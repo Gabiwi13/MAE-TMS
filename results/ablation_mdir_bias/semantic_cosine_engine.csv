@@ -1,0 +1,15 @@
+word,cosine_with_engine,domain
+motor,0.38,(extra)
+machine,0.306667,car
+automobile,0.393333,car
+vehicle,0.42,car
+transportation,0.18,car
+computer,0.193333,apple
+mac,0.046667,apple
+macintosh,0.086667,apple
+windows,0.133333,car
+apple,0.053333,(extra)
+fruit,0.093333,apple
+red,0.16,"apple, car"
+crash,0.266667,car
+wheel,0.313333,(extra)

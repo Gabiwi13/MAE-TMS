@@ -1,0 +1,16 @@
+rank,word,cosine,domain
+1,vehicle,0.42,car
+2,car,0.4,(extra)
+3,automobile,0.393333,car
+4,motor,0.38,(extra)
+5,wheels,0.36,car
+6,driver,0.32,car
+7,wheel,0.313333,(extra)
+8,machine,0.306667,car
+9,racing,0.3,horse
+10,driving,0.293333,car
+11,ride,0.286667,horse
+12,crash,0.266667,car
+13,tail,0.26,horse
+14,stem,0.253333,apple
+15,seat,0.253333,car
