@@ -1,0 +1,28 @@
+# Large model binaries — use Git LFS or share separately
+models/*.pkl
+models/*.pt
+
+# ETH-80 dataset (205 MB) — download separately
+data/
+
+# ConceptNet corpus (474 MB)
+cache/conceptnet-assertions-5.7.0.csv.gz
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Local Claude settings
+.claude/
+memory/
+
+# External libraries with their own git repos
+hetero/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
