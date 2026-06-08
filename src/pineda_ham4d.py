@@ -65,15 +65,31 @@ class PinedaHAM4D(HeteroAssociativeMemory4D):
     # Additional API required by this project (not in the original class)
     # ------------------------------------------------------------------
 
-    def recognize_from_left(self, cue_a: np.ndarray) -> float:
+    def recognize_from_left(self, cue_a: np.ndarray,
+                            left_weights: np.ndarray = None) -> float:
         """
         One-sided recognition score for agent routing (argmax across agents).
 
         Projects cue_a through the containment-AND relation (same project()
         as the original) and returns mean activation weight.
+
+        Parameters
+        ----------
+        cue_a        : quantized left-domain cue (n-dimensional)
+        left_weights : per-feature weights from M_dom_L.recog_weights().
+                       When provided, modulates each feature's contribution
+                       following Pineda's left_eam→hetero_eam architecture.
+                       Normalised internally to [0, 1].
+                       Falls back to uniform weights when None or all-zero.
         """
         ca = self.validate(cue_a, 0)
-        weights = np.ones(len(ca), dtype=float)
+        if left_weights is None:
+            weights = np.ones(len(ca), dtype=float)
+        else:
+            w = np.asarray(left_weights, dtype=float)
+            mx = w.max()
+            # Fall back to uniform if M_dom_L is empty (all-zero weights)
+            weights = (w / mx) if mx > 0 else np.ones(len(ca), dtype=float)
         projection = self.project(ca, weights, 0)   # (p, q) — uses AND
         total = np.sum(projection)
         count = np.count_nonzero(projection)
