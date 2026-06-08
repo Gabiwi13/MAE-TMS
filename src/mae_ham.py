@@ -1,15 +1,23 @@
 """
-SimpleHAM4D — versión sin dependencia de TensorFlow.
-Extrae la lógica central de hetero_associative_4d.py (Pineda & Morales)
-y la adapta para el experimento MAE (n=300, m=16, p=64, q=32).
+SimpleHAM4D — redirected to PinedaHAM4D (HeteroAssociativeMemory4D from Pineda & Morales).
+
+The original numpy-only implementation is preserved below for reference.
+All new code imports SimpleHAM4D from this module and receives PinedaHAM4D.
 """
+# Migration: use Pineda's original implementation.
+from pineda_ham4d import PinedaHAM4D as SimpleHAM4D  # noqa: F401
+
+# ── Original implementation kept for reference ──────────────────────────────
 import math
 import random
 import numpy as np
 
 
-class SimpleHAM4D:
+class _OriginalSimpleHAM4D:
     """
+    Original numpy-only implementation — kept for reference only.
+    Use SimpleHAM4D (= PinedaHAM4D) for all new code.
+
     Hetero-associative memory between two domains:
       Domain A (left):  n features, m quantization levels  -> label space
       Domain B (right): p features, q quantization levels  -> latent space
