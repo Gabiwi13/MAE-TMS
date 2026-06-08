@@ -1,0 +1,35 @@
+# MAE-TMS experiment dependencies
+# Python 3.13 (tested on 3.13.6)
+# Install: pip install -r requirements.txt
+
+# Deep learning
+torch==2.12.0
+torchvision==0.27.0
+
+# TensorFlow — required by hetero_lib/ (AssociativeMemory, HeteroAssociativeMemory4D)
+# Classifiers are not loaded in production; TF is imported only for type compatibility.
+tensorflow==2.21.0
+
+# Numerical / scientific
+numpy==2.4.6
+scipy==1.17.1
+
+# Visualisation
+matplotlib==3.10.9
+plotly==6.8.0
+seaborn
+
+# Data
+pandas==3.0.3
+scikit-learn==1.9.0
+
+# NLP
+spacy==3.8.14
+# After install run: python -m spacy download en_core_web_sm
+fasttext-wheel
+
+# App
+streamlit==1.58.0
+
+# Image
+Pillow

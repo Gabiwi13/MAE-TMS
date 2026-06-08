@@ -48,9 +48,20 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
     if not tokens:
         return {"query": query, "winner": None, "image": None, "routed": False}
 
-    token_vectors = {tok: quantize_binary(
-        get_fasttext_vector(tok, vectors_cache), M_LABEL)
-        for tok in tokens}
+    # Filter to vocabulary-known tokens only (unknown tokens produce random
+    # vectors that generate spurious M_dir scores).
+    from stage6_interaction import token_in_vocabulary
+    token_vectors = {}
+    unknown_tokens = []
+    for tok in tokens:
+        if not token_in_vocabulary(tok, vectors_cache):
+            unknown_tokens.append(tok)
+            continue
+        token_vectors[tok] = quantize_binary(
+            get_fasttext_vector(tok, vectors_cache), M_LABEL)
+
+    if verbose and unknown_tokens:
+        print(f"  Unknown tokens (not in vocabulary): {unknown_tokens}")
 
     # Aggregate routing votes using M_dir of entry_agent
     agent_scores = np.zeros(len(CLASSES), dtype=float)
@@ -63,15 +74,18 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
             scores = mem_dir.predict(v_q)
         agent_scores += scores
 
-    if agent_scores.sum() == 0:
-        # Unknown tokens → no routing signal; return None (not a default)
-        dest_idx  = 0   # structural fallback only (logged)
-        dest_name = CLASSES[dest_idx]
+    if not token_vectors or agent_scores.sum() == 0:
+        # Explicit rejection: no known tokens or no routing signal.
+        # Refuse to route rather than silently default to agent 0.
         if verbose:
-            print(f"  WARNING: all scores=0 for '{query}' — routing undefined")
-    else:
-        dest_idx  = int(np.argmax(agent_scores))
-        dest_name = CLASSES[dest_idx]
+            print(f"  REJECTED: no routing signal for '{query}' "
+                  f"— tokens not in vocabulary or not registered in M_dir.")
+        return {"query": query, "winner": None, "image": None,
+                "routed": False, "scores": agent_scores.tolist(),
+                "rejected": True}
+
+    dest_idx  = int(np.argmax(agent_scores))
+    dest_name = CLASSES[dest_idx]
 
     dest_agent = agents[dest_name]
     routed     = (dest_name != entry_agent.name)
