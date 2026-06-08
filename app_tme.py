@@ -25,10 +25,11 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quantizer import quantize_binary
 from stage6_interaction import (
-    CLASSES, AGENT_LIST, MODELS_DIR,
+    CLASSES, AGENT_LIST, MODELS_DIR, Agent,
     get_nlp, load_all_vectors,
-    tokenize_query, get_fasttext_vector, M_LABEL,
+    tokenize_query, get_fasttext_vector, M_LABEL, N,
 )
+from pineda_am import PinedaDirectoryMemory
 
 # ─────────────────────────────────────────────────────────────────
 # Constantes visuales
@@ -55,6 +56,7 @@ NODE_POS = {
 def load_models():
     """Carga todos los modelos necesarios. No modifica ningún archivo."""
     from stage2_encoder import Decoder
+    from stage5_fill import load_agent_memories
 
     # Decoder
     decoder = Decoder()
@@ -62,11 +64,12 @@ def load_models():
         MODELS_DIR / "decoder.pt", map_location="cpu"))
     decoder.eval()
 
-    # M_dom por agente (read-only)
-    mdoms = {}
+    # Agentes con 4 AMRs: M_dom_H + M_dom_L + M_dom_R + M_dir vacío
+    # M_dom_L se usa para pesos de reconocimiento (Pineda's left_eam pattern)
+    agents = {}
     for cls in CLASSES:
-        with open(MODELS_DIR / f"mem_dom_{cls}.pkl", "rb") as f:
-            mdoms[cls] = pickle.load(f)
+        mem_H, mem_L, mem_R = load_agent_memories(cls)
+        agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
 
     # Vectores fastText (cache en memoria)
     vectors_cache = load_all_vectors()
@@ -88,7 +91,7 @@ def load_models():
         img = Image.open(path).convert("RGB").resize((128, 128))
         ref_imgs[cls] = to_t(img)
 
-    return decoder, mdoms, vectors_cache, g_min, g_max, nlp, ref_imgs
+    return decoder, agents, vectors_cache, g_min, g_max, nlp, ref_imgs
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -108,11 +111,15 @@ def decode_image(recalled_q, g_min, g_max, decoder):
     return img.permute(1, 2, 0).numpy()
 
 
-def route_query_early(query, mdoms, vectors_cache, g_min, g_max, decoder, nlp):
+def route_query_early(query, agents, vectors_cache, g_min, g_max, decoder, nlp):
     """
     Reproduce la fase temprana:
     query → tokens → M_dom scores → ganador → recall imagen.
-    Retorna resultados detallados sin modificar nada.
+
+    Usa agent.recognize(v_q) que aplica M_dom_L.recog_weights() como pesos
+    sobre M_dom_H.recognize_from_left() — patrón Pineda left_eam → hetero_eam.
+    También registra los vectores ganadores en st.session_state.mdir_mem
+    (PinedaDirectoryMemory) para routing real en la fase madura.
     """
     tokens = tokenize_query(query, nlp)
     if not tokens:
@@ -125,8 +132,9 @@ def route_query_early(query, mdoms, vectors_cache, g_min, g_max, decoder, nlp):
         v = get_fasttext_vector(tok, vectors_cache)
         v_q = quantize_binary(v, M_LABEL)
         token_vecs[tok] = v_q
+        # agent.recognize() aplica pesos de M_dom_L internamente
         per_token_scores[tok] = {
-            cls: float(mdoms[cls].recognize_from_left(v_q))
+            cls: float(agents[cls].recognize(v_q))
             for cls in CLASSES
         }
 
@@ -140,10 +148,14 @@ def route_query_early(query, mdoms, vectors_cache, g_min, g_max, decoder, nlp):
     winner = max(avg_scores, key=avg_scores.get)
     winner_idx = AGENT_LIST.index(winner)
 
+    # Registrar en M_dir de sesión (PinedaDirectoryMemory — B1 normalizable)
+    for v_q in token_vecs.values():
+        st.session_state.mdir_mem.register(v_q, winner_idx)
+
     # Recall imagen del ganador con el primer token reconocido
     recalled_img = None
     for tok, v_q in token_vecs.items():
-        recalled_q, recognized, _ = mdoms[winner].recall_from_left(v_q)
+        recalled_q, recognized, _ = agents[winner].mem_dom_H.recall_from_left(v_q)
         if recognized:
             recalled_img = decode_image(recalled_q, g_min, g_max, decoder)
             break
@@ -161,11 +173,11 @@ def route_query_early(query, mdoms, vectors_cache, g_min, g_max, decoder, nlp):
     }
 
 
-def route_query_mature(query, mdir_counts, mdoms, vectors_cache,
+def route_query_mature(query, agents, vectors_cache,
                        g_min, g_max, decoder, nlp, entry_cls=None, seed=None):
     """
-    Fase madura: usa M_dir acumulado (no M_dom) para redirigir.
-    mdir_counts: array (3,) con registros acumulados en la sesión.
+    Fase madura: usa st.session_state.mdir_mem (PinedaDirectoryMemory) para redirigir.
+    Aplica normalización B1 (÷count) — congruente con la condición G del ablation.
     """
     tokens = tokenize_query(query, nlp)
     if not tokens:
@@ -175,23 +187,31 @@ def route_query_mature(query, mdir_counts, mdoms, vectors_cache,
         rng = np.random.RandomState(seed if seed else 42)
         entry_cls = CLASSES[rng.randint(0, 3)]
 
-    # Simular M_dir.predict con los conteos actuales
-    # mdir_counts[j] = cuántas veces el agente j fue registrado
-    # Score simple: proporción de registros (equivale a predict normalizado)
-    total = mdir_counts.sum()
-    if total == 0:
+    mdir_mem = st.session_state.mdir_mem
+    counts = mdir_mem.agent_counts
+
+    # Routing real: predict_normalized(B1) agregado sobre todos los tokens
+    agg_scores = np.zeros(len(CLASSES), dtype=float)
+    for tok in tokens:
+        v = get_fasttext_vector(tok, vectors_cache)
+        v_q = quantize_binary(v, M_LABEL)
+        agg_scores += mdir_mem.predict_normalized(v_q, mode="linear")
+
+    if agg_scores.sum() == 0:
+        # M_dir vacío: distribución uniforme
         mdir_scores = {cls: 1 / 3 for cls in CLASSES}
+        dest_cls = entry_cls
     else:
-        mdir_scores = {cls: float(mdir_counts[i]) for i, cls in enumerate(CLASSES)}
+        dest_idx  = int(np.argmax(agg_scores))
+        dest_cls  = CLASSES[dest_idx]
+        mdir_scores = {cls: float(agg_scores[i]) for i, cls in enumerate(CLASSES)}
 
-    dest_cls = max(mdir_scores, key=mdir_scores.get)
-
-    # Recall desde el agente destino
+    # Recall desde el agente destino (M_dom_H)
     recalled_img = None
     for tok in tokens:
         v = get_fasttext_vector(tok, vectors_cache)
         v_q = quantize_binary(v, M_LABEL)
-        recalled_q, recognized, _ = mdoms[dest_cls].recall_from_left(v_q)
+        recalled_q, recognized, _ = agents[dest_cls].mem_dom_H.recall_from_left(v_q)
         if recognized:
             recalled_img = decode_image(recalled_q, g_min, g_max, decoder)
             break
@@ -387,6 +407,9 @@ def tensor_to_pil(t):
 def init_session():
     if "mdir_counts" not in st.session_state:
         st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+    if "mdir_mem" not in st.session_state:
+        # PinedaDirectoryMemory para routing real en fase madura (B1 normalizado)
+        st.session_state.mdir_mem = PinedaDirectoryMemory(N, M_LABEL, len(CLASSES))
     if "history" not in st.session_state:
         st.session_state.history = []   # lista de resultados
     if "query_n" not in st.session_state:
@@ -395,6 +418,7 @@ def init_session():
 
 def reset_session():
     st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+    st.session_state.mdir_mem = PinedaDirectoryMemory(N, M_LABEL, len(CLASSES))
     st.session_state.history = []
     st.session_state.query_n = 0
 
@@ -447,7 +471,7 @@ def main():
 
     # ── Carga modelos ─────────────────────────────────────────────
     with st.spinner("Cargando modelos (primera vez puede tardar ~15s)..."):
-        decoder, mdoms, vectors_cache, g_min, g_max, nlp, ref_imgs = load_models()
+        decoder, agents, vectors_cache, g_min, g_max, nlp, ref_imgs = load_models()
 
     # ── Tabs ──────────────────────────────────────────────────────
     tab_routing, tab_mdir, tab_madura, tab_info = st.tabs([
@@ -492,7 +516,7 @@ def main():
 
         if process and query:
             result = route_query_early(
-                query, mdoms, vectors_cache, g_min, g_max, decoder, nlp)
+                query, agents, vectors_cache, g_min, g_max, decoder, nlp)
 
             if result is None:
                 st.warning("No se encontraron tokens válidos en la query.")
@@ -714,8 +738,7 @@ def main():
             if run_mature and query_m:
                 res_m = route_query_mature(
                     query_m,
-                    st.session_state.mdir_counts,
-                    mdoms, vectors_cache, g_min, g_max, decoder, nlp,
+                    agents, vectors_cache, g_min, g_max, decoder, nlp,
                     entry_cls=entry_cls,
                 )
                 if res_m is None:
@@ -788,7 +811,7 @@ def main():
                     # ── Comparar con fase temprana ─────────────────
                     with st.expander("Comparar con fase temprana"):
                         early = route_query_early(
-                            query_m, mdoms, vectors_cache, g_min, g_max, decoder, nlp)
+                            query_m, agents, vectors_cache, g_min, g_max, decoder, nlp)
                         if early:
                             e_winner = early["winner"]
                             match = e_winner == dest
