@@ -214,6 +214,11 @@ def get_fasttext_vector(word: str, vectors_cache: dict) -> np.ndarray:
     return rng.choice([-1.0, 1.0], 300).astype(np.float32)
 
 
+def token_in_vocabulary(word: str, vectors_cache: dict) -> bool:
+    """Return True only if the word has a real fastText vector (in training labels)."""
+    return any(word in vectors_cache[cls] for cls in CLASSES)
+
+
 def load_all_vectors() -> dict:
     cache = {}
     for cls in CLASSES:
@@ -240,10 +245,17 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         print(f"  Query: '{query}'  tokens={tokens}")
 
     # --- Aggregate mean_weight per agent across all tokens ---
+    # Only process tokens whose fastText vector is in the training vocabulary.
+    # Tokens outside the vocabulary produce random vectors that generate
+    # spurious non-zero scores — they must be filtered before scoring.
     agent_scores = {cls: 0.0 for cls in CLASSES}
     token_vectors = {}
+    unknown_tokens = []
 
     for tok in tokens:
+        if not token_in_vocabulary(tok, vectors_cache):
+            unknown_tokens.append(tok)
+            continue                   # skip: not in label vocabulary
         v = get_fasttext_vector(tok, vectors_cache)
         v_q = quantize_binary(v, M_LABEL)
         token_vectors[tok] = v_q
@@ -253,8 +265,20 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
             w = agents[cls].recognize(v_q)
             agent_scores[cls] += w
 
-    # Average over tokens
-    n_toks = len(tokens)
+    if verbose and unknown_tokens:
+        print(f"  Unknown tokens (not in vocabulary): {unknown_tokens}")
+
+    # --- Explicit rejection: no known tokens OR all scores == 0 ---
+    if not token_vectors or max(agent_scores.values()) == 0.0:
+        if verbose:
+            print(f"  REJECTED: no routing signal for tokens={tokens} "
+                  f"— labels not seen during early phase.")
+        return {"query": query, "tokens": tokens, "winner": None,
+                "image": None, "labels": tokens, "agent": None,
+                "rejected": True}
+
+    # Average over known tokens only
+    n_toks = len(token_vectors)
     for cls in CLASSES:
         agent_scores[cls] /= n_toks
 
