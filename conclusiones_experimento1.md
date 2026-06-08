@@ -102,9 +102,15 @@ La API de ConceptNet estuvo inaccesible (HTTP 502) durante todo el experimento. 
 
 **Hallazgo importante**: las relaciones `IsA`, `HasProperty` y `HasPart` solas producen solo 9 labels para los 3 conceptos (τ=2.0). El grueso de los labels cualitativos (red, round, animal, vehicle) reside en `/r/RelatedTo`, que es la relación más poblada en ConceptNet 5.7 para conceptos concretos. La spec original asumía el comportamiento del endpoint de la API, que agrega internamente múltiples tipos de relaciones.
 
-### 4.2 EAM sin TensorFlow
+### 4.2 EAM basada en código original de Pineda & Morales
 
-La implementación de `SimpleHAM4D` (numpy puro) reproduce la lógica central de `hetero_associative_4d.py` (Pineda & Morales) sin dependencia de TensorFlow, incompatible con Python 3.13. Los parámetros `iota=kappa=xi=0` con `recall_from_right_soft()` (proyección por suma en lugar de AND) son suficientes para el experimento base.
+A partir de la migración de arquitectura completa, el sistema usa exclusivamente las implementaciones originales de Pineda & Morales (`hetero_lib/`):
+
+- **M_dom_H**: `PinedaHAM4D` — subclase real de `HeteroAssociativeMemory4D`. Llama `super().__init__(fold=None)` con una guard de 1 línea que hace opcional la carga de clasificadores TF. Los parámetros `iota=kappa=xi=0` con `recall_from_right_soft()` delegando a `recall_from_right()` (proyección containment-AND) son suficientes para el experimento base.
+- **M_dom_L/R**: `PinedaAssociativeMemory` — wrapper de `AssociativeMemory`. Sus `recog_weights()` se usan para ponderar la proyección hetero-asociativa de `recognize_from_left()`, replicando el patrón `left_eam.recog_weights() → hetero_eam` del código de Pineda en `eam.py`.
+- **M_dir**: `PinedaDirectoryMemory` — 3 instancias `AssociativeMemory` (una por agente). Reemplaza `SimpleDirectoryMemory` (tabla de frecuencias numpy). Incluye normalización B1 (`predict_normalized`) equivalente a la condición B1 del ablation study.
+
+Instalación: `tensorflow==2.21.0` (compatible con Python 3.13; los clasificadores no se cargan en producción).
 
 ### 4.3 Cuantización global
 
@@ -162,7 +168,10 @@ Apple (fruta) y Apple (empresa) comparten el mismo nodo en ConceptNet, introduci
 
 - **Dataset**: ETH-80, 3 clases, 410 imágenes/clase, splits 328/82 (train/test)
 - **Encoder**: ResNet18 → 64-dim latente + ConvTranspose decoder
-- **EAM**: SimpleHAM4D, n=300, m=16, p=64, q=32, iota=kappa=xi=0
+- **EAM M_dom_H**: PinedaHAM4D (HeteroAssociativeMemory4D de Pineda & Morales), n=300, m=16, p=64, q=32, iota=kappa=xi=0
+- **EAM M_dom_L**: PinedaAssociativeMemory (AssociativeMemory homo-asociativa), n=300, m=16
+- **EAM M_dom_R**: PinedaAssociativeMemory (AssociativeMemory homo-asociativa), n=64, m=32
+- **EAM M_dir**: PinedaDirectoryMemory (3×AssociativeMemory para routing), n=300, m=16
 - **Labels**: ConceptNet 5.7.0 assertions CSV, τ=2.0, relaciones IsA+HasProperty+HasPart+RelatedTo+HasA+MadeOf+CapableOf
 - **Vectorización**: fastText wiki-news-subwords-300, sign(v) ∈ {-1,+1}^300
 - **Queries fase temprana**: 10 queries manuales

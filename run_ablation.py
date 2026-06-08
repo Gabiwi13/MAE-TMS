@@ -34,10 +34,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from mae_ham import SimpleHAM4D
+from pineda_am import PinedaDirectoryMemory
 from quantizer import quantize_binary
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
-    SimpleDirectoryMemory, get_nlp, load_all_vectors,
+    get_nlp, load_all_vectors,
     tokenize_query, get_fasttext_vector, M_LABEL,
 )
 
@@ -132,36 +133,12 @@ for _i in range(max(len(APPLE_QUERIES), len(HORSE_QUERIES), len(CAR_QUERIES))):
 # Clases extendidas de M_dir
 # ═══════════════════════════════════════════════════════════════════
 
-class DirectoryMemoryTracked(SimpleDirectoryMemory):
-    """M_dir con conteo de registros por agente y soporte de normalización."""
-
-    def __init__(self, n=300, m=16, n_agents=3):
-        super().__init__(n=n, m=m, n_agents=n_agents)
-        self._counts = np.zeros(n_agents, dtype=np.int64)
-
-    def register(self, v_label_q: np.ndarray, agent_idx: int):
-        super().register(v_label_q, agent_idx)
-        self._counts[agent_idx] += 1
-
-    def predict_normalized(self, v_label_q: np.ndarray,
-                           mode: str = "linear", eps: float = 1.0) -> np.ndarray:
-        scores = self.predict(v_label_q)
-        denom = self._counts.astype(float) + eps
-        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
-
-    @property
-    def agent_counts(self) -> np.ndarray:
-        return self._counts.copy()
-
-    def entropy(self) -> float:
-        total = float(self._counts.sum())
-        if total == 0:
-            return math.log2(max(len(self._counts), 1))
-        p = self._counts / total
-        return float(-np.sum(p * np.log2(np.where(p == 0, 1.0, p))))
+# DirectoryMemoryTracked: PinedaDirectoryMemory ya tiene conteo de registros,
+# predict_normalized (B1/B2) y entropy() — no hay que reimplementarlos.
+DirectoryMemoryTracked = PinedaDirectoryMemory
 
 
-class DirectoryMemoryBalanced(DirectoryMemoryTracked):
+class DirectoryMemoryBalanced(PinedaDirectoryMemory):
     """M_dir que limita la acumulación desproporcionada por agente."""
 
     def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
@@ -227,25 +204,25 @@ def get_condition_config(condition: str):
     use_balanced = condition in ("D", "G")
 
     if condition == "B1":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     elif condition == "B2":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "sqrt")
     elif condition == "C":
         mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryBalanced, 16, {"max_ratio": 3.0}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E32":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 32, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 32, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E64":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 64, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 64, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "G":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     else:  # A, D, F
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryTracked, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
 
     return mdir_class, m_mdir, mdir_kwargs, predict_fn, use_curated, use_balanced
@@ -257,14 +234,24 @@ def get_condition_config(condition: str):
 
 def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
                 mdir_kwargs: dict = None):
+    """Create fresh Agent+TME set for one ablation experiment.
+
+    mdoms[cls] is the H memory (may be curated for conditions F/G).
+    M_dom_L/R are loaded from disk (non-curated) for weighted recognition.
+    """
+    from stage5_fill import load_agent_memories
     mdir_kwargs = mdir_kwargs or {}
     agents = {}
     for cls in CLASSES:
-        ag = Agent(cls, mdoms[cls])
+        # Load L/R for weighted recognition (H is provided via mdoms)
+        _, mem_L, mem_R = load_agent_memories(cls)
+        ag = Agent(cls, mdoms[cls], mem_dom_L=mem_L, mem_dom_R=mem_R)
+        # Override the default mem_dir with the ablation-specific class
         ag.mem_dir = mdir_class(m=m_mdir, **mdir_kwargs)
         agents[cls] = ag
     tme = TME()
-    tme.mem_dir = mdir_class(m=m_mdir, **mdir_kwargs)
+    # mem_dir is a read-only property alias; set mem_dir_L directly
+    tme.mem_dir_L = mdir_class(m=m_mdir, **mdir_kwargs)
     return agents, tme
 
 
