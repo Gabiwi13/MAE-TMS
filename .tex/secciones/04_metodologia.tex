@@ -1,0 +1,91 @@
+\section{Metodología}
+\label{sec:metodologia}
+
+Este capítulo describe el conjunto de datos, el protocolo experimental, los parámetros del sistema y las métricas de evaluación empleadas para caracterizar el sistema MAE-TMS.
+
+% ---------------------------------------------------------------
+\subsection{Conjunto de datos}
+\label{sec:dataset}
+
+Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80}, que contiene imágenes fotográficas de objetos tridimensionales.
+Para este experimento se seleccionaron tres clases: \texttt{apple} (manzana), \texttt{horse} (caballo) y \texttt{car} (automóvil).
+Cada clase cuenta con 410 imágenes en escala de grises de $128\times128$ píxeles.
+Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba, sin solapamiento.
+
+Dentro del conjunto de entrenamiento se definieron tres piscinas disjuntas con propósitos distintos:
+\begin{itemize}
+    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada clase, utilizadas para registrar patrones en las memorias homoasociativas de cada agente especialista.
+    \item \textbf{Interacciones visuales}: imágenes \texttt{train[200:328]} de cada clase, usadas para simular las interacciones de percepción durante la fase de formación del directorio transactivo.
+    \item \textbf{Evaluación}: las 82 imágenes de prueba (\texttt{test}) de cada clase, nunca vistas durante el entrenamiento ni la formación del directorio.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Pipeline semántico}
+\label{sec:pipeline-semantico}
+
+Cada consulta en lenguaje natural transita por un pipeline de cuatro etapas antes de llegar a las memorias asociativas.
+
+\paragraph{Extracción de conceptos con ConceptNet.}
+Se consultó ConceptNet~5.7~\cite{speer2017conceptnet} con las relaciones \texttt{IsA}, \texttt{HasProperty}, \texttt{RelatedTo}, \texttt{HasPart}, \texttt{HasA}, \texttt{MadeOf} y \texttt{CapableOf}.
+Solo se retuvieron aristas con peso mayor o igual a 2.0, lo que produjo un vocabulario de aproximadamente 20 etiquetas (\textit{labels}) por clase con su frecuencia de co-ocurrencia.
+
+\paragraph{Vectorización con fastText.}
+Cada etiqueta del vocabulario se representó con un vector de 300 dimensiones extraído del modelo fastText preentrenado~\cite{bojanowski2017fasttext}.
+Para obtener un patrón binario compatible con la Memoria Asociativa Entrópica, cada vector se binarizó tomando el signo de cada componente, resultando en un vector de 300 bits por etiqueta.
+
+\paragraph{Procesamiento de consultas con spaCy.}
+Las consultas en lenguaje natural se preprocesaron con spaCy~\cite{honnibal2020spacy}: se aplicó lematización y se retuvieron únicamente tokens de categoría gramatical \texttt{NOUN}, \texttt{ADJ} o \texttt{PROPN}.
+Se eliminaron palabras vacías (\textit{stopwords}) y se aplicó deduplicación estable para conservar el orden del original.
+
+\paragraph{Normalización por lemas.}
+Las etiquetas de ConceptNet se almacenan en su forma superficial (e.g., \texttt{wheels}, \texttt{hooves}), mientras que spaCy devuelve lemas (\texttt{wheel}, \texttt{hoof}).
+Para evitar rechazos espurios, se construyó un índice de alias lema$\to$etiqueta de vocabulario que permite resolver la consulta aun cuando la forma superficial difiera del lema.
+
+% ---------------------------------------------------------------
+\subsection{Percepción visual: encoder ResNet-18}
+\label{sec:percepcion}
+
+Para obtener representaciones latentes de las imágenes se entrenó un autoencoder convolucional con encoder basado en ResNet-18~\cite{he2016resnet}.
+El espacio latente tiene dimensión 64.
+Los vectores latentes se cuantizaron a valores binarios mediante normalización global min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado (\texttt{train[0:200]} por clase).
+Esta cuantización global evita que la escala relativa entre clases afecte la codificación binaria.
+
+% ---------------------------------------------------------------
+\subsection{Banco de evaluación semántica}
+\label{sec:banco}
+
+Se construyó un banco de 80 consultas en lenguaje natural con etiqueta de clase correcta conocida (\textit{ground truth}): 27 consultas de \texttt{apple}, 27 de \texttt{horse} y 26 de \texttt{car}, presentadas de forma intercalada para reflejar un escenario de uso realista.
+Las consultas varían en longitud y vocabulario (e.g., ``a red crunchy fruit'', ``an animal that trots'', ``a wheeled motor vehicle'') y cubren tanto descripciones directas como perifrásticas.
+
+% ---------------------------------------------------------------
+\subsection{Parámetros de la EAM}
+\label{sec:parametros}
+
+Los parámetros propios del modelo de Memoria Asociativa Entrópica de Pineda y Morales~\cite{pineda2021entropic,pineda2024hetero} se fijaron en:
+$\iota = 0$, $\kappa = 0$, $\xi = 0$, $\sigma = 0.1$.
+La justificación experimental de estos valores se presenta en la Sección~\ref{sec:param-iota-kappa} (barrido $\iota \times \kappa$) y en la Sección~\ref{sec:capacidad} (análisis de $\xi$).
+En síntesis, $\iota > 0$ poda conocimiento escaso legítimo antes que promiscuidad (con patrones binarios las relaciones son ralas) y $\kappa$ resultó inerte a lo largo de todo el rango probado.
+
+% ---------------------------------------------------------------
+\subsection{Métricas de evaluación}
+\label{sec:metricas}
+
+Se emplearon las siguientes métricas:
+
+\begin{itemize}
+    \item \textbf{Precisión temprana} (\textit{early accuracy}): fracción de consultas para las que el agente ganador en la fase de activación temprana coincide con la clase real.
+    \item \textbf{Precisión madura} (\textit{mature accuracy}): ídem tras la fase de recuperación madura, con lectura de directorio corregida por conteo (B1) o cruda.
+    \item \textbf{Tasa de rechazo}: fracción de consultas para las que ningún agente supera el umbral de aceptación.
+    \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
+    \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{counts} de los agentes especialistas, normalizada respecto a $\log_2(3)$ (máximo para tres agentes).
+    \item \textbf{Counts por agente}: número de registros acumulados en el directorio transactivo por cada agente especialista.
+    \item \textbf{Routing de test} (hemisferio visual): fracción de imágenes de prueba asignadas correctamente por el directorio visual.
+    \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recall inverso imagen $\to$ palabras).
+\end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Organización del experimento}
+\label{sec:organizacion}
+
+El experimento se organiza en cinco secciones (A--E) que caracterizan al sistema completo bajo un protocolo único, más un estudio de calibración del directorio que fundamenta la elección de lectura B1.
+La Sección~\ref{sec:proto-completo} presenta el protocolo completo; la Sección~\ref{sec:param-iota-kappa} examina los parámetros nativos; la Sección~\ref{sec:formacion} analiza la formación del directorio; la Sección~\ref{sec:capacidad} estudia la curva de capacidad de llenado; y la Sección~\ref{sec:hemisferio-visual} evalúa el hemisferio visual.

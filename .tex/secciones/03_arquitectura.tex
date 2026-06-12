@@ -1,0 +1,445 @@
+\section{Arquitectura MAE-TMS}
+\label{sec:arquitectura}
+
+Esta sección describe la arquitectura completa del sistema de memoria transactiva
+multi-agente.
+Se presentan primero los componentes (Sección~\ref{sec:componentes}), luego los tres
+diagramas de flujo que ilustran el llenado de memorias, la fase temprana y la fase
+madura (Sección~\ref{sec:diagramas}), y finalmente la formalización de todas las
+operaciones del sistema (Sección~\ref{sec:operaciones}).
+
+\subsection{Componentes del sistema}
+\label{sec:componentes}
+
+El sistema MAE-TMS contiene en total \textbf{14 memorias asociativas} distribuidas entre
+tres agentes especialistas y el mediador TME.
+La Tabla~\ref{tab:memorias} resume todas las memorias, sus dominios y sus dimensiones.
+Fuera del sistema de memorias, dos componentes de percepción actúan como interfaz con
+el mundo: un encoder ResNet18 \cite{he2016resnet} que proyecta imágenes de $128\times128$
+píxeles al espacio latente $\mathbf{z} \in \mathbb{R}^{64}$, y un decoder convolucional
+transpuesto que invierte esa proyección; ambos son preentrenados y sus pesos permanecen
+fijos durante la operación del sistema de memorias.
+Las representaciones semánticas se construyen con embeddings fastText 300D
+\cite{bojanowski2017fasttext} procesados por spaCy \cite{honnibal2020spacy} y
+enriquecidos con relaciones de ConceptNet 5.7 \cite{speer2017conceptnet}.
+
+\begin{table}[H]
+\centering
+\caption{Las 14 memorias asociativas del sistema MAE-TMS.
+Para las memorias homo-asociativas se indica $(n, m)$ (dimensión, alfabeto).
+Para las hetero-asociativas se indica $(n_L, m_L \leftrightarrow n_R, m_R)$ o
+$(n_L, m_L \to n_R, m_R)$ cuando la relación es unidireccional.
+El dominio \emph{label} corresponde a vectores fastText cuantizados;
+el dominio \emph{latente} a códigos ResNet18 cuantizados.
+$g \in \{0,1,2\}$ codifica la identidad del agente ganador en one-hot con bit de
+\emph{desconocido}.}
+\label{tab:memorias}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Componente} & \textbf{Memoria} & \textbf{Tipo} & \textbf{Dimensiones} \\
+\midrule
+\multirow{4}{*}{Agente $k$ (×3)} &
+  $M^L_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}300,\; m{=}16)$ \\
+& $M^R_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}64,\; m{=}32)$ \\
+& $M^H_{\mathrm{dom}}$ & Hetero-asociativa & $(300, 16 \leftrightarrow 64, 32)$ \\
+& $M_{\mathrm{dir}}$   & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\
+\midrule
+\multirow{2}{*}{TME} &
+  $M^L_{\mathrm{dir}}$ & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\
+& $M^R_{\mathrm{dir}}$ & Hetero-asociativa & $(64, 32 \to 3, 2)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Las memorias de directorio ($M_{\mathrm{dir}}$, $M^L_{\mathrm{dir}}$,
+$M^R_{\mathrm{dir}}$) son hetero-asociativas cuyo dominio derecho es la identidad del
+agente ganador codificada en \emph{one-hot} con $q=2$ (un bit de ``conoce'' y uno de
+``no-conoce'').
+Cuando se registra un par $(\mathbf{v}_q, g)$ en un directorio, la representación
+semántica (o latente) del cue se asocia al identificador del agente que ganó el
+enrutamiento; todos los agentes, incluidos los perdedores, registran esta asociación
+(\emph{directory updating} de Wegner).
+
+\subsection{Diagramas de flujo}
+\label{sec:diagramas}
+
+Los tres diagramas siguientes ilustran las tres etapas operativas del sistema:
+el llenado de las memorias de dominio, la recuperación mediada por el TME (fase temprana)
+y la recuperación punto a punto (fase madura).
+
+% ------------------------------------------------------------------
+% Diagrama 1: Llenado
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance = 0.55cm and 1.5cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\small,
+        minimum height=1.0cm, minimum width=2.6cm,
+        inner sep=4pt
+    },
+    boxg/.style = {
+        rectangle, draw=gray, dashed, line width=0.4pt,
+        align=center, font=\small,
+        minimum height=1.0cm, minimum width=2.6cm,
+        inner sep=4pt, text=gray
+    },
+    arr/.style  = {-{Stealth[length=2mm]}, line width=0.4pt},
+    lbl/.style  = {font=\footnotesize, midway, above, align=center},
+    lblb/.style = {font=\footnotesize, midway, below, align=center},
+]
+
+% ---- Rama semántica (izquierda) ----
+\node[box] (conceptnet) {ConceptNet 5.7\\relaciones \textit{IsA},\\ \textit{HasProp.}, \textit{Related}};
+\node[box, right=of conceptnet] (ft) {fastText\\subword 300D};
+\node[box, right=of ft] (sign) {$\mathrm{sign}(\cdot)$};
+\node[box, right=of sign] (qL) {Cuantización\\binaria};
+
+% ---- Memoria label ----
+\node[box, right=1.8cm of qL] (ML) {$M^L_{\mathrm{dom}}$\\homo\\$(300,16)$};
+
+% ---- Etiqueta secuencia ----
+\node[box, below=1.5cm of qL] (seq) {Secuencia\\de labels\\(expandida por\\frecuencia)};
+
+% ---- Rama visual (debajo de rama semántica) ----
+\node[box, below=3.5cm of conceptnet] (eth80) {ETH-80\\200 imágenes/clase};
+\node[box, right=of eth80] (resnet) {Encoder\\ResNet18\\$128\!\times\!128$};
+\node[box, right=of resnet] (zR) {$\mathbf{z}\in\mathbb{R}^{64}$};
+\node[box, right=of zR] (qR) {Cuantización\\global\\min--max};
+
+% ---- Memoria latente y het ----
+\node[box, right=1.8cm of qR] (MR) {$M^R_{\mathrm{dom}}$\\homo\\$(64,32)$};
+\node[box, below=0.7cm of ML]  (MH) {$M^H_{\mathrm{dom}}$\\hetero\\$(300,16\!\leftrightarrow\!64,32)$};
+
+% ---- Flechas rama semántica ----
+\draw[arr] (conceptnet) -- node[lbl]{palabras,\\frec.} (ft);
+\draw[arr] (ft) -- node[lbl]{$\mathbf{v}\in\mathbb{R}^{300}$} (sign);
+\draw[arr] (sign) -- node[lbl]{$\{-1,1\}^{300}$} (qL);
+\draw[arr] (qL) -- node[lbl]{$\mathbf{v}_q\in\{0,15\}^{300}$} (ML);
+\draw[arr] (qL) -- (seq);
+
+% ---- Flechas rama visual ----
+\draw[arr] (eth80) -- (resnet);
+\draw[arr] (resnet) -- node[lbl]{$\mathbf{z}$} (zR);
+\draw[arr] (zR) -- (qR);
+\draw[arr] (qR) -- node[lbl]{$\mathbf{z}_q\in[0,31]^{64}$} (MR);
+
+% ---- Registro emparejado image-major en M^H ----
+\draw[arr] (qL.south) -- ++(0,-0.4) -| (MH.north)
+    node[near end, left, font=\footnotesize]{$\lambda(\mathbf{v}_q, \mathbf{z}_q)$};
+\draw[arr] (qR.north) |- (MH.west);
+\draw[arr] (seq.east) -- ++(0.4,0) |- (MH.south west);
+
+% ---- Nota ----
+\node[font=\footnotesize\itshape, text width=4.5cm, align=center,
+      below=0.3cm of MH]
+    {La distribución de clase se acumula DENTRO\\
+     de la memoria; el prototipo emerge, no se impone.};
+
+\end{tikzpicture}
+\caption{Llenado de las memorias de dominio (etapas 3--5).
+La rama semántica extrae y cuantiza embeddings fastText desde ConceptNet;
+la rama visual cuantiza los códigos ResNet18.
+El registro en $M^H_{\mathrm{dom}}$ sigue el esquema \emph{image-major}:
+la imagen $i$-ésima se registra una sola vez, emparejada con el label
+$\mathbf{v}_q^{(i mod L)}$ de la secuencia expandida por frecuencias
+(de longitud $L$), de modo que cada clase aporta exactamente $N=200$ registros.}
+\label{fig:arq-llenado}
+\end{figure}
+
+% ------------------------------------------------------------------
+% Diagrama 2: Fase temprana
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance = 0.6cm and 1.4cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\small,
+        minimum height=1.0cm, minimum width=2.5cm,
+        inner sep=4pt
+    },
+    boxA/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\small,
+        minimum height=2.2cm, minimum width=2.8cm,
+        inner sep=4pt
+    },
+    arr/.style  = {-{Stealth[length=2mm]}, line width=0.4pt},
+    lbl/.style  = {font=\footnotesize, midway, above, align=center},
+    lblb/.style = {font=\footnotesize, midway, below, align=center},
+]
+
+% ---- Entrada ----
+\node[box] (query) {Consulta};
+\node[box, right=of query] (spacy) {spaCy\\lemas NOUN/ADJ};
+\node[box, right=of spacy] (emb) {fastText\\$+\,\mathrm{sign}$};
+\node[box, right=of emb] (vq) {$\mathbf{v}_q$};
+
+% ---- TME ----
+\node[box, right=1.8cm of vq, minimum height=1.4cm, minimum width=2.8cm]
+    (tme) {TME\\(mediador)};
+
+% ---- Agentes (col derecha) ----
+\node[boxA, right=2.5cm of tme, yshift=2.0cm]  (A0) {Agente 0\\(\textit{apple})\\$M^L \to w \to M^H$};
+\node[boxA, right=2.5cm of tme]                 (A1) {Agente 1\\(\textit{horse})\\$M^L \to w \to M^H$};
+\node[boxA, right=2.5cm of tme, yshift=-2.0cm]  (A2) {Agente 2\\(\textit{car})\\$M^L \to w \to M^H$};
+
+% ---- Scores ----
+\node[box, right=1.2cm of A1] (argmax) {$\arg\max_k \sum s_k$\\ganador $g$};
+
+% ---- Salidas ----
+\node[box, right=of argmax, yshift=1.2cm] (recall) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
+\node[box, right=of recall] (decoder) {Decoder};
+
+% Corchete de salida
+\node[box, right=of decoder] (salida) {Imagen\\recuperada};
+
+% ---- Actualización de directorio ----
+\node[box, below=1.4cm of tme, minimum width=2.8cm]
+    (dir_update) {Actualización de\\directorio\\ $(\mathbf{v}_q \to g)$};
+
+% ---- Flechas principales ----
+\draw[arr] (query) -- (spacy);
+\draw[arr] (spacy) -- (emb);
+\draw[arr] (emb) -- node[lbl]{$\mathbf{v}\in\mathbb{R}^{300}$} (vq);
+\draw[arr] (vq) -- (tme);
+
+% Broadcast del TME a los agentes (3 pares de flechas paralelas)
+\foreach \ag/\lab in {A0/$s_0$, A1/$s_1$, A2/$s_2$}{
+    \draw[arr] (tme.east) -- (\ag.west);
+    \draw[arr] (\ag.east) -- node[lbl]{\lab} (argmax.west|-\ag.east);
+}
+
+\draw[arr] (argmax) -- (recall);
+\draw[arr] (recall) -- (decoder);
+\draw[arr] (decoder) -- (salida);
+
+% Actualización de directorio hacia los 3 agentes y el TME
+\draw[arr] (tme.south) -- (dir_update.north);
+\draw[arr, dashed] (dir_update.west) -| (A0.south);
+\draw[arr, dashed] (dir_update)      -- (A1.south);
+\draw[arr, dashed] (dir_update.east) -| (A2.south);
+\node[font=\footnotesize, below=0.15cm of dir_update, text width=5cm, align=center]
+    {Todos los agentes y el TME\\ registran $\lambda(\mathbf{v}_q, g)$};
+
+% Nota Wegner
+\node[font=\footnotesize\itshape, below=0.25cm of A2, text width=4cm, align=center]
+    {También los perdedores anotan\\(\textit{directory updating}, Wegner)};
+
+\end{tikzpicture}
+\caption{Fase temprana: aprendizaje mediado por el TME.
+La consulta se codifica con fastText+sign, el TME la difunde a los tres agentes,
+cada agente devuelve un score $s_k$ mediante el reconocimiento de su memoria homo
+y la proyección de su memoria hetero, y el ganador $g = \arg\max_k \sum s_k$ ejecuta
+el recall $\beta$ hacia el espacio latente.
+Los tres agentes y el propio TME registran el par $(\mathbf{v}_q, g)$ en sus
+respectivos directorios, incluyendo los agentes perdedores.}
+\label{fig:arq-temprana}
+\end{figure}
+
+% ------------------------------------------------------------------
+% Diagrama 3: Fase madura
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance = 0.6cm and 1.3cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\small,
+        minimum height=1.0cm, minimum width=2.6cm,
+        inner sep=4pt
+    },
+    boxg/.style = {
+        rectangle, draw=gray, dashed, line width=0.4pt,
+        align=center, font=\small, text=gray,
+        minimum height=1.2cm, minimum width=2.6cm,
+        inner sep=4pt
+    },
+    arr/.style  = {-{Stealth[length=2mm]}, line width=0.4pt},
+    arrg/.style = {-{Stealth[length=2mm]}, line width=0.4pt, draw=gray, dashed},
+    lbl/.style  = {font=\footnotesize, midway, above, align=center},
+]
+
+% ---- Entrada ----
+\node[box] (query) {Consulta};
+\node[box, right=of query] (entrada) {Agente de\\entrada\\(aleatorio)};
+
+% ---- Directorio del agente de entrada ----
+\node[box, right=1.6cm of entrada] (mdir) {$M_{\mathrm{dir}}$\\lectura B1};
+
+% ---- Rama conocida: agente destino ----
+\node[box, right=2.0cm of mdir, yshift=1.4cm] (destino) {Agente\\destino};
+\node[box, right=of destino] (recall) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
+\node[box, right=of recall] (decoder) {Decoder};
+\node[box, right=of decoder] (img) {Imagen};
+
+% ---- Rama desconocida: rechazo ----
+\node[box, right=2.0cm of mdir, yshift=-1.4cm] (rechazo) {RECHAZO\\(ningún experto)};
+
+% ---- TME (fuera del circuito) ----
+\node[boxg, below=1.5cm of entrada] (tme) {TME\\(fuera del circuito)};
+
+% ---- Flechas ----
+\draw[arr] (query) -- (entrada);
+\draw[arr] (entrada) -- node[lbl]{$\mathbf{v}_q$} (mdir);
+
+% Bifurcación desde el directorio
+\draw[arr] (mdir.east) -- ++(0.6,0) |- (destino.west)
+    node[near start, above, font=\footnotesize]{$g$ conocido};
+\draw[arr] (mdir.east) -- ++(0.6,0) |- (rechazo.west)
+    node[near start, below, font=\footnotesize]{$c{+}\text{desconocido}$};
+
+% Agente destino al recall
+\draw[arr] (destino) -- (recall);
+\draw[arr] (recall) -- (decoder);
+\draw[arr] (decoder) -- (img);
+
+% TME apagado
+\draw[arrg] (entrada.south) -- (tme.north);
+\node[font=\footnotesize\itshape, text=gray, below=0.2cm of tme, text width=4cm, align=center]
+    {El mediador ya no participa\\en la recuperación};
+
+% Nota rechazo
+\node[font=\footnotesize\itshape, right=0.3cm of rechazo, text width=3.5cm, align=left]
+    {El grupo no inventa\\expertos inexistentes};
+
+% Corchete salida final
+\node[right=0.15cm of img, font=\small] (cbrace) {$\left.\rule{0pt}{2.5ex}\right\}$};
+\node[right=0.1cm of cbrace, font=\footnotesize, align=left]
+    {imagen,\\labels,\\ubicación};
+
+\end{tikzpicture}
+\caption{Fase madura: recuperación punto a punto.
+Un agente de entrada (seleccionado aleatoriamente) consulta su directorio $M_{\mathrm{dir}}$
+con la lectura B1 y reenvía directamente al agente destino sin pasar por el TME
+(dibujado en gris punteado).
+Si el cue cae en la región ``desconocido'' del directorio, el sistema emite un rechazo
+explícito: el grupo no inventa expertos.}
+\label{fig:arq-madura}
+\end{figure}
+
+\subsection{Operaciones del sistema}
+\label{sec:operaciones}
+
+\subsubsection*{Score de enrutamiento (gated)}
+
+Para un agente $k$ dado un cue $\mathbf{v}_q$ (representación semántica cuantizada),
+el proceso de enrutamiento es el siguiente.
+
+\begin{enumerate}
+    \item Se obtienen los pesos de reconocimiento de la memoria homo-asociativa de labels:
+    \begin{equation}
+        \mathbf{w} = \eta(\mathbf{v}_q,\; M^L_{\mathrm{dom}})
+        \label{eq:pesos-routing}
+    \end{equation}
+    y se normalizan $w_i \leftarrow w_i / \max_j w_j$ para equiparar escalas.
+
+    \item Se computa la proyección AND-ponderada sobre la memoria de contenido:
+    \begin{equation}
+        \Pi_k = \Pi(\mathbf{v}_q,\; \mathbf{w},\; M^H_{\mathrm{dom}})
+        \label{eq:proyeccion-routing}
+    \end{equation}
+    según la ecuación~\eqref{eq:proyeccion-AND}.
+
+    \item El score del agente $k$ incorpora un \textbf{gate de containment}:
+    \begin{equation}
+        s_k = \begin{cases}
+            0 & \text{si } \exists\, j : \sum_l \Pi_k[j, l] = 0 \\[4pt]
+            \dfrac{\displaystyle\sum_{j,l} \Pi_k[j, l]}%
+                  {|\{(j,l) : \Pi_k[j,l] \neq 0\}|} & \text{en otro caso}
+        \end{cases}
+        \label{eq:score-gated}
+    \end{equation}
+    El gate anula el score si alguna fila del dominio derecho carece completamente
+    de soporte: el agente no opina sobre lo que no contiene.
+    En el caso contrario, $s_k$ es la \emph{activación media} de las celdas no nulas.
+\end{enumerate}
+
+El agente ganador es $g = \arg\max_k \sum_{\text{tokens}} s_k$ (la suma recorre todos
+los tokens semánticos del cue).
+Si $s_k = 0$ para todos los agentes, el sistema emite un \textbf{rechazo}.
+
+\paragraph{Justificación.}
+Con el llenado \emph{image-major}, cada agente acumula exactamente 200 registros en
+$M^H_{\mathrm{dom}}$ (una imagen por cada label de su clase, expandida por frecuencias).
+Las masas de registro quedan igualadas por construcción, de modo que la activación media
+$s_k$ es directamente comparable entre agentes sin necesidad de calibración adicional.
+
+\subsubsection*{Lectura B1 del directorio}
+
+Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección del cue $\mathbf{v}_q$
+en el directorio $M_{\mathrm{dir}}$ del agente, restringida al bit $b=1$
+(``el agente $k$ conoce'').
+El score B1 se define como:
+\begin{equation}
+    \hat{s}_k = \frac{\Pi^{\mathrm{dir}}_k(\mathbf{v}_q,\; b{=}1)}{c_k + 1}
+    \label{eq:b1}
+\end{equation}
+donde $c_k$ es el número total de registros del agente $k$ en el directorio.
+
+\paragraph{Justificación.}
+La especialización genuina produce masas desiguales entre agentes: por ejemplo,
+$c_0 = 68$, $c_1 = 54$, $c_2 = 42$ en una sesión típica.
+El score crudo de una proyección hetero-asociativa crece con la masa de registros,
+por lo que un agente con más registros en el directorio obtendría ventaja sin mérito.
+La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
+registro}, haciendo que el score refleje calidad de especialización y no cantidad.
+Esta es la \textbf{única calibración externa} del sistema de directorios.
+
+\subsubsection*{Entropía del directorio}
+
+Sea $c_k$ el número de registros del agente $k$ en el directorio y
+$C = \sum_k c_k$ el total.
+La entropía del directorio mide la salud estructural del grupo:
+\begin{equation}
+    H_{\mathrm{dir}} = -\sum_{k=0}^{K-1} p_k \log_2 p_k, \qquad p_k = \frac{c_k}{C}
+    \label{eq:entropia-dir}
+\end{equation}
+Con $K=3$ agentes, el máximo teórico es $\log_2 3 \approx 1{.}585$ bits,
+alcanzado cuando la especialización es perfectamente balanceada.
+Una entropía menor señala o bien que un agente domina el directorio (colapso) o bien
+que el directorio está poco poblado (formación incompleta).
+
+\subsubsection*{Evocación inversa (imagen $\to$ labels)}
+
+Dado un código latente cuantizado $\mathbf{z}_q$ de una imagen, la recuperación
+de labels procede como sigue.
+
+\begin{enumerate}
+    \item Se obtienen los pesos del dominio latente:
+    $\mathbf{w}_R = \eta(\mathbf{z}_q,\; M^R_{\mathrm{dom}})$.
+
+    \item Se aplica el recall $\beta$ de la memoria hetero-asociativa \emph{desde la
+    derecha}: el cue es $\mathbf{z}_q$ con pesos $\mathbf{w}_R$, y el resultado es un
+    patrón muestreado en el dominio semántico $\hat{\mathbf{v}}_q$.
+
+    \item Se buscan los 3 vecinos más cercanos de $\hat{\mathbf{v}}_q$ en el diccionario
+    fastText mediante similitud coseno, y se devuelven como labels asociados a la imagen.
+\end{enumerate}
+
+\paragraph{Justificación del diccionario.}
+El recall $\beta$ devuelve una \emph{muestra} de la distribución de labels acumulada
+por el agente, no una palabra exacta: el vector muestreado puede no coincidir con ningún
+embedding almacenado.
+El diccionario actúa como un decodificador que interpreta esa muestra en términos del
+vocabulario conocido.
+La necesidad del diccionario no es una debilidad del sistema sino una consecuencia
+directa de la naturaleza entrópica del recall.
+
+\subsubsection*{Fidelidad de la fase madura}
+
+La \textbf{fidelidad} se define como la fracción de consultas en la fase madura en las
+que el agente de entrada enruta hacia el mismo agente ganador que la fase temprana:
+\begin{equation}
+    F = \frac{|\{q : g^{\mathrm{maduro}}(q) = g^{\mathrm{temprano}}(q)\}|}{N_{\mathrm{consultas}}}
+    \label{eq:fidelidad}
+\end{equation}
+La fidelidad mide \emph{coincidencia con lo aprendido}, no acierto absoluto:
+un sistema con fidelidad alta ha trasladado fielmente el conocimiento de la fase temprana
+a los directorios individuales.

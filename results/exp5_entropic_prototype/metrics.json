@@ -1,0 +1,86 @@
+{
+  "old": {
+    "entropy": {
+      "apple": 0.8042632779481806,
+      "horse": 0.7515250920276896,
+      "car": 0.7683013843239345
+    },
+    "variety": {
+      "apple": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "horse": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "car": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      }
+    },
+    "reverse": {
+      "apple": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "horse": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "car": {
+        "train": 0.0,
+        "test": 0.0
+      }
+    },
+    "early": {
+      "acc": 0.975,
+      "rej": 0.025
+    }
+  },
+  "new": {
+    "entropy": {
+      "apple": 3.9677018581871093,
+      "horse": 3.7603559892576444,
+      "car": 4.071797037701074
+    },
+    "variety": {
+      "apple": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.983191287878788
+      },
+      "horse": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.4623579545454546
+      },
+      "car": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 3.4874526515151514
+      }
+    },
+    "reverse": {
+      "apple": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "horse": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "car": {
+        "train": 1.0,
+        "test": 0.0
+      }
+    },
+    "early": {
+      "acc": 0.975,
+      "rej": 0.025
+    }
+  }
+}

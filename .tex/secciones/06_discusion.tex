@@ -1,0 +1,75 @@
+\section{Discusión}
+\label{sec:discusion}
+
+% ---------------------------------------------------------------
+\subsection{El sesgo de densidad era un síntoma de llenado infiel}
+\label{sec:disc-sesgo}
+
+El hallazgo más importante de este trabajo es que el sesgo de densidad que motivó múltiples calibraciones externas (condiciones C, D, E en la Tabla~\ref{tab:calibracion}) no era un defecto del mecanismo de la Memoria Asociativa Entrópica, sino un síntoma de una práctica de llenado incorrecta.
+
+Cuando la memoria se llenaba con el vector promedio de la clase repetido $N$ veces, todos los agentes acumulaban masas artificialmente iguales y los patrones de recall colapsaban a un único atractor (variedad $L_1 = 0.00$, Figura~\ref{fig:variedad-recall}).
+Al reemplazar ese prototipo único por las instancias reales del conjunto de llenado, las masas de los agentes se igualaron por construcción: cada imagen aporta una contribución de igual peso y el gate de containment nativo discrimina correctamente el 100\% de los casos de diagnóstico sin ninguna división adicional por la media de la memoria.
+
+En otras palabras, la teoría del modelo de Pineda y Morales~\cite{pineda2021entropic} estaba completa: bastaba alimentarla con los datos que el modelo requiere.
+El corolario práctico es que la forma en que se llena la memoria condiciona de forma más profunda el comportamiento del sistema que cualquier ajuste posterior de parámetros.
+
+% ---------------------------------------------------------------
+\subsection{La única calibración irreducible es B1 en el directorio}
+\label{sec:disc-b1}
+
+A diferencia de las calibraciones que compensan síntomas, la lectura B1 del directorio transactivo no corrige un defecto: refleja la naturaleza misma del sistema.
+Cuando los agentes especialistas acumulan números desiguales de interacciones (counts $[68, 54, 42]$), la puntuación cruda del directorio favorece sistemáticamente al agente más activo con independencia del contenido semántico de la consulta.
+Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacción}, que es la cantidad informativa correcta para comparar agentes con historiales de exposición distintos.
+
+Que B1 sea irreducible no implica que sea una corrección externa al modelo; al contrario, es la expresión natural de lo que significa que un agente tenga más o menos experiencia en el sistema transactivo.
+Las condiciones B2, C y D de la Tabla~\ref{tab:calibracion} intentan ajustar síntomas del mismo problema (la escala desigual de los scores) sin capturar la causa, lo que explica su menor desempeño (46.25\%, 33.75\% y 33.33\% respectivamente frente al 97.50\% de B1).
+
+% ---------------------------------------------------------------
+\subsection{Lectura desde la teoría de memoria transactiva de Wegner}
+\label{sec:disc-wegner}
+
+La teoría de memoria transactiva de Wegner~\cite{wegner1987transactive} postula que los grupos desarrollan un directorio compartido de quién sabe qué a través de la interacción repetida.
+Los resultados de la Sección~\ref{sec:formacion} ilustran este proceso con una resolución inusual:
+
+\begin{itemize}
+    \item \textbf{Interacción mixta y rápida}: con presentación intercalada, el directorio cruza el umbral del 90\% en solo 14 interacciones.
+    El grupo \textit{se conoce} muy pronto cuando la exposición es variada.
+    \item \textbf{Segregación de experiencias}: con presentación bloqueada por dominio, la transición no ocurre hasta $k = 57$.
+    Las experiencias homogéneas dentro de cada bloque aportan mucha información sobre un solo agente y casi ninguna sobre los demás, retrasando la formación del directorio colectivo.
+    Esta dinámica recuerda los silos de conocimiento en organizaciones con poca rotación de roles.
+    \item \textbf{Mediador sesgado}: el experimento con scoring crudo produce un grupo funcional (93.8\% de precisión final) pero con un directorio que tergiversa la expertise real: los counts $[73, 57, 34]$ sobreestiman la contribución del agente más activo frente a los counts equilibrados $[68, 54, 42]$ del sistema corregido.
+    La lectura B1 compensa este sesgo en el agregado, pero la estructura interna del directorio queda distorsionada.
+\end{itemize}
+
+Estos resultados sugieren que la calidad del directorio transactivo depende tanto del volumen de interacciones como de la distribución de esas interacciones entre los miembros del grupo.
+Un sistema que solo maximiza la cantidad de interacciones sin garantizar diversidad puede producir un directorio internamente sesgado que funciona bien en promedio pero falla al redistribuir tareas de forma equitativa.
+
+% ---------------------------------------------------------------
+\subsection{Limitaciones}
+\label{sec:limitaciones}
+
+\paragraph{(a) Cuantización por signo en la extracción semántica.}
+La binarización por signo de los vectores fastText de 300 dimensiones descarta toda información de magnitud.
+El margen discriminativo intra/inter-clase en el espacio binario es de solo 3.3 puntos porcentuales (60.4\% de acuerdo de signos intra-clase vs.\ 57.1\% inter-clase), lo que indica que las representaciones son similares entre clases en esta proyección.
+Un efecto directo de esta limitación es la polisemia colapsada: los vectores de ``apple'' como fruta y ``apple'' como empresa tecnológica comparten el mismo vector fastText, lo que introduce ruido en el vocabulario de ConceptNet (etiquetas relacionadas con Apple Inc.\ aparecen en el vocabulario de la clase manzana-fruta).
+La Figura~\ref{fig:espacio-semantico} ilustra los solapamientos entre dominios en el espacio semántico 2D.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{espacio_semantico.png}
+    \caption{Proyección bidimensional del espacio fastText de los labels de las tres clases.
+    Los tres paneles muestran los solapamientos cross-domain que dificultan la discriminación por signo binario.}
+    \label{fig:espacio-semantico}
+\end{figure}
+
+Las mitigaciones diseñadas incluyen: (i) usar las magnitudes de los componentes fastText como pesos por feature en lugar de binarizar, y (ii) una cuantización más fina en 16 niveles por componente para preservar gradientes de similitud.
+Ambas alternativas son compatibles con la arquitectura EAM y constituyen extensiones naturales del sistema.
+
+\paragraph{(b) Cobertura limitada del hemisferio visual con $\xi = 0$.}
+Con el parámetro de generalización $\xi = 0$, el directorio visual solo acepta imágenes suficientemente similares a las ya registradas.
+Esto produce una precisión perfecta sobre las imágenes aceptadas (100\%), pero una cobertura total de solo el 32.9\% en el conjunto de test.
+El barrido sistemático de $\xi > 0$ es la extensión natural más urgente del trabajo presentado: se espera que valores pequeños de $\xi$ incrementen la cobertura con un costo controlado en especificidad, dado que la tasa de falsos fue del 0\% en todo el rango de $N$ probado (Tabla~\ref{tab:capacidad}).
+
+\paragraph{(c) Calidad de la reconstrucción visual.}
+El decoder del autoencoder, entrenado con error cuadrático medio (MSE), produce reconstrucciones visualmente suaves que carecen de detalle de alta frecuencia.
+Este es un artefacto de la función de pérdida del autoencoder, no del sistema de memorias asociativas, y puede abordarse de forma independiente mediante funciones de pérdida perceptuales o arquitecturas generativas más expresivas.
