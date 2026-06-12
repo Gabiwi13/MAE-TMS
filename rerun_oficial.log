@@ -1,0 +1,189 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781160087.988657   28808 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781160091.579363   28808 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+============================================================
+  RE-CORRIDA OFICIAL v2 — stages 5-8
+============================================================
+
+########## STAGE 5 ##########
+  Encoding 200 instance latents for apple...
+  Encoding 200 instance latents for horse...
+  Encoding 200 instance latents for car...
+  Computing global latent statistics over 200/class pool...
+  Global stats saved (min range: -18.887, max range: 23.488)
+
+--- Filling M_dom for agent apple ---
+  apple: 22 labels (seq=92), 200 instancias registradas image-major
+[HAM4D apple] entropy=3.9881  mean=9.8831
+[AM apple_L] n=300 m=16 entropy=0.8043  mean=48.7600
+[AM apple_R] n=64 m=32 entropy=3.2313  mean=17.3732
+  Saved M_dom_H_apple -> mem_dom_apple.pkl
+  Saved M_dom_L_apple -> mem_dom_L_apple.pkl
+  Saved M_dom_R_apple -> mem_dom_R_apple.pkl
+  Probing apple with: ['core', 'skin', 'green', 'red', 'pome']
+    'core': recognized=True, weight=5024.22
+    'skin': recognized=True, weight=5132.86
+    'green': recognized=True, weight=5050.66
+    'red': recognized=True, weight=5109.17
+    'pome': recognized=True, weight=5295.83
+  Probes saved -> stage5_probes_apple.png
+
+--- Filling M_dom for agent horse ---
+  horse: 21 labels (seq=83), 200 instancias registradas image-major
+[HAM4D horse] entropy=3.7018  mean=11.8996
+[AM horse_L] n=300 m=16 entropy=0.7515  mean=44.9583
+[AM horse_R] n=64 m=32 entropy=2.9955  mean=20.3254
+  Saved M_dom_H_horse -> mem_dom_horse.pkl
+  Saved M_dom_L_horse -> mem_dom_L_horse.pkl
+  Saved M_dom_R_horse -> mem_dom_R_horse.pkl
+  Probing horse with: ['equine', 'animal', 'big', 'cow', 'donkey']
+    'equine': recognized=True, weight=6438.48
+    'animal': recognized=True, weight=6405.95
+    'big': recognized=True, weight=5626.27
+    'cow': recognized=True, weight=6793.08
+    'donkey': recognized=True, weight=5991.28
+  Probes saved -> stage5_probes_horse.png
+
+--- Filling M_dom for agent car ---
+  car: 18 labels (seq=59), 200 instancias registradas image-major
+[HAM4D car] entropy=4.3165  mean=7.8757
+[AM car_L] n=300 m=16 entropy=0.7683  mean=31.6633
+[AM car_R] n=64 m=32 entropy=3.6055  mean=13.4101
+  Saved M_dom_H_car -> mem_dom_car.pkl
+  Saved M_dom_L_car -> mem_dom_L_car.pkl
+  Saved M_dom_R_car -> mem_dom_R_car.pkl
+  Probing car with: ['crash', 'engine', 'seat', 'seats', 'windows']
+    'crash': recognized=True, weight=4047.05
+    'engine': recognized=True, weight=4136.44
+    'seat': recognized=True, weight=4497.67
+    'seats': recognized=True, weight=4583.53
+    'windows': recognized=True, weight=3671.95
+  Probes saved -> stage5_probes_car.png
+
+Etapa 5 COMPLETADA.
+
+########## STAGE 6 ##########
+Loading models and agents...
+
+--- Early phase (TME active) ---
+  Query: 'a round red fruit'  tokens=['round', 'red', 'fruit']
+  Scores: apple=449.06  horse=0.00  car=160.27  -> winner: apple
+  -> Triple: image=yes, labels=['round', 'red', 'fruit'], location=apple
+  Query: 'fast vehicle with wheels'  tokens=['fast', 'vehicle', 'wheel']
+  Unknown tokens (not in vocabulary): ['fast', 'wheel']
+  Scores: apple=0.00  horse=0.00  car=448.45  -> winner: car
+  -> Triple: image=yes, labels=['fast', 'vehicle', 'wheel'], location=car
+  Query: 'animal with a mane'  tokens=['animal', 'mane']
+  Scores: apple=0.00  horse=448.11  car=0.00  -> winner: horse
+  -> Triple: image=yes, labels=['animal', 'mane'], location=horse
+  Query: 'sweet edible thing'  tokens=['sweet', 'edible', 'thing']
+  Unknown tokens (not in vocabulary): ['sweet', 'edible', 'thing']
+  REJECTED: no routing signal for tokens=['sweet', 'edible', 'thing'] — labels not seen during early phase.
+  -> Triple: image=no, labels=['sweet', 'edible', 'thing'], location=None
+  Query: 'large powerful mammal'  tokens=['large', 'powerful', 'mammal']
+  Unknown tokens (not in vocabulary): ['powerful']
+  Scores: apple=0.00  horse=509.13  car=0.00  -> winner: horse
+  -> Triple: image=yes, labels=['large', 'powerful', 'mammal'], location=horse
+  Query: 'machine for transportation'  tokens=['machine', 'transportation']
+  Scores: apple=312.10  horse=0.00  car=512.16  -> winner: car
+  -> Triple: image=yes, labels=['machine', 'transportation'], location=car
+  Query: 'grows on trees'  tokens=['tree']
+  Scores: apple=440.81  horse=0.00  car=0.00  -> winner: apple
+  -> Triple: image=yes, labels=['tree'], location=apple
+  Query: 'has four legs and hooves'  tokens=['leg', 'hoof']
+  Unknown tokens (not in vocabulary): ['leg', 'hoof']
+  REJECTED: no routing signal for tokens=['leg', 'hoof'] — labels not seen during early phase.
+  -> Triple: image=no, labels=['leg', 'hoof'], location=None
+  Query: 'has an engine'  tokens=['engine']
+  Scores: apple=0.00  horse=0.00  car=498.86  -> winner: car
+  -> Triple: image=yes, labels=['engine'], location=car
+  Query: 'fruit with seeds inside'  tokens=['fruit', 'seed']
+  Unknown tokens (not in vocabulary): ['seed']
+  Scores: apple=419.06  horse=0.00  car=0.00  -> winner: apple
+  -> Triple: image=yes, labels=['fruit', 'seed'], location=apple
+TME and agents saved.
+
+Etapa 6 COMPLETADA.
+
+########## STAGE 7 ##########
+Etapa 7 — hemisferio visual (M_dir_R con percepciones reales)
+Cargando TME + agentes (stage6)...
+
+--- Fase A: entrenando M_dir_R con percepciones (train[200:], intercalado) ---
+  interacción 32/128  (acc visual 100.0%)
+  interacción 64/128  (acc visual 100.0%)
+  interacción 96/128  (acc visual 100.0%)
+  interacción 128/128  (acc visual 100.0%)
+  Fase A: 384 imágenes · routing temprano visual 100.0% · rechazo 49.7%
+  M_dir_R counts: [91, 71, 31]  entropía: 1.466 bits
+
+--- Fase B: routing por M_dir_R (B1) sobre test ---
+Entropy updated to mean = 4.135919169184483, stdev = 0.34912883010142415
+Iota relation updated, and 0 cells have been turned off
+  Routing test: 81/246 = 32.9%  (rechazo 67.1%)
+  Evocación top-3 domain-hit: 16/17 = 94.1%
+
+  Muestras (clase real → ruteado · labels evocados):
+    OK  apple → apple  · ['red', 'fruit', 'core']
+    OK  apple → apple  · ['red', 'green', 'fruit']
+    OK  apple → apple  · ['pear', 'core', 'green']
+    OK  horse → horse  · ['animal', 'horse', 'saddle']
+    OK  horse → horse  · ['animal', 'equine', 'horse']
+
+  TME actualizado (M_dir_R con percepciones) -> tme.pkl
+
+Etapa 7 COMPLETADA.
+
+########## STAGE 8 ##########
+Loading agents (mature phase — TME disabled)...
+
+--- Early phase reference (TME active) ---
+  'a round red fruit' -> apple
+  'fast vehicle with wheels' -> car
+  'animal with a mane' -> horse
+  'sweet edible thing' -> None
+  'large powerful mammal' -> horse
+  'machine for transportation' -> car
+  'grows on trees' -> apple
+  'has four legs and hooves' -> None
+  'has an engine' -> car
+  'fruit with seeds inside' -> apple
+
+--- Mature phase (point-to-point) ---
+Entropy updated to mean = 1.60053302254573, stdev = 0.29654937615288673
+Iota relation updated, and 0 cells have been turned off
+  Entry=car  scores=[apple=575.3  horse=0.0  car=0.0]  -> dest=apple  routed=True
+  Q1: early=apple  mature=apple  match=OK  entry=car
+  Unknown tokens (not in vocabulary): ['fast', 'wheel']
+Entropy updated to mean = 1.60053302254573, stdev = 0.29654937615288673
+Iota relation updated, and 0 cells have been turned off
+  Entry=apple  scores=[apple=0.0  horse=0.0  car=200.9]  -> dest=car  routed=True
+  Q2: early=car  mature=car  match=OK  entry=apple
+  Entry=car  scores=[apple=0.0  horse=391.1  car=0.0]  -> dest=horse  routed=True
+  Q3: early=horse  mature=horse  match=OK  entry=car
+  Unknown tokens (not in vocabulary): ['sweet', 'edible', 'thing']
+  REJECTED: no routing signal for 'sweet edible thing' — tokens not in vocabulary or not registered in M_dir.
+  Q4: early=None  mature=None  match=OK  entry=car
+  Unknown tokens (not in vocabulary): ['powerful']
+  Entry=apple  scores=[apple=0.0  horse=386.7  car=0.0]  -> dest=horse  routed=True
+  Q5: early=horse  mature=horse  match=OK  entry=apple
+  Entry=apple  scores=[apple=0.0  horse=0.0  car=379.1]  -> dest=car  routed=True
+  Q6: early=car  mature=car  match=OK  entry=apple
+  Entry=car  scores=[apple=190.2  horse=0.0  car=0.0]  -> dest=apple  routed=True
+  Q7: early=apple  mature=apple  match=OK  entry=car
+  Unknown tokens (not in vocabulary): ['leg', 'hoof']
+  REJECTED: no routing signal for 'has four legs and hooves' — tokens not in vocabulary or not registered in M_dir.
+  Q8: early=None  mature=None  match=OK  entry=horse
+  Entry=car  scores=[apple=0.0  horse=0.0  car=196.9]  -> dest=car  routed=False
+  Q9: early=car  mature=car  match=OK  entry=car
+  Unknown tokens (not in vocabulary): ['seed']
+  Entry=car  scores=[apple=210.5  horse=0.0  car=0.0]  -> dest=apple  routed=True
+  Q10: early=apple  mature=apple  match=OK  entry=car
+
+Fidelidad: 10/10 = 100.0%
+Fidelity chart saved -> stage8_fidelity.png
+
+Etapa 8 COMPLETADA.
+
+RE-CORRIDA COMPLETA.

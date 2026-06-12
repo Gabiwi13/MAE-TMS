@@ -1,11 +1,15 @@
 """
-Etapa 8 — Fase madura.
-TME desactivado. Routing punto a punto via M_dir de cada agente.
-Métrica: fidelidad = queries con mismo resultado / total queries.
+Etapa 8 — Fase madura: coordinacion de recuperacion punto a punto.
 
-Fixes respecto a versión anterior:
-  - Dequantización usa global stats (consistente con stage5/stage6)
-  - Routing usa predict_normalized (B1) si mem_dir es PinedaDirectoryMemory
+El TME queda fuera del circuito. Cada consulta entra por un agente
+aleatorio, que consulta su propio directorio para decidir quien debe
+atenderla. La lectura del directorio usa B1 (÷count): el score crudo de
+una HAM crece con la masa de registros del agente y, sin calibrar, el
+mas registrado gana aunque no sepa.
+
+Metrica: fidelidad = consultas donde la fase madura llega al mismo
+agente que la temprana. Mide coincidencia con lo aprendido, no acierto
+contra ground truth.
 """
 import json
 import sys
@@ -17,15 +21,15 @@ import torch
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from quantizer import quantize_binary, dequantize
+from quantizer import quantize_binary
 from stage6_interaction import (
     CLASSES, MODELS_DIR, DEVICE,
     load_tme_and_agents, get_nlp, load_decoder, load_all_vectors,
-    tokenize_query, get_fasttext_vector, TEST_QUERIES,
+    tokenize_query, get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
 )
 
-M_LABEL   = 16
-Q_LATENT  = 32
+M_LABEL = 16
+Q_LATENT = 32
 
 
 def _load_global_stats():
@@ -37,20 +41,13 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
                  vectors_cache: dict, decoder,
                  g_min: np.ndarray, g_max: np.ndarray,
                  verbose: bool = True) -> dict:
-    """
-    Mature phase: no TME. Entry agent receives query, consults its M_dir,
-    routes to correct agent (or self), and recalls from M_dom_H.
-
-    Uses B1 normalisation (÷count) if M_dir is a PinedaDirectoryMemory.
-    Falls back to raw scores otherwise.
-    """
+    """El agente de entrada decide con su directorio a quien rutear.
+    Sin señal en el directorio, rechaza: el grupo no inventa expertos."""
     tokens = tokenize_query(query, nlp)
     if not tokens:
-        return {"query": query, "winner": None, "image": None, "routed": False}
+        return {"query": query, "winner": None, "image": None,
+                "routed": False}
 
-    # Filter to vocabulary-known tokens only (unknown tokens produce random
-    # vectors that generate spurious M_dir scores).
-    from stage6_interaction import token_in_vocabulary
     token_vectors = {}
     unknown_tokens = []
     for tok in tokens:
@@ -61,108 +58,91 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
             get_fasttext_vector(tok, vectors_cache), M_LABEL)
 
     if verbose and unknown_tokens:
-        print(f"  Unknown tokens (not in vocabulary): {unknown_tokens}")
+        print(f"  Tokens fuera de vocabulario: {unknown_tokens}")
 
-    # Aggregate routing votes using M_dir of entry_agent
     agent_scores = np.zeros(len(CLASSES), dtype=float)
     for v_q in token_vectors.values():
-        mem_dir = entry_agent.mem_dir
-        # B1 normalisation when available (PinedaDirectoryMemory)
-        if hasattr(mem_dir, "predict_normalized"):
-            scores = mem_dir.predict_normalized(v_q, mode="linear")
-        else:
-            scores = mem_dir.predict(v_q)
-        agent_scores += scores
+        agent_scores += entry_agent.mem_dir.predict_normalized(
+            v_q, mode="linear")
 
     if not token_vectors or agent_scores.sum() == 0:
-        # Explicit rejection: no known tokens or no routing signal.
-        # Refuse to route rather than silently default to agent 0.
         if verbose:
-            print(f"  REJECTED: no routing signal for '{query}' "
-                  f"— tokens not in vocabulary or not registered in M_dir.")
+            print(f"  RECHAZADA: sin señal de routing para '{query}'.")
         return {"query": query, "winner": None, "image": None,
                 "routed": False, "scores": agent_scores.tolist(),
                 "rejected": True}
 
-    dest_idx  = int(np.argmax(agent_scores))
+    dest_idx = int(np.argmax(agent_scores))
     dest_name = CLASSES[dest_idx]
-
     dest_agent = agents[dest_name]
-    routed     = (dest_name != entry_agent.name)
+    routed = dest_name != entry_agent.name
 
     if verbose:
         score_str = "  ".join(f"{c}={agent_scores[i]:.1f}"
                               for i, c in enumerate(CLASSES))
-        print(f"  Entry={entry_agent.name}  scores=[{score_str}]"
-              f"  -> dest={dest_name}  routed={routed}")
+        print(f"  Entrada={entry_agent.name}  scores=[{score_str}]"
+              f"  -> destino={dest_name}  routed={routed}")
 
-    # Recall at destination — dequantize with global stats
     recalled_image = None
     for tok, v_q in token_vectors.items():
-        recalled_q, recognized, weight = dest_agent.mem_dom_H.recall_from_left(v_q)
+        recalled_q, recognized, weight, *_ = \
+            dest_agent.mem_dom_H.recall_from_left(v_q)
         if recognized:
-            # Global-stats dequantize (consistent with stage5 filling)
-            v_norm   = recalled_q.astype(float) / (Q_LATENT - 1)
+            v_norm = recalled_q.astype(float) / (Q_LATENT - 1)
             v_latent = (v_norm * (g_max - g_min) + g_min).astype(np.float32)
             z = torch.tensor(v_latent).unsqueeze(0).to(DEVICE)
             with torch.no_grad():
-                img = decoder(z)[0].cpu()
-            recalled_image = img
+                recalled_image = decoder(z)[0].cpu()
             break
 
     return {
-        "query":  query,
+        "query": query,
         "winner": dest_name,
-        "image":  recalled_image,
+        "image": recalled_image,
         "routed": routed,
         "scores": agent_scores.tolist(),
     }
 
 
 def run():
-    print("Loading agents (mature phase — TME disabled)...")
+    print("Cargando agentes (fase madura — TME desactivado)...")
     tme, agents = load_tme_and_agents()
-    nlp   = get_nlp()
+    nlp = get_nlp()
     decoder = load_decoder()
-    vectors_cache = load_all_vectors()
-    g_min, g_max  = _load_global_stats()
+    vectors_cache = load_all_vectors(nlp)
+    g_min, g_max = _load_global_stats()
 
-    # Re-run same queries with TME to get ground truth
-    from stage6_interaction import process_query, TME
-    tme_ref = tme   # use already-trained TME
+    from stage6_interaction import process_query
 
-    print("\n--- Early phase reference (TME active) ---")
+    print("\n--- Referencia de fase temprana (TME activo) ---")
     early_results = {}
     for query in TEST_QUERIES:
-        res = process_query(query, agents, tme_ref, nlp, vectors_cache, decoder,
+        res = process_query(query, agents, tme, nlp, vectors_cache, decoder,
                             verbose=False)
         early_results[query] = res["winner"]
         print(f"  '{query}' -> {res['winner']}")
 
-    print("\n--- Mature phase (point-to-point) ---")
+    print("\n--- Fase madura (punto a punto) ---")
     mature_results = {}
     rng = np.random.RandomState(42)
     fidelity_count = 0
 
     for i, query in enumerate(TEST_QUERIES):
-        entry_cls   = CLASSES[rng.randint(0, len(CLASSES))]
-        entry_agent = agents[entry_cls]
-        res = route_mature(query, entry_agent, agents, nlp, vectors_cache,
-                           decoder, g_min, g_max)
+        entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
+        res = route_mature(query, agents[entry_cls], agents, nlp,
+                           vectors_cache, decoder, g_min, g_max)
         mature_results[query] = res["winner"]
-
         early_winner = early_results.get(query)
-        match = (res["winner"] == early_winner)
-        if match:
-            fidelity_count += 1
-        print(f"  Q{i+1}: early={early_winner}  mature={res['winner']}  "
-              f"match={'OK' if match else 'X'}  entry={entry_cls}")
+        match = res["winner"] == early_winner
+        fidelity_count += int(match)
+        print(f"  Q{i+1}: temprana={early_winner}  madura={res['winner']}  "
+              f"match={'OK' if match else 'X'}  entrada={entry_cls}")
 
     fidelity = fidelity_count / len(TEST_QUERIES)
-    print(f"\nFidelidad: {fidelity_count}/{len(TEST_QUERIES)} = {fidelity*100:.1f}%")
+    print(f"\nFidelidad: {fidelity_count}/{len(TEST_QUERIES)} "
+          f"= {fidelity*100:.1f}%")
 
     _visualize_mature(TEST_QUERIES, early_results, mature_results)
-
     print("\nEtapa 8 COMPLETADA.")
     return fidelity
 
@@ -174,21 +154,19 @@ def _visualize_mature(queries, early, mature):
 
     n = len(queries)
     matches = [early[q] == mature.get(q) for q in queries]
-    colors  = ["green" if m else "red" for m in matches]
+    colors = ["green" if m else "red" for m in matches]
 
     fig, ax = plt.subplots(figsize=(10, 4))
-    y = range(n)
-    ax.barh(list(y), [1]*n, color=colors, alpha=0.7)
-    labels_txt = [f"Q{i+1}: early={early[q]} | mature={mature.get(q, '?')}"
+    ax.barh(range(n), [1] * n, color=colors, alpha=0.7)
+    labels_txt = [f"Q{i+1}: temprana={early[q]} | madura={mature.get(q, '?')}"
                   for i, q in enumerate(queries)]
-    ax.set_yticks(list(y))
+    ax.set_yticks(range(n))
     ax.set_yticklabels(labels_txt, fontsize=7)
-    ax.set_xlabel("match (green) / mismatch (red)")
-    ax.set_title("Mature phase fidelity")
+    ax.set_xlabel("match (verde) / mismatch (rojo)")
+    ax.set_title("Fidelidad de la fase madura")
     plt.tight_layout()
-    out = ROOT / "stage8_fidelity.png"
-    plt.savefig(out, dpi=80)
-    print(f"Fidelity chart saved -> {out.name}")
+    plt.savefig(ROOT / "stage8_fidelity.png", dpi=80)
+    print("Grafica de fidelidad -> stage8_fidelity.png")
 
 
 if __name__ == "__main__":

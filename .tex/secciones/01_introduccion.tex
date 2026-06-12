@@ -1,0 +1,97 @@
+\section{Introducción}
+\label{sec:introduccion}
+
+Cuando un grupo de personas trabaja de manera coordinada durante el tiempo suficiente,
+algo notable ocurre: el grupo recuerda más de lo que cualquiera de sus miembros podría
+recordar de forma individual.
+Este fenómeno fue formalizado por Wegner \cite{wegner1987transactive} bajo el nombre de
+\textbf{memoria transactiva}: un sistema cognitivo distribuido en el que cada individuo
+mantiene no solo sus propios conocimientos, sino también un \emph{directorio} de quién
+dentro del grupo es el experto en cada dominio.
+Cuando un miembro necesita información fuera de su área, consulta ese directorio,
+determina a quién preguntar y delega la recuperación.
+La eficiencia del sistema surge precisamente de esa especialización emergente: el grupo
+no duplica información, la distribuye, y la coordinación entre pares reemplaza
+gradualmente a cualquier mediador central.
+
+El paradigma de Wegner identifica tres mecanismos fundamentales.
+Primero, la \emph{actualización del directorio}: tras cada interacción, todos los
+miembros ---incluyendo quienes no fueron los expertos--- registran quién supo responder.
+Segundo, la \emph{asignación de información}: la información nueva se canaliza
+automáticamente hacia el miembro reconocido como especialista en ese dominio.
+Tercero, la \emph{coordinación de recuperación}: las consultas futuras viajan directamente
+al especialista sin pasar por un intermediario.
+La transición de una \emph{fase temprana} mediada a una \emph{fase madura} punto a punto
+es la marca distintiva de un sistema transactivo completamente formado.
+
+Este trabajo plantea la siguiente pregunta de investigación:
+
+\begin{quote}
+¿Puede un sistema de memorias asociativas puras ---sin gradientes, sin
+retropropagación y sin supervisión externa de las rutas--- desarrollar
+dinámicamente el directorio transactivo de Wegner mediante la interacción
+acumulativa con ejemplos de cada dominio?
+\end{quote}
+
+La respuesta que se propone y se verifica experimentalmente es afirmativa.
+El sistema construido, denominado \textbf{MAE-TMS} (Multi-Agent Transactive Memory
+System sobre Memorias Asociativas Entrópicas), se compone de tres agentes especialistas
+entrenados sobre el conjunto de imágenes ETH-80 \cite{leibe2003eth80}: uno para la
+categoría \textit{apple}, uno para \textit{horse} y uno para \textit{car}.
+Un mediador central denominado TME (\textit{Transactive Memory Engine}) coordina la fase
+temprana y registra en sus propios directorios qué agente responde a cada tipo de
+consulta.
+Conforme cada agente acumula registros en su memoria de directorio interna,
+el TME se vuelve prescindible: en la fase madura, cualquier agente puede determinar
+a quién reenviar una consulta desconocida sin intervención del mediador.
+
+El sistema no emplea ningún mecanismo de optimización numérica.
+Todas las operaciones ---registro, reconocimiento, recuperación y enrutamiento--- son
+operaciones definidas formalmente sobre las \textbf{Memorias Asociativas Entrópicas}
+(EAM) de Pineda \& Morales \cite{pineda2021entropic,pineda2024hetero}.
+Las representaciones semánticas provienen de embeddings fastText \cite{bojanowski2017fasttext}
+enriquecidos con relaciones de ConceptNet 5.7 \cite{speer2017conceptnet}, procesados con
+spaCy \cite{honnibal2020spacy}; las representaciones visuales las produce un encoder
+ResNet18 \cite{he2016resnet} preentrenado, cuya salida se cuantiza y almacena.
+
+\subsection*{Contribuciones principales}
+
+Este trabajo aporta tres contribuciones concretas:
+
+\begin{enumerate}
+    \item \textbf{Arquitectura de 14 memorias asociativas operando bidireccionalmente.}
+    Cada agente emplea cuatro memorias (dos homo-asociativas de dominio y una
+    hetero-asociativa de contenido texto$\leftrightarrow$imagen, más una hetero-asociativa
+    de directorio); el TME incorpora dos directorios adicionales.
+    Las memorias homo-asociativas actúan como árbitros de pertenencia y fuente de pesos
+    para la proyección hetero-asociativa, resolviendo la asimetría fundamental entre
+    dominios sin ninguna capa adicional.
+
+    \item \textbf{Caracterización experimental completa del sistema.}
+    Se reportan curvas de precisión temprana y madura en función del tamaño de la base
+    de conocimiento $N$, la curva de capacidad (generalización sin vistas del cue), la
+    formación del directorio (número de instancias necesarias para la especialización),
+    el espacio semántico latente y la rejilla de recuperación imagen$\to$labels.
+
+    \item \textbf{Hallazgo sobre el llenado teóricamente fiel.}
+    Cuando las memorias se llenan siguiendo el esquema \emph{image-major} ---cada imagen
+    registrada con cada label semántico de su clase, preservando la proporción natural
+    de frecuencias--- los sesgos de masa quedan igualados por construcción (200 registros
+    por agente) y el enrutamiento se torna directamente comparable entre agentes.
+    Esto elimina la necesidad de calibraciones externas, con excepción de una única
+    normalización por masa de registro (lectura B1) en el directorio, cuya justificación
+    se deriva analíticamente de la definición de proyección hetero-asociativa.
+\end{enumerate}
+
+\subsection*{Estructura del documento}
+
+El documento se organiza de la siguiente manera.
+La Sección~\ref{sec:marco_teorico} presenta los fundamentos teóricos: la EAM de Pineda
+\& Morales, la memoria hetero-asociativa 4D y el modelo de memoria transactiva de Wegner.
+La Sección~\ref{sec:arquitectura} describe en detalle la arquitectura MAE-TMS, incluyendo
+los diagramas de flujo del llenado, la fase temprana y la fase madura, así como la
+formalización de todas las operaciones del sistema.
+La Sección~4 detalla la metodología experimental.
+La Sección~5 reporta los resultados.
+La Sección~6 discute los hallazgos.
+La Sección~7 concluye y señala trabajo futuro.
