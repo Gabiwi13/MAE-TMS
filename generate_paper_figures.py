@@ -31,11 +31,11 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from run_ablation import run_ablation, CONDITION_LABELS
 
-# ── Global state set per language run ────────────────────────────────────────
+# Global state set per language run
 T            = {}          # current translation dict
 OUT_CURRENT  = ROOT        # current output directory
 
-# ── Style ─────────────────────────────────────────────────────────────────────
+# Style
 plt.rcParams.update({
     "figure.dpi":        300,
     "savefig.dpi":       300,
@@ -69,7 +69,7 @@ PALETTE = {
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
 N_VALUES     = [10, 20, 40, 80]
 
-# ── Translations ──────────────────────────────────────────────────────────────
+# Translations
 TEXTS = {
     "en": {
         "n_queries":        "Number of queries (N)",
@@ -234,7 +234,7 @@ TEXTS = {
 }
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def savefig(name, fig=None):
     if fig is None:
@@ -273,7 +273,7 @@ def build_agg(df_raw):
     return agg
 
 
-# ── Figure functions (all use global T) ───────────────────────────────────────
+# Figure functions (all use global T)
 
 def fig_early_accuracy(agg):
     show = ["A Baseline", "B1 Norm/count", "D Balanced queries", "G Best (D+B1+F)"]
@@ -799,7 +799,7 @@ def fig_semantic_space():
     ax_cosine = fig.add_subplot(gs[1])
     ax_bins   = fig.add_subplot(gs[2])
 
-    # ── Panel A: PCA space ────────────────────────────────────────
+    # Panel A: PCA space
     for dom in ["apple", "horse", "car"]:
         pts = pts2d[idx[dom]]
         _add_convex_hull(ax_pca, pts, DOM_COLORS[dom])
@@ -845,7 +845,7 @@ def fig_semantic_space():
     ax_pca.legend(loc="upper right", fontsize=8, framealpha=0.85)
     ax_pca.grid(True, alpha=0.2)
 
-    # ── Panel B: cosine similarity ────────────────────────────────
+    # Panel B: cosine similarity
     probe_words = ["engine", "motor", "machine", "computer", "mac"]
     cont_centroids = {}
     for dom in ["apple", "horse", "car"]:
@@ -874,7 +874,7 @@ def fig_semantic_space():
     ax_cosine.legend(fontsize=8, loc="upper right")
     ax_cosine.set_ylim(-0.05, 0.85)
 
-    # ── Panel C: binary bin collapse ──────────────────────────────
+    # Panel C: binary bin collapse
     M = 16
     rep = {"apple": "apple", "horse": "horse", "car": "engine"}
     x_bins, bar_w = np.arange(M), 0.26
@@ -957,7 +957,7 @@ def fig_recall_grid():
         from quantizer import quantize_binary
         v   = get_fasttext_vector(word, vc)
         v_q = quantize_binary(np.array(v, dtype=np.float32), 16)
-        q, recognized, weight = mdoms[cls].recall_from_left(v_q)
+        q, recognized, weight, *_ = mdoms[cls].recall_from_left(v_q)
         if not recognized:
             return None, recognized, 0.0
         v_norm   = q.astype(float) / (Q_LATENT - 1)
@@ -1029,7 +1029,7 @@ def fig_recall_grid():
     savefig("fig14_recall_grid.png", fig)
 
 
-# ── Architectural changes MD ──────────────────────────────────────────────────
+# Architectural changes MD
 
 ARCH_MD = """\
 # Architectural Changes — MAE-TMS
@@ -1048,7 +1048,7 @@ ARCH_MD = """\
 | **Decoder** | ConvTranspose 64→3×128×128 + Sigmoid | target: [0,1] |
 | **Quantizer** | `quantize(v, q=32)` with fixed vmin=-1, vmax=1 | 32 bins |
 | **fastText** | sign(v) ∈ {-1,+1}^300, `quantize_binary(v, m=16)` | 2 of 16 bins used |
-| **M_dom** | SimpleHAM4D(n=300, m=16, p=64, q=32) per agent | 3 agents |
+| **M_dom** | HeteroAssociativeMemory(n=300, m=16, p=64, q=32) per agent | 3 agents |
 | **M_dir** | SimpleDirectoryMemory(n=300, m=16, n_agents=3) | predict = vote sum |
 | **TME** | Star topology, broadcast early → argmax → M_dir.register | early/mature phase |
 | **Labels** | ConceptNet 5.7.0 RelatedTo (~62 words per domain) | includes "computer","mac" |
@@ -1197,7 +1197,7 @@ def write_arch_md(out_root):
     print(f"    {path.name}")
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# Main
 
 def main():
     global T, OUT_CURRENT

@@ -14,7 +14,7 @@
 | **Decoder** | ConvTranspose 64→3×128×128 + Sigmoid | target: [0,1] |
 | **Quantizer** | `quantize(v, q=32)` with fixed vmin=-1, vmax=1 | 32 bins |
 | **fastText** | sign(v) ∈ {-1,+1}^300, `quantize_binary(v, m=16)` | 2 of 16 bins used |
-| **M_dom** | SimpleHAM4D(n=300, m=16, p=64, q=32) per agent | 3 agents |
+| **M_dom** | HeteroAssociativeMemory(n=300, m=16, p=64, q=32) per agent | 3 agents |
 | **M_dir** | SimpleDirectoryMemory(n=300, m=16, n_agents=3) | predict = vote sum |
 | **TME** | Star topology, broadcast early → argmax → M_dir.register | early/mature phase |
 | **Labels** | ConceptNet 5.7.0 RelatedTo (~62 words per domain) | includes "computer","mac" |

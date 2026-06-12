@@ -1,0 +1,28 @@
+{
+  "early_acc": 0.9625,
+  "early_rej": 0.025,
+  "mature_acc_b1": 0.975,
+  "mature_acc_raw": 0.8375,
+  "fidelity": 0.9625,
+  "mdir_counts_tme": [
+    68,
+    54,
+    42
+  ],
+  "mdir_entropy_bits": 1.5576,
+  "test_queries_counts": [
+    5,
+    4,
+    4
+  ],
+  "exp1_reference": {
+    "early_acc_raw": "~34% (condici\u00f3n A del ablation)",
+    "mature_acc_raw": 0.338,
+    "mature_acc_b1": 0.988,
+    "test_queries_counts": [
+      7,
+      4,
+      2
+    ]
+  }
+}

@@ -1,11 +1,22 @@
 """
-Etapa 7 -- Recuperacion bidireccional.
-Direccion inversa: imagen -> CNN_encoder -> v_latente ->
-M_dom.recall_from_right(v_latente) -> nearest_neighbor -> top-3 labels.
+Etapa 7 — Hemisferio visual: el directorio de imagenes.
+
+Fase A (interacciones visuales): las imagenes de entrenamiento que no
+participaron del llenado (indices [N_FILL:]) se presentan al grupo,
+intercaladas por clase. Cada agente puntua la percepcion con su lado
+latente —pesos de M_dom_R modulando la proyeccion de M_dom_H, el espejo
+derecho del scoring de la etapa 6— y el TME registra (latente -> ganador)
+en su directorio visual. Solo percepciones reales entran al directorio.
+
+Fase B (evaluacion): las imagenes de test rutean por mem_dir_R con
+lectura B1, y el agente destino evoca labels con recall_from_right
+modulado por los pesos de M_dom_R. La metrica de evocacion es top-3
+domain hit: algun label evocado pertenece al vocabulario de la clase.
 """
+import io
 import json
-import pickle
 import sys
+import contextlib
 from pathlib import Path
 
 import numpy as np
@@ -16,13 +27,15 @@ from PIL import Image
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from mae_ham import SimpleHAM4D
-from quantizer import quantize_binary
-from stage5_fill import quantize_latent_global
-from stage6_interaction import CLASSES, MODELS_DIR, DEVICE, load_tme_and_agents
+from stage5_fill import quantize_latent_global, N_FILL
+from stage6_interaction import (
+    CLASSES, AGENT_LIST, MODELS_DIR, DEVICE,
+    load_tme_and_agents, load_all_vectors,
+)
 
 DATA_DIR = ROOT / "data" / "eth80"
 N, M_LABEL, P, Q_IMG = 300, 16, 64, 32
+N_EVOKE = 15
 
 IMG_TRANSFORM = transforms.Compose([
     transforms.ToTensor(),
@@ -35,18 +48,11 @@ def load_global_stats():
     return np.array(stats["global_min"]), np.array(stats["global_max"])
 
 
-def load_proto_latents():
-    protos = {}
-    for cls in CLASSES:
-        path = MODELS_DIR / f"proto_latent_{cls}.json"
-        protos[cls] = np.array(json.loads(path.read_text()))
-    return protos
-
-
 def load_encoder():
     from stage2_encoder import Encoder
     enc = Encoder().to(DEVICE)
-    enc.load_state_dict(torch.load(MODELS_DIR / "encoder.pt", map_location=DEVICE))
+    enc.load_state_dict(torch.load(MODELS_DIR / "encoder.pt",
+                                   map_location=DEVICE))
     enc.eval()
     return enc
 
@@ -55,128 +61,138 @@ def image_to_latent(img_path: str, encoder) -> np.ndarray:
     img = Image.open(img_path).convert("RGB").resize((128, 128))
     t = IMG_TRANSFORM(img).unsqueeze(0).to(DEVICE)
     with torch.no_grad():
-        z = encoder(t).cpu().numpy()[0]
-    return z
+        return encoder(t).cpu().numpy()[0]
 
 
-def find_winner_agent(v_latent: np.ndarray, proto_latents: dict) -> str:
-    """Level-1: find closest domain prototype (Euclidean in latent space)."""
-    best_cls = None
-    best_dist = float("inf")
-    for cls, proto in proto_latents.items():
-        dist = np.linalg.norm(v_latent - proto)
-        if dist < best_dist:
-            best_dist = dist
-            best_cls = cls
-    return best_cls
+def recognize_gated_right(agent, z_q: np.ndarray) -> float:
+    """Score visual de un agente: activacion media de la proyeccion
+    derecha de M_dom_H, modulada por los pesos de M_dom_R y gateada
+    por containment. Espejo de Agent.recognize_gated desde el dominio
+    latente."""
+    r_w = agent.mem_dom_R.recog_weights(z_q)
+    mx = r_w.max()
+    weights = (r_w / mx) if mx > 0 else np.ones(len(z_q), dtype=float)
+    mem_H = agent.mem_dom_H
+    cb = mem_H.validate(z_q, 1)
+    with contextlib.redirect_stdout(io.StringIO()):
+        proj = mem_H.project(cb, weights, 1)
+    if np.count_nonzero(np.sum(proj, axis=1) == 0) > 0:
+        return 0.0
+    count = int(np.count_nonzero(proj))
+    return float(np.sum(proj)) / count if count > 0 else 0.0
 
 
-def recover_labels(v_latent: np.ndarray, agent, g_min, g_max,
-                   vectors: dict, top_k: int = 3) -> list:
-    """Level-2: recall label vector from image latent and find nearest labels."""
-    v_q = quantize_latent_global(v_latent, g_min, g_max, Q_IMG)
-
-    # Use soft recall to tolerate test-image deviation from stored prototype
-    recalled_q, score = agent.mem_dom.recall_from_right_soft(v_q)
-    if score == 0.0:
+def evoke_labels(agent, z_q: np.ndarray, vectors: dict, top_k: int = 3):
+    """Evoca labels desde una imagen: recall inverso modulado por los
+    pesos de M_dom_R, luego vecinos por coseno en el diccionario. El
+    patron recordado es una muestra de la distribucion de labels del
+    agente, no una palabra exacta; el diccionario lo interpreta."""
+    r_w = agent.mem_dom_R.recog_weights(z_q)
+    with contextlib.redirect_stdout(io.StringIO()):
+        recalled_q, recognized, weight, *_ = agent.mem_dom_H.recall_from_right(
+            z_q, weights=r_w)
+    if not recognized:
         return []
-
-    # Convert recalled label indices to continuous {-1,+1} space
     recalled_cont = (recalled_q.astype(float) / max(M_LABEL - 1, 1)) * 2.0 - 1.0
-
-    # Find nearest neighbors in label dictionary (cosine similarity)
-    similarities = []
+    sims = []
     for word, vec in vectors.items():
         v = np.array(vec, dtype=np.float32)
-        sim = float(np.dot(recalled_cont, v) / (
-            np.linalg.norm(recalled_cont) * np.linalg.norm(v) + 1e-8))
-        similarities.append((word, sim))
-
-    similarities.sort(key=lambda x: -x[1])
-    return [w for w, s in similarities[:top_k]]
+        sim = float(np.dot(recalled_cont, v) /
+                    (np.linalg.norm(recalled_cont) * np.linalg.norm(v) + 1e-8))
+        sims.append((word, sim))
+    sims.sort(key=lambda x: -x[1])
+    return [w for w, s in sims[:top_k]]
 
 
 def run():
-    print("Loading encoder and agents...")
+    print("Etapa 7 — hemisferio visual")
     encoder = load_encoder()
     g_min, g_max = load_global_stats()
-    proto_latents = load_proto_latents()
+    splits = json.loads((DATA_DIR / "splits.json").read_text())
 
-    tme, agents_full = load_tme_and_agents()
-
-    # Load label vectors
-    all_vectors = {}
+    print("Cargando TME + agentes (etapa 6)...")
+    tme, agents = load_tme_and_agents()
+    label_vecs = load_all_vectors()
+    vocab_by_cls = {cls: set(label_vecs[cls].keys()) for cls in CLASSES}
+    all_vecs = {}
     for cls in CLASSES:
-        path = ROOT / f"label_vectors_{cls}.json"
-        all_vectors[cls] = json.loads(path.read_text())
+        all_vecs.update(label_vecs[cls])
 
-    # Get test images
-    splits_path = DATA_DIR / "splits.json"
-    splits = json.loads(splits_path.read_text())
+    print(f"\n--- Fase A: interacciones visuales (train[{N_FILL}:]) ---")
+    pools = {cls: splits[cls]["train"][N_FILL:] for cls in CLASSES}
+    n_inter = max(len(p) for p in pools.values())
+    a_ok = a_seen = a_rej = 0
+    for i in range(n_inter):
+        for cls in CLASSES:
+            if i >= len(pools[cls]):
+                continue
+            z = image_to_latent(pools[cls][i], encoder)
+            z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
+            scores = {c: recognize_gated_right(agents[c], z_q)
+                      for c in CLASSES}
+            if sum(scores.values()) == 0:
+                a_rej += 1
+                continue
+            winner = max(scores, key=scores.get)
+            with contextlib.redirect_stdout(io.StringIO()):
+                tme.update_directory_latent(z_q, AGENT_LIST.index(winner))
+            a_seen += 1
+            a_ok += int(winner == cls)
+        if (i + 1) % 32 == 0:
+            print(f"  interaccion {i+1}/{n_inter}  "
+                  f"(acc visual {a_ok/max(a_seen,1)*100:.1f}%)")
+    total_a = a_seen + a_rej
+    print(f"  Fase A: {total_a} imagenes · routing visual "
+          f"{a_ok/max(a_seen,1)*100:.1f}% · rechazo "
+          f"{a_rej/max(total_a,1)*100:.1f}%")
+    print(f"  mem_dir_R counts: {tme.mem_dir_R.agent_counts.tolist()}  "
+          f"entropia: {tme.mem_dir_R.entropy():.3f} bits")
 
-    print("\n--- Inverse retrieval: image -> labels ---")
-    results = []
+    print("\n--- Fase B: routing por mem_dir_R (B1) sobre test ---")
+    b_ok = b_rej = b_total = 0
+    evoke_hits = evoke_tried = 0
+    sample_rows = []
     for cls in CLASSES:
-        test_imgs = splits[cls]["test"][:2]
-        for img_path in test_imgs:
-            v_latent = image_to_latent(img_path, encoder)
+        for j, p in enumerate(splits[cls]["test"]):
+            z = image_to_latent(p, encoder)
+            z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
+            b_total += 1
+            agg = tme.mem_dir_R.predict_normalized(z_q, mode="linear")
+            if agg.sum() == 0:
+                b_rej += 1
+                continue
+            dest = CLASSES[int(np.argmax(agg))]
+            if dest == cls:
+                b_ok += 1
+            if j < N_EVOKE:
+                evoke_tried += 1
+                labels = evoke_labels(agents[dest], z_q, all_vecs)
+                hit = any(w in vocab_by_cls[cls] for w in labels)
+                evoke_hits += int(hit)
+                if j < 3:
+                    sample_rows.append((cls, dest, labels, hit))
 
-            # Level 1: domain detection
-            winner_cls = find_winner_agent(v_latent, proto_latents)
+    acc_b = b_ok / max(b_total, 1)
+    rej_b = b_rej / max(b_total, 1)
+    evoke_rate = evoke_hits / max(evoke_tried, 1)
+    print(f"  Routing test: {b_ok}/{b_total} = {acc_b*100:.1f}%  "
+          f"(rechazo {rej_b*100:.1f}%)")
+    print(f"  Evocacion top-3 domain-hit: {evoke_hits}/{evoke_tried} "
+          f"= {evoke_rate*100:.1f}%")
+    print("\n  Muestras (clase real -> ruteado · labels evocados):")
+    for cls, dest, labels, hit in sample_rows:
+        mark = "OK" if hit else "X "
+        print(f"    {mark} {cls:>6} -> {dest:<6} · {labels}")
 
-            # Level 2: label recovery
-            top_labels = recover_labels(
-                v_latent, agents_full[winner_cls],
-                g_min, g_max, all_vectors[winner_cls])
+    import pickle
+    with open(MODELS_DIR / "tme.pkl", "wb") as f:
+        pickle.dump(tme, f)
+    print("\n  TME actualizado (mem_dir_R entrenado) -> tme.pkl")
 
-            print(f"  [{cls}] image={Path(img_path).name}")
-            print(f"         domain_found={winner_cls}  top-3 labels={top_labels}")
-            coherent = winner_cls == cls
-            results.append({
-                "true_class": cls,
-                "predicted_class": winner_cls,
-                "top_labels": top_labels,
-                "coherent": coherent,
-            })
-
-    correct_domain = sum(1 for r in results if r["coherent"])
-    print(f"\nDomain accuracy (Level 1): {correct_domain}/{len(results)}")
-    labels_nonempty = sum(1 for r in results if r["top_labels"])
-    print(f"Queries with recovered labels: {labels_nonempty}/{len(results)}")
-
-    _visualize(results, splits, proto_latents)
     print("\nEtapa 7 COMPLETADA.")
-    return results
-
-
-def _visualize(results, splits, proto_latents):
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    n = len(results)
-    fig, axes = plt.subplots(1, n, figsize=(3*n, 4))
-    if n == 1:
-        axes = [axes]
-
-    img_idx = 0
-    for cls in CLASSES:
-        for img_path in splits[cls]["test"][:2]:
-            img = Image.open(img_path).convert("RGB").resize((128, 128))
-            r = results[img_idx]
-            ax = axes[img_idx]
-            ax.imshow(np.array(img))
-            label_str = ", ".join(r["top_labels"]) if r["top_labels"] else "none"
-            color = "green" if r["coherent"] else "red"
-            ax.set_title(f"true:{cls}\npred:{r['predicted_class']}\n{label_str}",
-                         fontsize=6, color=color)
-            ax.axis("off")
-            img_idx += 1
-
-    plt.tight_layout()
-    out = ROOT / "stage7_inverse_retrieval.png"
-    plt.savefig(out, dpi=80)
-    print(f"Saved -> {out.name}")
+    return {"visual_early_acc": a_ok / max(a_seen, 1),
+            "routing_test_acc": acc_b, "routing_test_rej": rej_b,
+            "evoke_top3_hit": evoke_rate}
 
 
 if __name__ == "__main__":
