@@ -33,8 +33,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from mae_ham import SimpleHAM4D
-from pineda_am import PinedaDirectoryMemory
+from hetero_memory import HeteroAssociativeMemory
+from associative_memory import HomoAssociativeMemory
 from quantizer import quantize_binary
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
@@ -42,9 +42,57 @@ from stage6_interaction import (
     tokenize_query, get_fasttext_vector, M_LABEL,
 )
 
-# ═══════════════════════════════════════════════════════════════════
+
+class SlotDirectoryMemory:
+    """Directorio legado del ablation: una HomoAssociativeMemory por agente.
+
+    Aproxima el directorio con n_agents memorias homo independientes;
+    el sistema oficial usa DirectoryMemory (hetero). Se conserva aqui
+    porque las condiciones A-G del estudio se definieron sobre esta
+    estructura y sus variantes B1/B2/C dependen de ella.
+    """
+
+    def __init__(self, n: int = 300, m: int = 16, n_agents: int = 3,
+                 iota: float = 0.0, kappa: float = 0.0,
+                 xi: int = 0, sigma: float = 0.1):
+        self._n = n
+        self._m = m
+        self._n_agents = n_agents
+        kw = dict(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
+        self._ams = [HomoAssociativeMemory(n, m, **kw)
+                     for _ in range(n_agents)]
+        self._counts = np.zeros(n_agents, dtype=np.int64)
+
+    def register(self, v_q: np.ndarray, agent_idx: int) -> None:
+        k = int(np.clip(agent_idx, 0, self._n_agents - 1))
+        self._ams[k].register(v_q)
+        self._counts[k] += 1
+
+    def predict(self, v_q: np.ndarray) -> np.ndarray:
+        return np.array([am.recognize(v_q) for am in self._ams], dtype=float)
+
+    def predict_normalized(self, v_q: np.ndarray, mode: str = "linear",
+                           eps: float = 1.0) -> np.ndarray:
+        scores = self.predict(v_q)
+        denom = self._counts.astype(float) + eps
+        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
+
+    def nearest_agent(self, v_q: np.ndarray) -> int:
+        scores = self.predict(v_q)
+        return -1 if scores.sum() == 0 else int(np.argmax(scores))
+
+    @property
+    def agent_counts(self) -> np.ndarray:
+        return self._counts.copy()
+
+    def entropy(self) -> float:
+        total = float(self._counts.sum())
+        if total == 0:
+            return math.log2(max(self._n_agents, 1))
+        p = self._counts / total
+        return float(-np.sum(p * np.log2(np.where(p == 0, 1.0, p))))
+
 # Configuración global
-# ═══════════════════════════════════════════════════════════════════
 
 N_VALUES   = [10, 20, 40, 80]
 SEEDS      = [0, 1, 2, 3, 4]
@@ -74,9 +122,7 @@ COND_COLORS = {
     "G":   "#c0392b",
 }
 
-# ═══════════════════════════════════════════════════════════════════
 # Query bank (80 total, interleaved apple/horse/car)
-# ═══════════════════════════════════════════════════════════════════
 
 APPLE_QUERIES = [
     "a round red fruit", "green food from trees", "red or green round food",
@@ -129,16 +175,14 @@ for _i in range(max(len(APPLE_QUERIES), len(HORSE_QUERIES), len(CAR_QUERIES))):
             ALL_QUERIES.append(_pool[_i])
             GROUND_TRUTH.append(_cls)
 
-# ═══════════════════════════════════════════════════════════════════
 # Clases extendidas de M_dir
-# ═══════════════════════════════════════════════════════════════════
 
-# DirectoryMemoryTracked: PinedaDirectoryMemory ya tiene conteo de registros,
+# DirectoryMemoryTracked: SlotDirectoryMemory ya tiene conteo de registros,
 # predict_normalized (B1/B2) y entropy() — no hay que reimplementarlos.
-DirectoryMemoryTracked = PinedaDirectoryMemory
+DirectoryMemoryTracked = SlotDirectoryMemory
 
 
-class DirectoryMemoryBalanced(PinedaDirectoryMemory):
+class DirectoryMemoryBalanced(SlotDirectoryMemory):
     """M_dir que limita la acumulación desproporcionada por agente."""
 
     def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
@@ -152,9 +196,7 @@ class DirectoryMemoryBalanced(PinedaDirectoryMemory):
         super().register(v_label_q, agent_idx)
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Carga de M_dom
-# ═══════════════════════════════════════════════════════════════════
 
 def load_base_mdoms() -> dict:
     mdoms = {}
@@ -164,39 +206,43 @@ def load_base_mdoms() -> dict:
     return mdoms
 
 
-def build_curated_apple_mdom() -> SimpleHAM4D:
-    """Reconstruye M_dom de apple sin labels de Apple Inc."""
+def build_curated_apple_mdom() -> HeteroAssociativeMemory:
+    """Reconstruye M_dom de apple sin labels de Apple Inc., con el mismo
+    protocolo de llenado por instancias de stage5 (los latentes del pool
+    se reusan desde instance_latents_apple.json)."""
     from stage5_fill import quantize_latent_global
     N_F, M_F, P_F, Q_F = 300, 16, 64, 32
     NOISE = {"computer", "mac", "macintosh", "eden"}
 
     labels   = json.loads((ROOT / "labels_apple.json").read_text())
     raw_vecs = json.loads((ROOT / "label_vectors_apple.json").read_text())
-    v_proto  = np.array(json.loads((MODELS_DIR / "proto_latent_apple.json").read_text()))
+    latents  = json.loads(
+        (MODELS_DIR / "instance_latents_apple.json").read_text())
     stats    = json.loads((MODELS_DIR / "latent_global_stats.json").read_text())
     g_min    = np.array(stats["global_min"])
     g_max    = np.array(stats["global_max"])
 
     curated = {l: w for l, w in labels.items() if l not in NOISE}
     removed = NOISE & set(labels)
-    print(f"  Curated apple: {len(labels)} -> {len(curated)} labels (removed: {removed})")
+    print(f"  Curated apple: {len(labels)} -> {len(curated)} labels "
+          f"(removed: {removed})")
 
-    mem = SimpleHAM4D(N_F, M_F, P_F, Q_F, iota=0.0, kappa=0.0, xi=0, sigma=0.1)
-    v_proto_q = quantize_latent_global(v_proto, g_min, g_max, Q_F)
-
+    label_seq = []
     for word, freq in curated.items():
         if word not in raw_vecs:
             continue
         v_lq = quantize_binary(np.array(raw_vecs[word], dtype=np.float32), M_F)
-        for _ in range(int(freq)):
-            mem.register(v_lq, v_proto_q)
+        label_seq.extend([v_lq] * int(freq))
 
+    mem = HeteroAssociativeMemory(N_F, M_F, P_F, Q_F)
+    L = len(label_seq)
+    for i, z in enumerate(latents):
+        z_q = quantize_latent_global(np.array(z), g_min, g_max, Q_F)
+        mem.register(label_seq[i % L], z_q)
     return mem
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Configuración por condición
-# ═══════════════════════════════════════════════════════════════════
 
 def get_condition_config(condition: str):
     """Retorna (mdir_class, m_mdir, mdir_kwargs, predict_fn, use_curated, use_balanced)."""
@@ -204,33 +250,31 @@ def get_condition_config(condition: str):
     use_balanced = condition in ("D", "G")
 
     if condition == "B1":
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     elif condition == "B2":
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "sqrt")
     elif condition == "C":
         mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryBalanced, 16, {"max_ratio": 3.0}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E32":
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 32, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 32, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E64":
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 64, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 64, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "G":
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     else:  # A, D, F
-        mdir_class, m_mdir, mdir_kwargs = PinedaDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
 
     return mdir_class, m_mdir, mdir_kwargs, predict_fn, use_curated, use_balanced
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Factory de agentes
-# ═══════════════════════════════════════════════════════════════════
 
 def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
                 mdir_kwargs: dict = None):
@@ -255,9 +299,7 @@ def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
     return agents, tme
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Selección de queries
-# ═══════════════════════════════════════════════════════════════════
 
 def balanced_queries(N: int, seed: int):
     """Condición D: floor(N/3) queries por dominio, shuffled, interleaved."""
@@ -282,16 +324,16 @@ def standard_queries(N: int):
     return ALL_QUERIES[:N], GROUND_TRUTH[:N]
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Fase temprana
-# ═══════════════════════════════════════════════════════════════════
 
 def run_early_phase(queries, agents, tme, nlp, vectors_cache, m_mdir):
+    """Sin tokens o sin señal, la consulta se rechaza ("REJ"): defaultear
+    a un agente fijo inflaria artificialmente sus metricas."""
     winners = []
     for q in queries:
         tokens = tokenize_query(q, nlp)
         if not tokens:
-            winners.append(CLASSES[0])
+            winners.append("REJ")
             continue
 
         agent_scores = {cls: 0.0 for cls in CLASSES}
@@ -309,24 +351,28 @@ def run_early_phase(queries, agents, tme, nlp, vectors_cache, m_mdir):
         for cls in CLASSES:
             agent_scores[cls] /= n_toks
 
+        if max(agent_scores.values()) == 0.0:
+            winners.append("REJ")
+            continue
+
         winner = max(agent_scores, key=agent_scores.get)
         winner_idx = AGENT_LIST.index(winner)
         winners.append(winner)
 
         for tok in tokens:
             vq = tok_vecs_mdir[tok]
-            tme.mem_dir.register(vq, winner_idx)
+            tme.mem_dir_L.register(vq, winner_idx)
             for ag in agents.values():
                 ag.mem_dir.register(vq, winner_idx)
 
     return winners
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Fase madura
-# ═══════════════════════════════════════════════════════════════════
 
 def run_mature_phase(queries, agents, nlp, vectors_cache, rng, predict_fn, m_mdir):
+    """Routing punto a punto por el directorio del agente de entrada.
+    Sin tokens o sin señal, rechaza ("REJ")."""
     winners = []
     for q in queries:
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
@@ -334,7 +380,7 @@ def run_mature_phase(queries, agents, nlp, vectors_cache, rng, predict_fn, m_mdi
 
         tokens = tokenize_query(q, nlp)
         if not tokens:
-            winners.append(CLASSES[0])
+            winners.append("REJ")
             continue
 
         scores = np.zeros(len(CLASSES))
@@ -343,14 +389,13 @@ def run_mature_phase(queries, agents, nlp, vectors_cache, rng, predict_fn, m_mdi
             vq = quantize_binary(v, m_mdir)
             scores += predict_fn(entry_ag, vq)
 
-        winners.append(CLASSES[int(np.argmax(scores))] if scores.sum() > 0 else CLASSES[0])
+        winners.append(CLASSES[int(np.argmax(scores))]
+                       if scores.sum() > 0 else "REJ")
 
     return winners
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Métricas
-# ═══════════════════════════════════════════════════════════════════
 
 def compute_metrics(early_winners, mature_winners, ground_truth, agents):
     N = len(ground_truth)
@@ -370,7 +415,8 @@ def compute_metrics(early_winners, mature_winners, ground_truth, agents):
 
     cm = np.zeros((3, 3), dtype=int)
     for g, m in zip(ground_truth, mature_winners):
-        cm[CLASSES.index(g), CLASSES.index(m)] += 1
+        if m in CLASSES:
+            cm[CLASSES.index(g), CLASSES.index(m)] += 1
 
     winner_dist = {cls: mature_winners.count(cls) / N for cls in CLASSES}
 
@@ -439,9 +485,7 @@ def save_csv(rows, path):
     print(f"  CSV guardado: {path.name} ({len(rows)} filas)")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Experimento único
-# ═══════════════════════════════════════════════════════════════════
 
 def run_single_experiment(condition, N, seed, base_mdoms, curated_apple,
                           nlp, vectors_cache):
@@ -473,9 +517,7 @@ def run_single_experiment(condition, N, seed, base_mdoms, curated_apple,
     return compute_metrics(early_w, mature_w, gt, agents)
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Loop principal
-# ═══════════════════════════════════════════════════════════════════
 
 def run_ablation():
     print("=== ABLATION STUDY: M_dir bias ===\n")
@@ -522,9 +564,7 @@ def run_ablation():
     return all_rows
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Funciones auxiliares para plots
-# ═══════════════════════════════════════════════════════════════════
 
 def aggregate(rows, condition, key):
     from collections import defaultdict
@@ -548,9 +588,7 @@ def std_cond(rows, cond, N, key):
     return np.std(vals) if vals else 0.0
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Plot 1: Scaling comparison
-# ═══════════════════════════════════════════════════════════════════
 
 def plot_scaling_comparison(rows):
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
@@ -585,9 +623,7 @@ def plot_scaling_comparison(rows):
     print(f"  Guardado: {out.name}")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Plot 2: Domain accuracy por condición (N=80)
-# ═══════════════════════════════════════════════════════════════════
 
 def plot_domain_accuracy(rows):
     N_PLOT = 80
@@ -622,9 +658,7 @@ def plot_domain_accuracy(rows):
     print(f"  Guardado: {out.name}")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Plot 3: Distribución de ganadores (fase madura, N=80)
-# ═══════════════════════════════════════════════════════════════════
 
 def plot_winner_distribution(rows):
     N_PLOT = 80
@@ -659,9 +693,7 @@ def plot_winner_distribution(rows):
     print(f"  Guardado: {out.name}")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Plots 4 y 5: Matrices de confusión
-# ═══════════════════════════════════════════════════════════════════
 
 def _draw_confusion_matrix(cm: np.ndarray, title: str, filename: str):
     fig, ax = plt.subplots(figsize=(5, 4))
@@ -701,9 +733,7 @@ def plot_confusion_matrices(rows):
         _draw_confusion_matrix(cm_total, title, fname)
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Plot 6: Registros en M_dir por condición
-# ═══════════════════════════════════════════════════════════════════
 
 def plot_registration_counts(rows):
     N_PLOT = 80
@@ -738,9 +768,7 @@ def plot_registration_counts(rows):
     print(f"  Guardado: {out.name}")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Reporte Markdown
-# ═══════════════════════════════════════════════════════════════════
 
 def generate_report(rows):
     def mv(cond, N, key):
@@ -774,7 +802,7 @@ def generate_report(rows):
 
     content = f"""# Ablation Report — Sesgo de M_dir en MAE-TMS
 **Fecha:** 2026-06-07
-**Arquitectura:** SimpleHAM4D (n=300, m=16, p=64, q=32) + ConceptNet 5.7.0
+**Arquitectura:** HeteroAssociativeMemory (n=300, m=16, p=64, q=32) + ConceptNet 5.7.0
 **Dominios:** apple / horse / car (ETH-80)
 
 ---
@@ -914,9 +942,7 @@ Registros M_dir (G): apple={mv("G",80,"mdir_reg_apple"):.0f},
     print(f"  Guardado: {out.name}")
 
 
-# ═══════════════════════════════════════════════════════════════════
 # Entry point
-# ═══════════════════════════════════════════════════════════════════
 
 def run():
     all_rows = run_ablation()

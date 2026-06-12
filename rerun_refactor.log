@@ -1,0 +1,179 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781231431.405168    5052 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781231433.642620    5052 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+RE-CORRIDA POST-REFACTOR — stages 5-8
+#### STAGE 5 ####
+  Codificando 200 latentes de apple...
+  Codificando 200 latentes de horse...
+  Codificando 200 latentes de car...
+  Calculando stats globales sobre 200 imagenes/clase...
+
+--- Llenando M_dom del agente apple ---
+  apple: secuencia de 92 labels, 200 instancias registradas
+[HAM apple] entropy=3.9881  mean=9.8831
+[AM apple_L] n=300 m=16 entropy=0.8043  mean=48.7600
+[AM apple_R] n=64 m=32 entropy=3.2313  mean=17.3732
+  Guardado -> mem_dom_apple.pkl
+  Guardado -> mem_dom_L_apple.pkl
+  Guardado -> mem_dom_R_apple.pkl
+  Probing apple con: ['core', 'skin', 'green', 'red', 'pome']
+    'core': recognized=True, weight=5291.06
+    'skin': recognized=True, weight=5077.36
+    'green': recognized=True, weight=5285.47
+    'red': recognized=True, weight=5107.03
+    'pome': recognized=True, weight=4970.94
+  Probes -> stage5_probes_apple.png
+
+--- Llenando M_dom del agente horse ---
+  horse: secuencia de 83 labels, 200 instancias registradas
+[HAM horse] entropy=3.7018  mean=11.8996
+[AM horse_L] n=300 m=16 entropy=0.7515  mean=44.9583
+[AM horse_R] n=64 m=32 entropy=2.9955  mean=20.3254
+  Guardado -> mem_dom_horse.pkl
+  Guardado -> mem_dom_L_horse.pkl
+  Guardado -> mem_dom_R_horse.pkl
+  Probing horse con: ['equine', 'animal', 'big', 'cow', 'donkey']
+    'equine': recognized=True, weight=5995.47
+    'animal': recognized=True, weight=6050.08
+    'big': recognized=True, weight=5851.58
+    'cow': recognized=True, weight=6346.56
+    'donkey': recognized=True, weight=6605.59
+  Probes -> stage5_probes_horse.png
+
+--- Llenando M_dom del agente car ---
+  car: secuencia de 59 labels, 200 instancias registradas
+[HAM car] entropy=4.3165  mean=7.8757
+[AM car_L] n=300 m=16 entropy=0.7683  mean=31.6633
+[AM car_R] n=64 m=32 entropy=3.6055  mean=13.4101
+  Guardado -> mem_dom_car.pkl
+  Guardado -> mem_dom_L_car.pkl
+  Guardado -> mem_dom_R_car.pkl
+  Probing car con: ['crash', 'engine', 'seat', 'seats', 'windows']
+    'crash': recognized=True, weight=4452.77
+    'engine': recognized=True, weight=4411.45
+    'seat': recognized=True, weight=4015.33
+    'seats': recognized=True, weight=4267.77
+    'windows': recognized=True, weight=3736.58
+  Probes -> stage5_probes_car.png
+
+Etapa 5 COMPLETADA.
+#### STAGE 6 ####
+Cargando modelos y agentes...
+
+--- Fase temprana (TME activo) ---
+  Query: 'a round red fruit'  tokens=['round', 'red', 'fruit']
+  Scores: apple=449.06  horse=0.00  car=160.27  -> ganador: apple
+  -> Triple: imagen=si, labels=['round', 'red', 'fruit'], ubicacion=apple
+  Query: 'fast vehicle with wheels'  tokens=['fast', 'vehicle', 'wheel']
+  Tokens fuera de vocabulario: ['fast']
+  Scores: apple=0.00  horse=0.00  car=490.15  -> ganador: car
+  -> Triple: imagen=si, labels=['fast', 'vehicle', 'wheel'], ubicacion=car
+  Query: 'animal with a mane'  tokens=['animal', 'mane']
+  Scores: apple=0.00  horse=448.11  car=0.00  -> ganador: horse
+  -> Triple: imagen=si, labels=['animal', 'mane'], ubicacion=horse
+  Query: 'sweet edible thing'  tokens=['sweet', 'edible', 'thing']
+  Tokens fuera de vocabulario: ['sweet', 'edible', 'thing']
+  RECHAZADA: sin señal de routing para tokens=['sweet', 'edible', 'thing'].
+  -> Triple: imagen=no, labels=['sweet', 'edible', 'thing'], ubicacion=None
+  Query: 'large powerful mammal'  tokens=['large', 'powerful', 'mammal']
+  Tokens fuera de vocabulario: ['powerful']
+  Scores: apple=0.00  horse=509.13  car=0.00  -> ganador: horse
+  -> Triple: imagen=si, labels=['large', 'powerful', 'mammal'], ubicacion=horse
+  Query: 'machine for transportation'  tokens=['machine', 'transportation']
+  Scores: apple=312.10  horse=0.00  car=512.16  -> ganador: car
+  -> Triple: imagen=si, labels=['machine', 'transportation'], ubicacion=car
+  Query: 'grows on trees'  tokens=['tree']
+  Scores: apple=440.81  horse=0.00  car=0.00  -> ganador: apple
+  -> Triple: imagen=si, labels=['tree'], ubicacion=apple
+  Query: 'has four legs and hooves'  tokens=['leg', 'hoof']
+  Scores: apple=283.25  horse=491.92  car=0.00  -> ganador: horse
+  -> Triple: imagen=si, labels=['leg', 'hoof'], ubicacion=horse
+  Query: 'has an engine'  tokens=['engine']
+  Scores: apple=0.00  horse=0.00  car=498.86  -> ganador: car
+  -> Triple: imagen=si, labels=['engine'], ubicacion=car
+  Query: 'fruit with seeds inside'  tokens=['fruit', 'seed']
+  Scores: apple=430.57  horse=0.00  car=0.00  -> ganador: apple
+  -> Triple: imagen=si, labels=['fruit', 'seed'], ubicacion=apple
+TME y agentes guardados.
+
+Etapa 6 COMPLETADA.
+#### STAGE 7 ####
+Etapa 7 — hemisferio visual
+Cargando TME + agentes (etapa 6)...
+
+--- Fase A: interacciones visuales (train[200:]) ---
+  interaccion 32/128  (acc visual 100.0%)
+  interaccion 64/128  (acc visual 100.0%)
+  interaccion 96/128  (acc visual 100.0%)
+  interaccion 128/128  (acc visual 100.0%)
+  Fase A: 384 imagenes · routing visual 100.0% · rechazo 49.7%
+  mem_dir_R counts: [91, 71, 31]  entropia: 1.466 bits
+
+--- Fase B: routing por mem_dir_R (B1) sobre test ---
+Entropy updated to mean = 4.135919169184483, stdev = 0.34912883010142415
+Iota relation updated, and 0 cells have been turned off
+  Routing test: 81/246 = 32.9%  (rechazo 67.1%)
+  Evocacion top-3 domain-hit: 16/17 = 94.1%
+
+  Muestras (clase real -> ruteado · labels evocados):
+    OK  apple -> apple  · ['pear', 'fruit', 'seeds']
+    OK  apple -> apple  · ['green', 'fruit', 'pome']
+    OK  apple -> apple  · ['green', 'red', 'fruit']
+    OK  horse -> horse  · ['animal', 'horse', 'donkey']
+    OK  horse -> horse  · ['animal', 'donkey', 'cow']
+
+  TME actualizado (mem_dir_R entrenado) -> tme.pkl
+
+Etapa 7 COMPLETADA.
+#### STAGE 8 ####
+Cargando agentes (fase madura — TME desactivado)...
+
+--- Referencia de fase temprana (TME activo) ---
+  'a round red fruit' -> apple
+  'fast vehicle with wheels' -> car
+  'animal with a mane' -> horse
+  'sweet edible thing' -> None
+  'large powerful mammal' -> horse
+  'machine for transportation' -> car
+  'grows on trees' -> apple
+  'has four legs and hooves' -> horse
+  'has an engine' -> car
+  'fruit with seeds inside' -> apple
+
+--- Fase madura (punto a punto) ---
+Entropy updated to mean = 1.6290343026608554, stdev = 0.2813820522849657
+Iota relation updated, and 0 cells have been turned off
+  Entrada=car  scores=[apple=574.2  horse=0.0  car=0.0]  -> destino=apple  routed=True
+  Q1: temprana=apple  madura=apple  match=OK  entrada=car
+  Tokens fuera de vocabulario: ['fast']
+Entropy updated to mean = 1.6290343026608554, stdev = 0.2813820522849657
+Iota relation updated, and 0 cells have been turned off
+  Entrada=apple  scores=[apple=0.0  horse=0.0  car=394.4]  -> destino=car  routed=True
+  Q2: temprana=car  madura=car  match=OK  entrada=apple
+  Entrada=car  scores=[apple=0.0  horse=394.5  car=0.0]  -> destino=horse  routed=True
+  Q3: temprana=horse  madura=horse  match=OK  entrada=car
+  Tokens fuera de vocabulario: ['sweet', 'edible', 'thing']
+  RECHAZADA: sin señal de routing para 'sweet edible thing'.
+  Q4: temprana=None  madura=None  match=OK  entrada=car
+  Tokens fuera de vocabulario: ['powerful']
+  Entrada=apple  scores=[apple=0.0  horse=377.8  car=0.0]  -> destino=horse  routed=True
+  Q5: temprana=horse  madura=horse  match=OK  entrada=apple
+  Entrada=apple  scores=[apple=0.0  horse=0.0  car=376.9]  -> destino=car  routed=True
+  Q6: temprana=car  madura=car  match=OK  entrada=apple
+  Entrada=car  scores=[apple=189.2  horse=0.0  car=0.0]  -> destino=apple  routed=True
+  Q7: temprana=apple  madura=apple  match=OK  entrada=car
+Entropy updated to mean = 1.6290343026608554, stdev = 0.2813820522849657
+Iota relation updated, and 0 cells have been turned off
+  Entrada=horse  scores=[apple=0.0  horse=389.2  car=0.0]  -> destino=horse  routed=False
+  Q8: temprana=horse  madura=horse  match=OK  entrada=horse
+  Entrada=car  scores=[apple=0.0  horse=0.0  car=198.2]  -> destino=car  routed=False
+  Q9: temprana=car  madura=car  match=OK  entrada=car
+  Entrada=car  scores=[apple=404.6  horse=0.0  car=0.0]  -> destino=apple  routed=True
+  Q10: temprana=apple  madura=apple  match=OK  entrada=car
+
+Fidelidad: 10/10 = 100.0%
+Grafica de fidelidad -> stage8_fidelity.png
+
+Etapa 8 COMPLETADA.
+REFACTOR-RERUN COMPLETO

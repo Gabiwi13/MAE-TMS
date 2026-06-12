@@ -1,0 +1,32 @@
+\section{Conclusiones}
+\label{sec:conclusiones}
+
+Este trabajo presentó MAE-TMS, un sistema de memoria transactiva multi-agente construido exclusivamente sobre Memorias Asociativas Entrópicas (EAM)~\cite{pineda2021entropic,pineda2024hetero}.
+El sistema opera de forma bidireccional texto $\leftrightarrow$ imagen con rechazo explícito en ambas direcciones, sin recurrir a módulos externos de clasificación o umbrales supervisados.
+
+\paragraph{Logros principales.}
+El sistema alcanzó una \textbf{precisión madura del 97.5\%} en el banco de 80 consultas semánticas (texto $\to$ imagen) con una tasa de rechazo del 2.5\%, y una \textbf{fidelidad del 96.2\%} entre las fases temprana y madura.
+En la dirección inversa (imagen $\to$ palabras), el hemisferio visual logró una \textbf{precisión de routing del 100\%} sobre las imágenes aceptadas y una \textbf{evocación de dominio del 94.1\%} (16/17 imágenes produjeron al menos una etiqueta semántica correcta).
+
+El directorio transactivo emergió por interacción sin supervisión explícita, alcanzando un balance de \textbf{98.3\%} del máximo teórico (1.558 de 1.585 bits) con counts $[68, 54, 42]$.
+Con presentación intercalada, la transición al 90\% de precisión ocurrió en tan solo \textbf{$k = 14$ interacciones}, confirmando la rapidez del aprendizaje del directorio cuando la exposición es diversa.
+
+La especificidad del sistema es \textbf{perfecta}: en ningún valor de $N$ probado se aceptó una imagen falsa (0\% en todo el rango), lo que demuestra que el containment inverso con $\xi = 0$ es un criterio de aceptación efectivo y conservador.
+
+\paragraph{Contribución conceptual.}
+El hallazgo más profundo del trabajo es que el comportamiento anómalo observado inicialmente (sesgo de densidad, recalls sin variedad) no era un defecto del modelo EAM sino consecuencia de un llenado con prototipos promedio.
+Al alimentar el sistema con instancias reales, la maquinaria teórica de Pineda y Morales opera correctamente sin calibraciones externas adicionales.
+Esto refuerza la importancia de respetar las condiciones de uso del modelo antes de buscar correcciones ad hoc.
+
+\paragraph{Trabajo futuro.}
+Las extensiones más relevantes identificadas son:
+\begin{enumerate}
+    \item \textbf{Barrido de $\xi > 0$}: incrementar la cobertura del hemisferio visual manteniendo la especificidad perfecta.
+    \item \textbf{Magnitudes de fastText}: reemplazar la binarización por signo por una representación ponderada por magnitud para ampliar el margen discriminativo intra/inter-clase (actualmente de 3.3 puntos).
+    \item \textbf{Cuarto agente y rotación de miembros}: explorar olvido controlado y reorganización del directorio cuando un agente abandona o se incorpora al sistema.
+    \item \textbf{Evocación atributiva anclada}: extender el hemisferio visual para que una imagen de una manzana verde evoque la etiqueta ``green'', emparejando labels con regiones de la imagen mediante atributos físicos durante el llenado.
+\end{enumerate}
+
+\bigskip
+
+En conjunto, los resultados demuestran que las Memorias Asociativas Entrópicas de Pineda y Morales son una plataforma suficiente para construir un sistema de memoria transactiva multi-agente funcional, bidireccional y con rechazo principado, sin recurrir a modelos de aprendizaje profundo supervisado para la toma de decisiones.

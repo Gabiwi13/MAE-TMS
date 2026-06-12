@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+
+% Codificación y fuentes
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+
+% Geometría
+\usepackage[margin=2.5cm]{geometry}
+
+% Matemáticas
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Gráficos
+\usepackage{graphicx}
+\graphicspath{{figuras/}}
+
+% Tablas
+\usepackage{booktabs}
+
+% TikZ y librerías
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, decorations.pathreplacing}
+
+% Hipervínculos
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% Flotantes
+\usepackage{float}
+
+% -------------------------------------------------------
+% Portada
+% -------------------------------------------------------
+\title{%
+    \textbf{Sistema de Memoria Transactiva Multi-Agente}\\
+    \textbf{sobre Memorias Asociativas Entrópicas}\\[0.5em]
+    \large Reporte Técnico de Licenciatura
+}
+\author{[Autor]}
+\date{Junio 2026}
+
+% -------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este trabajo presenta un sistema de memoria transactiva multi-agente (MAE-TMS) construido
+íntegramente sobre Memorias Asociativas Entrópicas (EAM) \cite{pineda2021entropic,pineda2024hetero}.
+El sistema está formado por tres agentes especialistas ---uno por categoría visual
+(\textit{apple}, \textit{horse}, \textit{car}) sobre el conjunto de datos ETH-80
+\cite{leibe2003eth80}--- y un mediador inicial (TME) que coordina las interacciones
+tempranas y se vuelve prescindible una vez que cada agente ha construido su propio
+directorio interno de especialización.
+Las memorias operan bidireccionalmente entre representaciones textuales (fastText 300D
+\cite{bojanowski2017fasttext}, enriquecidas con ConceptNet 5.7 \cite{speer2017conceptnet})
+e imágenes (codificadas por ResNet18 \cite{he2016resnet}).
+La arquitectura de 14 memorias asociativas puras ---sin gradientes ni retropropagación---
+reproduce los tres mecanismos centrales de la Memoria Transactiva de Wegner
+\cite{wegner1987transactive}: actualización de directorio, asignación de información y
+coordinación de recuperación.
+Los experimentos caracterizan la formación del directorio, la curva de capacidad y los
+parámetros nativos del sistema, y muestran que el llenado fiel a la teoría entrópica
+elimina la necesidad de calibraciones externas más allá de una sola normalización por
+masa de registro.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% -------------------------------------------------------
+% Secciones
+% -------------------------------------------------------
+\input{secciones/01_introduccion}
+\input{secciones/02_marco_teorico}
+\input{secciones/03_arquitectura}
+\input{secciones/04_metodologia}
+\input{secciones/05_resultados}
+\input{secciones/06_discusion}
+\input{secciones/07_conclusiones}
+
+% -------------------------------------------------------
+% Bibliografía
+% -------------------------------------------------------
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\end{document}
