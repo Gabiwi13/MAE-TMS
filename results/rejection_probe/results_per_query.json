@@ -1,0 +1,189 @@
+[
+  {
+    "query": "a musical instrument with strings",
+    "represented_tokens": [
+      "musical",
+      "instrument",
+      "string"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_rejected",
+    "winner": null
+  },
+  {
+    "query": "a kitchen appliance that heats food",
+    "represented_tokens": [
+      "kitchen",
+      "appliance",
+      "food"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 10776.21147,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_false_route",
+    "winner": "apple"
+  },
+  {
+    "query": "a flying bird with feathers",
+    "represented_tokens": [
+      "bird",
+      "feather"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 7055.97919,
+      "car": 0.0
+    },
+    "verdict": "mae_false_route",
+    "winner": "horse"
+  },
+  {
+    "query": "a glass container for water",
+    "represented_tokens": [
+      "glass",
+      "container",
+      "water"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 5890.06406,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_false_route",
+    "winner": "apple"
+  },
+  {
+    "query": "a piece of furniture for sitting",
+    "represented_tokens": [
+      "piece",
+      "furniture"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_rejected",
+    "winner": null
+  },
+  {
+    "query": "a tall building with many floors",
+    "represented_tokens": [
+      "tall",
+      "building",
+      "floor"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 4985.30821
+    },
+    "verdict": "mae_false_route",
+    "winner": "car"
+  },
+  {
+    "query": "a cold mountain covered in snow",
+    "represented_tokens": [
+      "cold",
+      "mountain",
+      "snow"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 6414.91377,
+      "car": 5105.41278
+    },
+    "verdict": "mae_false_route",
+    "winner": "horse"
+  },
+  {
+    "query": "a book with printed pages",
+    "represented_tokens": [
+      "book",
+      "page"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_rejected",
+    "winner": null
+  },
+  {
+    "query": "a river flowing to the sea",
+    "represented_tokens": [
+      "river",
+      "sea"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_rejected",
+    "winner": null
+  },
+  {
+    "query": "a telephone for making calls",
+    "represented_tokens": [
+      "telephone",
+      "call"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 6062.52018,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_false_route",
+    "winner": "apple"
+  },
+  {
+    "query": "a wooden table and chairs",
+    "represented_tokens": [
+      "wooden",
+      "table",
+      "chair"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 0.0,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_rejected",
+    "winner": null
+  },
+  {
+    "query": "a green plant in a pot",
+    "represented_tokens": [
+      "green",
+      "plant",
+      "pot"
+    ],
+    "unrepresented_tokens": [],
+    "scores": {
+      "apple": 10469.89316,
+      "horse": 0.0,
+      "car": 0.0
+    },
+    "verdict": "mae_false_route",
+    "winner": "apple"
+  }
+]
