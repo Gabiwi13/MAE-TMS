@@ -1,4 +1,4 @@
-# Architectural Changes — MAE-TMS
+# Architectural Changes — EAM-TMS
 **Project:** Associative Transactive Memory (Wegner 1987) on ETH-80
 **Versions:** v1.0 (initial) → v2.0 (current)
 **Date:** 2026-06-07
