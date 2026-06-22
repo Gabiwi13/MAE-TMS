@@ -1,8 +1,11 @@
 """
-Etapa 2 — CNN Encoder/Decoder para ETH-80.
+Etapa 2 — Autoencoder basado en ResNet18 para ETH-80 (NO es un masked
+autoencoder: no hay enmascaramiento de entrada).
 Encoder: ResNet18 pretrained -> 64-dim latent vector.
 Decoder: ConvTranspose -> 128x128x3.
-Loss: MSE reconstrucción + CrossEntropy clasificación.
+Loss: MSE reconstrucción + 0.1 * CrossEntropy clasificación. La cabeza
+clasificadora es solo una señal auxiliar de entrenamiento; durante las fases
+EAM-TMS (routing y recall) NO participa: solo se usan encoder y decoder.
 """
 import json
 import sys

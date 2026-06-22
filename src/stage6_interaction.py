@@ -20,6 +20,7 @@ TME (2 memorias):
   mem_dir_R  DirectoryMemory(64,32 -> 3,2)   directorio por latentes,
              se entrena en la etapa 7 con percepciones visuales
 """
+import hashlib
 import json
 import pickle
 import sys
@@ -156,7 +157,11 @@ def get_fasttext_vector(word: str, vectors_cache: dict) -> np.ndarray:
         return get_vector(word)
     except Exception:
         pass
-    rng = np.random.RandomState(hash(word) % (2 ** 31))
+    # Fallback determinista entre procesos: hash() de Python esta salteado por
+    # PYTHONHASHSEED, asi que se usa un digest estable para que el mismo OOV
+    # produzca siempre el mismo vector.
+    seed = int(hashlib.md5(word.encode("utf-8")).hexdigest()[:8], 16)
+    rng = np.random.RandomState(seed)
     return rng.choice([-1.0, 1.0], 300).astype(np.float32)
 
 

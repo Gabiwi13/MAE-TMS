@@ -94,7 +94,7 @@ def raw_score(agent, v_q, mem_mean):
 
 def prepare_bank(nlp, vectors):
     """Tokeniza el banco una sola vez. Devuelve lista de dicts."""
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
     bank = []
     for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
         tokens = [t for t in tokenize_query(query, nlp)
@@ -198,7 +198,7 @@ def main():
             mem_means[cls] = float(agents[cls].mem_dom_H.mean)
 
     nlp = get_nlp()
-    vectors = load_all_vectors()
+    vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     print("Tokenizando banco de 80 queries (una sola vez)...")
     bank = prepare_bank(nlp, vectors)
 

@@ -1,4 +1,4 @@
 condicion,iota,kappa,norm_upstream,early_acc,early_rej,mature_acc_raw,mature_acc_b1,mdir_counts
-baseline ι=0 κ=0 (exp. 1),0.0,0.0,False,0.9625,0.025,0.8375,0.975,"[68, 54, 42]"
-mejor nativa ι=0.0 κ=0.0,0.0,0.0,False,0.9625,0.025,0.8375,0.975,"[68, 54, 42]"
-÷mem.mean con ι=0 κ=0,0.0,0.0,True,0.9625,0.025,0.8375,0.975,"[68, 54, 42]"
+baseline ι=0 κ=0 (exp. 1),0.0,0.0,False,0.975,0.0125,0.85,0.9875,"[71, 58, 46]"
+mejor nativa ι=0.0 κ=0.0,0.0,0.0,False,0.975,0.0125,0.85,0.9875,"[71, 58, 46]"
+÷mem.mean con ι=0 κ=0,0.0,0.0,True,0.975,0.0125,0.85,0.9875,"[71, 58, 46]"

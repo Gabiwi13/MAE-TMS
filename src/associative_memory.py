@@ -146,10 +146,15 @@ class DirectoryMemory:
 
     def entropy(self) -> float:
         """Entropia de la distribucion de registros entre agentes (bits).
-        Maxima = log2(n_agents) cuando la especializacion esta balanceada."""
+        Maxima = log2(n_agents) cuando la especializacion esta balanceada.
+
+        Un directorio vacio no esta balanceado: esta SIN FORMAR. Devolver
+        log2(n_agents) lo haria parecer maximamente organizado desde el
+        primer instante (k=0 de la curva de formacion); por eso se reporta
+        0.0 bits hasta que haya evidencia registrada."""
         total = float(self._counts.sum())
         if total == 0:
-            return math.log2(max(self._n_agents, 1))
+            return 0.0
         p = self._counts / total
         return float(-np.sum(p * np.log2(np.where(p == 0, 1.0, p))))
 

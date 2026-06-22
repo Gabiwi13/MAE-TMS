@@ -1,7 +1,7 @@
 # Experimento 3 — protocolo completo con routing corregido
 
 ## Configuración
-- Fase temprana: gate de containment (η) + score ÷ mem.mean
+- Fase temprana: gate de containment (η), activación media de celdas no nulas (sin ÷mem.mean)
 - Aprendizaje: los 4 componentes registran (TME + 3 agentes), learn_latent en M_dir_R
 - Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1
 - Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)
@@ -11,18 +11,18 @@
 
 | métrica | exp. 1 (crudo) | exp. 3 (corregido) |
 |---|---|---|
-| early accuracy | ~34% | **96.2%** |
-| early rechazo | — | 2.5% |
-| mature accuracy B1 | 98.8% (ablation B1) | **97.5%** |
-| mature accuracy RAW | 33.8% | 83.8% |
-| fidelidad | 100% (sobre routing sesgado) | **96.2%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo | [68, 54, 42] |
-| M_dir entropía | — | 1.558 bits (máx 1.585) |
+| early accuracy | ~34% | **97.5%** |
+| early rechazo | — | 1.2% |
+| mature accuracy B1 | 98.8% (ablation B1) | **98.8%** |
+| mature accuracy RAW | 33.8% | 85.0% |
+| fidelidad | 100% (sobre routing sesgado) | **97.5%** (sobre routing correcto) |
+| M_dir counts | [81, 52, 31] estilo-crudo | [71, 58, 46] |
+| M_dir entropía | — | 1.563 bits (máx 1.585) |
 
 ## Réplica de las 10 TEST_QUERIES del exp. 1
 
 - counts exp. 1: [7, 4, 2] (apple capturó vehicle, engine, red…)
-- counts exp. 3: [5, 4, 4]
+- counts exp. 3: [6, 6, 5]
 
 | query | winner exp. 3 |
 |---|---|
@@ -33,7 +33,7 @@
 | large powerful mammal | horse |
 | machine for transportation | car |
 | grows on trees | apple |
-| has four legs and hooves | None |
+| has four legs and hooves | horse |
 | has an engine | car |
 | fruit with seeds inside | apple |
 

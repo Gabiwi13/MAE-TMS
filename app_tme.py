@@ -1,5 +1,5 @@
 """
-MAE-TMS Visualizador Interactivo v2 — Pipeline Trace completo.
+EAM-TMS Visualizador Interactivo v2 — Pipeline Trace completo.
 
 Muestra paso a paso cómo el sistema procesa una query:
   Stage 1 — Sentence Decomposition   (spaCy tokenization + POS)
@@ -107,15 +107,16 @@ def train_mdir_n80(normalized: bool):
     Train a fresh M_dir IN MEMORY by replaying the ablation's 80-query bank
     (run_ablation.ALL_QUERIES — read-only import) through the early phase.
 
-    normalized=True routes each query with density-normalized M_dom scores
-    (÷mem.mean) → clean associations; False uses raw scores → reproduces
-    the biased learning. Nothing is written to disk; cached per mode.
+    normalized=True routes each query with the official gated M_dom score
+    (recognize_gated, gate de containment) → clean associations; False uses
+    raw scores → reproduces the biased learning. Nothing is written to disk;
+    cached per mode.
 
     Returns (mdir, stats) where stats includes routing accuracy vs the
     ablation's ground truth and the learned token→agent vocabulary.
     """
     decoder, agents, vectors_cache, g_min, g_max, nlp, _ = load_models()
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
 
     mdir = DirectoryMemory(N, M_LABEL, len(CLASSES))
     stats = {"n": 0, "correct": 0, "vocab": {}}
@@ -173,12 +174,12 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
       Pass 1 (fast): l_weights + h_score for ALL agents via project() — no sampling.
       Pass 2 (slow): recall_from_left (127-iter stochastic) ONLY for the winner agent.
 
-    normalize=True applies density normalization (score ÷ mem.mean) — the
-    M_dom analogue of B1, correcting the registration-mass bias (apple has
-    92 registrations vs car's 59, inflating its raw activation for ANY cue).
-    Diagnostic set accuracy: raw 64% → normalized 100%.
-    This is theory-compliant: comparing recognition relative to each memory's
-    own mean is exactly the role of Pineda's kappa parameter.
+    normalize=True usa el scoring oficial Agent.recognize_gated (gate de
+    containment: activación media de las celdas no nulas). NO divide por
+    mem.mean — con el llenado por instancias las masas quedan igualadas y esa
+    calibración es redundante (exp. 2). normalize=False usa el score crudo
+    h_raw, que reproduce el sesgo de masa histórico para comparación.
+    Diagnóstico: crudo 64% → gateado 100%.
     """
     # Stage 1: spaCy decomposition
     doc = nlp(query.lower())
@@ -1198,7 +1199,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             with st.expander(
                     f"AMR 2 · M_dom_H  (hetero label↔latent)   "
                     f"score={pa['h_score']:.5f}"):
-                norm_tag = " (÷ mem.mean)" if trace.get("normalized") else " (raw)"
+                norm_tag = " (gateado)" if trace.get("normalized") else " (raw)"
                 st.metric(f"Recognition score{norm_tag}", f"{pa['h_score']:.5f}")
                 if trace.get("normalized"):
                     st.caption(
@@ -1393,7 +1394,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
 
 def main():
     st.set_page_config(
-        page_title="MAE-TMS — Pipeline Trace",
+        page_title="EAM-TMS — Pipeline Trace",
         page_icon="🍎",
         layout="wide",
         initial_sidebar_state="expanded",
@@ -1411,7 +1412,7 @@ def main():
 
     # Sidebar
     with st.sidebar:
-        st.title("MAE-TMS")
+        st.title("EAM-TMS")
         st.caption("Multi-Agent Associative Memory\nTransactive Memory System")
         st.divider()
 
@@ -1541,7 +1542,7 @@ def main():
         if st.session_state.last_trace is None:
             st.info(
                 "Enter a query above and click **▶ Run pipeline** to see the "
-                "full step-by-step trace of how MAE-TMS processes it."
+                "full step-by-step trace of how EAM-TMS processes it."
             )
             st.markdown("""
 ### What the trace shows
@@ -1799,7 +1800,7 @@ def main():
             with cm2:
                 st.metric("Routing correcto (vs ground truth)",
                           f"{acc80*100:.1f}%",
-                          delta="normalizado ÷mem.mean" if norm80
+                          delta="scoring gateado (recognize_gated)" if norm80
                           else "RAW (sesgo activo)",
                           delta_color="normal" if norm80 else "inverse")
             with cm3:

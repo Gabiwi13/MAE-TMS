@@ -171,7 +171,8 @@ def main():
         for cls in CLASSES:
             _, mem_L, _ = load_agent_memories(cls)
             mem_Ls[cls] = mem_L
-    vectors = load_all_vectors()
+    nlp = get_nlp()
+    vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     for cls in CLASSES:
         print(f"  codificando {cls} (328 train + 82 test)...")
         train_q[cls] = class_latents_q(encoder, cls, "train", 328,
@@ -181,8 +182,7 @@ def main():
         raw = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
         label_seqs[cls] = label_sequence(cls, raw)
 
-    nlp = get_nlp()
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
     bank = []
     for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
         toks = [t for t in tokenize_query(query, nlp)

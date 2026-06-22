@@ -1,12 +1,13 @@
 """
 Experimento 3 — Protocolo completo del experimento 1 con el routing corregido.
 
-Correcciones aplicadas (validadas en exp. 2):
+Scoring oficial (validado en exp. 2):
   1. Gate de containment (η re-acoplado): fila vacía en la proyección → score 0.
-     Mecanismo nativo de Pineda; solo, sube el routing temprano de ~34% a 81%.
-  2. Normalización ÷mem.mean (la cantidad κ-crítica como score comparativo):
-     calibración inter-memoria; con el gate llega a 97.5% en el banco.
-  3. B1 (÷count+1) en fase madura, como en la condición B1 del ablation.
+     Mecanismo nativo de Pineda; el score es la activación media de las celdas
+     no nulas (Agent.recognize_gated), SIN división por mem.mean. Con el llenado
+     por instancias las masas quedan igualadas por construcción y ÷mem.mean es
+     redundante (exp. 2 lo confirma: gate solo da 100% en el diagnóstico).
+  2. B1 (÷count+1) en fase madura, como en la condición B1 del ablation.
 
 Protocolo (idéntico al exp. 1 / stages 6+8, arquitectura 4-AMR completa):
   - Agentes con M_dom_L/R/H de stage5 (solo lectura) + M_dir EHAM fresco.
@@ -58,10 +59,11 @@ from stage6_interaction import (
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
 
 
-# Routing corregido (exp. 2): gate de containment + ÷mem.mean
+# Routing oficial (exp. 2): gate de containment, sin división por mem.mean
 
 def corrected_score(agent, v_q):
-    """Scoring oficial: Agent.recognize_gated (gate de containment)."""
+    """Scoring oficial: Agent.recognize_gated (activación media de las celdas
+    no nulas, gateada por containment). Sin calibración ÷mem.mean."""
     return agent.recognize_gated(v_q)
 
 
@@ -132,7 +134,7 @@ def route_mature(tokens, entry_agent, tok_cache, b1=True):
 def main():
     print("=" * 64)
     print("  EXPERIMENTO 3 — exp. 1 completo con routing corregido")
-    print("  (gate η + ÷mem.mean en temprana · B1 en madura)")
+    print("  (gate η en temprana · B1 en madura)")
     print("=" * 64)
 
     print("\nCargando M_dom de stage5 (solo lectura) y construyendo "
@@ -145,8 +147,8 @@ def main():
         tme = TME()
 
     nlp = get_nlp()
-    vectors = load_all_vectors()
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
     queries, gt = ALL_QUERIES[:80], GROUND_TRUTH[:80]
     tok_cache = {}
 
@@ -182,6 +184,14 @@ def main():
     for res in early_results:
         if not res["tokens"]:
             m_rej += 1
+            # Las consultas sin tokens se rechazan, pero deben quedar en el CSV
+            # como REJ: omitirlas dejaba 78 de 80 filas y daba la falsa
+            # impresion de un desempeno perfecto sobre el denominador completo.
+            mature_log.append({
+                "query": res["query"], "truth": res["truth"],
+                "early": res["winner"] or "REJ",
+                "entry": "NA", "mature_b1": "REJ", "mature_raw": "REJ",
+            })
             continue
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
         dest = route_mature(res["tokens"], agents[entry_cls], tok_cache, b1=True)
@@ -251,7 +261,10 @@ def main():
         "mdir_entropy_bits": round(tme.mem_dir_L.entropy(), 4),
         "test_queries_counts": counts10.tolist(),
         "exp1_reference": {
-            "early_acc_raw": "~34% (condición A del ablation)",
+            "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin "
+                     "gate). Ancla histórica, NO es la condición A del ablation "
+                     "actual (que usa el directorio hetero).",
+            "early_acc_raw": "~34% (Exp. 1 original)",
             "mature_acc_raw": 0.338, "mature_acc_b1": 0.988,
             "test_queries_counts": [7, 4, 2],
         },
@@ -269,7 +282,7 @@ def main():
     b1 = ax.bar(x - wdt/2, exp1_v, wdt, label="Exp. 1 (scores crudos)",
                 color="#95a5a6")
     b2 = ax.bar(x + wdt/2, exp3_v, wdt,
-                label="Exp. 3 (gate η + ÷mem.mean + B1)", color="#1D9E75")
+                label="Exp. 3 (gate η + B1)", color="#1D9E75")
     for bars in (b1, b2):
         for b in bars:
             ax.text(b.get_x() + b.get_width()/2, b.get_height() + 0.015,
@@ -302,7 +315,8 @@ def main():
         "# Experimento 3 — protocolo completo con routing corregido",
         "",
         "## Configuración",
-        "- Fase temprana: gate de containment (η) + score ÷ mem.mean",
+        "- Fase temprana: gate de containment (η), activación media de celdas "
+        "no nulas (sin ÷mem.mean)",
         "- Aprendizaje: los 4 componentes registran (TME + 3 agentes), "
         "learn_latent en M_dir_R",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
