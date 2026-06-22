@@ -12,8 +12,10 @@ Scoring oficial (validado en exp. 2):
 Protocolo (idéntico al exp. 1 / stages 6+8, arquitectura 4-AMR completa):
   - Agentes con M_dom_L/R/H de stage5 (solo lectura) + M_dir EHAM fresco.
   - TME con M_dir_L / M_dir_R (DirectoryMemory) frescos.
-  - Fase temprana: broadcast → score corregido → argmax → los 4 componentes
-    registran (v_q → ganador) → recall en ganador → learn_latent en M_dir_R.
+  - Fase temprana: broadcast → recognize_gated → argmax → los directorios de
+    labels registran (token → agente ganador). mem_dir_R NO se actualiza con
+    recalls: el directorio visual se entrena solo con percepciones reales de
+    imágenes (stage7), no con ecos generados por la propia memoria.
   - Fase madura: TME apagado, entrada aleatoria (seed 42), routing por M_dir
     del agente de entrada con B1, rechazo explícito.
 
@@ -354,10 +356,13 @@ def main():
         "# Experimento 3 — protocolo completo con routing corregido",
         "",
         "## Configuración",
-        "- Fase temprana: gate de containment (η), activación media de celdas "
-        "no nulas (sin ÷mem.mean)",
-        "- Aprendizaje: los 4 componentes registran (TME + 3 agentes), "
-        "learn_latent en M_dir_R",
+        "- Scoring oficial: recognize_gated (gate de containment, activación "
+        "media de celdas no nulas), sin ÷mem.mean",
+        "- Sin filtro léxico: tokens representables por fastText entran como "
+        "pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder",
+        "- Aprendizaje: solo los directorios de labels registran (TME + 3 "
+        "agentes), token → ganador. mem_dir_R NO se actualiza con recalls "
+        "(solo percepciones reales de imágenes en stage7)",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
         "- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",
