@@ -20,7 +20,7 @@ Los counts del directorio transactivo al final del experimento fueron $[68, 54, 
 
 \paragraph{Fase madura con lectura cruda.}
 Sin corrección por conteo, la precisión madura cayó al \textbf{83.8\%}, una diferencia de \textbf{14 puntos porcentuales} respecto a la lectura B1.
-Esta diferencia refleja que la especialización genuina produce masas acumuladas desiguales; sin normalizar, el agente que más interacciones registró domina la puntuación independientemente del contenido semántico de la consulta.
+Esta diferencia muestra que la especialización real produce masas acumuladas desiguales; sin normalizar, el agente que más interacciones registró domina la puntuación independientemente del contenido semántico de la consulta.
 
 \paragraph{Fidelidad temprana-madura.}
 La concordancia entre la clase ganadora en fase temprana y en fase madura fue del \textbf{96.2\%}, lo que indica que ambas fases se apoyan mutuamente: cuando la fase temprana es correcta, la fase madura lo confirma; y cuando la fase temprana falla, la madura raramente lo corrige.
@@ -37,7 +37,7 @@ La réplica con las 10 consultas de depuración originales produjo counts $[5, 4
 \end{figure}
 
 % ---------------------------------------------------------------
-\subsection{B. Parámetros nativos $\iota \times \kappa$}
+\subsection[B. Parámetros nativos iota x kappa]{B. Parámetros nativos $\iota \times \kappa$}
 \label{sec:param-iota-kappa}
 
 Se realizó un barrido de cuadrícula con $\iota \in \{0, 0.25, 0.5, 1.0\}$ y $\kappa \in \{0, 0.5, 1.0, 1.5\}$ sobre el banco completo de 80 consultas.
@@ -62,11 +62,11 @@ Los resultados se muestran en la Tabla~\ref{tab:grid-iota-kappa}.
 
 \paragraph{Efecto de $\iota$.}
 El parámetro de inhibición $\iota$ poda activamente el conocimiento escaso antes de que pueda actuar como señal discriminativa.
-Con patrones binarios de 300 bits, las relaciones semánticas son inherentemente ralas, de modo que incluso un valor pequeño ($\iota = 0.25$) elimina conexiones legítimas y reduce la precisión en 18.7 puntos, elevando el rechazo al 21.2\%.
+Con patrones binarios de 300 bits, las relaciones semánticas son muy ralas, de modo que incluso un valor pequeño ($\iota = 0.25$) elimina conexiones legítimas y reduce la precisión en 18.7 puntos, elevando el rechazo al 21.2\%.
 Con $\iota = 1.0$ todas las consultas son rechazadas.
 
 \paragraph{Efecto de $\kappa$.}
-El parámetro de umbral $\kappa$ resultó completamente inerte en todo el rango probado: las filas de la Tabla~\ref{tab:grid-iota-kappa} son idénticas para todos los valores de $\kappa$.
+El parámetro de umbral $\kappa$ no cambió los resultados en el rango probado: las filas de la Tabla~\ref{tab:grid-iota-kappa} son idénticas para todos los valores de $\kappa$.
 El análisis del tensor de activaciones revela que las proyecciones superan la media del tensor en aproximadamente dos órdenes de magnitud, lo que hace que el umbral relativo definido por $\kappa$ nunca sea vinculante.
 
 \paragraph{Redundancia de la calibración por división entre la media.}
@@ -117,7 +117,7 @@ Todas las condiciones con scoring corregido convergen al mismo estado final (97.
 \subsection{D. Capacidad de llenado}
 \label{sec:capacidad}
 
-Se varió el número de imágenes registradas por clase $N \in \{25, 50, 100, 200, 328\}$ utilizando llenado en orden imagen-por-imagen (\textit{image-major}).
+Se varió el número de imágenes registradas por clase $N \in \{25, 50, 100, 200, 328\}$ utilizando llenado en orden imagen-por-imagen (\textit{imagen-etiqueta}).
 La aceptación se determinó por containment inverso con $\xi = 0$.
 Los \textit{falsos} son imágenes de otras clases presentadas al agente.
 
@@ -140,8 +140,8 @@ Los \textit{falsos} son imágenes de otras clases presentadas al agente.
 \end{table}
 
 \paragraph{Generalización por cobertura.}
-Con $\xi = 0$ el sistema no generaliza desde cero; la generalización emerge a medida que el llenado cubre progresivamente más del espacio latente de la clase.
-A $N = 200$ la tasa de generalización alcanza el 56.7\%, y a $N = 328$ el 78.3\%, sin necesidad de ajustar $\xi > 0$.
+Con $\xi = 0$ el sistema no generaliza desde cero; la generalización aparece a medida que el llenado cubre más del espacio latente de la clase.
+A $N = 200$ la tasa de generalización alcanza el 56.7\%, y a $N = 328$ el 78.3\%, sin tener que ajustar $\xi > 0$.
 
 \paragraph{Especificidad perfecta.}
 La tasa de falsos aceptados es del \textbf{0\% en todo el rango} de $N$ probado, lo que confirma que el containment inverso discrimina de forma efectiva imágenes fuera de la clase registrada.
@@ -170,13 +170,13 @@ La \textbf{zona de operación recomendada} es $N = 200$.
 Al comparar el llenado por prototipo promedio (un solo vector por clase repetido $N$ veces) contra el llenado por instancias reales, la diferencia es drástica.
 Con llenado promedio, 12 muestras de recall producen \textbf{1 patrón único} (variedad $L_1 = 0.00$): la memoria colapsa a un atractor único.
 Con llenado por instancias, las mismas 12 muestras producen \textbf{12/12 patrones distintos}: el muestreo entrópico opera sobre una distribución real de representaciones y puede explorar el espacio aprendido.
-Esta comparación se ilustra en la Figura~\ref{fig:variedad-recall}.
+Esta comparación se muestra en la Figura~\ref{fig:variedad-recall}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{variedad_recall.png}
     \caption{Comparación de recalls decodificados con llenado promedio (izquierda) vs.\ llenado por instancias (derecha).
-    Con llenado promedio los recalls son idénticos; con instancias reales emergen 12 patrones distintos.}
+    Con llenado promedio los recalls son idénticos; con instancias reales aparecen 12 patrones distintos.}
     \label{fig:variedad-recall}
 \end{figure}
 
@@ -184,7 +184,9 @@ Esta comparación se ilustra en la Figura~\ref{fig:variedad-recall}.
 \subsection{E. Hemisferio visual}
 \label{sec:hemisferio-visual}
 
-El hemisferio visual opera en dos fases: formación (registro de imágenes del conjunto \texttt{train[200:]}) y evaluación (routing de imágenes de test mediante el directorio visual).
+El hemisferio visual opera en dos fases.
+La primera es formación, con registro de imágenes del conjunto \texttt{train[200:]}.
+La segunda es evaluación, con routing de imágenes de test mediante el directorio visual.
 
 \paragraph{Fase A: formación con imágenes de \texttt{train[200:]}.}
 Se presentaron 384 imágenes (128 por clase) en orden intercalado.
@@ -245,6 +247,6 @@ Los resultados se muestran en la Tabla~\ref{tab:calibracion}.
 \end{figure}
 
 \paragraph{Análisis.}
-La condición B1 es la única que corrige el mecanismo causal: divide la activación acumulada entre el número de registros, obteniendo la \textit{evidencia por interacción}.
+La condición B1 es la que corrige el mecanismo causal: divide la activación acumulada entre el número de registros, obteniendo la \textit{evidencia por interacción}.
 Las demás condiciones manipulan síntomas (el vocabulario con F, el sesgo de consultas con D, el número de registros con C) sin atacar la raíz.
 La condición G combina B1 con las correcciones de D y F y alcanza el 96.15\%, confirmando que el vocabulario limpio y las consultas balanceadas son beneficiosas pero subordinadas a la corrección principal de B1.
