@@ -48,29 +48,37 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
         return {"query": query, "winner": None, "image": None,
                 "routed": False}
 
+    # Sin filtro léxico: cada token con vector fastText real entra como pista;
+    # los no representables se descartan. El rechazo lo decide el directorio.
     token_vectors = {}
-    unknown_tokens = []
+    unrepresented_tokens = []
     for tok in tokens:
-        if not token_in_vocabulary(tok, vectors_cache):
-            unknown_tokens.append(tok)
+        v = get_fasttext_vector(tok, vectors_cache, allow_fallback=False)
+        if v is None:
+            unrepresented_tokens.append(tok)
             continue
         token_vectors[tok] = quantize_binary(
-            get_fasttext_vector(tok, vectors_cache), M_LABEL)
+            np.asarray(v, dtype=np.float32), M_LABEL)
 
-    if verbose and unknown_tokens:
-        print(f"  Tokens fuera de vocabulario: {unknown_tokens}")
+    if verbose and unrepresented_tokens:
+        print(f"  Tokens no representables (sin vector fastText): {unrepresented_tokens}")
+
+    if not token_vectors:
+        return {"query": query, "winner": None, "image": None,
+                "routed": False, "scores": [0.0] * len(CLASSES),
+                "rejected": True, "reason": "no_representable_tokens"}
 
     agent_scores = np.zeros(len(CLASSES), dtype=float)
     for v_q in token_vectors.values():
         agent_scores += entry_agent.mem_dir.predict_normalized(
             v_q, mode="linear")
 
-    if not token_vectors or agent_scores.sum() == 0:
+    if agent_scores.sum() == 0:
         if verbose:
-            print(f"  RECHAZADA: sin señal de routing para '{query}'.")
+            print(f"  RECHAZADA (directory_no_support): '{query}'.")
         return {"query": query, "winner": None, "image": None,
                 "routed": False, "scores": agent_scores.tolist(),
-                "rejected": True}
+                "rejected": True, "reason": "directory_no_support"}
 
     dest_idx = int(np.argmax(agent_scores))
     dest_name = CLASSES[dest_idx]

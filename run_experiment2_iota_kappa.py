@@ -63,7 +63,7 @@ from associative_memory import DirectoryMemory
 from stage5_fill import load_agent_memories
 from stage6_interaction import (
     CLASSES, AGENT_LIST, M_LABEL, N,
-    get_nlp, load_all_vectors, tokenize_query,
+    get_nlp, load_all_vectors, tokenize_query, prevectorize,
     get_fasttext_vector, token_in_vocabulary,
 )
 
@@ -138,26 +138,38 @@ def set_params(agents_mem, iota, kappa):
 
 # Evaluaciones
 
+def _represented_tokens(tokens, vectors, tok_cache):
+    """Tokens con vector fastText real (allow_fallback=False), cacheando el v_q
+    cuantizado (o None). Sin filtro léxico: el vocabulario de labels no censura
+    consultas; las palabras no representables sólo se descartan como pista."""
+    used = []
+    for tok in tokens:
+        if tok not in tok_cache:
+            v = get_fasttext_vector(tok, vectors, allow_fallback=False)
+            tok_cache[tok] = (None if v is None
+                              else quantize_binary(np.asarray(v, dtype=np.float32),
+                                                   M_LABEL))
+        if tok_cache[tok] is not None:
+            used.append(tok)
+    return used
+
+
 def route_query(query, agents_mem, kappa, nlp, vectors, tok_cache,
                 normalize=False):
     """Routing de fase temprana. Devuelve (winner|None, tokens_usados)."""
-    tokens = [t for t in tokenize_query(query, nlp)
-              if token_in_vocabulary(t, vectors)]
-    if not tokens:
+    used = _represented_tokens(tokenize_query(query, nlp), vectors, tok_cache)
+    if not used:
         return None, []
     scores = {cls: 0.0 for cls in CLASSES}
-    for tok in tokens:
-        if tok not in tok_cache:
-            v = np.array(get_fasttext_vector(tok, vectors), dtype=np.float32)
-            tok_cache[tok] = quantize_binary(v, M_LABEL)
+    for tok in used:
         v_q = tok_cache[tok]
         for cls in CLASSES:
             mem_L, mem_H = agents_mem[cls]
             scores[cls] += agent_score(mem_L, mem_H, v_q, kappa,
                                        normalize=normalize)
     if sum(scores.values()) == 0:
-        return None, tokens
-    return max(scores, key=scores.get), tokens
+        return None, used
+    return max(scores, key=scores.get), used
 
 
 def eval_early(agents_mem, kappa, queries, gt, nlp, vectors, tok_cache,
@@ -184,11 +196,8 @@ def eval_diag(agents_mem, kappa, vectors, tok_cache, normalize=False):
     """Accuracy sobre los 11 cues diagnósticos (rechazo cuenta como fallo)."""
     ok = 0
     for tok, truth in DIAG_CUES:
-        if not token_in_vocabulary(tok, vectors):
-            continue
-        if tok not in tok_cache:
-            v = np.array(get_fasttext_vector(tok, vectors), dtype=np.float32)
-            tok_cache[tok] = quantize_binary(v, M_LABEL)
+        if not _represented_tokens([tok], vectors, tok_cache):
+            continue  # token no representable (sin vector fastText real)
         v_q = tok_cache[tok]
         scores = {}
         for cls in CLASSES:
@@ -204,8 +213,7 @@ def eval_mature(mdir, queries, gt, nlp, vectors, tok_cache, b1):
     """Accuracy madura: routing solo por M_dir (raw o B1)."""
     ok = rej = 0
     for query, truth in zip(queries, gt):
-        tokens = [t for t in tokenize_query(query, nlp)
-                  if token_in_vocabulary(t, vectors)]
+        tokens = _represented_tokens(tokenize_query(query, nlp), vectors, tok_cache)
         if not tokens:
             rej += 1
             continue
@@ -240,6 +248,11 @@ def main():
     vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
     queries, gt = ALL_QUERIES[:80], GROUND_TRUTH[:80]
+    # Pre-vectorizar banco + cues diagnósticos en una sola pasada de stream.
+    bank_tokens = set(tok for tok, _ in DIAG_CUES)
+    for q in queries:
+        bank_tokens.update(tokenize_query(q, nlp))
+    prevectorize(vectors, bank_tokens, allow_fallback=False)
     tok_cache = {}
 
     rows = []

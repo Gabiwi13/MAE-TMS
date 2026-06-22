@@ -58,7 +58,7 @@ from stage5_fill import (
 )
 from stage6_interaction import (
     Agent, CLASSES, M_LABEL, N, P_LATENT, Q_LATENT,
-    get_nlp, load_all_vectors, tokenize_query,
+    get_nlp, load_all_vectors, tokenize_query, prevectorize,
     get_fasttext_vector, token_in_vocabulary,
 )
 
@@ -143,39 +143,29 @@ def reverse_accept(agent, z_q):
     return np.count_nonzero(np.sum(proj, axis=1) == 0) == 0
 
 
-def corrected_score(agent, v_q, mem_mean):
-    l_w = agent.mem_dom_L.recog_weights(v_q)
-    mx = l_w.max()
-    weights = (l_w / mx) if mx > 0 else np.ones(len(v_q), dtype=float)
-    mem_H = agent.mem_dom_H
-    ca = mem_H.validate(v_q, 0)
-    with contextlib.redirect_stdout(io.StringIO()):
-        proj = mem_H.project(ca, weights, 0)
-    if np.count_nonzero(np.sum(proj, axis=1) == 0) > 0:
-        return 0.0
-    count = int(np.count_nonzero(proj))
-    if count == 0 or mem_mean <= 0:
-        return 0.0
-    return (float(np.sum(proj)) / count) / mem_mean
+def corrected_score(agent, v_q):
+    """Scoring oficial: gate de containment (Agent.recognize_gated), sin
+    división por mem.mean — con el llenado por instancias es redundante."""
+    return agent.recognize_gated(v_q)
 
 
-def early_accuracy(agents, mem_means, nlp, vectors):
+def early_accuracy(agents, nlp, vectors):
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
     ok = rej = 0
     for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
-        tokens = [t for t in tokenize_query(query, nlp)
-                  if token_in_vocabulary(t, vectors)]
-        if not tokens:
-            rej += 1
-            continue
+        # Sin filtro léxico: cada token con vector fastText real entra como
+        # pista; el rechazo lo decide la EAM.
         scores = {cls: 0.0 for cls in CLASSES}
-        for tok in tokens:
-            v = np.array(get_fasttext_vector(tok, vectors), dtype=np.float32)
-            v_q = quantize_binary(v, M_LABEL)
+        represented = 0
+        for tok in tokenize_query(query, nlp):
+            v = get_fasttext_vector(tok, vectors, allow_fallback=False)
+            if v is None:
+                continue
+            represented += 1
+            v_q = quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL)
             for cls in CLASSES:
-                scores[cls] += corrected_score(agents[cls], v_q,
-                                               mem_means[cls])
-        if sum(scores.values()) == 0:
+                scores[cls] += corrected_score(agents[cls], v_q)
+        if represented == 0 or sum(scores.values()) == 0:
             rej += 1
         elif max(scores, key=scores.get) == truth:
             ok += 1
@@ -244,6 +234,11 @@ def main():
     print(f"\n[H1] Variedad del recall ({N_SAMPLES} muestras por cue):")
     nlp = get_nlp()
     vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
+    from eval_bank import ALL_QUERIES
+    _toks = set(CUE_BY_CLS.values())
+    for _q in ALL_QUERIES:
+        _toks.update(tokenize_query(_q, nlp))
+    prevectorize(vectors, _toks, allow_fallback=False)
     grid_imgs = {"old": {}, "new": {}}
     for arm, ags in [("old", old_agents), ("new", new_agents)]:
         metrics[arm]["variety"] = {}
@@ -280,7 +275,7 @@ def main():
     # H3: routing temprano corregido intacto
     print("\n[H3] Routing temprano corregido (banco de 80):")
     for arm, ags in [("old", old_agents), ("new", new_agents)]:
-        acc, rej = early_accuracy(ags, mem_means[arm], nlp, vectors)
+        acc, rej = early_accuracy(ags, nlp, vectors)
         metrics[arm]["early"] = {"acc": acc, "rej": rej}
         print(f"  [{arm:>4}] acc={acc*100:5.1f}%   rechazo={rej*100:4.1f}%")
 

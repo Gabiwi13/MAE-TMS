@@ -47,7 +47,7 @@ from eval_bank import (
 )
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
-    get_nlp, load_all_vectors,
+    get_nlp, load_all_vectors, prevectorize,
     tokenize_query, get_fasttext_vector, M_LABEL,
 )
 
@@ -245,30 +245,36 @@ def run_early_phase(queries, agents, tme, nlp, vectors_cache, m_mdir):
             continue
 
         agent_scores = {cls: 0.0 for cls in CLASSES}
-        tok_vecs_mdom = {}
         tok_vecs_mdir = {}
 
+        # Sin filtro léxico ni fallback sintético: cada token con vector
+        # fastText real entra como pista y el scoring oficial es recognize_gated
+        # (gate de containment). Los no representables se descartan.
         for tok in tokens:
-            v = get_fasttext_vector(tok, vectors_cache)
-            tok_vecs_mdom[tok] = quantize_binary(v, M_LABEL)   # fijo m=16 para M_dom
-            tok_vecs_mdir[tok] = quantize_binary(v, m_mdir)    # variable para M_dir
+            v = get_fasttext_vector(tok, vectors_cache, allow_fallback=False)
+            if v is None:
+                continue
+            v = np.asarray(v, dtype=np.float32)
+            vq_mdom = quantize_binary(v, M_LABEL)             # m=16 para M_dom
+            tok_vecs_mdir[tok] = quantize_binary(v, m_mdir)   # variable para M_dir
             for cls in CLASSES:
-                agent_scores[cls] += agents[cls].recognize(tok_vecs_mdom[tok])
+                agent_scores[cls] += agents[cls].recognize_gated(vq_mdom)
 
-        n_toks = max(len(tokens), 1)
+        if not tok_vecs_mdir:
+            winners.append("REJ")   # no_representable_tokens
+            continue
         for cls in CLASSES:
-            agent_scores[cls] /= n_toks
+            agent_scores[cls] /= len(tok_vecs_mdir)
 
         if max(agent_scores.values()) == 0.0:
-            winners.append("REJ")
+            winners.append("REJ")   # mae_no_support
             continue
 
         winner = max(agent_scores, key=agent_scores.get)
         winner_idx = AGENT_LIST.index(winner)
         winners.append(winner)
 
-        for tok in tokens:
-            vq = tok_vecs_mdir[tok]
+        for tok, vq in tok_vecs_mdir.items():
             tme.mem_dir_L.register(vq, winner_idx)
             for ag in agents.values():
                 ag.mem_dir.register(vq, winner_idx)
@@ -292,13 +298,17 @@ def run_mature_phase(queries, agents, nlp, vectors_cache, rng, predict_fn, m_mdi
             continue
 
         scores = np.zeros(len(CLASSES))
+        used = 0
         for tok in tokens:
-            v = get_fasttext_vector(tok, vectors_cache)
-            vq = quantize_binary(v, m_mdir)
+            v = get_fasttext_vector(tok, vectors_cache, allow_fallback=False)
+            if v is None:
+                continue
+            used += 1
+            vq = quantize_binary(np.asarray(v, dtype=np.float32), m_mdir)
             scores += predict_fn(entry_ag, vq)
 
         winners.append(CLASSES[int(np.argmax(scores))]
-                       if scores.sum() > 0 else "REJ")
+                       if used > 0 and scores.sum() > 0 else "REJ")
 
     return winners
 
@@ -431,7 +441,13 @@ def run_ablation():
     print("=== ABLATION STUDY: M_dir bias ===\n")
     print("Cargando NLP + vectores...")
     nlp = get_nlp()
-    vectors_cache = load_all_vectors()
+    vectors_cache = load_all_vectors(nlp)   # alias por lema (spaCy core)
+    # Pre-vectorizar todos los tokens del banco en una pasada (fastText real,
+    # sin fallback sintético): el rechazo lo decide la EAM, no el léxico.
+    _bank_tokens = set()
+    for _q in ALL_QUERIES:
+        _bank_tokens.update(tokenize_query(_q, nlp))
+    prevectorize(vectors_cache, _bank_tokens, allow_fallback=False)
 
     print("Cargando M_dom base...")
     base_mdoms = load_base_mdoms()
