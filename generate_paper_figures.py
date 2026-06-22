@@ -120,8 +120,9 @@ TEXTS = {
         "col_mature":       "Mature\nAcc",
         "col_entropy":      "Entropy\n(bits)",
         # FP/FN figures
-        "recog_title":      "M_dom Label Recognition Heatmap\n"
-                            "(row-normalized weight — diagonal = expected TP)",
+        "recog_title":      "M_dom Label Recognition Heatmap (diagnostic)\n"
+                            "(raw activation, row-normalized — NOT the official "
+                            "gated routing)",
         "recog_y":          "Labels (grouped by domain)",
         "recog_x":          "M_dom agent",
         "recog_cbar":       "Normalized recognition weight",
@@ -200,8 +201,9 @@ TEXTS = {
         "col_mature":       "Mature\nAcc",
         "col_entropy":      "Entropía\n(bits)",
         # FP/FN figures
-        "recog_title":      "Heatmap de reconocimiento en M_dom\n"
-                            "(peso normalizado por fila — diagonal = TP esperado)",
+        "recog_title":      "Heatmap de reconocimiento en M_dom (diagnóstico)\n"
+                            "(activación cruda, normalizada por fila — NO es el "
+                            "routing oficial gateado)",
         "recog_y":          "Labels (agrupadas por dominio)",
         "recog_x":          "Agente M_dom",
         "recog_cbar":       "Peso de reconocimiento normalizado",

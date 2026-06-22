@@ -1110,10 +1110,12 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         st.markdown(f"<div style='line-height:2.4'>{badges}</div>",
                     unsafe_allow_html=True)
 
-        known_str   = " · ".join(f"`{t}`" for t in trace["tokens_known"])
-        unknown_str = (" · ".join(f"`{t}`" for t in trace["tokens_unknown"])
-                       if trace["tokens_unknown"] else "—")
-        st.caption(f"Used tokens: {known_str}   ·   OOV (skipped): {unknown_str}")
+        repr_str = " · ".join(f"`{t}`" for t in trace["per_token"].keys())
+        invocab_str = (" · ".join(f"`{t}`" for t in trace["tokens_known"])
+                       if trace["tokens_known"] else "—")
+        st.caption(
+            f"Tokens representables (entran como pista): {repr_str}   ·   "
+            f"en vocab de labels (diagnóstico): {invocab_str}")
 
     # STAGE 2 — FastText Serialization
     _stage_header(2, "", "FastText Serialization",
@@ -1821,8 +1823,9 @@ def main():
                 st.caption(
                     f"{len(vocab_rows)} tokens con señal en M_dir, aprendidos de "
                     f"las {len(_TQ)} TEST_QUERIES de la fase temprana. "
-                    "Nota: spaCy lematiza (wheels→wheel), así que algunos tokens "
-                    "de las queries cayeron fuera del vocabulario de labels."
+                    "Nota: entra como pista todo token representable por fastText "
+                    "(no solo los del vocabulario de labels); aquí se listan los "
+                    "que el directorio efectivamente aprendió."
                 )
         mdir80 = None
         if use_n80:
@@ -1991,25 +1994,27 @@ def main():
                         st.caption("spaCy no extrajo ningún token NOUN/ADJ/PROPN "
                                    "de la query.")
                     for tok in tokens_all:
+                        vec = get_fasttext_vector(tok, vectors_cache,
+                                                  allow_fallback=False)
                         in_vocab = token_in_vocabulary(tok, vectors_cache)
-                        if not in_vocab:
+                        tag = "label" if in_vocab else "no-label"
+                        if vec is None:
                             st.caption(
-                                f"NO  `{tok}` — fuera del vocabulario de labels "
-                                f"(recuerda: spaCy lematiza, p.ej. wheels→wheel)")
+                                f"NO  `{tok}` — no representable por fastText "
+                                f"(sin pista para la EAM)")
                             continue
-                        v_q = quantize_binary(np.array(
-                            get_fasttext_vector(tok, vectors_cache),
-                            dtype=np.float32), M_LABEL)
+                        v_q = quantize_binary(np.asarray(vec, dtype=np.float32),
+                                              M_LABEL)
                         sig = _mdir_d.predict(v_q)
                         if sig.sum() > 0:
                             st.caption(
-                                f"OK  `{tok}` — tiene señal en M_dir "
+                                f"OK  `{tok}` ({tag}) — tiene señal en M_dir "
                                 f"→ {CLASSES[int(np.argmax(sig))]}")
                         else:
                             st.caption(
-                                f"!!  `{tok}` — en vocabulario, pero **nunca "
-                                f"registrado en M_dir** (no apareció en ninguna "
-                                f"interacción de la fase temprana)")
+                                f"!!  `{tok}` ({tag}) — representable, pero **sin "
+                                f"señal en M_dir** (la EAM no lo contiene / no "
+                                f"apareció en la fase temprana)")
                     st.info(
                         "La fase temprana rutea con **M_dom** (conoce los "
                         "~60 labels de ConceptNet); la madura rutea con **M_dir** "

@@ -30,7 +30,8 @@ TME
 ### What changed in v3
 
 - **Instance-based filling**: λ accumulates the real domain distribution (N=200 images per class) instead of a single averaged prototype. This eliminates the domain density bias at the root — masses are equalized by construction.
-- **Gate-only scoring**: the official score is `Agent.recognize_gated` (mean activation gated by containment). The `÷mem.mean` calibration — indispensable on the defective averaged base — is now redundant and was dropped from final scoring.
+- **Gate-only scoring**: the official score is `Agent.recognize_gated` (mean activation gated by containment), with no `÷mem.mean` calibration — with instance-based filling the masses are equalized by construction, so it is redundant.
+- **Rejection by the EAM, not a lexical filter**: `token_in_vocabulary()` no longer decides anything (it survives only as a diagnostic). Every token with a real fastText vector enters as a cue; acceptance/rejection follows from `recognize_gated` (containment, score 0) and the B1 directory read. Of the bank's non-label representable tokens, ~15/16 yield `recognize_gated = 0` on their own — the memory rejects them, the lexicon does not.
 - **Real visual hemisphere**: image → agent → labels evocation works at 94.1% (was 0/6 before).
 - **Meaningful names**: classes renamed to `HomoAssociativeMemory` / `HeteroAssociativeMemory` / `DirectoryMemory`; Wegner vocabulary (`update_directory`).
 
@@ -40,14 +41,18 @@ Full characterization re-run as a single experiment (sections A–E). EAM parame
 
 | Metric | Value | Note |
 |--------|-------|------|
-| Early-phase accuracy | 96.2% | 2.5% honest rejection |
-| Mature accuracy, B1 read | **97.5%** | directory ÷count normalization |
-| Mature accuracy, raw read | 83.8% | density bias of raw HAM score |
-| Early↔mature fidelity | 96.2% | |
-| Directory formation (interleaved) | k≈14 | ~26 shuffled, 57 blocked-by-domain |
+| Early-phase accuracy | 97.5% | 1.25% honest rejection |
+| Mature accuracy, B1 read | **98.75%** | directory ÷count normalization |
+| Mature accuracy, raw read | 53.75% | density bias of raw directory score |
+| Early↔mature fidelity | 97.5% | |
+| Directory counts (TME) | [78, 65, 53] | entropy 1.567 bits |
+| Directory formation (interleaved) | k≈13 | 15–24 shuffled, 67 blocked-by-domain |
+| Ablation N=80: raw (A) → B1 | 53.75% → **98.75%** | hetero directory, gated scoring |
 | Visual evocation (top-3 domain hit) | 94.1% | image → labels |
 
-**Central finding**: with instance-based filling, the domain density bias disappears and `÷mean` becomes redundant — the only calibration that remains irreducible is **B1** on the directory read (97.5% vs 83.8%), because genuine specialization produces unequal masses.
+Source of record for these numbers: [`results/exp3_corrected_routing/summary.json`](results/exp3_corrected_routing/summary.json).
+
+**Central finding**: rejection is decided by the EAM, not by a lexical filter. Tokens become vector cues whenever a real fastText representation exists; acceptance/rejection then follows from the memory's `recognize_gated` (containment) and the B1 directory read — there is no external vocabulary rule and no explicit `unknown` class. With every representable token allowed through, the raw directory read is more exposed to the registration-mass bias (53.75%), and **B1** is the single irreducible correction that restores 98.75%. The directory is `(3,2)` — three binary agent coordinates, no `unknown` bit; rejection emerges when no agent yields positive evidence.
 
 ## Project Structure
 
