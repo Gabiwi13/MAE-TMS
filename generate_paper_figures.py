@@ -1,5 +1,5 @@
 """
-Generates paper-quality figures for the MAE-TMS project.
+Generates paper-quality figures for the EAM-TMS project.
 Re-runs the ablation study (9 conditions × 4 N × 5 seeds = 180 exp.)
 and saves all figures in papers_images/en/ and papers_images/es/.
 Also generates papers_images/architectural_changes.md.
@@ -1032,7 +1032,7 @@ def fig_recall_grid():
 # Architectural changes MD
 
 ARCH_MD = """\
-# Architectural Changes — MAE-TMS
+# Architectural Changes — EAM-TMS
 **Project:** Associative Transactive Memory (Wegner 1987) on ETH-80
 **Versions:** v1.0 (initial) → v2.0 (current)
 **Date:** 2026-06-07
@@ -1207,7 +1207,7 @@ def main():
 
     # Run experiments once
     print("=" * 60)
-    print("  MAE-TMS — Paper figure generation")
+    print("  EAM-TMS — Paper figure generation")
     print("=" * 60)
     print("\n[1/3] Re-running ablation study (180 experiments)...")
     rows   = run_ablation()

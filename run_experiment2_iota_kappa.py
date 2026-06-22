@@ -237,8 +237,8 @@ def main():
         agents_mem[cls] = (mem_L, mem_H)
 
     nlp     = get_nlp()
-    vectors = load_all_vectors()
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
     queries, gt = ALL_QUERIES[:80], GROUND_TRUTH[:80]
     tok_cache = {}
 

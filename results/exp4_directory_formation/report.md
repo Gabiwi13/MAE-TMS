@@ -9,14 +9,14 @@ experiencias? ¿El sesgo de densidad impide la convergencia?
 
 | condición | primer k | k sostenido | acc final | entropía final | counts |
 |---|---|---|---|---|---|
-| A · intercalado | 14 | 14 | 97.5% | 1.558 | [68, 54, 42] |
-| B · barajado s0 | 34 | 34 | 97.5% | 1.558 | [68, 54, 42] |
-| B · barajado s1 | 27 | 27 | 97.5% | 1.558 | [68, 54, 42] |
-| B · barajado s2 | 25 | 25 | 97.5% | 1.558 | [68, 54, 42] |
-| B · barajado s3 | 25 | 25 | 97.5% | 1.558 | [68, 54, 42] |
-| B · barajado s4 | 18 | 18 | 97.5% | 1.558 | [68, 54, 42] |
-| C · bloqueado | 57 | 57 | 97.5% | 1.558 | [68, 54, 42] |
-| D · crudo (control sesgo) | 48 | 67 | 93.8% | 1.520 | [73, 57, 34] |
+| A · intercalado | 13 | 13 | 98.8% | 1.563 | [71, 58, 46] |
+| B · barajado s0 | 23 | 23 | 98.8% | 1.563 | [71, 58, 46] |
+| B · barajado s1 | 27 | 27 | 98.8% | 1.563 | [71, 58, 46] |
+| B · barajado s2 | 15 | 15 | 98.8% | 1.563 | [71, 58, 46] |
+| B · barajado s3 | 24 | 24 | 98.8% | 1.563 | [71, 58, 46] |
+| B · barajado s4 | 18 | 18 | 98.8% | 1.563 | [71, 58, 46] |
+| C · bloqueado | 57 | 57 | 98.8% | 1.563 | [71, 58, 46] |
+| D · crudo (control sesgo) | 14 | 46 | 95.0% | 1.508 | [81, 59, 35] |
 
 ## Archivos
 - results_formation.csv (formato largo: run, k, métricas)

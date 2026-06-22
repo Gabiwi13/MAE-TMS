@@ -13,15 +13,15 @@ experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.
   del criterio original de recognize()).
 
 ## Resultados clave
-- Baseline ι=0 κ=0 (exp. 1): early 96.2%, diag 100.0%
-- Referencia ÷mem.mean (ι=0 κ=0): early 96.2%
-- Mejor condición nativa: ι=0.0 κ=0.0 → early 96.2% (rechazo 2.5%), diag 100.0%
+- Baseline ι=0 κ=0 (exp. 1): early 97.5%, diag 100.0%
+- Referencia ÷mem.mean (ι=0 κ=0): early 97.5%
+- Mejor condición nativa: ι=0.0 κ=0.0 → early 97.5% (rechazo 1.2%), diag 100.0%
 
 ## Tabla del grid (brazo GATED, sin normalizar)
 
 | ι \ κ | 0.0 | 0.5 | 1.0 | 1.5 |
 |---|---|---|---|---|
-| **0.0** | 96% (rej 2%) | 96% (rej 2%) | 96% (rej 2%) | 96% (rej 2%) |
+| **0.0** | 98% (rej 1%) | 98% (rej 1%) | 98% (rej 1%) | 98% (rej 1%) |
 | **0.25** | 78% (rej 21%) | 78% (rej 21%) | 78% (rej 21%) | 78% (rej 21%) |
 | **0.5** | 54% (rej 45%) | 54% (rej 45%) | 54% (rej 45%) | 54% (rej 45%) |
 | **1.0** | 0% (rej 100%) | 0% (rej 100%) | 0% (rej 100%) | 0% (rej 100%) |
@@ -30,9 +30,9 @@ experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.
 
 | condición | early | mature RAW | mature B1 | counts M_dir |
 |---|---|---|---|---|
-| baseline ι=0 κ=0 (exp. 1) | 96.2% | 83.8% | 97.5% | [68, 54, 42] |
-| mejor nativa ι=0.0 κ=0.0 | 96.2% | 83.8% | 97.5% | [68, 54, 42] |
-| ÷mem.mean con ι=0 κ=0 | 96.2% | 83.8% | 97.5% | [68, 54, 42] |
+| baseline ι=0 κ=0 (exp. 1) | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
+| mejor nativa ι=0.0 κ=0.0 | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
+| ÷mem.mean con ι=0 κ=0 | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
 
 ## Archivos
 - results_grid.csv · results_downstream.csv

@@ -2,12 +2,12 @@
 
 **Experiment on Heteroassociative Associative Memory with a Transactive Memory System**
 
-This repository contains the implementation and experimental results for the MAE-TMS research project, which models Wegner's (1987) Transactive Memory System on top of the associative memories of Pineda & Morales. The system runs end to end — text → image and image → text — using only associative memories, with explicit rejection in both directions.
+This repository contains the implementation and experimental results for the EAM-TMS research project, which models Wegner's (1987) Transactive Memory System on top of the associative memories of Pineda & Morales. The system runs end to end — text → image and image → text — using only associative memories, with explicit rejection in both directions.
 
 ## Overview
 
 The system combines:
-- **MAE (Masked Autoencoder)**: ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on ETH-80 (apple, horse, car).
+- **ResNet18 autoencoder** (with an auxiliary classification head): pretrained ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on ETH-80 (apple, horse, car). Loss is `MSE + 0.1·CE`; the classification head is used only during encoder training and does **not** participate in routing or recall. (It is *not* a masked autoencoder — there is no masking.)
 - **`HeteroAssociativeMemory`** (`mem_dom_H`): subclass of `HeteroAssociativeMemory4D` (Pineda & Morales) — the content bridge mapping binary label vectors ↔ quantized prototype latents, modulated by per-feature weights from the homo-associative memories.
 - **`HomoAssociativeMemory`** (`mem_dom_L`, `mem_dom_R`): wrapper around `AssociativeMemory` (Pineda & Morales) — models the distribution of a single domain and is the only memory that produces per-feature recognition weights (`recog_weights`).
 - **`DirectoryMemory`** (`mem_dir`): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" and supports directory updating, retrieval coordination, and (externally) information allocation.
@@ -58,7 +58,7 @@ src/                        # Core modules
   hetero_lib/               # Pineda & Morales original code (vendored)
   quantizer.py              # Global quantize/dequantize (latent_global_stats.json)
   stage1_dataset.py         # ETH-80 dataset loading
-  stage2_encoder.py         # MAE encoder/decoder (ResNet18 + ConvTranspose)
+  stage2_encoder.py         # ResNet18 autoencoder: encoder/decoder + aux classifier
   stage3_conceptnet.py      # Label extraction from ConceptNet 5.7.0
   stage4_fasttext.py        # fastText binary vectors (sign(v) ∈ {−1,+1}³⁰⁰)
   stage5_fill.py            # mem_dom filling by instances (H + L + R per agent)
