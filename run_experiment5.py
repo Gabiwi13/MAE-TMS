@@ -1,5 +1,5 @@
 """
-Experimento 5 — Prototipo emergente: devolverle a la MAE su rol abstractor.
+Experimento 5 — Prototipo emergente: devolverle al autoencoder su rol abstractor.
 
 Problema detectado: stage5 registra UN latente artificial (np.mean de 50
 imágenes) repetido ~92 veces. La abstracción se hizo FUERA de la memoria;
@@ -160,7 +160,7 @@ def corrected_score(agent, v_q, mem_mean):
 
 
 def early_accuracy(agents, mem_means, nlp, vectors):
-    from run_ablation import ALL_QUERIES, GROUND_TRUTH
+    from eval_bank import ALL_QUERIES, GROUND_TRUTH
     ok = rej = 0
     for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
         tokens = [t for t in tokenize_query(query, nlp)
@@ -242,7 +242,8 @@ def main():
 
     # H1: variedad del recall
     print(f"\n[H1] Variedad del recall ({N_SAMPLES} muestras por cue):")
-    vectors = load_all_vectors()
+    nlp = get_nlp()
+    vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     grid_imgs = {"old": {}, "new": {}}
     for arm, ags in [("old", old_agents), ("new", new_agents)]:
         metrics[arm]["variety"] = {}
@@ -278,7 +279,6 @@ def main():
 
     # H3: routing temprano corregido intacto
     print("\n[H3] Routing temprano corregido (banco de 80):")
-    nlp = get_nlp()
     for arm, ags in [("old", old_agents), ("new", new_agents)]:
         acc, rej = early_accuracy(ags, mem_means[arm], nlp, vectors)
         metrics[arm]["early"] = {"acc": acc, "rej": rej}
@@ -331,7 +331,7 @@ def main():
     rep = [
         "# Experimento 5 — prototipo emergente (llenado entrópico)",
         "",
-        "La MAE debe construir su propia abstracción: se registran las 50",
+        "El autoencoder debe construir su propia abstracción: se registran las 50",
         "instancias reales por clase (round-robin label×freq → z_real) en",
         "lugar del promedio artificial. Misma masa de registros que stage5;",
         "M_dom_L idéntico; solo cambia el lado derecho de M_dom_H y M_dom_R.",
