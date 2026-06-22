@@ -27,5 +27,15 @@ hetero/
 .DS_Store
 Thumbs.db
 
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.pdf
+
 # Backup local pre-oficializacion (1 GB) - no versionar
 models_backup_pre_oficializacion/
