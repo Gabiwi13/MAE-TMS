@@ -1,7 +1,7 @@
 \section{Metodología}
 \label{sec:metodologia}
 
-Este capítulo describe el conjunto de datos, el protocolo experimental, los parámetros del sistema y las métricas de evaluación empleadas para caracterizar el sistema MAE-TMS.
+Este capítulo describe el conjunto de datos, el protocolo experimental, los parámetros del sistema y las métricas usadas para evaluar el sistema EAM-TMS.
 
 % ---------------------------------------------------------------
 \subsection{Conjunto de datos}
@@ -12,7 +12,7 @@ Para este experimento se seleccionaron tres clases: \texttt{apple} (manzana), \t
 Cada clase cuenta con 410 imágenes en escala de grises de $128\times128$ píxeles.
 Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba, sin solapamiento.
 
-Dentro del conjunto de entrenamiento se definieron tres piscinas disjuntas con propósitos distintos:
+Dentro de la fase de alimentación, se definieron 3 fases disjuntas con propósitos distintos:
 \begin{itemize}
     \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada clase, utilizadas para registrar patrones en las memorias homoasociativas de cada agente especialista.
     \item \textbf{Interacciones visuales}: imágenes \texttt{train[200:328]} de cada clase, usadas para simular las interacciones de percepción durante la fase de formación del directorio transactivo.
@@ -61,10 +61,12 @@ Las consultas varían en longitud y vocabulario (e.g., ``a red crunchy fruit'', 
 \subsection{Parámetros de la EAM}
 \label{sec:parametros}
 
-Los parámetros propios del modelo de Memoria Asociativa Entrópica de Pineda y Morales~\cite{pineda2021entropic,pineda2024hetero} se fijaron en:
+Los parámetros de la EAM se fijaron en:
 $\iota = 0$, $\kappa = 0$, $\xi = 0$, $\sigma = 0.1$.
+Estos valores siguen el modelo EAM y su extensión hetero-asociativa,
+descritos en el marco teórico.
 La justificación experimental de estos valores se presenta en la Sección~\ref{sec:param-iota-kappa} (barrido $\iota \times \kappa$) y en la Sección~\ref{sec:capacidad} (análisis de $\xi$).
-En síntesis, $\iota > 0$ poda conocimiento escaso legítimo antes que promiscuidad (con patrones binarios las relaciones son ralas) y $\kappa$ resultó inerte a lo largo de todo el rango probado.
+En síntesis, $\iota > 0$ elimina conocimiento escaso pero válido antes de eliminar relaciones espurias (con patrones binarios las relaciones son ralas) y $\kappa$ no cambió los resultados en el rango probado.
 
 % ---------------------------------------------------------------
 \subsection{Métricas de evaluación}
@@ -87,5 +89,5 @@ Se emplearon las siguientes métricas:
 \subsection{Organización del experimento}
 \label{sec:organizacion}
 
-El experimento se organiza en cinco secciones (A--E) que caracterizan al sistema completo bajo un protocolo único, más un estudio de calibración del directorio que fundamenta la elección de lectura B1.
+El experimento se organiza en cinco secciones (A--E) que evalúan el sistema completo bajo un protocolo único, más un estudio de calibración del directorio que justifica la lectura B1.
 La Sección~\ref{sec:proto-completo} presenta el protocolo completo; la Sección~\ref{sec:param-iota-kappa} examina los parámetros nativos; la Sección~\ref{sec:formacion} analiza la formación del directorio; la Sección~\ref{sec:capacidad} estudia la curva de capacidad de llenado; y la Sección~\ref{sec:hemisferio-visual} evalúa el hemisferio visual.

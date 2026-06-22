@@ -18,10 +18,14 @@
 
 % Tablas
 \usepackage{booktabs}
+\usepackage{multirow}
 
 % TikZ y librerías
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, calc, decorations.pathreplacing}
+
+% Flotantes
+\usepackage{float}
 
 % Hipervínculos
 \usepackage{hyperref}
@@ -32,19 +36,14 @@
     urlcolor=blue
 }
 
-% Flotantes
-\usepackage{float}
-
 % -------------------------------------------------------
 % Portada
 % -------------------------------------------------------
 \title{%
     \textbf{Sistema de Memoria Transactiva Multi-Agente}\\
     \textbf{sobre Memorias Asociativas Entrópicas}\\[0.5em]
-    \large Reporte Técnico de Licenciatura
 }
-\author{[Autor]}
-\date{Junio 2026}
+\author{Gabriel Gonzalez\\[0.4em]\small Directora: Karla Miroslava Olmos Sánchez}
 
 % -------------------------------------------------------
 \begin{document}
@@ -52,23 +51,24 @@
 \maketitle
 
 \begin{abstract}
-Este trabajo presenta un sistema de memoria transactiva multi-agente (MAE-TMS) construido
-íntegramente sobre Memorias Asociativas Entrópicas (EAM) \cite{pineda2021entropic,pineda2024hetero}.
-El sistema está formado por tres agentes especialistas ---uno por categoría visual
-(\textit{apple}, \textit{horse}, \textit{car}) sobre el conjunto de datos ETH-80
-\cite{leibe2003eth80}--- y un mediador inicial (TME) que coordina las interacciones
-tempranas y se vuelve prescindible una vez que cada agente ha construido su propio
+Este trabajo describe un sistema de memoria transactiva multi-agente (EAM-TMS) construido
+con Memorias Asociativas Entrópicas (EAM) \cite{pineda2021entropic,pineda2024hetero}.
+El sistema está formado por tres agentes especialistas, uno por categoría visual
+(\textit{apple}, \textit{horse}, \textit{car}), sobre el conjunto de datos ETH-80
+\cite{leibe2003eth80}. También incluye un mediador inicial (TME) que coordina las
+interacciones tempranas y deja de ser necesario cuando cada agente construye su propio
 directorio interno de especialización.
 Las memorias operan bidireccionalmente entre representaciones textuales (fastText 300D
 \cite{bojanowski2017fasttext}, enriquecidas con ConceptNet 5.7 \cite{speer2017conceptnet})
 e imágenes (codificadas por ResNet18 \cite{he2016resnet}).
-La arquitectura de 14 memorias asociativas puras ---sin gradientes ni retropropagación---
-reproduce los tres mecanismos centrales de la Memoria Transactiva de Wegner
-\cite{wegner1987transactive}: actualización de directorio, asignación de información y
-coordinación de recuperación.
-Los experimentos caracterizan la formación del directorio, la curva de capacidad y los
+La arquitectura propuesta modela computacionalmente tres mecanismos asociados a la Memoria Transactiva\cite{wegner1987transactive}: 
+la actualización del directorio de experticia, 
+la asignación de información y la coordinación de la recuperación. 
+En este enfoque, las memorias asociativas entrópicas funcionan como sustrato computacional para representar asociaciones entre estímulos, 
+etiquetas y agentes especializados.
+Los experimentos evalúan la formación del directorio, la curva de capacidad y los
 parámetros nativos del sistema, y muestran que el llenado fiel a la teoría entrópica
-elimina la necesidad de calibraciones externas más allá de una sola normalización por
+quita la necesidad de calibraciones externas más allá de una sola normalización por
 masa de registro.
 \end{abstract}
 
