@@ -4,6 +4,7 @@ Stream-lee fasttext-wiki-news-subwords-300.gz para extraer solo
 los ~36 words necesarios. Guarda label_vectors_{dominio}.json.
 """
 import gzip
+import hashlib
 import json
 from pathlib import Path
 
@@ -70,7 +71,10 @@ def _stream_lookup(needed_words: set) -> dict:
     if missing:
         print(f"  {len(missing)} words not found, using deterministic fallback: {missing}")
         for w in missing:
-            rng = np.random.RandomState(hash(w) % (2**31))
+            # Digest estable: hash() esta salteado por PYTHONHASHSEED y haria
+            # que el vector fallback cambiara entre procesos.
+            seed = int(hashlib.md5(w.encode("utf-8")).hexdigest()[:8], 16)
+            rng = np.random.RandomState(seed)
             found[w] = rng.choice([-1.0, 1.0], DIM).astype(np.float32)
 
     return found

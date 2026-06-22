@@ -1,8 +1,13 @@
 """
 Ablation study — diagnóstico del sesgo de M_dir hacia apple.
 
+Directorio: el DirectoryMemory hetero OFICIAL (associative_memory), el mismo que
+usa el sistema en produccion. La version previa usaba SlotDirectoryMemory (una
+HomoAssociativeMemory por agente), archivada en archive/legacy_slot_directory/;
+sus numeros no representaban la arquitectura final y no deben citarse como tales.
+
 Condiciones:
-  A   — Baseline: código actual, sin cambios
+  A   — Baseline: lectura cruda del directorio (predict, sin normalizar)
   B1  — Score normalizado / count_agente  (penaliza sobrerepresentados)
   B2  — Score normalizado / sqrt(count_agente)
   C   — Registro balanceado: cap proporcional de registros por agente
@@ -34,8 +39,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
+from associative_memory import DirectoryMemory
 from quantizer import quantize_binary
+from eval_bank import (
+    ALL_QUERIES, GROUND_TRUTH, DOMAIN_QUERIES,
+    APPLE_QUERIES, HORSE_QUERIES, CAR_QUERIES,
+)
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
     get_nlp, load_all_vectors,
@@ -43,54 +52,22 @@ from stage6_interaction import (
 )
 
 
-class SlotDirectoryMemory:
-    """Directorio legado del ablation: una HomoAssociativeMemory por agente.
 
-    Aproxima el directorio con n_agents memorias homo independientes;
-    el sistema oficial usa DirectoryMemory (hetero). Se conserva aqui
-    porque las condiciones A-G del estudio se definieron sobre esta
-    estructura y sus variantes B1/B2/C dependen de ella.
-    """
 
-    def __init__(self, n: int = 300, m: int = 16, n_agents: int = 3,
-                 iota: float = 0.0, kappa: float = 0.0,
-                 xi: int = 0, sigma: float = 0.1):
-        self._n = n
-        self._m = m
-        self._n_agents = n_agents
-        kw = dict(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
-        self._ams = [HomoAssociativeMemory(n, m, **kw)
-                     for _ in range(n_agents)]
-        self._counts = np.zeros(n_agents, dtype=np.int64)
+class DirectoryMemoryCapped(DirectoryMemory):
+    """Condicion C: DirectoryMemory hetero que limita la acumulacion
+    desproporcionada por agente (cap proporcional por max_ratio)."""
+
+    def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
+        super().__init__(n=n, m=m, n_agents=n_agents)
+        self._max_ratio = max_ratio
 
     def register(self, v_q: np.ndarray, agent_idx: int) -> None:
-        k = int(np.clip(agent_idx, 0, self._n_agents - 1))
-        self._ams[k].register(v_q)
-        self._counts[k] += 1
+        min_c = self._counts.min()
+        if min_c > 0 and self._counts[agent_idx] > min_c * self._max_ratio:
+            return  # Skip: agente demasiado dominante
+        super().register(v_q, agent_idx)
 
-    def predict(self, v_q: np.ndarray) -> np.ndarray:
-        return np.array([am.recognize(v_q) for am in self._ams], dtype=float)
-
-    def predict_normalized(self, v_q: np.ndarray, mode: str = "linear",
-                           eps: float = 1.0) -> np.ndarray:
-        scores = self.predict(v_q)
-        denom = self._counts.astype(float) + eps
-        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
-
-    def nearest_agent(self, v_q: np.ndarray) -> int:
-        scores = self.predict(v_q)
-        return -1 if scores.sum() == 0 else int(np.argmax(scores))
-
-    @property
-    def agent_counts(self) -> np.ndarray:
-        return self._counts.copy()
-
-    def entropy(self) -> float:
-        total = float(self._counts.sum())
-        if total == 0:
-            return math.log2(max(self._n_agents, 1))
-        p = self._counts / total
-        return float(-np.sum(p * np.log2(np.where(p == 0, 1.0, p))))
 
 # Configuración global
 
@@ -122,78 +99,9 @@ COND_COLORS = {
     "G":   "#c0392b",
 }
 
-# Query bank (80 total, interleaved apple/horse/car)
-
-APPLE_QUERIES = [
-    "a round red fruit", "green food from trees", "red or green round food",
-    "has core and seeds", "a delicious pome", "red fruit with a stem",
-    "grows on fruit trees", "juicy round fruit", "sweet core fruit",
-    "a pear or apple fruit", "fruit with skin and seeds", "orange cousin red food",
-    "green and red food", "a macintosh variety", "made into pie",
-    "round red food", "stem leaf core inside", "a green fruit",
-    "fruit with seeds inside", "delicious red round fruit",
-    "adam and eve fruit", "orange red green food", "core inside skin fruit",
-    "tree fruit food", "pome variety fruit", "green round food",
-    "red sweet fruit food",
-]
-
-HORSE_QUERIES = [
-    "animal with a mane", "large powerful mammal", "has four legs and hooves",
-    "riding and racing animal", "an equine animal", "big farm animal",
-    "has a long tail", "a pony or donkey", "mammal with saddle",
-    "racing animal with mane", "big four legged animal", "riding farm animal",
-    "farm mammal with mane", "equine riding beast", "has hooves and tail",
-    "donkey and zebra relative", "big strong animal", "saddle riding animal",
-    "cow and horse farm animals", "animal that races", "a ridden animal",
-    "four legged riding mammal", "mammal with hooves and mane",
-    "equine with saddle", "big farm riding animal",
-    "domesticated equine mammal", "animal with mane and tail",
-]
-
-CAR_QUERIES = [
-    "fast vehicle with wheels", "machine for transportation",
-    "automobile with seats", "has wheels and engine", "a heavy vehicle",
-    "passenger transportation machine", "seats and windows inside",
-    "a motor vehicle", "used for driving", "wheeled automobile",
-    "driving machine", "automobile with heavy seats",
-    "crash and accident vehicle", "passenger seats inside",
-    "vehicle with driver", "red automobile", "transportation vehicle",
-    "automobile for transport", "seats and windows vehicle",
-    "heavy automobile", "motor vehicle transport", "driver automobile",
-    "wheeled transportation", "crash vehicle", "automobile commuting",
-    "auto transportation machine",
-]
-
-DOMAIN_QUERIES = {"apple": APPLE_QUERIES, "horse": HORSE_QUERIES, "car": CAR_QUERIES}
-
-# Banco interleaved para condiciones A, B, C, E, F
-ALL_QUERIES, GROUND_TRUTH = [], []
-for _i in range(max(len(APPLE_QUERIES), len(HORSE_QUERIES), len(CAR_QUERIES))):
-    for _cls in CLASSES:
-        _pool = DOMAIN_QUERIES[_cls]
-        if _i < len(_pool):
-            ALL_QUERIES.append(_pool[_i])
-            GROUND_TRUTH.append(_cls)
-
-# Clases extendidas de M_dir
-
-# DirectoryMemoryTracked: SlotDirectoryMemory ya tiene conteo de registros,
-# predict_normalized (B1/B2) y entropy() — no hay que reimplementarlos.
-DirectoryMemoryTracked = SlotDirectoryMemory
-
-
-class DirectoryMemoryBalanced(SlotDirectoryMemory):
-    """M_dir que limita la acumulación desproporcionada por agente."""
-
-    def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
-        super().__init__(n=n, m=m, n_agents=n_agents)
-        self._max_ratio = max_ratio
-
-    def register(self, v_label_q: np.ndarray, agent_idx: int):
-        min_c = self._counts.min()
-        if min_c > 0 and self._counts[agent_idx] > min_c * self._max_ratio:
-            return  # Skip: agente demasiado dominante
-        super().register(v_label_q, agent_idx)
+# El banco de 80 consultas (APPLE/HORSE/CAR_QUERIES, DOMAIN_QUERIES,
+# ALL_QUERIES, GROUND_TRUTH) vive en src/eval_bank.py y se importa arriba:
+# modulo neutral para que los experimentos oficiales no dependan de este script.
 
 
 # Carga de M_dom
@@ -250,25 +158,25 @@ def get_condition_config(condition: str):
     use_balanced = condition in ("D", "G")
 
     if condition == "B1":
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     elif condition == "B2":
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "sqrt")
     elif condition == "C":
-        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryBalanced, 16, {"max_ratio": 3.0}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemoryCapped, 16, {"max_ratio": 3.0}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E32":
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 32, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 32, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "E64":
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 64, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 64, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
     elif condition == "G":
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict_normalized(vq, "linear")
     else:  # A, D, F
-        mdir_class, m_mdir, mdir_kwargs = SlotDirectoryMemory, 16, {}
+        mdir_class, m_mdir, mdir_kwargs = DirectoryMemory, 16, {}
         predict_fn = lambda ag, vq: ag.mem_dir.predict(vq)
 
     return mdir_class, m_mdir, mdir_kwargs, predict_fn, use_curated, use_balanced
@@ -614,7 +522,7 @@ def plot_scaling_comparison(rows):
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=7, ncol=2, loc="lower right")
 
-    plt.suptitle("Ablation Study — MAE-TMS: comparacion de condiciones",
+    plt.suptitle("Ablation Study — EAM-TMS: comparacion de condiciones",
                  fontsize=13, fontweight="bold")
     plt.tight_layout()
     out = RESULTS_DIR / "scaling_comparison_ablation.png"
@@ -800,7 +708,7 @@ def generate_report(rows):
     def pct(cond, N, key):
         return f"{mv(cond, N, key):.2%}"
 
-    content = f"""# Ablation Report — Sesgo de M_dir en MAE-TMS
+    content = f"""# Ablation Report — Sesgo de M_dir en EAM-TMS
 **Fecha:** 2026-06-07
 **Arquitectura:** HeteroAssociativeMemory (n=300, m=16, p=64, q=32) + ConceptNet 5.7.0
 **Dominios:** apple / horse / car (ETH-80)

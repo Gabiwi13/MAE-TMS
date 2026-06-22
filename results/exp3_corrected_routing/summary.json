@@ -1,22 +1,23 @@
 {
-  "early_acc": 0.9625,
-  "early_rej": 0.025,
-  "mature_acc_b1": 0.975,
-  "mature_acc_raw": 0.8375,
-  "fidelity": 0.9625,
+  "early_acc": 0.975,
+  "early_rej": 0.0125,
+  "mature_acc_b1": 0.9875,
+  "mature_acc_raw": 0.85,
+  "fidelity": 0.975,
   "mdir_counts_tme": [
-    68,
-    54,
-    42
+    71,
+    58,
+    46
   ],
-  "mdir_entropy_bits": 1.5576,
+  "mdir_entropy_bits": 1.5628,
   "test_queries_counts": [
-    5,
-    4,
-    4
+    6,
+    6,
+    5
   ],
   "exp1_reference": {
-    "early_acc_raw": "~34% (condici\u00f3n A del ablation)",
+    "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin gate). Ancla hist\u00f3rica, NO es la condici\u00f3n A del ablation actual (que usa el directorio hetero).",
+    "early_acc_raw": "~34% (Exp. 1 original)",
     "mature_acc_raw": 0.338,
     "mature_acc_b1": 0.988,
     "test_queries_counts": [

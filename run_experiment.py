@@ -1,5 +1,5 @@
 """
-Orquestador principal del experimento MAE.
+Orquestador principal del experimento EAM-TMS.
 Ejecuta las 8 etapas en orden, verifica cada una antes de continuar.
 """
 import sys
