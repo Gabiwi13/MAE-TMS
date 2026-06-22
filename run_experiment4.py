@@ -61,7 +61,7 @@ from associative_memory import DirectoryMemory
 from stage5_fill import load_agent_memories
 from stage6_interaction import (
     Agent, CLASSES, AGENT_LIST, M_LABEL, N,
-    get_nlp, load_all_vectors, tokenize_query,
+    get_nlp, load_all_vectors, tokenize_query, prevectorize,
     get_fasttext_vector, token_in_vocabulary,
 )
 
@@ -93,18 +93,27 @@ def raw_score(agent, v_q, mem_mean):
 # Formación + evaluación
 
 def prepare_bank(nlp, vectors):
-    """Tokeniza el banco una sola vez. Devuelve lista de dicts."""
+    """Tokeniza el banco una sola vez. Sin filtro léxico: cada token se
+    representa con fastText real (allow_fallback=False); los no representables
+    se descartan como pista y la EAM decide el resto."""
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
+    qg = list(zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]))
+    all_tokens = set()
+    for query, _ in qg:
+        all_tokens.update(tokenize_query(query, nlp))
+    prevectorize(vectors, all_tokens, allow_fallback=False)
     bank = []
-    for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
-        tokens = [t for t in tokenize_query(query, nlp)
-                  if token_in_vocabulary(t, vectors)]
-        vqs = []
+    for query, truth in qg:
+        tokens = tokenize_query(query, nlp)
+        vqs, repr_toks = [], []
         for tok in tokens:
-            v = np.array(get_fasttext_vector(tok, vectors), dtype=np.float32)
-            vqs.append(quantize_binary(v, M_LABEL))
+            v = get_fasttext_vector(tok, vectors, allow_fallback=False)
+            if v is None:
+                continue
+            repr_toks.append(tok)
+            vqs.append(quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL))
         bank.append({"query": query, "truth": truth,
-                     "tokens": tokens, "vqs": vqs})
+                     "tokens": repr_toks, "vqs": vqs})
     return bank
 
 

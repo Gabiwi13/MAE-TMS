@@ -58,7 +58,7 @@ from stage5_fill import (
 )
 from stage6_interaction import (
     Agent, CLASSES, M_LABEL, N, P_LATENT, Q_LATENT,
-    get_nlp, load_all_vectors, tokenize_query,
+    get_nlp, load_all_vectors, tokenize_query, prevectorize,
     get_fasttext_vector, token_in_vocabulary,
 )
 
@@ -183,13 +183,20 @@ def main():
         label_seqs[cls] = label_sequence(cls, raw)
 
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
+    qg = list(zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]))
+    all_tokens = set()
+    for query, _ in qg:
+        all_tokens.update(tokenize_query(query, nlp))
+    prevectorize(vectors, all_tokens, allow_fallback=False)
     bank = []
-    for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
-        toks = [t for t in tokenize_query(query, nlp)
-                if token_in_vocabulary(t, vectors)]
-        vqs = [quantize_binary(np.array(
-            get_fasttext_vector(t, vectors), dtype=np.float32), M_LABEL)
-            for t in toks]
+    for query, truth in qg:
+        # Sin filtro léxico: cada token con vector fastText real entra como
+        # pista; los no representables se descartan y la EAM decide el resto.
+        vqs = []
+        for t in tokenize_query(query, nlp):
+            v = get_fasttext_vector(t, vectors, allow_fallback=False)
+            if v is not None:
+                vqs.append(quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL))
         bank.append((vqs, truth))
 
     rng = np.random.RandomState(7)

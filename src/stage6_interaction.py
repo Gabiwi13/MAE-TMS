@@ -148,25 +148,91 @@ class TME:
         self.mem_dir_R.register(v_latent_q, winner_idx)
 
 
-def get_fasttext_vector(word: str, vectors_cache: dict) -> np.ndarray:
+_TOKENS_CACHE_PATH = ROOT / "models" / "token_vectors.json"
+
+
+def get_fasttext_vector(word: str, vectors_cache: dict,
+                        allow_fallback: bool = False):
+    """Pista vectorial del token, o None si no hay representacion real.
+
+    Orden de busqueda:
+      1. cache de labels (incluye alias por lema),
+      2. bucket de tokens ya pre-vectorizados (vectors_cache['_tokens']),
+      3. fastText real (stream del modelo) — se memoiza en el bucket.
+    Con allow_fallback=False (protocolo oficial) una palabra fuera del
+    vocabulario fastText devuelve None: el rechazo lo decide la EAM, no un
+    vector sintetico. allow_fallback=True (solo debug) sintetiza un vector
+    determinista para no romper demos exploratorias."""
     for cls in CLASSES:
-        if word in vectors_cache[cls]:
+        if word in vectors_cache.get(cls, {}):
             return np.array(vectors_cache[cls][word])
+
+    bucket = vectors_cache.setdefault("_tokens", {})
+    if word in bucket:
+        v = bucket[word]
+        return None if v is None else np.asarray(v, dtype=np.float32)
+
+    v = None
     try:
         from stage4_fasttext import get_vector
-        return get_vector(word)
+        v = get_vector(word, allow_fallback=allow_fallback)
     except Exception:
-        pass
-    # Fallback determinista entre procesos: hash() de Python esta salteado por
-    # PYTHONHASHSEED, asi que se usa un digest estable para que el mismo OOV
-    # produzca siempre el mismo vector.
-    seed = int(hashlib.md5(word.encode("utf-8")).hexdigest()[:8], 16)
-    rng = np.random.RandomState(seed)
-    return rng.choice([-1.0, 1.0], 300).astype(np.float32)
+        v = None
+    if v is None and allow_fallback:
+        seed = int(hashlib.md5(word.encode("utf-8")).hexdigest()[:8], 16)
+        v = np.random.RandomState(seed).choice([-1.0, 1.0], 300).astype(np.float32)
+
+    bucket[word] = None if v is None else np.asarray(v, dtype=np.float32)
+    return bucket[word]
+
+
+def prevectorize(vectors_cache: dict, tokens, allow_fallback: bool = False,
+                 persist: bool = True) -> dict:
+    """Vectoriza todos los `tokens` en UNA pasada de stream (el modelo pesa
+    1 GB; un lookup por palabra suelto seria inviable). Llena
+    vectors_cache['_tokens'] (incluyendo None para los no representables) para
+    que get_fasttext_vector no vuelva a tocar el modelo. Opcionalmente persiste
+    un cache en models/token_vectors.json para corridas reproducibles sin el
+    .gz."""
+    bucket = vectors_cache.setdefault("_tokens", {})
+    if persist and not bucket and _TOKENS_CACHE_PATH.exists():
+        try:
+            raw = json.loads(_TOKENS_CACHE_PATH.read_text())
+            bucket.update({k: (None if v is None else np.asarray(v, dtype=np.float32))
+                           for k, v in raw.items()})
+        except Exception:
+            pass
+
+    needed = set()
+    for t in tokens:
+        if any(t in vectors_cache.get(cls, {}) for cls in CLASSES):
+            continue
+        if t in bucket:
+            continue
+        needed.add(t)
+
+    if needed:
+        from stage4_fasttext import _stream_lookup
+        found = _stream_lookup(set(needed), allow_fallback=allow_fallback)
+        for t in needed:
+            v = found.get(t)
+            bucket[t] = None if v is None else np.asarray(v, dtype=np.float32)
+        if persist:
+            try:
+                _TOKENS_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+                serial = {k: (None if v is None else np.asarray(v).tolist())
+                          for k, v in bucket.items()}
+                _TOKENS_CACHE_PATH.write_text(json.dumps(serial))
+            except Exception:
+                pass
+    return vectors_cache
 
 
 def token_in_vocabulary(word: str, vectors_cache: dict) -> bool:
-    return any(word in vectors_cache[cls] for cls in CLASSES)
+    """SOLO para logging/analisis: indica si el token pertenece al vocabulario
+    de labels de ConceptNet. NO debe usarse para decidir routing ni rechazo —
+    eso lo decide la EAM (recognize_gated) sobre la pista vectorial."""
+    return any(word in vectors_cache.get(cls, {}) for cls in CLASSES)
 
 
 def load_all_vectors(nlp=None) -> dict:
@@ -190,45 +256,78 @@ def load_all_vectors(nlp=None) -> dict:
 
 
 def process_query(query: str, agents: dict, tme: TME, nlp,
-                  vectors_cache: dict, decoder, verbose: bool = True) -> dict:
+                  vectors_cache: dict, decoder, verbose: bool = True,
+                  allow_fallback: bool = False) -> dict:
     """Una interaccion de fase temprana completa.
 
-    Devuelve el triple de Wegner (imagen, labels, ubicacion) o el
-    rechazo explicito cuando ningun agente tiene señal: el sistema
-    prefiere "no se" a rutear al azar.
+    Devuelve el triple de Wegner (imagen, labels, ubicacion) o el rechazo
+    explicito. Hay dos clases de rechazo, distintas conceptualmente:
+      - no_representable_tokens: ningun token tiene vector fastText real, asi
+        que no hay pista que entregar a la memoria (frontera del encoder
+        linguistico, no decision de la EAM);
+      - mae_no_support: hay pistas representables pero ningun agente produce
+        soporte (max score == 0). Este es el rechazo que decide la EAM.
+    No se usa token_in_vocabulary como filtro: el vocabulario de labels llena la
+    memoria, no censura consultas. Una palabra real que no sea label (p.ej.
+    'powerful') entra como pista y la EAM la rechaza sola via recognize_gated.
     """
     tokens = tokenize_query(query, nlp)
     if not tokens:
         return {"query": query, "tokens": [], "winner": None,
-                "image": None, "labels": [], "agent": None}
+                "image": None, "labels": [], "agent": None,
+                "rejected": True, "reason": "no_tokens",
+                "represented_tokens": [], "unrepresented_tokens": [],
+                "token_logs": []}
 
     if verbose:
         print(f"  Query: '{query}'  tokens={tokens}")
 
-    # Tokens fuera del vocabulario producirian vectores aleatorios con
-    # scores espurios; se filtran antes de puntuar.
     agent_scores = {cls: 0.0 for cls in CLASSES}
     token_vectors = {}
-    unknown_tokens = []
+    unrepresented_tokens = []
+    token_logs = []
     for tok in tokens:
-        if not token_in_vocabulary(tok, vectors_cache):
-            unknown_tokens.append(tok)
+        vec = get_fasttext_vector(tok, vectors_cache, allow_fallback=allow_fallback)
+        if vec is None:
+            unrepresented_tokens.append(tok)
+            token_logs.append({"token": tok, "representable": False,
+                               "in_label_vocab": token_in_vocabulary(tok, vectors_cache),
+                               "reason": "no_fasttext_vector"})
             continue
-        v_q = quantize_binary(get_fasttext_vector(tok, vectors_cache),
-                              M_LABEL)
+        v_q = quantize_binary(vec, M_LABEL)
         token_vectors[tok] = v_q
+        tok_scores = {cls: agents[cls].recognize_gated(v_q) for cls in CLASSES}
         for cls in CLASSES:
-            agent_scores[cls] += agents[cls].recognize_gated(v_q)
+            agent_scores[cls] += tok_scores[cls]
+        token_logs.append({"token": tok, "representable": True,
+                           "in_label_vocab": token_in_vocabulary(tok, vectors_cache),
+                           "scores": tok_scores,
+                           "recognized_by_any_agent": max(tok_scores.values()) > 0.0})
 
-    if verbose and unknown_tokens:
-        print(f"  Tokens fuera de vocabulario: {unknown_tokens}")
+    if verbose and unrepresented_tokens:
+        print(f"  Tokens no representables (sin vector fastText): {unrepresented_tokens}")
 
-    if not token_vectors or max(agent_scores.values()) == 0.0:
+    if not token_vectors:
         if verbose:
-            print(f"  RECHAZADA: sin señal de routing para tokens={tokens}.")
+            print(f"  RECHAZADA (no_representable_tokens): tokens={tokens}.")
         return {"query": query, "tokens": tokens, "winner": None,
                 "image": None, "labels": tokens, "agent": None,
-                "rejected": True}
+                "rejected": True, "reason": "no_representable_tokens",
+                "agent_scores": agent_scores,
+                "represented_tokens": list(token_vectors),
+                "unrepresented_tokens": unrepresented_tokens,
+                "token_logs": token_logs}
+
+    if max(agent_scores.values()) == 0.0:
+        if verbose:
+            print(f"  RECHAZADA (mae_no_support): la EAM no contiene las pistas.")
+        return {"query": query, "tokens": tokens, "winner": None,
+                "image": None, "labels": tokens, "agent": None,
+                "rejected": True, "reason": "mae_no_support",
+                "agent_scores": agent_scores,
+                "represented_tokens": list(token_vectors),
+                "unrepresented_tokens": unrepresented_tokens,
+                "token_logs": token_logs}
 
     n_toks = len(token_vectors)
     for cls in CLASSES:
@@ -269,6 +368,11 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         "winner": winner,
         "image": recalled_image,
         "labels": tokens,
+        "rejected": False,
+        "reason": "mae_support",
+        "represented_tokens": list(token_vectors),
+        "unrepresented_tokens": unrepresented_tokens,
+        "token_logs": token_logs,
     }
 
 

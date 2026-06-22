@@ -52,7 +52,7 @@ from quantizer import quantize_binary
 from stage5_fill import load_agent_memories
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, M_LABEL, N,
-    get_nlp, load_all_vectors, tokenize_query,
+    get_nlp, load_all_vectors, tokenize_query, prevectorize,
     get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
 )
 
@@ -70,61 +70,73 @@ def corrected_score(agent, v_q):
 def process_query_early(query, agents, tme, nlp, vectors, tok_cache,
                         do_recall=True):
     """
-    Fase temprana corregida — protocolo de stage6.process_query:
-    tokenize → broadcast → argmax → aprendizaje en los 4 M_dir →
-    recall en ganador → learn_latent.
-    """
-    tokens = [t for t in tokenize_query(query, nlp)
-              if token_in_vocabulary(t, vectors)]
-    if not tokens:
-        return {"winner": None, "tokens": [], "rejected": True}
+    Fase temprana — protocolo oficial: tokenize → representar con fastText real
+    (sin filtro lexico) → recognize_gated → argmax → aprendizaje en los 4 M_dir.
 
+    El rechazo lo decide la EAM, no el vocabulario de labels. Se distinguen dos
+    causas: no_representable_tokens (ningun token tiene vector fastText) y
+    mae_no_support (hay pistas pero ningun agente las contiene).
+    """
+    tokens = tokenize_query(query, nlp)
+    represented, unrepresented = [], []
     for tok in tokens:
         if tok not in tok_cache:
-            v = np.array(get_fasttext_vector(tok, vectors), dtype=np.float32)
-            tok_cache[tok] = quantize_binary(v, M_LABEL)
+            v = get_fasttext_vector(tok, vectors, allow_fallback=False)
+            tok_cache[tok] = (None if v is None
+                              else quantize_binary(np.asarray(v, dtype=np.float32),
+                                                   M_LABEL))
+        (unrepresented if tok_cache[tok] is None else represented).append(tok)
+
+    if not represented:
+        return {"winner": None, "tokens": tokens, "rejected": True,
+                "reason": "no_representable_tokens",
+                "represented_tokens": [], "unrepresented_tokens": unrepresented}
 
     scores = {cls: 0.0 for cls in CLASSES}
-    for tok in tokens:
+    for tok in represented:
         v_q = tok_cache[tok]
         for cls in CLASSES:
             scores[cls] += corrected_score(agents[cls], v_q)
 
-    if sum(scores.values()) == 0:
-        return {"winner": None, "tokens": tokens, "rejected": True}
+    if max(scores.values()) == 0.0:
+        return {"winner": None, "tokens": tokens, "rejected": True,
+                "reason": "mae_no_support", "scores": scores,
+                "represented_tokens": represented,
+                "unrepresented_tokens": unrepresented}
 
     winner = max(scores, key=scores.get)
     widx = AGENT_LIST.index(winner)
 
-    # Aprendizaje — los 4 componentes registran (fiel a stage6:293-297)
-    for tok in tokens:
+    # Aprendizaje — los 4 componentes del directorio de labels registran.
+    # NOTA: mem_dir_R (directorio visual) NO se actualiza aqui. El latente de
+    # un recall es un eco de la propia memoria, no una percepcion real; el
+    # directorio visual solo indexa latentes de imagenes (stage7).
+    for tok in represented:
         v_q = tok_cache[tok]
         tme.update_directory(v_q, widx)
         for agent in agents.values():
             agent.update_directory(v_q, widx)
 
-    # Recall en el ganador + learn_latent (fiel a stage6:299-324)
-    if do_recall:
-        for tok in tokens:
-            with contextlib.redirect_stdout(io.StringIO()):
-                r_q, recognized, weight, *_ = agents[winner].recall(
-                    tok_cache[tok])
-            if recognized:
-                tme.update_directory_latent(r_q.astype(np.int32), widx)
-                break
-
     return {"winner": winner, "tokens": tokens, "rejected": False,
-            "scores": scores}
+            "reason": "mae_support", "scores": scores,
+            "represented_tokens": represented,
+            "unrepresented_tokens": unrepresented}
 
 
 def route_mature(tokens, entry_agent, tok_cache, b1=True):
-    """Fase madura — protocolo de stage8: M_dir del agente de entrada, B1."""
+    """Fase madura — protocolo de stage8: M_dir del agente de entrada, B1.
+    Sólo se rutean tokens representables (v_q no None); sin soporte en el
+    directorio devuelve None (directory_no_support)."""
     agg = np.zeros(len(CLASSES), dtype=float)
+    used = 0
     for tok in tokens:
-        v_q = tok_cache[tok]
+        v_q = tok_cache.get(tok)
+        if v_q is None:
+            continue
+        used += 1
         agg += (entry_agent.mem_dir.predict_normalized(v_q, mode="linear")
                 if b1 else entry_agent.mem_dir.predict(v_q))
-    if agg.sum() == 0:
+    if used == 0 or agg.sum() == 0:
         return None
     return CLASSES[int(np.argmax(agg))]
 
@@ -150,6 +162,12 @@ def main():
     vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
     queries, gt = ALL_QUERIES[:80], GROUND_TRUTH[:80]
+    # Pre-vectorizar todos los tokens del banco en UNA pasada de stream:
+    # palabras reales no-label entran como pistas; las no representables -> None.
+    bank_tokens = set()
+    for q in list(queries) + list(TEST_QUERIES):
+        bank_tokens.update(tokenize_query(q, nlp))
+    prevectorize(vectors, bank_tokens, allow_fallback=False)
     tok_cache = {}
 
     # FASE TEMPRANA (80 queries, con aprendizaje y recall)
@@ -169,6 +187,15 @@ def main():
                   f"(acc parcial {e_ok/(i+1)*100:.1f}%)")
     early_acc = e_ok / len(queries)
     early_rej = e_rej / len(queries)
+    from collections import Counter
+    reason_counts = Counter(r.get("reason", "?") for r in early_results)
+    n_norep = reason_counts.get("no_representable_tokens", 0) + \
+        reason_counts.get("no_tokens", 0)
+    n_mae_rej = reason_counts.get("mae_no_support", 0)
+    n_routed = reason_counts.get("mae_support", 0)
+    print(f"  Desglose: ruteadas={n_routed}  "
+          f"rechazo_EAM(mae_no_support)={n_mae_rej}  "
+          f"no_representables={n_norep}")
     counts = tme.mem_dir_L.agent_counts
     print(f"\n  Early accuracy: {early_acc*100:.1f}%   "
           f"rechazo: {early_rej*100:.1f}%")
@@ -182,20 +209,23 @@ def main():
     m_ok_raw = 0
     mature_log = []
     for res in early_results:
-        if not res["tokens"]:
+        represented = res.get("represented_tokens") or [
+            t for t in res["tokens"] if tok_cache.get(t) is not None]
+        # Toda consulta queda en el CSV, también los rechazos (denominador 80).
+        if not represented:
             m_rej += 1
-            # Las consultas sin tokens se rechazan, pero deben quedar en el CSV
-            # como REJ: omitirlas dejaba 78 de 80 filas y daba la falsa
-            # impresion de un desempeno perfecto sobre el denominador completo.
+            reason = ("no_tokens" if not res["tokens"]
+                      else "no_representable_tokens")
             mature_log.append({
                 "query": res["query"], "truth": res["truth"],
                 "early": res["winner"] or "REJ",
                 "entry": "NA", "mature_b1": "REJ", "mature_raw": "REJ",
+                "reason": reason,
             })
             continue
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
-        dest = route_mature(res["tokens"], agents[entry_cls], tok_cache, b1=True)
-        dest_raw = route_mature(res["tokens"], agents[entry_cls], tok_cache,
+        dest = route_mature(represented, agents[entry_cls], tok_cache, b1=True)
+        dest_raw = route_mature(represented, agents[entry_cls], tok_cache,
                                 b1=False)
         if dest is None:
             m_rej += 1
@@ -211,6 +241,7 @@ def main():
             "early": res["winner"] or "REJ",
             "entry": entry_cls, "mature_b1": dest or "REJ",
             "mature_raw": dest_raw or "REJ",
+            "reason": ("directory_no_support" if dest is None else "directory_support"),
         })
     n = len(queries)
     mature_acc, mature_raw_acc = m_ok / n, m_ok_raw / n
@@ -259,6 +290,14 @@ def main():
         "fidelity": round(fidelity, 4),
         "mdir_counts_tme": counts.tolist(),
         "mdir_entropy_bits": round(tme.mem_dir_L.entropy(), 4),
+        "rejection_breakdown": {
+            "routed": n_routed,
+            "rejected_by_mae": n_mae_rej,
+            "no_representable_tokens": n_norep,
+            "note": "El rechazo lo decide la EAM (mae_no_support), no un filtro "
+                    "léxico. no_representable_tokens = frontera del encoder "
+                    "(sin vector fastText real), no rechazo EAM.",
+        },
         "test_queries_counts": counts10.tolist(),
         "exp1_reference": {
             "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin "

@@ -117,21 +117,28 @@ def train_mdir_n80(normalized: bool):
     """
     decoder, agents, vectors_cache, g_min, g_max, nlp, _ = load_models()
     from eval_bank import ALL_QUERIES, GROUND_TRUTH
+    from stage6_interaction import prevectorize
+    # Pre-vectorizar el banco en una pasada (usa models/token_vectors.json si
+    # existe) para no hacer un stream del modelo de 1 GB por palabra.
+    _toks = set()
+    for _q in ALL_QUERIES[:80]:
+        _toks.update(tokenize_query(_q, nlp))
+    prevectorize(vectors_cache, _toks, allow_fallback=False)
 
     mdir = DirectoryMemory(N, M_LABEL, len(CLASSES))
     stats = {"n": 0, "correct": 0, "vocab": {}}
 
     for query, truth in zip(ALL_QUERIES[:80], GROUND_TRUTH[:80]):
         tokens = tokenize_query(query, nlp)
-        tokens = [t for t in tokens if token_in_vocabulary(t, vectors_cache)]
-        if not tokens:
-            continue
+        # Sin filtro léxico: cada token con vector fastText real entra como
+        # pista; los no representables se descartan.
         scores  = {cls: 0.0 for cls in CLASSES}
         tok_vecs = {}
         for tok in tokens:
-            v_q = quantize_binary(np.array(
-                get_fasttext_vector(tok, vectors_cache),
-                dtype=np.float32), M_LABEL)
+            v = get_fasttext_vector(tok, vectors_cache, allow_fallback=False)
+            if v is None:
+                continue
+            v_q = quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL)
             tok_vecs[tok] = v_q
             for cls in CLASSES:
                 ag  = agents[cls]
@@ -140,6 +147,11 @@ def train_mdir_n80(normalized: bool):
                      else float(ag.mem_dom_H.recognize_from_left(
                          v_q, left_weights=l_w)))
                 scores[cls] += h
+        # Rechazo EAM: sin pistas representables o sin soporte, no se asigna
+        # ganador por desempate (apple ganaría siempre con scores en cero).
+        if not tok_vecs or max(scores.values()) == 0.0:
+            stats["n"] += 1
+            continue
         winner = max(scores, key=scores.get)
         widx   = AGENT_LIST.index(winner)
         for tok, v_q in tok_vecs.items():
@@ -198,17 +210,23 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     if not tokens:
         return None
 
+    # Representación: cada token con vector fastText real entra como pista (sin
+    # filtro léxico). token_in_vocabulary queda solo como metadato de display.
+    tok_vecs = {}
+    for t in tokens:
+        v = get_fasttext_vector(t, vectors_cache, allow_fallback=False)
+        if v is not None:
+            tok_vecs[t] = np.asarray(v, dtype=np.float32)
     tokens_known   = [t for t in tokens if token_in_vocabulary(t, vectors_cache)]
     tokens_unknown = [t for t in tokens if not token_in_vocabulary(t, vectors_cache)]
-    if not tokens_known:
-        return None
+    if not tok_vecs:
+        return None   # no_representable_tokens (frontera del encoder, no EAM)
 
     # PASS 1: serialization + recognition scores (fast)
     # recog_weights() and recognize_from_left() use only matrix projection —
     # no stochastic sampling, runs in milliseconds.
     per_token = {}
-    for tok in tokens_known:
-        raw_v  = np.array(get_fasttext_vector(tok, vectors_cache), dtype=np.float32)
+    for tok, raw_v in tok_vecs.items():
         sign_v = np.where(np.sign(raw_v) == 0, 1.0, np.sign(raw_v))
         q_v    = quantize_binary(raw_v, M_LABEL)
 
@@ -247,6 +265,18 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
                  for t in per_token) / n_tok
         for cls in CLASSES
     }
+    # Rechazo de la EAM: si ningún agente contiene las pistas, no se declara
+    # ganador por desempate (apple ganaría siempre con scores en cero).
+    if max(avg_scores.values()) == 0.0:
+        return {
+            "query": query, "spacy_tokens": spacy_tokens, "tokens": tokens,
+            "tokens_known": tokens_known, "tokens_unknown": tokens_unknown,
+            "per_token": per_token, "avg_scores": avg_scores,
+            "winner": None, "winner_idx": None, "n_tokens": n_tok,
+            "normalized": bool(normalize), "rejected": True,
+            "reason": "mae_no_support",
+            "final_recalled_img": None, "final_recalled_tok": None,
+        }
     winner     = max(avg_scores, key=avg_scores.get)
     winner_idx = AGENT_LIST.index(winner)
 
@@ -288,6 +318,8 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         "winner_idx":         winner_idx,
         "n_tokens":           n_tok,
         "normalized":         bool(normalize),
+        "rejected":           False,
+        "reason":             "mae_support",
         "final_recalled_img": final_recalled_img,
         "final_recalled_tok": final_recalled_tok,
     }
@@ -1507,8 +1539,13 @@ def main():
 
         if trace is None:
             st.warning(
-                "No valid vocabulary tokens found. "
-                "Try nouns or adjectives directly related to apple, horse, or car."
+                "Ningún token es representable (sin vector fastText real). "
+                "No hay pista que entregar a la memoria."
+            )
+        elif trace.get("rejected"):
+            st.warning(
+                "Rechazo de la EAM: ningún agente contiene las pistas "
+                "(scores en cero). No se asigna ganador por desempate."
             )
         else:
             # Register in session M_dir (side effect happens exactly once here)
@@ -1848,10 +1885,13 @@ def main():
                 recalled_img = None
                 rejected = False
 
-                # Shared tokenization (also used for rejection diagnostics)
+                # Shared tokenization. Sin filtro léxico: tokens representables
+                # (con vector fastText real); el rechazo lo decide la memoria.
                 tokens_all   = tokenize_query(query_m, nlp)
-                tokens_vocab = [t for t in tokens_all
-                                if token_in_vocabulary(t, vectors_cache)]
+                tokens_vocab = [
+                    t for t in tokens_all
+                    if get_fasttext_vector(t, vectors_cache, allow_fallback=False)
+                    is not None]
 
                 if use_experiment:
                     with st.spinner("Cargando agentes entrenados del experimento "

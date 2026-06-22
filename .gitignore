@@ -2,6 +2,9 @@
 models/*.pkl
 models/*.pt
 
+# Token-vector cache (derivado del modelo fastText de 1 GB; regenerable)
+models/token_vectors.json
+
 # ETH-80 dataset (205 MB) — download separately
 data/
 

@@ -14,15 +14,15 @@
 | early accuracy | ~34% | **97.5%** |
 | early rechazo | — | 1.2% |
 | mature accuracy B1 | 98.8% (ablation B1) | **98.8%** |
-| mature accuracy RAW | 33.8% | 85.0% |
+| mature accuracy RAW | 33.8% | 53.8% |
 | fidelidad | 100% (sobre routing sesgado) | **97.5%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo | [71, 58, 46] |
-| M_dir entropía | — | 1.563 bits (máx 1.585) |
+| M_dir counts | [81, 52, 31] estilo-crudo | [78, 65, 53] |
+| M_dir entropía | — | 1.567 bits (máx 1.585) |
 
 ## Réplica de las 10 TEST_QUERIES del exp. 1
 
 - counts exp. 1: [7, 4, 2] (apple capturó vehicle, engine, red…)
-- counts exp. 3: [6, 6, 5]
+- counts exp. 3: [6, 7, 6]
 
 | query | winner exp. 3 |
 |---|---|

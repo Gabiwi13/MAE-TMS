@@ -30,9 +30,9 @@ experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.
 
 | condición | early | mature RAW | mature B1 | counts M_dir |
 |---|---|---|---|---|
-| baseline ι=0 κ=0 (exp. 1) | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
-| mejor nativa ι=0.0 κ=0.0 | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
-| ÷mem.mean con ι=0 κ=0 | 97.5% | 85.0% | 98.8% | [71, 58, 46] |
+| baseline ι=0 κ=0 (exp. 1) | 97.5% | 53.8% | 98.8% | [78, 65, 53] |
+| mejor nativa ι=0.0 κ=0.0 | 97.5% | 53.8% | 98.8% | [78, 65, 53] |
+| ÷mem.mean con ι=0 κ=0 | 97.5% | 53.8% | 98.8% | [78, 65, 53] |
 
 ## Archivos
 - results_grid.csv · results_downstream.csv

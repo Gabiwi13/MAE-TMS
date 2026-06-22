@@ -2,18 +2,24 @@
   "early_acc": 0.975,
   "early_rej": 0.0125,
   "mature_acc_b1": 0.9875,
-  "mature_acc_raw": 0.85,
+  "mature_acc_raw": 0.5375,
   "fidelity": 0.975,
   "mdir_counts_tme": [
-    71,
-    58,
-    46
+    78,
+    65,
+    53
   ],
-  "mdir_entropy_bits": 1.5628,
+  "mdir_entropy_bits": 1.5673,
+  "rejection_breakdown": {
+    "routed": 79,
+    "rejected_by_mae": 0,
+    "no_representable_tokens": 1,
+    "note": "El rechazo lo decide la EAM (mae_no_support), no un filtro l\u00e9xico. no_representable_tokens = frontera del encoder (sin vector fastText real), no rechazo EAM."
+  },
   "test_queries_counts": [
     6,
-    6,
-    5
+    7,
+    6
   ],
   "exp1_reference": {
     "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin gate). Ancla hist\u00f3rica, NO es la condici\u00f3n A del ablation actual (que usa el directorio hetero).",
