@@ -1,81 +1,81 @@
-query,truth,early,entry,mature_b1,mature_raw
-a round red fruit,apple,apple,car,apple,apple
-animal with a mane,horse,horse,apple,horse,horse
-fast vehicle with wheels,car,car,car,car,car
-green food from trees,apple,apple,car,apple,apple
-large powerful mammal,horse,horse,apple,horse,horse
-machine for transportation,car,car,apple,car,car
-red or green round food,apple,apple,car,apple,apple
-has four legs and hooves,horse,horse,horse,horse,apple
-automobile with seats,car,car,car,car,car
-has core and seeds,apple,apple,car,apple,apple
-riding and racing animal,horse,horse,car,horse,horse
-has wheels and engine,car,car,car,car,car
-a delicious pome,apple,apple,apple,apple,apple
-an equine animal,horse,horse,car,horse,horse
-a heavy vehicle,car,car,horse,car,car
-red fruit with a stem,apple,apple,apple,apple,apple
-big farm animal,horse,horse,horse,horse,horse
-passenger transportation machine,car,car,horse,car,car
-grows on fruit trees,apple,apple,horse,apple,apple
-has a long tail,horse,horse,horse,horse,horse
-seats and windows inside,car,car,apple,car,car
-juicy round fruit,apple,apple,apple,apple,apple
-a pony or donkey,horse,horse,horse,horse,horse
-a motor vehicle,car,car,horse,car,apple
-sweet core fruit,apple,apple,apple,apple,apple
-mammal with saddle,horse,horse,apple,horse,horse
-used for driving,car,REJ,NA,REJ,REJ
-a pear or apple fruit,apple,apple,apple,apple,apple
-racing animal with mane,horse,horse,car,horse,horse
-wheeled automobile,car,car,car,car,horse
-fruit with skin and seeds,apple,apple,car,apple,apple
-big four legged animal,horse,horse,horse,horse,horse
-driving machine,car,apple,car,car,apple
-orange cousin red food,apple,apple,horse,apple,apple
-riding farm animal,horse,horse,horse,horse,apple
-automobile with heavy seats,car,car,car,car,car
-green and red food,apple,apple,horse,apple,apple
-farm mammal with mane,horse,horse,car,horse,horse
-crash and accident vehicle,car,car,car,car,car
-a macintosh variety,apple,apple,apple,apple,apple
-equine riding beast,horse,horse,car,horse,horse
-passenger seats inside,car,car,apple,car,car
-made into pie,apple,apple,car,apple,apple
-has hooves and tail,horse,horse,car,horse,horse
-vehicle with driver,car,car,apple,car,apple
-round red food,apple,apple,apple,apple,apple
-donkey and zebra relative,horse,horse,car,horse,horse
-red automobile,car,car,horse,car,car
-stem leaf core inside,apple,apple,apple,apple,apple
-big strong animal,horse,horse,horse,horse,horse
-transportation vehicle,car,car,horse,car,car
-a green fruit,apple,apple,horse,apple,apple
-saddle riding animal,horse,horse,apple,horse,horse
-automobile for transport,car,car,horse,car,horse
-fruit with seeds inside,apple,apple,apple,apple,apple
-cow and horse farm animals,horse,horse,horse,horse,apple
-seats and windows vehicle,car,car,car,car,car
-delicious red round fruit,apple,apple,car,apple,apple
-animal that races,horse,horse,apple,horse,horse
-heavy automobile,car,car,car,car,horse
-adam and eve fruit,apple,apple,car,apple,apple
-a ridden animal,horse,horse,horse,horse,horse
-motor vehicle transport,car,car,apple,car,apple
-orange red green food,apple,apple,horse,apple,apple
-four legged riding mammal,horse,horse,horse,horse,horse
-driver automobile,car,car,horse,car,car
-core inside skin fruit,apple,apple,horse,apple,apple
-mammal with hooves and mane,horse,horse,horse,horse,horse
-wheeled transportation,car,car,horse,car,car
-tree fruit food,apple,apple,horse,apple,apple
-equine with saddle,horse,horse,apple,horse,horse
-crash vehicle,car,car,car,car,car
-pome variety fruit,apple,apple,horse,apple,apple
-big farm riding animal,horse,horse,horse,horse,horse
-automobile commuting,car,car,horse,car,horse
-green round food,apple,apple,horse,apple,apple
-domesticated equine mammal,horse,horse,horse,horse,horse
-auto transportation machine,car,car,horse,car,car
-red sweet fruit food,apple,apple,car,apple,apple
-animal with mane and tail,horse,horse,car,horse,horse
+query,truth,early,entry,mature_b1,mature_raw,reason
+a round red fruit,apple,apple,car,apple,apple,directory_support
+animal with a mane,horse,horse,apple,horse,horse,directory_support
+fast vehicle with wheels,car,car,car,car,apple,directory_support
+green food from trees,apple,apple,car,apple,apple,directory_support
+large powerful mammal,horse,horse,apple,horse,horse,directory_support
+machine for transportation,car,car,apple,car,apple,directory_support
+red or green round food,apple,apple,car,apple,apple,directory_support
+has four legs and hooves,horse,horse,horse,horse,apple,directory_support
+automobile with seats,car,car,car,car,apple,directory_support
+has core and seeds,apple,apple,car,apple,apple,directory_support
+riding and racing animal,horse,horse,car,horse,apple,directory_support
+has wheels and engine,car,car,car,car,apple,directory_support
+a delicious pome,apple,apple,apple,apple,apple,directory_support
+an equine animal,horse,horse,car,horse,horse,directory_support
+a heavy vehicle,car,car,horse,car,apple,directory_support
+red fruit with a stem,apple,apple,apple,apple,apple,directory_support
+big farm animal,horse,horse,horse,horse,apple,directory_support
+passenger transportation machine,car,car,horse,car,apple,directory_support
+grows on fruit trees,apple,apple,horse,apple,apple,directory_support
+has a long tail,horse,horse,horse,horse,horse,directory_support
+seats and windows inside,car,car,apple,car,apple,directory_support
+juicy round fruit,apple,apple,apple,apple,apple,directory_support
+a pony or donkey,horse,horse,horse,horse,apple,directory_support
+a motor vehicle,car,car,horse,car,apple,directory_support
+sweet core fruit,apple,apple,apple,apple,apple,directory_support
+mammal with saddle,horse,horse,apple,horse,horse,directory_support
+used for driving,car,REJ,NA,REJ,REJ,no_tokens
+a pear or apple fruit,apple,apple,apple,apple,apple,directory_support
+racing animal with mane,horse,horse,car,horse,horse,directory_support
+wheeled automobile,car,car,car,car,apple,directory_support
+fruit with skin and seeds,apple,apple,car,apple,apple,directory_support
+big four legged animal,horse,horse,horse,horse,apple,directory_support
+driving machine,car,apple,car,car,apple,directory_support
+orange cousin red food,apple,apple,horse,apple,apple,directory_support
+riding farm animal,horse,horse,horse,horse,apple,directory_support
+automobile with heavy seats,car,car,car,car,apple,directory_support
+green and red food,apple,apple,horse,apple,apple,directory_support
+farm mammal with mane,horse,horse,car,horse,horse,directory_support
+crash and accident vehicle,car,car,car,car,car,directory_support
+a macintosh variety,apple,apple,apple,apple,apple,directory_support
+equine riding beast,horse,horse,car,horse,horse,directory_support
+passenger seats inside,car,car,apple,car,apple,directory_support
+made into pie,apple,apple,car,apple,apple,directory_support
+has hooves and tail,horse,horse,car,horse,apple,directory_support
+vehicle with driver,car,car,apple,car,apple,directory_support
+round red food,apple,apple,apple,apple,apple,directory_support
+donkey and zebra relative,horse,horse,car,horse,apple,directory_support
+red automobile,car,car,horse,car,apple,directory_support
+stem leaf core inside,apple,apple,apple,apple,apple,directory_support
+big strong animal,horse,horse,horse,horse,apple,directory_support
+transportation vehicle,car,car,horse,car,apple,directory_support
+a green fruit,apple,apple,horse,apple,apple,directory_support
+saddle riding animal,horse,horse,apple,horse,apple,directory_support
+automobile for transport,car,car,horse,car,apple,directory_support
+fruit with seeds inside,apple,apple,apple,apple,apple,directory_support
+cow and horse farm animals,horse,horse,horse,horse,apple,directory_support
+seats and windows vehicle,car,car,car,car,apple,directory_support
+delicious red round fruit,apple,apple,car,apple,apple,directory_support
+animal that races,horse,horse,apple,horse,horse,directory_support
+heavy automobile,car,car,car,car,apple,directory_support
+adam and eve fruit,apple,apple,car,apple,apple,directory_support
+a ridden animal,horse,horse,horse,horse,horse,directory_support
+motor vehicle transport,car,car,apple,car,apple,directory_support
+orange red green food,apple,apple,horse,apple,apple,directory_support
+four legged riding mammal,horse,horse,horse,horse,horse,directory_support
+driver automobile,car,car,horse,car,apple,directory_support
+core inside skin fruit,apple,apple,horse,apple,apple,directory_support
+mammal with hooves and mane,horse,horse,horse,horse,horse,directory_support
+wheeled transportation,car,car,horse,car,apple,directory_support
+tree fruit food,apple,apple,horse,apple,apple,directory_support
+equine with saddle,horse,horse,apple,horse,apple,directory_support
+crash vehicle,car,car,car,car,car,directory_support
+pome variety fruit,apple,apple,horse,apple,apple,directory_support
+big farm riding animal,horse,horse,horse,horse,apple,directory_support
+automobile commuting,car,car,horse,car,apple,directory_support
+green round food,apple,apple,horse,apple,apple,directory_support
+domesticated equine mammal,horse,horse,horse,horse,horse,directory_support
+auto transportation machine,car,car,horse,car,apple,directory_support
+red sweet fruit food,apple,apple,car,apple,apple,directory_support
+animal with mane and tail,horse,horse,car,horse,horse,directory_support
