@@ -1,8 +1,9 @@
 # Experimento 3 — protocolo completo con routing corregido
 
 ## Configuración
-- Fase temprana: gate de containment (η), activación media de celdas no nulas (sin ÷mem.mean)
-- Aprendizaje: los 4 componentes registran (TME + 3 agentes), learn_latent en M_dir_R
+- Scoring oficial: recognize_gated (gate de containment, activación media de celdas no nulas), sin ÷mem.mean
+- Sin filtro léxico: tokens representables por fastText entran como pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder
+- Aprendizaje: solo los directorios de labels registran (TME + 3 agentes), token → ganador. mem_dir_R NO se actualiza con recalls (solo percepciones reales de imágenes en stage7)
 - Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1
 - Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)
 - ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar
