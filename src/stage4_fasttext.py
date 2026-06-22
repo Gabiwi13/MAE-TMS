@@ -27,8 +27,15 @@ GENSIM_MODEL_PATH = (
 _cache: dict = {}   # word -> np.ndarray (binarized)
 
 
-def _stream_lookup(needed_words: set) -> dict:
-    """Stream through the gz vec file and collect only needed words."""
+def _stream_lookup(needed_words: set, allow_fallback: bool = True) -> dict:
+    """Stream through the gz vec file and collect only needed words.
+
+    allow_fallback=True (build time): las palabras no halladas reciben un vector
+    sintetico determinista, para que la construccion de label_vectors nunca
+    falte un label. allow_fallback=False (protocolo oficial): las palabras no
+    halladas simplemente se OMITEN del dict; el caller las trata como None
+    (token no representable), de modo que el rechazo lo decida la EAM y no un
+    vector inventado."""
     found = {}
     missing = set(needed_words)
 
@@ -68,7 +75,7 @@ def _stream_lookup(needed_words: set) -> dict:
             found[word] = bv
             missing.discard(word)
 
-    if missing:
+    if missing and allow_fallback:
         print(f"  {len(missing)} words not found, using deterministic fallback: {missing}")
         for w in missing:
             # Digest estable: hash() esta salteado por PYTHONHASHSEED y haria
@@ -76,22 +83,25 @@ def _stream_lookup(needed_words: set) -> dict:
             seed = int(hashlib.md5(w.encode("utf-8")).hexdigest()[:8], 16)
             rng = np.random.RandomState(seed)
             found[w] = rng.choice([-1.0, 1.0], DIM).astype(np.float32)
+    # Si allow_fallback=False, las palabras en `missing` se quedan fuera de
+    # `found`: el caller las interpreta como no representables.
 
     return found
 
 
-def get_binary_vector(word: str) -> np.ndarray:
-    """Return sign(fastText(word)) as float32 {-1.0, +1.0}^300."""
+def get_binary_vector(word: str, allow_fallback: bool = True):
+    """Return sign(fastText(word)) as float32 {-1.0, +1.0}^300, or None when
+    the word is not in the fastText vocabulary and allow_fallback=False."""
     word = word.lower()
     if word in _cache:
         return _cache[word]
-    result = _stream_lookup({word})
+    result = _stream_lookup({word}, allow_fallback=allow_fallback)
     _cache.update(result)
-    return result[word]
+    return result.get(word)
 
 
-def get_vector(word: str) -> np.ndarray:
-    return get_binary_vector(word)
+def get_vector(word: str, allow_fallback: bool = True):
+    return get_binary_vector(word, allow_fallback=allow_fallback)
 
 
 def build_label_vectors(cls: str) -> dict:
