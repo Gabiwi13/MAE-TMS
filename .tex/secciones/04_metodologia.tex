@@ -14,7 +14,7 @@ Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82
 
 Dentro de la fase de alimentación, se definieron 3 fases disjuntas con propósitos distintos:
 \begin{itemize}
-    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada clase, utilizadas para registrar patrones en las memorias homoasociativas de cada agente especialista.
+    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada clase, utilizadas para registrar patrones en las memorias homo-asociativas de cada agente especialista.
     \item \textbf{Interacciones visuales}: imágenes \texttt{train[200:328]} de cada clase, usadas para simular las interacciones de percepción durante la fase de formación del directorio transactivo.
     \item \textbf{Evaluación}: las 82 imágenes de prueba (\texttt{test}) de cada clase, nunca vistas durante el entrenamiento ni la formación del directorio.
 \end{itemize}
@@ -37,16 +37,19 @@ Para obtener un patrón binario compatible con la Memoria Asociativa Entrópica,
 Las consultas en lenguaje natural se preprocesaron con spaCy~\cite{honnibal2020spacy}: se aplicó lematización y se retuvieron únicamente tokens de categoría gramatical \texttt{NOUN}, \texttt{ADJ} o \texttt{PROPN}.
 Se eliminaron palabras vacías (\textit{stopwords}) y se aplicó deduplicación estable para conservar el orden del original.
 
-\paragraph{Normalización por lemas.}
-Las etiquetas de ConceptNet se almacenan en su forma superficial (e.g., \texttt{wheels}, \texttt{hooves}), mientras que spaCy devuelve lemas (\texttt{wheel}, \texttt{hoof}).
-Para evitar rechazos espurios, se construyó un índice de alias lema$\to$etiqueta de vocabulario que permite resolver la consulta aun cuando la forma superficial difiera del lema.
+\paragraph{Representación de tokens, sin filtro de vocabulario.}
+El vocabulario de ConceptNet sirve para \emph{llenar} las memorias, no para decidir qué consultas son conocidas.
+Cada token de la consulta (ya lematizado) se convierte en una pista vectorial tomando su vector del modelo fastText completo, exista o no como etiqueta de ConceptNet: una palabra real como \texttt{powerful} o \texttt{machine} entra igual que un \textit{label}.
+No se aplica ningún filtro de pertenencia léxica: una vez obtenida la pista, es la propia memoria la que, mediante el reconocimiento y el \textit{containment}, decide si hay soporte o se rechaza (puntuación cero).
+Solo queda fuera lo que no es representable: un token sin vector fastText real no genera pista, lo cual es una frontera del codificador lingüístico y no un rechazo de la memoria.
 
 % ---------------------------------------------------------------
 \subsection{Percepción visual: encoder ResNet-18}
 \label{sec:percepcion}
 
-Para obtener representaciones latentes de las imágenes se entrenó un autoencoder convolucional con encoder basado en ResNet-18~\cite{he2016resnet}.
+Para obtener representaciones latentes de las imágenes se entrenó un autoencoder convolucional con encoder basado en ResNet-18~\cite{he2016resnet} (no es un \textit{masked autoencoder}: no hay enmascaramiento de la entrada).
 El espacio latente tiene dimensión 64.
+La pérdida combina reconstrucción y una señal auxiliar de clasificación ($\text{MSE} + 0.1\cdot\text{CE}$); la cabeza clasificadora solo guía el entrenamiento del codificador y \textbf{no participa} en el enrutamiento ni en la recuperación del sistema de memorias.
 Los vectores latentes se cuantizaron a valores binarios mediante normalización global min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado (\texttt{train[0:200]} por clase).
 Esta cuantización global evita que la escala relativa entre clases afecte la codificación binaria.
 
@@ -79,10 +82,10 @@ Se emplearon las siguientes métricas:
     \item \textbf{Precisión madura} (\textit{mature accuracy}): ídem tras la fase de recuperación madura, con lectura de directorio corregida por conteo (B1) o cruda.
     \item \textbf{Tasa de rechazo}: fracción de consultas para las que ningún agente supera el umbral de aceptación.
     \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
-    \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{counts} de los agentes especialistas, normalizada respecto a $\log_2(3)$ (máximo para tres agentes).
-    \item \textbf{Counts por agente}: número de registros acumulados en el directorio transactivo por cada agente especialista.
-    \item \textbf{Routing de test} (hemisferio visual): fracción de imágenes de prueba asignadas correctamente por el directorio visual.
-    \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recall inverso imagen $\to$ palabras).
+    \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{conteos} de los agentes especialistas, normalizada respecto a $\log_2(3)$ (máximo para tres agentes).
+    \item \textbf{Conteos por agente}: número de registros acumulados en el directorio transactivo por cada agente especialista.
+    \item \textbf{Enrutamiento de test} (hemisferio visual): fracción de imágenes de prueba asignadas correctamente por el directorio visual.
+    \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recuperación inversa imagen $\to$ palabras).
 \end{itemize}
 
 % ---------------------------------------------------------------
