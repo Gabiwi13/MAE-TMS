@@ -5,16 +5,16 @@ Este trabajo describió EAM-TMS, un sistema de memoria transactiva multi-agente 
 El sistema opera de forma bidireccional texto $\leftrightarrow$ imagen con rechazo claro en ambas direcciones, sin recurrir a módulos externos de clasificación o umbrales supervisados.
 
 \paragraph{Logros principales.}
-El sistema alcanzó una \textbf{precisión madura del 97.5\%} en el banco de 80 consultas semánticas (texto $\to$ imagen) con una tasa de rechazo del 2.5\%, y una \textbf{fidelidad del 96.2\%} entre las fases temprana y madura.
-En la dirección inversa (imagen $\to$ palabras), el hemisferio visual logró una \textbf{precisión de routing del 100\%} sobre las imágenes aceptadas y una \textbf{evocación de dominio del 94.1\%} (16/17 imágenes produjeron al menos una etiqueta semántica correcta).
+El sistema alcanzó una \textbf{precisión madura del 98.75\%} en el banco de 80 consultas semánticas (texto $\to$ imagen) con una tasa de rechazo del 1.25\%, y una \textbf{fidelidad del 97.5\%} entre las fases temprana y madura.
+En la dirección inversa (imagen $\to$ palabras), el hemisferio visual logró una \textbf{precisión de enrutamiento del 100\%} sobre las imágenes aceptadas y una \textbf{evocación de dominio del 94.1\%} (16/17 imágenes produjeron al menos una etiqueta semántica correcta).
 
-El directorio transactivo se formó por interacción sin supervisión explícita, alcanzando un balance de \textbf{98.3\%} del máximo teórico (1.558 de 1.585 bits) con counts $[68, 54, 42]$.
-Con presentación intercalada, la transición al 90\% de precisión ocurrió en \textbf{$k = 14$ interacciones}, lo que muestra que el directorio aprende rápido cuando la exposición es diversa.
+El directorio transactivo se formó por interacción sin supervisión explícita, alcanzando un balance de \textbf{98.9\%} del máximo teórico (1.567 de 1.585 bits) con conteos $[78, 65, 53]$.
+Con presentación intercalada, la transición al 90\% de precisión ocurrió en \textbf{$k = 13$ interacciones}, lo que muestra que el directorio aprende rápido cuando la exposición es diversa.
 
 La especificidad del sistema fue \textbf{perfecta}: en ningún valor de $N$ probado se aceptó una imagen falsa (0\% en todo el rango). Esto indica que el containment inverso con $\xi = 0$ es un criterio de aceptación efectivo y conservador.
 
 \paragraph{Lectura general.}
-El punto central del trabajo es que el comportamiento anómalo observado inicialmente (sesgo de densidad, recalls sin variedad) no era un defecto del modelo EAM sino consecuencia de un llenado con prototipos promedio.
+El punto central del trabajo es que el comportamiento anómalo observado inicialmente (sesgo de densidad, recuperaciones sin variedad) no era un defecto del modelo EAM sino consecuencia de un llenado con prototipos promedio.
 Al alimentar el sistema con instancias reales, el modelo de Pineda y Morales opera correctamente sin más ajustes externos.
 Esto refuerza la importancia de respetar las condiciones de uso del modelo antes de buscar parches del sistema propuesto.
 

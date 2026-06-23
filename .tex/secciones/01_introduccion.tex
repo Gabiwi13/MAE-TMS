@@ -35,7 +35,7 @@ acumulativa con ejemplos de cada dominio?
 El sistema construido, denominado \textbf{EAM-TMS} (Sistema de Memoria Transactiva Multi-Agente sobre Memorias Asociativas Entrópicas), se compone de tres agentes especialistas
 alimentados con el conjunto de imágenes ETH-80 \cite{leibe2003eth80}: uno para la
 categoría \textit{apple}, uno para \textit{horse} y uno para \textit{car}.
-Un mediador central denominado TME (\textit{Transactive Memory Expert}) coordina la fase
+Un mediador central denominado TME (\textit{Transactive Memory Engine}) coordina la fase
 temprana y registra en sus propios directorios qué agente responde a cada tipo de
 consulta.
 Conforme cada agente acumula registros en su memoria de directorio interna,
@@ -58,7 +58,7 @@ preentrenado, cuya salida se cuantiza y almacena.
 Este trabajo aporta tres contribuciones concretas:
 
 \begin{enumerate}
-    \item \textbf{Arquitectura de multiples memorias asociativas operando bidireccionalmente.}
+    \item \textbf{Arquitectura de múltiples memorias asociativas operando bidireccionalmente.}
     Cada agente emplea cuatro memorias (dos homo-asociativas de dominio y una
     hetero-asociativa de contenido texto$\leftrightarrow$imagen, más una hetero-asociativa
     de directorio); el TME incorpora dos directorios adicionales.
@@ -90,7 +90,7 @@ La Sección~\ref{sec:marco_teorico} presenta los fundamentos teóricos: la EAM d
 La Sección~\ref{sec:arquitectura} describe en detalle la arquitectura EAM-TMS, incluyendo
 los diagramas de flujo del llenado, la fase temprana y la fase madura, así como la
 formalización de todas las operaciones del sistema.
-La Sección~4 detalla la metodología experimental.
-La Sección~5 reporta los resultados.
-La Sección~6 discute los resultados.
-La Sección~7 concluye y señala trabajo futuro.
+La Sección~\ref{sec:metodologia} detalla la metodología experimental.
+La Sección~\ref{sec:resultados} reporta los resultados.
+La Sección~\ref{sec:discusion} discute los resultados.
+La Sección~\ref{sec:conclusiones} concluye y señala trabajo futuro.

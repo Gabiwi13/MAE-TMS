@@ -31,8 +31,9 @@ Para las hetero-asociativas se indica $(n_L, m_L \leftrightarrow n_R, m_R)$ o
 $(n_L, m_L \to n_R, m_R)$ cuando la relación es unidireccional.
 El dominio \emph{label} corresponde a vectores fastText cuantizados;
 el dominio \emph{latente} a códigos ResNet18 cuantizados.
-$g \in \{0,1,2\}$ codifica la identidad del agente ganador en one-hot con bit de
-\emph{desconocido}.}
+El dominio derecho de los directorios tiene una coordenada binaria por agente
+($q{=}2$: ``conoce''\,/\,``no conoce''); no hay una clase explícita de
+\emph{desconocido}: el rechazo emerge cuando ningún agente obtiene soporte.}
 \label{tab:memorias}
 \small
 \begin{tabular}{@{}llll@{}}
@@ -194,8 +195,8 @@ $\mathbf{v}_q^{(i \bmod L)}$ de la secuencia expandida por frecuencias
 \node[box, right=1.45cm of A1] (argmax) {$\arg\max_k \sum s_k$\\ganador $g$};
 
 % ---- Salidas ----
-\node[box, right=of argmax, yshift=1.2cm] (recall) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
-\node[box, right=of recall] (decoder) {Decoder};
+\node[box, right=of argmax, yshift=1.2cm] (recuperación) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
+\node[box, right=of recuperación] (decoder) {Decoder};
 
 % Corchete de salida
 \node[box, right=of decoder] (salida) {Imagen\\recuperada};
@@ -224,8 +225,8 @@ $\mathbf{v}_q^{(i \bmod L)}$ de la secuencia expandida por frecuencias
 \draw[route] (A2.east) -- node[font=\scriptsize, below=2pt, fill=white, inner sep=1pt]{$s_2$}
     (s2bend) |- (argmax.south);
 
-\draw[arr] (argmax) -- (recall);
-\draw[arr] (recall) -- (decoder);
+\draw[arr] (argmax) -- (recuperación);
+\draw[arr] (recuperación) -- (decoder);
 \draw[arr] (decoder) -- (salida);
 
 % Actualización de directorio hacia los 3 agentes y el TME
@@ -244,9 +245,9 @@ $\mathbf{v}_q^{(i \bmod L)}$ de la secuencia expandida por frecuencias
 }
 \caption{Fase temprana: aprendizaje mediado por el TME.
 La consulta se codifica con fastText+sign, el TME la difunde a los tres agentes,
-cada agente devuelve un score $s_k$ mediante el reconocimiento de su memoria homo
+cada agente devuelve una puntuación $s_k$ mediante el reconocimiento de su memoria homo
 y la proyección de su memoria hetero, y el ganador $g = \arg\max_k \sum s_k$ ejecuta
-el recall $\beta$ hacia el espacio latente.
+la recuperación $\beta$ hacia el espacio latente.
 Los tres agentes y el propio TME registran el par $(\mathbf{v}_q, g)$ en sus
 respectivos directorios, incluyendo los agentes perdedores.}
 \label{fig:arq-temprana}
@@ -286,8 +287,8 @@ respectivos directorios, incluyendo los agentes perdedores.}
 
 % ---- Rama conocida: agente destino ----
 \node[box, right=2.0cm of mdir, yshift=1.4cm] (destino) {Agente\\destino};
-\node[box, right=of destino] (recall) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
-\node[box, right=of recall] (decoder) {Decoder};
+\node[box, right=of destino] (recuperación) {Recall $\beta$\\$\hat{\mathbf{z}}_q$};
+\node[box, right=of recuperación] (decoder) {Decoder};
 \node[box, right=of decoder] (img) {Imagen};
 
 % ---- Rama desconocida: rechazo ----
@@ -304,11 +305,11 @@ respectivos directorios, incluyendo los agentes perdedores.}
 \draw[arr] (mdir.east) -- ++(0.6,0) |- (destino.west)
     node[near start, above, font=\footnotesize]{$g$ conocido};
 \draw[arr] (mdir.east) -- ++(0.6,0) |- (rechazo.west)
-    node[near start, below, font=\footnotesize]{$c{+}\text{desconocido}$};
+    node[near start, below, font=\footnotesize]{sin soporte};
 
-% Agente destino al recall
-\draw[arr] (destino) -- (recall);
-\draw[arr] (recall) -- (decoder);
+% Agente destino al recuperación
+\draw[arr] (destino) -- (recuperación);
+\draw[arr] (recuperación) -- (decoder);
 \draw[arr] (decoder) -- (img);
 
 % TME apagado
@@ -331,7 +332,7 @@ respectivos directorios, incluyendo los agentes perdedores.}
 Un agente de entrada (seleccionado aleatoriamente) consulta su directorio $M_{\mathrm{dir}}$
 con la lectura B1 y reenvía directamente al agente destino sin pasar por el TME
 (dibujado en gris punteado).
-Si la pista cae en la región ``desconocido'' del directorio, el sistema emite un rechazo
+Si ningún agente obtiene soporte para la pista, el sistema emite un rechazo
 claro: el grupo no inventa referentes.}
 \label{fig:arq-madura}
 \end{figure}
@@ -359,7 +360,7 @@ el proceso de enrutamiento es el siguiente.
     \end{equation}
     según la ecuación~\eqref{eq:proyeccion-AND}.
 
-    \item El score del agente $k$ incorpora un \textbf{gate de containment}:
+    \item El puntuación del agente $k$ incorpora un \textbf{compuerta de containment}:
     \begin{equation}
         s_k = \begin{cases}
             0 & \text{si } \exists\, j : \sum_l \Pi_k[j, l] = 0 \\[4pt]
@@ -368,7 +369,7 @@ el proceso de enrutamiento es el siguiente.
         \end{cases}
         \label{eq:score-gated}
     \end{equation}
-    El gate anula el score si alguna fila del dominio derecho carece completamente
+    La compuerta anula la puntuación si alguna fila del dominio derecho carece completamente
     de soporte: el agente no opina sobre lo que no contiene.
     En el caso contrario, $s_k$ es la \emph{activación media} de las celdas no nulas.
 \end{enumerate}
@@ -388,7 +389,7 @@ $s_k$ es directamente comparable entre agentes sin ajustes adicionales.
 Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección de la pista $\mathbf{v}_q$
 en el directorio $M_{\mathrm{dir}}$ del agente, restringida al bit $b=1$
 (``el agente $k$ conoce'').
-El score B1 se define como:
+El puntuación B1 se define como:
 \begin{equation}
     \hat{s}_k = \frac{\Pi^{\mathrm{dir}}_k(\mathbf{v}_q,\; b{=}1)}{c_k + 1}
     \label{eq:b1}
@@ -397,11 +398,11 @@ donde $c_k$ es el número total de registros del agente $k$ en el directorio.
 
 \paragraph{Justificación.}
 La especialización real produce masas desiguales entre agentes: por ejemplo,
-$c_0 = 68$, $c_1 = 54$, $c_2 = 42$ en una sesión típica.
-El score crudo de una proyección hetero-asociativa crece con la masa de registros,
+$c_0 = 78$, $c_1 = 65$, $c_2 = 53$ en una sesión típica.
+El puntuación cruda de una proyección hetero-asociativa crece con la masa de registros,
 por lo que un agente con más registros en el directorio obtendría ventaja sin mérito.
 La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
-registro}, haciendo que el score refleje calidad de especialización y no cantidad.
+registro}, haciendo que la puntuación refleje calidad de especialización y no cantidad.
 Esta es la \textbf{única normalización externa} del sistema de directorios.
 
 \subsubsection*{Entropía del directorio}
@@ -427,7 +428,7 @@ de labels procede como sigue.
     \item Se obtienen los pesos del dominio latente:
     $\mathbf{w}_R = \eta(\mathbf{z}_q,\; M^R_{\mathrm{dom}})$.
 
-    \item Se aplica el recall $\beta$ de la memoria hetero-asociativa \emph{desde la
+    \item Se aplica la recuperación $\beta$ de la memoria hetero-asociativa \emph{desde la
     derecha}: la pista es $\mathbf{z}_q$ con pesos $\mathbf{w}_R$, y el resultado es un
     patrón muestreado en el dominio semántico $\hat{\mathbf{v}}_q$.
 
@@ -436,13 +437,13 @@ de labels procede como sigue.
 \end{enumerate}
 
 \paragraph{Justificación del diccionario.}
-El recall $\beta$ devuelve una \emph{muestra} de la distribución de labels acumulada
+El recuperación $\beta$ devuelve una \emph{muestra} de la distribución de labels acumulada
 por el agente, no una palabra exacta: el vector muestreado puede no coincidir con ningún
 embedding almacenado.
 El diccionario actúa como un decodificador que interpreta esa muestra en términos del
 vocabulario conocido.
 La necesidad del diccionario no es una debilidad del sistema sino una consecuencia
-directa de la naturaleza entrópica del recall.
+directa de la naturaleza entrópica de la recuperación.
 
 \subsubsection*{Fidelidad de la fase madura}
 

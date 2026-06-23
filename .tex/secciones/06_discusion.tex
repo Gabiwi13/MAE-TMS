@@ -7,8 +7,8 @@
 
 El resultado central es que el sesgo de densidad que motivó varias calibraciones externas (condiciones C, D, E en la Tabla~\ref{tab:calibracion}) no era un defecto del mecanismo de la Memoria Asociativa Entrópica, sino una consecuencia de llenar mal las memorias.
 
-Cuando la memoria se llenaba con el vector promedio de la clase repetido $N$ veces, todos los agentes acumulaban masas artificialmente iguales y los patrones de recall terminaban siempre en el mismo patrón (variedad $L_1 = 0.00$, Figura~\ref{fig:variedad-recall}).
-Al reemplazar ese prototipo único por las instancias reales del conjunto de llenado, las masas de los agentes se igualaron por construcción: cada imagen aporta una contribución de igual peso y el gate de containment separa correctamente el 100\% de los casos de diagnóstico sin ninguna división adicional por la media de la memoria.
+Cuando la memoria se llenaba con el vector promedio de la clase repetido $N$ veces, todos los agentes acumulaban masas artificialmente iguales y los patrones de recuperación terminaban siempre en el mismo patrón (variedad $L_1 = 0.00$, Figura~\ref{fig:variedad-recall}).
+Al reemplazar ese prototipo único por las instancias reales del conjunto de llenado, las masas de los agentes se igualaron por construcción: cada imagen aporta una contribución de igual peso y la compuerta de containment separa correctamente el 100\% de los casos de diagnóstico sin ninguna división adicional por la media de la memoria.
 
 Dicho de forma simple, la teoría del modelo de Pineda y Morales~\cite{pineda2021entropic} estaba completa: bastaba alimentarla con los datos que el modelo requiere.
 La lección práctica es que la forma en que se llena la memoria pesa más en el comportamiento del sistema que cualquier ajuste posterior de parámetros.
@@ -18,11 +18,11 @@ La lección práctica es que la forma en que se llena la memoria pesa más en el
 \label{sec:disc-b1}
 
 A diferencia de las calibraciones que compensan síntomas, la lectura B1 del directorio transactivo no corrige un defecto: refleja cómo está construido el sistema.
-Cuando los agentes especialistas acumulan números desiguales de interacciones (counts $[68, 54, 42]$), la puntuación cruda del directorio favorece de forma constante al agente más activo con independencia del contenido semántico de la consulta.
+Cuando los agentes especialistas acumulan números desiguales de interacciones (conteos $[78, 65, 53]$), la puntuación cruda del directorio favorece de forma constante al agente más activo con independencia del contenido semántico de la consulta.
 Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacción}, que es una medida justa para comparar agentes con historiales de exposición distintos.
 
 Que B1 sea necesaria no implica que sea una corrección externa al modelo; al contrario, expresa que un agente puede tener más o menos experiencia en el sistema transactivo.
-Las condiciones B2, C y D de la Tabla~\ref{tab:calibracion} intentan ajustar síntomas del mismo problema (la escala desigual de los scores) sin capturar la causa, lo que explica su menor desempeño (46.25\%, 33.75\% y 33.33\% respectivamente frente al 97.50\% de B1).
+Las condiciones B2, C y D de la Tabla~\ref{tab:calibracion} intentan ajustar síntomas del mismo problema (la escala desigual de las puntuaciones) sin capturar la causa, lo que explica su menor desempeño (75.00\%, 53.75\% y 52.82\% respectivamente frente al 98.75\% de B1).
 
 % ---------------------------------------------------------------
 \subsection{Lectura desde la teoría de memoria transactiva de Wegner}
@@ -32,12 +32,12 @@ La teoría de memoria transactiva de Wegner~\cite{wegner1987transactive} dice qu
 Los resultados de la Sección~\ref{sec:formacion} muestran este proceso con mucho detalle:
 
 \begin{itemize}
-    \item \textbf{Interacción mixta y rápida}: con presentación intercalada, el directorio cruza el umbral del 90\% en solo 14 interacciones.
+    \item \textbf{Interacción mixta y rápida}: con presentación intercalada, el directorio cruza el umbral del 90\% en solo 13 interacciones.
     El grupo \textit{se conoce} muy pronto cuando la exposición es variada.
-    \item \textbf{Segregación de experiencias}: con presentación bloqueada por dominio, la transición no ocurre hasta $k = 57$.
+    \item \textbf{Segregación de experiencias}: con presentación bloqueada por dominio, la transición no ocurre hasta $k = 67$.
     Las experiencias homogéneas dentro de cada bloque aportan mucha información sobre un solo agente y casi ninguna sobre los demás, retrasando la formación del directorio colectivo.
     Esta dinámica recuerda los silos de conocimiento en organizaciones con poca rotación de roles.
-    \item \textbf{Mediador sesgado}: el experimento con scoring crudo produce un grupo funcional (93.8\% de precisión final) pero con un directorio que distorsiona la especialización real: los counts $[73, 57, 34]$ sobreestiman la contribución del agente más activo frente a los counts equilibrados $[68, 54, 42]$ del sistema corregido.
+    \item \textbf{Mediador sesgado}: el experimento con puntuación cruda produce un grupo funcional (93.8\% de precisión final) pero con un directorio que distorsiona la especialización real: los conteos $[84, 67, 45]$ sobreestiman la contribución del agente más activo frente a los conteos equilibrados $[78, 65, 53]$ del sistema corregido.
     La lectura B1 compensa este sesgo en el agregado, pero la estructura interna del directorio queda distorsionada.
 \end{itemize}
 
