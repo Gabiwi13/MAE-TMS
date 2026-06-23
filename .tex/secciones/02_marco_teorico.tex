@@ -37,7 +37,7 @@ estadística; no se imponen desde el exterior ni se calculan de forma separada.
 
 \subsubsection*{Operación de reconocimiento ($\eta$)}
 
-Se dice que la pista $\mathbf{a}$ está \emph{contenido} en $\mathbf{R}$ si, para toda
+Se dice que la pista $\mathbf{a}$ está \emph{contenida} en $\mathbf{R}$ si, para toda
 característica $i$, la celda correspondiente tiene masa positiva: $\mathbf{R}[i, a_i] > 0$.
 La versión con tolerancia $\xi$ admite a lo más $\xi$ fallas:
 \begin{equation}
@@ -136,9 +136,9 @@ La \textbf{proyección} $\Pi(\mathbf{a})$ sobre el dominio derecho se define por
 La condición de anulación es la \textbf{conjunción AND}: una celda del resultado se
 anula si \emph{cualquiera} de las $n$ evidencias aporta cero.
 Esto implementa \emph{containment} estricto: la proyección solo produce masa donde
-todos las características de la pista tienen soporte simultáneo en la memoria.
+todas las características de la pista tienen soporte simultáneo en la memoria.
 Los pesos $w'_i$ ponderan la suma por la frecuencia con que cada característica de la pista
-ha sido observado en la memoria homo-asociativa: características muy frecuentes en la pista
+ha sido observada en la memoria homo-asociativa: características muy frecuentes en la pista
 pesan más, lo cual permite que la memoria homo-asociativa module la hetero-asociativa
 de forma nativa y justifica la arquitectura de cuatro memorias por agente.
 
@@ -149,7 +149,7 @@ calidad del patrón recuperado.
 \subsubsection*{Asimetría entre dominios}
 
 La memoria homo-asociativa de un dominio modela la \emph{distribución marginal} de ese
-dominio: genera pesos $w_i$ que reflejan cuán típico es una pista dentro de ese espacio.
+dominio: genera pesos $w_i$ que reflejan cuán típica es una pista dentro de ese espacio.
 La memoria hetero-asociativa, en cambio, modela la \emph{distribución conjunta} de dos
 dominios y, por construcción, \textbf{no genera pesos por característica} del dominio derecho.
 Esta asimetría es propia del modelo y justifica que cada agente en EAM-TMS requiera
@@ -171,7 +171,7 @@ Los tres procesos fundamentales son:
 
 \begin{enumerate}
     \item \textbf{Actualización del directorio} (\emph{directory updating}):
-    tras cada interacción de recuperación exitosa, \emph{todos} los miembros del grupo
+    tras cada interacción de recuperación exitosa, \emph{todos} los miembros del grupo,
     incluso quienes no respondieron, actualizan su directorio anotando quién
     fue el especialista.
     Este proceso distribuye la información de especialización incluso a los miembros que

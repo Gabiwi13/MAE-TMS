@@ -44,5 +44,9 @@ Thumbs.db
 archive/
 notes_historicas/
 
-# Backup local pre-oficializacion (1 GB) - no versionar
+# Backups locales de modelos (1 GB) - no versionar
 models_backup_pre_oficializacion/
+models_pre_cost_backup/
+
+# Log del benchmark de costo
+cost_benchmark.log

@@ -1205,6 +1205,18 @@ def fig_image_to_labels():
                 break
 
     n = len(samples)
+    if n == 0:
+        # Ninguna imagen aceptada (p.ej. un encoder cuyo latente no se contiene):
+        # se emite una figura con la nota en vez de fallar.
+        fig, ax = plt.subplots(figsize=(7.6, 2.0))
+        ax.axis("off")
+        ax.text(0.5, 0.5, T.get("img2lbl_none",
+                "No accepted test images for this encoder (visual containment ξ=0)."),
+                ha="center", va="center", fontsize=11)
+        fig.suptitle(T.get("img2lbl_title",
+                     "Semantic output: image → MAE recall → labels"), fontsize=11)
+        savefig("fig16_image_to_labels.png", fig)
+        return
     fig, axes = plt.subplots(n, 3, figsize=(7.6, 2.5 * n))
     if n == 1:
         axes = [axes]
