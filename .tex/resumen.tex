@@ -55,8 +55,8 @@ Tres agentes especialistas trabajan sobre ETH-80 \cite{leibe2003eth80}: uno
 para \textit{apple}, uno para \textit{horse} y uno para \textit{car}.
 Junto con el mediador inicial (TME), reproducen los tres mecanismos de la
 Memoria Transactiva de Wegner \cite{wegner1987transactive}.
-El sistema alcanza una precisión madura del 97.5\,\% con rechazo claro de lo
-que no conoce, y el directorio transactivo se forma en tan solo 14 interacciones
+El sistema alcanza una precisión madura del 98.75\,\% con rechazo claro de lo
+que no conoce, y el directorio transactivo se forma en tan solo 13 interacciones
 cuando la exposición es variada.
 El documento completo desarrolla la teoría, la metodología y los cinco bloques
 experimentales.
@@ -70,7 +70,7 @@ suficiente, el grupo recuerda más de lo que cualquiera de sus miembros podría
 recordar de forma individual.
 Wegner \cite{wegner1987transactive} llamó a este fenómeno \textbf{memoria
 transactiva}: cada individuo mantiene no solo sus propios conocimientos, sino
-también un \emph{directorio} de quién dentro del grupo es el experto en cada
+también un \emph{directorio} de quién dentro del grupo sabe más de cada
 dominio.
 Cuando un miembro necesita información fuera de su área, consulta ese
 directorio, determina a quién preguntar y delega la recuperación.
@@ -79,7 +79,7 @@ El modelo identifica tres procesos: la \emph{actualización del directorio}
 (tras cada interacción, todos los miembros, incluso los que no respondieron,
 registran quién supo responder), la \emph{asignación de información} (lo nuevo
 se envía al especialista) y la \emph{coordinación de recuperación} (las
-consultas viajan directamente al experto, sin intermediario).
+consultas viajan directamente al agente que sabe del tema, sin intermediario).
 La transición de una \textbf{fase temprana} mediada a una \textbf{fase madura}
 punto a punto es la señal de que el sistema transactivo ya quedó formado.
 
@@ -191,19 +191,19 @@ esquema \emph{imagen-etiqueta} (cada imagen emparejada con un label de la secuen
 expandida por frecuencias), de modo que las masas de registro quedan igualadas
 por construcción.
 (2)~\textbf{Fase temprana}: el TME difunde cada consulta a los tres agentes;
-cada uno responde con un score gated por containment (la activación media de la
+cada uno responde con una puntuación gated por containment (la activación media de la
 proyección~\eqref{eq:proyeccion-AND}, anulada si falta soporte), el de mayor
-score gana y ejecuta el recall; \emph{todos} los agentes y el TME registran el
+puntuación gana y ejecuta la recuperación; \emph{todos} los agentes y el TME registran el
 par $(\mathbf{v}_q, g)$ en sus directorios, lo que corresponde al
 \textit{directory updating} de Wegner, incluyendo a los perdedores.
 (3)~\textbf{Fase madura}: el TME sale del circuito; cualquier agente de entrada
 consulta su propio $M_{\mathrm{dir}}$ y reenvía directamente al especialista, o
 emite un \textbf{rechazo claro} si nadie conoce el dominio: el grupo no inventa
-expertos.
+referentes.
 
 \paragraph{Lectura B1 del directorio.}
 La especialización real produce conteos desiguales entre agentes (p.\,ej.\
-$[68, 54, 42]$), y el score crudo de una proyección hetero-asociativa crece con
+$[78, 65, 53]$), y la puntuación cruda de una proyección hetero-asociativa crece con
 la masa de registros: el agente más activo ganaría sin mérito.
 La lectura B1 divide la evidencia entre el conteo:
 \begin{equation}
@@ -235,23 +235,23 @@ El detalle completo (cinco bloques experimentales A a E más el estudio de
 calibración) está en el documento completo.
 
 \paragraph{Protocolo completo.}
-La precisión temprana fue de \textbf{96.2\,\%}, con rechazo de 2.5\,\%.
-La precisión madura fue de \textbf{97.5\,\%} con lectura B1.
-Sin la corrección B1, la precisión madura cae al 83.8\,\% (14 puntos): sin
+La precisión temprana fue de \textbf{97.5\,\%}, con rechazo de 1.25\,\%.
+La precisión madura fue de \textbf{98.75\,\%} con lectura B1.
+Sin la corrección B1, la precisión madura cae al 53.75\,\% (45 puntos): sin
 normalizar, el agente más activo domina la puntuación sin importar el contenido
 de la consulta.
-La fidelidad entre fase temprana y madura fue del \textbf{96.2\,\%}.
-El directorio cerró con conteos $[68, 54, 42]$ y entropía de
-\textbf{1.558 bits} (98.3\,\% del máximo).
+La fidelidad entre fase temprana y madura fue del \textbf{97.5\,\%}.
+El directorio cerró con conteos $[78, 65, 53]$ y entropía de
+\textbf{1.567 bits} (98.9\,\% del máximo).
 
 \paragraph{Formación del directorio.}
 La Figura~\ref{fig:formacion} muestra cuándo puede apagarse el TME según el
 orden de las interacciones.
 Con presentación intercalada, el directorio cruza el umbral del 90\,\% en
-\textbf{$k = 14$ interacciones}; barajado, en $k \approx 26$ (rango $[18, 34]$,
-5 semillas); bloqueado por dominio, hasta $k = 57$: el directorio no puede
-enrutar expertise que no ha presenciado todavía.
-Todas las condiciones con scoring corregido convergen al mismo estado final:
+\textbf{$k = 13$ interacciones}; barajado, en $k \approx 20$ (rango $[15, 24]$,
+5 semillas); bloqueado por dominio, hasta $k = 67$: el directorio no puede
+enrutar conocimiento que no ha presenciado todavía.
+Todas las condiciones con puntuación corregida convergen al mismo estado final:
 el orden afecta la velocidad, no el destino.
 
 \begin{figure}[H]
@@ -269,8 +269,8 @@ La generalización sobre imágenes de test crece con la cobertura del llenado:
 56.7\,\% en $N{=}200$ y 78.3\,\% en $N{=}328$.
 La tasa de falsos aceptados fue de \textbf{0\,\% en todo el rango}: el containment
 inverso con $\xi = 0$ nunca acepta una imagen de otra clase.
-El routing de labels alcanza su mejor zona en $N = 200$ (96.2\,\%) y se degrada
-en $N = 328$ (81.2\,\%) por saturación del eje contrario; por eso la zona de
+El enrutamiento de labels alcanza su mejor zona en $N = 200$ (97.5\,\%) y se degrada
+en $N = 328$ (85.0\,\%) por saturación del eje contrario; por eso la zona de
 operación recomendada es $N = 200$.
 
 \paragraph{Calibración del directorio: por qué B1.}
@@ -291,14 +291,14 @@ sin tocar la raíz.
         \toprule
         Condición & Descripción & Precisión (\%) \\
         \midrule
-        A (cruda)     & Score de activación sin normalizar               & 33.75 \\
-        B1            & División entre conteo de registros por agente     & \textbf{97.50} \\
-        B2            & División entre raíz cuadrada del conteo           & 46.25 \\
-        C             & Cap de número máximo de registros por agente      & 33.75 \\
-        D             & Consultas balanceadas entre clases                & 33.33 \\
-        E32 / E64     & Cuantización binaria en 32 / 64 niveles           & 33.75 \\
-        F             & Vocabulario curado (sin ruido Apple Inc.)         & 67.50 \\
-        G (D+B1+F)    & Consultas balanceadas + B1 + vocabulario curado   & 96.15 \\
+        A (cruda)     & Score de activación sin normalizar               & 53.75 \\
+        B1            & División entre conteo de registros por agente     & \textbf{98.75} \\
+        B2            & División entre raíz cuadrada del conteo           & 75.00 \\
+        C             & Cap de número máximo de registros por agente      & 53.75 \\
+        D             & Consultas balanceadas entre clases                & 52.82 \\
+        E32 / E64     & Cuantización binaria en 32 / 64 niveles           & 53.75 \\
+        F             & Vocabulario curado (sin ruido Apple Inc.)         & 80.00 \\
+        G (D+B1+F)    & Consultas balanceadas + B1 + vocabulario curado   & 98.72 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -312,11 +312,11 @@ sin tocar la raíz.
 \end{figure}
 
 \paragraph{Hemisferio visual e inversa.}
-En la dirección imagen $\to$ palabras, el routing visual acierta el
+En la dirección imagen $\to$ palabras, el enrutamiento visual acierta el
 \textbf{100\,\%} de las imágenes que acepta (la cobertura con $\xi = 0$ es la
 restricción: 32.9\,\% del test) y la evocación de dominio top-3 alcanza
 \textbf{16/17 = 94.1\,\%}.
-En la dirección texto $\to$ imagen, los recalls visuales deben leerse como
+En la dirección texto $\to$ imagen, las recuperaciones visuales deben leerse como
 imágenes prototípicas del dominio, producidas por la acumulación de registros
 en la memoria y no como copias de imágenes particulares.
 
@@ -324,7 +324,7 @@ en la memoria y no como copias de imágenes particulares.
     \centering
     \includegraphics[width=0.92\textwidth]{recall_por_n.png}
     \caption{Imágenes recuperadas para la consulta ``fruit'' con distintos
-    tamaños de llenado $N$. A mayor cobertura, la memoria produce recalls con
+    tamaños de llenado $N$. A mayor cobertura, la memoria produce recuperaciones con
     más variedad; cada imagen recuperada es prototípica porque surge de la
     distribución acumulada en la memoria.}
     \label{fig:recall-por-n}
@@ -333,7 +333,7 @@ en la memoria y no como copias de imágenes particulares.
 \paragraph{El hallazgo de fondo: el sesgo venía del llenado.}
 El sesgo de densidad que motivó varias calibraciones externas no era un defecto
 de la EAM sino una consecuencia de llenar mal las memorias.
-Con un prototipo promedio repetido $N$ veces, el recall colapsa a un solo
+Con un prototipo promedio repetido $N$ veces, la recuperación colapsa a un solo
 patrón (variedad $L_1 = 0.00$); con instancias reales, 12 muestras producen
 12 patrones distintos y las masas quedan igualadas por construcción.
 La teoría de Pineda y Morales estaba completa: bastaba alimentarla con los
