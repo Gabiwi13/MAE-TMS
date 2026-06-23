@@ -89,6 +89,34 @@ def load_models():
     return decoder, agents, vectors_cache, g_min, g_max, nlp, ref_imgs
 
 
+# Hemisferio visual (imagen → etiquetas). Aditivo: no toca load_models.
+# El encoder ResNet18 es solo el "ojo" que produce la pista vectorial; el
+# reconocimiento, el rechazo y la reconstrucción son de la MAE.
+
+_IMG_TF = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+])
+
+
+@st.cache_resource
+def load_image_encoder():
+    from stage2_encoder import Encoder
+    enc = Encoder()
+    enc.load_state_dict(
+        torch.load(MODELS_DIR / "encoder.pt", map_location="cpu"))
+    enc.eval()
+    return enc
+
+
+def encode_pil(img, encoder):
+    """PIL → latente. Usa la normalización ImageNet que el encoder espera
+    (no la ToTensor cruda)."""
+    t = _IMG_TF(img.convert("RGB").resize((128, 128))).unsqueeze(0)
+    with torch.no_grad():
+        return encoder(t).cpu().numpy()[0]
+
+
 @st.cache_resource
 def load_experiment_state():
     """
@@ -267,10 +295,14 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     }
     # Rechazo de la EAM: si ningún agente contiene las pistas, no se declara
     # ganador por desempate (apple ganaría siempre con scores en cero).
+    tokens_representable = list(per_token.keys())
+    tokens_unrepresentable = [t for t in tokens if t not in per_token]
     if max(avg_scores.values()) == 0.0:
         return {
             "query": query, "spacy_tokens": spacy_tokens, "tokens": tokens,
             "tokens_known": tokens_known, "tokens_unknown": tokens_unknown,
+            "tokens_representable": tokens_representable,
+            "tokens_unrepresentable": tokens_unrepresentable,
             "per_token": per_token, "avg_scores": avg_scores,
             "winner": None, "winner_idx": None, "n_tokens": n_tok,
             "normalized": bool(normalize), "rejected": True,
@@ -312,6 +344,8 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         "tokens":             tokens,
         "tokens_known":       tokens_known,
         "tokens_unknown":     tokens_unknown,
+        "tokens_representable":   tokens_representable,
+        "tokens_unrepresentable": tokens_unrepresentable,
         "per_token":          per_token,
         "avg_scores":         avg_scores,
         "winner":             winner,
@@ -877,13 +911,9 @@ async function run(){
   }));
   await sleep(950); dot.remove();
 
-  // TME also registers the recalled latent in its M_dir_R (early only)
-  if(D.img && !isMature){
-    const tb2=$('tmebadge');
-    tb2.innerHTML='M_dir_R.register(z_latent, '+onehot+')';
-    tb2.style.opacity=1;
-    setTimeout(()=>{ tb2.style.opacity=0; }, 1600);
-  }
+  // M_dir_R (visual directory) is trained ONLY from real image perceptions in
+  // stage7. Recalled latents are echoes of the memory and are never registered
+  // in M_dir_R, so the early phase shows no such registration here.
 
   const res=$('result');
   let inner='';
@@ -919,17 +949,19 @@ window.addEventListener('load', ()=>setTimeout(run, 300));
 def build_flow_animation(trace) -> str:
     """Serialize real trace data into the animated HTML component."""
     accepted_pos = {"NOUN", "ADJ", "PROPN"}
+    representable = trace.get("tokens_representable", trace["tokens_known"])
+    unrepresentable = trace.get("tokens_unrepresentable", trace["tokens_unknown"])
     words = []
     for t in trace["spacy_tokens"]:
-        keep = t["lemma"] in trace["tokens_known"]
+        keep = t["lemma"] in representable
         if keep:
             reason = ""
         elif t["is_stop"]:
             reason = "stop"
         elif t["pos"] not in accepted_pos:
             reason = t["pos"]
-        elif t["lemma"] in trace["tokens_unknown"]:
-            reason = "OOV"
+        elif t["lemma"] in unrepresentable:
+            reason = "no-repr"
         else:
             reason = "dup"
         words.append({"text": t["text"], "keep": keep, "reason": reason})
@@ -965,33 +997,39 @@ def _decompose_anim_data(query, nlp, vectors_cache):
     accepted_pos = {"NOUN", "ADJ", "PROPN"}
     doc = nlp(query.lower())
     tokens  = tokenize_query(query, nlp)
-    known   = [t for t in tokens if token_in_vocabulary(t, vectors_cache)]
-    unknown = [t for t in tokens if t not in known]
+    # Sin filtro léxico: "keep" = token representable por fastText (entra como
+    # pista). token_in_vocabulary no decide nada aquí.
+    representable = [
+        t for t in tokens
+        if get_fasttext_vector(t, vectors_cache, allow_fallback=False) is not None
+    ]
+    unrepresentable = [t for t in tokens if t not in representable]
 
     words = []
     for tok in doc:
         if not (tok.is_alpha and len(tok.text) > 1):
             continue
-        keep = tok.lemma_ in known
+        keep = tok.lemma_ in representable
         if keep:
             reason = ""
         elif tok.is_stop:
             reason = "stop"
         elif tok.pos_ not in accepted_pos:
             reason = tok.pos_
-        elif tok.lemma_ in unknown:
-            reason = "OOV"
+        elif tok.lemma_ in unrepresentable:
+            reason = "no-repr"
         else:
             reason = "dup"
         words.append({"text": tok.text, "keep": keep, "reason": reason})
 
     toks = []
-    for t in known[:6]:
-        v   = np.array(get_fasttext_vector(t, vectors_cache), dtype=np.float32)
+    for t in representable[:6]:
+        v   = np.asarray(get_fasttext_vector(t, vectors_cache,
+                                             allow_fallback=False), dtype=np.float32)
         q_v = quantize_binary(v, M_LABEL)
         toks.append({"lemma": t, "vq": [int(x) for x in q_v[::5]]})
 
-    return words, toks, known
+    return words, toks, representable
 
 
 def build_mature_animation(query, words, toks, entry, dest,
@@ -1089,9 +1127,11 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
     with c2:
         st.markdown("**spaCy token analysis**")
         badges = ""
+        _repr = trace.get("tokens_representable", trace["tokens_known"])
+        _unrepr = trace.get("tokens_unrepresentable", trace["tokens_unknown"])
         for t in trace["spacy_tokens"]:
-            used = t["lemma"] in trace["tokens_known"]
-            oov  = t["lemma"] in trace["tokens_unknown"]
+            used = t["lemma"] in _repr
+            oov  = t["lemma"] in _unrepr
             if used:
                 bg, border = DOMAIN_COLOR.get("apple", "#27ae60"), "2px solid #fff"
                 bg = "#27ae60"
@@ -1558,7 +1598,8 @@ def main():
             st.session_state.last_trace = trace
             st.session_state.history.append({
                 "query":      trace["query"],
-                "tokens":     trace["tokens_known"],
+                "tokens":     trace.get("tokens_representable",
+                                        trace["tokens_known"]),
                 "winner":     trace["winner"],
                 "winner_idx": trace["winner_idx"],
                 "avg_scores": trace["avg_scores"],
@@ -1568,11 +1609,12 @@ def main():
     st.divider()
 
     # Tabs
-    tab_trace, tab_routing, tab_mdir, tab_mature, tab_info = st.tabs([
+    tab_trace, tab_routing, tab_mdir, tab_mature, tab_image, tab_info = st.tabs([
         "Pipeline Trace",
         "Routing Summary",
         "M_dir Evolution",
         "Mature Phase",
+        "Imagen → Etiquetas",
         "ETH-80 Reference",
     ])
 
@@ -1621,8 +1663,10 @@ def main():
                 unsafe_allow_html=True,
             )
 
-            tok_badges = "  ".join(f"`{t}`" for t in trace["tokens_known"])
-            st.markdown(f"**Tokens used:** {tok_badges}")
+            tok_badges = "  ".join(
+                f"`{t}`" for t in trace.get("tokens_representable",
+                                            trace["tokens_known"]))
+            st.markdown(f"**Tokens usados (representables):** {tok_badges}")
 
             c_g, c_s, c_i = st.columns([2, 1.5, 1])
             with c_g:
@@ -2129,6 +2173,70 @@ def main():
                                 )
 
     # TAB 5: ETH-80 Reference
+    with tab_image:
+        st.header("Imagen → Etiquetas (hemisferio visual)")
+        st.caption(
+            "El encoder ResNet18 es solo el «ojo» que convierte la imagen en una "
+            "pista vectorial. El reconocimiento, el rechazo y la reconstrucción "
+            "salen de la MAE: si ninguna memoria contiene la percepción, se rechaza; "
+            "si la contiene, el agente ganador evoca etiquetas y reconstruye desde su "
+            "propia memoria (no es la imagen de entrada — los falsos positivos son "
+            "honestos).")
+
+        up = st.file_uploader("Sube una imagen (png/jpg)",
+                              type=["png", "jpg", "jpeg"])
+        if up is not None:
+            from stage5_fill import quantize_latent_global
+            from stage7_bidirectional import (
+                recognize_gated_right, evoke_labels, load_global_stats)
+            import io as _io
+            import contextlib as _ctx
+            encoder = load_image_encoder()
+            gmin_v, gmax_v = load_global_stats()
+            all_vecs = {}
+            for _c in CLASSES:
+                all_vecs.update(vectors_cache.get(_c, {}))
+
+            pil = Image.open(_io.BytesIO(up.getvalue()))
+            z = encode_pil(pil, encoder)
+            z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
+            scores = {c: float(recognize_gated_right(agents[c], z_q))
+                      for c in CLASSES}
+
+            c_in, c_out = st.columns([1, 1.4])
+            with c_in:
+                st.image(pil.convert("RGB").resize((128, 128)),
+                         caption="Entrada (pista)", use_container_width=True)
+                for c in CLASSES:
+                    st.metric(f"{DOMAIN_EMOJI[c]} {c} · recognize_gated_right",
+                              f"{scores[c]:.3f}")
+
+            with c_out:
+                if max(scores.values()) == 0.0:
+                    st.error(
+                        "RECHAZADA por la MAE — ninguna memoria contiene esta "
+                        "percepción (containment ξ=0). No se asigna ganador.")
+                else:
+                    winner = max(scores, key=scores.get)
+                    st.success(
+                        f"Aceptada → agente **{DOMAIN_EMOJI[winner]} {winner}** "
+                        f"(score {scores[winner]:.3f})")
+                    labels = evoke_labels(agents[winner], z_q, all_vecs)
+                    st.markdown("**Etiquetas evocadas (top-3):** " +
+                                "  ".join(f"`{w}`" for w in labels))
+                    with _ctx.redirect_stdout(_io.StringIO()):
+                        r_io, recognized, _w = agents[winner].mem_dom_R.recall(z_q)
+                    if recognized:
+                        rec_img = _decode(r_io, gmin_v, gmax_v, decoder)
+                        st.image(_t2img(rec_img),
+                                 caption="Reconstrucción evocada por la MAE "
+                                         "(decode(mem_dom_R.recall), no la entrada)",
+                                 use_container_width=True)
+                    else:
+                        st.info("El agente reconoce la percepción para routing pero "
+                                "su recall no produjo un patrón estable para "
+                                "reconstruir.")
+
     with tab_info:
         st.header("ETH-80 Reference Images")
         st.caption("One representative training image per domain.")

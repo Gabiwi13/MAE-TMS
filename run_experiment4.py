@@ -8,7 +8,7 @@ retrasa o impide la convergencia?
 
 Protocolo
 ---------
-Fase temprana corregida (gate η + ÷mem.mean, exp. 3) sobre el banco de 80
+Fase temprana oficial (recognize_gated, sin ÷mem.mean) sobre el banco de 80
 queries. Tras CADA interacción k se congela el M_dir y se evalúa la fase
 madura completa (80 queries, routing B1, rechazo explícito) → curvas de:
   - accuracy madura(k)        ¿ya puedo apagar el TME?
@@ -26,8 +26,9 @@ Condiciones
 Nota de instrumentación: en la arquitectura real los 4 M_dir (TME + 3
 agentes) reciben registros idénticos; aquí se instrumenta uno solo
 (DirectoryMemory, EHAM real) que representa ese estado compartido.
-La fase temprana no hace recall (learn_latent llena M_dir_R, que no
-participa del routing por labels medido aquí; validado en exp. 3).
+La fase temprana semántica actualiza solo el directorio de labels (token →
+ganador). mem_dir_R no se actualiza con recalls: el directorio visual se
+entrena solo con percepciones reales de imágenes (stage7).
 
 Solo lectura de stage5; nada del exp. 1–3 se modifica.
 Salidas en results/exp4_directory_formation/
@@ -381,8 +382,8 @@ def main():
         "(DirectoryMemory, EHAM real).",
         "- Los 4 M_dir de la arquitectura reciben registros idénticos; se "
         "instrumenta uno que representa el estado compartido.",
-        "- Sin recall en temprana (M_dir_R no participa del routing por "
-        "labels; pipeline completo validado en exp. 3).",
+        "- Temprana semántica registra solo el directorio de labels; mem_dir_R "
+        "(visual) se entrena solo con percepciones reales en stage7.",
     ]
     (OUT_DIR / "report.md").write_text("\n".join(rep), encoding="utf-8")
     print(f"\nSalidas -> {OUT_DIR}")
