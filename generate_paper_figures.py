@@ -204,6 +204,13 @@ TEXTS = {
         "recog_title":      "Heatmap de reconocimiento en M_dom (diagnóstico)\n"
                             "(activación cruda, normalizada por fila — NO es el "
                             "routing oficial gateado)",
+        "imgrej_title":     "Rechazo de imágenes por la MAE (containment, sin filtro léxico)",
+        "imgrej_accepted":  "Aceptadas (la MAE tiene soporte)",
+        "imgrej_rejected":  "Rechazadas — reales (containment ξ=0)",
+        "imgrej_ood":       "Fuera de dominio (sintéticas) — rechazadas",
+        "img2lbl_title":    "Salida semántica: imagen → recall MAE → etiquetas (94.1% top-3)",
+        "img2lbl_input":    "Entrada (pista)",
+        "img2lbl_recon":    "Reconstrucción evocada (MAE)",
         "recog_y":          "Labels (agrupadas por dominio)",
         "recog_x":          "Agente M_dom",
         "recog_cbar":       "Peso de reconocimiento normalizado",
@@ -1031,6 +1038,197 @@ def fig_recall_grid():
     savefig("fig14_recall_grid.png", fig)
 
 
+# Hemisferio visual: rechazo de imágenes y salida semántica (imagen → labels).
+# El encoder es solo el "ojo"; reconocimiento, rechazo y reconstrucción son MAE.
+
+def _load_visual_assets():
+    import torch
+    from stage2_encoder import Decoder
+    from stage5_fill import load_agent_memories
+    from stage6_interaction import Agent, load_all_vectors
+    from stage7_bidirectional import load_encoder, load_global_stats
+    classes = ["apple", "horse", "car"]
+    enc = load_encoder()
+    dec = Decoder()
+    dec.load_state_dict(torch.load(ROOT / "models" / "decoder.pt",
+                                   map_location="cpu"))
+    dec.eval()
+    g_min, g_max = load_global_stats()
+    agents = {}
+    for c in classes:
+        H, L, R = load_agent_memories(c)
+        agents[c] = Agent(c, H, mem_dom_L=L, mem_dom_R=R)
+    vc = load_all_vectors()
+    all_vecs = {}
+    for c in classes:
+        all_vecs.update(vc[c])
+    vocab_by_cls = {c: set(vc[c].keys()) for c in classes}
+    splits = json.loads((ROOT / "data" / "eth80" / "splits.json").read_text())
+    return enc, dec, agents, g_min, g_max, all_vecs, vocab_by_cls, splits
+
+
+def _encode_img(pil, enc):
+    import torch
+    from stage7_bidirectional import IMG_TRANSFORM
+    t = IMG_TRANSFORM(pil.convert("RGB").resize((128, 128))).unsqueeze(0)
+    with torch.no_grad():
+        return enc(t).cpu().numpy()[0]
+
+
+def _visual_scores(agents, z_q, classes):
+    from stage7_bidirectional import recognize_gated_right
+    return {c: float(recognize_gated_right(agents[c], z_q)) for c in classes}
+
+
+def _mae_reconstruction(agent, z_q, g_min, g_max, decoder):
+    """Reconstrucción interna de la MAE: la memoria homo del latente completa
+    la percepción (mem_dom_R.recall) y el decoder la renderiza. NO es la
+    imagen de entrada."""
+    import io as _io, contextlib as _ctx, torch
+    with _ctx.redirect_stdout(_io.StringIO()):
+        r_io, recognized, _w = agent.mem_dom_R.recall(z_q)
+    if not recognized:
+        return None
+    v_norm = r_io.astype(float) / 31.0
+    v_lat = (v_norm * (g_max - g_min) + g_min).astype(np.float32)
+    with torch.no_grad():
+        img = decoder(torch.tensor(v_lat).unsqueeze(0))[0].clamp(0, 1)
+    return img.permute(1, 2, 0).numpy()
+
+
+def _synthetic_ood():
+    """Imágenes claramente fuera de dominio para probar el rechazo MAE."""
+    from PIL import Image
+    rng = np.random.RandomState(0)
+    noise = (rng.rand(128, 128, 3) * 255).astype(np.uint8)
+    solid = np.full((128, 128, 3), 127, dtype=np.uint8)
+    scram = (rng.rand(128, 128, 3) * 255).astype(np.uint8)
+    scram = scram.reshape(-1, 3)
+    rng.shuffle(scram)
+    scram = scram.reshape(128, 128, 3)
+    return [("noise", Image.fromarray(noise)),
+            ("solid", Image.fromarray(solid)),
+            ("scrambled", Image.fromarray(scram))]
+
+
+def fig_image_rejection():
+    """Rechazo visual: la MAE acepta o rechaza una percepción por containment
+    (recognize_gated_right). Fila 1 aceptadas reales, fila 2 rechazadas reales
+    (ξ=0), fila 3 sintéticas fuera de dominio (todas score 0)."""
+    from PIL import Image
+    from stage5_fill import quantize_latent_global
+    classes = ["apple", "horse", "car"]
+    enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
+
+    accepted, rejected_real = [], []
+    for cls in classes:
+        for p in splits[cls]["test"]:
+            z_q = quantize_latent_global(_encode_img(Image.open(p), enc),
+                                         g_min, g_max, 32)
+            sc = _visual_scores(agents, z_q, classes)
+            if max(sc.values()) > 0 and len(accepted) < 3:
+                w = max(sc, key=sc.get)
+                accepted.append((Image.open(p).convert("RGB").resize((128, 128)),
+                                 f"→ {w} ({sc[w]:.0f})", True))
+            elif max(sc.values()) == 0 and len(rejected_real) < 3:
+                rejected_real.append((Image.open(p).convert("RGB").resize((128, 128)),
+                                      "rechazada (ξ=0)", False))
+            if len(accepted) >= 3 and len(rejected_real) >= 3:
+                break
+        if len(accepted) >= 3 and len(rejected_real) >= 3:
+            break
+
+    synth = []
+    for name, img in _synthetic_ood():
+        z_q = quantize_latent_global(_encode_img(img, enc), g_min, g_max, 32)
+        sc = _visual_scores(agents, z_q, classes)
+        ok = max(sc.values()) > 0
+        synth.append((img, f"{name}: {'aceptada' if ok else 'rechazada'}", ok))
+
+    rows = [
+        (T.get("imgrej_accepted", "Accepted (MAE has support)"), accepted),
+        (T.get("imgrej_rejected", "Rejected — real (containment ξ=0)"), rejected_real),
+        (T.get("imgrej_ood", "Out-of-domain (synthetic) — rejected"), synth),
+    ]
+    fig, axes = plt.subplots(3, 3, figsize=(7.2, 7.8))
+    for r, (row_title, items) in enumerate(rows):
+        for c in range(3):
+            ax = axes[r][c]
+            ax.axis("off")
+            if c < len(items):
+                img, cap, ok = items[c]
+                ax.imshow(np.asarray(img))
+                ax.set_title(cap, fontsize=8,
+                             color=("#27ae60" if ok else "#c0392b"))
+                for s in ax.spines.values():
+                    s.set_visible(True)
+                    s.set_color("#27ae60" if ok else "#c0392b")
+                    s.set_linewidth(2)
+            if c == 0:
+                ax.text(-0.08, 0.5, row_title, transform=ax.transAxes,
+                        rotation=90, va="center", ha="right", fontsize=8.5,
+                        fontweight="bold")
+    fig.suptitle(T.get("imgrej_title",
+                       "Image rejection by the MAE (containment, no lexical filter)"),
+                 fontsize=11)
+    fig.tight_layout()
+    savefig("fig15_image_rejection.png", fig)
+
+
+def fig_image_to_labels():
+    """Salida semántica: imagen → reconstrucción evocada por la MAE → labels.
+    Demuestra image→labels (evocación) y que la reconstrucción es lo que la
+    memoria completa, no la entrada."""
+    from PIL import Image
+    from stage5_fill import quantize_latent_global
+    from stage7_bidirectional import evoke_labels
+    classes = ["apple", "horse", "car"]
+    enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
+
+    samples = []
+    for cls in classes:
+        taken = 0
+        for p in splits[cls]["test"]:
+            z_q = quantize_latent_global(_encode_img(Image.open(p), enc),
+                                         g_min, g_max, 32)
+            sc = _visual_scores(agents, z_q, classes)
+            if max(sc.values()) == 0:
+                continue
+            w = max(sc, key=sc.get)
+            labels = evoke_labels(agents[w], z_q, all_vecs)
+            hit = any(lbl in vocab[cls] for lbl in labels)
+            recon = _mae_reconstruction(agents[w], z_q, g_min, g_max, dec)
+            samples.append((Image.open(p).convert("RGB").resize((128, 128)),
+                            recon, w, labels, hit))
+            taken += 1
+            if taken >= 2:
+                break
+
+    n = len(samples)
+    fig, axes = plt.subplots(n, 3, figsize=(7.6, 2.5 * n))
+    if n == 1:
+        axes = [axes]
+    for r, (inp, recon, w, labels, hit) in enumerate(samples):
+        ax0, ax1, ax2 = axes[r]
+        ax0.imshow(np.asarray(inp)); ax0.axis("off")
+        ax0.set_title(T.get("img2lbl_input", "Input (cue)"), fontsize=9)
+        ax1.axis("off")
+        if recon is not None:
+            ax1.imshow(np.clip(recon, 0, 1))
+        ax1.set_title(T.get("img2lbl_recon", "MAE evoked recon."), fontsize=9)
+        ax2.axis("off")
+        mark = "✓" if hit else "✗"
+        col = "#27ae60" if hit else "#c0392b"
+        ax2.text(0.5, 0.62, f"→ {w}", ha="center", fontsize=11, fontweight="bold")
+        ax2.text(0.5, 0.40, "\n".join(labels), ha="center", fontsize=10)
+        ax2.text(0.5, 0.10, f"domain-hit {mark}", ha="center", fontsize=9, color=col)
+    fig.suptitle(T.get("img2lbl_title",
+                       "Semantic output: image → MAE recall → labels (94.1% top-3 hit)"),
+                 fontsize=11)
+    fig.tight_layout()
+    savefig("fig16_image_to_labels.png", fig)
+
+
 # Architectural changes MD
 
 ARCH_MD = """\
@@ -1051,7 +1249,7 @@ ARCH_MD = """\
 | **Quantizer** | `quantize(v, q=32)` with fixed vmin=-1, vmax=1 | 32 bins |
 | **fastText** | sign(v) ∈ {-1,+1}^300, `quantize_binary(v, m=16)` | 2 of 16 bins used |
 | **M_dom** | HeteroAssociativeMemory(n=300, m=16, p=64, q=32) per agent | 3 agents |
-| **M_dir** | SimpleDirectoryMemory(n=300, m=16, n_agents=3) | predict = vote sum |
+| **M_dir** | v1 frequency-table directory (replaced by DirectoryMemory) | predict = vote sum |
 | **TME** | Star topology, broadcast early → argmax → M_dir.register | early/mature phase |
 | **Labels** | ConceptNet 5.7.0 RelatedTo (~62 words per domain) | includes "computer","mac" |
 
@@ -1120,8 +1318,10 @@ prototypes (beige sphere for apple, dark blob for horse, flat shape for car).
 **Key finding:** B1 normalization (÷count) alone resolves 98.75% of the bias.
 Combination G eliminates the bias completely.
 
-**New class:** `DirectoryMemoryTracked` extends `SimpleDirectoryMemory` with
-`_counts` per agent and `predict_normalized(mode="linear"|"sqrt")` method.
+**Final system:** the directory is `DirectoryMemory`, a hetero-associative
+memory `(n, m → K, 2)` with `_counts` per agent and `predict_normalized(
+mode="linear"|"sqrt")` (B1). There is no explicit `unknown` class — rejection
+emerges when no agent yields positive evidence.
 
 ---
 
@@ -1240,10 +1440,9 @@ def main():
         fig_recognition_heatmap()
         fig_precision_recall()
         fig_recall_grid()
+        fig_image_rejection()
+        fig_image_to_labels()
 
-    # Architectural changes MD (language-independent)
-    print("\n  Markdown:")
-    write_arch_md(out_root)
 
     # Summary
     total = sum(1 for p in out_root.rglob("*") if p.is_file())
