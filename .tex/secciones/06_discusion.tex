@@ -71,7 +71,7 @@ Esto produce una precisión perfecta sobre las imágenes aceptadas (100\%), pero
 El siguiente paso es probar varios valores de $\xi > 0$: valores pequeños de $\xi$ podrían aumentar la cobertura con un costo controlado en especificidad, dado que la tasa de falsos fue del 0\% en todo el rango de $N$ probado (Tabla~\ref{tab:capacidad}).
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
-El decoder del autoencoder, entrenado con error cuadrático medio (MSE), produce reconstrucciones visualmente suaves que carecen de detalle de alta frecuencia.
+El decoder del autoencoder, entrenado con un término de reconstrucción MSE dentro de una pérdida total que incluye una cabeza auxiliar de clasificación, produce reconstrucciones visualmente suaves que carecen de detalle de alta frecuencia (cf.\ la reconstrucción visual e imaginación en EAM de Pineda y Morales~\cite{pineda2023imagery}).
 Este es un efecto de la función de pérdida del autoencoder, no del sistema de memorias asociativas, y puede abordarse de forma independiente mediante funciones de pérdida perceptuales o arquitecturas generativas más expresivas.
 
 \paragraph{(d) Aprendizaje limitado después de formar el directorio.}
@@ -85,3 +85,7 @@ conocimiento nuevo ni cómo reorganiza sus memorias de contenido durante la oper
 madura.
 El directorio sí se evalúa como mecanismo de coordinación, pero el aprendizaje continuo
 de los agentes queda fuera del alcance de este reporte.
+
+\paragraph{(e) Partición a nivel de imagen.}
+La partición train/test se realizó a nivel de archivo de imagen, no a nivel de objeto físico de ETH-80.
+Una validación más estricta deberá usar particiones por objeto físico para medir generalización a instancias completamente no vistas.

@@ -1053,6 +1053,243 @@ def build_mature_animation(query, words, toks, entry, dest,
     return _ANIM_TEMPLATE.replace("__DATA__", json.dumps(data))
 
 
+# Animated visual-hemisphere flow (imagen → etiquetas). Componente nuevo y
+# autocontenido: NO reutiliza ni modifica _ANIM_TEMPLATE ni los builders de la
+# fase principal. Cada components.html se renderiza en su propio iframe.
+_ANIM_IMG2LBL_TEMPLATE = r"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
+#anim{position:relative;width:100%;max-width:1000px;margin:0 auto;
+  background:linear-gradient(160deg,#0e1130 0%,#1b1f4b 55%,#101332 100%);
+  border-radius:16px;padding:22px 24px 18px;color:#e8eaf6;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.phase-label{position:absolute;top:16px;right:22px;font-size:11px;letter-spacing:2px;
+  color:#8d93c8;text-transform:uppercase;text-align:right}
+#replay{position:absolute;top:12px;left:16px;background:#2b3060;border:1px solid #4a508f;
+  color:#cfd4ff;border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;z-index:9}
+#replay:hover{background:#3a4080}
+#top{display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-top:30px;min-height:132px}
+.stagebox{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cap{font-size:10px;letter-spacing:1px;color:#8d93c8;text-transform:uppercase}
+#cue{opacity:0;transition:opacity .6s}
+#cueimg{width:96px;height:96px;border-radius:10px;border:2px solid #6b79e8;
+  box-shadow:0 0 16px rgba(107,121,232,.4);object-fit:cover}
+.arrow{font-size:26px;color:#5c6190}
+#eye{width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3d4db7,#1d2566);
+  border:3px solid #6b79e8;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;color:#fff;font-weight:700}
+#eye .ico{font-size:24px;line-height:1}
+#eye small{font-size:8px;color:#aab3ff;font-weight:400;margin-top:2px}
+#eye.pulse{animation:pulse .9s ease-out 2}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(120,140,255,.8)}
+  100%{box-shadow:0 0 0 30px rgba(120,140,255,0)}}
+#latentwrap{transition:opacity .5s}
+.grid{display:grid;grid-template-columns:repeat(16,10px);gap:1px}
+.cell{width:10px;height:10px;border-radius:2px;background:#1a1d3d;opacity:0;
+  transform:scale(0);transition:all .25s}
+.cell.on{opacity:1;transform:scale(1)}
+#net{display:flex;gap:20px;justify-content:center;margin-top:16px}
+.agent{width:212px;background:#181c44;border:2px solid #303670;border-radius:14px;
+  padding:11px 13px;transition:all .5s}
+.agent h4{font-size:15px;display:flex;align-items:center;gap:6px;color:#fff}
+.agent .sub{font-size:9px;color:#8d93c8;margin-top:2px;letter-spacing:.5px}
+.agent .crown{margin-left:auto;opacity:0;transform:scale(0);
+  transition:all .5s cubic-bezier(.3,1.6,.4,1)}
+.agent .crown.show{opacity:1;transform:scale(1.25)}
+.agent .barwrap{height:9px;background:#0d0f29;border-radius:5px;margin-top:9px;overflow:hidden}
+.agent .bar{height:100%;width:0%;border-radius:5px;transition:width 1.1s cubic-bezier(.2,.8,.3,1)}
+.agent .score{font-family:monospace;font-size:12px;color:#aab3ff;margin-top:4px;text-align:right}
+.agent.win{border-color:#ffd54f;box-shadow:0 0 26px rgba(255,213,79,.45);transform:scale(1.05)}
+.agent.lose{opacity:.4;filter:saturate(.4)}
+.agent.reject{border-color:#ff6b6b;box-shadow:0 0 18px rgba(255,107,107,.35)}
+#labels{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
+  min-height:42px;margin-top:14px}
+.lchip{padding:6px 15px;border-radius:16px;background:#0e7c66;color:#fff;font-size:15px;
+  font-weight:600;box-shadow:0 0 14px rgba(36,222,166,.4);opacity:0;
+  transform:translateY(-12px) scale(.8);transition:all .45s cubic-bezier(.2,.8,.3,1.2)}
+.lchip.show{opacity:1;transform:none}
+#result{display:flex;align-items:center;gap:16px;justify-content:center;min-height:118px;
+  margin-top:8px;opacity:0;transform:translateY(16px);transition:all .7s}
+#result.show{opacity:1;transform:none}
+#result img{width:100px;height:100px;border-radius:10px;border:2px solid #6b79e8;object-fit:cover}
+#result img.recon{border-color:#ffd54f;box-shadow:0 0 22px rgba(255,213,79,.4)}
+#result .arrowbig{font-size:30px;color:#ffd54f}
+#result .txt{font-size:14px;line-height:1.6;max-width:520px}
+#result .txt b{color:#ffd54f}
+#result .txt code{background:#0e7c66;color:#fff;padding:1px 7px;border-radius:8px;font-size:13px}
+#result .muted{color:#8d93c8;font-size:12px}
+.dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#ffd54f;
+  box-shadow:0 0 12px #ffd54f;z-index:5;transition:all .8s cubic-bezier(.45,.05,.4,1);
+  transform:translate(-50%,-50%)}
+</style></head><body>
+<div id="anim">
+  <button id="replay" onclick="run()">&#8635; Replay</button>
+  <div class="phase-label" id="plabel"></div>
+  <div id="top">
+    <div class="stagebox" id="cue"><div class="cap">imagen (pista)</div><img id="cueimg"></div>
+    <div class="arrow">&rarr;</div>
+    <div id="eye"><div class="ico">&#128065;</div><small>ResNet18</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stagebox" id="latentwrap"><div class="cap">z_q &#8712; [0,31]&#8310;&#8308;</div>
+      <div class="grid" id="latentgrid"></div></div>
+  </div>
+  <div id="net"></div>
+  <div id="labels"></div>
+  <div id="result"></div>
+</div>
+<script>
+const D=__DATA__;
+const AG=["apple","horse","car"];
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let running=false;
+function centerOf(el,ref){const a=el.getBoundingClientRect(),b=ref.getBoundingClientRect();
+  return [a.left+a.width/2-b.left,a.top+a.height/2-b.top];}
+function cellColor(v){const t=v/31,a=[26,29,61],b=[124,164,255];
+  const c=a.map((x,i)=>Math.round(x+(b[i]-x)*t));return `rgb(${c[0]},${c[1]},${c[2]})`;}
+function countUp(el,target,dur){const t0=performance.now();
+  function f(t){const p=Math.min(1,(t-t0)/dur);el.textContent=(target*p).toFixed(0);
+  if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+function mkdot(c,color){const d=document.createElement('div');d.className='dot';
+  d.style.left=c[0]+'px';d.style.top=c[1]+'px';d.style.background=color;
+  d.style.boxShadow='0 0 12px '+color;return d;}
+function move(d,c){requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  d.style.left=c[0]+'px';d.style.top=c[1]+'px';}));}
+
+function setup(){
+  const net=$('net');net.innerHTML='';
+  for(const cls of AG){
+    const d=document.createElement('div');d.className='agent';d.id='ag-'+cls;
+    d.innerHTML=`<h4>${D.emoji[cls]} ${cls}<span class="crown" id="cr-${cls}">&#128081;</span></h4>
+      <div class="sub">M_dom_R &middot; recognize_gated_right</div>
+      <div class="barwrap"><div class="bar" id="bar-${cls}" style="background:${D.colors[cls]}"></div></div>
+      <div class="score" id="sc-${cls}">&mdash;</div>`;
+    net.appendChild(d);
+  }
+  const g=$('latentgrid');g.innerHTML='';
+  for(let i=0;i<D.latent.length;i++){const c=document.createElement('div');c.className='cell';g.appendChild(c);}
+  $('cueimg').src='data:image/png;base64,'+D.queryImg;
+  $('labels').innerHTML='';$('result').innerHTML='';$('result').classList.remove('show');
+  $('cue').style.opacity=0;$('eye').classList.remove('pulse');$('latentwrap').style.opacity=.25;
+  document.querySelectorAll('.dot').forEach(x=>x.remove());
+}
+
+function showResult(rejected){
+  const res=$('result');let inner='';
+  inner+=`<img src="data:image/png;base64,${D.queryImg}" title="entrada">`;
+  if(rejected){
+    inner+=`<div class="txt"><b style="color:#ff6b6b">RECHAZADA por la MAE</b><br>`+
+      `<span class="muted">score 0 en los tres agentes &middot; containment &xi;=0 &middot; `+
+      `sin filtro externo</span></div>`;
+  }else{
+    inner+=`<div class="arrowbig">&rarr;</div>`;
+    if(D.reconImg)inner+=`<img class="recon" src="data:image/png;base64,${D.reconImg}" title="reconstruccion">`;
+    inner+=`<div class="txt">Aceptada &rarr; <b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b>`+
+      `<br>etiquetas: ${D.labels.map(w=>'<code>'+w+'</code>').join(' ')}`+
+      `<br><span class="muted">la reconstrucci&oacute;n la evoca la MAE (no es la entrada)</span></div>`;
+  }
+  res.innerHTML=inner;res.classList.add('show');
+}
+
+async function run(){
+  if(running)return;running=true;setup();
+  const lbl=$('plabel'),anim=$('anim');
+
+  lbl.textContent='1 / percepción (imagen de entrada)';
+  $('cue').style.opacity=1;await sleep(750);
+
+  lbl.textContent='2 / ResNet18 (ojo) → z ∈ ℝ⁶⁴';
+  {const dot=mkdot(centerOf($('cueimg'),anim),'#7da4ff');anim.appendChild(dot);
+   move(dot,centerOf($('eye'),anim));await sleep(800);dot.remove();}
+  $('eye').classList.add('pulse');await sleep(500);
+
+  lbl.textContent='3 / cuantización z → z_q ∈ [0,31]⁶⁴';
+  {const dot=mkdot(centerOf($('eye'),anim),'#9d7bff');anim.appendChild(dot);
+   move(dot,centerOf($('latentgrid'),anim));await sleep(750);dot.remove();}
+  $('latentwrap').style.opacity=1;
+  const cells=$('latentgrid').querySelectorAll('.cell');
+  for(let i=0;i<cells.length;i++){cells[i].style.background=cellColor(D.latent[i]);
+    cells[i].classList.add('on');if(i%4===0)await sleep(6);}
+  await sleep(500);
+
+  lbl.textContent='4 / broadcast z_q → M_dom_R de cada agente';
+  const gc=centerOf($('latentgrid'),anim);
+  for(const cls of AG){const dot=mkdot(gc,D.colors[cls]);anim.appendChild(dot);
+    move(dot,centerOf($('ag-'+cls),anim));}
+  await sleep(850);document.querySelectorAll('.dot').forEach(x=>x.remove());
+
+  lbl.textContent='5 / score por containment (recognize_gated_right)';
+  const mx=Math.max(...AG.map(c=>D.scores[c]),1e-9);
+  for(const cls of AG){$('bar-'+cls).style.width=(100*D.scores[cls]/mx)+'%';
+    countUp($('sc-'+cls),D.scores[cls],900);}
+  await sleep(1250);
+
+  if(D.winner===null){
+    lbl.textContent='6 / RECHAZADA — ninguna memoria contiene la percepción';
+    for(const cls of AG)$('ag-'+cls).classList.add('reject');
+    await sleep(400);showResult(true);
+    lbl.textContent='done — replay ↻';running=false;return;
+  }
+
+  lbl.textContent='6 / argmax → agente ganador';
+  for(const cls of AG){
+    if(cls===D.winner){$('ag-'+cls).classList.add('win');$('cr-'+cls).classList.add('show');}
+    else $('ag-'+cls).classList.add('lose');
+  }
+  await sleep(900);
+
+  lbl.textContent='7 / evoke_labels (recall inverso → top-3 coseno)';
+  const lw=$('labels');
+  for(const w of D.labels){
+    const chip=document.createElement('span');chip.className='lchip';chip.textContent=w;
+    lw.appendChild(chip);await sleep(130);chip.classList.add('show');
+  }
+  await sleep(700);
+
+  if(D.reconImg){lbl.textContent='8 / mem_dom_R.recall → decode → reconstrucción';await sleep(250);}
+  showResult(false);
+  lbl.textContent='done — replay ↻';running=false;
+}
+window.addEventListener('load',()=>setTimeout(run,250));
+</script></body></html>"""
+
+
+def build_image_to_labels_animation(pil, z_q, scores, agents, all_vecs,
+                                    decoder, gmin_v, gmax_v) -> str:
+    """Serializa el flujo imagen → etiquetas en el componente animado nuevo.
+    Solo visualiza el pipeline existente (encode → quantize → recognize_gated_right
+    → evoke_labels → reconstrucción); no altera ninguna memoria ni resultado."""
+    import io as _io
+    import contextlib as _ctx
+    from stage7_bidirectional import evoke_labels
+
+    scores = {c: float(scores[c]) for c in CLASSES}
+    winner = max(scores, key=scores.get) if max(scores.values()) > 0 else None
+
+    labels, recon_b64 = [], None
+    if winner is not None:
+        labels = list(evoke_labels(agents[winner], z_q, all_vecs))
+        with _ctx.redirect_stdout(_io.StringIO()):
+            r_io, recognized, _w = agents[winner].mem_dom_R.recall(z_q)
+        if recognized:
+            recon_b64 = _img_b64(_decode(r_io, gmin_v, gmax_v, decoder))
+
+    q_np = np.asarray(pil.convert("RGB").resize((128, 128)), dtype=np.float32) / 255.0
+    data = {
+        "queryImg": _img_b64(q_np),
+        "reconImg": recon_b64,
+        "latent":   [int(x) for x in np.asarray(z_q).ravel().tolist()],
+        "scores":   scores,
+        "winner":   winner,
+        "labels":   labels,
+        "colors":   DOMAIN_COLOR,
+        "emoji":    DOMAIN_EMOJI,
+    }
+    return _ANIM_IMG2LBL_TEMPLATE.replace("__DATA__", json.dumps(data))
+
+
 # Session state management
 
 def _init_session():
@@ -2236,6 +2473,15 @@ def main():
                         st.info("El agente reconoce la percepción para routing pero "
                                 "su recall no produjo un patrón estable para "
                                 "reconstruir.")
+
+            # Animación aditiva del flujo imagen → etiquetas (mismo pipeline,
+            # solo visualización; no toca el bloque estático de arriba).
+            st.divider()
+            st.subheader("Animación del flujo imagen → etiquetas")
+            components.html(
+                build_image_to_labels_animation(
+                    pil, z_q, scores, agents, all_vecs, decoder, gmin_v, gmax_v),
+                height=720, scrolling=False)
 
     with tab_info:
         st.header("ETH-80 Reference Images")

@@ -10,7 +10,9 @@ Este capítulo describe el conjunto de datos, el protocolo experimental, los par
 Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80}, que contiene imágenes fotográficas de objetos tridimensionales.
 Para este experimento se seleccionaron tres clases: \texttt{apple} (manzana), \texttt{horse} (caballo) y \texttt{car} (automóvil).
 Cada clase cuenta con 410 imágenes en escala de grises de $128\times128$ píxeles.
-Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba, sin solapamiento.
+Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba.
+La partición se realizó a nivel de archivo de imagen.
+Por tanto, no hay solapamiento de imágenes entre train y test, pero no se impone una separación leave-object-out entre objetos físicos de ETH-80.
 
 Dentro de la fase de alimentación, se definieron 3 fases disjuntas con propósitos distintos:
 \begin{itemize}
