@@ -205,9 +205,9 @@ TEXTS = {
                             "(activación cruda, normalizada por fila — NO es el "
                             "routing oficial gateado)",
         "imgrej_title":     "Rechazo de imágenes por la MAE (containment, sin filtro léxico)",
-        "imgrej_accepted":  "Aceptadas (la MAE tiene soporte)",
-        "imgrej_rejected":  "Rechazadas — reales (containment ξ=0)",
-        "imgrej_ood":       "Fuera de dominio (sintéticas) — rechazadas",
+        "imgrej_accepted":  "Aceptadas\n(con soporte)",
+        "imgrej_rejected":  "Rechazadas\n(reales, ξ=0)",
+        "imgrej_ood":       "Fuera de dominio\n(sintéticas)",
         "img2lbl_title":    "Salida semántica: imagen → recall MAE → etiquetas (94.1% top-3)",
         "img2lbl_input":    "Entrada (pista)",
         "img2lbl_recon":    "Reconstrucción evocada (MAE)",
@@ -1146,9 +1146,9 @@ def fig_image_rejection():
         synth.append((img, f"{name}: {'aceptada' if ok else 'rechazada'}", ok))
 
     rows = [
-        (T.get("imgrej_accepted", "Accepted (MAE has support)"), accepted),
-        (T.get("imgrej_rejected", "Rejected — real (containment ξ=0)"), rejected_real),
-        (T.get("imgrej_ood", "Out-of-domain (synthetic) — rejected"), synth),
+        (T.get("imgrej_accepted", "Accepted\n(has support)"), accepted),
+        (T.get("imgrej_rejected", "Rejected\n(real, ξ=0)"), rejected_real),
+        (T.get("imgrej_ood", "Out-of-domain\n(synthetic)"), synth),
     ]
     fig, axes = plt.subplots(3, 3, figsize=(7.2, 7.8))
     for r, (row_title, items) in enumerate(rows):

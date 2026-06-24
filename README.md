@@ -111,7 +111,41 @@ streamlit run app_tme.py
 
 The app starts with an **empty mem_dir** (no prior training). Interact via queries in the "Routing en vivo" tab — each query trains the directory incrementally. The "Fase Madura" tab becomes active after enough registrations.
 
+## Building the artifacts from scratch (stages 1–8)
+
+If you are replicating from a clean clone you have **no** `models/` and **no** `data/`
+(both are excluded — see *Note on Large Files*). Run the full pipeline first; it
+executes the eight stages in order and produces every artifact the experiments need:
+
+```bash
+python run_experiment.py             # stages 1–8: dataset → encoder → fill → phases
+```
+
+- **Stage 1 (dataset)** downloads ETH-80 atomically (a `.part` file is renamed only
+  when the download is complete and verified as a valid `.tgz`). If the MPI mirror is
+  down, it stops with an actionable message — drop the archive in `data/` manually and
+  re-run. A truncated archive is detected and re-downloaded instead of crashing later.
+- **Stage 2 (encoder)** is **deterministic** (`seed=42`: `torch`/`numpy`/`random` +
+  cuDNN) so a fresh train is reproducible. It saves **atomically** and writes a
+  sentinel manifest `models/encoder.meta.json` **only after** a complete, validated
+  run (RMSE < 0.3 and class-head acc ≥ 85%). On every start the encoder is verified:
+  - missing / incomplete (interrupted) / unreadable → **auto-retrains from scratch**;
+  - present but below criteria → **auto-retrains**;
+  - pre-existing weights without a manifest (e.g. shared by the authors) → **validated,
+    not retrained**, and the manifest is back-filled;
+  - valid → loaded directly.
+
+  This removes the old trap where an interrupted training left a half-trained
+  `encoder.pt` that was then loaded silently, poisoning every downstream result.
+  Force a clean rebuild with `python src/stage2_encoder.py --force-retrain`.
+
+> Exact paper numbers were produced with the authors' original encoder weights. A fresh
+> deterministic train yields a comparable but not bit-identical encoder; request the
+> original weights for an exact reproduction.
+
 ## Reproducing Experimento 1
+
+Once the artifacts exist (`run_experiment.py` finished, or the authors' `models/` in place):
 
 ```bash
 python run_experiment3.py            # Sec. A — full protocol → results/exp3_corrected_routing/

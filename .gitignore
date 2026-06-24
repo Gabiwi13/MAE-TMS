@@ -2,11 +2,19 @@
 models/*.pkl
 models/*.pt
 
+# Estado local del encoder: manifiesto de entrenamiento y temporales de guardado
+# atómico (describen modelos locales, que de por sí no se versionan)
+models/*.meta.json
+models/*.tmp
+
 # Token-vector cache (derivado del modelo fastText de 1 GB; regenerable)
 models/token_vectors.json
 
 # ETH-80 dataset (205 MB) — download separately
 data/
+
+# Imágenes de muestra para la app (derivadas de ETH-80; locales, no se versionan)
+app_sample_images/
 
 # ConceptNet corpus (474 MB)
 cache/conceptnet-assertions-5.7.0.csv.gz

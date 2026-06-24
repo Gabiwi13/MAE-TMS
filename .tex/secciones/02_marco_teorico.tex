@@ -96,13 +96,26 @@ o no ha sido suficientemente alimentada.
 \subsection{Memoria Hetero-asociativa 4D}
 \label{sec:hetero4d}
 
-La memoria hetero-asociativa \cite{pineda2024hetero} relaciona dos dominios:
-un dominio izquierdo con $n$ características y alfabeto de tamaño $m$, y un dominio
-derecho con $p$ características y alfabeto de tamaño $q$.
+La Memoria Hetero-Asociativa Entrópica (EHAM) de Morales y Pineda~\cite{morales2024hetero}
+extiende la EAM al almacenamiento de pares de objetos posiblemente pertenecientes a dominios
+o modalidades distintas.
+En lugar de una relación bidimensional, la EHAM almacena las asociaciones en una relación
+ponderada de cuatro dimensiones, de modo que una pista en un dominio puede proyectar una
+relación en el dominio asociado.
+Formalmente, relaciona un dominio izquierdo con $n$ características y alfabeto de tamaño $m$,
+y un dominio derecho con $p$ características y alfabeto de tamaño $q$.
 La relación se almacena en un tensor
 $\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$,
 donde los tamaños $(m+1)$ y $(q+1)$ incorporan \emph{centinelas} en la posición cero
 para representar funciones parciales (características no definidas).
+
+La recuperación hetero-asociativa introduce además el \textbf{problema de la pista faltante}
+(\emph{missing cue problem}): la pista fuente selecciona un plano de memoria en el dominio
+destino, pero no existe una pista destino adicional para completar la recuperación.
+El paper original propone métodos como \emph{random}, \emph{sample-and-test} y
+\emph{sample-and-search}/\emph{search-and-test} para resolverlo.
+El presente sistema usa esa idea como sustrato de asociación texto$\leftrightarrow$imagen y
+como base para los directorios hetero-asociativos agente$\leftrightarrow$especialidad.
 
 \subsubsection*{Registro hetero-asociativo}
 
