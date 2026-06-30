@@ -1289,17 +1289,18 @@ window.addEventListener('load',()=>setTimeout(run,250));
 </script></body></html>"""
 
 
-def build_image_to_labels_animation(pil, z_q, scores, entry, agents, all_vecs,
-                                    decoder, gmin_v, gmax_v) -> str:
+def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
+                                    all_vecs, decoder, gmin_v, gmax_v) -> str:
     """Serializa el flujo imagen → etiquetas estilo fase madura: la imagen entra
     por `entry` y se rutea con el directorio visual del TME (M_dir_R, B1) hacia el
-    especialista, que evoca etiquetas y reconstruye. Solo visualiza; no altera nada."""
+    especialista `winner` (None = rechazo), que evoca etiquetas y reconstruye.
+    La decisión de ruteo la toma el tab (vía la memoria) y se recibe aquí; este
+    builder NO re-decide. Solo visualiza; no altera nada."""
     import io as _io
     import contextlib as _ctx
     from stage7_bidirectional import evoke_labels
 
     scores = {c: float(scores[c]) for c in CLASSES}
-    winner = max(scores, key=scores.get) if sum(scores.values()) > 0 else None
 
     labels, recon_b64 = [], None
     if winner is not None:
@@ -2479,6 +2480,9 @@ def main():
             # que la etapa 7B. Rechazo si nadie lo conoce; si no, redirige al destino.
             agg = tme.mem_dir_R.predict_normalized(z_q, mode="linear")
             scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
+            # Decisión de ruteo ÚNICA, tomada por el directorio (B1). None = rechazo.
+            # Se reutiliza en el bloque estático y en la animación (sin recalcular).
+            winner = CLASSES[int(np.argmax(agg))] if agg.sum() > 0 else None
             entry = _random.choice(CLASSES)
 
             c_in, c_out = st.columns([1, 1.4])
@@ -2492,13 +2496,12 @@ def main():
                               f"{scores[c]:.3f}")
 
             with c_out:
-                if agg.sum() == 0.0:
+                if winner is None:
                     st.error(
                         "RECHAZADA — el directorio visual (M_dir_R) no tiene soporte "
                         "para esta percepción: ningún especialista la conoce. "
                         "El grupo no inventa referente.")
                 else:
-                    winner = CLASSES[int(np.argmax(agg))]
                     if winner == entry:
                         st.success(
                             f"El agente de entrada {DOMAIN_EMOJI[entry]} {entry} "
@@ -2529,7 +2532,8 @@ def main():
             st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
             components.html(
                 build_image_to_labels_animation(
-                    pil, z_q, scores, entry, agents, all_vecs, decoder, gmin_v, gmax_v),
+                    pil, z_q, scores, entry, winner, agents, all_vecs,
+                    decoder, gmin_v, gmax_v),
                 height=760, scrolling=False)
 
     with tab_info:
