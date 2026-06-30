@@ -1053,9 +1053,10 @@ def build_mature_animation(query, words, toks, entry, dest,
     return _ANIM_TEMPLATE.replace("__DATA__", json.dumps(data))
 
 
-# Animated visual-hemisphere flow (imagen → etiquetas). Componente nuevo y
-# autocontenido: NO reutiliza ni modifica _ANIM_TEMPLATE ni los builders de la
-# fase principal. Cada components.html se renderiza en su propio iframe.
+# Animated visual-hemisphere flow (imagen → etiquetas), estilo fase madura:
+# entrada por un agente cualquiera → directorio visual del TME (M_dir_R, B1) →
+# redirige al especialista o rechaza. Componente autocontenido en su propio iframe;
+# no reutiliza _ANIM_TEMPLATE ni los builders de la fase de texto.
 _ANIM_IMG2LBL_TEMPLATE = r"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
@@ -1104,6 +1105,15 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
 .agent.win{border-color:#ffd54f;box-shadow:0 0 26px rgba(255,213,79,.45);transform:scale(1.05)}
 .agent.lose{opacity:.4;filter:saturate(.4)}
 .agent.reject{border-color:#ff6b6b;box-shadow:0 0 18px rgba(255,107,107,.35)}
+.agent.entry{border-color:#7da4ff;box-shadow:0 0 18px rgba(125,164,255,.4)}
+.agent .tag{font-size:8px;letter-spacing:1px;color:#7da4ff;opacity:0;transition:opacity .4s}
+.agent .tag.show{opacity:1}
+#hubwrap{display:flex;justify-content:center;margin-top:14px}
+#hub{padding:10px 18px;border-radius:12px;text-align:center;
+  background:radial-gradient(circle at 35% 30%,#3d4db7,#1d2566);
+  border:2px solid #6b79e8;color:#fff;font-weight:700;font-size:14px;transition:all .5s}
+#hub small{display:block;font-size:9px;color:#aab3ff;font-weight:400;margin-top:2px}
+#hub.pulse{animation:pulse .9s ease-out 2}
 #labels{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
   min-height:42px;margin-top:14px}
 .lchip{padding:6px 15px;border-radius:16px;background:#0e7c66;color:#fff;font-size:15px;
@@ -1135,6 +1145,7 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
     <div class="stagebox" id="latentwrap"><div class="cap">z_q &#8712; [0,31]&#8310;&#8308;</div>
       <div class="grid" id="latentgrid"></div></div>
   </div>
+  <div id="hubwrap"><div id="hub">M_dir_R &middot; TME<small>directorio visual &middot; lectura B1</small></div></div>
   <div id="net"></div>
   <div id="labels"></div>
   <div id="result"></div>
@@ -1163,7 +1174,8 @@ function setup(){
   for(const cls of AG){
     const d=document.createElement('div');d.className='agent';d.id='ag-'+cls;
     d.innerHTML=`<h4>${D.emoji[cls]} ${cls}<span class="crown" id="cr-${cls}">&#128081;</span></h4>
-      <div class="sub">M_dom_R &middot; recognize_gated_right</div>
+      <div class="sub">especialista &middot; score B1 del directorio</div>
+      <div class="tag" id="tag-${cls}">ENTRADA</div>
       <div class="barwrap"><div class="bar" id="bar-${cls}" style="background:${D.colors[cls]}"></div></div>
       <div class="score" id="sc-${cls}">&mdash;</div>`;
     net.appendChild(d);
@@ -1173,6 +1185,7 @@ function setup(){
   $('cueimg').src='data:image/png;base64,'+D.queryImg;
   $('labels').innerHTML='';$('result').innerHTML='';$('result').classList.remove('show');
   $('cue').style.opacity=0;$('eye').classList.remove('pulse');$('latentwrap').style.opacity=.25;
+  $('hub').classList.remove('pulse');
   document.querySelectorAll('.dot').forEach(x=>x.remove());
 }
 
@@ -1180,13 +1193,16 @@ function showResult(rejected){
   const res=$('result');let inner='';
   inner+=`<img src="data:image/png;base64,${D.queryImg}" title="entrada">`;
   if(rejected){
-    inner+=`<div class="txt"><b style="color:#ff6b6b">RECHAZADA por la MAE</b><br>`+
-      `<span class="muted">score 0 en los tres agentes &middot; containment &xi;=0 &middot; `+
-      `sin filtro externo</span></div>`;
+    inner+=`<div class="txt"><b style="color:#ff6b6b">RECHAZADA</b><br>`+
+      `<span class="muted">el directorio visual M_dir_R no tiene soporte &middot; `+
+      `ning&uacute;n especialista lo conoce &middot; el grupo no inventa referente</span></div>`;
   }else{
     inner+=`<div class="arrowbig">&rarr;</div>`;
     if(D.reconImg)inner+=`<img class="recon" src="data:image/png;base64,${D.reconImg}" title="reconstruccion">`;
-    inner+=`<div class="txt">Aceptada &rarr; <b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b>`+
+    const route=D.redirect
+      ? `${D.emoji[D.entry]} ${D.entry} &rarr; redirige a <b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b>`
+      : `<b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b> (entrada = especialista)`;
+    inner+=`<div class="txt">${route}`+
       `<br>etiquetas: ${D.labels.map(w=>'<code>'+w+'</code>').join(' ')}`+
       `<br><span class="muted">la reconstrucci&oacute;n la evoca la MAE (no es la entrada)</span></div>`;
   }
@@ -1214,33 +1230,50 @@ async function run(){
     cells[i].classList.add('on');if(i%4===0)await sleep(6);}
   await sleep(500);
 
-  lbl.textContent='4 / broadcast z_q → M_dom_R de cada agente';
-  const gc=centerOf($('latentgrid'),anim);
-  for(const cls of AG){const dot=mkdot(gc,D.colors[cls]);anim.appendChild(dot);
+  // P4: z_q llega a un agente de entrada cualquiera
+  lbl.textContent='4 / z_q llega al agente de entrada ('+D.entry+')';
+  $('ag-'+D.entry).classList.add('entry');$('tag-'+D.entry).classList.add('show');
+  {const dot=mkdot(centerOf($('latentgrid'),anim),D.colors[D.entry]);anim.appendChild(dot);
+   move(dot,centerOf($('ag-'+D.entry),anim));await sleep(850);dot.remove();}
+
+  // P5: la entrada consulta el directorio visual del TME (M_dir_R)
+  lbl.textContent='5 / '+D.entry+' consulta el directorio visual M_dir_R (TME)';
+  {const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#7da4ff');anim.appendChild(dot);
+   move(dot,centerOf($('hub'),anim));await sleep(800);dot.remove();}
+  $('hub').classList.add('pulse');await sleep(500);
+
+  // P6: el directorio reparte el score B1 a cada especialista
+  lbl.textContent='6 / M_dir_R reparte score B1 por especialista';
+  const hc=centerOf($('hub'),anim);
+  for(const cls of AG){const dot=mkdot(hc,D.colors[cls]);anim.appendChild(dot);
     move(dot,centerOf($('ag-'+cls),anim));}
   await sleep(850);document.querySelectorAll('.dot').forEach(x=>x.remove());
-
-  lbl.textContent='5 / score por containment (recognize_gated_right)';
   const mx=Math.max(...AG.map(c=>D.scores[c]),1e-9);
   for(const cls of AG){$('bar-'+cls).style.width=(100*D.scores[cls]/mx)+'%';
     countUp($('sc-'+cls),D.scores[cls],900);}
   await sleep(1250);
 
+  // P7: rechazo, o redirección punto a punto al especialista
   if(D.winner===null){
-    lbl.textContent='6 / RECHAZADA — ninguna memoria contiene la percepción';
+    lbl.textContent='7 / RECHAZADA — M_dir_R sin soporte: nadie lo conoce';
     for(const cls of AG)$('ag-'+cls).classList.add('reject');
     await sleep(400);showResult(true);
     lbl.textContent='done — replay ↻';running=false;return;
   }
-
-  lbl.textContent='6 / argmax → agente ganador';
   for(const cls of AG){
     if(cls===D.winner){$('ag-'+cls).classList.add('win');$('cr-'+cls).classList.add('show');}
-    else $('ag-'+cls).classList.add('lose');
+    else if(cls!==D.entry)$('ag-'+cls).classList.add('lose');
   }
-  await sleep(900);
+  if(D.redirect){
+    lbl.textContent='7 / redirige '+D.entry+' → '+D.winner+' (punto a punto)';
+    const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#ffd54f');anim.appendChild(dot);
+    move(dot,centerOf($('ag-'+D.winner),anim));await sleep(950);dot.remove();
+  }else{
+    lbl.textContent='7 / '+D.entry+' se queda la consulta (entrada = especialista)';
+    await sleep(700);
+  }
 
-  lbl.textContent='7 / evoke_labels (recall inverso → top-3 coseno)';
+  lbl.textContent='8 / evoke_labels en el destino (recall inverso → top-3 coseno)';
   const lw=$('labels');
   for(const w of D.labels){
     const chip=document.createElement('span');chip.className='lchip';chip.textContent=w;
@@ -1248,7 +1281,7 @@ async function run(){
   }
   await sleep(700);
 
-  if(D.reconImg){lbl.textContent='8 / mem_dom_R.recall → decode → reconstrucción';await sleep(250);}
+  if(D.reconImg){lbl.textContent='9 / mem_dom_R.recall → decode → reconstrucción';await sleep(250);}
   showResult(false);
   lbl.textContent='done — replay ↻';running=false;
 }
@@ -1256,17 +1289,17 @@ window.addEventListener('load',()=>setTimeout(run,250));
 </script></body></html>"""
 
 
-def build_image_to_labels_animation(pil, z_q, scores, agents, all_vecs,
+def build_image_to_labels_animation(pil, z_q, scores, entry, agents, all_vecs,
                                     decoder, gmin_v, gmax_v) -> str:
-    """Serializa el flujo imagen → etiquetas en el componente animado nuevo.
-    Solo visualiza el pipeline existente (encode → quantize → recognize_gated_right
-    → evoke_labels → reconstrucción); no altera ninguna memoria ni resultado."""
+    """Serializa el flujo imagen → etiquetas estilo fase madura: la imagen entra
+    por `entry` y se rutea con el directorio visual del TME (M_dir_R, B1) hacia el
+    especialista, que evoca etiquetas y reconstruye. Solo visualiza; no altera nada."""
     import io as _io
     import contextlib as _ctx
     from stage7_bidirectional import evoke_labels
 
     scores = {c: float(scores[c]) for c in CLASSES}
-    winner = max(scores, key=scores.get) if max(scores.values()) > 0 else None
+    winner = max(scores, key=scores.get) if sum(scores.values()) > 0 else None
 
     labels, recon_b64 = [], None
     if winner is not None:
@@ -1283,6 +1316,8 @@ def build_image_to_labels_animation(pil, z_q, scores, agents, all_vecs,
         "latent":   [int(x) for x in np.asarray(z_q).ravel().tolist()],
         "scores":   scores,
         "winner":   winner,
+        "entry":    entry,
+        "redirect": (winner is not None and winner != entry),
         "labels":   labels,
         "colors":   DOMAIN_COLOR,
         "emoji":    DOMAIN_EMOJI,
@@ -2414,22 +2449,23 @@ def main():
         st.header("Imagen → Etiquetas (hemisferio visual)")
         st.caption(
             "El encoder ResNet18 es solo el «ojo» que convierte la imagen en una "
-            "pista vectorial. El reconocimiento, el rechazo y la reconstrucción "
-            "salen de la MAE: si ninguna memoria contiene la percepción, se rechaza; "
-            "si la contiene, el agente ganador evoca etiquetas y reconstruye desde su "
-            "propia memoria (no es la imagen de entrada — los falsos positivos son "
-            "honestos).")
+            "pista vectorial. El ruteo es estilo fase madura: la imagen entra por un "
+            "agente cualquiera y se resuelve con el directorio visual del TME "
+            "(M_dir_R, lectura B1) — si ningún especialista la conoce se rechaza, y si "
+            "alguien la conoce se redirige a ese especialista, que evoca etiquetas y "
+            "reconstruye desde su propia memoria (no es la imagen de entrada).")
 
         up = st.file_uploader("Sube una imagen (png/jpg)",
                               type=["png", "jpg", "jpeg"])
         if up is not None:
+            import random as _random
             from stage5_fill import quantize_latent_global
-            from stage7_bidirectional import (
-                recognize_gated_right, evoke_labels, load_global_stats)
+            from stage7_bidirectional import evoke_labels, load_global_stats
             import io as _io
             import contextlib as _ctx
             encoder = load_image_encoder()
             gmin_v, gmax_v = load_global_stats()
+            tme, _exp_agents = load_experiment_state()   # TME con su M_dir_R entrenado
             all_vecs = {}
             for _c in CLASSES:
                 all_vecs.update(vectors_cache.get(_c, {}))
@@ -2437,27 +2473,41 @@ def main():
             pil = Image.open(_io.BytesIO(up.getvalue()))
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
-            scores = {c: float(recognize_gated_right(agents[c], z_q))
-                      for c in CLASSES}
+
+            # Ruteo estilo fase madura: la imagen entra por un agente cualquiera y se
+            # resuelve con el directorio visual del TME (M_dir_R, lectura B1), igual
+            # que la etapa 7B. Rechazo si nadie lo conoce; si no, redirige al destino.
+            agg = tme.mem_dir_R.predict_normalized(z_q, mode="linear")
+            scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
+            entry = _random.choice(CLASSES)
 
             c_in, c_out = st.columns([1, 1.4])
             with c_in:
                 st.image(pil.convert("RGB").resize((128, 128)),
-                         caption="Entrada (pista)", use_container_width=True)
+                         caption=f"Entrada · agente de entrada: "
+                                 f"{DOMAIN_EMOJI[entry]} {entry}",
+                         use_container_width=True)
                 for c in CLASSES:
-                    st.metric(f"{DOMAIN_EMOJI[c]} {c} · recognize_gated_right",
+                    st.metric(f"{DOMAIN_EMOJI[c]} {c} · M_dir_R (B1)",
                               f"{scores[c]:.3f}")
 
             with c_out:
-                if max(scores.values()) == 0.0:
+                if agg.sum() == 0.0:
                     st.error(
-                        "RECHAZADA por la MAE — ninguna memoria contiene esta "
-                        "percepción (containment ξ=0). No se asigna ganador.")
+                        "RECHAZADA — el directorio visual (M_dir_R) no tiene soporte "
+                        "para esta percepción: ningún especialista la conoce. "
+                        "El grupo no inventa referente.")
                 else:
-                    winner = max(scores, key=scores.get)
-                    st.success(
-                        f"Aceptada → agente **{DOMAIN_EMOJI[winner]} {winner}** "
-                        f"(score {scores[winner]:.3f})")
+                    winner = CLASSES[int(np.argmax(agg))]
+                    if winner == entry:
+                        st.success(
+                            f"El agente de entrada {DOMAIN_EMOJI[entry]} {entry} "
+                            f"**se queda la consulta** (M_dir_R B1 {scores[winner]:.3f}).")
+                    else:
+                        st.success(
+                            f"{DOMAIN_EMOJI[entry]} {entry} no la conoce → **redirige a "
+                            f"{DOMAIN_EMOJI[winner]} {winner}** vía M_dir_R "
+                            f"(B1 {scores[winner]:.3f}).")
                     labels = evoke_labels(agents[winner], z_q, all_vecs)
                     st.markdown("**Etiquetas evocadas (top-3):** " +
                                 "  ".join(f"`{w}`" for w in labels))
@@ -2470,18 +2520,17 @@ def main():
                                          "(decode(mem_dom_R.recall), no la entrada)",
                                  use_container_width=True)
                     else:
-                        st.info("El agente reconoce la percepción para routing pero "
-                                "su recall no produjo un patrón estable para "
-                                "reconstruir.")
+                        st.info("El especialista destino recibió la consulta pero su "
+                                "recall no produjo un patrón estable para reconstruir.")
 
-            # Animación aditiva del flujo imagen → etiquetas (mismo pipeline,
-            # solo visualización; no toca el bloque estático de arriba).
+            # Animación del flujo imagen → etiquetas (estilo fase madura: entrada →
+            # directorio visual M_dir_R del TME → redirige/rechaza).
             st.divider()
-            st.subheader("Animación del flujo imagen → etiquetas")
+            st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
             components.html(
                 build_image_to_labels_animation(
-                    pil, z_q, scores, agents, all_vecs, decoder, gmin_v, gmax_v),
-                height=720, scrolling=False)
+                    pil, z_q, scores, entry, agents, all_vecs, decoder, gmin_v, gmax_v),
+                height=760, scrolling=False)
 
     with tab_info:
         st.header("ETH-80 Reference Images")
