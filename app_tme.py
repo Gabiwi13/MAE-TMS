@@ -1659,8 +1659,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                         use_container_width=True, key="s5_mdir")
         total = counts.sum()
         if total > 0:
-            p = counts / total
-            h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
+            h = st.session_state.mdir_mem.entropy()
             st.caption(
                 f"Entropy: {h:.3f} bits (max={np.log2(3):.3f})  •  "
                 f"Counts: {dict(zip(CLASSES, counts.tolist()))}"
@@ -1772,8 +1771,7 @@ def main():
 
         total = int(counts.sum())
         if total > 0:
-            p = counts / total
-            h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
+            h = st.session_state.mdir_mem.entropy()
             st.metric("M_dir entropy", f"{h:.3f} bits",
                       delta=f"max={np.log2(3):.3f}", delta_color="normal")
 
@@ -2036,8 +2034,7 @@ def main():
                           delta_color="inverse" if ratio > 2 else "normal")
             with c3:
                 if total > 0:
-                    p = counts / total
-                    h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
+                    h = st.session_state.mdir_mem.entropy()
                     st.metric("M_dir entropy", f"{h:.3f} bits",
                               delta=f"max={np.log2(3):.3f}")
 
