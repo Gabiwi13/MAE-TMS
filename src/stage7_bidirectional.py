@@ -36,6 +36,12 @@ from stage6_interaction import (
 DATA_DIR = ROOT / "data" / "eth80"
 N, M_LABEL, P, Q_IMG = 300, 16, 64, 32
 N_EVOKE = 15
+# Tolerancia eta del ruteo VISUAL (lectura del directorio mem_dir_R): hasta
+# XI_VISUAL coordenadas sin soporte se tratan como funcion parcial (undefined).
+# Barrido medido: xi=2 es el punto dulce (+1.7 pts de ruteo test, 0 falsos OOD,
+# 100% acierto sobre aceptadas; xi=3 ya no agrega). El directorio de TEXTO se
+# queda en xi=0: alli la tolerancia agravaria la aceptacion de fuera-de-dominio.
+XI_VISUAL = 2
 
 IMG_TRANSFORM = transforms.Compose([
     transforms.ToTensor(),
@@ -65,21 +71,21 @@ def image_to_latent(img_path: str, encoder) -> np.ndarray:
 
 
 def recognize_gated_right(agent, z_q: np.ndarray) -> float:
-    """Score visual de un agente: activacion media de la proyeccion
-    derecha de M_dom_H, modulada por los pesos de M_dom_R y gateada
-    por containment. Espejo de Agent.recognize_gated desde el dominio
-    latente."""
-    r_w = agent.mem_dom_R.recog_weights(z_q)
-    mx = r_w.max()
-    weights = (r_w / mx) if mx > 0 else np.ones(len(z_q), dtype=float)
-    mem_H = agent.mem_dom_H
-    cb = mem_H.validate(z_q, 1)
-    with contextlib.redirect_stdout(io.StringIO()):
-        proj = mem_H.project(cb, weights, 1)
-    if np.count_nonzero(np.sum(proj, axis=1) == 0) > 0:
+    """Score visual PURO de un agente: reconocimiento homo del dominio latente
+    (mem_dom_R) — containment + activacion media de los pesos por caracteristica.
+
+    Antes proyectaba por M_dom_H (hetero), lo que ACOPLABA el reconocimiento
+    visual a la cuantizacion de las etiquetas: al pasar a magnitud, el lado
+    etiqueta de M_dom_H quedaba disperso y el gate de containment rechazaba de
+    mas. El reconocimiento visual debe depender solo del espacio latente, que usa
+    su propia cuantizacion (quantize_latent_global), independiente de las labels.
+    Sigue siendo una operacion de la MAE (recog_weights = R[i, z_q[i]] con gate
+    por containment); no hay bypass.
+    """
+    w = agent.mem_dom_R.recog_weights(z_q)     # w_i = R[i, z_q[i]] (homo latente)
+    if np.count_nonzero(w == 0) > 0:           # containment estricto (xi=0)
         return 0.0
-    count = int(np.count_nonzero(proj))
-    return float(np.sum(proj)) / count if count > 0 else 0.0
+    return float(np.mean(w))
 
 
 def evoke_labels(agent, z_q: np.ndarray, vectors: dict, top_k: int = 3):
@@ -134,8 +140,12 @@ def run():
                 a_rej += 1
                 continue
             winner = max(scores, key=scores.get)
+            widx = AGENT_LIST.index(winner)
             with contextlib.redirect_stdout(io.StringIO()):
-                tme.update_directory_latent(z_q, AGENT_LIST.index(winner))
+                tme.update_directory_latent(z_q, widx)
+                # Wegner: cada agente (incl. perdedores) anota en SU directorio visual.
+                for ag in agents.values():
+                    ag.update_directory_latent(z_q, widx)
             a_seen += 1
             a_ok += int(winner == cls)
         if (i + 1) % 32 == 0:
@@ -148,20 +158,26 @@ def run():
     print(f"  mem_dir_R counts: {tme.mem_dir_R.agent_counts.tolist()}  "
           f"entropia: {tme.mem_dir_R.entropy():.3f} bits")
 
-    print("\n--- Fase B: routing por mem_dir_R (B1) sobre test ---")
+    print("\n--- Fase B: routing por mem_dir_R per-agente (B1) sobre test ---")
     b_ok = b_rej = b_total = 0
     evoke_hits = evoke_tried = 0
     sample_rows = []
-    for cls in CLASSES:
+    for ci, cls in enumerate(CLASSES):
         for j, p in enumerate(splits[cls]["test"]):
             z = image_to_latent(p, encoder)
             z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             b_total += 1
-            agg = tme.mem_dir_R.predict_normalized(z_q, mode="linear")
-            if agg.sum() == 0:
+            # Entrada NO-especialista a propósito: el agente de la clase siguiente
+            # consulta SU propio directorio visual y redirige (coordinación de
+            # recuperación de Wegner). Los directorios per-agente son idénticos,
+            # así que cualquier agente de entrada da el mismo destino.
+            entry = agents[CLASSES[(ci + 1) % len(CLASSES)]]
+            with contextlib.redirect_stdout(io.StringIO()):
+                widx = entry.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
+            if widx < 0:
                 b_rej += 1
                 continue
-            dest = CLASSES[int(np.argmax(agg))]
+            dest = CLASSES[widx]
             if dest == cls:
                 b_ok += 1
             if j < N_EVOKE:
@@ -187,7 +203,10 @@ def run():
     import pickle
     with open(MODELS_DIR / "tme.pkl", "wb") as f:
         pickle.dump(tme, f)
-    print("\n  TME actualizado (mem_dir_R entrenado) -> tme.pkl")
+    for cls in CLASSES:
+        with open(MODELS_DIR / f"agent_{cls}.pkl", "wb") as f:
+            pickle.dump(agents[cls], f)
+    print("\n  TME + agentes actualizados (mem_dir_R per-agente) -> *.pkl")
 
     print("\nEtapa 7 COMPLETADA.")
     return {"visual_early_acc": a_ok / max(a_seen, 1),

@@ -14,7 +14,7 @@ ROOT = Path(__file__).parent.parent
 MODELS_DIR = ROOT / "models"
 MODELS_DIR.mkdir(exist_ok=True)
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 DIM = 300
 
 # Gensim downloads to ~/gensim-data/
@@ -55,9 +55,7 @@ def _stream_lookup(needed_words: set, allow_fallback: bool = True) -> dict:
             word = parts[0].lower()
             if word in missing and len(parts) == DIM + 1:
                 v = np.array([float(x) for x in parts[1:]], dtype=np.float32)
-                bv = np.sign(v)
-                bv = np.where(bv == 0.0, 1.0, bv)
-                found[word] = bv
+                found[word] = v   # crudo: la magnitud se preserva (cuant. por magnitud)
                 missing.discard(word)
 
         for line in f:
@@ -70,9 +68,7 @@ def _stream_lookup(needed_words: set, allow_fallback: bool = True) -> dict:
             if len(parts) != DIM + 1:
                 continue
             v = np.array([float(x) for x in parts[1:]], dtype=np.float32)
-            bv = np.sign(v)
-            bv = np.where(bv == 0.0, 1.0, bv)
-            found[word] = bv
+            found[word] = v   # crudo: la magnitud se preserva (cuant. por magnitud)
             missing.discard(word)
 
     if missing and allow_fallback:
@@ -139,6 +135,17 @@ def run():
         out_path = ROOT / f"label_vectors_{cls}.json"
         out_path.write_text(json.dumps(vectors))
         print(f"  {cls}: {len(vectors)} vectors saved -> {out_path.name}")
+
+    # Escala global para la cuantización por magnitud (percentil de |componente|).
+    # Se calcula sobre TODOS los vectores crudos y se persiste: llenado y consulta
+    # deben usar la MISMA escala para que la cuantización sea consistente.
+    from quantizer import compute_label_scale, set_label_scale
+    scale = compute_label_scale(list(all_vecs.values()), pct=99.0)
+    set_label_scale(scale)   # vigente en este proceso (no esperar al reload del archivo)
+    (MODELS_DIR / "label_quant_scale.json").write_text(
+        json.dumps({"scale": scale, "pct": 99.0, "n_vectors": len(all_vecs)}))
+    print(f"  Escala global de cuantización (magnitud): {scale:.4f} "
+          f"-> label_quant_scale.json")
 
     print("\nEtapa 4 COMPLETADA.")
 

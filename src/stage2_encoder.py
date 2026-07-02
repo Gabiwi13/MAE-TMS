@@ -29,7 +29,7 @@ MODELS_DIR = ROOT / "models"
 MODELS_DIR.mkdir(exist_ok=True)
 META_PATH = MODELS_DIR / "encoder.meta.json"
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 CLASS_TO_IDX = {c: i for i, c in enumerate(CLASSES)}
 LATENT_DIM = 64
 IMG_SIZE = 128

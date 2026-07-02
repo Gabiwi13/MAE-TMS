@@ -140,6 +140,49 @@ class DirectoryMemory:
         scores = self.predict(v_q)
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
 
+    def support_gaps(self, v_q: np.ndarray) -> list:
+        """Coordenadas de la pista SIN soporte en la relacion del directorio
+        (ese valor nunca fue registrado para ningun agente). Operacion nativa
+        de la memoria: espejo del recog_weights de la homo (w_i = R[i, a_i])
+        para el dominio izquierdo del tensor 4D."""
+        ham = self._ham
+        v = ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
+        rel = ham._full_iota_relation
+        return [i for i in range(v.size)
+                if not ham.is_undefined(int(v[i]), 0)
+                and rel[i, :, int(v[i]), :ham.q].sum() == 0]
+
+    def predict_tolerant(self, v_q: np.ndarray, xi: int = 0,
+                         mode: str = "linear", eps: float = 1.0) -> np.ndarray:
+        """Lectura eta-tolerante (B1): hasta xi coordenadas sin soporte se marcan
+        como 'undefined' — las funciones parciales nativas de la EHAM, que la
+        proyeccion salta — y el resto decide. Con mas de xi huecos: rechazo
+        (scores en cero). xi=0 reproduce exactamente la lectura estricta."""
+        gaps = self.support_gaps(v_q)
+        if len(gaps) > xi:
+            return np.zeros(self._n_agents, dtype=float)
+        if gaps:
+            v = self._ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
+            v[gaps] = self._ham.undefined(0)
+            weights = np.ones(len(v), dtype=float)
+            with contextlib.redirect_stdout(io.StringIO()):
+                proj = self._ham.project(v, weights, dim=0)
+            scores = proj[:, 1].copy()
+        else:
+            scores = self.predict(v_q)
+        denom = self._counts.astype(float) + eps
+        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
+
+    def route(self, v_q: np.ndarray, mode: str = "linear",
+              eps: float = 1.0, xi: int = 0) -> int:
+        """Ruteo calibrado por masa (B1): indice del agente ganador, o -1 si
+        ningun agente tiene soporte (rechazo). Encapsula la regla de seleccion
+        dentro de la MAE — quien consume no decide con operaciones sueltas.
+        xi>0 usa la lectura eta-tolerante (funciones parciales)."""
+        scores = (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
+                  if xi > 0 else self.predict_normalized(v_q, mode=mode, eps=eps))
+        return -1 if scores.sum() == 0 else int(np.argmax(scores))
+
     @property
     def agent_counts(self) -> np.ndarray:
         return self._counts.copy()

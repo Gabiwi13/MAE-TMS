@@ -21,7 +21,7 @@ ROOT = Path(__file__).parent.parent
 CACHE_DIR = ROOT / "cache"
 CACHE_DIR.mkdir(exist_ok=True)
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 # IsA + HasProperty + HasPart (spec) + RelatedTo + HasA + MadeOf + CapableOf.
 # En ConceptNet 5.7 el grueso de las propiedades cualitativas (red, round, fast)
 # está en /r/RelatedTo — omitirla deja solo ~3 labels por concepto.
@@ -34,7 +34,17 @@ RELATIONS = {
     "/r/MadeOf",
     "/r/CapableOf",
 }
-TAU = 2.0
+TAU = 1.0
+# Tope de labels por clase: equilibra el vocabulario para que ninguna clase
+# domine el routing por tamaño (clases pobres ~10-12, ricas se recortan aquí).
+MAX_LABELS = 20
+# Ruido de polisemia / términos no visuales que ConceptNet asocia con peso alto
+# pero contaminan el routing (Apple Inc. vs manzana-fruta; cf. condición F).
+NOISE_LABELS = {
+    "adam", "eve", "eden", "computer", "mac", "macintosh", "ipod", "iphone",
+    "ipad", "steve", "jobs", "logo", "company", "corporation", "inc",
+    "digital", "unit", "carriage", "woman", "family", "warden", "eated",
+}
 
 BASE_URL = "https://api.conceptnet.io"
 ASSERTIONS_URL = (
@@ -300,11 +310,23 @@ def run():
     all_data = get_conceptnet_labels()
 
     all_labels = {}
+    other_class_names = set(CLASSES)
     for cls in CLASSES:
         raw = all_data.get(cls, {})
-        # Aplicar threshold τ y convertir pesos a frecuencias enteras
-        filtered = {l: w for l, w in raw.items() if w >= TAU}
-        freq = {l: max(1, round(w)) for l, w in filtered.items()}
+        # Aplicar threshold τ; quitar ruido de polisemia y los NOMBRES de otras
+        # clases (p.ej. apple no debe tener "pear"); quedarse con las MAX_LABELS
+        # de mayor peso: da vocabulario real a las clases pobres sin dejar que
+        # las ricas dominen el routing por puro tamaño de vocabulario.
+        others = other_class_names - {cls}
+        filtered = {l: w for l, w in raw.items()
+                    if w >= TAU and l not in NOISE_LABELS and l not in others}
+        top = sorted(filtered.items(), key=lambda x: -x[1])[:MAX_LABELS]
+        freq = {l: max(1, round(w)) for l, w in top}
+        # El NOMBRE PROPIO de la clase es su label más distintivo (una consulta
+        # que dice "pear" debe rutear a pear). ConceptNet no siempre lo incluye,
+        # así que lo añadimos con frecuencia alta. Es crítico para clases con
+        # vocabulario pobre (pear/tomato), cuyo único token distintivo es su nombre.
+        freq[cls] = max(freq.values(), default=1)
         all_labels[cls] = freq
 
         out_path = ROOT / f"labels_{cls}.json"
