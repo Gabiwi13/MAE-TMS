@@ -34,9 +34,14 @@ from hetero_memory import HeteroAssociativeMemory
 from associative_memory import HomoAssociativeMemory
 from quantizer import quantize_binary
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 N, M, P, Q = 300, 16, 64, 32
+# N_FILL=200 se mantiene: deja train[200:328] libre para las interacciones
+# visuales de stage7 (formación del directorio). El enriquecimiento del llenado
+# viene de la AUGMENTACIÓN (4× por imagen), no de consumir más imágenes.
 N_FILL = 200
+FILL_AUGMENT = True      # augmentar cada imagen (espejo + rotaciones) al llenar
+FILL_AUG_ANGLES = (-12, 12)
 MODELS_DIR = ROOT / "models"
 DATA_DIR = ROOT / "data" / "eth80"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -53,8 +58,20 @@ def load_encoder():
     return encoder
 
 
+def _augment_variants(img):
+    """Variantes por imagen para enriquecer el llenado sin datos nuevos:
+    original + espejo horizontal + dos rotaciones suaves. Amplía la cobertura
+    del espacio latente de la clase (menos rechazo por containment) sin salir
+    del propio dataset. Es solo más percepción registrada en la MAE, no un truco."""
+    variants = [img, img.transpose(Image.FLIP_LEFT_RIGHT)]
+    for angle in FILL_AUG_ANGLES:
+        variants.append(img.rotate(angle, resample=Image.BILINEAR))
+    return variants
+
+
 def get_instance_latents(encoder, cls: str, n: int = N_FILL) -> list:
-    """Codifica las primeras n imagenes de entrenamiento de la clase."""
+    """Codifica las primeras n imagenes de entrenamiento de la clase (con
+    augmentacion si FILL_AUGMENT)."""
     splits = json.loads((DATA_DIR / "splits.json").read_text())
     paths = splits[cls]["train"][:n]
     zs = []
@@ -62,8 +79,10 @@ def get_instance_latents(encoder, cls: str, n: int = N_FILL) -> list:
     with torch.no_grad():
         for p in paths:
             img = Image.open(p).convert("RGB").resize((128, 128))
-            img_t = IMG_TRANSFORM(img).unsqueeze(0).to(DEVICE)
-            zs.append(encoder(img_t).cpu().numpy()[0])
+            variants = _augment_variants(img) if FILL_AUGMENT else [img]
+            for v in variants:
+                img_t = IMG_TRANSFORM(v).unsqueeze(0).to(DEVICE)
+                zs.append(encoder(img_t).cpu().numpy()[0])
     return zs
 
 
@@ -233,13 +252,56 @@ def visualize_probes(results: list, cls: str):
     print(f"  Probes -> {out.name}")
 
 
+def _encoder_mtime() -> float:
+    """mtime del encoder (pesos o manifiesto). Si una memoria de contenido es
+    más antigua, se llenó con OTRO encoder y está stale."""
+    ts = 0.0
+    for name in ("encoder.meta.json", "encoder.pt"):
+        p = MODELS_DIR / name
+        if p.exists():
+            ts = max(ts, p.stat().st_mtime)
+    return ts
+
+
+def _is_stale(path) -> bool:
+    """True si falta o si el encoder es más nuevo (memoria de un encoder viejo).
+    Evita reutilizar silenciosamente un llenado hecho con otro espacio latente."""
+    return (not path.exists()) or (path.stat().st_mtime < _encoder_mtime())
+
+
+def _fill_inputs_mtime(cls: str) -> float:
+    """mtime del insumo más nuevo del llenado de una clase: encoder + labels +
+    vectores + escala de cuantización. Si una memoria es más vieja que cualquiera,
+    se llenó con datos/representación distintos y está stale."""
+    ts = _encoder_mtime()
+    for p in (ROOT / f"labels_{cls}.json",
+              ROOT / f"label_vectors_{cls}.json",
+              MODELS_DIR / "label_quant_scale.json"):
+        if p.exists():
+            ts = max(ts, p.stat().st_mtime)
+    return ts
+
+
+def _is_stale_cls(path, cls: str) -> bool:
+    """Como _is_stale pero también contra labels/vectores/escala de la clase:
+    refill si cambió el vocabulario o la cuantización, no solo el encoder."""
+    return (not path.exists()) or (path.stat().st_mtime < _fill_inputs_mtime(cls))
+
+
 def run():
     encoder = load_encoder()
 
+    stats_path = MODELS_DIR / "latent_global_stats.json"
+    # Si el encoder cambió, las stats globales y las memorias previas quedaron
+    # stale (otro espacio latente). Forzar recálculo/rellenado en vez de
+    # reutilizarlas en silencio (mismo criterio que el manifiesto del encoder).
+    if stats_path.exists() and _is_stale(stats_path):
+        stats_path.unlink()
+
     latents_by_cls = {}
     need_fill = any(
-        not (MODELS_DIR / f"mem_dom_{c}.pkl").exists() for c in CLASSES)
-    if need_fill or not (MODELS_DIR / "latent_global_stats.json").exists():
+        _is_stale_cls(MODELS_DIR / f"mem_dom_{c}.pkl", c) for c in CLASSES)
+    if need_fill or not stats_path.exists():
         for cls in CLASSES:
             print(f"  Codificando {N_FILL} latentes de {cls}...")
             latents_by_cls[cls] = get_instance_latents(encoder, cls, N_FILL)
@@ -250,8 +312,8 @@ def run():
     for cls in CLASSES:
         print(f"\n--- Llenando M_dom del agente {cls} ---")
         paths = [MODELS_DIR / f"mem_dom_{s}{cls}.pkl" for s in ("", "L_", "R_")]
-        if all(p.exists() for p in paths):
-            print("  Memorias existentes, cargando.")
+        if all(p.exists() for p in paths) and not any(_is_stale_cls(p, cls) for p in paths):
+            print("  Memorias existentes y vigentes, cargando.")
             mem_H, mem_L, mem_R = load_agent_memories(cls)
         else:
             mem_H, mem_L, mem_R = fill_agent(

@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from associative_memory import HomoAssociativeMemory, DirectoryMemory
 from quantizer import quantize_binary
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 AGENT_LIST = CLASSES
 N, M_LABEL = 300, 16
 P_LATENT, Q_LATENT = 64, 32
@@ -81,7 +81,13 @@ class Agent:
             else HomoAssociativeMemory(N, M_LABEL)
         self.mem_dom_R = mem_dom_R if mem_dom_R is not None \
             else HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        # Directorios transactivos por agente (Wegner): uno por modalidad de pista.
+        #   mem_dir   : pista de texto  (label 300x16) -> agente
+        #   mem_dir_R : pista de imagen (latente 64x32) -> agente
+        # Mismo destino (identidad de agente), dos espacios de entrada distintos,
+        # por eso son dos DirectoryMemory (una HAM no admite dos formas de pista).
         self.mem_dir = DirectoryMemory(N, M_LABEL, len(AGENT_LIST))
+        self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(AGENT_LIST))
 
     def recognize(self, v_label_q: np.ndarray) -> float:
         """Score crudo: activacion media sin gate ni calibracion.
@@ -121,8 +127,14 @@ class Agent:
         return self.mem_dom_H.recall_from_left(v_label_q)
 
     def update_directory(self, v_label_q: np.ndarray, winner_idx: int):
-        """Wegner: tambien los no-ganadores anotan quien gano."""
+        """Wegner: tambien los no-ganadores anotan quien gano (pista de texto)."""
         self.mem_dir.register(v_label_q, winner_idx)
+
+    def update_directory_latent(self, v_latent_q: np.ndarray, winner_idx: int):
+        """Wegner para el hemisferio visual: cada agente anota qué agente ganó
+        esta percepción de imagen en su propio directorio visual. Solo se
+        registran percepciones reales, nunca ecos del recall."""
+        self.mem_dir_R.register(v_latent_q, winner_idx)
 
 
 class TME:

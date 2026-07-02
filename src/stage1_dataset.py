@@ -15,7 +15,7 @@ DATA_DIR = ROOT / "data" / "eth80"
 ETH80_URL = "http://datasets.d2.mpi-inf.mpg.de/eth80/eth80-cropped-close128.tgz"
 TGZ_PATH = ROOT / "data" / "eth80-cropped-close128.tgz"
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 
 
 def _is_valid_tgz(path):

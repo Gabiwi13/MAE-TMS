@@ -42,8 +42,11 @@ from associative_memory import DirectoryMemory
 
 # Visual constants
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
-DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗"}
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
+                "pear": "#7f8c8d", "tomato": "#c0392b"}
+DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
+                "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
 NODE_POS = {
     "TME":   (0.0,  0.0),
@@ -1145,7 +1148,7 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
     <div class="stagebox" id="latentwrap"><div class="cap">z_q &#8712; [0,31]&#8310;&#8308;</div>
       <div class="grid" id="latentgrid"></div></div>
   </div>
-  <div id="hubwrap"><div id="hub">M_dir_R &middot; TME<small>directorio visual &middot; lectura B1</small></div></div>
+  <div id="hubwrap"><div id="hub">M_dir_R<small>directorio visual del agente &middot; B1</small></div></div>
   <div id="net"></div>
   <div id="labels"></div>
   <div id="result"></div>
@@ -1237,7 +1240,7 @@ async function run(){
    move(dot,centerOf($('ag-'+D.entry),anim));await sleep(850);dot.remove();}
 
   // P5: la entrada consulta el directorio visual del TME (M_dir_R)
-  lbl.textContent='5 / '+D.entry+' consulta el directorio visual M_dir_R (TME)';
+  lbl.textContent='5 / '+D.entry+' consulta SU directorio visual M_dir_R';
   {const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#7da4ff');anim.appendChild(dot);
    move(dot,centerOf($('hub'),anim));await sleep(800);dot.remove();}
   $('hub').classList.add('pulse');await sleep(500);
@@ -1332,7 +1335,7 @@ def _init_session():
     if "mdir_mem" not in st.session_state:
         st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
     if "mdir_counts" not in st.session_state:
-        st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+        st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     if "history" not in st.session_state:
         st.session_state.history     = []
     if "query_n" not in st.session_state:
@@ -1343,7 +1346,7 @@ def _init_session():
 
 def _reset_session():
     st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
-    st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+    st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     st.session_state.history     = []
     st.session_state.query_n     = 0
     st.session_state.last_trace  = None
@@ -2040,7 +2043,7 @@ def main():
 
             if len(st.session_state.history) > 1:
                 st.subheader("Query-by-query evolution")
-                running = np.zeros(3, dtype=np.int64)
+                running = np.zeros(len(CLASSES), dtype=np.int64)
                 evo = {"q": [], **{cls: [] for cls in CLASSES}}
                 for i, r in enumerate(st.session_state.history):
                     running[r["winner_idx"]] += r["n_tokens"]
@@ -2447,23 +2450,25 @@ def main():
         st.header("Imagen → Etiquetas (hemisferio visual)")
         st.caption(
             "El encoder ResNet18 es solo el «ojo» que convierte la imagen en una "
-            "pista vectorial. El ruteo es estilo fase madura: la imagen entra por un "
-            "agente cualquiera y se resuelve con el directorio visual del TME "
+            "pista vectorial. Ruteo estilo fase madura: la imagen entra por el agente "
+            "que elijas, y ese agente consulta SU PROPIO directorio visual "
             "(M_dir_R, lectura B1) — si ningún especialista la conoce se rechaza, y si "
-            "alguien la conoce se redirige a ese especialista, que evoca etiquetas y "
-            "reconstruye desde su propia memoria (no es la imagen de entrada).")
+            "alguien la conoce redirige a ese especialista, que evoca etiquetas y "
+            "reconstruye desde su memoria (no es la imagen de entrada).")
 
+        entry = st.selectbox(
+            "Agente de entrada (cualquiera puede recibir la imagen)", CLASSES,
+            format_func=lambda c: f"{DOMAIN_EMOJI[c]} {c}", key="img_entry")
         up = st.file_uploader("Sube una imagen (png/jpg)",
                               type=["png", "jpg", "jpeg"])
         if up is not None:
-            import random as _random
             from stage5_fill import quantize_latent_global
             from stage7_bidirectional import evoke_labels, load_global_stats
             import io as _io
             import contextlib as _ctx
             encoder = load_image_encoder()
             gmin_v, gmax_v = load_global_stats()
-            tme, _exp_agents = load_experiment_state()   # TME con su M_dir_R entrenado
+            tme, exp_agents = load_experiment_state()  # agentes con su mem_dir_R
             all_vecs = {}
             for _c in CLASSES:
                 all_vecs.update(vectors_cache.get(_c, {}))
@@ -2472,15 +2477,18 @@ def main():
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
 
-            # Ruteo estilo fase madura: la imagen entra por un agente cualquiera y se
-            # resuelve con el directorio visual del TME (M_dir_R, lectura B1), igual
-            # que la etapa 7B. Rechazo si nadie lo conoce; si no, redirige al destino.
-            agg = tme.mem_dir_R.predict_normalized(z_q, mode="linear")
+            # Ruteo estilo fase madura, per-agente: el agente de entrada consulta SU
+            # propio directorio visual (mem_dir_R, lectura B1 con tolerancia eta
+            # XI_VISUAL — funciones parciales nativas de la EHAM) y redirige, o
+            # rechaza si nadie lo conoce. La decisión la toma la MAE
+            # (DirectoryMemory.route); una sola decisión para estático y animación.
+            from stage7_bidirectional import XI_VISUAL
+            entry_agent = exp_agents[entry]
+            agg = entry_agent.mem_dir_R.predict_tolerant(z_q, xi=XI_VISUAL,
+                                                         mode="linear")
             scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
-            # Decisión de ruteo ÚNICA, tomada por el directorio (B1). None = rechazo.
-            # Se reutiliza en el bloque estático y en la animación (sin recalcular).
-            winner = CLASSES[int(np.argmax(agg))] if agg.sum() > 0 else None
-            entry = _random.choice(CLASSES)
+            widx = entry_agent.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
+            winner = CLASSES[widx] if widx >= 0 else None
 
             c_in, c_out = st.columns([1, 1.4])
             with c_in:
@@ -2508,11 +2516,11 @@ def main():
                             f"{DOMAIN_EMOJI[entry]} {entry} no la conoce → **redirige a "
                             f"{DOMAIN_EMOJI[winner]} {winner}** vía M_dir_R "
                             f"(B1 {scores[winner]:.3f}).")
-                    labels = evoke_labels(agents[winner], z_q, all_vecs)
+                    labels = evoke_labels(exp_agents[winner], z_q, all_vecs)
                     st.markdown("**Etiquetas evocadas (top-3):** " +
                                 "  ".join(f"`{w}`" for w in labels))
                     with _ctx.redirect_stdout(_io.StringIO()):
-                        r_io, recognized, _w = agents[winner].mem_dom_R.recall(z_q)
+                        r_io, recognized, _w = exp_agents[winner].mem_dom_R.recall(z_q)
                     if recognized:
                         rec_img = _decode(r_io, gmin_v, gmax_v, decoder)
                         st.image(_t2img(rec_img),
@@ -2529,7 +2537,7 @@ def main():
             st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
             components.html(
                 build_image_to_labels_animation(
-                    pil, z_q, scores, entry, winner, agents, all_vecs,
+                    pil, z_q, scores, entry, winner, exp_agents, all_vecs,
                     decoder, gmin_v, gmax_v),
                 height=760, scrolling=False)
 

@@ -10,17 +10,18 @@ The system combines:
 - **ResNet18 autoencoder** (with an auxiliary classification head): pretrained ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on ETH-80 (apple, horse, car). Loss is `MSE + 0.1·CE`; the classification head is used only during encoder training and does **not** participate in routing or recall. (It is *not* a masked autoencoder — there is no masking.)
 - **`HeteroAssociativeMemory`** (`mem_dom_H`): subclass of `HeteroAssociativeMemory4D` (Pineda & Morales) — the content bridge mapping binary label vectors ↔ quantized prototype latents, modulated by per-feature weights from the homo-associative memories.
 - **`HomoAssociativeMemory`** (`mem_dom_L`, `mem_dom_R`): wrapper around `AssociativeMemory` (Pineda & Morales) — models the distribution of a single domain and is the only memory that produces per-feature recognition weights (`recog_weights`).
-- **`DirectoryMemory`** (`mem_dir`): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" and supports directory updating, retrieval coordination, and (externally) information allocation.
+- **`DirectoryMemory`** (`mem_dir` text + `mem_dir_R` visual, one per modality per agent): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" and supports directory updating, retrieval coordination, and (externally) information allocation. Each agent keeps both a text directory (label→agent) and a visual directory (latent→agent), so an image can enter through any agent and be redirected to the right specialist via that agent's own `mem_dir_R`.
 - **fastText + spaCy**: NLP pipeline tokenizing queries into binary vectors (sign(v) ∈ {−1,+1}³⁰⁰), with lemma-normalized vocabulary.
 
-### Architecture per agent (4 AMRs)
+### Architecture per agent (5 AMRs)
 
 ```
 Agent (apple / horse / car)
   ├── mem_dom_H  HeteroAssociativeMemory(n=300, m=16, p=64, q=32)   hetero label↔latent
   ├── mem_dom_L  HomoAssociativeMemory(n=300, m=16)                 homo label  → recog weights
   ├── mem_dom_R  HomoAssociativeMemory(n=64,  m=32)                 homo latent → recog weights
-  └── mem_dir    DirectoryMemory(n=300, m=16, n_agents=3)           routing label→agent
+  ├── mem_dir    DirectoryMemory(n=300, m=16, n_agents=3)           routing label→agent (text)
+  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=3)           routing latent→agent (visual)
 
 TME
   ├── mem_dir_L  DirectoryMemory(n=300, m=16, n_agents=3)           label-space routing
