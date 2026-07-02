@@ -29,6 +29,7 @@ warnings.filterwarnings("ignore")
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from stage6_interaction import CLASSES as SYS_CLASSES
 from run_ablation import run_ablation, CONDITION_LABELS
 
 # Global state set per language run
@@ -66,8 +67,11 @@ PALETTE = {
     "F Curated ConceptNet": "#1abc9c",
     "G Best (D+B1+F)":      "#2c3e50",
 }
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
-N_VALUES     = [10, 20, 40, 80]
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
+                "pear": "#7f8c8d", "tomato": "#c0392b"}
+N_VALUES     = [50, 100, 200, 400]
+N_SHOW       = N_VALUES[-1]   # N del banco completo para las figuras de corte
 
 # Translations
 TEXTS = {
@@ -79,7 +83,7 @@ TEXTS = {
         "mature_acc_title": "Mature-phase accuracy (M_dir) vs N — condition comparison",
         "heatmap_title":    "Mature accuracy — condition × N queries",
         "domain_acc_y":     "Mature accuracy per domain",
-        "domain_acc_title": "Per-domain accuracy × condition (N=80, mean over 5 seeds)",
+        "domain_acc_title": "Per-domain accuracy × condition (N=400, mean over 5 seeds)",
         "domain":           "Domain",
         "fidelity_y":       "M_dir → M_dom fidelity",
         "fidelity_title":   "M_dir learning fidelity vs N\n"
@@ -89,7 +93,7 @@ TEXTS = {
                             "(higher entropy = more balanced routing)",
         "max_entropy":      "Maximum entropy",
         "reg_y":            "Accumulated M_dir registrations",
-        "reg_title":        "M_dir registrations per agent × condition (N=80)",
+        "reg_title":        "M_dir registrations per agent × condition (N=400)",
         "ideal":            "Ideal balanced",
         "scatter_x":        "Early-phase accuracy (M_dom)",
         "scatter_y":        "Mature-phase accuracy (M_dir)",
@@ -105,15 +109,15 @@ TEXTS = {
         "cosine_title":     "Continuous-space cosine similarity\nof problematic tokens",
         "bins_x":           "Quantization bin",
         "bins_y":           "Feature proportion",
-        "bins_title":       "Binary space collapse\nquantize_binary(sign(v), m=16)\n"
-                            "Only bins 0 and 15 are activated",
-        "bins_note":        "Only 2 of 16 bins\nare used",
-        "sem_suptitle":     "Semantic space analysis — why bias occurs in binary space",
+        "bins_title":       "Magnitude quantization\nquantize_binary(v, m=16)\n"
+                            "All 16 levels are used",
+        "bins_note":        "All 16 bins\nare populated",
+        "sem_suptitle":     "Semantic space analysis — magnitude quantization preserves separation",
         "winner_y":         "Fraction of mature-phase wins",
-        "winner_title":     "M_dir winner distribution per condition (N=80)",
+        "winner_title":     "M_dir winner distribution per condition (N=400)",
         "winner_agent":     "Winning agent",
-        "ideal_balanced":   "Ideal balanced (33%)",
-        "table_title":      "Results summary (N=80, mean over 5 seeds)",
+        "ideal_balanced":   "Ideal balanced (12.5%)",
+        "table_title":      "Results summary (N=400, mean over 5 seeds)",
         "col_cond":         "Condition",
         "col_early":        "Early\nAcc",
         "col_fid":          "Fidelity",
@@ -160,7 +164,7 @@ TEXTS = {
         "mature_acc_title": "Precisión en fase madura (M_dir) vs N — comparación de condiciones",
         "heatmap_title":    "Precisión madura — condición × N queries",
         "domain_acc_y":     "Precisión madura por dominio",
-        "domain_acc_title": "Precisión por dominio × condición (N=80, media 5 seeds)",
+        "domain_acc_title": "Precisión por dominio × condición (N=400, media 5 seeds)",
         "domain":           "Dominio",
         "fidelity_y":       "Fidelidad M_dir → M_dom",
         "fidelity_title":   "Fidelidad de aprendizaje de M_dir vs N\n"
@@ -170,7 +174,7 @@ TEXTS = {
                             "(mayor entropía = routing más equilibrado)",
         "max_entropy":      "Entropía máxima",
         "reg_y":            "Registros acumulados en M_dir",
-        "reg_title":        "Registros en M_dir por agente × condición (N=80)",
+        "reg_title":        "Registros en M_dir por agente × condición (N=400)",
         "ideal":            "Ideal balanceado",
         "scatter_x":        "Precisión fase temprana (M_dom)",
         "scatter_y":        "Precisión fase madura (M_dir)",
@@ -186,15 +190,15 @@ TEXTS = {
         "cosine_title":     "Similitud coseno (espacio continuo)\nde tokens problemáticos",
         "bins_x":           "Bin de cuantización",
         "bins_y":           "Proporción de features",
-        "bins_title":       "Colapso en espacio binario\nquantize_binary(sign(v), m=16)\n"
-                            "Solo bins 0 y 15 son activados",
-        "bins_note":        "Solo 2 de 16 bins\nson utilizados",
-        "sem_suptitle":     "Análisis del espacio semántico — por qué el sesgo ocurre en espacio binario",
+        "bins_title":       "Cuantización por magnitud\nquantize_binary(v, m=16)\n"
+                            "Los 16 niveles se utilizan",
+        "bins_note":        "Los 16 bins\nse pueblan",
+        "sem_suptitle":     "Análisis del espacio semántico — la cuantización por magnitud preserva la separación",
         "winner_y":         "Fracción de victorias en fase madura",
-        "winner_title":     "Distribución de ganador en M_dir por condición (N=80)",
+        "winner_title":     "Distribución de ganador en M_dir por condición (N=400)",
         "winner_agent":     "Agente ganador",
-        "ideal_balanced":   "Ideal balanceado (33%)",
-        "table_title":      "Tabla resumen de resultados (N=80, media 5 seeds)",
+        "ideal_balanced":   "Ideal balanceado (12.5%)",
+        "table_title":      "Tabla resumen de resultados (N=400, media 5 seeds)",
         "col_cond":         "Condición",
         "col_early":        "Early\nAcc",
         "col_fid":          "Fidelidad",
@@ -208,7 +212,7 @@ TEXTS = {
         "imgrej_accepted":  "Aceptadas\n(con soporte)",
         "imgrej_rejected":  "Rechazadas\n(reales, ξ=0)",
         "imgrej_ood":       "Fuera de dominio\n(sintéticas)",
-        "img2lbl_title":    "Salida semántica: imagen → recall MAE → etiquetas (94.1% top-3)",
+        "img2lbl_title":    "Salida semántica: imagen → recall MAE → etiquetas (top-3, dominio real)",
         "img2lbl_input":    "Entrada (pista)",
         "img2lbl_recon":    "Reconstrucción evocada (MAE)",
         "recog_y":          "Labels (agrupadas por dominio)",
@@ -355,13 +359,21 @@ def fig_heatmap(agg):
 
 
 def fig_domain_accuracy(agg):
-    n80 = agg[agg["N"] == 80].set_index("condition").reindex(
+    n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    x, w = np.arange(len(n80)), 0.25
-    fig, ax = plt.subplots(figsize=(10, 4.5))
-    for i, (dom, color) in enumerate(DOMAIN_COLOR.items()):
+    # NOTE: run_ablation.py's metrics_to_row() currently only emits
+    # mature_acc_{apple,horse,car}_mean columns (not the full 8-class
+    # SYS_CLASSES set). Classes without a column are skipped defensively
+    # rather than raising KeyError; fixing run_ablation.py is out of scope
+    # for this file.
+    doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
+    x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)
+    fig, ax = plt.subplots(figsize=(2 + 1.1 * len(doms_present), 4.5))
+    mid = (len(doms_present) - 1) / 2
+    for i, dom in enumerate(doms_present):
+        color = DOMAIN_COLOR[dom]
         vals = n80[f"mature_acc_{dom}_mean"].fillna(0).values
-        ax.bar(x + (i - 1) * w, vals, w, label=dom, color=color,
+        ax.bar(x + (i - mid) * w, vals, w, label=dom, color=color,
                alpha=0.85, edgecolor="white", linewidth=0.8)
     ax.set_xticks(x)
     ax.set_xticklabels(n80["condition"], rotation=22, ha="right", fontsize=8)
@@ -396,7 +408,7 @@ def fig_fidelity(agg):
 
 
 def fig_entropy(agg):
-    max_h = math.log2(3)
+    max_h = math.log2(len(SYS_CLASSES))
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.axhline(max_h, color="#636e72", lw=1.0, linestyle="--",
                label=f"{T['max_entropy']} = {max_h:.3f} bits")
@@ -414,15 +426,20 @@ def fig_entropy(agg):
 
 
 def fig_registrations(agg):
-    n80 = agg[agg["N"] == 80].set_index("condition").reindex(
+    n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    x, w = np.arange(len(n80)), 0.25
-    fig, ax = plt.subplots(figsize=(10, 4.5))
-    for i, (dom, color) in enumerate(DOMAIN_COLOR.items()):
+    # NOTE: run_ablation.py currently only emits mdir_reg_{apple,horse,car}_mean
+    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    doms_present = [d for d in SYS_CLASSES if f"mdir_reg_{d}_mean" in n80.columns]
+    x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)
+    fig, ax = plt.subplots(figsize=(2 + 1.1 * len(doms_present), 4.5))
+    mid = (len(doms_present) - 1) / 2
+    for i, dom in enumerate(doms_present):
+        color = DOMAIN_COLOR[dom]
         vals = n80[f"mdir_reg_{dom}_mean"].fillna(0).values
-        ax.bar(x + (i - 1) * w, vals, w, label=dom, color=color,
+        ax.bar(x + (i - mid) * w, vals, w, label=dom, color=color,
                alpha=0.85, edgecolor="white", linewidth=0.8)
-    ideal = n80[[f"mdir_reg_{d}_mean" for d in DOMAIN_COLOR]].sum(axis=1).mean() / 3
+    ideal = n80[[f"mdir_reg_{d}_mean" for d in doms_present]].sum(axis=1).mean() / max(len(doms_present), 1)
     ax.axhline(ideal, color="#636e72", lw=0.9, linestyle=":",
                label=f"{T['ideal']} ({ideal:.0f})")
     ax.set_xticks(x)
@@ -460,12 +477,16 @@ def fig_early_vs_mature(agg):
 
 
 def fig_winner_distribution(agg):
-    n80 = agg[agg["N"] == 80].set_index("condition").reindex(
+    n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
+    # NOTE: run_ablation.py currently only emits winner_pct_{apple,horse,car}_mean
+    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    doms_present = [d for d in SYS_CLASSES if f"winner_pct_{d}_mean" in n80.columns]
     x = np.arange(len(n80))
     fig, ax = plt.subplots(figsize=(10, 4))
     bottom = np.zeros(len(n80))
-    for dom, color in DOMAIN_COLOR.items():
+    for dom in doms_present:
+        color = DOMAIN_COLOR[dom]
         vals = n80[f"winner_pct_{dom}_mean"].fillna(0).values
         ax.bar(x, vals, bottom=bottom, label=dom, color=color,
                alpha=0.85, edgecolor="white", linewidth=0.8)
@@ -475,7 +496,7 @@ def fig_winner_distribution(agg):
                         ha="center", va="center", fontsize=8,
                         color="white", fontweight="bold")
         bottom += vals
-    ax.axhline(1/3, color="#2d3436", lw=0.9, linestyle="--",
+    ax.axhline(1 / max(len(doms_present), 1), color="#2d3436", lw=0.9, linestyle="--",
                label=T["ideal_balanced"])
     ax.set_xticks(x)
     ax.set_xticklabels(n80["condition"], rotation=22, ha="right", fontsize=8)
@@ -488,10 +509,13 @@ def fig_winner_distribution(agg):
 
 
 def fig_summary_table(agg):
-    n80 = agg[agg["N"] == 80].set_index("condition").reindex(
+    n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
+    # NOTE: run_ablation.py currently only emits mature_acc_{apple,horse,car}_mean
+    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
     headers = [T["col_cond"], T["col_early"], T["col_fid"], T["col_mature"],
-               "Apple", "Horse", "Car", T["col_entropy"]]
+               *[d.capitalize() for d in doms_present], T["col_entropy"]]
     rows = []
     for _, r in n80.iterrows():
         rows.append([
@@ -499,9 +523,7 @@ def fig_summary_table(agg):
             f"{r['early_accuracy_mean']:.1%}",
             f"{r['mature_fidelity_mean']:.1%}",
             f"{r['mature_accuracy_mean']:.1%}",
-            f"{r['mature_acc_apple_mean']:.1%}",
-            f"{r['mature_acc_horse_mean']:.1%}",
-            f"{r['mature_acc_car_mean']:.1%}",
+            *[f"{r[f'mature_acc_{d}_mean']:.1%}" for d in doms_present],
             f"{r['mdir_entropy_mean']:.3f}",
         ])
     fig, ax = plt.subplots(figsize=(12, 4))
@@ -533,7 +555,7 @@ def _compute_recognition_matrix(mdoms):
         matrix  : ndarray (n_labels, 3) raw recognition scores
     """
     from quantizer import quantize_binary
-    CLASSES = ["apple", "horse", "car"]
+    CLASSES = list(SYS_CLASSES)
     words, true_dom, rows = [], [], []
     for cls in CLASSES:
         vecs = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
@@ -546,11 +568,13 @@ def _compute_recognition_matrix(mdoms):
     return words, true_dom, np.array(rows)   # (N, 3)
 
 
-def _prf(matrix, true_dom, cls_list=("apple", "horse", "car")):
+def _prf(matrix, true_dom, cls_list=None):
     """
     Argmax-based P / R / F1 per agent (binary one-vs-rest).
     Returns dict {cls: {"P": float, "R": float, "F1": float, "TP": int, "FP": int, "FN": int}}
     """
+    if cls_list is None:
+        cls_list = list(SYS_CLASSES)
     n     = len(true_dom)
     preds = [cls_list[int(np.argmax(matrix[i]))] for i in range(n)]
     out   = {}
@@ -571,12 +595,12 @@ def fig_recognition_heatmap():
     Marks TP / FP / FN on each cell.
     """
     from run_ablation import load_base_mdoms
-    CLASSES = ["apple", "horse", "car"]
+    CLASSES = list(SYS_CLASSES)
 
     mdoms = load_base_mdoms()
     words, true_dom, matrix = _compute_recognition_matrix(mdoms)
 
-    # Sort rows: apple labels first, then horse, then car
+    # Sort rows by domain, in CLASSES order, then alphabetically by word
     order = sorted(range(len(words)),
                    key=lambda i: (CLASSES.index(true_dom[i]), words[i]))
     words    = [words[i]    for i in order]
@@ -592,12 +616,12 @@ def fig_recognition_heatmap():
     preds = [CLASSES[int(np.argmax(matrix[i]))] for i in range(len(words))]
 
     n_labels = len(words)
-    fig, ax  = plt.subplots(figsize=(5, max(8, n_labels * 0.22)))
+    fig, ax  = plt.subplots(figsize=(2 + 0.6 * len(CLASSES), max(8, n_labels * 0.22)))
 
     im = ax.imshow(norm_mat, aspect="auto",
                    cmap="RdYlGn", vmin=0, vmax=1)
 
-    ax.set_xticks(range(3))
+    ax.set_xticks(range(len(CLASSES)))
     ax.set_xticklabels(CLASSES, fontsize=9)
     ax.set_yticks(range(n_labels))
     ax.set_yticklabels(words, fontsize=5.5)
@@ -677,7 +701,7 @@ def fig_precision_recall():
     Also shows TP/FP/FN counts as text inside bars.
     """
     from run_ablation import load_base_mdoms, build_curated_apple_mdom
-    CLASSES = ["apple", "horse", "car"]
+    CLASSES = list(SYS_CLASSES)
 
     # Baseline M_dom
     base_mdoms = load_base_mdoms()
@@ -696,7 +720,7 @@ def fig_precision_recall():
     w = 0.18
     offsets = [-1.5 * w, -0.5 * w, 0.5 * w, 1.5 * w]
 
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(2.0 * len(CLASSES), 4.5), sharey=True)
 
     for mi, (met, mkey) in enumerate(zip(metrics, met_keys)):
         ax = axes[mi]
@@ -765,11 +789,16 @@ def fig_precision_recall():
 
 def _load_all_label_vectors():
     words, vecs, domains = [], [], []
-    for cls in ["apple", "horse", "car"]:
+    for cls in SYS_CLASSES:
         raw = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
         for word, v in raw.items():
+            v = np.array(v, dtype=np.float32)
+            # Excluir vectores fallback sintéticos (±1 en 300 dims → norma ~17;
+            # los fastText reales rondan norma 1–3): distorsionan el PCA.
+            if np.linalg.norm(v) > 10:
+                continue
             words.append(word)
-            vecs.append(np.array(v, dtype=np.float32))
+            vecs.append(v)
             domains.append(cls)
     return words, np.array(vecs), domains
 
@@ -795,12 +824,13 @@ def fig_semantic_space():
     var   = pca.explained_variance_ratio_
 
     idx = {d: [i for i, dom in enumerate(all_domains) if dom == d]
-           for d in ["apple", "horse", "car", "extra"]}
-    centroids = {d: pts2d[idx[d]].mean(axis=0) for d in ["apple", "horse", "car"]}
+           for d in list(SYS_CLASSES) + ["extra"]}
+    centroids = {d: pts2d[idx[d]].mean(axis=0) for d in SYS_CLASSES}
 
-    DOM_COLORS  = {"apple": "#e74c3c", "horse": "#2980b9",
-                   "car": "#27ae60",   "extra": "#8e44ad"}
-    DOM_MARKERS = {"apple": "o", "horse": "s", "car": "^", "extra": "D"}
+    DOM_COLORS  = {**DOMAIN_COLOR, "extra": "#555555"}
+    DOM_MARKERS = {"apple": "o", "car": "^", "cow": "P", "cup": "X",
+                   "dog": "*", "horse": "s", "pear": "v", "tomato": "d",
+                   "extra": "D"}
 
     fig = plt.figure(figsize=(15, 5.5))
     gs  = gridspec.GridSpec(1, 3, width_ratios=[2.2, 1.4, 1.4], wspace=0.38)
@@ -809,7 +839,7 @@ def fig_semantic_space():
     ax_bins   = fig.add_subplot(gs[2])
 
     # Panel A: PCA space
-    for dom in ["apple", "horse", "car"]:
+    for dom in SYS_CLASSES:
         pts = pts2d[idx[dom]]
         _add_convex_hull(ax_pca, pts, DOM_COLORS[dom])
         lbl = f"{dom} ({T['domain'].lower()})" if dom != "extra" else T["cross_domain"]
@@ -857,7 +887,7 @@ def fig_semantic_space():
     # Panel B: cosine similarity
     probe_words = ["engine", "motor", "machine", "computer", "mac"]
     cont_centroids = {}
-    for dom in ["apple", "horse", "car"]:
+    for dom in SYS_CLASSES:
         idxs = [i for i, d in enumerate(all_domains) if d == dom]
         c = all_vecs[idxs].mean(axis=0)
         n = np.linalg.norm(c)
@@ -885,7 +915,8 @@ def fig_semantic_space():
 
     # Panel C: binary bin collapse
     M = 16
-    rep = {"apple": "apple", "horse": "horse", "car": "engine"}
+    rep = {"apple": "apple", "car": "engine", "cow": "cow", "cup": "cup",
+           "dog": "dog", "horse": "horse", "pear": "pear", "tomato": "tomato"}
     x_bins, bar_w = np.arange(M), 0.26
     for di, (dom, color) in enumerate(DOMAIN_COLOR.items()):
         v   = np.array(get_fasttext_vector(rep[dom], vc))
@@ -916,22 +947,27 @@ def fig_semantic_space():
 def fig_recall_grid():
     """
     Grid showing label → recalled prototype image per domain.
-    Layout: 3 domain columns × (1 ETH-80 reference + 5 label recalls) rows.
-    Uses correct g_min/g_max dequantization.
+    Layout: len(CLASSES) domain columns × (1 ETH-80 reference + 5 label
+    recalls) rows. Uses correct g_min/g_max dequantization.
     """
     import pickle, torch
     from torchvision import transforms
     from stage2_encoder import Decoder
     from stage6_interaction import get_fasttext_vector, load_all_vectors
 
-    CLASSES = ["apple", "horse", "car"]
+    CLASSES = list(SYS_CLASSES)
     Q_LATENT = 32
 
     # Representative labels per domain (top recognized, semantically clear)
     LABELS = {
-        "apple": ["fruit", "red", "tree", "pear", "seeds"],
-        "horse": ["horse", "animal", "equine", "donkey", "riding"],
-        "car":   ["vehicle", "automobile", "car", "engine", "driving"],
+        "apple":  ["fruit", "red", "tree", "pear", "seeds"],
+        "car":    ["vehicle", "automobile", "car", "engine", "driving"],
+        "cow":    ["cow", "animal", "cattle", "farm", "milk"],
+        "cup":    ["cup", "mug", "drink", "container", "coffee"],
+        "dog":    ["dog", "animal", "canine", "puppy", "pet"],
+        "horse":  ["horse", "animal", "equine", "donkey", "riding"],
+        "pear":   ["pear", "fruit", "tree", "green", "seeds"],
+        "tomato": ["tomato", "fruit", "red", "vegetable", "seeds"],
     }
 
     # Load decoder
@@ -1047,7 +1083,7 @@ def _load_visual_assets():
     from stage5_fill import load_agent_memories
     from stage6_interaction import Agent, load_all_vectors
     from stage7_bidirectional import load_encoder, load_global_stats
-    classes = ["apple", "horse", "car"]
+    classes = list(SYS_CLASSES)
     enc = load_encoder()
     dec = Decoder()
     dec.load_state_dict(torch.load(ROOT / "models" / "decoder.pt",
@@ -1117,19 +1153,21 @@ def fig_image_rejection():
     (ξ=0), fila 3 sintéticas fuera de dominio (todas score 0)."""
     from PIL import Image
     from stage5_fill import quantize_latent_global
-    classes = ["apple", "horse", "car"]
+    classes = list(SYS_CLASSES)
     enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
 
     accepted, rejected_real = [], []
+    accepted_domains = set()
     for cls in classes:
         for p in splits[cls]["test"]:
             z_q = quantize_latent_global(_encode_img(Image.open(p), enc),
                                          g_min, g_max, 32)
             sc = _visual_scores(agents, z_q, classes)
-            if max(sc.values()) > 0 and len(accepted) < 3:
+            if max(sc.values()) > 0 and len(accepted) < 3 and cls not in accepted_domains:
                 w = max(sc, key=sc.get)
                 accepted.append((Image.open(p).convert("RGB").resize((128, 128)),
                                  f"→ {w} ({sc[w]:.0f})", True))
+                accepted_domains.add(cls)
             elif max(sc.values()) == 0 and len(rejected_real) < 3:
                 rejected_real.append((Image.open(p).convert("RGB").resize((128, 128)),
                                       "rechazada (ξ=0)", False))
@@ -1182,7 +1220,7 @@ def fig_image_to_labels():
     from PIL import Image
     from stage5_fill import quantize_latent_global
     from stage7_bidirectional import evoke_labels
-    classes = ["apple", "horse", "car"]
+    classes = list(SYS_CLASSES)
     enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
 
     samples = []
@@ -1423,9 +1461,18 @@ def main():
     print("=" * 60)
     print("  EAM-TMS — Paper figure generation")
     print("=" * 60)
-    print("\n[1/3] Re-running ablation study (180 experiments)...")
-    rows   = run_ablation()
-    df_raw = pd.DataFrame(rows)
+    # Cache de filas de la ablación (~40 min): se reutiliza si existe, salvo
+    # `--fresh`. Borrar el CSV o pasar --fresh cuando cambien memorias/banco.
+    rows_cache = out_root / "ablation_rows.csv"
+    if rows_cache.exists() and "--fresh" not in sys.argv:
+        print(f"\n[1/3] Reusando ablación cacheada: {rows_cache.name} "
+              f"(pasa --fresh para re-correrla)")
+        df_raw = pd.read_csv(rows_cache)
+    else:
+        print("\n[1/3] Re-running ablation study (180 experiments)...")
+        rows   = run_ablation()
+        df_raw = pd.DataFrame(rows)
+        df_raw.to_csv(rows_cache, index=False)
     df_raw["condition"] = df_raw["condition"].map(
         lambda c: CONDITION_LABELS.get(c, c))
     agg = build_agg(df_raw)
