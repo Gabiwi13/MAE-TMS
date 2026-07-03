@@ -66,7 +66,9 @@ from stage6_interaction import (
     get_fasttext_vector, token_in_vocabulary,
 )
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
+                "pear": "#7f8c8d", "tomato": "#c0392b"}
 SHUFFLE_SEEDS = [0, 1, 2, 3, 4]
 ACC_THRESHOLD = 0.90
 
@@ -304,8 +306,8 @@ def main():
             label="C · bloqueado")
     ax.plot(ks, runs["D_raw"]["entropy"], color="#95a5a6", lw=2, ls=":",
             label="D · crudo")
-    ax.axhline(np.log2(3), color="k", lw=0.8, ls=":",
-               label="máx (log₂3 = 1.585)")
+    ax.axhline(np.log2(len(CLASSES)), color="k", lw=0.8, ls=":",
+               label=f"máx (log₂{len(CLASSES)} = {np.log2(len(CLASSES)):.3f})")
     ax.set_xlabel("interacciones (k)"); ax.set_ylabel("entropía M_dir (bits)")
     ax.set_title("Balance del directorio durante la formación")
     ax.legend(fontsize=9); ax.spines[["top", "right"]].set_visible(False)

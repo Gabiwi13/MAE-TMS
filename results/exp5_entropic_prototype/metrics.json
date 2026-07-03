@@ -1,67 +1,147 @@
 {
   "old": {
     "entropy": {
-      "apple": 0.8042632779481806,
-      "horse": 0.7515250920276896,
-      "car": 0.7683013843239345
+      "apple": 5.207673332326672,
+      "car": 5.569051318802259,
+      "cow": 5.449904261045088,
+      "cup": 5.3850920198303145,
+      "dog": 5.6808583416937175,
+      "horse": 5.270185012330922,
+      "pear": 5.049119928970689,
+      "tomato": 5.281117796611545
     },
     "variety": {
       "apple": {
         "n_ok": 12,
-        "distinct": 1,
-        "mean_pair_l1": 0.0
-      },
-      "horse": {
-        "n_ok": 12,
-        "distinct": 1,
-        "mean_pair_l1": 0.0
+        "distinct": 12,
+        "mean_pair_l1": 2.5113636363636362
       },
       "car": {
         "n_ok": 12,
-        "distinct": 1,
-        "mean_pair_l1": 0.0
+        "distinct": 12,
+        "mean_pair_l1": 2.559659090909091
+      },
+      "cow": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.9936079545454546
+      },
+      "cup": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.0729166666666665
+      },
+      "dog": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.394649621212121
+      },
+      "horse": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.2634943181818183
+      },
+      "pear": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.285274621212121
+      },
+      "tomato": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.3958333333333335
       }
     },
     "reverse": {
       "apple": {
-        "train": 0.0,
-        "test": 0.0
-      },
-      "horse": {
-        "train": 0.0,
-        "test": 0.0
+        "train": 1.0,
+        "test": 1.0
       },
       "car": {
-        "train": 0.0,
-        "test": 0.0
+        "train": 1.0,
+        "test": 0.6
+      },
+      "cow": {
+        "train": 1.0,
+        "test": 0.9
+      },
+      "cup": {
+        "train": 1.0,
+        "test": 0.9
+      },
+      "dog": {
+        "train": 1.0,
+        "test": 0.6
+      },
+      "horse": {
+        "train": 1.0,
+        "test": 0.9
+      },
+      "pear": {
+        "train": 1.0,
+        "test": 0.9
+      },
+      "tomato": {
+        "train": 1.0,
+        "test": 0.8
       }
     },
     "early": {
-      "acc": 0.975,
-      "rej": 0.025
+      "acc": 0.8,
+      "rej": 0.0125
     }
   },
   "new": {
     "entropy": {
-      "apple": 3.9677018581871093,
-      "horse": 3.7603559892576444,
-      "car": 4.071797037701074
+      "apple": 4.845987826700243,
+      "car": 4.891071929840476,
+      "cow": 4.729266372148525,
+      "cup": 4.207426003985588,
+      "dog": 5.138883674231692,
+      "horse": 4.853352264355651,
+      "pear": 3.26509322329039,
+      "tomato": 3.7320809585762715
     },
     "variety": {
       "apple": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 2.983191287878788
-      },
-      "horse": {
-        "n_ok": 12,
-        "distinct": 12,
-        "mean_pair_l1": 1.4623579545454546
+        "mean_pair_l1": 1.8977272727272727
       },
       "car": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 3.4874526515151514
+        "mean_pair_l1": 1.814157196969697
+      },
+      "cow": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.3463541666666667
+      },
+      "cup": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.0366950757575757
+      },
+      "dog": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.7329545454545454
+      },
+      "horse": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.5146780303030303
+      },
+      "pear": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 0.6567234848484849
+      },
+      "tomato": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
       }
     },
     "reverse": {
@@ -69,18 +149,38 @@
         "train": 1.0,
         "test": 0.0
       },
+      "car": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "cow": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "cup": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "dog": {
+        "train": 1.0,
+        "test": 0.0
+      },
       "horse": {
         "train": 1.0,
         "test": 0.0
       },
-      "car": {
-        "train": 1.0,
+      "pear": {
+        "train": 0.6,
+        "test": 0.0
+      },
+      "tomato": {
+        "train": 0.85,
         "test": 0.0
       }
     },
     "early": {
-      "acc": 0.975,
-      "rej": 0.025
+      "acc": 0.7,
+      "rej": 0.0125
     }
   }
 }

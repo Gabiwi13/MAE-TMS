@@ -58,7 +58,9 @@ from stage6_interaction import (
     get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
 )
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
+                "pear": "#7f8c8d", "tomato": "#c0392b"}
 
 
 # Routing oficial (exp. 2): gate de containment, sin división por mem.mean
@@ -252,8 +254,9 @@ def main():
     print(f"  Mature accuracy (RAW): {mature_raw_acc*100:.1f}%")
     print(f"  Fidelidad (madura == temprana): {fidelity*100:.1f}%")
 
-    # Réplica del protocolo original: 10 TEST_QUERIES
-    print("\n--- Réplica 10 TEST_QUERIES (protocolo exacto del exp. 1) ---")
+    # Réplica del protocolo del pipeline oficial: TEST_QUERIES (2 por dominio)
+    print(f"\n--- Réplica {len(TEST_QUERIES)} TEST_QUERIES "
+          f"(protocolo del pipeline oficial) ---")
     with contextlib.redirect_stdout(io.StringIO()):
         agents10 = {}
         for cls in CLASSES:
@@ -334,16 +337,16 @@ def main():
     fig.tight_layout(); fig.savefig(OUT_DIR / "fig1_exp1_vs_exp3.png", dpi=150)
     plt.close(fig)
 
-    # 2) counts M_dir exp1 vs exp3 (sesgo de registro)
+    # 2) counts M_dir exp3 (sesgo de registro). La referencia histórica del
+    # exp. 1 ([81, 52, 31]) era del sistema de 3 clases y no es comparable
+    # barra a barra con 8 agentes; queda documentada en summary.json.
     fig, ax = plt.subplots(figsize=(8.4, 4.6))
     x = np.arange(len(CLASSES))
-    exp1_c = np.array([81, 52, 31]); exp1_c = exp1_c / exp1_c.sum()
     exp3_c = counts / max(counts.sum(), 1)
-    ax.bar(x - 0.18, exp1_c, 0.36, label="Exp. 1-estilo (crudo, exp2 downstream)",
-           color="#95a5a6")
-    ax.bar(x + 0.18, exp3_c, 0.36, label="Exp. 3 (corregido)",
+    ax.bar(x, exp3_c, 0.6, label="Exp. 3 (corregido)",
            color=[DOMAIN_COLOR[c] for c in CLASSES])
-    ax.axhline(1/3, ls=":", c="k", lw=1, label="ideal (1/3)")
+    ax.axhline(1 / len(CLASSES), ls=":", c="k", lw=1,
+               label=f"ideal (1/{len(CLASSES)})")
     ax.set_xticks(x, CLASSES)
     ax.set_ylabel("proporción de registros M_dir")
     ax.set_title("Distribución de registros en M_dir — el sesgo de captura")
@@ -360,30 +363,33 @@ def main():
         "media de celdas no nulas), sin ÷mem.mean",
         "- Sin filtro léxico: tokens representables por fastText entran como "
         "pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder",
-        "- Aprendizaje: solo los directorios de labels registran (TME + 3 "
-        "agentes), token → ganador. mem_dir_R NO se actualiza con recalls "
-        "(solo percepciones reales de imágenes en stage7)",
+        "- Aprendizaje: solo los directorios de labels registran (TME + un "
+        "directorio por agente), token → ganador. mem_dir_R NO se actualiza "
+        "con recalls (solo percepciones reales de imágenes en stage7)",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
         "- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",
         "",
         "## Resultados (banco de 80 queries, 10 por clase)",
         "",
-        "| métrica | exp. 1 (crudo) | exp. 3 (corregido) |",
+        "| métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, "
+        "8 clases) |",
         "|---|---|---|",
         f"| early accuracy | ~34% | **{early_acc:.1%}** |",
         f"| early rechazo | — | {early_rej:.1%} |",
-        f"| mature accuracy B1 | 98.8% (ablation B1) | **{mature_acc:.1%}** |",
+        f"| mature accuracy B1 | 98.8% (ablation B1, v3) | **{mature_acc:.1%}** |",
         f"| mature accuracy RAW | 33.8% | {mature_raw_acc:.1%} |",
         f"| fidelidad | 100% (sobre routing sesgado) | **{fidelity:.1%}** "
         "(sobre routing correcto) |",
-        f"| M_dir counts | [81, 52, 31] estilo-crudo | {counts.tolist()} |",
+        f"| M_dir counts | [81, 52, 31] estilo-crudo (v3) | {counts.tolist()} |",
         f"| M_dir entropía | — | {tme.mem_dir_L.entropy():.3f} bits "
-        "(máx 1.585) |",
+        f"(máx {np.log2(len(CLASSES)):.3f}) |",
         "",
-        "## Réplica de las 10 TEST_QUERIES del exp. 1",
+        f"## Réplica de las {len(TEST_QUERIES)} TEST_QUERIES del pipeline "
+        "oficial (2 por dominio)",
         "",
-        f"- counts exp. 1: [7, 4, 2] (apple capturó vehicle, engine, red…)",
+        f"- counts exp. 1 (v3, 10 queries de 3 clases): [7, 4, 2] "
+        "(apple capturó vehicle, engine, red…)",
         f"- counts exp. 3: {counts10.tolist()}",
         "",
         "| query | winner exp. 3 |",

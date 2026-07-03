@@ -66,7 +66,9 @@ N_IMAGES   = 50     # mismas 50 que usó stage5 para el promedio
 N_TEST     = 10     # imágenes held-out por clase para generalización
 N_SAMPLES  = 12     # repeticiones de recall para medir variedad
 GRID_SHOW  = 5      # muestras decodificadas en la figura
-CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle"}
+CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle",
+              "cow": "milk", "cup": "drink", "dog": "pet",
+              "pear": "pome", "tomato": "vegetable"}
 
 
 # Construcción del llenado entrópico
