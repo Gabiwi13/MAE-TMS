@@ -7,7 +7,7 @@ Estrategia (en orden):
   3. Descarga del CSV de aserciones (~1.1 GB) en modo streaming:
        - se guarda en cache/ para reutilización
        - se procesa línea a línea sin descomprimir completo
-       - se extraen SOLO las ~100 líneas relevantes para apple/horse/car
+       - se extraen SOLO las líneas relevantes para las clases ETH-80
        - resultado neto almacenado: ~5 KB
   4. Fallback curado (último recurso, sin fidelidad teórica).
 """
@@ -176,7 +176,7 @@ def _download_assertions() -> bool:
 
 def _stream_extract(gz_path: Path) -> dict:
     """
-    Lee línea a línea el .gz, extrae SOLO las aserciones de apple/horse/car.
+    Lee línea a línea el .gz, extrae SOLO las aserciones de las clases ETH-80.
     Formato TSV: assertion_id \\t relation \\t start \\t end \\t json_meta
     """
     if EXTRACTED_CACHE.exists():

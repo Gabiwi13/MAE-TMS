@@ -387,7 +387,8 @@ def main():
         "",
         "## Setup",
         f"- Grid: ι ∈ {IOTAS} × κ ∈ {KAPPAS} (mutación en-memoria, setters originales)",
-        "- Banco: 80 queries del ablation con ground truth (27/27/26)",
+        "- Banco: primeras 80 queries del banco de 8 clases con ground truth "
+        "(10 por clase)",
         "- Score: activación media de project() con pesos de M_dom_L,",
         "  gateada por containment-ι y por κ·mem.mean (adaptación unilateral",
         "  del criterio original de recognize()).",

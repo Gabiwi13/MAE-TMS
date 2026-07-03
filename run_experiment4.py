@@ -18,13 +18,13 @@ madura completa (80 queries, routing B1, rechazo explícito) → curvas de:
 
 Condiciones
 -----------
-  A  corregido · orden original (intercalado apple/horse/car)
+  A  corregido · orden original (intercalado sobre las 8 clases)
   B  corregido · 5 órdenes barajados (media ± desv.)
-  C  corregido · orden bloqueado (27 apple, luego 27 horse, luego 26 car)
+  C  corregido · orden bloqueado (todas las de una clase, luego la siguiente)
   D  crudo (exp. 1: sin gate, sin norm) · orden original — control del sesgo
 
-Nota de instrumentación: en la arquitectura real los 4 M_dir (TME + 3
-agentes) reciben registros idénticos; aquí se instrumenta uno solo
+Nota de instrumentación: en la arquitectura real los M_dir (TME + un
+directorio por agente) reciben registros idénticos; aquí se instrumenta uno solo
 (DirectoryMemory, EHAM real) que representa ese estado compartido.
 La fase temprana semántica actualiza solo el directorio de labels (token →
 ganador). mem_dir_R no se actualiza con recalls: el directorio visual se

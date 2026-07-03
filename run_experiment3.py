@@ -19,8 +19,8 @@ Protocolo (idéntico al exp. 1 / stages 6+8, arquitectura 4-AMR completa):
   - Fase madura: TME apagado, entrada aleatoria (seed 42), routing por M_dir
     del agente de entrada con B1, rechazo explícito.
 
-Corpus: banco de 80 queries del ablation (ground truth 27/27/26) +
-réplica del protocolo original de 10 TEST_QUERIES para comparación directa.
+Corpus: primeras 80 queries del banco de 8 clases (ground truth, 10 por
+clase) + réplica del protocolo de TEST_QUERIES para comparación directa.
 
 No modifica ningún artefacto del exp. 1 (models/*.pkl intactos).
 Salidas en results/exp3_corrected_routing/
@@ -367,7 +367,7 @@ def main():
         "- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",
         "",
-        "## Resultados (banco de 80 queries, GT 27/27/26)",
+        "## Resultados (banco de 80 queries, 10 por clase)",
         "",
         "| métrica | exp. 1 (crudo) | exp. 3 (corregido) |",
         "|---|---|---|",

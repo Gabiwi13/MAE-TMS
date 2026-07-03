@@ -4,20 +4,21 @@ Etapa 6 — Fase temprana del sistema transactivo.
 Implementa los tres procesos de la memoria transactiva de Wegner:
   asignacion de informacion   cada consulta se asigna al especialista
                               que mejor la reconoce (broadcast + argmax),
-  actualizacion de directorio el TME y los tres agentes registran
+  actualizacion de directorio el TME y TODOS los agentes registran
                               (cue -> ganador) en sus directorios,
   coordinacion de recuperacion el ganador evoca el contenido asociado
                               (recall hetero -> decoder -> imagen).
 
-Arquitectura por agente (4 memorias):
+Arquitectura por agente (5 memorias, K = len(CLASSES) agentes):
   mem_dom_L  HomoAssociativeMemory(300,16)   dominio label, pesos por feature
   mem_dom_R  HomoAssociativeMemory(64,32)    dominio latente, pesos por feature
   mem_dom_H  HeteroAssociativeMemory(300,16,64,32)  contenido label <-> latente
-  mem_dir    DirectoryMemory(300,16 -> 3,2)  quien sabe que (labels)
+  mem_dir    DirectoryMemory(300,16 -> K,2)  quien sabe que (labels)
+  mem_dir_R  DirectoryMemory(64,32 -> K,2)   quien sabe que (latentes visuales)
 
 TME (2 memorias):
-  mem_dir_L  DirectoryMemory(300,16 -> 3,2)  directorio por labels
-  mem_dir_R  DirectoryMemory(64,32 -> 3,2)   directorio por latentes,
+  mem_dir_L  DirectoryMemory(300,16 -> K,2)  directorio por labels
+  mem_dir_R  DirectoryMemory(64,32 -> K,2)   directorio por latentes,
              se entrena en la etapa 7 con percepciones visuales
 """
 import hashlib
@@ -451,17 +452,27 @@ def visualize_result(result: dict, idx: int):
     plt.close()
 
 
+# Interacciones de la fase temprana del pipeline oficial: 2 por dominio,
+# intercaladas (16 en total). La versión anterior eran las 10 queries de la
+# era de 3 clases (apple/horse/car) y dejaba 5 dominios sin presenciar:
+# sus directorios quedaban vacíos ("no ruteas lo que no presenciaste").
 TEST_QUERIES = [
-    "a round red fruit",
-    "fast vehicle with wheels",
-    "animal with a mane",
-    "sweet edible thing",
-    "large powerful mammal",
-    "machine for transportation",
-    "grows on trees",
-    "has four legs and hooves",
-    "has an engine",
-    "fruit with seeds inside",
+    "a crunchy red fruit with a core",             # apple
+    "fast vehicle with wheels",                    # car
+    "farm animal that gives milk",                 # cow
+    "a mug for drinking coffee",                   # cup
+    "a barking domestic pet",                      # dog
+    "animal with a mane",                          # horse
+    "sweet green fruit with a narrow neck",        # pear
+    "red juicy fruit used in salads",              # tomato
+    "sweet fruit from an orchard tree",            # apple
+    "machine for transportation with an engine",   # car
+    "bovine beast that moos",                      # cow
+    "small container for a hot drink",             # cup
+    "canine with a wagging tail",                  # dog
+    "riding animal with hooves",                   # horse
+    "teardrop shaped orchard fruit",               # pear
+    "round red fruit growing on a vine",           # tomato
 ]
 
 

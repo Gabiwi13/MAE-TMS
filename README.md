@@ -7,25 +7,25 @@ This repository contains the implementation and experimental results for the EAM
 ## Overview
 
 The system combines:
-- **ResNet18 autoencoder** (with an auxiliary classification head): pretrained ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on ETH-80 (apple, horse, car). Loss is `MSE + 0.1·CE`; the classification head is used only during encoder training and does **not** participate in routing or recall. (It is *not* a masked autoencoder — there is no masking.)
+- **ResNet18 autoencoder** (with an auxiliary classification head): pretrained ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on the 8 ETH-80 classes (apple, car, cow, cup, dog, horse, pear, tomato). Loss is `MSE + 0.1·CE`; the classification head is used only during encoder training and does **not** participate in routing or recall. (It is *not* a masked autoencoder — there is no masking.)
 - **`HeteroAssociativeMemory`** (`mem_dom_H`): subclass of `HeteroAssociativeMemory4D` (Pineda & Morales) — the content bridge mapping binary label vectors ↔ quantized prototype latents, modulated by per-feature weights from the homo-associative memories.
 - **`HomoAssociativeMemory`** (`mem_dom_L`, `mem_dom_R`): wrapper around `AssociativeMemory` (Pineda & Morales) — models the distribution of a single domain and is the only memory that produces per-feature recognition weights (`recog_weights`).
 - **`DirectoryMemory`** (`mem_dir` text + `mem_dir_R` visual, one per modality per agent): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" and supports directory updating, retrieval coordination, and (externally) information allocation. Each agent keeps both a text directory (label→agent) and a visual directory (latent→agent), so an image can enter through any agent and be redirected to the right specialist via that agent's own `mem_dir_R`.
-- **fastText + spaCy**: NLP pipeline tokenizing queries into binary vectors (sign(v) ∈ {−1,+1}³⁰⁰), with lemma-normalized vocabulary.
+- **fastText + spaCy**: NLP pipeline tokenizing queries into 300-D cues quantized **by magnitude** (v4: `v/S` clipped to [−1,1] with a persisted global scale `S`, mapped to m=16 levels; the old sign(v) binarization used only 2 of 16 levels). Lemma-normalized vocabulary; words without a real fastText vector are rejected as cues, never synthesized.
 
-### Architecture per agent (5 AMRs)
+### Architecture per agent (5 AMRs, K = 8 agents)
 
 ```
-Agent (apple / horse / car)
+Agent (apple / car / cow / cup / dog / horse / pear / tomato)
   ├── mem_dom_H  HeteroAssociativeMemory(n=300, m=16, p=64, q=32)   hetero label↔latent
   ├── mem_dom_L  HomoAssociativeMemory(n=300, m=16)                 homo label  → recog weights
   ├── mem_dom_R  HomoAssociativeMemory(n=64,  m=32)                 homo latent → recog weights
-  ├── mem_dir    DirectoryMemory(n=300, m=16, n_agents=3)           routing label→agent (text)
-  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=3)           routing latent→agent (visual)
+  ├── mem_dir    DirectoryMemory(n=300, m=16, n_agents=8)           routing label→agent (text)
+  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           routing latent→agent (visual)
 
 TME
-  ├── mem_dir_L  DirectoryMemory(n=300, m=16, n_agents=3)           label-space routing
-  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=3)           latent-space routing (inverse)
+  ├── mem_dir_L  DirectoryMemory(n=300, m=16, n_agents=8)           label-space routing
+  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           latent-space routing (inverse)
 ```
 
 ### What changed in v3
@@ -36,7 +36,21 @@ TME
 - **Real visual hemisphere**: image → agent → labels evocation works at 94.1% (was 0/6 before).
 - **Meaningful names**: classes renamed to `HomoAssociativeMemory` / `HeteroAssociativeMemory` / `DirectoryMemory`; Wegner vocabulary (`update_directory`).
 
-## Key Results — Experimento 1
+### What changed in v4 (this branch)
+
+- **Scaling to 8 agents** (all ETH-80 classes): encoder retrained on 8 classes, evaluation bank extended to ~411 queries (≈50 per domain, `src/eval_bank.py`), ablation re-run at N ∈ {50,100,200,400}.
+- **Per-agent visual directory** (`mem_dir_R` in every agent): an image can enter through *any* agent and be redirected point-to-point to the specialist — mature-phase routing for the visual hemisphere (the TME-bridge alternative translated 0% and was discarded).
+- **Magnitude quantization** for label cues (`v/S`, global persisted scale) replacing sign(v) binarization, plus η-tolerant B1 reads (`DirectoryMemory.route`, ξ=2 for the visual directory only, from a measured sweep).
+- **No synthetic vectors anywhere** (fidelity audit): label vectors are built with `allow_fallback=False`; labels outside the fastText vocabulary are excluded from filling instead of receiving a fabricated ±1 vector.
+- **Early-phase interactions cover the 8 domains** (`TEST_QUERIES`, 2 per class): directories cannot route what they never witnessed.
+
+## Key Results — Experimento 1 (v3, 3-class system)
+
+> **Note:** the table below is the v3 characterization of the **3-class** system
+> (apple/horse/car, bank of 80 queries, 27/27/26). It is kept as the reference
+> baseline; the 8-class (v4) numbers live in `results/` as they are regenerated
+> and differ — semantic routing degrades with overlapping domains (pear/tomato
+> vs apple) while the visual hemisphere scales.
 
 Full characterization re-run as a single experiment (sections A–E). EAM parameters ι=0, κ=0, ξ=0, σ=0.1. Evaluation bank: 80 queries with ground truth (27/27/26). Report: [`results/experimento1/informe.md`](results/experimento1/informe.md).
 
@@ -53,7 +67,7 @@ Full characterization re-run as a single experiment (sections A–E). EAM parame
 
 Source of record for these numbers: [`results/exp3_corrected_routing/summary.json`](results/exp3_corrected_routing/summary.json).
 
-**Central finding**: rejection is decided by the EAM, not by a lexical filter. Tokens become vector cues whenever a real fastText representation exists; acceptance/rejection then follows from the memory's `recognize_gated` (containment) and the B1 directory read — there is no external vocabulary rule and no explicit `unknown` class. With every representable token allowed through, the raw directory read is more exposed to the registration-mass bias (53.75%), and **B1** is the single irreducible correction that restores 98.75%. The directory is `(3,2)` — three binary agent coordinates, no `unknown` bit; rejection emerges when no agent yields positive evidence.
+**Central finding**: rejection is decided by the EAM, not by a lexical filter. Tokens become vector cues whenever a real fastText representation exists; acceptance/rejection then follows from the memory's `recognize_gated` (containment) and the B1 directory read — there is no external vocabulary rule and no explicit `unknown` class. With every representable token allowed through, the raw directory read is more exposed to the registration-mass bias (53.75%), and **B1** is the single irreducible correction that restores 98.75%. The directory is `(K,2)` — K binary agent coordinates (3 in v3, 8 in v4), no `unknown` bit; rejection emerges when no agent yields positive evidence.
 
 ## Project Structure
 
@@ -66,7 +80,7 @@ src/                        # Core modules
   stage1_dataset.py         # ETH-80 dataset loading
   stage2_encoder.py         # ResNet18 autoencoder: encoder/decoder + aux classifier
   stage3_conceptnet.py      # Label extraction from ConceptNet 5.7.0
-  stage4_fasttext.py        # fastText binary vectors (sign(v) ∈ {−1,+1}³⁰⁰)
+  stage4_fasttext.py        # fastText raw vectors + global magnitude scale (no fallback)
   stage5_fill.py            # mem_dom filling by instances (H + L + R per agent)
   stage6_interaction.py     # Agent + TME early phase: routing + 4-AMR learning
   stage7_bidirectional.py   # Bidirectional recall (image → labels), visual hemisphere
