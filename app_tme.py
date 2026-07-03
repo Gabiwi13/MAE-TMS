@@ -31,7 +31,7 @@ from torchvision import transforms
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from quantizer import quantize_binary
+from quantizer import quantize_binary, label_scale
 from stage6_interaction import (
     CLASSES, AGENT_LIST, MODELS_DIR, Agent,
     get_nlp, load_all_vectors,
@@ -48,12 +48,13 @@ DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
 DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
                 "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
-NODE_POS = {
-    "TME":   (0.0,  0.0),
-    "apple": (-2.0, 0.0),
-    "horse": (1.0,  1.7),
-    "car":   (1.0, -1.7),
-}
+# Posiciones del grafo de ruteo: TME al centro y los agentes en una elipse,
+# generadas desde CLASSES (antes hardcodeadas a las 3 clases originales, lo
+# que rompía _routing_graph con el sistema de 8 agentes).
+NODE_POS = {"TME": (0.0, 0.0)}
+for _i, _cls in enumerate(CLASSES):
+    _ang = 2.0 * np.pi * _i / len(CLASSES) + np.pi / 2.0
+    NODE_POS[_cls] = (round(2.3 * np.cos(_ang), 3), round(1.9 * np.sin(_ang), 3))
 
 
 # Model loading (cached — runs once per session)
@@ -135,8 +136,9 @@ def load_experiment_state():
 @st.cache_resource
 def train_mdir_n80(normalized: bool):
     """
-    Train a fresh M_dir IN MEMORY by replaying the ablation's 80-query bank
-    (run_ablation.ALL_QUERIES — read-only import) through the early phase.
+    Train a fresh M_dir IN MEMORY by replaying the first 80 queries of the
+    8-class evaluation bank (eval_bank.ALL_QUERIES, 10 per class — read-only
+    import) through the early phase.
 
     normalized=True routes each query with the official gated M_dom score
     (recognize_gated, gate de containment) → clean associations; False uses
@@ -258,8 +260,11 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     # no stochastic sampling, runs in milliseconds.
     per_token = {}
     for tok, raw_v in tok_vecs.items():
-        sign_v = np.where(np.sign(raw_v) == 0, 1.0, np.sign(raw_v))
-        q_v    = quantize_binary(raw_v, M_LABEL)
+        # Paso intermedio REAL de quantize_binary (cuantización por magnitud):
+        # v/S recortado a [-1,1] con la escala global S. (La visualización
+        # anterior mostraba sign(v), un paso que ya no existe en el pipeline.)
+        scaled_v = np.clip(raw_v / label_scale(), -1.0, 1.0)
+        q_v      = quantize_binary(raw_v, M_LABEL)
 
         per_agent = {}
         for cls in CLASSES:
@@ -283,10 +288,10 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             }
 
         per_token[tok] = {
-            "raw_vec":   raw_v,
-            "sign_vec":  sign_v,
-            "q_vec":     q_v,
-            "per_agent": per_agent,
+            "raw_vec":    raw_v,
+            "scaled_vec": scaled_v,
+            "q_vec":      q_v,
+            "per_agent":  per_agent,
         }
 
     # TME decision (after pass 1)
@@ -449,7 +454,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         ))
 
     fig.update_layout(
-        xaxis=dict(visible=False, range=[-3.2, 2.8]),
+        xaxis=dict(visible=False, range=[-3.4, 3.4]),
         yaxis=dict(visible=False, range=[-2.8, 2.8]),
         height=360, margin=dict(l=10, r=10, t=50, b=10),
         title=dict(text=title, x=0.5, font=dict(size=14)),
@@ -469,7 +474,7 @@ def _mdir_bar(counts, qn):
         textposition="outside",
     ))
     total = counts.sum()
-    ideal = total / 3.0 if total > 0 else 0.0
+    ideal = total / len(CLASSES) if total > 0 else 0.0
     if ideal > 0:
         fig.add_hline(y=ideal, line_dash="dot", line_color="#7f8c8d",
                       annotation_text=f"Ideal ({ideal:.0f})",
@@ -625,10 +630,21 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
 </div>
 <script>
 const D = __DATA__;
-const AG = ["apple","horse","car"];
+// Agentes desde los datos reales (antes hardcodeados a apple/horse/car:
+// con 8 clases el JS reventaba si el ganador/entrada no estaba en la lista).
+const AG = D.agents;
 const $ = id => document.getElementById(id);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const LEFT = {apple:"16%", horse:"50%", car:"84%"};
+// Layout dinamico: hasta 4 agentes por fila (8 agentes -> dos filas).
+const PER_ROW = AG.length > 4 ? Math.ceil(AG.length/2) : AG.length;
+const N_ROWS  = Math.ceil(AG.length / PER_ROW);
+const ROW_H   = 158;
+const POS = {};
+AG.forEach((c,i)=>{
+  const row = Math.floor(i/PER_ROW), col = i%PER_ROW;
+  const inRow = Math.min(PER_ROW, AG.length - row*PER_ROW);
+  POS[c] = {left:(100*(col+0.5)/inRow)+'%', row:row};
+});
 let running = false;
 
 function centerOf(el, ref){
@@ -664,17 +680,21 @@ function setup(){
   document.querySelectorAll('.dot').forEach(d=>d.remove());
   const net=$('net');
   net.querySelectorAll('.agent').forEach(a=>a.remove());
+  net.style.height=(362+(N_ROWS-1)*ROW_H)+'px';
   const H=net.clientHeight;
+  const BIT=AG.length>4?11:15, BFS=AG.length>4?7:9;
+  const MNAME=AG.length<=4?'<span class="mname">M_dir</span>':'';
   for(const cls of AG){
     const d=document.createElement('div'); d.className='agent'; d.id='ag-'+cls;
-    d.style.left=LEFT[cls]; d.style.top=(H-168)+'px';
+    d.style.left=POS[cls].left;
+    d.style.top=(H-168-(N_ROWS-1-POS[cls].row)*ROW_H)+'px';
     d.innerHTML=`<h4>${D.emoji[cls]} ${cls}</h4>
       <div class="barwrap"><div class="bar" id="bar-${cls}"
            style="background:${D.colors[cls]}"></div></div>
       <div class="score" id="sc-${cls}">&mdash;</div>
-      <div class="mdir"><span class="mname">M_dir</span>
+      <div class="mdir">${MNAME}
         <div class="onehot" id="oh-${cls}">${
-          AG.map(a=>`<div class="bit" data-a="${a}">${a[0].toUpperCase()}</div>`).join('')
+          AG.map(a=>`<div class="bit" data-a="${a}" style="width:${BIT}px;height:${BIT}px;font-size:${BFS}px">${a[0].toUpperCase()}</div>`).join('')
         }</div>
         <span class="mcount" id="mc-${cls}">+0</span></div>`;
     net.appendChild(d);
@@ -981,6 +1001,7 @@ def build_flow_animation(trace) -> str:
         "mode":     "early",
         "entry":    None,
         "redirect": False,
+        "agents": list(CLASSES),
         "query":  trace["query"],
         "words":  words,
         "tokens": tokens,
@@ -1043,6 +1064,7 @@ def build_mature_animation(query, words, toks, entry, dest,
         "mode":     "mature",
         "entry":    entry,
         "redirect": entry != dest,
+        "agents":   list(CLASSES),
         "query":    query,
         "words":    words,
         "tokens":   toks,
@@ -1094,7 +1116,7 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
 .cell{width:10px;height:10px;border-radius:2px;background:#1a1d3d;opacity:0;
   transform:scale(0);transition:all .25s}
 .cell.on{opacity:1;transform:scale(1)}
-#net{display:flex;gap:20px;justify-content:center;margin-top:16px}
+#net{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:16px}
 .agent{width:212px;background:#181c44;border:2px solid #303670;border-radius:14px;
   padding:11px 13px;transition:all .5s}
 .agent h4{font-size:15px;display:flex;align-items:center;gap:6px;color:#fff}
@@ -1155,7 +1177,8 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
 </div>
 <script>
 const D=__DATA__;
-const AG=["apple","horse","car"];
+// Agentes desde los datos reales (antes hardcodeados a apple/horse/car).
+const AG=D.agents;
 const $=id=>document.getElementById(id);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let running=false;
@@ -1317,6 +1340,7 @@ def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
     data = {
         "queryImg": _img_b64(q_np),
         "reconImg": recon_b64,
+        "agents":   list(CLASSES),
         "latent":   [int(x) for x in np.asarray(z_q).ravel().tolist()],
         "scores":   scores,
         "winner":   winner,
@@ -1327,6 +1351,12 @@ def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
         "emoji":    DOMAIN_EMOJI,
     }
     return _ANIM_IMG2LBL_TEMPLATE.replace("__DATA__", json.dumps(data))
+
+
+# Alturas de los iframes de animación: con más de 4 agentes el grid de
+# especialistas ocupa una fila extra.
+_ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
+_ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
 # Session state management
@@ -1383,7 +1413,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         "broadcast through the TME, and return as a reconstructed memory — "
         "all values are the real ones computed by the AMRs."
     )
-    components.html(build_flow_animation(trace), height=890, scrolling=False)
+    components.html(build_flow_animation(trace), height=_ANIM_H, scrolling=False)
 
     st.markdown("---")
     st.markdown("### Detailed Stage-by-Stage Breakdown")
@@ -1409,7 +1439,6 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             used = t["lemma"] in _repr
             oov  = t["lemma"] in _unrepr
             if used:
-                bg, border = DOMAIN_COLOR.get("apple", "#27ae60"), "2px solid #fff"
                 bg = "#27ae60"
             elif oov:
                 bg = "#e67e22"
@@ -1435,7 +1464,8 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
 
     # STAGE 2 — FastText Serialization
     _stage_header(2, "", "FastText Serialization",
-        f"token → 300D float  →  sign() → {{−1,+1}}  →  quantize_binary(v, M={M_LABEL})  →  v_q ∈ [0,{M_LABEL-1}]^{N}")
+        f"token → 300D float  →  v/S recortado a [−1,1] (escala global S)  →  "
+        f"quantize_binary(v, M={M_LABEL}) por magnitud  →  v_q ∈ [0,{M_LABEL-1}]^{N}")
 
     tokens_list = list(trace["per_token"].keys())
     sel_tok = (st.selectbox("Inspect token:", tokens_list, key="s2_tok")
@@ -1457,15 +1487,16 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         st.caption(f"μ={td['raw_vec'].mean():.3f}   σ={td['raw_vec'].std():.3f}")
 
     with c_sign:
-        st.markdown("**② sign(v) → {−1, +1}**")
+        st.markdown("**② v/S → [−1, 1]  (magnitud)**")
+        _clipped = int((np.abs(td["scaled_vec"]) >= 1.0).sum())
         fig = _vec_heatmap(
-            td["sign_vec"],
-            title=(f"+1: {int((td['sign_vec']>0).sum())}   "
-                   f"−1: {int((td['sign_vec']<0).sum())}"),
-            rows=15, colorscale="Greys",
+            td["scaled_vec"],
+            title=(f"S={label_scale():.4f}   "
+                   f"recortadas: {_clipped}/300"),
+            rows=15, colorscale="RdBu_r",
         )
-        st.plotly_chart(fig, use_container_width=True, key=f"s2_sign_{sel_tok}")
-        st.caption("Binary projection in semantic space")
+        st.plotly_chart(fig, use_container_width=True, key=f"s2_scaled_{sel_tok}")
+        st.caption("Escala global S (p99 de |componente|) — la magnitud se preserva")
 
     with c_q:
         st.markdown(f"**③ v_q ∈ [0,{M_LABEL-1}]  (input to AMRs)**")
@@ -1481,19 +1512,17 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
     _stage_header(3, "", "TME Broadcast",
         "v_q sent simultaneously to all agents — each processes independently, no inter-agent communication")
 
+    _agents_html = " &nbsp;|&nbsp; ".join(
+        f"<span style='color:{DOMAIN_COLOR[c]}'>{DOMAIN_EMOJI[c]} {c}</span>"
+        for c in CLASSES)
     st.markdown(
         f"""<div style='text-align:center;padding:14px;background:#f8f9fa;
             border-radius:8px;margin:8px 0;border:1px solid #ddd'>
-          <span style='font-size:16px;color:#2c3e50'>
+          <span style='font-size:15px;color:#2c3e50'>
             <b>TME</b> broadcasts
             <code style='background:#eee;padding:2px 6px;border-radius:4px'>
               v_q[{sel_tok}] ∈ [0,{M_LABEL-1}]^{N}</code>
-            &nbsp;→&nbsp;
-            <span style='color:{DOMAIN_COLOR["apple"]}'>{DOMAIN_EMOJI["apple"]} apple M_dom_H</span>
-            &nbsp;|&nbsp;
-            <span style='color:{DOMAIN_COLOR["horse"]}'>{DOMAIN_EMOJI["horse"]} horse M_dom_H</span>
-            &nbsp;|&nbsp;
-            <span style='color:{DOMAIN_COLOR["car"]}'>{DOMAIN_EMOJI["car"]} car M_dom_H</span>
+            &nbsp;→&nbsp; M_dom_H de: {_agents_html}
           </span>
         </div>""",
         unsafe_allow_html=True,
@@ -1507,8 +1536,14 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
     _stage_header(4, "", "Per-Agent AMR Processing",
         "M_dom_L.recog_weights(v_q) → per-feature weights  →  M_dom_H.recognize_from_left(v_q, w) → score")
 
-    agent_cols = st.columns(3)
-    for col, cls in zip(agent_cols, CLASSES):
+    # Filas de 4 columnas para cubrir TODAS las clases (st.columns(3) + zip
+    # truncaba la vista a 3 de los 8 agentes; el ganador podía ni aparecer).
+    _PER_ROW = 4
+    agent_cells = []
+    for _start in range(0, len(CLASSES), _PER_ROW):
+        _chunk = CLASSES[_start:_start + _PER_ROW]
+        agent_cells.extend(zip(st.columns(_PER_ROW), _chunk))
+    for col, cls in agent_cells:
         pa     = td["per_agent"][cls]
         is_win = (cls == trace["winner"])
         color  = DOMAIN_COLOR[cls]
@@ -1664,7 +1699,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         if total > 0:
             h = st.session_state.mdir_mem.entropy()
             st.caption(
-                f"Entropy: {h:.3f} bits (max={np.log2(3):.3f})  •  "
+                f"Entropy: {h:.3f} bits (max={np.log2(len(CLASSES)):.3f})  •  "
                 f"Counts: {dict(zip(CLASSES, counts.tolist()))}"
             )
 
@@ -1776,7 +1811,8 @@ def main():
         if total > 0:
             h = st.session_state.mdir_mem.entropy()
             st.metric("M_dir entropy", f"{h:.3f} bits",
-                      delta=f"max={np.log2(3):.3f}", delta_color="normal")
+                      delta=f"max={np.log2(len(CLASSES)):.3f}",
+                      delta_color="normal")
 
         st.divider()
         st.subheader("Architecture")
@@ -1825,10 +1861,10 @@ def main():
             options=[
                 "", "a round red fruit", "animal with a mane",
                 "fast vehicle with wheels", "has an engine",
-                "large powerful mammal", "made into pie",
-                "equine with saddle", "passenger seats inside",
-                "grows on trees", "four legs and hooves",
-                "red color and sweet", "metal body and wheels",
+                "farm animal that gives milk", "a mug for hot coffee",
+                "a barking domestic pet", "sweet green fruit with a narrow neck",
+                "red juicy fruit on a vine", "made into pie",
+                "equine with saddle", "four legs and hooves",
             ],
             key="example_sel",
         )
@@ -1905,8 +1941,8 @@ def main():
 | Stage | What you see |
 |-------|-------------|
 | **1 · Sentence Decomposition** | spaCy tokens with POS tags, stopword flags, vocabulary status |
-| **2 · Serialization** | FastText 300D heatmap → sign() → quantize_binary() visualised as colour grids |
-| **3 · TME Broadcast** | v_q sent simultaneously to all 3 agents |
+| **2 · Serialization** | FastText 300D heatmap → v/S ∈ [−1,1] → quantize_binary() (magnitud) visualised as colour grids |
+| **3 · TME Broadcast** | v_q sent simultaneously to all agents |
 | **4 · Per-Agent AMR Processing** | For each agent: M_dom_L recog_weights (300D heatmap), M_dom_H recognition score + recall result |
 | **5 · TME Decision + M_dir** | Aggregated scores, winner, M_dir bar chart after update |
 | **6 · Recall & Reconstruction** | recalled_q (64D heatmap) → dequantize → decoder → reconstructed image vs. ETH-80 reference |
@@ -2039,7 +2075,7 @@ def main():
                 if total > 0:
                     h = st.session_state.mdir_mem.entropy()
                     st.metric("M_dir entropy", f"{h:.3f} bits",
-                              delta=f"max={np.log2(3):.3f}")
+                              delta=f"max={np.log2(len(CLASSES)):.3f}")
 
             if len(st.session_state.history) > 1:
                 st.subheader("Query-by-query evolution")
@@ -2096,7 +2132,7 @@ def main():
             "Fuente de M_dir:",
             ["Sesión actual (lo que enseñaste en esta sesión)",
              "Experimento entrenado (stage6 real — models/agent_*.pkl)",
-             "Entrenado en vivo — 80 queries del ablation (máxima precisión)"],
+             "Entrenado en vivo — 80 queries del banco (10 por clase)"],
             horizontal=True, key="mdir_src",
         )
         use_experiment = src_mode.startswith("Experimento")
@@ -2147,7 +2183,7 @@ def main():
         mdir80 = None
         if use_n80:
             norm80 = st.session_state.get("norm_toggle", True)
-            with st.spinner("Entrenando M_dir con las 80 queries del ablation "
+            with st.spinner("Entrenando M_dir con 80 queries del banco "
                             "(en memoria, primera vez ~10–30 s)…"):
                 mdir80, stats80 = train_mdir_n80(norm80)
             acc80 = stats80["correct"] / max(stats80["n"], 1)
@@ -2165,8 +2201,9 @@ def main():
                           f"{len(stats80['vocab'])} tokens",
                           delta=f"counts={mdir80.agent_counts.tolist()}")
             st.caption(
-                "M_dir entrenado en memoria con el mismo banco de 80 queries del "
-                "ablation (run_ablation.ALL_QUERIES, importado solo-lectura). "
+                "M_dir entrenado en memoria con las primeras 80 queries del "
+                "banco de evaluación de 8 clases (eval_bank.ALL_QUERIES, "
+                "10 por clase, importado solo-lectura). "
                 "El routing de entrenamiento usa el toggle de normalización de arriba — "
                 "cámbialo para comparar M_dir limpio vs M_dir sesgado. "
                 "Nada se escribe a disco."
@@ -2296,8 +2333,8 @@ def main():
 
                 if rejected:
                     st.warning(
-                        "REJECTED — sin señal de routing. "
-                        "(El sistema rechaza en vez de rutear al azar — audit fix #6.)")
+                        "REJECTED — sin señal de routing: el sistema rechaza "
+                        "en vez de rutear al azar.")
                     # Per-token diagnostics: WHY was it rejected?
                     st.markdown("**Diagnóstico por token:**")
                     if use_experiment:
@@ -2356,7 +2393,7 @@ def main():
                             build_mature_animation(
                                 query_m, words_m, toks_m, entry_cls, dest_cls,
                                 mdir_scores, recalled_img),
-                            height=890, scrolling=False)
+                            height=_ANIM_H, scrolling=False)
 
                     # Banner
                     if redirected:
@@ -2539,31 +2576,36 @@ def main():
                 build_image_to_labels_animation(
                     pil, z_q, scores, entry, winner, exp_agents, all_vecs,
                     decoder, gmin_v, gmax_v),
-                height=760, scrolling=False)
+                height=_ANIM_IMG_H, scrolling=False)
 
     with tab_info:
         st.header("ETH-80 Reference Images")
         st.caption("One representative training image per domain.")
 
-        cols = st.columns(3)
-        for col, cls in zip(cols, CLASSES):
-            with col:
-                st.subheader(f"{DOMAIN_EMOJI[cls]} {cls}")
-                img_np = ref_imgs[cls].permute(1, 2, 0).numpy()
-                st.image(_t2img(img_np), caption=f"ETH-80 — {cls}",
-                         use_container_width=True)
+        # Filas de 4 para las 8 clases (antes st.columns(3)+zip truncaba a 3).
+        _PR = 4
+        for _start in range(0, len(CLASSES), _PR):
+            _chunk = CLASSES[_start:_start + _PR]
+            for col, cls in zip(st.columns(_PR), _chunk):
+                with col:
+                    st.subheader(f"{DOMAIN_EMOJI[cls]} {cls}")
+                    img_np = ref_imgs[cls].permute(1, 2, 0).numpy()
+                    st.image(_t2img(img_np), caption=f"ETH-80 — {cls}",
+                             use_container_width=True)
 
         st.divider()
         st.subheader("ConceptNet labels per domain")
-        c_a, c_h, c_c = st.columns(3)
-        for col, cls in zip([c_a, c_h, c_c], CLASSES):
-            with col:
-                lpath  = ROOT / f"labels_{cls}.json"
-                labels = json.loads(lpath.read_text())
-                st.markdown(f"**{DOMAIN_EMOJI[cls]} {cls}** — {len(labels)} labels")
-                for word, freq in sorted(labels.items(),
-                                         key=lambda x: -x[1])[:15]:
-                    st.markdown(f"- `{word}` (freq={freq})")
+        for _start in range(0, len(CLASSES), _PR):
+            _chunk = CLASSES[_start:_start + _PR]
+            for col, cls in zip(st.columns(_PR), _chunk):
+                with col:
+                    lpath  = ROOT / f"labels_{cls}.json"
+                    labels = json.loads(lpath.read_text())
+                    st.markdown(f"**{DOMAIN_EMOJI[cls]} {cls}** — "
+                                f"{len(labels)} labels")
+                    for word, freq in sorted(labels.items(),
+                                             key=lambda x: -x[1])[:15]:
+                        st.markdown(f"- `{word}` (freq={freq})")
 
 
 if __name__ == "__main__":

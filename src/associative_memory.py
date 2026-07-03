@@ -102,9 +102,14 @@ class DirectoryMemory:
     (B1: ÷count) o se compara via argmax sobre scores ya calibrados.
     """
 
-    def __init__(self, n: int = 300, m: int = 16, n_agents: int = 3,
+    def __init__(self, n: int = 300, m: int = 16, n_agents: int = None,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
+        # n_agents es obligatorio: un default silencioso (el 3 histórico)
+        # construiría un directorio del tamaño equivocado sin fallar.
+        if n_agents is None:
+            raise TypeError("DirectoryMemory requiere n_agents explícito "
+                            "(número de agentes del sistema).")
         self._n = n
         self._m = m
         self._n_agents = n_agents

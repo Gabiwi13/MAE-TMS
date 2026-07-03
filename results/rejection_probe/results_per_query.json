@@ -9,8 +9,13 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_rejected",
     "winner": null
@@ -24,9 +29,14 @@
     ],
     "unrepresented_tokens": [],
     "scores": {
-      "apple": 10776.21147,
+      "apple": 8191.39881,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_false_route",
     "winner": "apple"
@@ -40,27 +50,37 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
-      "horse": 7055.97919,
-      "car": 0.0
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
+      "horse": 0.0,
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "horse"
+    "verdict": "mae_rejected",
+    "winner": null
   },
   {
-    "query": "a glass container for water",
+    "query": "a sailing boat on the ocean",
     "represented_tokens": [
-      "glass",
-      "container",
-      "water"
+      "sailing",
+      "boat",
+      "ocean"
     ],
     "unrepresented_tokens": [],
     "scores": {
-      "apple": 5890.06406,
+      "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "apple"
+    "verdict": "mae_rejected",
+    "winner": null
   },
   {
     "query": "a piece of furniture for sitting",
@@ -71,8 +91,13 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_rejected",
     "winner": null
@@ -87,11 +112,16 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 4985.30821
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "car"
+    "verdict": "mae_rejected",
+    "winner": null
   },
   {
     "query": "a cold mountain covered in snow",
@@ -103,11 +133,16 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
-      "horse": 6414.91377,
-      "car": 5105.41278
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
+      "horse": 0.0,
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "horse"
+    "verdict": "mae_rejected",
+    "winner": null
   },
   {
     "query": "a book with printed pages",
@@ -118,8 +153,13 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_rejected",
     "winner": null
@@ -133,8 +173,13 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_rejected",
     "winner": null
@@ -147,12 +192,17 @@
     ],
     "unrepresented_tokens": [],
     "scores": {
-      "apple": 6062.52018,
+      "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "apple"
+    "verdict": "mae_rejected",
+    "winner": null
   },
   {
     "query": "a wooden table and chairs",
@@ -164,26 +214,36 @@
     "unrepresented_tokens": [],
     "scores": {
       "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
     "verdict": "mae_rejected",
     "winner": null
   },
   {
-    "query": "a green plant in a pot",
+    "query": "a pair of leather shoes",
     "represented_tokens": [
-      "green",
-      "plant",
-      "pot"
+      "pair",
+      "leather",
+      "shoe"
     ],
     "unrepresented_tokens": [],
     "scores": {
-      "apple": 10469.89316,
+      "apple": 0.0,
+      "car": 0.0,
+      "cow": 0.0,
+      "cup": 0.0,
+      "dog": 0.0,
       "horse": 0.0,
-      "car": 0.0
+      "pear": 0.0,
+      "tomato": 0.0
     },
-    "verdict": "mae_false_route",
-    "winner": "apple"
+    "verdict": "mae_rejected",
+    "winner": null
   }
 ]

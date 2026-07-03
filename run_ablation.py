@@ -11,7 +11,7 @@ Condiciones:
   B1  — Score normalizado / count_agente  (penaliza sobrerepresentados)
   B2  — Score normalizado / sqrt(count_agente)
   C   — Registro balanceado: cap proporcional de registros por agente
-  D   — Queries estrictamente balanceadas por dominio (N//3 por clase)
+  D   — Queries estrictamente balanceadas por dominio (N//K por clase, K=8)
   E32 — M_dir con m=32 (binario — confirma que m>2 no ayuda para sign(v))
   E64 — M_dir con m=64 (binario — ídem)
   F   — ConceptNet curado: apple sin computer/mac/macintosh/eden
@@ -58,7 +58,8 @@ class DirectoryMemoryCapped(DirectoryMemory):
     """Condicion C: DirectoryMemory hetero que limita la acumulacion
     desproporcionada por agente (cap proporcional por max_ratio)."""
 
-    def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
+    def __init__(self, n=300, m=16, n_agents=None, max_ratio=3.0):
+        # n_agents obligatorio (lo valida DirectoryMemory).
         super().__init__(n=n, m=m, n_agents=n_agents)
         self._max_ratio = max_ratio
 

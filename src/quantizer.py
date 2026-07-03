@@ -1,6 +1,6 @@
 """
-Quantizer/dequantizer utilities.
-Maps continuous vectors to discrete levels and back.
+Cuantización de pistas semánticas (fastText -> niveles discretos) con escala
+global por magnitud, compartida entre llenado y consulta.
 """
 import json
 from pathlib import Path
@@ -27,30 +27,15 @@ def label_scale() -> float:
         try:
             _LABEL_SCALE = float(json.loads(_SCALE_PATH.read_text())["scale"])
         except Exception:
-            _LABEL_SCALE = 0.5   # rango típico de fastText si aún no hay stats
+            # Solo puede pasar antes de correr la etapa 4 (que persiste la
+            # escala). Avisar: si llenado y consulta usaran escalas distintas,
+            # la cuantización dejaría de ser comparable.
+            print(f"  ADVERTENCIA: {_SCALE_PATH.name} no disponible; usando "
+                  f"escala provisional 0.5. Corre stage4 para la escala real.")
+            _LABEL_SCALE = 0.5
     return _LABEL_SCALE
 
 
-def quantize(vec: np.ndarray, levels: int) -> np.ndarray:
-    """
-    Map each component of vec to an integer in [0, levels-1].
-    Uses uniform quantization over the empirical range.
-    """
-    vmin, vmax = vec.min(), vec.max()
-    if vmax == vmin:
-        return np.zeros(len(vec), dtype=np.int32)
-    v = (vec - vmin) / (vmax - vmin)  # [0, 1]
-    q = np.floor(v * levels).astype(np.int32)
-    q = np.clip(q, 0, levels - 1)
-    return q
-
-
-def quantize_batch(matrix: np.ndarray, levels: int) -> np.ndarray:
-    """Quantize a 2-D matrix row-wise (each row is one vector)."""
-    out = np.zeros_like(matrix, dtype=np.int32)
-    for i, row in enumerate(matrix):
-        out[i] = quantize(row, levels)
-    return out
 
 
 def quantize_binary(vec: np.ndarray, levels: int) -> np.ndarray:
@@ -75,10 +60,3 @@ def compute_label_scale(vectors, pct: float = 99.0) -> float:
                                   for v in vectors]))
     s = float(np.percentile(allc, pct))
     return s if s > 1e-6 else 0.5
-
-
-def dequantize(q: np.ndarray, levels: int,
-               vmin: float = -1.0, vmax: float = 1.0) -> np.ndarray:
-    """Inverse of quantize_binary — maps integers back to floats."""
-    v = q.astype(float) / (levels - 1)   # [0, 1]
-    return v * (vmax - vmin) + vmin

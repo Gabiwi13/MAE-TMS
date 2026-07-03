@@ -1,8 +1,8 @@
 {
   "n_queries": 12,
   "representable_queries": 12,
-  "mae_rejected": 5,
-  "mae_false_routes": 7,
+  "mae_rejected": 11,
+  "mae_false_routes": 1,
   "no_representable": 0,
-  "notes": "Probe diagnóstico de rechazo, no parte del benchmark de accuracy. Consultas representables fuera de apple/horse/car; el rechazo (o no) sale de recognize_gated, sin filtro léxico."
+  "notes": "Probe diagnóstico de rechazo, no parte del benchmark de accuracy. Consultas representables fuera de los 8 dominios ETH-80; el rechazo (o no) sale de recognize_gated, sin filtro léxico."
 }

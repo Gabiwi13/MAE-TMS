@@ -345,8 +345,8 @@ def main():
     for split in ("train", "test"):
         o = np.mean([metrics["old"]["reverse"][c][split] for c in CLASSES])
         nw = np.mean([metrics["new"]["reverse"][c][split] for c in CLASSES])
-        rep.append(f"| H2 aceptación inversa ({split}) | media 3 clases | "
-                   f"{o:.1%} | {nw:.1%} |")
+        rep.append(f"| H2 aceptación inversa ({split}) | media "
+                   f"{len(CLASSES)} clases | {o:.1%} | {nw:.1%} |")
     rep.append(f"| H3 routing temprano | acc (rechazo) | "
                f"{metrics['old']['early']['acc']:.1%} "
                f"({metrics['old']['early']['rej']:.1%}) | "
@@ -354,8 +354,8 @@ def main():
                f"({metrics['new']['early']['rej']:.1%}) |")
     eo = np.mean(list(metrics["old"]["entropy"].values()))
     en = np.mean(list(metrics["new"]["entropy"].values()))
-    rep.append(f"| H4 entropía M_dom_H | media 3 clases | {eo:.4f} | "
-               f"{en:.4f} |")
+    rep.append(f"| H4 entropía M_dom_H | media {len(CLASSES)} clases | "
+               f"{eo:.4f} | {en:.4f} |")
     rep += [
         "",
         "## Detalle variedad por clase",
