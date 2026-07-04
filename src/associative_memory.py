@@ -188,6 +188,23 @@ class DirectoryMemory:
                   if xi > 0 else self.predict_normalized(v_q, mode=mode, eps=eps))
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
 
+    def route_multi(self, cues, mode: str = "linear",
+                    eps: float = 1.0, xi: int = 0):
+        """Coordinación de recuperación con VARIAS pistas (una por token):
+        suma de lecturas calibradas por pista y argmax DENTRO de la memoria.
+        Cierra el único punto donde el protocolo agregaba con operaciones
+        sueltas (auditoría jul 2026): quien consume no decide, la MAE decide.
+
+        Devuelve (winner_idx, scores_agregados); winner_idx = -1 si ninguna
+        pista tiene soporte (rechazo)."""
+        total = np.zeros(self._n_agents, dtype=float)
+        for v_q in cues:
+            total += (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
+                      if xi > 0
+                      else self.predict_normalized(v_q, mode=mode, eps=eps))
+        winner = -1 if total.sum() == 0 else int(np.argmax(total))
+        return winner, total
+
     @property
     def agent_counts(self) -> np.ndarray:
         return self._counts.copy()

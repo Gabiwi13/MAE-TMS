@@ -126,6 +126,13 @@ streamlit run app_tme.py
 
 The app starts with an **empty mem_dir** (no prior training). Interact via queries in the "Routing en vivo" tab — each query trains the directory incrementally. The "Fase Madura" tab becomes active after enough registrations.
 
+Each routing animation (early phase, mature phase, image → labels) can be
+**exported as a downloadable MP4** ("🎬 Exportar la animación a video"): the
+video is rendered server-side (`app_video.py`, PIL → ffmpeg) from the *same
+data already decided by the memories* — scores, winner, redirection and
+evoked images; the renderer never re-decides. Multi-cue mature routing is
+encapsulated in the memory itself (`DirectoryMemory.route_multi`).
+
 ## Building the artifacts from scratch (stages 1–8)
 
 If you are replicating from a clean clone you have **no** `models/` and **no** `data/`
