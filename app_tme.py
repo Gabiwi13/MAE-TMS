@@ -1359,6 +1359,31 @@ _ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
 _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
+def _video_export_ui(key: str, sig: str, builder):
+    """Exportación a MP4 de una animación de ruteo. `builder` renderiza el
+    video server-side (app_video) con los MISMOS datos ya decididos por la
+    MAE — el video visualiza, no re-decide. `sig` invalida el video cacheado
+    cuando cambia la consulta/imagen."""
+    if st.session_state.get(f"vidsig_{key}") != sig:
+        st.session_state.pop(f"vid_{key}", None)
+    with st.expander("🎬 Exportar la animación a video (MP4 descargable)"):
+        st.caption(
+            "Render server-side (PIL → ffmpeg) con los datos reales de esta "
+            "corrida: scores, ganador, redirección e imágenes evocadas."
+        )
+        if st.button("Generar video", key=f"btn_{key}"):
+            with st.spinner("Renderizando MP4 (~5–10 s)…"):
+                st.session_state[f"vid_{key}"] = builder()
+                st.session_state[f"vidsig_{key}"] = sig
+        data = st.session_state.get(f"vid_{key}")
+        if data:
+            st.video(data)
+            st.download_button(
+                "⬇ Descargar MP4", data, file_name=f"{key}.mp4",
+                mime="video/mp4", key=f"dl_{key}",
+                use_container_width=True)
+
+
 # Session state management
 
 def _init_session():
@@ -1414,6 +1439,14 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         "all values are the real ones computed by the AMRs."
     )
     components.html(build_flow_animation(trace), height=_ANIM_H, scrolling=False)
+
+    _ref_np = ref_imgs[trace["winner"]].permute(1, 2, 0).numpy() \
+        if trace.get("winner") else None
+    from app_video import render_early_video
+    _video_export_ui(
+        "ruteo_temprano", trace["query"],
+        lambda: render_early_video(trace, list(CLASSES), DOMAIN_COLOR,
+                                   ref_img=_ref_np))
 
     st.markdown("---")
     st.markdown("### Detailed Stage-by-Stage Breakdown")
@@ -1862,9 +1895,9 @@ def main():
                 "", "a round red fruit", "animal with a mane",
                 "fast vehicle with wheels", "has an engine",
                 "farm animal that gives milk", "a mug for hot coffee",
-                "a barking domestic pet", "sweet green fruit with a narrow neck",
-                "red juicy fruit on a vine", "made into pie",
-                "equine with saddle", "four legs and hooves",
+                "a barking domestic pet", "a bosc pear from the orchard",
+                "red fruit used for sauce", "made into pie",
+                "a mare with a foal", "a puppy in the kennel",
             ],
             key="example_sel",
         )
@@ -2305,17 +2338,23 @@ def main():
                     if not tokens_vocab:
                         rejected = True
                     else:
-                        agg = np.zeros(len(CLASSES), dtype=float)
-                        for tok in tokens_vocab:
-                            v_q = quantize_binary(np.array(
-                                get_fasttext_vector(tok, vectors_cache),
-                                dtype=np.float32), M_LABEL)
-                            agg += (mdir.predict_normalized(v_q, mode="linear")
-                                    if b1_on else mdir.predict(v_q))
-                        if agg.sum() == 0:
+                        cues = [quantize_binary(np.array(
+                                    get_fasttext_vector(tok, vectors_cache),
+                                    dtype=np.float32), M_LABEL)
+                                for tok in tokens_vocab]
+                        if b1_on:
+                            # Decisión multi-pista DENTRO de la MAE (B1)
+                            widx, agg = mdir.route_multi(cues, mode="linear")
+                        else:
+                            # Lectura cruda: condición A del ablation (diagnóstico)
+                            agg = np.zeros(len(CLASSES), dtype=float)
+                            for v_q in cues:
+                                agg += mdir.predict(v_q)
+                            widx = -1 if agg.sum() == 0 else int(np.argmax(agg))
+                        if widx < 0:
                             rejected = True
                         else:
-                            dest_cls    = CLASSES[int(np.argmax(agg))]
+                            dest_cls    = CLASSES[widx]
                             mdir_scores = {cls: float(agg[i])
                                            for i, cls in enumerate(CLASSES)}
                         if dest_cls is not None:
@@ -2394,6 +2433,13 @@ def main():
                                 query_m, words_m, toks_m, entry_cls, dest_cls,
                                 mdir_scores, recalled_img),
                             height=_ANIM_H, scrolling=False)
+                    # Payload para exportar a video: sobrevive los reruns que
+                    # provoca el botón "Generar video" (run_m vuelve a False).
+                    st.session_state["mature_vid_payload"] = {
+                        "query": query_m, "tokens": known_m,
+                        "entry": entry_cls, "dest": dest_cls,
+                        "scores": dict(mdir_scores), "img": recalled_img,
+                    }
 
                     # Banner
                     if redirected:
@@ -2482,6 +2528,19 @@ def main():
                                     f"M_dir bias may be affecting routing."
                                 )
 
+            # Exportación a video del último ruteo maduro (persiste en
+            # session_state, así que sobrevive el rerun del botón).
+            _mp = st.session_state.get("mature_vid_payload")
+            if _mp:
+                from app_video import render_mature_video
+                _video_export_ui(
+                    "ruteo_maduro",
+                    _mp["query"] + ">" + _mp["entry"] + ">" + _mp["dest"],
+                    lambda: render_mature_video(
+                        _mp["query"], _mp["tokens"], _mp["entry"],
+                        _mp["dest"], _mp["scores"], list(CLASSES),
+                        DOMAIN_COLOR, _mp["img"]))
+
     # TAB 5: ETH-80 Reference
     with tab_image:
         st.header("Imagen → Etiquetas (hemisferio visual)")
@@ -2527,6 +2586,7 @@ def main():
             widx = entry_agent.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
             winner = CLASSES[widx] if widx >= 0 else None
 
+            vid_labels, vid_recon = [], None   # capturados para el video
             c_in, c_out = st.columns([1, 1.4])
             with c_in:
                 st.image(pil.convert("RGB").resize((128, 128)),
@@ -2554,12 +2614,14 @@ def main():
                             f"{DOMAIN_EMOJI[winner]} {winner}** vía M_dir_R "
                             f"(B1 {scores[winner]:.3f}).")
                     labels = evoke_labels(exp_agents[winner], z_q, all_vecs)
+                    vid_labels = list(labels)
                     st.markdown("**Etiquetas evocadas (top-3):** " +
                                 "  ".join(f"`{w}`" for w in labels))
                     with _ctx.redirect_stdout(_io.StringIO()):
                         r_io, recognized, _w = exp_agents[winner].mem_dom_R.recall(z_q)
                     if recognized:
                         rec_img = _decode(r_io, gmin_v, gmax_v, decoder)
+                        vid_recon = rec_img
                         st.image(_t2img(rec_img),
                                  caption="Reconstrucción evocada por la MAE "
                                          "(decode(mem_dom_R.recall), no la entrada)",
@@ -2577,6 +2639,16 @@ def main():
                     pil, z_q, scores, entry, winner, exp_agents, all_vecs,
                     decoder, gmin_v, gmax_v),
                 height=_ANIM_IMG_H, scrolling=False)
+
+            _q_np = np.asarray(pil.convert("RGB").resize((128, 128)),
+                               dtype=np.float32) / 255.0
+            from app_video import render_image_video
+            _video_export_ui(
+                "ruteo_imagen",
+                f"{up.name}>{entry}>{winner}",
+                lambda: render_image_video(
+                    _q_np, z_q, scores, entry, winner, vid_labels,
+                    list(CLASSES), DOMAIN_COLOR, recon_img=vid_recon))
 
     with tab_info:
         st.header("ETH-80 Reference Images")
