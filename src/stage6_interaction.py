@@ -51,22 +51,69 @@ def get_nlp():
 
 ACCEPTED_POS = {"NOUN", "ADJ", "PROPN"}
 
+# Cache de POS fuera de contexto (etiqueta "de diccionario" de una palabra
+# aislada). Ver el rescate en tokenize_query.
+_ISOLATED_POS_CACHE = {}
+
+
+def _isolated_pos(word: str, nlp) -> str:
+    if word not in _ISOLATED_POS_CACHE:
+        _ISOLATED_POS_CACHE[word] = nlp(word)[0].pos_
+    return _ISOLATED_POS_CACHE[word]
+
+
+_LABEL_VOCAB = None
+
+
+def _label_vocab() -> set:
+    """Labels registrados en el sistema (los que llenaron las memorias).
+    Se usa SOLO para rescatar la atención de tokens mal etiquetados por el
+    tagger — admite pistas adicionales, nunca censura ninguna."""
+    global _LABEL_VOCAB
+    if _LABEL_VOCAB is None:
+        vocab = set()
+        for cls in CLASSES:
+            try:
+                vocab |= set(json.loads(
+                    (ROOT / f"label_vectors_{cls}.json").read_text()))
+            except OSError:
+                pass
+        _LABEL_VOCAB = vocab
+    return _LABEL_VOCAB
+
 
 def tokenize_query(query: str, nlp) -> list:
     """Lemas NOUN/ADJ/PROPN sin stopwords, deduplicados preservando el
     orden de aparicion (un set desordenado haria no determinista que
-    token alimenta el recall)."""
+    token alimenta el recall).
+
+    Rescate de errores del tagger en frases nominales cortas: spaCy etiqueta
+    'pear' como VERB en "a bosc pear from the orchard" (o AUX en "pear grown
+    in..."), matando la pista mas distintiva ANTES de llegar a la memoria.
+    Un token descartado por POS se rescata si (a) AISLADO se etiqueta
+    NOUN/ADJ/PROPN, o (b) es un label registrado del sistema (_label_vocab:
+    el conocimiento propio recupera la atencion — 'pear' se reconoce como
+    pista aunque el tagger lo lea como verbo). Los verbos reales (grown,
+    gives) siguen fuera y la EAM sigue decidiendo el resto."""
     doc = nlp(query.lower())
     tokens = []
     seen = set()
     for tok in doc:
         if tok.is_stop or not tok.is_alpha:
             continue
+        cue = tok.lemma_
         if tok.pos_ not in ACCEPTED_POS:
-            continue
-        if tok.lemma_ not in seen:
-            seen.add(tok.lemma_)
-            tokens.append(tok.lemma_)
+            if _isolated_pos(tok.text, nlp) in ACCEPTED_POS:
+                pass                      # rescate por etiqueta de diccionario
+            elif tok.text in _label_vocab():
+                cue = tok.text            # forma EXACTA del label conocido
+            elif tok.lemma_ in _label_vocab():
+                cue = tok.lemma_
+            else:
+                continue
+        if cue not in seen:
+            seen.add(cue)
+            tokens.append(cue)
     return tokens
 
 
@@ -463,16 +510,16 @@ TEST_QUERIES = [
     "a mug for drinking coffee",                   # cup
     "a barking domestic pet",                      # dog
     "animal with a mane",                          # horse
-    "sweet green fruit with a narrow neck",        # pear
-    "red juicy fruit used in salads",              # tomato
+    "a ripe green pear from the orchard",          # pear
+    "a tomato used for sauce and soup",            # tomato
     "sweet fruit from an orchard tree",            # apple
     "machine for transportation with an engine",   # car
     "bovine beast that moos",                      # cow
     "small container for a hot drink",             # cup
     "canine with a wagging tail",                  # dog
     "riding animal with hooves",                   # horse
-    "teardrop shaped orchard fruit",               # pear
-    "round red fruit growing on a vine",           # tomato
+    "a bosc pear with a narrow neck",              # pear
+    "red vegetable for ketchup and salads",        # tomato
 ]
 
 

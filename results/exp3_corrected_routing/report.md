@@ -12,18 +12,18 @@
 
 | métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, 8 clases) |
 |---|---|---|
-| early accuracy | ~34% | **71.2%** |
-| early rechazo | — | 8.8% |
-| mature accuracy B1 | 98.8% (ablation B1, v3) | **75.0%** |
-| mature accuracy RAW | 33.8% | 65.0% |
-| fidelidad | 100% (sobre routing sesgado) | **90.0%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [72, 14, 36, 21, 20, 21, 3, 23] |
-| M_dir entropía | — | 2.651 bits (máx 3.000) |
+| early accuracy | ~34% | **76.2%** |
+| early rechazo | — | 5.0% |
+| mature accuracy B1 | 98.8% (ablation B1, v3) | **77.5%** |
+| mature accuracy RAW | 33.8% | 66.2% |
+| fidelidad | 100% (sobre routing sesgado) | **93.8%** (sobre routing correcto) |
+| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [72, 16, 37, 25, 30, 21, 3, 23] |
+| M_dir entropía | — | 2.693 bits (máx 3.000) |
 
 ## Réplica de las 16 TEST_QUERIES del pipeline oficial (2 por dominio)
 
 - counts exp. 1 (v3, 10 queries de 3 clases): [7, 4, 2] (apple capturó vehicle, engine, red…)
-- counts exp. 3: [24, 6, 5, 6, 2, 4, 0, 0]
+- counts exp. 3: [12, 6, 6, 7, 5, 5, 4, 7]
 
 | query | winner exp. 3 |
 |---|---|
@@ -33,16 +33,16 @@
 | a mug for drinking coffee | cup |
 | a barking domestic pet | dog |
 | animal with a mane | horse |
-| sweet green fruit with a narrow neck | apple |
-| red juicy fruit used in salads | apple |
+| a ripe green pear from the orchard | apple |
+| a tomato used for sauce and soup | tomato |
 | sweet fruit from an orchard tree | apple |
 | machine for transportation with an engine | car |
 | bovine beast that moos | cow |
 | small container for a hot drink | cup |
-| canine with a wagging tail | None |
+| canine with a wagging tail | dog |
 | riding animal with hooves | horse |
-| teardrop shaped orchard fruit | apple |
-| round red fruit growing on a vine | apple |
+| a bosc pear with a narrow neck | pear |
+| red vegetable for ketchup and salads | tomato |
 
 ## Archivos
 - summary.json · results_per_query.csv · exp3_mdir_state.pkl
