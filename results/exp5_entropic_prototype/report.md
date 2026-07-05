@@ -14,21 +14,21 @@ M_dom_L compartido; solo cambia el lado derecho de M_dom_H y M_dom_R.
 | H1 variedad | recalls distintos /12 | 1.0 | 12.0 |
 | H2 aceptación inversa (train) | media 8 clases | 0.0% | 100.0% |
 | H2 aceptación inversa (test) | media 8 clases | 0.0% | 0.0% |
-| H3 routing temprano | acc (rechazo) | 65.0% (8.8%) | 67.5% (8.8%) |
+| H3 routing temprano | acc (rechazo) | 70.0% (5.0%) | 72.5% (5.0%) |
 | H4 entropía M_dom_H | media 8 clases | 2.6364 | 4.9030 |
 
 ## Detalle variedad por clase
 
 | clase | cue | distintos delta | distintos inst | L1 delta | L1 inst |
 |---|---|---|---|---|---|
-| apple | fruit | 1/12 | 12/12 | 0.000 | 1.629 |
-| car | vehicle | 1/12 | 12/12 | 0.000 | 2.321 |
-| cow | milk | 1/12 | 12/12 | 0.000 | 1.314 |
-| cup | drink | 1/12 | 12/12 | 0.000 | 1.815 |
-| dog | pet | 1/12 | 12/12 | 0.000 | 1.915 |
-| horse | mane | 1/12 | 12/12 | 0.000 | 1.036 |
-| pear | pome | 1/12 | 12/12 | 0.000 | 1.495 |
-| tomato | vegetable | 1/12 | 12/12 | 0.000 | 1.883 |
+| apple | fruit | 1/12 | 12/12 | 0.000 | 1.668 |
+| car | vehicle | 1/12 | 12/12 | 0.000 | 2.235 |
+| cow | milk | 1/12 | 12/12 | 0.000 | 1.309 |
+| cup | drink | 1/12 | 12/12 | 0.000 | 1.940 |
+| dog | pet | 1/12 | 12/12 | 0.000 | 1.983 |
+| horse | mane | 1/12 | 12/12 | 0.000 | 1.011 |
+| pear | pome | 1/12 | 12/12 | 0.000 | 1.474 |
+| tomato | vegetable | 1/12 | 12/12 | 0.000 | 1.931 |
 
 ## Archivos
 - metrics.json · fig1_recall_variety_grid.png · fig2_reverse_acceptance.png

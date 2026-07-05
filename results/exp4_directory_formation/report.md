@@ -9,14 +9,14 @@ experiencias? ¿El sesgo de densidad impide la convergencia?
 
 | condición | primer k | k sostenido | acc final | entropía final | counts |
 |---|---|---|---|---|---|
-| A · intercalado | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| B · barajado s0 | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| B · barajado s1 | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| B · barajado s2 | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| B · barajado s3 | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| B · barajado s4 | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| C · bloqueado | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
-| D · crudo (control sesgo) | None | None | 75.0% | 2.651 | [72, 14, 36, 21, 20, 21, 3, 23] |
+| A · intercalado | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| B · barajado s0 | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| B · barajado s1 | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| B · barajado s2 | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| B · barajado s3 | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| B · barajado s4 | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| C · bloqueado | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
+| D · crudo (control sesgo) | None | None | 77.5% | 2.693 | [72, 16, 37, 25, 30, 21, 3, 23] |
 
 ## Archivos
 - results_formation.csv (formato largo: run, k, métricas)

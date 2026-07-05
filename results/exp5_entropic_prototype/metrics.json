@@ -87,8 +87,8 @@
       }
     },
     "early": {
-      "acc": 0.65,
-      "rej": 0.0875
+      "acc": 0.7,
+      "rej": 0.05
     }
   },
   "inst": {
@@ -106,42 +106,42 @@
       "apple": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.6292613636363635
+        "mean_pair_l1": 1.667850378787879
       },
       "car": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 2.3212594696969697
+        "mean_pair_l1": 2.2353219696969697
       },
       "cow": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.314157196969697
+        "mean_pair_l1": 1.309185606060606
       },
       "cup": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.8151041666666667
+        "mean_pair_l1": 1.9396306818181819
       },
       "dog": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.9154829545454546
+        "mean_pair_l1": 1.9834280303030303
       },
       "horse": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.0362215909090908
+        "mean_pair_l1": 1.0108901515151516
       },
       "pear": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.4947916666666667
+        "mean_pair_l1": 1.4737215909090908
       },
       "tomato": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 1.8825757575757576
+        "mean_pair_l1": 1.9308712121212122
       }
     },
     "reverse": {
@@ -179,8 +179,8 @@
       }
     },
     "early": {
-      "acc": 0.675,
-      "rej": 0.0875
+      "acc": 0.725,
+      "rej": 0.05
     }
   }
 }

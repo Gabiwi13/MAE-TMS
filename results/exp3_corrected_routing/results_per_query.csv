@@ -2,7 +2,7 @@ query,truth,early,entry,mature_b1,mature_raw,reason
 a round red fruit,apple,apple,pear,apple,apple,directory_support
 fast vehicle with wheels,car,car,cup,car,car,directory_support
 a farm animal that gives milk,cow,cow,dog,cow,cow,directory_support
-a container to drink from,cup,REJ,pear,cup,cup,directory_support
+a container to drink from,cup,cup,pear,cup,cup,directory_support
 a barking domestic pet,dog,dog,cow,dog,dog,directory_support
 animal with a mane,horse,horse,tomato,horse,horse,directory_support
 a green sweet pear fruit,pear,apple,dog,apple,apple,directory_support
@@ -11,8 +11,8 @@ green food from trees,apple,apple,pear,apple,apple,directory_support
 machine for transportation,car,REJ,car,REJ,REJ,directory_no_support
 bovine cattle beast,cow,cow,cow,cow,cow,directory_support
 a mug for liquid,cup,cup,pear,cup,cup,directory_support
-canine mammal with a tail,dog,horse,cow,horse,horse,directory_support
-large powerful mammal,horse,horse,cow,horse,horse,directory_support
+canine mammal with a tail,dog,dog,cow,dog,dog,directory_support
+large powerful mammal,horse,horse,cow,horse,cow,directory_support
 a pome fruit like an apple,pear,apple,tomato,apple,apple,directory_support
 red juicy tomato fruit,tomato,tomato,dog,tomato,apple,directory_support
 red or green round food,apple,apple,cup,apple,apple,directory_support
@@ -52,7 +52,7 @@ seats and windows inside,car,car,horse,car,car,directory_support
 animal with udders and milk,cow,cow,pear,cow,cow,directory_support
 a trophy shaped drinking container,cup,cup,horse,cup,cup,directory_support
 a wolf related domestic animal,dog,dog,cow,dog,dog,directory_support
-has a long tail,horse,REJ,cup,horse,horse,directory_support
+has a long tail,horse,REJ,cup,dog,dog,directory_support
 sweet juicy pear food,pear,apple,pear,apple,apple,directory_support
 a herb plant with a red fruit,tomato,tomato,cup,tomato,apple,directory_support
 juicy round fruit,apple,apple,tomato,apple,apple,directory_support
@@ -64,18 +64,18 @@ a pony or donkey,horse,horse,pear,horse,horse,directory_support
 fruit shaped like a teardrop,pear,tomato,dog,tomato,apple,directory_support
 round juicy red produce,tomato,apple,apple,apple,apple,directory_support
 sweet core fruit,apple,apple,pear,apple,apple,directory_support
-used for driving,car,REJ,NA,REJ,REJ,no_tokens
-beef cattle on the farm,cow,cow,car,cow,cow,directory_support
-containerful of liquid to drink,cup,cup,cup,cup,cup,directory_support
-canine friend with a wet nose,dog,REJ,apple,horse,horse,directory_support
-mammal with saddle,horse,horse,cup,horse,horse,directory_support
-a green or yellow pear,pear,apple,horse,apple,apple,directory_support
+used for driving,car,car,car,car,car,directory_support
+beef cattle on the farm,cow,cow,cup,cow,cow,directory_support
+containerful of liquid to drink,cup,cup,apple,cup,cup,directory_support
+canine friend with a wet nose,dog,dog,cup,dog,dog,directory_support
+mammal with saddle,horse,horse,horse,horse,horse,directory_support
+a green or yellow pear,pear,apple,car,apple,apple,directory_support
 red fruit often called a vegetable,tomato,tomato,car,tomato,apple,directory_support
-a pear or apple fruit,apple,apple,car,apple,apple,directory_support
-wheeled automobile,car,car,apple,car,car,directory_support
-big farm animal that says moo,cow,cow,car,cow,cow,directory_support
-a mug or cup crockery,cup,cup,dog,cup,cup,directory_support
-a black dog with teeth and paws,dog,dog,car,dog,dog,directory_support
+a pear or apple fruit,apple,apple,apple,apple,apple,directory_support
+wheeled automobile,car,car,car,car,car,directory_support
+big farm animal that says moo,cow,cow,dog,cow,cow,directory_support
+a mug or cup crockery,cup,cup,car,cup,cup,directory_support
+a black dog with teeth and paws,dog,dog,cup,dog,dog,directory_support
 racing animal with mane,horse,horse,cup,horse,horse,directory_support
-pome fruit with sweet flesh,pear,apple,cup,apple,apple,directory_support
-a salad vegetable that is red,tomato,tomato,pear,tomato,apple,directory_support
+pome fruit with sweet flesh,pear,apple,pear,apple,apple,directory_support
+a salad vegetable that is red,tomato,tomato,cup,tomato,apple,directory_support
