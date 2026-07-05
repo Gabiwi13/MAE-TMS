@@ -2582,9 +2582,57 @@ def main():
         entry = st.selectbox(
             "Agente de entrada (cualquiera puede recibir la imagen)", CLASSES,
             format_func=lambda c: f"{DOMAIN_EMOJI[c]} {c}", key="img_entry")
-        up = st.file_uploader("Sube una imagen (png/jpg)",
-                              type=["png", "jpg", "jpeg"])
-        if up is not None:
+
+        # Fuente de la imagen: dataset ETH-80 integrado (un clic, sin subir
+        # nada) o archivo propio. Con el dataset, la animación y su descarga
+        # están disponibles al instante.
+        src = st.radio(
+            "Fuente de la imagen:",
+            ["Imagen de ejemplo del dataset ETH-80",
+             "Subir mi propia imagen (png/jpg)"],
+            horizontal=True, key="img_src")
+
+        pil = None          # imagen elegida (cualquiera de las dos fuentes)
+        img_name = None     # nombre para la firma del video
+        _splits = json.loads((ROOT / "data" / "eth80" / "splits.json").read_text())
+
+        if src.startswith("Imagen de ejemplo"):
+            c_cls, c_idx, c_rnd = st.columns([2, 2, 1])
+            with c_cls:
+                ex_cls = st.selectbox(
+                    "Clase de la imagen (la verdad de terreno):", CLASSES,
+                    format_func=lambda c: f"{DOMAIN_EMOJI[c]} {c}",
+                    key="img_ex_cls")
+            n_test = len(_splits[ex_cls]["test"])
+            # Índice gestionado en estado propio (evita el conflicto
+            # key/value del slider de Streamlit); se clampa al cambiar de clase.
+            idx0 = min(st.session_state.get("img_ex_idx_val", 0), n_test - 1)
+            with c_rnd:
+                st.write("")
+                st.write("")
+                if st.button("🎲 Aleatoria", key="img_rand",
+                             use_container_width=True):
+                    idx0 = int(np.random.randint(0, n_test))
+            with c_idx:
+                ex_idx = st.slider(
+                    "Ejemplo # (imagen de test)", 0, max(n_test - 1, 1), idx0)
+            st.session_state["img_ex_idx_val"] = ex_idx
+            _path = _splits[ex_cls]["test"][ex_idx]
+            pil = Image.open(_path)
+            img_name = f"{ex_cls}_test{ex_idx}"
+            st.caption(
+                f"Entrada real de **{ex_cls}** (test). Como entra por "
+                f"**{entry}**, el directorio visual debería redirigir a "
+                f"**{ex_cls}** — o rechazar si no la reconoce.")
+        else:
+            up = st.file_uploader("Sube una imagen (png/jpg)",
+                                  type=["png", "jpg", "jpeg"])
+            if up is not None:
+                import io as _io0
+                pil = Image.open(_io0.BytesIO(up.getvalue()))
+                img_name = up.name
+
+        if pil is not None:
             from stage5_fill import quantize_latent_global
             from stage7_bidirectional import evoke_labels, load_global_stats
             import io as _io
@@ -2596,7 +2644,6 @@ def main():
             for _c in CLASSES:
                 all_vecs.update(vectors_cache.get(_c, {}))
 
-            pil = Image.open(_io.BytesIO(up.getvalue()))
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
 
@@ -2671,7 +2718,7 @@ def main():
             from app_video import render_image_video
             _video_export_ui(
                 "ruteo_imagen",
-                f"{up.name}>{entry}>{winner}",
+                f"{img_name}>{entry}>{winner}",
                 html=_img_html, height=_ANIM_IMG_H,
                 builder=lambda: render_image_video(
                     _q_np, z_q, scores, entry, winner, vid_labels,
