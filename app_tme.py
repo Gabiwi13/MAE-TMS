@@ -1359,21 +1359,43 @@ _ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
 _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
-def _video_export_ui(key: str, sig: str, builder):
-    """Exportación a MP4 de una animación de ruteo. `builder` renderiza el
-    video server-side (app_video) con los MISMOS datos ya decididos por la
-    MAE — el video visualiza, no re-decide. `sig` invalida el video cacheado
-    cuando cambia la consulta/imagen."""
+def _video_export_ui(key: str, sig: str, builder=None, html: str = None,
+                     height: int = None):
+    """Exportación a MP4 de una animación de ruteo.
+
+    Vía principal: grabación EXACTA de la animación HTML (el mismo markup
+    que muestra la app) en un Edge headless vía screencast CDP — pixel por
+    pixel lo que se ve en Streamlit (app_video_dom). Si el navegador o
+    playwright no están disponibles, cae al renderer PIL (app_video) con
+    los mismos datos. En ambos casos el video consume decisiones YA tomadas
+    por la MAE: visualiza, no re-decide. `sig` invalida el cache al cambiar
+    la consulta/imagen."""
     if st.session_state.get(f"vidsig_{key}") != sig:
         st.session_state.pop(f"vid_{key}", None)
     with st.expander("🎬 Exportar la animación a video (MP4 descargable)"):
         st.caption(
-            "Render server-side (PIL → ffmpeg) con los datos reales de esta "
-            "corrida: scores, ganador, redirección e imágenes evocadas."
+            "Graba la animación real en un navegador headless (idéntica a la "
+            "de arriba). Con los datos reales de esta corrida: scores, "
+            "ganador, redirección e imágenes evocadas."
         )
         if st.button("Generar video", key=f"btn_{key}"):
-            with st.spinner("Renderizando MP4 (~5–10 s)…"):
-                st.session_state[f"vid_{key}"] = builder()
+            data = None
+            if html:
+                with st.spinner("Grabando la animación en el navegador "
+                                "headless (~30–60 s, corre completa)…"):
+                    try:
+                        from app_video_dom import record_animation_html
+                        data = record_animation_html(
+                            html, height or _ANIM_H)
+                    except Exception as e:
+                        st.warning(
+                            f"Captura del navegador no disponible "
+                            f"({type(e).__name__}); usando el renderer PIL.")
+            if data is None and builder is not None:
+                with st.spinner("Renderizando MP4 (PIL, ~5–10 s)…"):
+                    data = builder()
+            if data:
+                st.session_state[f"vid_{key}"] = data
                 st.session_state[f"vidsig_{key}"] = sig
         data = st.session_state.get(f"vid_{key}")
         if data:
@@ -1438,15 +1460,17 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         "broadcast through the TME, and return as a reconstructed memory — "
         "all values are the real ones computed by the AMRs."
     )
-    components.html(build_flow_animation(trace), height=_ANIM_H, scrolling=False)
+    _anim_html = build_flow_animation(trace)
+    components.html(_anim_html, height=_ANIM_H, scrolling=False)
 
     _ref_np = ref_imgs[trace["winner"]].permute(1, 2, 0).numpy() \
         if trace.get("winner") else None
     from app_video import render_early_video
     _video_export_ui(
         "ruteo_temprano", trace["query"],
-        lambda: render_early_video(trace, list(CLASSES), DOMAIN_COLOR,
-                                   ref_img=_ref_np))
+        html=_anim_html, height=_ANIM_H,
+        builder=lambda: render_early_video(trace, list(CLASSES), DOMAIN_COLOR,
+                                           ref_img=_ref_np))
 
     st.markdown("---")
     st.markdown("### Detailed Stage-by-Stage Breakdown")
@@ -2427,18 +2451,20 @@ def main():
                     )
                     words_m, toks_m, known_m = _decompose_anim_data(
                         query_m, nlp, vectors_cache)
+                    _mat_html = None
                     if toks_m:
-                        components.html(
-                            build_mature_animation(
-                                query_m, words_m, toks_m, entry_cls, dest_cls,
-                                mdir_scores, recalled_img),
-                            height=_ANIM_H, scrolling=False)
+                        _mat_html = build_mature_animation(
+                            query_m, words_m, toks_m, entry_cls, dest_cls,
+                            mdir_scores, recalled_img)
+                        components.html(_mat_html, height=_ANIM_H,
+                                        scrolling=False)
                     # Payload para exportar a video: sobrevive los reruns que
                     # provoca el botón "Generar video" (run_m vuelve a False).
                     st.session_state["mature_vid_payload"] = {
                         "query": query_m, "tokens": known_m,
                         "entry": entry_cls, "dest": dest_cls,
                         "scores": dict(mdir_scores), "img": recalled_img,
+                        "html": _mat_html,
                     }
 
                     # Banner
@@ -2536,7 +2562,8 @@ def main():
                 _video_export_ui(
                     "ruteo_maduro",
                     _mp["query"] + ">" + _mp["entry"] + ">" + _mp["dest"],
-                    lambda: render_mature_video(
+                    html=_mp.get("html"), height=_ANIM_H,
+                    builder=lambda: render_mature_video(
                         _mp["query"], _mp["tokens"], _mp["entry"],
                         _mp["dest"], _mp["scores"], list(CLASSES),
                         DOMAIN_COLOR, _mp["img"]))
@@ -2634,11 +2661,10 @@ def main():
             # directorio visual M_dir_R del TME → redirige/rechaza).
             st.divider()
             st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
-            components.html(
-                build_image_to_labels_animation(
-                    pil, z_q, scores, entry, winner, exp_agents, all_vecs,
-                    decoder, gmin_v, gmax_v),
-                height=_ANIM_IMG_H, scrolling=False)
+            _img_html = build_image_to_labels_animation(
+                pil, z_q, scores, entry, winner, exp_agents, all_vecs,
+                decoder, gmin_v, gmax_v)
+            components.html(_img_html, height=_ANIM_IMG_H, scrolling=False)
 
             _q_np = np.asarray(pil.convert("RGB").resize((128, 128)),
                                dtype=np.float32) / 255.0
@@ -2646,7 +2672,8 @@ def main():
             _video_export_ui(
                 "ruteo_imagen",
                 f"{up.name}>{entry}>{winner}",
-                lambda: render_image_video(
+                html=_img_html, height=_ANIM_IMG_H,
+                builder=lambda: render_image_video(
                     _q_np, z_q, scores, entry, winner, vid_labels,
                     list(CLASSES), DOMAIN_COLOR, recon_img=vid_recon))
 
