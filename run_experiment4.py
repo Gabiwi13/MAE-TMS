@@ -254,16 +254,16 @@ def main():
               encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["run", "k", "mature_acc", "mature_rej", "entropy",
-                    "count_apple", "count_horse", "count_car",
+                    *[f"count_{c}" for c in CLASSES],
                     "early_acc_running"])
         for name, s in runs.items():
             for i in range(len(s["k"])):
-                c = s["counts"][i]
+                c = s["counts"][i]      # longitud len(CLASSES)=8
                 w.writerow([name, s["k"][i],
                             round(s["mature_acc"][i], 4),
                             round(s["mature_rej"][i], 4),
                             round(s["entropy"][i], 4),
-                            c[0], c[1], c[2],
+                            *c,
                             round(s["early_winner_ok"][i], 4)])
 
     # Figuras

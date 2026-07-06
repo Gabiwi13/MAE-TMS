@@ -7,10 +7,11 @@ Cada agente recibe tres memorias:
   mem_dom_R_{cls}.pkl  HomoAssociativeMemory(64,32)           dominio latente
 
 El llenado es por instancias (image-major): cada una de las N_FILL imagenes
-reales entra una vez a la memoria hetero, emparejada con el siguiente label
-de la secuencia de labels expandida por frecuencia. La abstraccion de la
-clase la construye la propia memoria al acumular; ningun prototipo se
-calcula fuera de ella.
+reales —×4 variantes si FILL_AUGMENT (original + espejo + 2 rotaciones), el
+valor vigente— entra a la memoria hetero, emparejada con el siguiente label
+de la secuencia de labels expandida por frecuencia (800 registros/clase con
+N_FILL=200). La abstraccion de la clase la construye la propia memoria al
+acumular; ningun prototipo se calcula fuera de ella.
 
 Las stats globales de cuantizacion del latente se calculan sobre el mismo
 pool de imagenes que llena las memorias. Los latentes continuos del pool

@@ -12,12 +12,14 @@ Condiciones:
   B2  — Score normalizado / sqrt(count_agente)
   C   — Registro balanceado: cap proporcional de registros por agente
   D   — Queries estrictamente balanceadas por dominio (N//K por clase, K=8)
-  E32 — M_dir con m=32 (binario — confirma que m>2 no ayuda para sign(v))
-  E64 — M_dir con m=64 (binario — ídem)
-  F   — ConceptNet curado: apple sin computer/mac/macintosh/eden
-  G   — Mejor combinación: D + B1 + F
+  E32 — M_dir con m=32  [HISTÓRICO: nació para probar m>2 con sign(v); con la
+        cuantización por MAGNITUD vigente ya no mide lo mismo]
+  E64 — M_dir con m=64  [HISTÓRICO, ídem]
+  F   — ConceptNet curado: apple sin computer/mac/macintosh/eden  [NO-OP en v4:
+        esos labels ya no están en labels_apple.json → F ≡ A]
+  G   — Mejor combinación: D + B1 + F  (con F no-op, G ≡ D + B1)
 
-N ∈ [10,20,40,80]  ×  seeds ∈ [0,1,2,3,4]  →  CSV → gráficas → reporte Markdown
+N ∈ [50,100,200,400]  ×  seeds ∈ [0,1,2,3,4]  →  CSV → gráficas → reporte Markdown
 """
 import csv
 import json
@@ -41,10 +43,7 @@ import matplotlib.pyplot as plt
 from hetero_memory import HeteroAssociativeMemory
 from associative_memory import DirectoryMemory
 from quantizer import quantize_binary
-from eval_bank import (
-    ALL_QUERIES, GROUND_TRUTH, DOMAIN_QUERIES,
-    APPLE_QUERIES, HORSE_QUERIES, CAR_QUERIES,
-)
+from eval_bank import ALL_QUERIES, GROUND_TRUTH, DOMAIN_QUERIES
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
     get_nlp, load_all_vectors, prevectorize,
@@ -146,6 +145,12 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
     removed = NOISE & set(labels)
     print(f"  Curated apple: {len(labels)} -> {len(curated)} labels "
           f"(removed: {removed})")
+    if not removed:
+        # El vocabulario v4 (masa asociativa) ya no contiene los labels de
+        # Apple Inc.: las condiciones F/G quedan como NO-OP (F ≡ A). Se avisa
+        # en vez de narrar en el reporte un efecto que no ocurre.
+        print("  AVISO: la curación F/G no removió NADA (los labels de Apple "
+              "Inc. ya no están en labels_apple.json). F ≡ A en esta corrida.")
 
     label_seq = []
     for word, freq in curated.items():
@@ -571,7 +576,8 @@ def plot_scaling_comparison(rows):
         ax.set_title(ylabel + " por condicion")
         ax.set_ylim(0, 1.05)
         ax.set_xticks(N_VALUES)
-        ax.axhline(1/3, color="gray", lw=0.8, ls=":", label="chance (33%)")
+        ax.axhline(CHANCE, color="gray", lw=0.8, ls=":",
+                   label=f"chance ({CHANCE*100:.1f}%)")
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=7, ncol=2, loc="lower right")
 
@@ -794,10 +800,15 @@ mejora mature accuracy de {baseline_acc:.2%} a {best_acc:.2%}
 
 ## Respuestas a las 7 preguntas de investigación
 
+> **[HISTÓRICO v2/3-clases]** P1–P7 describen el diagnóstico de la era de
+> `sign(v)` + Apple Inc.; NO aplican a la cuantización por magnitud vigente
+> (ver disclaimer arriba). Los NÚMEROS de la tabla sí son de la corrida actual.
+
 ### P1 — ¿El sesgo hacia apple es estructural o aleatorio?
 
-**Estructural.** Tres mecanismos se combinan:
-1. **Cuantización binaria**: `quantize_binary(sign(v), m=16)` mapea exactamente 2 valores
+**[HISTÓRICO]** **Estructural.** Tres mecanismos se combinan:
+1. **Cuantización binaria** *(ya no vigente: hoy es por magnitud)*:
+   `quantize_binary(sign(v), m=16)` mapeaba exactamente 2 valores
    (0 y 15). Apple acumula más registros cuando sus labels ganan el early phase.
 2. **Acumulación asimétrica**: si apple gana N_a queries y el resto gana menos, M_dir
    acumula N_a × n_tokens registros para apple vs. menos para los demás.
@@ -842,15 +853,17 @@ early phase), C no puede compensarlo completamente.
 E32 mature_acc N={N_PLOT} = {pct("E32", N_PLOT,"mature_accuracy")}
 E64 mature_acc N={N_PLOT} = {pct("E64", N_PLOT,"mature_accuracy")}
 
-**Resultado esperado y confirmado**: cambiar m NO mejora discriminación para vectores
-binarios. `quantize_binary` mapea sign(v)∈{{-1,+1}} a {{0, m-1}}, usando solo 2 de m bins.
-Con m=32: usa posiciones 0 y 31. Con m=64: posiciones 0 y 63. El patrón de bits es
-idéntico, cambian solo los índices absolutos.
-
-**Recomendación**: usar vectores fastText continuos (no sign(v)) para M_dir con
-normalización global min/max permitiría aprovechar la resolución de m>2.
+**[HISTÓRICO — sign(v), ya no vigente]** Cuando la cuantización era binaria,
+cambiar m NO mejoraba discriminación: `quantize_binary` mapeaba sign(v)∈{{-1,+1}}
+a {{0, m-1}}, usando solo 2 de m bins. HOY la cuantización es por MAGNITUD y usa
+todos los m niveles, así que E32/E64 ya no prueban lo que su nombre sugiere;
+la recomendación de "usar vectores continuos" YA se aplicó (fastText crudo).
 
 ### P6 — ¿La curación de ConceptNet (F) reduce engine→apple?
+
+**[NO-OP en v4]** Los labels de Apple Inc. (computer/mac/macintosh/eden) ya no
+están en labels_apple.json (vocabulario por masa asociativa), así que F no
+remueve nada y F ≡ A; los números F/A abajo deben coincidir.
 
 F mature_acc_car N={N_PLOT} = {pct("F", N_PLOT,"mature_acc_car")} vs A = {pct("A", N_PLOT,"mature_acc_car")}
 F mature_acc N={N_PLOT} = {pct("F", N_PLOT,"mature_accuracy")}
@@ -900,8 +913,6 @@ Registros M_dir (G): apple={mv("G", N_PLOT,"mdir_reg_apple"):.0f},
 | `confusion_matrix_baseline.png` | Matriz de confusion baseline A |
 | `confusion_matrix_best_condition.png` | Matriz de confusion mejor condicion |
 | `mdir_registration_counts.png` | Registros en M_dir por agente |
-| `semantic_cosine_engine.csv` | Similitudes coseno de "engine" |
-| `semantic_nn_engine.csv` | Vecinos mas cercanos de "engine" |
 """
 
     out = RESULTS_DIR / "ablation_report.md"

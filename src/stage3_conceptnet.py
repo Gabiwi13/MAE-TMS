@@ -1,15 +1,19 @@
 """
 Etapa 3 — Labels semánticos via ConceptNet.
 
-Estrategia (en orden):
-  1. Cache de extracción previa (cache/conceptnet_extracted.json) — instantáneo.
-  2. API REST de ConceptNet — si responde (actualmente con 502 frecuentes).
-  3. Descarga del CSV de aserciones (~1.1 GB) en modo streaming:
+Estrategia (orden real de get_conceptnet_labels):
+  1. Cache de extracción previa versionado (cache/conceptnet_extracted.json,
+     EXTRACT_VERSION) — instantáneo.
+  2. CSV de aserciones si YA está descargado en cache/ (extracción bidireccional
+     determinista) — antes que la API, que solo da aristas salientes.
+  3. API REST de ConceptNet (fallback en línea; a menudo con 502).
+  4. Descarga del CSV de aserciones (~500 MB) + streaming:
        - se guarda en cache/ para reutilización
        - se procesa línea a línea sin descomprimir completo
        - se extraen SOLO las líneas relevantes para las clases ETH-80
        - resultado neto almacenado: ~5 KB
-  4. Fallback curado (último recurso, sin fidelidad teórica).
+  5. Fallback curado (último recurso, solo cubre apple/horse/car — con más
+     clases, ABORTA en vez de fabricar labels, por fidelidad).
 """
 import gzip
 import json
@@ -78,7 +82,9 @@ ASSERTIONS_URL = (
 ASSERTIONS_GZ   = CACHE_DIR / "conceptnet-assertions-5.7.0.csv.gz"
 EXTRACTED_CACHE = CACHE_DIR / "conceptnet_extracted.json"
 
-# Curado: último recurso si todo lo anterior falla
+# Curado: último recurso si todo lo anterior falla. SOLO cubre apple/horse/car
+# (reliquia de la era de 3 clases); get_conceptnet_labels ABORTA si CLASSES
+# incluye una clase ausente aquí, en vez de fabricar labels a mano (fidelidad).
 FALLBACK_LABELS = {
     "apple": {
         "fruit": 8.1, "red": 4.2, "round": 3.8, "sweet": 3.1,
@@ -345,7 +351,17 @@ def get_conceptnet_labels() -> dict:
     if csv_data and any(csv_data.get(c) for c in CLASSES):
         return csv_data
 
-    # 5. Fallback curado (avisa explícitamente)
+    # 5. Fallback curado — SOLO para las clases que estén en FALLBACK_LABELS.
+    # Fabricar labels curados a mano para clases sin datos reales violaría la
+    # fidelidad (contenido inventado); si falta alguna clase, se ABORTA con un
+    # mensaje claro en vez de reventar con KeyError o rellenar con datos falsos.
+    missing = [c for c in CLASSES if c not in FALLBACK_LABELS]
+    if missing:
+        raise RuntimeError(
+            "ConceptNet no disponible (cache/API/CSV fallaron) y el fallback "
+            f"curado no cubre {missing}. No se fabrican labels a mano por "
+            "fidelidad: consigue el CSV de aserciones (cache/) o espera a que "
+            "la API responda, y re-ejecuta la etapa 3.")
     print("\n  ADVERTENCIA: usando fallback curado (sin fidelidad teorica).")
     print("  Para datos reales ejecuta de nuevo cuando ConceptNet API responda,")
     print("  o verifica que la URL de descarga sea accesible.")
@@ -366,8 +382,8 @@ def _semantic_vectors(all_data: dict) -> dict:
     needed = set(CLASSES)
     for cls in CLASSES:
         needed.update(k for k in all_data.get(cls, {}) if not k.startswith("_"))
-    print(f"\n  Verificando representabilidad + proximidad semántica de "
-          f"{len(needed)} candidatos (fastText, una pasada)...")
+    print(f"\n  Verificando representabilidad (vector fastText real) de "
+          f"{len(needed)} candidatos, una pasada...")
     return _stream_lookup(needed, allow_fallback=False)
 
 

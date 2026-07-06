@@ -443,24 +443,9 @@ def visualize_reconstructions(encoder, decoder, test_loader, n=5):
     print(f"Reconstructions saved to {out}")
 
 
-def get_prototype_latent(encoder, cls: str) -> np.ndarray:
-    """Return mean latent vector for all training images of a class."""
-    splits_path = DATA_DIR / "splits.json"
-    splits = json.loads(splits_path.read_text())
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    ])
-    paths = splits[cls]["train"]
-    zs = []
-    encoder.eval()
-    with torch.no_grad():
-        for p in paths:
-            img = Image.open(p).convert("RGB").resize((IMG_SIZE, IMG_SIZE))
-            img = transform(img).unsqueeze(0).to(DEVICE)
-            z = encoder(img).cpu().numpy()[0]
-            zs.append(z)
-    return np.mean(zs, axis=0)
+# Nota: se eliminó get_prototype_latent() (media de latentes por clase). No
+# tenía callers y contradecía el diseño vigente de llenado por INSTANCIAS
+# (stage5): ningún prototipo promediado se calcula fuera de la memoria.
 
 
 if __name__ == "__main__":

@@ -63,12 +63,24 @@ def timed_script(name, script):
     record(name, time.perf_counter() - t0, r.returncode == 0, f"rc={r.returncode}")
 
 
+def _n_train_imgs() -> int:
+    """Total de imágenes de entrenamiento reales (suma sobre las 8 clases).
+    Antes estaba hardcodeado a 984 = 328×3, cifra de la era de 3 clases."""
+    try:
+        splits = json.loads((ROOT / "data" / "eth80" / "splits.json").read_text())
+        from stage6_interaction import CLASSES
+        return sum(len(splits[c]["train"]) for c in CLASSES)
+    except Exception:
+        return -1
+
+
 def hardware():
     import torch
     info = {
         "platform": platform.platform(),
         "machine": platform.machine(),
-        "processor": platform.processor() or "Intel Core i5-13420H (8C/12T)",
+        # Sin fabricar un modelo de CPU ajeno si platform.processor() viene vacío.
+        "processor": platform.processor() or "desconocido (platform.processor vacío)",
         "cpu_count_logical": os.cpu_count(),
         "ram_total_gb": None,
         "python": platform.python_version(),
@@ -117,16 +129,14 @@ def main():
     # Etapa 2: FORZAR entrenamiento (sobrescribe modelos) + regenerar la
     # imagen de reconstrucciones (igual que run_experiment.py).
     from stage2_encoder import (train, get_loaders, evaluate,
-                                visualize_reconstructions)
-    from torchvision import transforms
+                                visualize_reconstructions, _inv_norm)
 
     def s2():
         rmse, acc, encoder, decoder, classifier = train()
         _, test_loader = get_loaders()
-        inv_norm = transforms.Normalize(
-            mean=[-0.485 / 0.229, -0.456 / 0.224, -0.406 / 0.225],
-            std=[1 / 0.229, 1 / 0.224, 1 / 0.225])
-        evaluate(encoder, decoder, classifier, test_loader, inv_norm)
+        # Reusar la normalización inversa oficial en vez de re-escribir sus
+        # constantes (se desincronizaría en silencio si cambia el dataset).
+        evaluate(encoder, decoder, classifier, test_loader, _inv_norm())
         visualize_reconstructions(encoder, decoder, test_loader)
     timed_call("stage2_train_encoder", s2)
 
@@ -203,10 +213,10 @@ def main():
         f"**Pipeline (etapas 1–8): {summary['pipeline_minutes']:.1f} min**  ·  "
         f"**Total (con batería de análisis): {summary['total_minutes']:.1f} min**",
         "",
-        "El entrenamiento del encoder (stage2, 50 épocas sobre 984 imágenes) "
-        "domina el costo; el resto del sistema —memorias asociativas, routing, "
-        "directorios— es de bajo costo porque son operaciones matriciales sobre "
-        "vectores cuantizados, no entrenamiento por gradiente.",
+        f"El entrenamiento del encoder (stage2, 50 épocas sobre {_n_train_imgs()} "
+        "imágenes) domina el costo; el resto del sistema —memorias asociativas, "
+        "routing, directorios— es de bajo costo porque son operaciones "
+        "matriciales sobre vectores cuantizados, no entrenamiento por gradiente.",
     ]
     (OUT / "report.md").write_text("\n".join(lines), encoding="utf-8")
 
