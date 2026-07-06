@@ -120,7 +120,13 @@ class DirectoryMemory:
         self._counts = np.zeros(n_agents, dtype=np.int64)
 
     def register(self, v_q: np.ndarray, agent_idx: int) -> None:
-        k = int(np.clip(agent_idx, 0, self._n_agents - 1))
+        # Índice inválido = bug de indexación aguas arriba (p.ej. índice de
+        # clase vs de agente desalineado). Se falla ruidoso en vez de recortar
+        # en silencio, que corrompería el directorio sin dejar rastro.
+        k = int(agent_idx)
+        if not 0 <= k < self._n_agents:
+            raise ValueError(
+                f"agent_idx={agent_idx} fuera de rango [0, {self._n_agents}).")
         agent_id = np.zeros(self._n_agents, dtype=np.int32)
         agent_id[k] = 1
         self._ham.register(v_q, agent_id)

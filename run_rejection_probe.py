@@ -39,7 +39,7 @@ from stage5_fill import load_agent_memories
 from stage6_interaction import (
     Agent, CLASSES, M_LABEL,
     get_nlp, load_all_vectors, tokenize_query, prevectorize,
-    get_fasttext_vector, token_in_vocabulary,
+    get_fasttext_vector,
 )
 
 # Consultas representables (palabras reales con vector fastText) que NO

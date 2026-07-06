@@ -69,9 +69,6 @@ GRID_SHOW  = 5
 CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle",
               "cow": "milk", "cup": "drink", "dog": "pet",
               "pear": "pome", "tomato": "vegetable"}
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
-                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
-                "pear": "#7f8c8d", "tomato": "#c0392b"}
 
 
 def class_latents_q(encoder, cls, split, k, g_min, g_max):

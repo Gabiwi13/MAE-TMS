@@ -26,10 +26,12 @@ def label_scale() -> float:
     if _LABEL_SCALE is None:
         try:
             _LABEL_SCALE = float(json.loads(_SCALE_PATH.read_text())["scale"])
-        except Exception:
-            # Solo puede pasar antes de correr la etapa 4 (que persiste la
-            # escala). Avisar: si llenado y consulta usaran escalas distintas,
-            # la cuantización dejaría de ser comparable.
+        except FileNotFoundError:
+            # Solo antes de correr la etapa 4 (que persiste la escala). Avisar:
+            # si llenado y consulta usaran escalas distintas, la cuantización
+            # dejaría de ser comparable. Un archivo CORRUPTO (JSON/clave
+            # inválida) NO se captura aquí a propósito: debe fallar ruidoso en
+            # vez de caer a 0.5 y producir cuantización inconsistente en silencio.
             print(f"  ADVERTENCIA: {_SCALE_PATH.name} no disponible; usando "
                   f"escala provisional 0.5. Corre stage4 para la escala real.")
             _LABEL_SCALE = 0.5

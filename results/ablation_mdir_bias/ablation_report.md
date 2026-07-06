@@ -67,10 +67,15 @@ mejora mature accuracy de 80.00% a 93.25%
 
 ## Respuestas a las 7 preguntas de investigación
 
+> **[HISTÓRICO v2/3-clases]** P1–P7 describen el diagnóstico de la era de
+> `sign(v)` + Apple Inc.; NO aplican a la cuantización por magnitud vigente
+> (ver disclaimer arriba). Los NÚMEROS de la tabla sí son de la corrida actual.
+
 ### P1 — ¿El sesgo hacia apple es estructural o aleatorio?
 
-**Estructural.** Tres mecanismos se combinan:
-1. **Cuantización binaria**: `quantize_binary(sign(v), m=16)` mapea exactamente 2 valores
+**[HISTÓRICO]** **Estructural.** Tres mecanismos se combinan:
+1. **Cuantización binaria** *(ya no vigente: hoy es por magnitud)*:
+   `quantize_binary(sign(v), m=16)` mapeaba exactamente 2 valores
    (0 y 15). Apple acumula más registros cuando sus labels ganan el early phase.
 2. **Acumulación asimétrica**: si apple gana N_a queries y el resto gana menos, M_dir
    acumula N_a × n_tokens registros para apple vs. menos para los demás.
@@ -115,15 +120,17 @@ early phase), C no puede compensarlo completamente.
 E32 mature_acc N=400 = 84.75%
 E64 mature_acc N=400 = 86.50%
 
-**Resultado esperado y confirmado**: cambiar m NO mejora discriminación para vectores
-binarios. `quantize_binary` mapea sign(v)∈{-1,+1} a {0, m-1}, usando solo 2 de m bins.
-Con m=32: usa posiciones 0 y 31. Con m=64: posiciones 0 y 63. El patrón de bits es
-idéntico, cambian solo los índices absolutos.
-
-**Recomendación**: usar vectores fastText continuos (no sign(v)) para M_dir con
-normalización global min/max permitiría aprovechar la resolución de m>2.
+**[HISTÓRICO — sign(v), ya no vigente]** Cuando la cuantización era binaria,
+cambiar m NO mejoraba discriminación: `quantize_binary` mapeaba sign(v)∈{-1,+1}
+a {0, m-1}, usando solo 2 de m bins. HOY la cuantización es por MAGNITUD y usa
+todos los m niveles, así que E32/E64 ya no prueban lo que su nombre sugiere;
+la recomendación de "usar vectores continuos" YA se aplicó (fastText crudo).
 
 ### P6 — ¿La curación de ConceptNet (F) reduce engine→apple?
+
+**[NO-OP en v4]** Los labels de Apple Inc. (computer/mac/macintosh/eden) ya no
+están en labels_apple.json (vocabulario por masa asociativa), así que F no
+remueve nada y F ≡ A; los números F/A abajo deben coincidir.
 
 F mature_acc_car N=400 = 96.00% vs A = 96.00%
 F mature_acc N=400 = 80.00%
@@ -173,5 +180,3 @@ Registros M_dir (G): apple=199,
 | `confusion_matrix_baseline.png` | Matriz de confusion baseline A |
 | `confusion_matrix_best_condition.png` | Matriz de confusion mejor condicion |
 | `mdir_registration_counts.png` | Registros en M_dir por agente |
-| `semantic_cosine_engine.csv` | Similitudes coseno de "engine" |
-| `semantic_nn_engine.csv` | Vecinos mas cercanos de "engine" |

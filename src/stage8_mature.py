@@ -137,7 +137,7 @@ def run():
     for i, query in enumerate(TEST_QUERIES):
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
         res = route_mature(query, agents[entry_cls], agents, nlp,
-                           vectors_cache, decoder, g_min, g_max)
+                           vectors_cache, decoder, g_min, g_max, verbose=False)
         mature_results[query] = res["winner"]
         early_winner = early_results.get(query)
         match = res["winner"] == early_winner

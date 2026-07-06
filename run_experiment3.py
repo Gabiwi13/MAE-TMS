@@ -71,8 +71,7 @@ def corrected_score(agent, v_q):
     return agent.recognize_gated(v_q)
 
 
-def process_query_early(query, agents, tme, nlp, vectors, tok_cache,
-                        do_recall=True):
+def process_query_early(query, agents, tme, nlp, vectors, tok_cache):
     """
     Fase temprana — protocolo oficial: tokenize → representar con fastText real
     (sin filtro lexico) → recognize_gated → argmax → aprendizaje en los 4 M_dir.
@@ -193,8 +192,10 @@ def main():
     early_rej = e_rej / len(queries)
     from collections import Counter
     reason_counts = Counter(r.get("reason", "?") for r in early_results)
-    n_norep = reason_counts.get("no_representable_tokens", 0) + \
-        reason_counts.get("no_tokens", 0)
+    # process_query_early solo emite no_representable_tokens/mae_no_support/
+    # mae_support; "no_tokens" pertenece a otro dict (mature_log) y nunca
+    # aparece aquí, así que no se suma (antes era un +0 muerto).
+    n_norep = reason_counts.get("no_representable_tokens", 0)
     n_mae_rej = reason_counts.get("mae_no_support", 0)
     n_routed = reason_counts.get("mae_support", 0)
     print(f"  Desglose: ruteadas={n_routed}  "
@@ -266,7 +267,7 @@ def main():
     tq_winners = []
     for query in TEST_QUERIES:
         res = process_query_early(query, agents10, tme10, nlp, vectors,
-                                  tok_cache, do_recall=False)
+                                  tok_cache)
         tq_winners.append((query, res["winner"]))
         print(f"  '{query}' -> {res['winner']}")
     counts10 = tme10.mem_dir_L.agent_counts
@@ -305,26 +306,34 @@ def main():
         },
         "test_queries_counts": counts10.tolist(),
         "exp1_reference": {
-            "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin "
-                     "gate). Ancla histórica, NO es la condición A del ablation "
-                     "actual (que usa el directorio hetero).",
-            "early_acc_raw": "~34% (Exp. 1 original)",
+            "_nota": "ADVERTENCIA: cifras NO VERIFICABLES en el estado actual "
+                     "del repo. Provienen de un ablation intermedio (3 clases, "
+                     "pre-refactor v3) sin artefacto que las respalde, y "
+                     "CONTRADICEN notes_historicas/conclusiones_experimento1.md "
+                     "(que reporta fidelidad 50% = 5/10 y counts apple=5/horse=3/"
+                     "car=2). NO citar como ancla; se conservan solo como "
+                     "referencia cualitativa del sesgo apple de la era 3-clases.",
+            "early_acc_raw": "~34% (no verificable)",
             "mature_acc_raw": 0.338, "mature_acc_b1": 0.988,
             "test_queries_counts": [7, 4, 2],
+            "_fuente_documentada": "notes_historicas/conclusiones_experimento1.md "
+                                   "reporta fidelidad 50%, counts [5,3,2]",
         },
     }
     (OUT_DIR / "summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8")
 
     # Figuras
-    # 1) comparativa exp1 vs exp3
+    # 1) comparativa exp1 vs exp3. NOTA: las barras "Exp. 1" son cifras
+    # históricas NO VERIFICABLES (ver exp1_reference en summary.json) y se
+    # etiquetan como tales para no presentarlas como dato citable.
     fig, ax = plt.subplots(figsize=(8.4, 5))
     labels = ["Early acc.", "Mature acc. (B1)", "Fidelidad"]
     exp1_v = [0.34, 0.988, 1.00]
     exp3_v = [early_acc, mature_acc, fidelity]
     x = np.arange(len(labels)); wdt = 0.36
-    b1 = ax.bar(x - wdt/2, exp1_v, wdt, label="Exp. 1 (scores crudos)",
-                color="#95a5a6")
+    b1 = ax.bar(x - wdt/2, exp1_v, wdt,
+                label="Exp. 1 (histórico, no verificable)", color="#95a5a6")
     b2 = ax.bar(x + wdt/2, exp3_v, wdt,
                 label="Exp. 3 (gate η + B1)", color="#1D9E75")
     for bars in (b1, b2):
