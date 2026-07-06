@@ -1,20 +1,20 @@
 {
-  "early_acc": 0.7625,
+  "early_acc": 0.8,
   "early_rej": 0.05,
-  "mature_acc_b1": 0.775,
-  "mature_acc_raw": 0.6625,
-  "fidelity": 0.9375,
+  "mature_acc_b1": 0.825,
+  "mature_acc_raw": 0.6875,
+  "fidelity": 0.9,
   "mdir_counts_tme": [
-    72,
+    50,
     16,
-    37,
+    44,
     25,
     30,
-    21,
-    3,
-    23
+    14,
+    17,
+    31
   ],
-  "mdir_entropy_bits": 2.693,
+  "mdir_entropy_bits": 2.8658,
   "rejection_breakdown": {
     "routed": 76,
     "rejected_by_mae": 4,

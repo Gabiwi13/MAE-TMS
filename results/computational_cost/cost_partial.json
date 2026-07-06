@@ -5,5 +5,110 @@
     "minutes": 0.005,
     "ok": true,
     "note": ""
+  },
+  {
+    "step": "stage2_train_encoder",
+    "seconds": 4794.28,
+    "minutes": 79.905,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage3_conceptnet",
+    "seconds": 27.42,
+    "minutes": 0.457,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage4_fasttext",
+    "seconds": 25.63,
+    "minutes": 0.427,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage5_fill",
+    "seconds": 943.63,
+    "minutes": 15.727,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage6_interaction",
+    "seconds": 60.23,
+    "minutes": 1.004,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage7_bidirectional",
+    "seconds": 2039.14,
+    "minutes": 33.986,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "stage8_mature",
+    "seconds": 111.86,
+    "minutes": 1.864,
+    "ok": true,
+    "note": ""
+  },
+  {
+    "step": "exp2_iota_kappa",
+    "seconds": 494.59,
+    "minutes": 8.243,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "exp3_routing",
+    "seconds": 35.25,
+    "minutes": 0.588,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "exp4_formation",
+    "seconds": 506.58,
+    "minutes": 8.443,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "exp5_entropic",
+    "seconds": 1042.59,
+    "minutes": 17.377,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "exp6_capacity",
+    "seconds": 1627.38,
+    "minutes": 27.123,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "ablation",
+    "seconds": 2351.67,
+    "minutes": 39.195,
+    "ok": false,
+    "note": "rc=1"
+  },
+  {
+    "step": "rejection_probe",
+    "seconds": 15.43,
+    "minutes": 0.257,
+    "ok": true,
+    "note": "rc=0"
+  },
+  {
+    "step": "paper_figures",
+    "seconds": 3518.44,
+    "minutes": 58.641,
+    "ok": true,
+    "note": "rc=0"
   }
 ]
