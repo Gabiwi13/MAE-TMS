@@ -12,13 +12,13 @@
 
 | métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, 8 clases) |
 |---|---|---|
-| early accuracy | ~34% | **76.2%** |
+| early accuracy | ~34% | **80.0%** |
 | early rechazo | — | 5.0% |
-| mature accuracy B1 | 98.8% (ablation B1, v3) | **77.5%** |
-| mature accuracy RAW | 33.8% | 66.2% |
-| fidelidad | 100% (sobre routing sesgado) | **93.8%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [72, 16, 37, 25, 30, 21, 3, 23] |
-| M_dir entropía | — | 2.693 bits (máx 3.000) |
+| mature accuracy B1 | 98.8% (ablation B1, v3) | **82.5%** |
+| mature accuracy RAW | 33.8% | 68.8% |
+| fidelidad | 100% (sobre routing sesgado) | **90.0%** (sobre routing correcto) |
+| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [50, 16, 44, 25, 30, 14, 17, 31] |
+| M_dir entropía | — | 2.866 bits (máx 3.000) |
 
 ## Réplica de las 16 TEST_QUERIES del pipeline oficial (2 por dominio)
 

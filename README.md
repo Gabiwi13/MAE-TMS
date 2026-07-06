@@ -44,13 +44,39 @@ TME
 - **No synthetic vectors anywhere** (fidelity audit): label vectors are built with `allow_fallback=False`; labels outside the fastText vocabulary are excluded from filling instead of receiving a fabricated ±1 vector.
 - **Early-phase interactions cover the 8 domains** (`TEST_QUERIES`, 2 per class): directories cannot route what they never witnessed.
 
-## Key Results — Experimento 1 (v3, 3-class system)
+## Key Results — v4 (8-class system, official)
+
+All numbers below come from one consistent set of models (fresh deterministic
+encoder, seed 42, RMSE 0.110 / class-head acc 99.7%) filling instance-based
+memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,200,400}
+× 5 seeds; headline figures at N=400. Source: `results/` and `papers_images/`.
+
+| Metric | Value | Note |
+|--------|-------|------|
+| Early-phase accuracy (ablation) | **88.0%** | gated scoring, honest rejection |
+| Mature accuracy, B1 read | **93.2%** | directory ÷count normalization |
+| Mature accuracy, raw read (A) | 80.0% | density bias of raw directory score |
+| Mature accuracy, best combo (G) | 92.9% | D + B1 + F |
+| Directory winner share, apple | **13.0%** | ideal 12.5% — bias essentially resolved |
+| Per-domain mature (B1) | cup/tomato 100, car 98, cow/dog 96, pear 86, apple 88, horse 82 | |
+| Visual routing (test, mem_dir_R) | 75.0% | 25% rejection, **0 false routes** |
+| Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
+| Image→labels evocation (top-3 hit) | 85.3% | |
+| Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
+
+**Finding on apple dominance (v4):** earlier 8-class runs showed apple capturing
+~20% of mature wins (vs ideal 12.5%) and pear collapsing to ~52%. A fresh
+deterministic encoder retrain revealed that a large part of this was the *latent
+space*, not only ConceptNet's lexical asymmetry: with better visual separation of
+pear/tomato from apple, apple's share drops to 13.0% and pear recovers to 86% —
+**without changing the vocabulary**. So the dominance is a joint effect of encoder
+separability *and* the knowledge source, not ConceptNet alone.
+
+## Key Results — Experimento 1 (v3, 3-class system, historical baseline)
 
 > **Note:** the table below is the v3 characterization of the **3-class** system
-> (apple/horse/car, bank of 80 queries, 27/27/26). It is kept as the reference
-> baseline; the 8-class (v4) numbers live in `results/` as they are regenerated
-> and differ — semantic routing degrades with overlapping domains (pear/tomato
-> vs apple) while the visual hemisphere scales.
+> (apple/horse/car, bank of 80 queries, 27/27/26). Kept as historical baseline;
+> the current official numbers are the v4 table above.
 
 Full characterization re-run as a single experiment (sections A–E). EAM parameters ι=0, κ=0, ξ=0, σ=0.1. Evaluation bank: 80 queries with ground truth (27/27/26). Report: [`results/experimento1/informe.md`](results/experimento1/informe.md).
 

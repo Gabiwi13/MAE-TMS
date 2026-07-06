@@ -1,62 +1,67 @@
 # Ablation Report — Sesgo de M_dir en EAM-TMS
-**Fecha:** 2026-06-07
 **Arquitectura:** HeteroAssociativeMemory (n=300, m=16, p=64, q=32) + ConceptNet 5.7.0
-**Dominios:** apple / horse / car (ETH-80)
+**Dominios:** apple / car / cow / cup / dog / horse / pear / tomato (ETH-80, 8 clases)
+
+> **Nota:** los NÚMEROS de este reporte salen de la corrida actual de 8 clases
+> (N=400, 5 seeds). La NARRATIVA cualitativa de P1–P7 abajo es el
+> diagnóstico histórico de la era v2 (3 clases, cuantización `sign(v)`,
+> polisemia de Apple Inc.); la cuantización actual es por MAGNITUD y el
+> análisis vigente vive en el paper (.tex) y en generate_paper_figures.py.
 
 ---
 
 ## Resumen ejecutivo
 
 El baseline (A) muestra sesgo estructural donde apple domina la fase madura con
-78.75% de victorias vs 17.50% (horse)
-y 2.50% (car) en N=80.
+24.00% de victorias vs 6.75% (horse)
+y 12.00% (car) en N=400.
 
 La mejor condición encontrada es **B1** (B1 Norm/count):
-mejora mature accuracy de 53.75% a 98.75%
-(Δ = +45.00%).
+mejora mature accuracy de 80.00% a 93.25%
+(Δ = +13.25%).
 
 ---
 
 ## Tabla de resultados (promedio sobre 5 seeds)
 
-| Condicion              | N   | EarlyAcc | Fidelidad | MatureAcc | Apple | Horse | Car   |
-|------------------------|-----|----------|-----------|----------|-------|-------|-------|
-| A Baseline             |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| A Baseline             |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| A Baseline             |  40 | 95.00%   | 57.50%    | 52.50%    | 100.00% | 46.15% | 7.69% |
-| A Baseline             |  80 | 97.50%   | 56.25%    | 53.75%    | 100.00% | 51.85% | 7.69% |
-| B1 Norm/count          |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| B1 Norm/count          |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| B1 Norm/count          |  40 | 95.00%   | 97.50%    | 97.50%    | 100.00% | 100.00% | 92.31% |
-| B1 Norm/count          |  80 | 97.50%   | 98.75%    | 98.75%    | 100.00% | 100.00% | 96.15% |
-| B2 Norm/sqrt           |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| B2 Norm/sqrt           |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| B2 Norm/sqrt           |  40 | 95.00%   | 60.00%    | 55.00%    | 100.00% | 53.85% | 7.69% |
-| B2 Norm/sqrt           |  80 | 97.50%   | 77.50%    | 75.00%    | 100.00% | 96.30% | 26.92% |
-| C Balanced M_dir       |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| C Balanced M_dir       |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| C Balanced M_dir       |  40 | 95.00%   | 57.50%    | 52.50%    | 100.00% | 46.15% | 7.69% |
-| C Balanced M_dir       |  80 | 97.50%   | 56.25%    | 53.75%    | 100.00% | 51.85% | 7.69% |
-| D Balanced queries     |  10 | 95.56%   | 100.00%    | 95.56%    | 100.00% | 100.00% | 86.67% |
-| D Balanced queries     |  20 | 96.66%   | 100.00%    | 96.66%    | 100.00% | 100.00% | 90.00% |
-| D Balanced queries     |  40 | 98.46%   | 86.67%    | 85.13%    | 100.00% | 100.00% | 55.38% |
-| D Balanced queries     |  80 | 97.44%   | 55.39%    | 52.82%    | 100.00% | 50.77% | 7.69% |
-| E32 m=32 binary        |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| E32 m=32 binary        |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| E32 m=32 binary        |  40 | 95.00%   | 57.50%    | 52.50%    | 100.00% | 46.15% | 7.69% |
-| E32 m=32 binary        |  80 | 97.50%   | 56.25%    | 53.75%    | 100.00% | 51.85% | 7.69% |
-| E64 m=64 binary        |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| E64 m=64 binary        |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| E64 m=64 binary        |  40 | 95.00%   | 57.50%    | 52.50%    | 100.00% | 46.15% | 7.69% |
-| E64 m=64 binary        |  80 | 97.50%   | 56.25%    | 53.75%    | 100.00% | 51.85% | 7.69% |
-| F Curated ConceptNet   |  10 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| F Curated ConceptNet   |  20 | 100.00%   | 100.00%    | 100.00%    | 100.00% | 100.00% | 100.00% |
-| F Curated ConceptNet   |  40 | 95.00%   | 97.50%    | 97.50%    | 100.00% | 100.00% | 92.31% |
-| F Curated ConceptNet   |  80 | 97.50%   | 80.00%    | 80.00%    | 100.00% | 88.89% | 50.00% |
-| G Best (D+B1+F)        |  10 | 95.56%   | 100.00%    | 95.56%    | 100.00% | 100.00% | 86.67% |
-| G Best (D+B1+F)        |  20 | 96.66%   | 100.00%    | 96.66%    | 100.00% | 100.00% | 90.00% |
-| G Best (D+B1+F)        |  40 | 97.44%   | 98.98%    | 97.95%    | 98.46% | 100.00% | 95.39% |
-| G Best (D+B1+F)        |  80 | 97.44%   | 98.72%    | 98.72%    | 100.00% | 100.00% | 96.15% |
+| Condicion              | N   | EarlyAcc | Fidelidad | MatureAcc |
+|------------------------|-----|----------|-----------|----------|
+| A Baseline             |  50 | 78.00%   | 84.00%    | 62.00%    |
+| A Baseline             | 100 | 81.00%   | 78.00%    | 67.00%    |
+| A Baseline             | 200 | 80.50%   | 81.00%    | 69.00%    |
+| A Baseline             | 400 | 88.00%   | 87.25%    | 80.00%    |
+| B1 Norm/count          |  50 | 78.00%   | 98.00%    | 80.00%    |
+| B1 Norm/count          | 100 | 81.00%   | 90.00%    | 86.00%    |
+| B1 Norm/count          | 200 | 80.50%   | 90.00%    | 86.00%    |
+| B1 Norm/count          | 400 | 88.00%   | 93.50%    | 93.25%    |
+| B2 Norm/sqrt           |  50 | 78.00%   | 98.00%    | 76.00%    |
+| B2 Norm/sqrt           | 100 | 81.00%   | 87.00%    | 75.00%    |
+| B2 Norm/sqrt           | 200 | 80.50%   | 87.50%    | 76.50%    |
+| B2 Norm/sqrt           | 400 | 88.00%   | 95.00%    | 89.00%    |
+| C Balanced M_dir       |  50 | 78.00%   | 94.00%    | 72.00%    |
+| C Balanced M_dir       | 100 | 81.00%   | 87.00%    | 77.00%    |
+| C Balanced M_dir       | 200 | 80.50%   | 82.50%    | 75.50%    |
+| C Balanced M_dir       | 400 | 88.00%   | 91.50%    | 86.50%    |
+| D Balanced queries     |  50 | 89.58%   | 96.67%    | 87.50%    |
+| D Balanced queries     | 100 | 85.83%   | 93.12%    | 82.92%    |
+| D Balanced queries     | 200 | 87.90%   | 91.90%    | 83.90%    |
+| D Balanced queries     | 400 | 88.57%   | 89.57%    | 82.76%    |
+| E32 m=32 binary        |  50 | 78.00%   | 84.00%    | 62.00%    |
+| E32 m=32 binary        | 100 | 81.00%   | 78.00%    | 67.00%    |
+| E32 m=32 binary        | 200 | 80.50%   | 83.00%    | 71.00%    |
+| E32 m=32 binary        | 400 | 88.00%   | 91.25%    | 84.75%    |
+| E64 m=64 binary        |  50 | 78.00%   | 86.00%    | 64.00%    |
+| E64 m=64 binary        | 100 | 81.00%   | 79.00%    | 68.00%    |
+| E64 m=64 binary        | 200 | 80.50%   | 81.50%    | 72.50%    |
+| E64 m=64 binary        | 400 | 88.00%   | 92.00%    | 86.50%    |
+| F Curated ConceptNet   |  50 | 78.00%   | 84.00%    | 62.00%    |
+| F Curated ConceptNet   | 100 | 81.00%   | 78.00%    | 67.00%    |
+| F Curated ConceptNet   | 200 | 80.50%   | 81.00%    | 69.00%    |
+| F Curated ConceptNet   | 400 | 88.00%   | 87.25%    | 80.00%    |
+| G Best (D+B1+F)        |  50 | 89.58%   | 99.17%    | 90.00%    |
+| G Best (D+B1+F)        | 100 | 85.83%   | 97.09%    | 87.71%    |
+| G Best (D+B1+F)        | 200 | 87.90%   | 94.40%    | 91.40%    |
+| G Best (D+B1+F)        | 400 | 88.57%   | 93.63%    | 92.93%    |
 
 ---
 
@@ -72,25 +77,25 @@ mejora mature accuracy de 53.75% a 98.75%
 3. **Polisemia de ConceptNet**: labels de Apple Inc. (computer, mac, macintosh) permiten
    que tokens de car/horse activen el agente apple en early phase.
 
-Baseline N=80: winner_apple=78.75%,
-winner_horse=17.50%, winner_car=2.50%.
+Baseline N=400: winner_apple=24.00%,
+winner_horse=6.75%, winner_car=12.00%.
 
 ### P2 — ¿Normalización B1/B2 reduce el sesgo?
 
-B1 (÷count): mature_acc N=80 = 98.75% vs baseline 53.75%
-B2 (÷√count): mature_acc N=80 = 75.00%
+B1 (÷count): mature_acc N=400 = 93.25% vs baseline 80.00%
+B2 (÷√count): mature_acc N=400 = 89.00%
 
 La normalización penaliza al agente con más registros (apple). B1 divide directamente
 por el número de veces que el agente fue registrado, equilibrando los scores.
 El efecto es parcial si el sesgo también viene de M_dom (reconocimiento).
 
-Horse N=80: A=51.85% → B1=100.00%
-Car  N=80: A=7.69% → B1=96.15%
+Horse N=400: A=54.00% → B1=82.00%
+Car  N=400: A=96.00% → B1=98.00%
 
 ### P3 — ¿El balanceo de queries (D) mejora el early phase?
 
-D early_acc N=80 = 97.44% vs A = 97.50%
-D mature_acc N=80 = 52.82%
+D early_acc N=400 = 88.57% vs A = 88.00%
+D mature_acc N=400 = 82.76%
 
 Con floor(N/3) queries exactas por dominio e interleaved, los registros en M_dir
 deberían ser más balanceados. Sin embargo, si M_dom tiene sesgos propios (reconoce
@@ -98,8 +103,8 @@ mejor apple), el efecto es limitado.
 
 ### P4 — ¿El registro balanceado (C) es efectivo?
 
-C mature_acc N=80 = 53.75%
-C winner_apple = 78.75% vs A = 78.75%
+C mature_acc N=400 = 86.50%
+C winner_apple = 20.75% vs A = 24.00%
 
 El cap (max_ratio=3.0) previene que un agente acumule >3× los registros del mínimo.
 Esto ayuda si el sesgo es de registro; si el sesgo viene de M_dom (reconocimiento en
@@ -107,8 +112,8 @@ early phase), C no puede compensarlo completamente.
 
 ### P5 — ¿Aumentar m (E32, E64) mejora discriminación?
 
-E32 mature_acc N=80 = 53.75%
-E64 mature_acc N=80 = 53.75%
+E32 mature_acc N=400 = 84.75%
+E64 mature_acc N=400 = 86.50%
 
 **Resultado esperado y confirmado**: cambiar m NO mejora discriminación para vectores
 binarios. `quantize_binary` mapea sign(v)∈{-1,+1} a {0, m-1}, usando solo 2 de m bins.
@@ -120,8 +125,8 @@ normalización global min/max permitiría aprovechar la resolución de m>2.
 
 ### P6 — ¿La curación de ConceptNet (F) reduce engine→apple?
 
-F mature_acc_car N=80 = 50.00% vs A = 7.69%
-F mature_acc N=80 = 80.00%
+F mature_acc_car N=400 = 96.00% vs A = 96.00%
+F mature_acc N=400 = 80.00%
 
 Remover {computer, mac, macintosh, eden} del M_dom de apple hace que tokens como
 "engine", "machine", "motor" tengan menos afinidad con apple en early phase.
@@ -130,16 +135,16 @@ El agente car gana más queries con tokens mecanicos → M_dir aprende correctam
 ### P7 — ¿Cuál es la mejor combinación?
 
 Mejor condicion: B1 (B1 Norm/count)
-N=80: mature_acc=98.75% (baseline: 53.75%, mejora: +45.00%)
+N=400: mature_acc=93.25% (baseline: 80.00%, mejora: +13.25%)
 
-Entropía M_dir (A): 1.567 bits
-Entropía M_dir (G): 1.575 bits
-(máximo posible: 1.585 bits para 3 agentes)
+Entropía M_dir (A): 2.955 bits
+Entropía M_dir (G): 2.961 bits
+(máximo posible: 3.000 bits para 8 agentes)
 
-Registros M_dir (A): apple=78,
-  horse=65, car=53
-Registros M_dir (G): apple=72,
-  horse=63, car=54
+Registros M_dir (A): apple=206,
+  horse=100, car=115
+Registros M_dir (G): apple=199,
+  horse=101, car=114
 
 ---
 
@@ -163,7 +168,7 @@ Registros M_dir (G): apple=72,
 |---------|-------------|
 | `ablation_metrics.csv` | Metricas completas N × seed × condition |
 | `scaling_comparison_ablation.png` | Mature accuracy y fidelidad vs N |
-| `domain_accuracy_ablation.png` | Accuracy por dominio por condicion (N=80) |
+| `domain_accuracy_ablation.png` | Accuracy por dominio por condicion (N=400) |
 | `winner_distribution.png` | Distribucion de ganadores en fase madura |
 | `confusion_matrix_baseline.png` | Matriz de confusion baseline A |
 | `confusion_matrix_best_condition.png` | Matriz de confusion mejor condicion |
