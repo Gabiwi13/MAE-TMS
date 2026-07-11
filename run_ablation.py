@@ -149,8 +149,8 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
         # El vocabulario v4 (masa asociativa) ya no contiene los labels de
         # Apple Inc.: las condiciones F/G quedan como NO-OP (F ≡ A). Se avisa
         # en vez de narrar en el reporte un efecto que no ocurre.
-        print("  AVISO: la curación F/G no removió NADA (los labels de Apple "
-              "Inc. ya no están en labels_apple.json). F ≡ A en esta corrida.")
+        print("  AVISO: la curacion F/G no removio NADA (los labels de Apple "
+              "Inc. ya no estan en labels_apple.json). F == A en esta corrida.")
 
     label_seq = []
     for word, freq in curated.items():
