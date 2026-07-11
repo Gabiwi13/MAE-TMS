@@ -7,11 +7,6 @@ from pathlib import Path
 
 import numpy as np
 
-# Escala global para la cuantización por MAGNITUD de las pistas semánticas.
-# Antes las etiquetas se binarizaban por signo (solo 2 niveles efectivos), lo que
-# no separaba clases solapadas. Ahora se conserva la magnitud de cada componente
-# fastText, mapeando [-S, S] -> [0, levels-1] con una escala global S (percentil
-# alto de |componente| sobre el vocabulario), consistente entre llenado y consulta.
 _SCALE_PATH = Path(__file__).parent.parent / "models" / "label_quant_scale.json"
 _LABEL_SCALE = None
 
