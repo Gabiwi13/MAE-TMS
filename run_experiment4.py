@@ -67,8 +67,8 @@ from stage6_interaction import (
 )
 
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
-                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
-                "pear": "#7f8c8d", "tomato": "#c0392b"}
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
 SHUFFLE_SEEDS = [0, 1, 2, 3, 4]
 ACC_THRESHOLD = 0.90
 

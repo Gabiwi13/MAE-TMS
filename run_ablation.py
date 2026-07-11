@@ -102,8 +102,8 @@ COND_COLORS = {
 
 # Paleta por dominio (8 clases ETH-80) para los plots diagnósticos.
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
-                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
-                "pear": "#7f8c8d", "tomato": "#c0392b"}
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
 # N de referencia para los plots por dominio: el banco completo (debe estar
 # en N_VALUES). Antes era 80 —de la era de 3 clases y AUSENTE de N_VALUES—,
 # así que los plots agregaban 0 filas.

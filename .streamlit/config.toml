@@ -1,0 +1,12 @@
+# Tema de la app EAM-TMS: mismo sistema visual que las animaciones
+# (navy/índigo con acento violeta). La paleta categórica de 8 clases está
+# validada (dataviz skill) para esta superficie: ver DOMAIN_COLOR en app_tme.
+[theme]
+base = "dark"
+primaryColor = "#6b79e8"
+backgroundColor = "#101332"
+secondaryBackgroundColor = "#181c44"
+textColor = "#e8eaf6"
+
+[server]
+headless = true
