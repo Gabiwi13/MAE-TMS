@@ -323,7 +323,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     # PASS 2: full recall for winner only (slow)
     # recall_from_left calls recall_with_sampling_n_search (127 stochastic
     # iterations + hill-climbing). We do this ONLY for the winner agent,
-    # not all 3 — reduces calls from n_tokens×3 to n_tokens.
+    # not all K — reduces calls from n_tokens×len(CLASSES) to n_tokens.
     final_recalled_img = None
     final_recalled_tok = None
     for tok, td in per_token.items():
@@ -895,7 +895,7 @@ async function run(){
     tb.style.opacity=1;
     // losers wake up to learn — everyone registers the association
     for(const cls of AG) $('ag-'+cls).classList.add('relearn');
-    // association pairs fly TME → all 3 agents
+    // association pairs fly TME → ALL agents (los perdedores también registran)
     for(const cls of AG){
       const p=document.createElement('div'); p.className='pair';
       p.innerHTML='v_q&rarr;'+D.emoji[D.winner];
@@ -1369,51 +1369,6 @@ _ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
 _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
-def _video_export_ui(key: str, sig: str, builder=None, html: str = None,
-                     height: int = None):
-    """Exportación a MP4 de una animación de ruteo.
-
-    Vía principal: grabación EXACTA de la animación HTML (el mismo markup
-    que muestra la app) en un Edge headless vía screencast CDP — pixel por
-    pixel lo que se ve en Streamlit (app_video_dom). Si el navegador o
-    playwright no están disponibles, cae al renderer PIL (app_video) con
-    los mismos datos. En ambos casos el video consume decisiones YA tomadas
-    por la MAE: visualiza, no re-decide. `sig` invalida el cache al cambiar
-    la consulta/imagen."""
-    if st.session_state.get(f"vidsig_{key}") != sig:
-        st.session_state.pop(f"vid_{key}", None)
-    with st.expander("🎬 Exportar la animación a video (MP4 descargable)"):
-        st.caption(
-            "Graba la animación real en un navegador headless (idéntica a la "
-            "de arriba). Con los datos reales de esta corrida: scores, "
-            "ganador, redirección e imágenes evocadas."
-        )
-        if st.button("Generar video", key=f"btn_{key}"):
-            data = None
-            if html:
-                with st.spinner("Grabando la animación en el navegador "
-                                "headless (~30–60 s, corre completa)…"):
-                    try:
-                        from app_video_dom import record_animation_html
-                        data = record_animation_html(
-                            html, height or _ANIM_H)
-                    except Exception as e:
-                        st.warning(
-                            f"Captura del navegador no disponible "
-                            f"({type(e).__name__}); usando el renderer PIL.")
-            if data is None and builder is not None:
-                with st.spinner("Renderizando MP4 (PIL, ~5–10 s)…"):
-                    data = builder()
-            if data:
-                st.session_state[f"vid_{key}"] = data
-                st.session_state[f"vidsig_{key}"] = sig
-        data = st.session_state.get(f"vid_{key}")
-        if data:
-            st.video(data)
-            st.download_button(
-                "⬇ Descargar MP4", data, file_name=f"{key}.mp4",
-                mime="video/mp4", key=f"dl_{key}",
-                use_container_width=True)
 
 
 # Session state management
@@ -1470,17 +1425,10 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         "broadcast through the TME, and return as a reconstructed memory — "
         "all values are the real ones computed by the AMRs."
     )
-    _anim_html = build_flow_animation(trace)
-    components.html(_anim_html, height=_ANIM_H, scrolling=False)
-
-    _ref_np = ref_imgs[trace["winner"]].permute(1, 2, 0).numpy() \
-        if trace.get("winner") else None
-    from app_video import render_early_video
-    _video_export_ui(
-        "ruteo_temprano", trace["query"],
-        html=_anim_html, height=_ANIM_H,
-        builder=lambda: render_early_video(trace, list(CLASSES), DOMAIN_COLOR,
-                                           ref_img=_ref_np))
+    components.html(build_flow_animation(trace), height=_ANIM_H,
+                    scrolling=False)
+    st.caption("Para exportarla: botón ↻ Replay + grabación de pantalla "
+               "(Win+Alt+R).")
 
     st.markdown("---")
     st.markdown("### Detailed Stage-by-Stage Breakdown")
@@ -2463,19 +2411,11 @@ def main():
                         query_m, nlp, vectors_cache)
                     _mat_html = None
                     if toks_m:
-                        _mat_html = build_mature_animation(
-                            query_m, words_m, toks_m, entry_cls, dest_cls,
-                            mdir_scores, recalled_img)
-                        components.html(_mat_html, height=_ANIM_H,
-                                        scrolling=False)
-                    # Payload para exportar a video: sobrevive los reruns que
-                    # provoca el botón "Generar video" (run_m vuelve a False).
-                    st.session_state["mature_vid_payload"] = {
-                        "query": query_m, "tokens": known_m,
-                        "entry": entry_cls, "dest": dest_cls,
-                        "scores": dict(mdir_scores), "img": recalled_img,
-                        "html": _mat_html,
-                    }
+                        components.html(
+                            build_mature_animation(
+                                query_m, words_m, toks_m, entry_cls, dest_cls,
+                                mdir_scores, recalled_img),
+                            height=_ANIM_H, scrolling=False)
 
                     # Banner
                     if redirected:
@@ -2564,20 +2504,6 @@ def main():
                                     f"M_dir bias may be affecting routing."
                                 )
 
-            # Exportación a video del último ruteo maduro (persiste en
-            # session_state, así que sobrevive el rerun del botón).
-            _mp = st.session_state.get("mature_vid_payload")
-            if _mp:
-                from app_video import render_mature_video
-                _video_export_ui(
-                    "ruteo_maduro",
-                    _mp["query"] + ">" + _mp["entry"] + ">" + _mp["dest"],
-                    html=_mp.get("html"), height=_ANIM_H,
-                    builder=lambda: render_mature_video(
-                        _mp["query"], _mp["tokens"], _mp["entry"],
-                        _mp["dest"], _mp["scores"], list(CLASSES),
-                        DOMAIN_COLOR, _mp["img"]))
-
     # TAB 5: ETH-80 Reference
     with tab_image:
         st.header("Imagen → Etiquetas (hemisferio visual)")
@@ -2603,7 +2529,6 @@ def main():
             horizontal=True, key="img_src")
 
         pil = None          # imagen elegida (cualquiera de las dos fuentes)
-        img_name = None     # nombre para la firma del video
         _splits = json.loads((ROOT / "data" / "eth80" / "splits.json").read_text())
 
         if src.startswith("Imagen de ejemplo"):
@@ -2629,7 +2554,6 @@ def main():
             st.session_state["img_ex_idx_val"] = ex_idx
             _path = _splits[ex_cls]["test"][ex_idx]
             pil = Image.open(_path)
-            img_name = f"{ex_cls}_test{ex_idx}"
             st.caption(
                 f"Entrada real de **{ex_cls}** (test). Como entra por "
                 f"**{entry}**, el directorio visual debería redirigir a "
@@ -2640,7 +2564,6 @@ def main():
             if up is not None:
                 import io as _io0
                 pil = Image.open(_io0.BytesIO(up.getvalue()))
-                img_name = up.name
 
         if pil is not None:
             from stage5_fill import quantize_latent_global
@@ -2670,7 +2593,6 @@ def main():
             widx = entry_agent.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
             winner = CLASSES[widx] if widx >= 0 else None
 
-            vid_labels, vid_recon = [], None   # capturados para el video
             c_in, c_out = st.columns([1, 1.4])
             with c_in:
                 st.image(pil.convert("RGB").resize((128, 128)),
@@ -2698,14 +2620,12 @@ def main():
                             f"{DOMAIN_EMOJI[winner]} {winner}** vía M_dir_R "
                             f"(B1 {scores[winner]:.3f}).")
                     labels = evoke_labels(exp_agents[winner], z_q, all_vecs)
-                    vid_labels = list(labels)
                     st.markdown("**Etiquetas evocadas (top-3):** " +
                                 "  ".join(f"`{w}`" for w in labels))
                     with _ctx.redirect_stdout(_io.StringIO()):
                         r_io, recognized, _w = exp_agents[winner].mem_dom_R.recall(z_q)
                     if recognized:
                         rec_img = _decode(r_io, gmin_v, gmax_v, decoder)
-                        vid_recon = rec_img
                         st.image(_t2img(rec_img),
                                  caption="Reconstrucción evocada por la MAE "
                                          "(decode(mem_dom_R.recall), no la entrada)",
@@ -2718,21 +2638,13 @@ def main():
             # lectura de SU M_dir_R per-agente → redirige/rechaza, sin broadcast).
             st.divider()
             st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
-            _img_html = build_image_to_labels_animation(
-                pil, z_q, scores, entry, winner, exp_agents, all_vecs,
-                decoder, gmin_v, gmax_v)
-            components.html(_img_html, height=_ANIM_IMG_H, scrolling=False)
-
-            _q_np = np.asarray(pil.convert("RGB").resize((128, 128)),
-                               dtype=np.float32) / 255.0
-            from app_video import render_image_video
-            _video_export_ui(
-                "ruteo_imagen",
-                f"{img_name}>{entry}>{winner}",
-                html=_img_html, height=_ANIM_IMG_H,
-                builder=lambda: render_image_video(
-                    _q_np, z_q, scores, entry, winner, vid_labels,
-                    list(CLASSES), DOMAIN_COLOR, recon_img=vid_recon))
+            components.html(
+                build_image_to_labels_animation(
+                    pil, z_q, scores, entry, winner, exp_agents, all_vecs,
+                    decoder, gmin_v, gmax_v),
+                height=_ANIM_IMG_H, scrolling=False)
+            st.caption("Para exportarla: botón ↻ Replay + grabación de "
+                       "pantalla (Win+Alt+R).")
 
     with tab_info:
         st.header("ETH-80 Reference Images")
