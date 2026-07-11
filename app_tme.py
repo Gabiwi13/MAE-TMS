@@ -24,6 +24,12 @@ import numpy as np
 import streamlit as st
 import streamlit.components.v1 as components
 import plotly.graph_objects as go
+import plotly.io as pio
+
+# Sistema visual de la app = el de las animaciones (navy/índigo, acento
+# violeta). Todas las figuras Plotly heredan la plantilla oscura; los
+# fondos se dejan transparentes para fundirse con los paneles.
+pio.templates.default = "plotly_dark"
 import torch
 from PIL import Image
 from torchvision import transforms
@@ -43,8 +49,8 @@ from associative_memory import DirectoryMemory
 # Visual constants
 
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
-                "cow": "#8e44ad", "cup": "#f39c12", "dog": "#16a085",
-                "pear": "#7f8c8d", "tomato": "#c0392b"}
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
 DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
                 "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
@@ -418,8 +424,8 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
             x=(x0 + x1) / 2, y=(y0 + y1) / 2,
             text=f"{score:.4f}",
             showarrow=False,
-            font=dict(size=10, color=color if is_win else "#999"),
-            bgcolor="white", opacity=0.9,
+            font=dict(size=10, color=color if is_win else "#8d93c8"),
+            bgcolor="#181c44", opacity=0.92,
         )
 
     if highlight_path:
@@ -433,7 +439,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
 
     for name, (nx, ny) in NODE_POS.items():
         is_win = name == winner
-        color  = DOMAIN_COLOR.get(name, "#2c3e50")
+        color  = DOMAIN_COLOR.get(name, "#6b79e8")
         label  = f"{DOMAIN_EMOJI.get(name, '')} {name}"
         fig.add_trace(go.Scatter(
             x=[nx], y=[ny],
@@ -442,7 +448,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
                 size=33 if name == "TME" else (30 if is_win else 22),
                 color=color,
                 line=dict(width=5 if is_win else 2,
-                          color="gold" if is_win else "white"),
+                          color="#ffd54f" if is_win else "#303670"),
             ),
             text=[label],
             textposition=("middle left" if nx < 0
@@ -458,7 +464,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         yaxis=dict(visible=False, range=[-2.8, 2.8]),
         height=360, margin=dict(l=10, r=10, t=50, b=10),
         title=dict(text=title, x=0.5, font=dict(size=14)),
-        plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -484,7 +490,7 @@ def _mdir_bar(counts, qn):
                    x=0.5, font=dict(size=13)),
         yaxis_title="Cumulative registrations",
         height=280, margin=dict(l=20, r=20, t=50, b=20),
-        plot_bgcolor="white", paper_bgcolor="#f8f9fa", showlegend=False,
+        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", showlegend=False,
     )
     return fig
 
@@ -1397,17 +1403,17 @@ def _reset_session():
 # Pipeline Trace UI renderer
 
 def _stage_header(num, icon, title, subtitle=""):
-    sub = (f"<div style='color:#aaa;font-size:12px;margin-top:2px'>{subtitle}</div>"
-           if subtitle else "")
+    sub = (f"<div style='color:#8d93c8;font-size:12px;margin-top:3px'>"
+           f"{subtitle}</div>" if subtitle else "")
     st.markdown(
         f"""<div style='
-            background:linear-gradient(90deg,#1a1a2e 0%,#16213e 100%);
-            border-left:4px solid #e94560;
-            border-radius:6px; padding:10px 18px; margin:18px 0 10px 0'>
-          <span style='color:#e94560;font-size:11px;font-weight:700;
+            background:linear-gradient(90deg,#1b1f4b 0%,#181c44 100%);
+            border:1px solid #303670; border-left:4px solid #6b79e8;
+            border-radius:10px; padding:10px 18px; margin:18px 0 10px 0'>
+          <span style='color:#6b79e8;font-size:11px;font-weight:700;
                        letter-spacing:2px;text-transform:uppercase'>
-            STAGE {num}</span>
-          <div style='color:white;font-size:17px;font-weight:700;margin-top:3px'>
+            ETAPA {num}</span>
+          <div style='color:#e8eaf6;font-size:17px;font-weight:700;margin-top:2px'>
             {(icon + " ") if icon else ""}{title}</div>
           {sub}
         </div>""",
@@ -1419,11 +1425,11 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
     """Full 6-stage pipeline visualisation."""
 
     # ANIMATED FLOW — cinematic overview of the whole pipeline
-    st.markdown("### Animated Pipeline Flow")
+    st.markdown("### Flujo animado del pipeline")
     st.caption(
-        "Watch the query decompose into words, transform into quantized cues, "
-        "broadcast through the TME, and return as a reconstructed memory — "
-        "all values are the real ones computed by the AMRs."
+        "Mira la consulta descomponerse en palabras, volverse pistas cuantizadas, "
+        "difundirse por el TME y regresar como memoria reconstruida — todos "
+        "los valores son los reales calculados por las AMRs."
     )
     components.html(build_flow_animation(trace), height=_ANIM_H,
                     scrolling=False)
@@ -1431,18 +1437,18 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                "(Win+Alt+R).")
 
     st.markdown("---")
-    st.markdown("### Detailed Stage-by-Stage Breakdown")
+    st.markdown("### Desglose etapa por etapa")
 
     # STAGE 1 — Sentence Decomposition
-    _stage_header(1, "", "Sentence Decomposition",
+    _stage_header(1, "", "Descomposición de la consulta",
         "spaCy en_core_web_sm: tokenise → lemmatise → filter stopwords + keep NOUN/ADJ/PROPN")
 
     c1, c2 = st.columns([1, 2])
     with c1:
-        st.markdown("**Input query**")
+        st.markdown("**Consulta**")
         st.markdown(
-            f"<div style='background:#f0f2f6;padding:10px;border-radius:6px;"
-            f"font-size:17px;font-style:italic'>\"{trace['query']}\"</div>",
+            f"<div class='dcard' style='font-size:17px;font-style:italic'>"
+            f"\"{trace['query']}\"</div>",
             unsafe_allow_html=True,
         )
     with c2:
@@ -1478,7 +1484,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"en vocab de labels (diagnóstico): {invocab_str}")
 
     # STAGE 2 — FastText Serialization
-    _stage_header(2, "", "FastText Serialization",
+    _stage_header(2, "", "Serialización fastText",
         f"token → 300D float  →  v/S recortado a [−1,1] (escala global S)  →  "
         f"quantize_binary(v, M={M_LABEL}) por magnitud  →  v_q ∈ [0,{M_LABEL-1}]^{N}")
 
@@ -1524,18 +1530,17 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         st.caption("This v_q is broadcast to every agent's M_dom_H")
 
     # STAGE 3 — TME Broadcast
-    _stage_header(3, "", "TME Broadcast",
+    _stage_header(3, "", "Broadcast del TME",
         "v_q sent simultaneously to all agents — each processes independently, no inter-agent communication")
 
     _agents_html = " &nbsp;|&nbsp; ".join(
         f"<span style='color:{DOMAIN_COLOR[c]}'>{DOMAIN_EMOJI[c]} {c}</span>"
         for c in CLASSES)
     st.markdown(
-        f"""<div style='text-align:center;padding:14px;background:#f8f9fa;
-            border-radius:8px;margin:8px 0;border:1px solid #ddd'>
-          <span style='font-size:15px;color:#2c3e50'>
+        f"""<div class='dcard' style='text-align:center;margin:8px 0'>
+          <span style='font-size:15px;color:#e8eaf6'>
             <b>TME</b> broadcasts
-            <code style='background:#eee;padding:2px 6px;border-radius:4px'>
+            <code>
               v_q[{sel_tok}] ∈ [0,{M_LABEL-1}]^{N}</code>
             &nbsp;→&nbsp; M_dom_H de: {_agents_html}
           </span>
@@ -1543,12 +1548,13 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         unsafe_allow_html=True,
     )
     st.caption(
-        "Each agent has 4 AMRs. Only M_dom_L and M_dom_H participate in routing. "
-        "M_dom_R (latent homo-AM) and M_dir (routing hetero-AM) are updated separately."
+        "Cada agente tiene 5 AMRs; en el ruteo temprano participan M_dom_L y "
+        "M_dom_H. M_dom_R (homo latente) y los directorios M_dir/M_dir_R se usan "
+        "en el hemisferio visual y la fase madura."
     )
 
     # STAGE 4 — Per-Agent AMR Processing
-    _stage_header(4, "", "Per-Agent AMR Processing",
+    _stage_header(4, "", "Procesamiento por agente",
         "M_dom_L.recog_weights(v_q) → per-feature weights  →  M_dom_H.recognize_from_left(v_q, w) → score")
 
     # Filas de 4 columnas para cubrir TODAS las clases (st.columns(3) + zip
@@ -1562,8 +1568,8 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         pa     = td["per_agent"][cls]
         is_win = (cls == trace["winner"])
         color  = DOMAIN_COLOR[cls]
-        border = f"3px solid {color}" if is_win else f"1px solid {color}55"
-        bg     = f"{color}11"         if is_win else "#fafafa"
+        border = f"3px solid {color}" if is_win else "1px solid #303670"
+        bg     = f"{color}22"         if is_win else "#181c44"
         crown  = ""
 
         with col:
@@ -1572,8 +1578,8 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                     padding:12px 14px;margin-bottom:10px'>
                   <div style='font-size:18px;font-weight:700;color:{color}'>
                     {DOMAIN_EMOJI[cls]} {cls.upper()}{crown}</div>
-                  <div style='font-size:11px;color:#666;margin-top:2px'>
-                    4 AMRs: M_dom_L · M_dom_R · M_dom_H · M_dir</div>
+                  <div style='font-size:11px;color:#8d93c8;margin-top:2px'>
+                    5 AMRs: M_dom_L · M_dom_R · M_dom_H · M_dir · M_dir_R</div>
                 </div>""",
                 unsafe_allow_html=True,
             )
@@ -1667,13 +1673,13 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                 title=dict(text="M_dom_H score per token × agent", x=0.5,
                            font=dict(size=12)),
                 height=240, margin=dict(l=20, r=20, t=50, b=20),
-                plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                 legend=dict(orientation="h", y=1.1),
             )
             st.plotly_chart(fig, use_container_width=True, key="s4_multitok")
 
     # STAGE 5 — TME Decision + M_dir Update
-    _stage_header(5, "", "TME Decision + M_dir Update",
+    _stage_header(5, "", "Decisión del TME + registro en M_dir",
         "winner = argmax(avg_scores)  →  register all tokens in M_dir[winner]")
 
     winner = trace["winner"]
@@ -1697,7 +1703,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"""<div style='background:{wcolor}22;border-left:5px solid {wcolor};
                 padding:12px;border-radius:6px;margin-top:14px'>
               <b>Winner → {DOMAIN_EMOJI[winner]} {winner.upper()}</b><br>
-              <span style='font-size:12px;color:#555'>
+              <span style='font-size:12px;color:#8d93c8'>
                 TME routes query to {winner} agent •
                 registers {trace['n_tokens']} token(s) in M_dir
               </span>
@@ -1719,7 +1725,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             )
 
     # STAGE 6 — Recall & Image Reconstruction
-    _stage_header(6, "", "Recall & Image Reconstruction",
+    _stage_header(6, "", "Recall y reconstrucción",
         f"Winner ({winner}): M_dom_H.recall_from_left(v_q) → recalled_q (64D) → dequantize → decoder → image")
 
     if trace["final_recalled_img"] is not None:
@@ -1799,70 +1805,139 @@ def main():
         initial_sidebar_state="expanded",
     )
 
+    # Sistema de diseño: mismos tokens que las animaciones HTML (navy #101332,
+    # panel #181c44, borde #303670, tinta #e8eaf6, muted #8d93c8, acento
+    # violeta #6b79e8, dorado #ffd54f). La paleta categórica de 8 clases está
+    # VALIDADA con el validador del skill dataviz sobre esta superficie
+    # (lightness band / chroma / CVD / contraste: ALL PASS).
     st.markdown("""<style>
-      .block-container{padding-top:1.6rem}
-      div[data-testid="stMetric"]{background:#f5f6fa;border-radius:10px;
-        padding:8px 12px;border:1px solid #e6e8f0}
-      .stTabs [data-baseweb="tab"]{font-size:15px;font-weight:600}
+      :root{ --bg:#101332; --panel:#181c44; --panel2:#1b1f4b;
+             --border:#303670; --ink:#e8eaf6; --muted:#8d93c8;
+             --accent:#6b79e8; --gold:#ffd54f; }
+      .block-container{padding-top:1.1rem; max-width:1240px}
+      header[data-testid="stHeader"]{background:transparent}
+
+      /* Hero */
+      .hero{background:linear-gradient(135deg,#1b1f4b 0%,#101332 75%);
+        border:1px solid var(--border); border-radius:16px;
+        padding:16px 24px; margin-bottom:6px}
+      .hero h1{font-size:24px;margin:0;color:var(--ink);letter-spacing:.4px}
+      .hero p{margin:5px 0 0;color:var(--muted);font-size:13px}
+      .hero .pill{display:inline-block;margin-left:10px;padding:2px 11px;
+        border-radius:12px;background:rgba(107,121,232,.16);
+        border:1px solid var(--border);color:var(--accent);
+        font-size:11px;font-weight:700;vertical-align:2px}
+
+      /* Métricas */
+      div[data-testid="stMetric"]{background:var(--panel);
+        border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+      div[data-testid="stMetric"] label p{color:var(--muted)!important}
+
+      /* Tabs */
+      .stTabs [data-baseweb="tab-list"]{gap:6px;
+        border-bottom:1px solid var(--border)}
+      .stTabs [data-baseweb="tab"]{font-size:14px;font-weight:600;
+        color:var(--muted);border-radius:10px 10px 0 0;padding:8px 16px}
+      .stTabs [aria-selected="true"]{color:var(--ink);background:var(--panel)}
+
+      /* Expanders, progreso, divisores, captions */
+      details[data-testid="stExpander"]{background:var(--panel);
+        border:1px solid var(--border);border-radius:12px}
       .stProgress > div > div{border-radius:6px}
+      hr{border-color:var(--border)}
+      div[data-testid="stCaptionContainer"]{color:var(--muted)}
+
+      /* Sidebar */
+      section[data-testid="stSidebar"]{background:#0c0f28;
+        border-right:1px solid var(--border)}
+
+      /* Grid de chips (conteos M_dir en el sidebar) */
+      .chipgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}
+      .mchip{display:flex;align-items:center;gap:6px;background:var(--panel);
+        border:1px solid var(--border);border-radius:10px;padding:5px 9px;
+        font-size:12px;color:var(--ink)}
+      .mchip .dot{width:9px;height:9px;border-radius:3px;flex:none}
+      .mchip b{margin-left:auto;color:var(--gold);font-family:monospace}
+
+      /* Tarjeta oscura de uso general */
+      .dcard{background:var(--panel);border:1px solid var(--border);
+        border-radius:10px;padding:10px 14px;color:var(--ink)}
+      .dcard code{background:#0d0f29;color:var(--gold);padding:1px 7px;
+        border-radius:6px}
     </style>""", unsafe_allow_html=True)
 
     _init_session()
 
     # Sidebar
     with st.sidebar:
-        st.title("EAM-TMS")
-        st.caption("Multi-Agent Associative Memory\nTransactive Memory System")
+        st.markdown(
+            "<div style='font-size:22px;font-weight:800;color:#e8eaf6'>"
+            "EAM-TMS</div>"
+            "<div style='font-size:12px;color:#8d93c8;line-height:1.5'>"
+            "Memoria transactiva multi-agente<br>sobre memorias asociativas "
+            "entrópicas</div>",
+            unsafe_allow_html=True)
         st.divider()
 
-        st.subheader("Session")
+        st.markdown("**Sesión**")
         qn     = st.session_state.query_n
         counts = st.session_state.mdir_counts
-        st.metric("Queries processed", qn)
-        for i, cls in enumerate(CLASSES):
-            st.metric(f"M_dir {DOMAIN_EMOJI[cls]} {cls}", int(counts[i]))
+        c1, c2 = st.columns(2)
+        with c1:
+            st.metric("Consultas", qn)
+        with c2:
+            total = int(counts.sum())
+            h = (st.session_state.mdir_mem.entropy() if total > 0 else 0.0)
+            st.metric("H (bits)", f"{h:.2f}",
+                      help=f"Entropía del M_dir de sesión; máximo log2({len(CLASSES)}) = {np.log2(len(CLASSES)):.1f} bits")
 
-        total = int(counts.sum())
-        if total > 0:
-            h = st.session_state.mdir_mem.entropy()
-            st.metric("M_dir entropy", f"{h:.3f} bits",
-                      delta=f"max={np.log2(len(CLASSES)):.3f}",
-                      delta_color="normal")
+        st.caption("Registros en M_dir por agente:")
+        chips = "".join(
+            f"<div class='mchip'>"
+            f"<span class='dot' style='background:{DOMAIN_COLOR[c]}'></span>"
+            f"{c}<b>{int(counts[i])}</b></div>"
+            for i, c in enumerate(CLASSES))
+        st.markdown(f"<div class='chipgrid'>{chips}</div>",
+                    unsafe_allow_html=True)
 
         st.divider()
-        st.subheader("Architecture")
-        st.markdown(f"""
-**Each Agent — 4 AMRs:**
-| AMR | Type | Dims |
+        with st.expander("Arquitectura (5 AMRs por agente)"):
+            st.markdown(f"""
+| AMR | Tipo | Dims |
 |-----|------|------|
 | M_dom_L | homo label | ({N},{M_LABEL}) |
-| M_dom_R | homo latent | ({P_LATENT},{Q_LATENT}) |
+| M_dom_R | homo latente | ({P_LATENT},{Q_LATENT}) |
 | M_dom_H | hetero | ({N},{M_LABEL}↔{P_LATENT},{Q_LATENT}) |
-| M_dir | hetero routing | ({N},{M_LABEL}→{len(CLASSES)},2) |
+| M_dir | directorio texto | ({N},{M_LABEL}→{len(CLASSES)},2) |
+| M_dir_R | directorio visual | ({P_LATENT},{Q_LATENT}→{len(CLASSES)},2) |
 
-**TME — 2 AMRs:**
-| AMR | Dims |
-|-----|------|
-| M_dir_L | ({N},{M_LABEL}→{len(CLASSES)},2) |
-| M_dir_R | ({P_LATENT},{Q_LATENT}→{len(CLASSES)},2) |
-        """)
-        st.divider()
-        if st.button("Reset session", type="secondary",
+**TME:** M_dir_L + M_dir_R (mismas dims).
+            """)
+        if st.button("↺ Reiniciar sesión", type="secondary",
                      use_container_width=True):
             _reset_session()
             st.rerun()
-        st.caption("Core experiment files are read-only.")
+        st.caption("Los artefactos del experimento son solo-lectura.")
 
     # Model loading
-    with st.spinner("Loading models (first run ~15 s)…"):
+    with st.spinner("Cargando modelos (primera vez ~15 s)…"):
         decoder, agents, vectors_cache, g_min, g_max, nlp, ref_imgs = load_models()
 
-    # Shared query input
-    st.markdown("## Query")
+    # Hero + entrada de consulta compartida
+    st.markdown(
+        f"""<div class="hero">
+          <h1>Sistema de Memoria Transactiva
+            <span class="pill">{len(CLASSES)} especialistas ETH-80</span>
+            <span class="pill">solo operaciones de memoria</span></h1>
+          <p>Escribe una consulta: los agentes la reconocen con sus memorias
+          asociativas, el grupo la asigna al especialista y el directorio
+          aprende quién sabe qué (Wegner, 1987).</p>
+        </div>""",
+        unsafe_allow_html=True)
     c_q, c_ex = st.columns([3, 1])
     with c_q:
         query = st.text_input(
-            "Enter a natural-language query:",
+            "Consulta en lenguaje natural:",
             placeholder=(
                 "e.g.:  a round red fruit  ·  animal with a mane  ·  "
                 "fast vehicle with wheels  ·  grows on trees"
@@ -1888,7 +1963,7 @@ def main():
 
     col_run, col_norm = st.columns([2, 2])
     with col_run:
-        run_btn = st.button("Run pipeline", type="primary",
+        run_btn = st.button("▶ Correr pipeline", type="primary",
                              use_container_width=True, disabled=not query)
     with col_norm:
         norm_on = st.toggle(
@@ -1899,7 +1974,7 @@ def main():
         )
 
     if run_btn and query:
-        with st.spinner("Running full pipeline trace…"):
+        with st.spinner("Corriendo el pipeline completo…"):
             trace = compute_pipeline_trace(
                 query, agents, vectors_cache, g_min, g_max, decoder, nlp,
                 normalize=norm_on)
@@ -1935,32 +2010,32 @@ def main():
 
     # Tabs
     tab_trace, tab_routing, tab_mdir, tab_mature, tab_image, tab_info = st.tabs([
-        "Pipeline Trace",
-        "Routing Summary",
-        "M_dir Evolution",
-        "Mature Phase",
+        "🔬 Trace del pipeline",
+        "🧭 Resumen de ruteo",
+        "📈 Evolución de M_dir",
+        "🌗 Fase madura",
         "Imagen → Etiquetas",
-        "ETH-80 Reference",
+        "📚 Referencia ETH-80",
     ])
 
     # TAB 1: Pipeline Trace
     with tab_trace:
         if st.session_state.last_trace is None:
             st.info(
-                "Enter a query above and click **▶ Run pipeline** to see the "
-                "full step-by-step trace of how EAM-TMS processes it."
+                "Escribe una consulta arriba y pulsa **▶ Correr pipeline** para ver "
+                "el trace completo, etapa por etapa, de cómo la procesa el sistema."
             )
             st.markdown("""
-### What the trace shows
+### Qué muestra el trace
 
-| Stage | What you see |
-|-------|-------------|
-| **1 · Sentence Decomposition** | spaCy tokens with POS tags, stopword flags, vocabulary status |
-| **2 · Serialization** | FastText 300D heatmap → v/S ∈ [−1,1] → quantize_binary() (magnitud) visualised as colour grids |
-| **3 · TME Broadcast** | v_q sent simultaneously to all agents |
-| **4 · Per-Agent AMR Processing** | For each agent: M_dom_L recog_weights (300D heatmap), M_dom_H recognition score + recall result |
-| **5 · TME Decision + M_dir** | Aggregated scores, winner, M_dir bar chart after update |
-| **6 · Recall & Reconstruction** | recalled_q (64D heatmap) → dequantize → decoder → reconstructed image vs. ETH-80 reference |
+| Etapa | Qué se ve |
+|-------|-----------|
+| **1 · Descomposición** | tokens de spaCy con POS, stopwords y estado de vocabulario |
+| **2 · Serialización** | fastText 300D → v/S ∈ [−1,1] → quantize_binary() (magnitud), como grillas de color |
+| **3 · Broadcast del TME** | v_q enviado simultáneamente a todos los agentes |
+| **4 · Procesamiento por agente** | recog_weights de M_dom_L (heatmap 300D), score de M_dom_H y recall |
+| **5 · Decisión + M_dir** | scores agregados, ganador, y el M_dir tras registrar |
+| **6 · Recall y reconstrucción** | recalled_q (64D) → dequantización → decoder → imagen vs referencia ETH-80 |
             """)
         else:
             render_pipeline_trace(
@@ -1968,9 +2043,9 @@ def main():
 
     # TAB 2: Routing Summary
     with tab_routing:
-        st.header("Routing Summary")
+        st.header("Resumen de ruteo")
         if st.session_state.last_trace is None:
-            st.info("Run a query to see routing results.")
+            st.info("Corre una consulta para ver el resultado del ruteo.")
         else:
             trace  = st.session_state.last_trace
             winner = trace["winner"]
@@ -1981,8 +2056,8 @@ def main():
                     padding:16px;border-radius:8px;margin:12px 0'>
                   <span style='font-size:28px'>{DOMAIN_EMOJI[winner]}</span>
                   <span style='font-size:20px;font-weight:bold;color:{wcolor}'>
-                   → Agent <b>{winner.upper()}</b></span>
-                  <span style='color:#555;margin-left:16px'>
+                   → Agente <b>{winner.upper()}</b></span>
+                  <span style='color:#8d93c8;margin-left:16px'>
                   score={trace['avg_scores'][winner]:.5f}</span>
                 </div>""",
                 unsafe_allow_html=True,
@@ -2002,7 +2077,7 @@ def main():
                     key="tab2_graph",
                 )
             with c_s:
-                st.markdown("**Scores per agent:**")
+                st.markdown("**Score por agente:**")
                 max_s = max(trace["avg_scores"].values())
                 for cls in CLASSES:
                     s   = trace["avg_scores"][cls]
@@ -2011,16 +2086,16 @@ def main():
                     st.markdown(f"{DOMAIN_EMOJI[cls]} {bld}{cls}{bld}")
                     st.progress(float(np.clip(pct, 0, 1)), text=f"{s:.5f}")
             with c_i:
-                st.markdown(f"**Recalled ({winner}):**")
+                st.markdown(f"**Evocado ({winner}):**")
                 if trace["final_recalled_img"] is not None:
                     st.image(_t2img(trace["final_recalled_img"]),
-                             width=120, caption=f"Prototype {winner}")
+                             width=120, caption=f"Prototipo {winner}")
                 else:
-                    st.info("Not recognized")
+                    st.info("No reconocido")
                 ref_np = ref_imgs[winner].permute(1, 2, 0).numpy()
                 st.image(_t2img(ref_np), width=120, caption="ETH-80 ref")
 
-            with st.expander("Per-token score breakdown"):
+            with st.expander("Desglose de score por token"):
                 fig = go.Figure()
                 toks = list(trace["per_token"].keys())
                 for cls in CLASSES:
@@ -2035,14 +2110,14 @@ def main():
                     title=dict(text="M_dom_H score per token × agent",
                                x=0.5, font=dict(size=12)),
                     height=240, margin=dict(l=20, r=20, t=50, b=20),
-                    plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                     legend=dict(orientation="h", y=1.1),
                 )
                 st.plotly_chart(fig, use_container_width=True, key="tab2_tokbar")
 
         if len(st.session_state.history) > 1:
             with st.expander(
-                    f"Session history ({len(st.session_state.history)} queries)"):
+                    f"Historial de la sesión ({len(st.session_state.history)} consultas)"):
                 import pandas as pd
                 rows = []
                 for r in reversed(st.session_state.history):
@@ -2057,7 +2132,7 @@ def main():
 
     # TAB 3: M_dir Evolution
     with tab_mdir:
-        st.header("M_dir Evolution — Bias Accumulation")
+        st.header("Evolución de M_dir — acumulación de registros")
         st.caption(
             "Every time a query routes to an agent, that agent's M_dir slot grows. "
             "Over many queries, dominant agents accumulate bias. "
@@ -2117,7 +2192,7 @@ def main():
                     xaxis_title="Query #",
                     yaxis_title="Cumulative registrations",
                     height=300, legend=dict(orientation="h", y=1.1),
-                    plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                     margin=dict(l=20, r=20, t=60, b=20),
                 )
                 st.plotly_chart(fig_evo, use_container_width=True, key="tab3_evo")
@@ -2135,7 +2210,7 @@ def main():
 
     # TAB 4: Mature Phase
     with tab_mature:
-        st.header("Mature Phase — Point-to-Point Routing via M_dir")
+        st.header("Fase madura — ruteo punto a punto vía M_dir")
         st.caption(
             "TME disabled. Entry agent receives query, consults its M_dir "
             "(what it learned during early phase), and routes to the correct agent. "
@@ -2647,7 +2722,7 @@ def main():
                        "pantalla (Win+Alt+R).")
 
     with tab_info:
-        st.header("ETH-80 Reference Images")
+        st.header("Referencia ETH-80")
         st.caption("One representative training image per domain.")
 
         # Filas de 4 para las 8 clases (antes st.columns(3)+zip truncaba a 3).
