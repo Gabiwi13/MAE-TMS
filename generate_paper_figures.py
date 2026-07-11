@@ -548,7 +548,8 @@ def fig_summary_table(agg):
 
 def _compute_recognition_matrix(mdoms):
     """
-    For every label in every domain, compute recognize_from_left on all 3 M_dom agents.
+    For every label in every domain, compute recognize_from_left on every
+    M_dom agent (all len(CLASSES) of them).
     Returns:
         words   : list of str  (len = n_labels)
         true_dom: list of str  (domain each label belongs to)
