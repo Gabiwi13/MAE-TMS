@@ -839,8 +839,10 @@ async function run(){
   }
 
   // ── P6: AMR scores ──
+  // En maduro las barras son la LECTURA del directorio de la entrada (una
+  // operación de memoria, sin broadcast); en temprano sí es cómputo por agente.
   lbl.textContent = isMature
-    ? '6 / M_dir scores per agent (B1 normalized)'
+    ? '6 / lectura B1 del M_dir de la entrada: evidencia por agente (sin broadcast)'
     : '6 / M_dom_L weights → M_dom_H scores';
   const mx=Math.max(...AG.map(c=>D.avg[c]), 1e-9);
   for(const cls of AG){
@@ -1079,9 +1081,10 @@ def build_mature_animation(query, words, toks, entry, dest,
 
 
 # Animated visual-hemisphere flow (imagen → etiquetas), estilo fase madura:
-# entrada por un agente cualquiera → directorio visual del TME (M_dir_R, B1) →
-# redirige al especialista o rechaza. Componente autocontenido en su propio iframe;
-# no reutiliza _ANIM_TEMPLATE ni los builders de la fase de texto.
+# entrada por un agente cualquiera → lectura de SU PROPIO directorio visual
+# (M_dir_R per-agente, B1) → redirige al especialista o rechaza. Sin broadcast:
+# los demás agentes no procesan la pista. Componente autocontenido en su propio
+# iframe; no reutiliza _ANIM_TEMPLATE ni los builders de la fase de texto.
 _ANIM_IMG2LBL_TEMPLATE = r"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
@@ -1187,7 +1190,7 @@ function centerOf(el,ref){const a=el.getBoundingClientRect(),b=ref.getBoundingCl
 function cellColor(v){const t=v/31,a=[26,29,61],b=[124,164,255];
   const c=a.map((x,i)=>Math.round(x+(b[i]-x)*t));return `rgb(${c[0]},${c[1]},${c[2]})`;}
 function countUp(el,target,dur){const t0=performance.now();
-  function f(t){const p=Math.min(1,(t-t0)/dur);el.textContent=(target*p).toFixed(0);
+  function f(t){const p=Math.min(1,(t-t0)/dur);el.textContent=(target*p).toFixed(3);
   if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
 function mkdot(c,color){const d=document.createElement('div');d.className='dot';
   d.style.left=c[0]+'px';d.style.top=c[1]+'px';d.style.background=color;
@@ -1200,12 +1203,16 @@ function setup(){
   for(const cls of AG){
     const d=document.createElement('div');d.className='agent';d.id='ag-'+cls;
     d.innerHTML=`<h4>${D.emoji[cls]} ${cls}<span class="crown" id="cr-${cls}">&#128081;</span></h4>
-      <div class="sub">especialista &middot; score B1 del directorio</div>
+      <div class="sub">evidencia que el directorio de ${D.entry} le asigna</div>
       <div class="tag" id="tag-${cls}">ENTRADA</div>
       <div class="barwrap"><div class="bar" id="bar-${cls}" style="background:${D.colors[cls]}"></div></div>
       <div class="score" id="sc-${cls}">&mdash;</div>`;
     net.appendChild(d);
   }
+  // El hub es el directorio DEL AGENTE DE ENTRADA (per-agente), no un nodo
+  // central compartido tipo TME.
+  $('hub').innerHTML='M_dir_R de '+D.entry+
+    '<small>directorio visual propio &middot; lectura B1 (&xi;=2)</small>';
   const g=$('latentgrid');g.innerHTML='';
   for(let i=0;i<D.latent.length;i++){const c=document.createElement('div');c.className='cell';g.appendChild(c);}
   $('cueimg').src='data:image/png;base64,'+D.queryImg;
@@ -1262,18 +1269,20 @@ async function run(){
   {const dot=mkdot(centerOf($('latentgrid'),anim),D.colors[D.entry]);anim.appendChild(dot);
    move(dot,centerOf($('ag-'+D.entry),anim));await sleep(850);dot.remove();}
 
-  // P5: la entrada consulta el directorio visual del TME (M_dir_R)
+  // P5: la entrada consulta SU PROPIO directorio visual (lectura interna:
+  // los demás agentes NO reciben la pista ni procesan nada — a diferencia
+  // del broadcast de la fase temprana).
   lbl.textContent='5 / '+D.entry+' consulta SU directorio visual M_dir_R';
   {const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#7da4ff');anim.appendChild(dot);
    move(dot,centerOf($('hub'),anim));await sleep(800);dot.remove();}
   $('hub').classList.add('pulse');await sleep(500);
 
-  // P6: el directorio reparte el score B1 a cada especialista
-  lbl.textContent='6 / M_dir_R reparte score B1 por especialista';
-  const hc=centerOf($('hub'),anim);
-  for(const cls of AG){const dot=mkdot(hc,D.colors[cls]);anim.appendChild(dot);
-    move(dot,centerOf($('ag-'+cls),anim));}
-  await sleep(850);document.querySelectorAll('.dot').forEach(x=>x.remove());
+  // P6: LECTURA del directorio — una sola operación de memoria devuelve la
+  // evidencia registrada por especialista. Las barras muestran el CONTENIDO
+  // del directorio, no cómputo de los agentes; por eso NO vuelan puntos
+  // hacia ellos (eso sería un broadcast, que aquí no existe).
+  lbl.textContent='6 / lectura B1: evidencia registrada por especialista (sin broadcast)';
+  $('hub').classList.add('pulse');
   const mx=Math.max(...AG.map(c=>D.scores[c]),1e-9);
   for(const cls of AG){$('bar-'+cls).style.width=(100*D.scores[cls]/mx)+'%';
     countUp($('sc-'+cls),D.scores[cls],900);}
@@ -1318,8 +1327,9 @@ window.addEventListener('load',()=>setTimeout(run,250));
 def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
                                     all_vecs, decoder, gmin_v, gmax_v) -> str:
     """Serializa el flujo imagen → etiquetas estilo fase madura: la imagen entra
-    por `entry` y se rutea con el directorio visual del TME (M_dir_R, B1) hacia el
-    especialista `winner` (None = rechazo), que evoca etiquetas y reconstruye.
+    por `entry`, que lee SU PROPIO directorio visual (M_dir_R per-agente, B1) y
+    redirige al especialista `winner` (None = rechazo), que evoca etiquetas y
+    reconstruye. Sin broadcast: los demás agentes no procesan la pista.
     La decisión de ruteo la toma el tab (vía la memoria) y se recibe aquí; este
     builder NO re-decide. Solo visualiza; no altera nada."""
     import io as _io
@@ -2705,7 +2715,7 @@ def main():
                                 "recall no produjo un patrón estable para reconstruir.")
 
             # Animación del flujo imagen → etiquetas (estilo fase madura: entrada →
-            # directorio visual M_dir_R del TME → redirige/rechaza).
+            # lectura de SU M_dir_R per-agente → redirige/rechaza, sin broadcast).
             st.divider()
             st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
             _img_html = build_image_to_labels_animation(
