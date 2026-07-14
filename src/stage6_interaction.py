@@ -170,6 +170,29 @@ class Agent:
         count = int(np.count_nonzero(proj))
         return float(np.sum(proj)) / count if count > 0 else 0.0
 
+    def recognize_both(self, v_label_q: np.ndarray):
+        """(l_weights, h_raw, h_gated) compartiendo UNA sola proyeccion.
+
+        Equivalente exacto a llamar recognize() y recognize_gated() por
+        separado: _norm_weights de la memoria hetero normaliza igual que
+        aqui (l_w/max) y project() es invariante a escala, asi que ambos
+        scores salen de la misma proyeccion — solo se evita repetirla.
+        """
+        import io as _io
+        import contextlib as _ctx
+        l_w = self.mem_dom_L.recog_weights(v_label_q)
+        mx = l_w.max()
+        weights = (l_w / mx) if mx > 0 else np.ones(len(v_label_q),
+                                                    dtype=float)
+        mem_H = self.mem_dom_H
+        ca = mem_H.validate(v_label_q, 0)
+        with _ctx.redirect_stdout(_io.StringIO()):
+            proj = mem_H.project(ca, weights, 0)
+        count = int(np.count_nonzero(proj))
+        h_raw = float(np.sum(proj)) / count if count > 0 else 0.0
+        gated_out = np.count_nonzero(np.sum(proj, axis=1) == 0) > 0
+        return l_w, h_raw, (0.0 if gated_out else h_raw)
+
     def recall(self, v_label_q: np.ndarray):
         """label -> latente via la memoria de contenido."""
         return self.mem_dom_H.recall_from_left(v_label_q)
