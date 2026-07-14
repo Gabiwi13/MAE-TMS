@@ -1,0 +1,119 @@
+\section{Introducción}
+\label{sec:introduccion}
+
+Cuando un grupo de personas trabaja de manera coordinada durante el tiempo suficiente,
+recuerda más de lo que cualquiera de sus miembros podría
+recordar de forma individual.
+Wegner \cite{wegner1987transactive} llamó a este fenómeno
+\textbf{memoria transactiva}: una forma de memoria compartida en la que cada individuo
+almacena no solo sus propios conocimientos, sino también un \emph{directorio} que indica quién es reconocido
+dentro del grupo como referente en cada dominio.
+Cuando un miembro necesita información que no conoce, consulta ese directorio,
+determina a quién preguntar y delega la recuperación.
+El sistema funciona gracias a esa especialización: el conocimiento no necesita repetirse en cada miembro,
+sino que se reparte entre ellos, y la coordinación entre pares reemplaza gradualmente a cualquier mediador central.
+
+El modelo de Wegner identifica tres procesos principales.
+Primero, la \emph{actualización del directorio}: tras cada interacción, todos los
+miembros, incluso quienes no respondieron directamente, registran quién supo responder.
+Segundo, la \emph{asignación de información}: la información nueva se envía
+hacia el miembro reconocido como referencia en ese dominio.
+Tercero, la \emph{coordinación de recuperación}: las consultas futuras viajan directamente
+a ese referente sin pasar por un intermediario.
+La transición de una \emph{fase temprana} mediada a una \emph{fase madura} punto a punto
+es la señal de que el sistema transactivo ya quedó formado.
+
+Un reporte previo de este proyecto mostró que un sistema de tres agentes especialistas
+sobre memorias asociativas puras desarrolla el directorio transactivo de Wegner por
+interacción acumulativa, alcanzando una precisión madura del 98.75\,\% en tres categorías
+de ETH-80.
+Este reporte técnico aborda la pregunta que ese resultado deja abierta:
+
+\begin{quote}
+¿La maquinaria transactiva construida sobre memorias asociativas entrópicas
+\emph{escala} cuando el número de agentes especialistas crece de tres a ocho,
+cubriendo todas las categorías de ETH-80? Y si aparecen límites, ¿provienen del
+mecanismo asociativo o de las representaciones que lo alimentan?
+\end{quote}
+
+El sistema construido, denominado \textbf{EAM-TMS} (Sistema de Memoria Transactiva
+Multi-Agente sobre Memorias Asociativas Entrópicas), se compone en esta versión de
+\textbf{ocho agentes especialistas}, uno por cada categoría del conjunto ETH-80
+\cite{leibe2003eth80}: \textit{apple}, \textit{car}, \textit{cow}, \textit{cup},
+\textit{dog}, \textit{horse}, \textit{pear} y \textit{tomato}.
+Un mediador central denominado TME (\textit{Transactive Memory Expert}) coordina la fase
+temprana y registra en sus propios directorios qué agente responde a cada tipo de
+consulta.
+Conforme cada agente acumula registros en sus memorias de directorio internas
+(una textual y una visual), el TME deja de hacer falta: en la fase madura, cualquier
+agente puede determinar a quién reenviar una consulta desconocida, sea una frase o una
+imagen, sin intervención del mediador.
+
+El sistema no emplea ningún mecanismo de optimización numérica en la toma de decisiones.
+Todas las operaciones (registro, reconocimiento, recuperación y enrutamiento) son
+operaciones definidas formalmente sobre las \textbf{Memorias Asociativas Entrópicas}
+de Pineda \& Morales en su variante ponderada (W-EAM)
+\cite{pineda2021entropic,pineda2022weighted} y su extensión hetero-asociativa (EHAM)
+\cite{morales2024hetero,morales2025missing}.
+Las representaciones semánticas se obtienen con embeddings fastText
+\cite{bojanowski2017fasttext}, cuantizados \emph{por magnitud} en 16 niveles
+(un cambio central de esta versión frente a la binarización por signo anterior).
+El vocabulario de llenado se extrae de ConceptNet 5.7 \cite{speer2017conceptnet}
+y el texto se procesa con spaCy \cite{honnibal2020spacy}.
+Las representaciones visuales las produce un encoder ResNet18 \cite{he2016resnet}
+preentrenado, cuya salida se cuantiza y almacena.
+
+\subsection*{Contribuciones principales}
+
+Este trabajo aporta cinco contribuciones concretas respecto a la versión anterior:
+
+\begin{enumerate}
+    \item \textbf{Escalado a ocho agentes especialistas.}
+    El sistema pasa de 3 a 8 categorías (las ocho clases de ETH-80), con el encoder
+    visual reentrenado de forma determinista, el vocabulario semántico regenerado y el
+    banco de evaluación extendido a 411 consultas ($\approx$50 por dominio).
+    Los resultados muestran que los directorios, la lectura normalizada B1, el rechazo
+    por containment y la coordinación punto a punto escalan sin cambios en el mecanismo.
+
+    \item \textbf{Cuantización por magnitud de las pistas semánticas.}
+    La binarización por signo de fastText (que usaba 2 de los 16 niveles disponibles)
+    se reemplaza por una cuantización por magnitud $v/S$ sobre una escala global
+    persistida, que puebla los 16 niveles.
+    Este cambio de representación elevó la precisión temprana de 8 clases del 50\,\% al
+    rango de 85--88\,\% sin tocar la maquinaria asociativa.
+
+    \item \textbf{Directorio visual por agente.}
+    Cada agente incorpora un directorio hetero-asociativo visual propio
+    ($M^R_{\mathrm{dir}}$), de modo que una imagen puede entrar por \emph{cualquier}
+    agente y ser redirigida punto a punto al especialista, replicando para la modalidad
+    visual la coordinación de recuperación de Wegner.
+    La alternativa de un puente por el TME traducía 0\,\% y fue descartada.
+
+    \item \textbf{Auditoría de fidelidad del pipeline.}
+    Se auditó que ninguna decisión provenga de mecanismos ajenos a las memorias: se
+    eliminó el único vector sintético del vocabulario (que además distorsionaba la
+    escala global de cuantización), se verificó que el código de Pineda \& Morales
+    permanece byte-idéntico, y todos los números reportados provienen de corridas
+    posteriores a esa auditoría, trazables a datos no fabricados.
+
+    \item \textbf{Evaluación experimental del sistema escalado.}
+    Se reportan el estudio de calibración del directorio (9 condiciones $\times$
+    $N \in \{50,100,200,400\}$ $\times$ 5 semillas), el barrido de parámetros nativos
+    $\iota \times \kappa$, la curva de formación del directorio, la curva de capacidad
+    de llenado y el hemisferio visual completo, junto con el costo computacional de la
+    reproducción íntegra.
+\end{enumerate}
+
+\subsection*{Estructura del documento}
+
+El documento se organiza de la siguiente manera.
+La Sección~\ref{sec:marco_teorico} presenta los fundamentos teóricos: la EAM de Pineda
+\& Morales y su variante ponderada, la memoria hetero-asociativa 4D y el modelo de
+memoria transactiva de Wegner.
+La Sección~\ref{sec:arquitectura} describe en detalle la arquitectura EAM-TMS de ocho
+agentes, incluyendo los diagramas de flujo del llenado, la fase temprana y la fase
+madura, así como la formalización de todas las operaciones del sistema.
+La Sección~\ref{sec:metodologia} detalla la metodología experimental.
+La Sección~\ref{sec:resultados} reporta los resultados.
+La Sección~\ref{sec:discusion} discute los resultados.
+La Sección~\ref{sec:conclusiones} concluye y señala trabajo futuro.
