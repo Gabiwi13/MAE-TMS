@@ -1,0 +1,180 @@
+\section{Discusión}
+\label{sec:discusion}
+
+% ---------------------------------------------------------------
+\subsection{La maquinaria transactiva escala; la representación era el límite}
+\label{sec:disc-escala}
+
+El resultado central de esta versión es una separación limpia de responsabilidades.
+Al pasar de tres a ocho agentes, \emph{ningún} componente de la maquinaria transactiva
+requirió cambios de mecanismo: los directorios hetero-asociativos, la lectura B1, el
+rechazo por containment, la actualización de directorio de todos los agentes y la
+coordinación punto a punto operan idénticos, y el directorio visual alcanza el balance
+perfecto (3.000 de 3.000 bits) con cero falsos enrutamientos.
+Lo que sí golpeó el escalado fue la \emph{representación}: con la binarización por signo
+heredada de la versión anterior, la precisión temprana de 8 clases caía al 50\,\% y dos
+clases colapsaban a 0\,\%.
+La causa no estaba en las memorias sino en el alfabeto: $\mathrm{sign}(v)$ usaba 2 de
+los 16 niveles disponibles, y ocho categorías con léxico solapado (tres frutas, tres
+animales) no caben en ese margen.
+La cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico})
+recuperó el rango de 85--88\,\% de precisión temprana \emph{sin tocar una línea de la
+maquinaria asociativa}.
+La Figura~\ref{fig:espacio-semantico} muestra el espacio semántico resultante: los
+solapamientos entre dominios persisten (son propiedades del léxico), pero la
+representación ya no los agrava.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig11_semantic_space.png}
+    \caption{Análisis del espacio semántico de los labels de las ocho clases:
+    proyección PCA 2D con centroides de dominio y tokens ambiguos, similitud coseno de
+    tokens problemáticos y ocupación de los 16 niveles de la cuantización por magnitud.}
+    \label{fig:espacio-semantico}
+\end{figure}
+
+% ---------------------------------------------------------------
+\subsection{La normalización necesaria sigue siendo B1, también a ocho agentes}
+\label{sec:disc-b1}
+
+La lectura B1 del directorio transactivo no corrige un defecto: refleja cómo está
+construido el sistema.
+Cuando los agentes especialistas acumulan números desiguales de interacciones, la
+puntuación cruda del directorio favorece de forma constante al agente más activo con
+independencia del contenido semántico de la consulta.
+Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacción}, que
+es una medida justa para comparar agentes con historiales de exposición distintos.
+
+El escalado refuerza esta lectura en dos direcciones.
+Primero, la brecha cruda-B1 persiste con $K = 8$ (80.0\,\% frente a 93.2\,\%): el sesgo
+de masa no era un artefacto del caso de tres agentes.
+Segundo, la entropía del directorio es alta incluso en la condición cruda (2.955 de
+3.000 bits): la \emph{estructura} del directorio está bien formada y balanceada; el
+sesgo vive en la \emph{lectura}, exactamente donde B1 actúa.
+Las condiciones que manipulan síntomas (B2, C, D, E) vuelven a quedar por debajo, y la
+combinación G no supera a B1 sola: una vez corregida la causa, las correcciones
+auxiliares son redundantes.
+
+% ---------------------------------------------------------------
+\subsection{La dominancia de un agente era un efecto conjunto: encoder y fuente de conocimiento}
+\label{sec:disc-dominancia}
+
+Las corridas iniciales de 8 clases mostraban al agente \texttt{apple} capturando
+$\approx$20\,\% de las victorias maduras y a \texttt{pear} colapsando, y la explicación
+disponible era léxica: \texttt{apple} posee en ConceptNet el vocabulario genérico de
+fruta (\textit{fruit}, \textit{red}, \textit{green}, \textit{round}, \textit{tree}).
+Dos intervenciones sobre el vocabulario (extracción bidireccional con masa asociativa y
+desempate por centroide) movieron poco ese reparto.
+El hallazgo llegó por una vía inesperada: un reentrenamiento determinista del encoder
+(motivado por el benchmark de costo) produjo un espacio latente con mejor separación de
+\texttt{pear} y \texttt{tomato} respecto a \texttt{apple}, y con él la participación de
+\texttt{apple} cayó de 20.0\,\% a 13.0\,\% (ideal 12.5\,\%) y \texttt{pear} subió de
+$\approx$52\,\% a 86\,\% \emph{sin cambiar el vocabulario}.
+
+La conclusión corregida es que la dominancia era un efecto \emph{conjunto} de la
+separabilidad del espacio latente y de la asimetría léxica de la fuente de
+conocimiento, no de la segunda por sí sola.
+Este hallazgo tiene una lectura metodológica: en un sistema bidireccional, un sesgo
+observado en el hemisferio semántico puede tener su causa parcial en el hemisferio
+visual, porque el llenado imagen-etiqueta acopla ambos espacios.
+
+Del trabajo sobre el vocabulario queda un resultado con valor propio: enriquecer el
+vocabulario de una clase ayuda \emph{solo si el conocimiento nuevo coincide con el
+lenguaje de las consultas}.
+\texttt{tomato} mejoró al adquirir los labels que sus consultas usan
+(\textit{sauce}, \textit{salad}, \textit{vegetable}); \texttt{pear} empeoró al adquirir
+variedades botánicas (\textit{bosc}, \textit{anjou}) que el banco apenas menciona,
+porque el vocabulario extra solo diluye su activación media en los tokens compartidos.
+El conocimiento del especialista debe estar en el idioma en que el grupo pregunta;
+acumular experticia que nadie consulta no mejora al grupo.
+Un intento relacionado que \emph{no} funcionó y conviene registrar: podar el vocabulario
+por similitud coseno al nombre de la clase falla porque el nombre es polisémico en el
+espacio de embeddings (\texttt{cup} $\approx$ \textit{World Cup} podaba \textit{drink} y
+\textit{mug}).
+
+% ---------------------------------------------------------------
+\subsection{Lectura desde la teoría de memoria transactiva de Wegner}
+\label{sec:disc-wegner}
+
+Los resultados de las Secciones~\ref{sec:calibracion} y~\ref{sec:formacion} releen los
+mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
+
+\begin{itemize}
+    \item \textbf{Un grupo más grande necesita más interacción para conocerse.}
+    Con tres agentes, 10 consultas por dominio bastaban para cruzar el 90\,\% de
+    precisión madura en $k \approx 13$ interacciones; con ocho agentes ese mismo volumen
+    se queda en 82.5\,\%, y hace falta el banco completo ($\approx$50 por dominio) para
+    alcanzar el 93.2\,\%.
+    El costo de formación del directorio crece con el número de especialidades y con el
+    solapamiento entre ellas, no solo con el número de miembros.
+
+    \item \textbf{El orden de las experiencias afecta la velocidad, no el destino.}
+    Todas las condiciones de presentación convergen exactamente al mismo directorio
+    (mismos conteos, misma entropía).
+    La estructura final del sistema transactivo depende de \emph{qué} se presenció, no
+    de \emph{en qué orden}; el orden determina cuándo el directorio se vuelve utilizable.
+
+    \item \textbf{La comunicación distintiva forma mejor directorio.}
+    Las clases cuyas consultas usan léxico exclusivo (\texttt{cup}, \texttt{tomato},
+    \texttt{car}) alcanzan 98--100\,\%; las que preguntan con léxico compartido
+    (\texttt{pear}, \texttt{horse}) quedan en 82--86\,\%.
+    En términos de Wegner: la asignación de información funciona en la medida en que
+    quien pregunta aporta las señas del dominio.
+    La palanca no es más vocabulario del especialista sino mejores señas del que
+    consulta, como muestra el resultado de enriquecimiento
+    (Sección~\ref{sec:disc-dominancia}).
+
+    \item \textbf{El rechazo colectivo escala.}
+    Con ocho especialistas y siete clases contrarias por agente, la especificidad se
+    mantiene exacta: 0\,\% de falsos aceptados en contenido en todo el rango de $N$, y
+    cero falsos enrutamientos visuales.
+    El grupo sigue sin inventar referentes.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Limitaciones}
+\label{sec:limitaciones}
+
+\paragraph{(a) Fuga de consultas fuera de dominio en el hemisferio textual.}
+La sonda de rechazo (Sección~\ref{sec:proto-completo}) muestra que 2 de 12 consultas
+fuera de dominio rutean hacia algún agente porque comparten tokens con labels legítimos.
+Con la cuantización por magnitud y directorios densos, el containment textual pasa con
+más facilidad que en la versión binaria, y la frontera semántica queda expuesta.
+Una doble compuerta de contenido (verificar que el agente destino contenga la consulta,
+no solo que el directorio la señale) es la mitigación diseñada pendiente de evaluación.
+
+\paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
+El 25\,\% de rechazo del enrutamiento visual de test no proviene de huecos por
+coordenada (625 de 656 imágenes tienen soporte marginal completo) sino de la conjunción
+AND sobre las 64 coordenadas simultáneas, por lo que aumentar $\xi$ no lo reduce
+($\xi$ satura en 2--3).
+La palanca es densificar el llenado con augmentación más rica, manteniendo el criterio
+conservador que hoy garantiza cero falsos enrutamientos.
+
+\paragraph{(c) Calidad de la reconstrucción visual.}
+El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
+incluye una cabeza auxiliar de clasificación, produce reconstrucciones suaves sin
+detalle de alta frecuencia (cf.\ la reconstrucción e imaginación en EAM de Pineda y
+Morales~\cite{pineda2023imagery}).
+Es un efecto de la función de pérdida del autoencoder, no del sistema de memorias, y
+puede abordarse de forma independiente.
+
+\paragraph{(d) Aprendizaje limitado después de formar el directorio.}
+Una vez llenas las memorias de dominio y formado el directorio, los agentes dejan de
+registrar contenido nuevo: la fase madura enruta y recupera con lo aprendido.
+El sistema aún no modela \emph{transactive encoding} ni la reorganización de memorias
+de contenido durante la operación madura.
+
+\paragraph{(e) Partición a nivel de imagen.}
+La partición train/test se realizó a nivel de archivo de imagen, no a nivel de objeto
+físico de ETH-80.
+Una validación más estricta deberá usar particiones leave-object-out para medir
+generalización a instancias completamente no vistas.
+
+\paragraph{(f) Dependencia de la calidad de la fuente de conocimiento.}
+El vocabulario de ConceptNet es asimétrico entre clases, y el resultado de
+enriquecimiento muestra que no puede corregirse mecánicamente: el techo de las clases
+de léxico compartido depende de la distintividad de las consultas del banco tanto como
+del vocabulario del agente.
+Fuentes de conocimiento adicionales (definiciones, corpora específicos de dominio) son
+la extensión natural.
