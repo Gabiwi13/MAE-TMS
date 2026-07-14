@@ -180,12 +180,8 @@ def train_mdir_n80(normalized: bool):
             v_q = quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL)
             tok_vecs[tok] = v_q
             for cls in CLASSES:
-                ag  = agents[cls]
-                l_w = ag.mem_dom_L.recog_weights(v_q)
-                h = (ag.recognize_gated(v_q) if normalized
-                     else float(ag.mem_dom_H.recognize_from_left(
-                         v_q, left_weights=l_w)))
-                scores[cls] += h
+                _, h_raw, h_gated = agents[cls].recognize_both(v_q)
+                scores[cls] += h_gated if normalized else h_raw
         # Rechazo EAM: sin pistas representables o sin soporte, no se asigna
         # ganador por desempate (apple ganaría siempre con scores en cero).
         if not tok_vecs or max(scores.values()) == 0.0:
@@ -275,10 +271,11 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         per_agent = {}
         for cls in CLASSES:
             ag  = agents[cls]
-            l_w = ag.mem_dom_L.recog_weights(q_v)
-            h_raw = float(ag.mem_dom_H.recognize_from_left(q_v, left_weights=l_w))
+            # Una sola proyección por agente: h_raw y h_gated salen del mismo
+            # project() (antes se proyectaba dos veces con gate ON).
+            l_w, h_raw, h_gated = ag.recognize_both(q_v)
             mem_mean = float(ag.mem_dom_H.mean)
-            h_score = ag.recognize_gated(q_v) if normalize else h_raw
+            h_score = h_gated if normalize else h_raw
             per_agent[cls] = {
                 "l_weights":     l_w,
                 "l_mean":        float(l_w.mean()),
@@ -1005,6 +1002,11 @@ def build_flow_animation(trace) -> str:
             "vq": [int(x) for x in td["q_vec"][::5]],   # 60-dim sample
         })
 
+    # El trace vive en session_state: memoizar el PNG/base64 ahí evita
+    # re-codificarlo en cada rerun de Streamlit.
+    if trace.get("final_b64") is None and trace["final_recalled_img"] is not None:
+        trace["final_b64"] = _img_b64(trace["final_recalled_img"])
+
     data = {
         "mode":     "early",
         "entry":    None,
@@ -1018,8 +1020,7 @@ def build_flow_animation(trace) -> str:
         "ntok":   int(trace["n_tokens"]),
         "colors": DOMAIN_COLOR,
         "emoji":  DOMAIN_EMOJI,
-        "img":    (_img_b64(trace["final_recalled_img"])
-                   if trace["final_recalled_img"] is not None else None),
+        "img":    trace.get("final_b64"),
     }
     return _ANIM_TEMPLATE.replace("__DATA__", json.dumps(data))
 
@@ -2560,10 +2561,16 @@ def main():
                             st.info("Not recalled")
 
                     with st.expander("Compare early vs mature"):
-                        early = compute_pipeline_trace(
-                            query_m, agents, vectors_cache,
-                            g_min, g_max, decoder, nlp,
-                            normalize=st.session_state.get("norm_toggle", True))
+                        # Cache por (query, gate): re-clicar la misma query no
+                        # vuelve a pagar Pass 1 + Pass 2 completos.
+                        _norm  = st.session_state.get("norm_toggle", True)
+                        _ckey  = (query_m, _norm)
+                        _cache = st.session_state.setdefault("early_trace_cache", {})
+                        if _ckey not in _cache:
+                            _cache[_ckey] = compute_pipeline_trace(
+                                query_m, agents, vectors_cache,
+                                g_min, g_max, decoder, nlp, normalize=_norm)
+                        early = _cache[_ckey]
                         if early:
                             e_w = early["winner"]
                             st.metric("Early phase (M_dom)",
