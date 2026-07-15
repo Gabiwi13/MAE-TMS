@@ -11,15 +11,16 @@ externos de clasificación ni umbrales supervisados.
 
 \paragraph{Logros principales.}
 Sobre el banco de 411 consultas ($N = 400$, 5 semillas), el sistema alcanzó una
-\textbf{precisión temprana del 88.0\,\%} y una \textbf{precisión madura del 93.2\,\%}
-con la lectura B1 del directorio, con una fidelidad temprana-madura del 93.5\,\% y la
-participación del agente dominante en \textbf{13.0\,\%} (ideal 12.5\,\%).
-En la dirección inversa, el hemisferio visual enrutó el \textbf{75.0\,\%} de las 656
-imágenes de prueba con \textbf{cero falsos enrutamientos} (100\,\% de precisión sobre
-las aceptadas) y una evocación de dominio del \textbf{85.3\,\%}; su directorio alcanzó
+\textbf{precisión temprana del 88.0\%} y una \textbf{precisión madura del 93.2\%}
+con la lectura B1 del directorio, con una fidelidad temprana-madura del 93.5\% y la
+participación de \texttt{apple}, el agente históricamente sesgado, en \textbf{13.0\%}
+(ideal 12.5\%).
+En la dirección inversa, el hemisferio visual enrutó el \textbf{75.0\%} de las 656
+imágenes de prueba con \textbf{cero falsos enrutamientos} (100\% de precisión sobre
+las aceptadas) y una evocación de dominio del \textbf{85.3\%}; su directorio alcanzó
 el balance perfecto: \textbf{3.000 de 3.000 bits} de entropía.
 La especificidad del contenido fue \textbf{perfecta} en todo el rango de llenado
-probado (0\,\% de falsos aceptados con siete clases contrarias por agente).
+probado (0\% de falsos aceptados con siete clases contrarias por agente).
 
 \paragraph{Respuesta a la pregunta de investigación.}
 La maquinaria transactiva \emph{escala}: directorios, lectura B1, rechazo por
@@ -27,8 +28,8 @@ containment, actualización de directorio y coordinación punto a punto pasan de
 agentes sin cambios de mecanismo.
 Los límites encontrados estaban en las \emph{representaciones}: la binarización por
 signo (resuelta con la cuantización por magnitud, que llevó la precisión temprana del
-50\,\% al 88\,\%), la separabilidad del espacio latente del encoder (cuyo
-reentrenamiento resolvió la dominancia de \texttt{apple}: 20\,\% $\to$ 13.0\,\%), y la
+50\% al 88\%), la separabilidad del espacio latente del encoder (cuyo
+reentrenamiento resolvió el sesgo hacia \texttt{apple}: 20\% $\to$ 13.0\%), y la
 asimetría léxica de la fuente de conocimiento (que fija el techo de las clases con
 vocabulario compartido).
 El costo de la escala aparece donde la teoría de Wegner lo predice: un grupo con más
@@ -38,7 +39,7 @@ especialidades necesita más interacciones, y más distintivas, para formar su d
 Primero, la representación pesa tanto como el mecanismo: dos de los tres límites
 observados se resolvieron cambiando representaciones sin tocar las memorias.
 Segundo, los sesgos observados en un hemisferio pueden originarse en el otro: la
-dominancia ``léxica'' de \texttt{apple} era en buena parte solapamiento latente del
+sesgo ``léxico'' hacia \texttt{apple} era en buena parte solapamiento latente del
 encoder.
 Tercero, la fidelidad del pipeline es un resultado en sí mismo: la auditoría que
 eliminó el único vector sintético del sistema también corrigió la escala global de
@@ -50,7 +51,7 @@ Los siguientes pasos más relevantes son:
     \item \textbf{Doble compuerta de contenido en la fase madura textual}: cerrar la
     fuga de consultas fuera de dominio verificando el containment en el agente destino,
     no solo la señal del directorio.
-    \item \textbf{Augmentación más rica del llenado visual}: reducir el 25\,\% de
+    \item \textbf{Augmentación más rica del llenado visual}: reducir el 25\% de
     rechazo residual de test, que proviene del containment conjunto y no responde a
     $\xi$.
     \item \textbf{Fuentes de conocimiento complementarias a ConceptNet}: elevar el techo

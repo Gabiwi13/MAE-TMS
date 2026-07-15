@@ -16,7 +16,8 @@ una función característica $R : A \times V \to \{0, 1\}$ y el registro se real
 disyunción lógica.
 La variante que este trabajo utiliza es la \textbf{EAM ponderada} (W-EAM), introducida
 en el aprendizaje fonético \cite{pineda2022weighted} y empleada desde entonces en toda
-la línea de trabajo del grupo \cite{morales2022manuscript,pineda2023imagery}: la memoria
+la línea de trabajo del grupo, desde símbolos manuscritos hasta imágenes naturales de
+CIFAR-10 \cite{morales2022manuscript,pineda2023imagery,hernandez2026cifar}: la memoria
 se representa como una relación ponderada $\mathbf{R} \in \mathbb{N}^{n \times m}$,
 donde $\mathbf{R}[i, j]$ cuenta cuántas veces la característica $i$ ha tomado el valor
 $j$ a lo largo de todos los registros.
@@ -116,7 +117,7 @@ por columna:
 \end{equation}
 donde $\hat{p}_{ij} = \mathbf{R}[i,j] / \sum_l \mathbf{R}[i,l]$.
 La entropía resume el estado de la memoria: una memoria con entropía alta ha acumulado
-más variedad; una con entropía baja está dominada por pocos valores.
+más variedad; una con entropía baja está concentrada en pocos valores.
 Conviene precisar que la entropía baja \emph{no} es intrínsecamente patológica: en las
 fuentes, una función totalmente determinada tiene entropía exactamente cero y es una
 memoria perfectamente bien formada, solo que rígida y reproductiva

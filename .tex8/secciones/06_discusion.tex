@@ -12,13 +12,13 @@ rechazo por containment, la actualización de directorio de todos los agentes y 
 coordinación punto a punto operan idénticos, y el directorio visual alcanza el balance
 perfecto (3.000 de 3.000 bits) con cero falsos enrutamientos.
 Lo que sí golpeó el escalado fue la \emph{representación}: con la binarización por signo
-heredada de la versión anterior, la precisión temprana de 8 clases caía al 50\,\% y dos
-clases colapsaban a 0\,\%.
+heredada de la versión anterior, la precisión temprana de 8 clases caía al 50\% y dos
+clases colapsaban a 0\%.
 La causa no estaba en las memorias sino en el alfabeto: $\mathrm{sign}(v)$ usaba 2 de
 los 16 niveles disponibles, y ocho categorías con léxico solapado (tres frutas, tres
 animales) no caben en ese margen.
 La cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico})
-recuperó el rango de 85--88\,\% de precisión temprana \emph{sin tocar una línea de la
+recuperó el rango de 85--88\% de precisión temprana \emph{sin tocar una línea de la
 maquinaria asociativa}.
 La Figura~\ref{fig:espacio-semantico} muestra el espacio semántico resultante: los
 solapamientos entre dominios persisten (son propiedades del léxico), pero la
@@ -46,7 +46,7 @@ Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacci
 es una medida justa para comparar agentes con historiales de exposición distintos.
 
 El escalado refuerza esta lectura en dos direcciones.
-Primero, la brecha cruda-B1 persiste con $K = 8$ (80.0\,\% frente a 93.2\,\%): el sesgo
+Primero, la brecha cruda-B1 persiste con $K = 8$ (80.0\% frente a 93.2\%): el sesgo
 de masa no era un artefacto del caso de tres agentes.
 Segundo, la entropía del directorio es alta incluso en la condición cruda (2.955 de
 3.000 bits): la \emph{estructura} del directorio está bien formada y balanceada; el
@@ -56,11 +56,11 @@ combinación G no supera a B1 sola: una vez corregida la causa, las correcciones
 auxiliares son redundantes.
 
 % ---------------------------------------------------------------
-\subsection{La dominancia de un agente era un efecto conjunto: encoder y fuente de conocimiento}
+\subsection{El sesgo hacia un agente era un efecto conjunto: encoder y fuente de conocimiento}
 \label{sec:disc-dominancia}
 
 Las corridas iniciales de 8 clases mostraban al agente \texttt{apple} capturando
-$\approx$20\,\% de las victorias maduras y a \texttt{pear} colapsando, y la explicación
+$\approx$20\% de las victorias maduras y a \texttt{pear} colapsando, y la explicación
 disponible era léxica: \texttt{apple} posee en ConceptNet el vocabulario genérico de
 fruta (\textit{fruit}, \textit{red}, \textit{green}, \textit{round}, \textit{tree}).
 Dos intervenciones sobre el vocabulario (extracción bidireccional con masa asociativa y
@@ -68,13 +68,13 @@ desempate por centroide) movieron poco ese reparto.
 El hallazgo llegó por una vía inesperada: un reentrenamiento determinista del encoder
 (motivado por el benchmark de costo) produjo un espacio latente con mejor separación de
 \texttt{pear} y \texttt{tomato} respecto a \texttt{apple}, y con él la participación de
-\texttt{apple} cayó de 20.0\,\% a 13.0\,\% (ideal 12.5\,\%) y \texttt{pear} subió de
-$\approx$52\,\% a 86\,\% \emph{sin cambiar el vocabulario}.
+\texttt{apple} bajo la lectura B1 cayó de 20.0\% a 13.0\% (ideal 12.5\%) y \texttt{pear}
+subió de $\approx$52\% a 86\% \emph{sin cambiar el vocabulario}.
 
-La conclusión corregida es que la dominancia era un efecto \emph{conjunto} de la
+La conclusión corregida es que el sesgo era un efecto \emph{conjunto} de la
 separabilidad del espacio latente y de la asimetría léxica de la fuente de
 conocimiento, no de la segunda por sí sola.
-Este hallazgo tiene una lectura metodológica: en un sistema bidireccional, un sesgo
+El hallazgo tiene una lectura metodológica: en un sistema bidireccional, un sesgo
 observado en el hemisferio semántico puede tener su causa parcial en el hemisferio
 visual, porque el llenado imagen-etiqueta acopla ambos espacios.
 
@@ -101,10 +101,10 @@ mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
 
 \begin{itemize}
     \item \textbf{Un grupo más grande necesita más interacción para conocerse.}
-    Con tres agentes, 10 consultas por dominio bastaban para cruzar el 90\,\% de
+    Con tres agentes, 10 consultas por dominio bastaban para cruzar el 90\% de
     precisión madura en $k \approx 13$ interacciones; con ocho agentes ese mismo volumen
-    se queda en 82.5\,\%, y hace falta el banco completo ($\approx$50 por dominio) para
-    alcanzar el 93.2\,\%.
+    se queda en 82.5\%, y hace falta el banco completo ($\approx$50 por dominio) para
+    alcanzar el 93.2\%.
     El costo de formación del directorio crece con el número de especialidades y con el
     solapamiento entre ellas, no solo con el número de miembros.
 
@@ -116,8 +116,8 @@ mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
 
     \item \textbf{La comunicación distintiva forma mejor directorio.}
     Las clases cuyas consultas usan léxico exclusivo (\texttt{cup}, \texttt{tomato},
-    \texttt{car}) alcanzan 98--100\,\%; las que preguntan con léxico compartido
-    (\texttt{pear}, \texttt{horse}) quedan en 82--86\,\%.
+    \texttt{car}) alcanzan 98--100\%; las que preguntan con léxico compartido
+    (\texttt{pear}, \texttt{horse}) quedan en 82--86\%.
     En términos de Wegner: la asignación de información funciona en la medida en que
     quien pregunta aporta las señas del dominio.
     La palanca no es más vocabulario del especialista sino mejores señas del que
@@ -126,7 +126,7 @@ mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
 
     \item \textbf{El rechazo colectivo escala.}
     Con ocho especialistas y siete clases contrarias por agente, la especificidad se
-    mantiene exacta: 0\,\% de falsos aceptados en contenido en todo el rango de $N$, y
+    mantiene exacta: 0\% de falsos aceptados en contenido en todo el rango de $N$, y
     cero falsos enrutamientos visuales.
     El grupo sigue sin inventar referentes.
 \end{itemize}
@@ -144,18 +144,27 @@ Una doble compuerta de contenido (verificar que el agente destino contenga la co
 no solo que el directorio la señale) es la mitigación diseñada pendiente de evaluación.
 
 \paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
-El 25\,\% de rechazo del enrutamiento visual de test no proviene de huecos por
+El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por
 coordenada (625 de 656 imágenes tienen soporte marginal completo) sino de la conjunción
 AND sobre las 64 coordenadas simultáneas, por lo que aumentar $\xi$ no lo reduce
 ($\xi$ satura en 2--3).
 La palanca es densificar el llenado con augmentación más rica, manteniendo el criterio
 conservador que hoy garantiza cero falsos enrutamientos.
+En sentido inverso, el containment visual también tiene una fuga con \emph{entradas
+degeneradas}: una imagen de color sólido uniforme obtiene soporte y se acepta
+(Figura~\ref{fig:rechazo-imagenes}), presumiblemente porque el fondo liso de ETH-80
+puebla esa región del espacio latente; las sondas estructuradas (ruido, píxeles
+barajados) sí se rechazan.
+Un criterio de varianza mínima de la pista latente, previo a la memoria, o la doble
+compuerta del punto (a) aplicada al hemisferio visual, son mitigaciones candidatas.
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
 El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
 incluye una cabeza auxiliar de clasificación, produce reconstrucciones suaves sin
 detalle de alta frecuencia (cf.\ la reconstrucción e imaginación en EAM de Pineda y
-Morales~\cite{pineda2023imagery}).
+Morales~\cite{pineda2023imagery}, y la memoria EAM sobre imágenes naturales de
+CIFAR-10~\cite{hernandez2026cifar}, que enfrenta el mismo compromiso con
+autoencoders más profundos).
 Es un efecto de la función de pérdida del autoencoder, no del sistema de memorias, y
 puede abordarse de forma independiente.
 
