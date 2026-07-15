@@ -25,7 +25,7 @@ es la señal de que el sistema transactivo ya quedó formado.
 
 Un reporte previo de este proyecto mostró que un sistema de tres agentes especialistas
 sobre memorias asociativas puras desarrolla el directorio transactivo de Wegner por
-interacción acumulativa, alcanzando una precisión madura del 98.75\,\% en tres categorías
+interacción acumulativa, alcanzando una precisión madura del 98.75\% en tres categorías
 de ETH-80.
 Este reporte técnico aborda la pregunta que ese resultado deja abierta:
 
@@ -79,15 +79,15 @@ Este trabajo aporta cinco contribuciones concretas respecto a la versión anteri
     La binarización por signo de fastText (que usaba 2 de los 16 niveles disponibles)
     se reemplaza por una cuantización por magnitud $v/S$ sobre una escala global
     persistida, que puebla los 16 niveles.
-    Este cambio de representación elevó la precisión temprana de 8 clases del 50\,\% al
-    rango de 85--88\,\% sin tocar la maquinaria asociativa.
+    Este cambio de representación elevó la precisión temprana de 8 clases del 50\% al
+    rango de 85--88\% sin tocar la maquinaria asociativa.
 
     \item \textbf{Directorio visual por agente.}
     Cada agente incorpora un directorio hetero-asociativo visual propio
     ($M^R_{\mathrm{dir}}$), de modo que una imagen puede entrar por \emph{cualquier}
     agente y ser redirigida punto a punto al especialista, replicando para la modalidad
     visual la coordinación de recuperación de Wegner.
-    La alternativa de un puente por el TME traducía 0\,\% y fue descartada.
+    La alternativa de un puente por el TME traducía 0\% y fue descartada.
 
     \item \textbf{Auditoría de fidelidad del pipeline.}
     Se auditó que ninguna decisión provenga de mecanismos ajenos a las memorias: se

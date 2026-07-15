@@ -105,9 +105,9 @@ sistema de memorias.
 El entrenamiento es \emph{determinista} (semilla 42 en \texttt{torch}, \texttt{numpy} y
 \texttt{random}, con cuDNN determinista), de modo que una réplica desde cero es
 reproducible; el encoder oficial de esta versión alcanza RMSE 0.110 y precisión de la
-cabeza auxiliar de 99.7\,\%.
+cabeza auxiliar de 99.7\%.
 Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
-min-max con un margen del 10\,\%, calculada exclusivamente sobre el pool de llenado
+min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado
 (\texttt{train[0:200]} por clase).
 Esta cuantización global evita que la escala relativa entre clases afecte la codificación.
 
@@ -138,7 +138,9 @@ $\iota = 0$, $\kappa = 0$, $\sigma = 0.1$, y tolerancia de reconocimiento
 $\xi = 0$ para el dominio textual y $\xi = 2$ para el directorio visual.
 Estos valores siguen el modelo W-EAM y su extensión hetero-asociativa, descritos en el
 marco teórico.
-La justificación experimental se presenta en la Sección~\ref{sec:param-iota-kappa}
+La propia línea W-EAM ha mostrado que estos hiperparámetros admiten optimización
+automática multi-objetivo \cite{lopez2025hyperopt}; aquí se fijan por barrido directo,
+cuya justificación experimental se presenta en la Sección~\ref{sec:param-iota-kappa}
 (barrido $\iota \times \kappa$) y en la Sección~\ref{sec:hemisferio-visual}
 (barrido de $\xi$ visual).
 En síntesis: $\iota > 0$ elimina conocimiento escaso pero válido antes de eliminar
@@ -179,7 +181,7 @@ Se emplearon las siguientes métricas:
     \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
     \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{conteos} de los agentes especialistas, con máximo $\log_2(8) = 3$ bits.
     \item \textbf{Conteos por agente}: número de registros acumulados en el directorio transactivo por cada agente especialista.
-    \item \textbf{Participación del ganador} (\textit{winner share}): fracción de victorias maduras capturadas por cada agente; el ideal balanceado es $1/8 = 12.5\,\%$.
+    \item \textbf{Participación del ganador} (\textit{winner share}): fracción de victorias maduras capturadas por cada agente; el ideal balanceado es $1/8 = 12.5\%$.
     \item \textbf{Enrutamiento de test} (hemisferio visual): fracción de imágenes de prueba asignadas correctamente por el directorio visual, junto con la precisión sobre las imágenes aceptadas.
     \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recuperación inversa imagen $\to$ palabras).
 \end{itemize}
