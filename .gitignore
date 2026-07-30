@@ -24,6 +24,22 @@ __pycache__/
 *.pyc
 *.pyo
 
+# realtime_lab: material derivado de ETH-80 (regenerable con
+# export_phone_images.py / make_print_sheet.py; mismo criterio que data/)
+realtime_lab/phone_test_images/
+realtime_lab/phone_test_images.zip
+realtime_lab/hoja_impresion_eth80.pdf
+
+# Artefactos de compilación LaTeX (los reportes versionan solo fuentes,
+# como .tex y .tex8)
+.SMTex/main.pdf
+.SMTex/*.aux
+.SMTex/*.log
+.SMTex/*.out
+.SMTex/*.toc
+.SMTex/*.bbl
+.SMTex/*.blg
+
 # Local Claude settings
 .claude/
 memory/

@@ -1,0 +1,100 @@
+\section{Discusión}
+\label{sec:discusion}
+
+\subsection{Qué significa aquí ``multimodal''}
+
+En la taxonomía de Baltru\v{s}aitis et al.\ \cite{baltrusaitis2019multimodal}, la
+arquitectura resultante tiene una lectura precisa: la \emph{representación} y la
+\emph{traducción} de modalidades están delegadas a modelos de frontera (Whisper para
+voz$\to$texto; ResNet18 para pixeles$\to$latente), mientras que la \emph{alineación}
+(pares texto--imagen en el registro conjunto de la EHAM) y la decisión sobre evidencia
+(asignación, redirección, rechazo) son operaciones de memoria asociativa.
+No hay \emph{fusión} numérica de modalidades: cada modalidad consulta su propio
+directorio y el punto de encuentro es la identidad del agente especialista --- una
+fusión \emph{a nivel del grupo}, coherente con la teoría de Wegner
+\cite{wegner1987transactive}, no a nivel de vectores.
+
+Esta separación es la que hace honesto el resultado de tiempo real: el sistema no es
+rápido porque un clasificador atajara el camino, sino porque el enrutamiento
+asociativo \emph{ya era} barato (proyección matricial) y lo único costoso ---la
+recuperación--- admite asincronía sin pérdida conceptual: el grupo decide en
+milisegundos \emph{quién sabe}; el especialista tarda un par de segundos en
+\emph{recordar}, igual que en los reportes por lotes.
+
+\subsection{La cadena física de percepción es otro límite de representación}
+
+El reporte de ocho agentes concluyó que los límites del sistema estaban en las
+representaciones, no en la maquinaria asociativa.
+La prueba física de esta extensión añade un caso más de la misma familia: la cadena
+impresora$+$cámara desplaza los momentos de color del estímulo, el latente cae fuera
+del soporte del directorio, y el sistema ---correctamente--- rechaza.
+Ni el directorio ni el encoder están ``mal'': el estímulo llega de otra distribución.
+
+La mitigación elegida respeta la arquitectura: la renormalización de
+momentos~\eqref{eq:colorfix} es una corrección de \emph{frontera} (lentes para el
+ojo), no un cambio en las memorias, y su política condicionada ---reintentar solo tras
+rechazo--- convierte una limitación medida (el traslape de las distribuciones que
+impide todo umbral detector) en una regla sin parámetros que no puede dañar entradas
+limpias.
+Vale subrayar el patrón metodológico, porque se repite en el proyecto: el fallo
+(pantalla de teléfono, colores lavados) primero se \emph{reproduce en simulación}, la
+causa se mide, y solo entonces se interviene --- y el rechazo del sistema durante todo
+el proceso fue comportamiento correcto, no un defecto a suprimir.
+
+\subsection{La plastilina y el objeto definido}
+
+La caracterización de la Sección~\ref{sec:res_pista} pone números a la imagen
+intuitiva del problema de la pista faltante: la memoria hetero-asociativa \emph{sabe}
+que hay un objeto (el plano proyectado tiene soporte en todas sus características),
+pero lo que tiene es una superposición que debe decodificarse
+\cite{morales2025missing}.
+El hallazgo más instructivo es el del prototipo emergente: la lectura determinista
+``más probable'' columna a columna es \emph{peor} que una muestra aleatoria con suerte
+y muchísimo peor que cualquier método con prueba (7.0--9.0 contra 0.0 de ST/SS).
+La razón es estructural, no estadística: el máximo por columna descarta las
+correlaciones entre características que el registro conjunto sí almacena, de modo que
+el patrón resultante no corresponde a ningún objeto contenido en la memoria.
+Recordar, en este modelo, no es leer máximos: es \emph{buscar un patrón conjunto
+consistente con la pista}, y la prueba de retro-proyección es el criterio de esa
+consistencia.
+
+También merece registro la nota de trazabilidad: el mecanismo de recuperación oficial
+del sistema fue siempre sample-and-search --- el mejor método del artículo.
+La contribución de esta extensión no fue por tanto ``arreglar'' la recuperación, sino
+\emph{exponerla}: implementar RS y ST como alternativas seleccionables, medir las
+cuatro lecturas con la métrica común, y hacer visible en ambas interfaces la
+distinción entre la masa indeterminada y el objeto definido --- el requisito teórico
+que motivó esta parte del trabajo.
+
+\subsection{El laboratorio como instrumento de demostración de Wegner}
+
+Los reportes por lotes \emph{miden} los tres procesos de Wegner; la ventana en tiempo
+real los \emph{muestra ocurriendo}.
+El directorio de sesión que se llena frase a frase (actualización de directorio), la
+asignación visible del grupo al especialista (asignación de información) y la
+redirección punto a punto con el TME apagado, incluida la anotación ``se queda: es el
+experto'' (coordinación de recuperación), convierten el mecanismo en algo observable
+en segundos por una audiencia no técnica.
+El costo de esa visibilidad fue de ingeniería de interfaz, no de mecanismo: ninguna
+operación de memoria se modificó para el modo en vivo.
+
+\subsection{Limitaciones}
+
+\begin{enumerate}
+    \item \textbf{Los números de tiempo real son de un solo equipo.} Las latencias de
+    la Tabla~\ref{tab:latencias} dependen del hardware (GPU de gama de entrada para
+    Whisper; CPU para el encoder); no se midió en otras configuraciones.
+    \item \textbf{El banco físico es pequeño.} La validación de color usa 24 imágenes
+    en condiciones simuladas ancladas a una cámara concreta; una validación con
+    múltiples cámaras e iluminaciones queda pendiente.
+    \item \textbf{RS y ST se caracterizaron con corridas individuales.} La jerarquía
+    fue estable en todas las ejecuciones observadas, pero una caracterización
+    distribucional (medias y varianzas sobre $n$ corridas por pista, más pistas
+    ambiguas donde SS deba superar a ST) daría el resultado fino.
+    \item \textbf{El canal de voz depende de un traductor externo.} Los errores de
+    transcripción de Whisper entran al sistema como pistas legítimas; la memoria los
+    rechaza si no tienen soporte, pero no puede corregirlos.
+    \item \textbf{Herencia de los límites del hemisferio visual.} El 25\% de rechazo
+    residual del experimento base se manifiesta también en vivo; el laboratorio no lo
+    empeora, pero tampoco lo resuelve.
+\end{enumerate}

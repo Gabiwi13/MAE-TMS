@@ -1,0 +1,14 @@
+# Experimento aislado de voz/cámara en TIEMPO REAL (realtime_lab)
+# Además de las dependencias del experimento base (../requirements.txt).
+
+# Voz → texto local. GPU (RTX 2050) vía ctranslate2: los DLLs de los
+# paquetes nvidia-* deben precargarse con ctypes.WinDLL (ver
+# salvaged_voice_camera.py::load_whisper — os.add_dll_directory NO basta).
+faster-whisper==1.2.1
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+
+# Captura continua (plan aprobado: ventana nativa)
+sounddevice
+opencv-python
+# VAD: Silero, ya integrado en faster-whisper — sin dependencia extra.

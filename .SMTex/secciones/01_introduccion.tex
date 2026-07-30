@@ -1,0 +1,121 @@
+\section{Introducción}
+\label{sec:introduccion}
+
+Los dos reportes previos de este proyecto establecieron que un sistema de agentes
+especialistas construido exclusivamente con memorias asociativas entrópicas desarrolla
+el directorio transactivo de Wegner \cite{wegner1987transactive} por interacción
+acumulativa: primero con tres agentes (precisión madura 98.75\% en tres categorías de
+ETH-80) y después con ocho, cubriendo el conjunto ETH-80 \cite{leibe2003eth80} completo
+(precisión temprana 88.0\%, madura 93.2\%, hemisferio visual con 75.0\% de
+enrutamiento y cero falsos aceptados).
+En ambos casos la evaluación fue \emph{por lotes}: bancos de consultas escritas y
+archivos de imagen procesados fuera de línea.
+
+Este reporte aborda la extensión natural que esos resultados dejan pendiente, y que
+en la literatura se conoce como la construcción de un \textbf{sistema multimodal}
+\cite{baltrusaitis2019multimodal}: un sistema que percibe y coordina información
+proveniente de más de una modalidad sensorial.
+La pregunta que organiza el trabajo es:
+
+\begin{quote}
+¿Puede la maquinaria transactiva sobre memorias asociativas entrópicas operar en
+\emph{tiempo real} con entrada sensorial continua ---voz hablada y video de una cámara
+web--- manteniendo el principio de que \emph{todas} las decisiones son operaciones de
+memoria? Y cuando la memoria hetero-asociativa recupera sin pista en el dominio
+destino, ¿cómo se pasa de la masa indeterminada que devuelve la proyección
+---el \emph{problema de la pista faltante} \cite{morales2025missing}--- a un objeto
+definido?
+\end{quote}
+
+La respuesta empírica es afirmativa, con una condición de diseño que este reporte
+documenta: las \emph{traducciones} entre modalidades viven en los bordes del sistema
+(voz$\to$texto mediante Whisper \cite{radford2023whisper}; pixeles$\to$latente mediante
+el encoder ResNet18 \cite{he2016resnet} ya existente), mientras que el núcleo
+---reconocer, asignar, redirigir, rechazar y recuperar--- permanece intacto: son las
+mismas operaciones de las memorias W-EAM y EHAM
+\cite{pineda2021entropic,pineda2022weighted,morales2024hetero} evaluadas en los
+reportes anteriores, consultadas ahora en modo de solo lectura por una ventana nativa
+de tres hilos.
+
+\subsection*{Contribuciones principales}
+
+Este trabajo aporta seis contribuciones concretas respecto a la versión de ocho
+agentes:
+
+\begin{enumerate}
+    \item \textbf{Canal de voz continuo.}
+    Escucha permanente con detección de actividad de voz (Silero VAD
+    \cite{silero2021vad}), subtítulos parciales en vivo y enrutamiento automático al
+    detectar la pausa del hablante ($\sim$600 ms de silencio).
+    La transcripción usa Whisper \emph{small} \cite{radford2023whisper} en GPU
+    (vía faster-whisper \cite{systran2023fasterwhisper}) en modo \texttt{translate},
+    de modo que el usuario puede hablar en español o inglés y la memoria recibe pistas
+    en inglés, el idioma de su vocabulario fastText.
+    Latencia medida extremo a extremo (fin de habla $\to$ decisión de enrutamiento):
+    $\approx$0.6 s.
+
+    \item \textbf{Canal de visión con etiqueta viva.}
+    El cuadro de la cámara se analiza $\sim$4 veces por segundo (54 ms por análisis)
+    con suavizado por mayoría, mostrando sobre el video la clase reconocida por el
+    directorio visual del agente de entrada o un \emph{rechazo honesto} con el
+    candidato más cercano.
+    La interfaz muestra además ``lo que ve el ojo'': el recorte de $128\times128$
+    exacto que recibe el encoder, que convierte los fallos de encuadre, enfoque o
+    reflejo en evidencia visible al instante.
+
+    \item \textbf{Los dos modos transactivos, en vivo y visibles.}
+    La voz opera en modo \emph{temprano} (difusión del TME: los ocho agentes puntúan y
+    el grupo asigna, mientras un directorio de sesión aprende de cada frase) o
+    \emph{maduro} (protocolo punto a punto: el agente de entrada consulta su directorio
+    entrenado con lectura B1 y redirige al especialista o rechaza, con el TME apagado).
+    El panel muestra la redirección como relación entre agentes
+    (\textsc{entrada} $\to$ \textsc{destino}), haciendo observable el mecanismo de
+    Wegner en tiempo real.
+
+    \item \textbf{Política de color ``reintentar con lentes''.}
+    La cadena física impresora$+$cámara desplaza los momentos de color del estímulo y
+    colapsa el enrutamiento visual.
+    Se caracterizó el fenómeno, se demostró que un detector por distancia de momentos
+    no separa las entradas limpias de las degradadas (las distribuciones se traslapan),
+    y se adoptó una política sin umbral: intento crudo primero y renormalización de
+    momentos RGB hacia los anclajes de ETH-80 \emph{solo} si el directorio rechaza.
+    El rescate triplica el reconocimiento bajo degradación fuerte (de $\sim$0 a 15/24)
+    sin dañar las entradas limpias.
+
+    \item \textbf{Recuperación con pista faltante: los tres métodos del artículo.}
+    Se implementaron \emph{random samples} (RS), \emph{sample-and-test} (ST) y
+    \emph{sample-and-search} (SS) de Morales \& Pineda \cite{morales2025missing} como
+    métodos seleccionables de la memoria hetero-asociativa, compartiendo la misma
+    proyección AND-ponderada y la misma prueba de retro-proyección.
+    Se verificó su jerarquía empírica en este dominio y se documentó que el
+    mecanismo de recuperación oficial del sistema es exactamente SS, el mejor de los
+    tres.
+
+    \item \textbf{Prototipo emergente vs.\ objeto definido.}
+    Ambas interfaces (la aplicación de trazado del experimento y la ventana en tiempo
+    real) exhiben ahora el contraste que motiva el problema de la pista faltante: el
+    \emph{plano proyectado} como masa indeterminada, su \emph{prototipo emergente}
+    (la lectura determinista columna a columna, que rompe la consistencia conjunta) y
+    el \emph{objeto definido} que produce la búsqueda con prueba, comparados con una
+    métrica común: la distancia de retro-proyección a la pista original.
+\end{enumerate}
+
+\subsection*{Alcance}
+
+El experimento base permanece intacto: la extensión vive en un módulo aislado
+(\texttt{realtime\_lab/}) que carga los modelos entrenados en modo de solo lectura y
+mantiene su propio directorio de sesión en memoria.
+Ningún número de los reportes anteriores cambia; los resultados nuevos son las
+latencias, los diagnósticos de la cadena física de percepción y la caracterización de
+los métodos de recuperación con pista faltante.
+
+\subsection*{Estructura del documento}
+
+La Sección~\ref{sec:marco_teorico} resume los fundamentos y formaliza el problema de
+la pista faltante y sus tres métodos de solución.
+La Sección~\ref{sec:arquitectura} describe la arquitectura multimodal en tiempo real.
+La Sección~\ref{sec:metodologia} detalla la metodología de verificación.
+La Sección~\ref{sec:resultados} reporta latencias, diagnósticos físicos y la
+caracterización empírica de los métodos de recuperación.
+La Sección~\ref{sec:discusion} discute los hallazgos y la
+Sección~\ref{sec:conclusiones} concluye.

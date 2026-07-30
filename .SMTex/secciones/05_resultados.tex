@@ -1,0 +1,188 @@
+\section{Resultados}
+\label{sec:resultados}
+
+\subsection{Presupuesto de tiempo real: latencias medidas}
+\label{sec:res_latencias}
+
+La Tabla~\ref{tab:latencias} resume las latencias medidas.
+El presupuesto de diseño (pausa$\to$enrutamiento $< 1$ s; cuadro$\to$etiqueta
+$< 250$ ms) se cumple con margen.
+
+\begin{table}[H]
+\centering
+\caption{Latencias medidas en el equipo de desarrollo (RTX 2050; ResNet18 en CPU).}
+\label{tab:latencias}
+\begin{tabular}{llr}
+\toprule
+Canal & Operación & Latencia \\
+\midrule
+Voz    & Transcripción Whisper \emph{small} (GPU, frase corta) & 336 ms \\
+Voz    & Enrutamiento de texto (8 agentes, broadcast gateado)  & 302 ms \\
+Voz    & \textbf{Extremo a extremo} (fin de habla $\to$ decisión) & $\approx$ 0.6 s \\
+\midrule
+Visión & Análisis de cuadro (encode $+$ directorio visual)     & 54 ms \\
+Visión & Interfaz con cámara activa                            & 26 fps \\
+\midrule
+Evocación & Recall SS $+$ prototipo $+$ distancias $+$ decodificación
+          & $\approx$ 2.1 s (asíncrona) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La estructura de estas cifras confirma la hipótesis de viabilidad: el enrutamiento es
+proyección matricial y cuesta milisegundos por agente; los cientos de milisegundos del
+canal de voz pertenecen al traductor de frontera (Whisper), no a las memorias.
+La única operación intrínsecamente lenta ---la recuperación estocástica--- no
+participa del lazo de tiempo real: corre asíncrona y su resultado se incorpora al
+panel al estar listo, sin interrumpir video ni escucha.
+
+\subsection{Cadena de voz extremo a extremo}
+
+La prueba inyectada reproduce el caso de uso completo sin micrófono: un WAV con la
+frase ``\emph{Farm animal that gives milk}'' atraviesa VAD, transcripción,
+enrutamiento y evocación.
+El resultado: transcripción correcta, asignación a \textit{cow} en modo temprano
+(con el registro correspondiente en el directorio de sesión), y en modo maduro la
+redirección punto a punto \textit{apple} $\to$ \textit{cow}
+(\texttt{routed=True}, 56 ms) con entrada \textit{apple}, y la permanencia
+\textit{cow} $\to$ \textit{cow} (``se queda: es el experto'') con entrada
+\textit{cow}.
+La evocación asíncrona produjo la imagen del recuerdo $\sim$2 s después del
+enrutamiento (token \texttt{farm}, peso 9142) sin congelar la interfaz
+(Figura~\ref{fig:wavtest}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{wavtest_evocacion}
+\caption{Imagen evocada por la cadena de voz inyectada (``Farm animal that gives
+milk'' $\to$ \textit{cow}): reconstrucción del decoder a partir del patrón recuperado
+por la memoria hetero-asociativa, no una fotografía del conjunto de datos.}
+\label{fig:wavtest}
+\end{figure}
+
+En el micrófono real, la sonda de arranque detectó el caso límite relevante del
+sistema operativo: con el permiso de privacidad de Windows desactivado la señal llega
+en silencio absoluto (RMS $= 0$) y el sistema lo reporta con instrucciones; con el
+permiso activo el arreglo de micrófonos entrega señal normal (RMS $\approx 0.0013$ en
+reposo).
+
+\subsection{Canal de visión: sintético y físico}
+
+Con cuadros sintéticos (imagen ETH-80 llenando el recuadro al 55\%), el canal enruta
+correctamente en $\sim$98 ms y rechaza el cuadro vacío mostrando el candidato más
+cercano.
+Con cuadros ETH-80 reales presentados sin degradación, \textit{car} enruta a
+\textit{car} y las clases con menor margen caen en rechazo ---consistente con el
+comportamiento del hemisferio visual del experimento base (75.0\% de enrutamiento con
+cero falsos aceptados y un 25\% de rechazo residual): el laboratorio en vivo hereda
+los límites del experimento, no agrega los suyos.
+
+La prueba física arrojó el diagnóstico central de esta sección: la \textbf{pantalla de
+teléfono no es un estímulo viable} (brillo, moiré y encuadre colapsan el enrutamiento,
+tal como lo anticipó la simulación), mientras que la \textbf{hoja impresa en papel
+mate} sí lo es, siempre que el recuadro de análisis ajustable permita llenarla a la
+distancia de enfoque de la cámara.
+La primera sesión con impresiones dejó solo a \textit{cow} como clase fiable; el
+análisis de los cuadros capturados mostró el corrimiento de color de la cadena
+impresora$+$cámara como causa, lo que motivó la política de la
+Sección~\ref{sec:arquitectura} y el banco siguiente.
+
+\subsubsection*{Política de color: validación}
+
+\begin{table}[H]
+\centering
+\caption{Enrutamiento correcto sobre el banco de 24 imágenes (3 por clase) bajo
+condiciones simuladas de cámara. La política aplica el rescate
+\emph{solo} tras un rechazo del intento crudo.}
+\label{tab:colorfix}
+\begin{tabular}{lccc}
+\toprule
+Condición & Sin rescate & Con política completa & El rescate actuó en \\
+\midrule
+Limpia             & 22/24 & 22/24 & 1/24 \\
+Degradación media  & ---   & 18/24 & --- \\
+Degradación fuerte & $\sim$0/24 & 15/24 & mayoría de los aciertos \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dos lecturas de la Tabla~\ref{tab:colorfix}.
+Primero, el rescate condicionado \emph{no daña} las entradas limpias (22/24 en ambos
+casos): al correr solo tras un rechazo, una corrección innecesaria nunca toca una
+entrada ya aceptada.
+Segundo, bajo degradación fuerte el rescate recupera el canal visual desde el colapso
+($\sim$0) hasta 15/24.
+El hallazgo negativo también se reporta: un detector previo por distancia de momentos
+es inviable porque las distribuciones limpia/degradada se traslapan (medianas 24.2
+vs.\ 27.1) --- de ahí que la política sea ``reintentar tras rechazo'' y no
+``detectar y corregir''.
+
+\subsection{Pista faltante: prototipo, RS, ST y SS}
+\label{sec:res_pista}
+
+La Tabla~\ref{tab:pista} reporta la caracterización de los cuatro métodos de lectura
+del plano proyectado con la distancia de retro-proyección~\eqref{eq:test} como métrica
+común (corridas individuales; RS y ST son estocásticos).
+
+\begin{table}[H]
+\centering
+\caption{Distancia de retro-proyección (menor = mejor) de las cuatro lecturas del
+plano proyectado, sobre la misma proyección por pista. Corridas individuales
+representativas; la jerarquía fue estable en todas las ejecuciones observadas.}
+\label{tab:pista}
+\begin{tabular}{llrrrr}
+\toprule
+Pista & Agente & Prototipo & RS & ST & SS \\
+\midrule
+\texttt{pear}  & \textit{pear}  & 9.02 & 8.48 & 0.00 & 0.00 \\
+\texttt{car}   & \textit{car}   & 7.97 & 1.60 & 0.00 & 0.00 \\
+\texttt{green} & \textit{apple} & 7.00 & 3.51 & 0.00 & 0.00 \\
+\texttt{animal}\,$^{\dagger}$ & \textit{horse} & 7.01 & --- & --- & 0.00 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+{\footnotesize $^{\dagger}$Medición en la ventana en tiempo real, que calcula
+prototipo y SS.}
+\end{table}
+
+Los costos por método (pista \texttt{pear}): RS $\approx$ 0.02 s (una muestra),
+ST $\approx$ 1.0 s (127 muestras con prueba), SS $\approx$ 1.9 s (ST más descenso
+local).
+La jerarquía del artículo \cite{morales2025missing} se reproduce en este dominio:
+$\mathrm{SS} \approx \mathrm{ST} < \mathrm{RS} < \text{prototipo}$.
+Tres observaciones:
+
+\begin{enumerate}
+    \item \textbf{ST y SS alcanzan distancia cero} en todas las pistas probadas: con
+    memorias llenadas por instancias ($N = 200$ por agente) y pistas de un token, 127
+    muestras con prueba bastan para encontrar un patrón cuya retro-proyección
+    reproduce la pista exactamente. La ventaja adicional del descenso local de SS
+    quedaría de manifiesto con pistas más ambiguas; aquí su valor es de garantía.
+    \item \textbf{RS es errático}: sin prueba, una única muestra puede caer cerca
+    (1.60 en \texttt{car}) o lejos (8.48 en \texttt{pear}) --- el comportamiento
+    esperado de la línea base.
+    \item \textbf{El prototipo es consistentemente el peor} (7.0--9.0), pese a ser la
+    lectura determinista ``más probable'' columna a columna.
+    Elegir el máximo de cada característica por separado destruye las correlaciones
+    conjuntas que el registro sí almacena: el resultado es la ``plastilina''
+    ---una superposición estadística--- y no un objeto que la memoria haya contenido.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{panel_prototipo_definido}
+\caption{Panel de la ventana en tiempo real tras la frase ``animal with a mane''
+$\to$ \textit{horse}: arriba el prototipo emergente del plano proyectado
+(\emph{prototype, raw plane}, $d = 7.0$), visiblemente difuso; abajo el objeto
+definido del recall oficial SS (\emph{memory of horse, defined}, $d = 0.0$).
+A la izquierda, las barras del enrutamiento por agente y el directorio de sesión.}
+\label{fig:panel}
+\end{figure}
+
+El contraste visual de la Figura~\ref{fig:panel} es el resultado cualitativo central:
+el prototipo decodifica a una mancha reconocible pero desdibujada (la superposición),
+mientras que el objeto definido decodifica a una figura nítida.
+La misma comparación, extendida a los cuatro métodos y al mapa de calor del plano
+proyectado, está disponible en la etapa de recall de la aplicación de trazado del
+experimento.
