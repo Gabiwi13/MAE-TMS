@@ -26,10 +26,11 @@ import streamlit.components.v1 as components
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Sistema visual de la app = el de las animaciones (navy/índigo, acento
-# violeta). Todas las figuras Plotly heredan la plantilla oscura; los
-# fondos se dejan transparentes para fundirse con los paneles.
-pio.templates.default = "plotly_dark"
+# Sistema visual de la app: tema claro (superficie #f7f7fb, paneles blancos,
+# acento índigo). Las figuras Plotly heredan la plantilla clara con fondos
+# transparentes; las DOS animaciones HTML conservan su superficie navy — son
+# paneles tipo «reproductor» con su propia paleta validada en oscuro.
+pio.templates.default = "plotly_white"
 import torch
 from PIL import Image
 from torchvision import transforms
@@ -48,9 +49,18 @@ from associative_memory import DirectoryMemory
 
 # Visual constants
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+# Paleta categórica para la SUPERFICIE CLARA (#f7f7fb), validada con el
+# validador del skill dataviz en orden CLASSES: banda L / croma / CVD
+# (peor par adyacente ΔE 18.6, objetivo ≥12) / contraste (los 8 ≥ 3:1) — PASS.
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#17a24f",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
-                "pear": "#7d8f22", "tomato": "#c0392b"}
+                "pear": "#85980f", "tomato": "#b3271e"}
+# Los mismos 8 dominios escalonados para la superficie navy (#101332) de las
+# animaciones HTML — paleta previa, validada en oscuro. No son dos paletas:
+# es la misma identidad por clase con pasos por superficie.
+DOMAIN_COLOR_DARK = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                     "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                     "pear": "#7d8f22", "tomato": "#c0392b"}
 DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
                 "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
@@ -319,6 +329,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             "normalized": bool(normalize), "rejected": True,
             "reason": "mae_no_support",
             "final_recalled_img": None, "final_recalled_tok": None,
+            "missing_cue": None,
         }
     winner     = max(avg_scores, key=avg_scores.get)
     winner_idx = AGENT_LIST.index(winner)
@@ -349,6 +360,42 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             final_recalled_img = rec_img
             final_recalled_tok = tok
 
+    # Pista faltante (Morales & Pineda 2025): para el token de la imagen
+    # final se computan las tres vías de recuperación del paper — Random
+    # Sample (RS), Sample-and-Test (ST) y Sample-and-Search (SS, el recall
+    # oficial de arriba) — más el prototipo emergente (argmax del plano
+    # proyectado). Todas comparables por la distancia retro-proyectada a la
+    # pista, que es el "test" del paper.
+    missing_cue = None
+    if final_recalled_img is not None:
+        td_f  = per_token[final_recalled_tok]
+        q_v_f = td_f["q_vec"]
+        mem_w = agents[winner].mem_dom_H
+        ss_q  = td_f["per_agent"][winner]["recalled_q"]
+
+        def _mc_entry(r_q, dist, tested=None):
+            try:
+                img = _decode(r_q, g_min, g_max, decoder)
+            except Exception:
+                img = None
+            return {"r_q": r_q, "img": img,
+                    "distance": float(dist), "tested": tested}
+
+        proto_q, projection = mem_w.prototype_from_left(q_v_f)
+        rs_q, _, _, _, rs_stats = mem_w.recall_from_left(q_v_f, method="random")
+        st_q, _, _, _, st_stats = mem_w.recall_from_left(q_v_f, method="sample_test")
+        missing_cue = {
+            "token":         final_recalled_tok,
+            "projection":    projection,
+            "random":        _mc_entry(rs_q, rs_stats[1], rs_stats[0]),
+            "sample_test":   _mc_entry(st_q, st_stats[1], st_stats[0]),
+            "sample_search": _mc_entry(
+                ss_q, mem_w.backward_distance_from_left(q_v_f, ss_q)),
+        }
+        if proto_q is not None:
+            missing_cue["prototype"] = _mc_entry(
+                proto_q, mem_w.backward_distance_from_left(q_v_f, proto_q))
+
     return {
         "query":              query,
         "spacy_tokens":       spacy_tokens,
@@ -367,6 +414,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         "reason":             "mae_support",
         "final_recalled_img": final_recalled_img,
         "final_recalled_tok": final_recalled_tok,
+        "missing_cue":        missing_cue,
     }
 
 
@@ -409,7 +457,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         score  = avg_scores.get(cls, 0.0)
         norm   = score / max(max_score, 1e-9)
         is_win = cls == winner
-        color  = DOMAIN_COLOR[cls] if is_win else "#c0c0c0"
+        color  = DOMAIN_COLOR[cls] if is_win else "#c3c6d8"
         width  = 7 if is_win else max(1.0, 3.0 * norm)
 
         fig.add_trace(go.Scatter(
@@ -421,8 +469,8 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
             x=(x0 + x1) / 2, y=(y0 + y1) / 2,
             text=f"{score:.4f}",
             showarrow=False,
-            font=dict(size=10, color=color if is_win else "#8d93c8"),
-            bgcolor="#181c44", opacity=0.92,
+            font=dict(size=10, color=color if is_win else "#5a5e7d"),
+            bgcolor="#ffffff", opacity=0.92,
         )
 
     if highlight_path:
@@ -431,12 +479,12 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         fig.add_annotation(
             x=tx, y=ty, ax=fx, ay=fy,
             xref="x", yref="y", axref="x", ayref="y",
-            arrowhead=3, arrowwidth=5, arrowcolor="#f39c12", text="",
+            arrowhead=3, arrowwidth=5, arrowcolor="#d97706", text="",
         )
 
     for name, (nx, ny) in NODE_POS.items():
         is_win = name == winner
-        color  = DOMAIN_COLOR.get(name, "#6b79e8")
+        color  = DOMAIN_COLOR.get(name, "#4653c9")
         label  = f"{DOMAIN_EMOJI.get(name, '')} {name}"
         fig.add_trace(go.Scatter(
             x=[nx], y=[ny],
@@ -445,7 +493,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
                 size=33 if name == "TME" else (30 if is_win else 22),
                 color=color,
                 line=dict(width=5 if is_win else 2,
-                          color="#ffd54f" if is_win else "#303670"),
+                          color="#c9930a" if is_win else "#c3c6d8"),
             ),
             text=[label],
             textposition=("middle left" if nx < 0
@@ -1018,7 +1066,7 @@ def build_flow_animation(trace) -> str:
         "avg":    {cls: float(trace["avg_scores"][cls]) for cls in CLASSES},
         "winner": trace["winner"],
         "ntok":   int(trace["n_tokens"]),
-        "colors": DOMAIN_COLOR,
+        "colors": DOMAIN_COLOR_DARK,
         "emoji":  DOMAIN_EMOJI,
         "img":    trace.get("final_b64"),
     }
@@ -1080,7 +1128,7 @@ def build_mature_animation(query, words, toks, entry, dest,
         "avg":      {cls: float(scores.get(cls, 0.0)) for cls in CLASSES},
         "winner":   dest,
         "ntok":     len(toks),
-        "colors":   DOMAIN_COLOR,
+        "colors":   DOMAIN_COLOR_DARK,
         "emoji":    DOMAIN_EMOJI,
         "img":      _img_b64(img_arr) if img_arr is not None else None,
     }
@@ -1364,7 +1412,7 @@ def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
         "entry":    entry,
         "redirect": (winner is not None and winner != entry),
         "labels":   labels,
-        "colors":   DOMAIN_COLOR,
+        "colors":   DOMAIN_COLOR_DARK,
         "emoji":    DOMAIN_EMOJI,
     }
     return _ANIM_IMG2LBL_TEMPLATE.replace("__DATA__", json.dumps(data))
@@ -1404,17 +1452,17 @@ def _reset_session():
 # Pipeline Trace UI renderer
 
 def _stage_header(num, icon, title, subtitle=""):
-    sub = (f"<div style='color:#8d93c8;font-size:12px;margin-top:3px'>"
+    sub = (f"<div style='color:#5a5e7d;font-size:12px;margin-top:3px'>"
            f"{subtitle}</div>" if subtitle else "")
     st.markdown(
         f"""<div style='
-            background:linear-gradient(90deg,#1b1f4b 0%,#181c44 100%);
-            border:1px solid #303670; border-left:4px solid #6b79e8;
+            background:linear-gradient(90deg,#eef0f8 0%,#ffffff 100%);
+            border:1px solid #d9dcea; border-left:4px solid #4653c9;
             border-radius:10px; padding:10px 18px; margin:18px 0 10px 0'>
-          <span style='color:#6b79e8;font-size:11px;font-weight:700;
+          <span style='color:#4653c9;font-size:11px;font-weight:700;
                        letter-spacing:2px;text-transform:uppercase'>
             ETAPA {num}</span>
-          <div style='color:#e8eaf6;font-size:17px;font-weight:700;margin-top:2px'>
+          <div style='color:#1c1e33;font-size:17px;font-weight:700;margin-top:2px'>
             {(icon + " ") if icon else ""}{title}</div>
           {sub}
         </div>""",
@@ -1461,11 +1509,11 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             used = t["lemma"] in _repr
             oov  = t["lemma"] in _unrepr
             if used:
-                bg = "#27ae60"
+                bg = "#178f4a"
             elif oov:
-                bg = "#e67e22"
+                bg = "#c05f0e"
             else:
-                bg = "#95a5a6"
+                bg = "#767d94"
             stop_mark = "✗" if t["is_stop"] else ""
             badges += (
                 f"<span style='background:{bg};color:white;padding:4px 10px;"
@@ -1539,7 +1587,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         for c in CLASSES)
     st.markdown(
         f"""<div class='dcard' style='text-align:center;margin:8px 0'>
-          <span style='font-size:15px;color:#e8eaf6'>
+          <span style='font-size:15px;color:#1c1e33'>
             <b>TME</b> broadcasts
             <code>
               v_q[{sel_tok}] ∈ [0,{M_LABEL-1}]^{N}</code>
@@ -1569,8 +1617,8 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         pa     = td["per_agent"][cls]
         is_win = (cls == trace["winner"])
         color  = DOMAIN_COLOR[cls]
-        border = f"3px solid {color}" if is_win else "1px solid #303670"
-        bg     = f"{color}22"         if is_win else "#181c44"
+        border = f"3px solid {color}" if is_win else "1px solid #d9dcea"
+        bg     = f"{color}22"         if is_win else "#ffffff"
         crown  = ""
 
         with col:
@@ -1579,7 +1627,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                     padding:12px 14px;margin-bottom:10px'>
                   <div style='font-size:18px;font-weight:700;color:{color}'>
                     {DOMAIN_EMOJI[cls]} {cls.upper()}{crown}</div>
-                  <div style='font-size:11px;color:#8d93c8;margin-top:2px'>
+                  <div style='font-size:11px;color:#5a5e7d;margin-top:2px'>
                     5 AMRs: M_dom_L · M_dom_R · M_dom_H · M_dir · M_dir_R</div>
                 </div>""",
                 unsafe_allow_html=True,
@@ -1704,7 +1752,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"""<div style='background:{wcolor}22;border-left:5px solid {wcolor};
                 padding:12px;border-radius:6px;margin-top:14px'>
               <b>Winner → {DOMAIN_EMOJI[winner]} {winner.upper()}</b><br>
-              <span style='font-size:12px;color:#8d93c8'>
+              <span style='font-size:12px;color:#5a5e7d'>
                 TME routes query to {winner} agent •
                 registers {trace['n_tokens']} token(s) in M_dir
               </span>
@@ -1777,6 +1825,82 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"via token `{best_tok}`  (recall_weight={r_weight:.4f})"
         )
 
+        mc = trace.get("missing_cue")
+        if mc is not None:
+            with st.expander(
+                    "🧩 Pista faltante: plastilina → prototipo → objeto "
+                    "definido  (Morales & Pineda 2025)", expanded=False):
+                st.markdown(
+                    "La pista de texto selecciona un **plano proyectado** en el "
+                    "dominio visual, pero no hay pista visual con qué completar "
+                    "la recuperación: el plano queda indeterminado — la "
+                    "*plastilina* que hay que decodificar. El paper de la pista "
+                    "faltante propone tres formas de extraer una figura "
+                    "definida; las tres se muestran aquí sobre la **misma "
+                    f"proyección** (token `{mc['token']}`), junto con el "
+                    "prototipo emergente. La métrica común es la **distancia "
+                    "retro-proyectada** a la pista original (el *test* del "
+                    "paper): menor = mejor."
+                )
+
+                proj = np.asarray(mc["projection"], dtype=float)
+                fig = go.Figure(go.Heatmap(
+                    z=proj.T, colorscale="Plasma", showscale=False,
+                    xgap=0.4, ygap=0.4,
+                ))
+                fig.update_layout(
+                    title=dict(
+                        text="Plano proyectado Π (64 características × 32 "
+                             "valores) — la «plastilina»",
+                        x=0.5, font=dict(size=11)),
+                    height=190, margin=dict(l=0, r=0, t=30, b=0),
+                    xaxis=dict(visible=False), yaxis=dict(visible=False),
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                )
+                st.plotly_chart(fig, use_container_width=True, key="s6_mc_proj")
+
+                methods = [
+                    ("prototype",     "① Prototipo",
+                     "argmax por columna — lectura determinista, sin muestreo"),
+                    ("random",        "② Random Sample (RS)",
+                     "1 muestra del plano, sin prueba de aceptación"),
+                    ("sample_test",   "③ Sample-and-Test (ST)",
+                     None),   # tested se llena abajo
+                    ("sample_search", "④ Sample-and-Search (SS)",
+                     "ST + descenso local — el recall oficial de arriba"),
+                ]
+                dists  = {k: mc[k]["distance"] for k, _, _ in methods if k in mc}
+                d_min  = min(dists.values()) if dists else None
+
+                cols_mc = st.columns(4)
+                for col, (key, name, note) in zip(cols_mc, methods):
+                    with col:
+                        st.markdown(f"**{name}**")
+                        if key not in mc:
+                            st.caption("no disponible para esta pista")
+                            continue
+                        e = mc[key]
+                        if note is None:
+                            note = (f"{e['tested']} muestras + test de "
+                                    "retro-proyección")
+                        st.caption(note)
+                        if e["img"] is not None:
+                            st.image(_t2img(e["img"]), width=110)
+                        tag = ("  ← mínima"
+                               if abs(e["distance"] - d_min) < 1e-9 else "")
+                        st.caption(f"d(retro, pista) = {e['distance']:.4f}{tag}")
+
+                st.caption(
+                    "RS, ST y SS son *random samples*, *sample-and-test* y "
+                    "*sample-and-search* de Morales & Pineda (2025), Sci. Rep. "
+                    "15:21850. SS reutiliza el resultado del recall oficial "
+                    "(por eso su imagen coincide con la de arriba); RS y ST se "
+                    "computan aquí con la misma maquinaria (project → reduce → "
+                    "distance_recall). El muestreo es estocástico: repetir la "
+                    "query puede variar RS y ST."
+                )
+
     else:
         st.warning(
             f"Winner agent **{winner}** did not recognize any token in M_dom_H "
@@ -1806,26 +1930,27 @@ def main():
         initial_sidebar_state="expanded",
     )
 
-    # Sistema de diseño: mismos tokens que las animaciones HTML (navy #101332,
-    # panel #181c44, borde #303670, tinta #e8eaf6, muted #8d93c8, acento
-    # violeta #6b79e8, dorado #ffd54f). La paleta categórica de 8 clases está
-    # VALIDADA con el validador del skill dataviz sobre esta superficie
-    # (lightness band / chroma / CVD / contraste: ALL PASS).
+    # Sistema de diseño CLARO: página #f7f7fb, paneles blancos, tinta
+    # #1c1e33, muted #5a5e7d, acento índigo #4653c9, ámbar #8a6400 para
+    # cifras acentuadas. La paleta categórica de 8 clases (DOMAIN_COLOR)
+    # está VALIDADA con el validador del skill dataviz sobre esta
+    # superficie (lightness band / chroma / CVD / contraste: ALL PASS).
+    # Las animaciones HTML conservan su superficie navy propia.
     st.markdown("""<style>
-      :root{ --bg:#101332; --panel:#181c44; --panel2:#1b1f4b;
-             --border:#303670; --ink:#e8eaf6; --muted:#8d93c8;
-             --accent:#6b79e8; --gold:#ffd54f; }
+      :root{ --bg:#f7f7fb; --panel:#ffffff; --panel2:#eef0f8;
+             --border:#d9dcea; --ink:#1c1e33; --muted:#5a5e7d;
+             --accent:#4653c9; --amber:#8a6400; }
       .block-container{padding-top:1.1rem; max-width:1240px}
       header[data-testid="stHeader"]{background:transparent}
 
       /* Hero */
-      .hero{background:linear-gradient(135deg,#1b1f4b 0%,#101332 75%);
+      .hero{background:linear-gradient(135deg,#eef0f8 0%,#ffffff 75%);
         border:1px solid var(--border); border-radius:16px;
         padding:16px 24px; margin-bottom:6px}
       .hero h1{font-size:24px;margin:0;color:var(--ink);letter-spacing:.4px}
       .hero p{margin:5px 0 0;color:var(--muted);font-size:13px}
       .hero .pill{display:inline-block;margin-left:10px;padding:2px 11px;
-        border-radius:12px;background:rgba(107,121,232,.16);
+        border-radius:12px;background:rgba(70,83,201,.10);
         border:1px solid var(--border);color:var(--accent);
         font-size:11px;font-weight:700;vertical-align:2px}
 
@@ -1839,7 +1964,8 @@ def main():
         border-bottom:1px solid var(--border)}
       .stTabs [data-baseweb="tab"]{font-size:14px;font-weight:600;
         color:var(--muted);border-radius:10px 10px 0 0;padding:8px 16px}
-      .stTabs [aria-selected="true"]{color:var(--ink);background:var(--panel)}
+      .stTabs [aria-selected="true"]{color:var(--accent);
+        background:var(--panel2)}
 
       /* Expanders, progreso, divisores, captions */
       details[data-testid="stExpander"]{background:var(--panel);
@@ -1849,7 +1975,7 @@ def main():
       div[data-testid="stCaptionContainer"]{color:var(--muted)}
 
       /* Sidebar */
-      section[data-testid="stSidebar"]{background:#0c0f28;
+      section[data-testid="stSidebar"]{background:#eef0f8;
         border-right:1px solid var(--border)}
 
       /* Grid de chips (conteos M_dir en el sidebar) */
@@ -1858,12 +1984,12 @@ def main():
         border:1px solid var(--border);border-radius:10px;padding:5px 9px;
         font-size:12px;color:var(--ink)}
       .mchip .dot{width:9px;height:9px;border-radius:3px;flex:none}
-      .mchip b{margin-left:auto;color:var(--gold);font-family:monospace}
+      .mchip b{margin-left:auto;color:var(--amber);font-family:monospace}
 
-      /* Tarjeta oscura de uso general */
+      /* Tarjeta de uso general (panel blanco) */
       .dcard{background:var(--panel);border:1px solid var(--border);
         border-radius:10px;padding:10px 14px;color:var(--ink)}
-      .dcard code{background:#0d0f29;color:var(--gold);padding:1px 7px;
+      .dcard code{background:#eef0f8;color:var(--amber);padding:1px 7px;
         border-radius:6px}
     </style>""", unsafe_allow_html=True)
 
@@ -1872,9 +1998,9 @@ def main():
     # Sidebar
     with st.sidebar:
         st.markdown(
-            "<div style='font-size:22px;font-weight:800;color:#e8eaf6'>"
+            "<div style='font-size:22px;font-weight:800;color:#1c1e33'>"
             "EAM-TMS</div>"
-            "<div style='font-size:12px;color:#8d93c8;line-height:1.5'>"
+            "<div style='font-size:12px;color:#5a5e7d;line-height:1.5'>"
             "Memoria transactiva multi-agente<br>sobre memorias asociativas "
             "entrópicas</div>",
             unsafe_allow_html=True)
@@ -1933,8 +2059,12 @@ def main():
           <p>Escribe una consulta: los agentes la reconocen con sus memorias
           asociativas, el grupo la asigna al especialista y el directorio
           aprende quién sabe qué (Wegner, 1987).</p>
+          <p><b>Cómo usar:</b> ① escribe la consulta &nbsp;→&nbsp;
+          ② ▶ Correr pipeline &nbsp;→&nbsp; ③ recorre las pestañas 1→4 en
+          orden (la 5 es para imágenes, la 6 es el dataset).</p>
         </div>""",
         unsafe_allow_html=True)
+
     c_q, c_ex = st.columns([3, 1])
     with c_q:
         query = st.text_input(
@@ -2009,14 +2139,16 @@ def main():
 
     st.divider()
 
-    # Tabs
+    # Tabs numeradas: 1-4 siguen el orden del flujo de una consulta de texto
+    # (trace → ruteo → directorio → fase madura); 5 es el hemisferio visual
+    # y 6 la referencia del dataset. El número orienta — "¿dónde estoy?".
     tab_trace, tab_routing, tab_mdir, tab_mature, tab_image, tab_info = st.tabs([
-        "🔬 Trace del pipeline",
-        "🧭 Resumen de ruteo",
-        "📈 Evolución de M_dir",
-        "🌗 Fase madura",
-        "Imagen → Etiquetas",
-        "📚 Referencia ETH-80",
+        "1 · 🔬 Trace del pipeline",
+        "2 · 🧭 Ruteo",
+        "3 · 📈 Directorio M_dir",
+        "4 · 🌗 Fase madura",
+        "5 · 🖼️ Imagen → Etiquetas",
+        "6 · 📚 Referencia ETH-80",
     ])
 
     # TAB 1: Pipeline Trace
@@ -2058,7 +2190,7 @@ def main():
                   <span style='font-size:28px'>{DOMAIN_EMOJI[winner]}</span>
                   <span style='font-size:20px;font-weight:bold;color:{wcolor}'>
                    → Agente <b>{winner.upper()}</b></span>
-                  <span style='color:#8d93c8;margin-left:16px'>
+                  <span style='color:#5a5e7d;margin-left:16px'>
                   score={trace['avg_scores'][winner]:.5f}</span>
                 </div>""",
                 unsafe_allow_html=True,
@@ -2496,8 +2628,8 @@ def main():
                     # Banner
                     if redirected:
                         st.markdown(
-                            f"""<div style='background:#f39c1222;
-                                border-left:6px solid #f39c12;
+                            f"""<div style='background:#d9770622;
+                                border-left:6px solid #d97706;
                                 padding:14px;border-radius:8px;margin:10px 0'>
                               <b>Redirect detected</b>
                               {'· <i>experimento real (stage8)</i>' if use_experiment else ''}<br>
@@ -2513,8 +2645,8 @@ def main():
                         )
                     else:
                         st.markdown(
-                            f"""<div style='background:#2ecc7122;
-                                border-left:6px solid #2ecc71;
+                            f"""<div style='background:#178f4a22;
+                                border-left:6px solid #178f4a;
                                 padding:14px;border-radius:8px;margin:10px 0'>
                               <b>No redirect</b> — entry = destination:
                               {DOMAIN_EMOJI[entry_cls]} {entry_cls}

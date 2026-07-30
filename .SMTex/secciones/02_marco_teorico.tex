@@ -1,0 +1,160 @@
+\section{Marco Teórico}
+\label{sec:marco_teorico}
+
+Esta sección resume los fundamentos ya formalizados en el reporte de ocho agentes
+---al que se remite para las definiciones completas de las operaciones $\lambda$,
+$\eta$ y $\beta$--- y desarrolla con detalle los dos elementos teóricos propios de
+esta extensión: la taxonomía multimodal en la que se ubica el sistema y el problema de
+la pista faltante con sus tres métodos de solución.
+
+\subsection{Sistemas multimodales}
+\label{sec:multimodal}
+
+Un sistema multimodal percibe y relaciona información de más de una modalidad
+sensorial.
+La taxonomía de Baltru\v{s}aitis, Ahuja y Morency \cite{baltrusaitis2019multimodal}
+organiza los retos técnicos de estos sistemas en cinco categorías:
+\emph{representación} (codificar cada modalidad de forma que preserve su contenido),
+\emph{traducción} (mapear contenido de una modalidad a otra),
+\emph{alineación} (identificar correspondencias entre elementos de modalidades
+distintas),
+\emph{fusión} (combinar evidencia de varias modalidades para una decisión) y
+\emph{co-aprendizaje} (transferir conocimiento entre modalidades).
+
+EAM-TMS ya era multimodal en tres de estos ejes desde su versión por lotes:
+representa texto (fastText 300D cuantizado por magnitud
+\cite{bojanowski2017fasttext}) e imagen (latente ResNet18 de 64D cuantizado
+\cite{he2016resnet}); traduce entre ambas con la memoria hetero-asociativa de
+contenido (label $\leftrightarrow$ latente); y alinea pares texto--imagen en el
+registro conjunto de la EHAM \cite{morales2024hetero}.
+Lo que esta extensión agrega es la \textbf{entrada sensorial continua} y una tercera
+modalidad en el borde: la voz.
+Conviene precisar el estatus teórico de esa adición: la voz no constituye un dominio
+nuevo de memoria, sino una \emph{traducción de frontera} (voz$\to$texto) realizada por
+un modelo externo de reconocimiento de habla \cite{radford2023whisper}, exactamente
+como los pixeles se traducen a latente por el encoder convolucional.
+La política de diseño del proyecto se mantiene: los módulos de frontera
+\emph{traducen}; las memorias \emph{deciden}.
+Ninguna decisión de asignación, redirección, rechazo o recuperación proviene de los
+traductores.
+
+\subsection{Reconocimiento de voz: Whisper}
+
+Whisper \cite{radford2023whisper} es una familia de modelos encoder--decoder de
+reconocimiento de habla entrenados con supervisión débil a gran escala (680{,}000
+horas), robustos a acento, ruido y lenguaje espontáneo, con capacidad nativa de
+\emph{traducción} a inglés desde otros idiomas.
+Esta extensión usa la variante \emph{small} mediante la reimplementación
+faster-whisper \cite{systran2023fasterwhisper}, que integra además el detector de
+actividad de voz Silero \cite{silero2021vad}.
+El modo \texttt{translate} resuelve un desajuste práctico del sistema: el vocabulario
+de las memorias está en inglés (proviene de ConceptNet \cite{speer2017conceptnet} y
+fastText en inglés), pero el hablante puede dictar en español; la traducción en el
+borde entrega a la memoria pistas en el idioma que sus relaciones conocen.
+
+\subsection{La EAM y la EHAM en una página}
+
+La Memoria Asociativa Entrópica \cite{pineda2021entropic} almacena funciones sobre una
+tabla $\mathbf{R} \in \mathbb{N}^{n \times m}$; en su variante ponderada (W-EAM)
+\cite{pineda2022weighted} las celdas acumulan frecuencias.
+El \emph{registro} ($\lambda$) suma la relación unitaria del patrón; el
+\emph{reconocimiento} ($\eta$) es una implicación material relajada (containment con
+tolerancia $\xi$) que además produce pesos por característica
+$w_i = \mathbf{R}[i, a_i]$; la \emph{recuperación} ($\beta$) muestrea por columna una
+distribución modulada por una gaussiana centrada en la pista
+\cite{pineda2023imagery}.
+La extensión hetero-asociativa (EHAM)
+\cite{morales2024hetero,morales2025missing} almacena pares de dominios en un tensor 4D
+$\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$ y define la
+\emph{proyección} de una pista izquierda $\mathbf{a}$ con pesos normalizados $w'_i$
+sobre el dominio derecho:
+\begin{equation}
+    \Pi[j, l] = \begin{cases}
+        0 & \text{si } \exists\, i : \mathbf{R}[i, j, a_i, l] = 0 \\[4pt]
+        \displaystyle\sum_{i=1}^{n} w'_i\, \mathbf{R}[i, j, a_i, l] & \text{en otro caso}
+    \end{cases}
+    \label{eq:proyeccion}
+\end{equation}
+La conjunción de anulación implementa \emph{containment} estricto: solo hay masa donde
+todas las características de la pista tienen soporte simultáneo.
+Sobre estas primitivas ---tomadas sin modificación de la implementación de referencia
+de Pineda \& Morales--- se construye todo lo que sigue.
+
+\subsection{El problema de la pista faltante}
+\label{sec:pista_faltante}
+
+La proyección~\eqref{eq:proyeccion} no es un patrón: es una \emph{relación} en el
+dominio destino, una distribución de posibilidades por cada característica.
+Cuando existe una pista del dominio destino, la recuperación $\beta$ la usa para
+concentrar el muestreo.
+Pero en el caso de uso central de este sistema ---una frase evoca una imagen--- no
+existe pista visual alguna: el plano queda \emph{ampliamente indeterminado}.
+Este es el \textbf{problema de la pista faltante} (\emph{missing cue problem}),
+contribución central del artículo de Morales \& Pineda \cite{morales2025missing}:
+la memoria \emph{sabe} que ahí hay un objeto (el plano tiene soporte), pero lo que
+tiene no es una figura sino una superposición que debe decodificarse.
+
+El artículo propone tres métodos para extraer un objeto definido del plano.
+Los tres comparten la misma \emph{prueba} (\emph{test}): dado un candidato
+$\mathbf{b}$ del dominio destino con pesos $\mathbf{u}$, se le retro-proyecta al
+dominio de la pista y se mide su distancia ponderada a la pista original,
+\begin{equation}
+    d(\mathbf{a}, \mathbf{b}) \;=\;
+    \frac{\sum_{i} w_i \, \delta_i\!\left(a_i,\; \Pi^{-1}(\mathbf{b})\right)}
+         {\sum_{i} w_i},
+    \label{eq:test}
+\end{equation}
+donde $\Pi^{-1}(\mathbf{b})$ denota la proyección del candidato hacia el dominio
+fuente y $\delta_i$ es la desviación cuadrática esperada de la columna $i$ respecto
+del valor $a_i$ de la pista.
+Un candidato es tanto mejor cuanto más se parece, visto de regreso, a la pista que lo
+evocó.
+Los métodos difieren en cómo generan candidatos:
+
+\begin{description}
+    \item[Random samples (RS).] Se toma \emph{una} muestra del plano (una reducción
+    aleatoria columna a columna proporcional a la masa) y se acepta sin prueba.
+    Es la línea base: barato y sin garantía de consistencia.
+
+    \item[Sample-and-test (ST).] Se generan $k$ muestras del plano (en este sistema
+    $k = 127$, el \texttt{sample\_size} de la implementación de referencia) y se
+    elige la de menor distancia~\eqref{eq:test}.
+    El muestreo propone; la retro-proyección dispone.
+
+    \item[Sample-and-search (SS).] Igual que ST, seguido de un descenso local: se
+    explora la vecindad del mejor candidato (variaciones de $\pm 1$ nivel por
+    característica con soporte en el plano) aceptando todo movimiento que reduzca la
+    distancia, hasta el óptimo local.
+    Es el método de mejor desempeño reportado en el artículo, al mayor costo
+    computacional.
+\end{description}
+
+Un punto de trazabilidad importante para este proyecto: la operación de recuperación
+que el sistema EAM-TMS ha usado desde sus primeras versiones
+(\texttt{recall\_with\_sampling\_n\_search} de la implementación de referencia)
+\emph{es} sample-and-search.
+Es decir, el sistema siempre devolvió objetos definidos por el mejor de los tres
+métodos; lo que no hacía era \emph{exponer} los otros dos ni exhibir la masa
+indeterminada de la que parten.
+Esta extensión los implementa como métodos seleccionables y los muestra lado a lado
+(Sección~\ref{sec:arq_pista}).
+
+\subsubsection*{El prototipo emergente}
+
+Junto a los tres métodos, esta extensión define una cuarta lectura con valor
+pedagógico: el \textbf{prototipo emergente} del plano,
+\begin{equation}
+    \hat{b}_j \;=\; \arg\max_{l}\; \Pi[j, l],
+    \label{eq:prototipo}
+\end{equation}
+la elección determinista del valor más masivo de cada columna, sin muestreo ni
+prueba.
+El prototipo es la imagen más literal de la ``plastilina'': cada característica por
+separado elige su valor más frecuente, pero nada garantiza que la combinación de esos
+máximos corresponda a \emph{ningún} objeto registrado --- las correlaciones entre
+características, que el registro conjunto de la EHAM sí almacena, se pierden al leer
+columna a columna.
+La Sección~\ref{sec:res_pista} muestra que, medido con la prueba~\eqref{eq:test}, el
+prototipo es consistentemente \emph{peor} que cualquiera de los tres métodos del
+artículo: la evidencia cuantitativa de que la recuperación asociativa no es lectura de
+máximos sino búsqueda de consistencia conjunta.
