@@ -97,4 +97,8 @@ Proviene de una medición real (2089 ms, corrida del 30 jul) pero no está docum
 - C2, M7, M8, M10 (docs): rejection_probe/report.md reescrito desde los JSON vigentes; 47.1%→75.0%/25%; punteros de fuente canónica corregidos (verificado que ningún destino prometido carece de los números); teclas y VAD del README alineados con el código.
 - Verificación final: smoke test sobre memorias reales — prototipos idénticos pre/post fix (pear 9.0150, car 7.9715), RS/ST/SS funcionando; 18 archivos modificados en total.
 
-**Lotes B y C: PENDIENTES** (B requiere decisión editorial: párrafos de limitaciones en .tex8/.SMTex declarando M1–M4).
+**Lote B: APLICADO** (commit `faeb03f`): .tex8 declara en metodología el rescate con su delta (+23.8 pts), la selección del encoder por RMSE-sobre-test y el barrido de ξ sobre test, y el solape de instancias del 100% con su consecuencia de alcance; limitación (e) reforzada y nuevas (f)/(g); .SMTex hereda ambas salvedades en su limitación de herencia. Ambos reportes recompilados sin referencias sin resolver.
+
+**Lote C: APLICADO** (commit `7d16899`): N2 (pesos todo-cero → rechazo, en `_norm_weights` y `recognize_gated/both`), N3 (avisos del bug de `ExperimentSettings` en los 3 constructores, vendorizado intacto), N5 (layout del overlay con márgenes reales en 480p), N8 (`mode` inválido falla ruidoso; desempate documentado), N9 (huérfanos pre-v2 → `archive/results_pre_v2/` con README; comentarios obsoletos de generate_paper_figures corregidos; import muerto fuera; `ACCEPTED_POS` sin duplicar). Verificado: py_compile ×7, smoke tests con prototipos idénticos y render del panel.
+
+**La auditoría queda cerrada: los tres lotes aplicados.**
