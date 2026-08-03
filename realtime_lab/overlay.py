@@ -247,6 +247,11 @@ def draw_side_panel(canvas, cam_w, voice_mode, entry, route, evoked,
                         _GRAY, 1, cv2.LINE_AA)
             cv2.putText(canvas, "recalling...", (xe, ye + 60), _FONT,
                         0.45, _GRAY, 1, cv2.LINE_AA)
+        elif evoked.get("status") == "error":
+            cv2.putText(canvas, f"{cls}:", (xe, ye + 40), _FONT, 0.45,
+                        _GRAY, 1, cv2.LINE_AA)
+            cv2.putText(canvas, "recall failed", (xe, ye + 60), _FONT,
+                        0.45, _GRAY, 1, cv2.LINE_AA)
         elif evoked.get("img") is not None:
             if evoked.get("proto") is not None:
                 cv2.putText(canvas, "prototype (raw plane)",

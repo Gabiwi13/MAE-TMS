@@ -27,7 +27,7 @@ GENSIM_MODEL_PATH = (
 _cache: dict = {}   # word -> np.ndarray (binarized)
 
 
-def _stream_lookup(needed_words: set, allow_fallback: bool = True) -> dict:
+def _stream_lookup(needed_words: set, allow_fallback: bool = False) -> dict:
     """Stream through the gz vec file and collect only needed words.
 
     allow_fallback=False (protocolo oficial, tambien en build): las palabras no

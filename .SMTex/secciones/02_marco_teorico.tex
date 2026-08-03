@@ -45,8 +45,10 @@ reconocimiento de habla entrenados con supervisión débil a gran escala (680{,}
 horas), robustos a acento, ruido y lenguaje espontáneo, con capacidad nativa de
 \emph{traducción} a inglés desde otros idiomas.
 Esta extensión usa la variante \emph{small} mediante la reimplementación
-faster-whisper \cite{systran2023fasterwhisper}, que integra además el detector de
-actividad de voz Silero \cite{silero2021vad}.
+faster-whisper \cite{systran2023fasterwhisper}, que integra el detector de actividad
+de voz Silero \cite{silero2021vad}; el laboratorio, sin embargo, lo desactiva
+(\texttt{vad\_filter=False}) y segmenta el habla con un VAD por energía con piso de
+ruido adaptativo propio, mejor adaptado al flujo continuo por bloques de 30 ms.
 El modo \texttt{translate} resuelve un desajuste práctico del sistema: el vocabulario
 de las memorias está en inglés (proviene de ConceptNet \cite{speer2017conceptnet} y
 fastText en inglés), pero el hablante puede dictar en español; la traducción en el

@@ -142,8 +142,42 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         w = _norm_weights(weights, len(cue_a))
         ca = self.validate(cue_a, 0)
         projection = self.project(ca, w, 0)
-        q_io = self.validate(np.asarray(r_q, dtype=float), 1)
-        q_ws = self.weights_in_projection(projection, q_io, 1)
+
+        # r_q trae el sentinel (== self.q) en las coordenadas sin resultado.
+        # validate() por si solo clipea cualquier valor >= self.q al indice
+        # valido mas alto (self.q - 1) SIN pasar por su camino de "undefined"
+        # (ese solo dispara con NaN): un candidato sin resultado terminaria
+        # indexado en q-1 y, mas abajo, con distancia 0.0 (el mejor valor
+        # posible) para un no-resultado. Mapeamos sentinel -> NaN primero
+        # para que validate() lo reconozca como undefined de verdad.
+        q_arr = np.asarray(r_q, dtype=float)
+        q_arr = np.where(q_arr == self.q, np.nan, q_arr)
+        q_io = self.validate(q_arr, 1)
+
+        # weights_in_projection indexa projection[i, q_io[i]], pero projection
+        # solo tiene self.q columnas (0..q-1): un q_io[i] == self.q (undefined)
+        # cae fuera de rango. Leemos con un indice recortado (el valor leido
+        # se descarta) y forzamos peso 0 en esas coordenadas, para que no
+        # aporten masa ni distorsionen la normalizacion de pesos mas abajo.
+        # q_io conserva su sentinel real: distance_recall()/project() ya
+        # saben ignorar coordenadas == self.q via is_undefined, asi que la
+        # coordenada undefined queda excluida del calculo, no premiada.
+        undefined = (q_io == self.q)
+        safe_idx = np.where(undefined, 0, q_io)
+        q_ws = self.weights_in_projection(projection, safe_idx, 1)
+        q_ws = np.where(undefined, 0.0, q_ws)
+
+        # Candidato sin NINGUNA coordenada definida: no hay peso alguno para
+        # el project() de mas abajo (sum_weights == 0), que entonces atajo-
+        # corta y devuelve la matriz cero; calculate_distance() del vendor,
+        # ante una columna en cero, usa ps=columna=0 y arroja d=0 por esa
+        # coordenada, asi que el resultado final terminaria en 0.0 -- la
+        # misma "distancia perfecta gratis" que el fix de arriba evita para
+        # el indexado, pero por otra puerta. Un candidato sin ninguna
+        # coordenada definida no es comparable: NaN, no 0.0.
+        if bool(np.all(undefined)):
+            return float("nan")
+
         return float(self.distance_recall(ca, w, q_io, q_ws, 0))
 
     def print_stats(self, name: str = ""):

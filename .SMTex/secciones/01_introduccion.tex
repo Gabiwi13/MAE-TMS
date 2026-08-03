@@ -44,9 +44,10 @@ agentes:
 
 \begin{enumerate}
     \item \textbf{Canal de voz continuo.}
-    Escucha permanente con detección de actividad de voz (Silero VAD
-    \cite{silero2021vad}), subtítulos parciales en vivo y enrutamiento automático al
-    detectar la pausa del hablante ($\sim$600 ms de silencio).
+    Escucha permanente con detección de actividad de voz por energía (piso de ruido
+    adaptativo, implementación propia del laboratorio), subtítulos parciales en vivo y
+    enrutamiento automático al detectar la pausa del hablante ($\sim$600 ms de
+    silencio).
     La transcripción usa Whisper \emph{small} \cite{radford2023whisper} en GPU
     (vía faster-whisper \cite{systran2023fasterwhisper}) en modo \texttt{translate},
     de modo que el usuario puede hablar en español o inglés y la memoria recibe pistas

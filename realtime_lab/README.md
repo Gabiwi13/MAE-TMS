@@ -29,7 +29,8 @@ Presupuesto: pausa→ruteo **< 1 s**; frame→etiqueta **< 250 ms**.
 ```
 main.py            ventana OpenCV (~30 fps): video + overlays + panel
  ├─ audio_worker   hilo · sounddevice InputStream 16 kHz mono, bloques 30 ms
- │                 → VAD Silero (integrado en faster-whisper, sin dep extra)
+ │                 → VAD propio por energía (RMS por bloque de 30 ms
+ │                   contra un piso de ruido adaptativo, EMA en silencio)
  │                 → subtítulo parcial ~1/s mientras hay habla
  │                 → fin de habla (~600 ms de silencio) → transcripción
  │                   final (task=translate, es/en → en) → cola de frases
@@ -67,8 +68,9 @@ una sola vez al inicio.
    primero a consola, luego overlay con barras de score.
 3. **M3 — Visión**: etiqueta viva con suavizado temporal + rechazo.
 4. **M4 — Pulido**: panel con historial de ruteos y M_dir de sesión;
-   teclas (`q` salir, `m` silenciar mic, `espacio` congelar frame y
-   correr evocación completa como extra opcional).
+   teclas (`q` salir, `m` silenciar mic); evocación automática y
+   asíncrona (recall MAE → decoder) disparada al rutear por voz, sin
+   congelar video ni voz.
 5. **M5 — Medición**: latencias reales (pausa→ruteo, frame→etiqueta),
    tasa de rechazo con webcam vs imágenes ETH-80 mostradas a cámara —
    mini-informe.
@@ -88,8 +90,9 @@ una sola vez al inicio.
 
 ## Dependencias nuevas
 
-`sounddevice`, `opencv-python` (VAD: Silero, ya incluido en
-faster-whisper). Ver `requirements.txt` de esta carpeta.
+`sounddevice`, `opencv-python` (VAD: por energía, propio de
+`audio_worker.py`, sin dependencia extra — faster-whisper corre con
+`vad_filter=False`). Ver `requirements.txt` de esta carpeta.
 
 ## Uso (M1+M2+M3 construidos)
 
@@ -100,7 +103,8 @@ python main.py --entry cow    # agente de entrada del hemisferio visual
 python main.py --selftest 8   # verificación sin ventana (frame + reporte)
 python main.py --wavtest x.wav  # inyecta un WAV por el camino del mic
 ```
-Teclas: `q` salir · `m` silenciar micrófono.
+Teclas: `q` salir · `m` silenciar mic · `t` modo de voz temprana/madura ·
+`e` ciclar agente de entrada · `+`/`-` tamaño del recuadro.
 
 ## Resultados verificados (16 jul 2026)
 
@@ -110,7 +114,7 @@ Teclas: `q` salir · `m` silenciar micrófono.
 | Evocación (recall MAE → decoder), asíncrona | imagen del recuerdo en **~2 s** tras el ruteo (token `farm`, peso 9142); aparece junto a la referencia ETH-80 sin congelar video ni voz |
 | Render con webcam | 26 fps; análisis visual 54 ms/frame |
 | Micrófono nativo (WASAPI) | **SÍ entrega señal** (Realtek array, RMS 0.0013) — el silencio que veíamos era del navegador |
-| Frames ETH-80 reales por route_frame | car→car ✓; cow/dog→rechazo — consistente con el 47.1% de ruteo visual conocido de 8 clases (límite del experimento, no del lab) |
+| Frames ETH-80 reales por route_frame | car→car ✓; cow/dog→rechazo — consistente con el 25% de rechazo residual conocido del hemisferio visual de 8 clases (75.0% de ruteo, límite del experimento, no del lab) |
 
 **Pendiente del entorno**: Windows tenía la CÁMARA bloqueada para apps
 de escritorio (el frame llega como placeholder gris con candado) →

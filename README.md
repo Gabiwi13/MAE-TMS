@@ -91,7 +91,7 @@ Full characterization re-run as a single experiment (sections A–E). EAM parame
 | Ablation N=80: raw (A) → B1 | 53.75% → **98.75%** | hetero directory, gated scoring |
 | Visual evocation (top-3 domain hit) | 94.1% | image → labels |
 
-Source of record for these numbers: [`results/exp3_corrected_routing/summary.json`](results/exp3_corrected_routing/summary.json).
+These are historical v3 figures, documented in this table; `results/exp3_corrected_routing/summary.json` was overwritten by the 8-class re-run and no longer contains them.
 
 **Central finding**: rejection is decided by the EAM, not by a lexical filter. Tokens become vector cues whenever a real fastText representation exists; acceptance/rejection then follows from the memory's `recognize_gated` (containment) and the B1 directory read — there is no external vocabulary rule and no explicit `unknown` class. With every representable token allowed through, the raw directory read is more exposed to the registration-mass bias (53.75%), and **B1** is the single irreducible correction that restores 98.75%. The directory is `(K,2)` — K binary agent coordinates (3 in v3, 8 in v4), no `unknown` bit; rejection emerges when no agent yields positive evidence.
 

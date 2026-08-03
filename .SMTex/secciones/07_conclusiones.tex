@@ -19,11 +19,15 @@ La política de color ``reintentar con lentes'' recuperó el canal visual físic
 el colapso ($\sim$0/24 bajo degradación fuerte) hasta 15/24 sin dañar entradas limpias
 (22/24 en ambos casos).
 Los métodos RS, ST y SS quedaron implementados como variantes seleccionables de la
-recuperación hetero-asociativa, y su caracterización reprodujo la jerarquía del
-artículo en este dominio: ST y SS alcanzan distancia de retro-proyección cero, RS es
-errático, y el prototipo emergente ---la lectura determinista del plano--- es
-consistentemente el peor (7.0--9.0), la evidencia cuantitativa de que la superposición
-``amontonada'' no es un objeto.
+recuperación hetero-asociativa, y su caracterización distribucional (30 corridas con
+semillas fijas por método y pista) reprodujo la jerarquía del artículo:
+$\mathrm{SS} \le \mathrm{ST} < \mathrm{RS} < \text{prototipo}$, con desigualdad
+estricta $\mathrm{SS} < \mathrm{ST}$ en las pistas difíciles y empate en el techo
+($0.00$) en \texttt{green}, aportando valor precisamente donde la pista es difícil
+(\texttt{animal}: media $1.17 \to 0.19$), RS errático (distancia cero en 2 de 120
+corridas) y el prototipo emergente ---la lectura determinista del plano---
+consistentemente el peor (7.0--9.0), la evidencia cuantitativa de que la
+superposición ``amontonada'' no es un objeto.
 
 \paragraph{Respuesta a la pregunta de investigación.}
 La maquinaria transactiva sobre memorias asociativas entrópicas \emph{sí} opera en
@@ -54,9 +58,10 @@ una métrica común se volvió un resultado comunicable.
 \paragraph{Trabajo futuro.}
 Los siguientes pasos más relevantes son:
 \begin{enumerate}
-    \item \textbf{Caracterización distribucional de RS/ST/SS}: medias y varianzas
-    sobre corridas repetidas, y pistas ambiguas (multi-token, fuera de vocabulario
-    cercano) donde el descenso local de SS deba separarse de ST.
+    \item \textbf{Banco ampliado de pistas para RS/ST/SS}: la caracterización de 30
+    corridas cubrió cuatro pistas de un token; extenderla a pistas multi-token y de
+    más dominios trazaría la curva completa de dificultad que la pista
+    \texttt{animal} ya insinúa.
     \item \textbf{Banco físico ampliado}: múltiples cámaras, iluminaciones y papeles
     para la política de color, y la partición leave-object-out heredada del reporte de
     ocho agentes.
