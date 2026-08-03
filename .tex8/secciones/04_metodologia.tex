@@ -17,6 +17,14 @@ Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82
 La partición se realizó a nivel de archivo de imagen.
 Por tanto, no hay solapamiento de imágenes entre train y test, pero no se impone una
 separación leave-object-out entre objetos físicos de ETH-80.
+La consecuencia, verificada sobre la partición persistida, es que \textbf{los diez
+objetos físicos de cada clase aportan vistas tanto a train como a test} (solape de
+instancias del 100\%): toda imagen de prueba es una vista nueva de un objeto cuyas
+demás vistas participaron del llenado o de la formación del directorio.
+Las cifras del hemisferio visual de este reporte miden, en consecuencia,
+generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos nuevos;
+la partición leave-one-object-out, protocolo estándar de ETH-80, queda declarada
+como trabajo futuro (Sección~\ref{sec:limitaciones}).
 
 Dentro de la fase de alimentación, se definieron 3 particiones disjuntas con propósitos distintos:
 \begin{itemize}
@@ -78,6 +86,17 @@ pistas, nunca censura).
 El rescate corrige errores del etiquetador en frases nominales cortas (p.ej.\
 \texttt{pear} etiquetado como verbo en ``a bosc pear\ldots''), que de otro modo
 eliminarían la pista más distintiva de la consulta antes de llegar a la memoria.
+El efecto de esta regla está medido y se declara como parte del protocolo: sobre el
+banco completo afecta a 42 consultas, que con el rescate aciertan 41/42 (97.6\%) y
+sin él 31/42 (73.8\%) --- \textbf{+23.8 puntos sobre las consultas afectadas}, con
+los diez cambios de ganador moviéndose todos hacia la clase correcta (los tokens
+rescatados son precisamente los más discriminativos: \texttt{bark}, \texttt{moo},
+\texttt{saddle}, \texttt{wheel}, \texttt{brake}\ldots).
+Conviene precisar su estatus: la regla no decide el ganador (eso sigue siendo la
+proyección gateada de las memorias) ni censura token alguno, pero sí decide
+\emph{qué tokens entran como pista} con un criterio derivado del vocabulario que
+llenó las memorias, y por eso se reporta aquí con su delta en lugar de tratarse
+como un detalle de preprocesamiento neutro.
 
 \paragraph{Representación de tokens, sin filtro de vocabulario.}
 El vocabulario de ConceptNet sirve para \emph{llenar} las memorias, no para decidir qué
@@ -106,6 +125,13 @@ El entrenamiento es \emph{determinista} (semilla 42 en \texttt{torch}, \texttt{n
 \texttt{random}, con cuDNN determinista), de modo que una réplica desde cero es
 reproducible; el encoder oficial de esta versión alcanza RMSE 0.110 y precisión de la
 cabeza auxiliar de 99.7\%.
+Una precisión de protocolo que debe declararse: no existe partición de validación
+separada, de modo que el punto de control ganador se selecciona por RMSE mínimo
+evaluado \emph{sobre el propio conjunto de prueba} (una evaluación cada 10 épocas,
+$\approx$5 candidatos).
+Es una selección de modelo sobre test, de alcance acotado, pero significa que el
+espacio latente con el que después se evalúa el hemisferio visual fue elegido
+mirando ese conjunto (Sección~\ref{sec:limitaciones}).
 Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
 min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado
 (\texttt{train[0:200]} por clase).
@@ -146,6 +172,12 @@ cuya justificación experimental se presenta en la Sección~\ref{sec:param-iota-
 En síntesis: $\iota > 0$ elimina conocimiento escaso pero válido antes de eliminar
 relaciones espurias, $\kappa$ no cambió ningún resultado en el rango probado, y
 $\xi = 2$ en el directorio visual amplía la cobertura sin costo en especificidad.
+Debe declararse que el barrido de $\xi$ visual se midió sobre el enrutamiento del
+conjunto de \emph{prueba}: $\xi = 2$ es, por tanto, un hiperparámetro seleccionado
+sobre el mismo conjunto que después se reporta.
+$\xi$ es un mecanismo nativo de la EHAM (tolerancia de funciones parciales), no un
+umbral supervisado ad hoc --- la observación afecta al protocolo de selección, no a
+la operación (Sección~\ref{sec:limitaciones}).
 
 % ---------------------------------------------------------------
 \subsection{Auditoría de fidelidad}
