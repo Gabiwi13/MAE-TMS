@@ -43,6 +43,9 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
     def __init__(self, n: int, m: int, p: int, q: int,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
+        # Pasar SIEMPRE los 4 parametros: ExperimentSettings muta
+        # commons.params_defaults (lista global, bug upstream) y una
+        # construccion parcial heredaria valores del ultimo barrido.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             super().__init__(n=n, p=p, m=m, q=q, es=es, fold=None)
@@ -185,12 +188,17 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
 
 
 def _norm_weights(weights, n: int) -> np.ndarray:
-    """project() es invariante a escala; esto solo evita ceros y NaN."""
+    """project() es invariante a escala; esto solo evita NaN y desbordes.
+    Pesos todo-cero se PRESERVAN (proyeccion vacia -> rechazo): convertirlos
+    en unos haria opinar a una memoria cuya homo no vio la pista. Hoy ese
+    caso no ocurre porque el soporte de la homo contiene al de la hetero
+    (propiedad del llenado, no invariante custodiado)."""
     if weights is None:
         return np.ones(n, dtype=float)
-    w = np.asarray(weights, dtype=float)
+    w = np.nan_to_num(np.asarray(weights, dtype=float),
+                      nan=0.0, posinf=0.0, neginf=0.0)
     mx = w.max()
-    return (w / mx) if mx > 0 else np.ones(n, dtype=float)
+    return (w / mx) if mx > 0 else w
 
 
 def _to_int(r_io, sentinel: int) -> np.ndarray:

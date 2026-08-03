@@ -213,7 +213,9 @@ def draw_side_panel(canvas, cam_w, voice_mode, entry, route, evoked,
                 color = _bgr(cls) if s > 0 else (80, 80, 80)
                 cv2.putText(canvas, f"{cls:<7}", (x, y), _FONT, 0.42,
                             _WHITE if win else _GRAY, 1, cv2.LINE_AA)
-                bar = int(170 * s / mx)
+                # 156 px de barra maxima: la etiqueta de score del ganador
+                # queda a >=15 px de la columna del recuerdo evocado (xe).
+                bar = int(156 * s / mx)
                 cv2.rectangle(canvas, (x + 64, y - 9),
                               (x + 64 + max(bar, 1), y - 1), color, -1)
                 if win:
@@ -240,7 +242,9 @@ def draw_side_panel(canvas, cam_w, voice_mode, entry, route, evoked,
     if evoked is not None:
         size = 88
         xe = x + 268
-        ye = HEADER_H + 104
+        # ye deja >=8 px entre la ultima caption (y2+size+28) y el titulo
+        # de VISION (h-120) con camara 480p; a HEADER_H+104 el hueco era ~3 px.
+        ye = HEADER_H + 96
         cls = evoked["cls"]
         if evoked.get("status") == "pending":
             cv2.putText(canvas, f"{cls}:", (xe, ye + 40), _FONT, 0.45,

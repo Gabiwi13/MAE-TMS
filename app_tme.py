@@ -40,7 +40,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quantizer import quantize_binary, label_scale
 from stage6_interaction import (
-    CLASSES, AGENT_LIST, MODELS_DIR, Agent,
+    CLASSES, AGENT_LIST, MODELS_DIR, Agent, ACCEPTED_POS,
     get_nlp, load_all_vectors,
     tokenize_query, get_fasttext_vector, token_in_vocabulary,
     M_LABEL, N, P_LATENT, Q_LATENT,
@@ -1024,7 +1024,9 @@ window.addEventListener('load', ()=>setTimeout(run, 300));
 
 def build_flow_animation(trace) -> str:
     """Serialize real trace data into the animated HTML component."""
-    accepted_pos = {"NOUN", "ADJ", "PROPN"}
+    # Solo DISPLAY de la razon de descarte: la tokenizacion real (con rescate
+    # de POS) ya decidio "keep" via tokens_representable.
+    accepted_pos = ACCEPTED_POS
     representable = trace.get("tokens_representable", trace["tokens_known"])
     unrepresentable = trace.get("tokens_unrepresentable", trace["tokens_unknown"])
     words = []
@@ -1075,7 +1077,8 @@ def build_flow_animation(trace) -> str:
 
 def _decompose_anim_data(query, nlp, vectors_cache):
     """Word/token serialization shared by the mature-phase animation."""
-    accepted_pos = {"NOUN", "ADJ", "PROPN"}
+    # Igual que en build_flow_animation: display de la razon, no decision.
+    accepted_pos = ACCEPTED_POS
     doc = nlp(query.lower())
     tokens  = tokenize_query(query, nlp)
     # Sin filtro léxico: "keep" = token representable por fastText (entra como

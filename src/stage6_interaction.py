@@ -159,8 +159,12 @@ class Agent:
         import contextlib as _ctx
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
-        weights = (l_w / mx) if mx > 0 else np.ones(len(v_label_q),
-                                                    dtype=float)
+        if mx <= 0:
+            # La homo no vio ninguna coordenada de la pista: rechazo directo
+            # (con pesos unos la hetero opinaria sobre una pista que su
+            # arbitro de pertenencia desconoce por completo).
+            return 0.0
+        weights = l_w / mx
         mem_H = self.mem_dom_H
         ca = mem_H.validate(v_label_q, 0)
         with _ctx.redirect_stdout(_io.StringIO()):
@@ -182,8 +186,11 @@ class Agent:
         import contextlib as _ctx
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
-        weights = (l_w / mx) if mx > 0 else np.ones(len(v_label_q),
-                                                    dtype=float)
+        if mx <= 0:
+            # Mismo rechazo directo que recognize_gated: pista totalmente
+            # desconocida para la homo izquierda.
+            return l_w, 0.0, 0.0
+        weights = l_w / mx
         mem_H = self.mem_dom_H
         ca = mem_H.validate(v_label_q, 0)
         with _ctx.redirect_stdout(_io.StringIO()):
