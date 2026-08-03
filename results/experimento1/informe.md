@@ -10,7 +10,9 @@ decide soporte/rechazo; `token_in_vocabulary` quedó solo como diagnóstico.
 Banco de evaluación: 80 consultas con ground truth (27/27/26). Parámetros EAM:
 ι=0, κ=0, ξ=0, σ=0.1. La calibración ÷mem.mean quedó fuera del scoring final:
 la sección B demuestra que con masas igualadas por el llenado es redundante.
-Fuente canónica de métricas: `results/exp3_corrected_routing/summary.json`.
+Fuente de estas métricas: cifras históricas v3 documentadas en este informe
+(sección A); `results/exp3_corrected_routing/summary.json` actual corresponde
+a la re-corrida de 8 clases y ya no las contiene.
 
 ## Sección A — Protocolo completo (temprana → directorio → madura)
 

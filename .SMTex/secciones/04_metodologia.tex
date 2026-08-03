@@ -77,20 +77,22 @@ Los métodos RS, ST y SS y el prototipo se caracterizaron sobre la misma proyecc
 pista, en dos escenarios:
 
 \begin{enumerate}
-    \item \textbf{Fuera de línea} (prueba de humo reproducible): pistas de un token
-    (\texttt{pear} $\to$ agente \textit{pear}; \texttt{car} $\to$ agente \textit{car})
-    con los cuatro valores de distancia~\eqref{eq:test}, el peso medio del patrón y el
-    tiempo de cómputo por método.
+    \item \textbf{Caracterización distribucional} (guion reproducible
+    \texttt{run\_missing\_cue.py}): cuatro pistas de un token con su agente
+    especialista (\texttt{pear} $\to$ \textit{pear}; \texttt{car} $\to$ \textit{car};
+    \texttt{green} $\to$ \textit{apple}; \texttt{animal} $\to$ \textit{horse}),
+    \textbf{30 corridas por método y pista} con semillas fijas (1000--1029, sembrando
+    los generadores de Python y NumPy por corrida), reportando media, desviación
+    estándar, rango, fracción de corridas con distancia exactamente cero y tiempo
+    medio por corrida.
+    El prototipo es determinista y aporta un único valor por pista.
 
     \item \textbf{En las interfaces}: la aplicación de trazado (consulta
     ``a ripe green pear from the orchard'', suite completa sobre el token ganador) y
     la ventana en tiempo real (frase ``animal with a mane'' $\to$ \textit{horse},
-    prototipo y objeto definido con sus distancias en el panel).
+    prototipo y objeto definido con sus distancias en el panel), como verificación de
+    integración con corridas individuales.
 \end{enumerate}
-
-Al ser RS y ST muestreos estocásticos, sus distancias varían entre ejecuciones; se
-reportan corridas individuales representativas ---señaladas como tales--- y la
-jerarquía cualitativa, que fue estable en todas las ejecuciones observadas.
 
 \subsection{Métricas}
 

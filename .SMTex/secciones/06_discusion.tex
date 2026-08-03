@@ -49,8 +49,9 @@ que hay un objeto (el plano proyectado tiene soporte en todas sus característic
 pero lo que tiene es una superposición que debe decodificarse
 \cite{morales2025missing}.
 El hallazgo más instructivo es el del prototipo emergente: la lectura determinista
-``más probable'' columna a columna es \emph{peor} que una muestra aleatoria con suerte
-y muchísimo peor que cualquier método con prueba (7.0--9.0 contra 0.0 de ST/SS).
+``más probable'' columna a columna es \emph{peor} que el promedio de una muestra
+aleatoria y muchísimo peor que cualquier método con prueba (7.0--9.0 contra medias
+de 0.0--1.2 de ST y 0.0--0.2 de SS sobre 30 corridas).
 La razón es estructural, no estadística: el máximo por columna descarta las
 correlaciones entre características que el registro conjunto sí almacena, de modo que
 el patrón resultante no corresponde a ningún objeto contenido en la memoria.
@@ -87,10 +88,10 @@ operación de memoria se modificó para el modo en vivo.
     \item \textbf{El banco físico es pequeño.} La validación de color usa 24 imágenes
     en condiciones simuladas ancladas a una cámara concreta; una validación con
     múltiples cámaras e iluminaciones queda pendiente.
-    \item \textbf{RS y ST se caracterizaron con corridas individuales.} La jerarquía
-    fue estable en todas las ejecuciones observadas, pero una caracterización
-    distribucional (medias y varianzas sobre $n$ corridas por pista, más pistas
-    ambiguas donde SS deba superar a ST) daría el resultado fino.
+    \item \textbf{La caracterización distribucional cubre cuatro pistas de un
+    token.} Las 30 corridas por método dan medias y desviaciones estables, y la
+    pista \texttt{animal} ya exhibe la separación ST/SS; pero un banco con pistas
+    multi-token y de más dominios daría la curva completa de dificultad.
     \item \textbf{El canal de voz depende de un traductor externo.} Los errores de
     transcripción de Whisper entran al sistema como pistas legítimas; la memoria los
     rechaza si no tienen soporte, pero no puede corregirlos.

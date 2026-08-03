@@ -22,14 +22,17 @@ def label_scale() -> float:
         try:
             _LABEL_SCALE = float(json.loads(_SCALE_PATH.read_text())["scale"])
         except FileNotFoundError:
-            # Solo antes de correr la etapa 4 (que persiste la escala). Avisar:
-            # si llenado y consulta usaran escalas distintas, la cuantización
-            # dejaría de ser comparable. Un archivo CORRUPTO (JSON/clave
-            # inválida) NO se captura aquí a propósito: debe fallar ruidoso en
-            # vez de caer a 0.5 y producir cuantización inconsistente en silencio.
-            print(f"  ADVERTENCIA: {_SCALE_PATH.name} no disponible; usando "
-                  f"escala provisional 0.5. Corre stage4 para la escala real.")
-            _LABEL_SCALE = 0.5
+            # Fallar ruidoso: una escala 0.5 de relleno cuantizaria distinto de
+            # la escala real (p.ej. S=0.18809 con memorias ya llenadas) y
+            # produciria cuantizacion inconsistente en silencio entre llenado
+            # y consulta. Un archivo CORRUPTO (JSON/clave invalida) tampoco se
+            # captura aqui a proposito: debe fallar ruidoso igual.
+            raise FileNotFoundError(
+                f"{_SCALE_PATH} no existe. La escala global de cuantizacion "
+                f"se genera en Etapa 4 (src/stage4_fasttext.py, funcion "
+                f"run()) junto con label_vectors_*.json. Corre "
+                f"'python src/stage4_fasttext.py' antes de usar quantize_binary "
+                f"o label_scale().")
     return _LABEL_SCALE
 
 

@@ -22,7 +22,7 @@ vez al inicio y nunca se escriben; el único estado que aprende en vivo es un
     flecha/.style={-{Stealth[length=2.5mm]}, thick}
 ]
 \node[hilo] (audio) {Hilo de audio\\ \footnotesize 16 kHz mono, bloques de 30 ms};
-\node[caja, below=of audio] (vad) {VAD Silero + Whisper \emph{small}\\
+\node[caja, below=of audio] (vad) {VAD por energía + Whisper \emph{small}\\
     \footnotesize subtítulo parcial $\sim$1/s;\\
     \footnotesize pausa $\sim$600 ms $\to$ transcripción (\texttt{translate})};
 \node[hilo, right=22mm of audio] (vision) {Hilo de visión\\

@@ -7,7 +7,8 @@ Uso:
                                   reporta mic/visión (para verificación)
   python main.py --wavtest f.wav  inyecta un WAV por el camino del mic
                                   (VAD → whisper → ruteo) y termina
-Teclas: q salir · m mute mic.
+Teclas: q salir · m mute mic · t modo voz (early/mature) · e agente de
+        entrada (siguiente clase) · +/= agrandar recuadro · -/_ achicarlo.
 """
 import argparse
 import queue
@@ -195,16 +196,24 @@ def main():
                                    "cls": route["winner"]}
 
                 def _evoke(w=route["winner"], qv=route["q_vecs"]):
-                    res = router.evoke(w, qv)
-                    state["evoked"] = {
-                        "status": "ok", "cls": w,
-                        "img": res["img_bgr"], "token": res["token"],
-                        "weight": res["weight"],
-                        "proto": res["proto_bgr"],
-                        "d_ss": res["d_ss"], "d_proto": res["d_proto"]}
-                    print(f"[recall] {w}: "
-                          f"{'image' if res['img_bgr'] is not None else 'not recognized'} "
-                          f"in {res['ms']:.0f} ms (token {res['token']})")
+                    try:
+                        res = router.evoke(w, qv)
+                        state["evoked"] = {
+                            "status": "ok", "cls": w,
+                            "img": res["img_bgr"], "token": res["token"],
+                            "weight": res["weight"],
+                            "proto": res["proto_bgr"],
+                            "d_ss": res["d_ss"], "d_proto": res["d_proto"]}
+                        print(f"[recall] {w}: "
+                              f"{'image' if res['img_bgr'] is not None else 'not recognized'} "
+                              f"in {res['ms']:.0f} ms (token {res['token']})")
+                    except Exception as e:
+                        # Sin esto, un fallo en router.evoke() deja
+                        # state["evoked"] en {"status": "pending"} para
+                        # siempre y el overlay muestra "recalling..." de
+                        # forma indefinida.
+                        state["evoked"] = {"status": "error", "cls": w}
+                        print(f"[recall] {w}: FAILED ({type(e).__name__}: {e})")
 
                 threading.Thread(target=_evoke, daemon=True).start()
         except queue.Empty:
