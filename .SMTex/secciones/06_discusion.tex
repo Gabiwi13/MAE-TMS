@@ -95,7 +95,17 @@ operación de memoria se modificó para el modo en vivo.
     \item \textbf{El canal de voz depende de un traductor externo.} Los errores de
     transcripción de Whisper entran al sistema como pistas legítimas; la memoria los
     rechaza si no tienen soporte, pero no puede corregirlos.
-    \item \textbf{Herencia de los límites del hemisferio visual.} El 25\% de rechazo
-    residual del experimento base se manifiesta también en vivo; el laboratorio no lo
-    empeora, pero tampoco lo resuelve.
+    \item \textbf{Herencia de los límites y salvedades del hemisferio visual.} El
+    25\% de rechazo residual del experimento base se manifiesta también en vivo; el
+    laboratorio no lo empeora, pero tampoco lo resuelve.
+    Se heredan igualmente dos salvedades metodológicas del experimento base,
+    declaradas en su reporte: la partición de ETH-80 es por imagen y no por objeto
+    físico (solape de instancias del 100\%), de modo que el 75.0\% de enrutamiento
+    ---y con él las cifras visuales de este laboratorio--- mide generalización a
+    \emph{vistas nuevas de objetos conocidos}, no a objetos nuevos; y la tolerancia
+    $\xi = 2$ del directorio visual se seleccionó con un barrido medido sobre ese
+    mismo conjunto de prueba.
+    El estímulo físico de este laboratorio (impresión $+$ cámara) queda de hecho
+    \emph{más lejos} de train que el test digital, lo que hace a la demo un
+    complemento útil de esa salvedad, no una víctima adicional.
 \end{enumerate}

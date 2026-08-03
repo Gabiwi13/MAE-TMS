@@ -176,11 +176,35 @@ de contenido durante la operación madura.
 
 \paragraph{(e) Partición a nivel de imagen.}
 La partición train/test se realizó a nivel de archivo de imagen, no a nivel de objeto
-físico de ETH-80.
+físico de ETH-80; verificado sobre la partición persistida, los diez objetos de cada
+clase aportan vistas a ambos lados (solape de instancias del 100\%,
+Sección~\ref{sec:dataset}).
+Las cifras visuales de este reporte (75.0\% de enrutamiento, evocación top-3) miden
+por tanto generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos
+nuevos.
 Una validación más estricta deberá usar particiones leave-object-out para medir
 generalización a instancias completamente no vistas.
 
-\paragraph{(f) Dependencia de la calidad de la fuente de conocimiento.}
+\paragraph{(f) Selección de modelo e hiperparámetro sobre el conjunto de prueba.}
+Dos elementos del protocolo se eligieron mirando el conjunto de prueba, por ausencia
+de una partición de validación separada: el punto de control del encoder (RMSE mínimo
+sobre test entre $\approx$5 candidatos, Sección~\ref{sec:percepcion}) y la tolerancia
+$\xi = 2$ del directorio visual (barrido medido sobre el enrutamiento de test,
+Sección~\ref{sec:parametros}).
+Ambas selecciones son de alcance acotado y ninguna introduce un mecanismo ajeno a las
+memorias, pero inflan potencialmente las cifras visuales reportadas; la corrección de
+protocolo (partición train/val/test) es directa y queda pendiente.
+
+\paragraph{(g) Regla de admisión de pistas alineada con el vocabulario propio.}
+El rescate de atención léxica (Sección~\ref{sec:pipeline-semantico}) admite tokens
+mal etiquetados por el POS si figuran en el vocabulario que llenó las memorias; su
+efecto medido es de +23.8 puntos sobre las 42 consultas afectadas del banco.
+La regla nunca censura y no decide el ganador, pero decide \emph{quién vota} con un
+criterio derivado del conocimiento del propio sistema; un criterio de rescate
+independiente del vocabulario (p.ej.\ solo la etiqueta POS de diccionario) eliminaría
+la alineación al costo medido.
+
+\paragraph{(h) Dependencia de la calidad de la fuente de conocimiento.}
 El vocabulario de ConceptNet es asimétrico entre clases, y el resultado de
 enriquecimiento muestra que no puede corregirse mecánicamente: el techo de las clases
 de léxico compartido depende de la distintividad de las consultas del banco tanto como
