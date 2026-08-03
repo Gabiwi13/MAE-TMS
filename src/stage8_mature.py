@@ -25,7 +25,7 @@ from quantizer import quantize_binary
 from stage6_interaction import (
     CLASSES, MODELS_DIR, DEVICE,
     load_tme_and_agents, get_nlp, load_decoder, load_all_vectors,
-    tokenize_query, get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
+    tokenize_query, get_fasttext_vector, TEST_QUERIES,
 )
 
 M_LABEL = 16

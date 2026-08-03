@@ -39,6 +39,9 @@ class HomoAssociativeMemory:
     def __init__(self, n: int, m: int,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
+        # Pasar SIEMPRE los 4 parametros: ExperimentSettings escribe sobre
+        # commons.params_defaults (lista global compartida, bug upstream);
+        # una construccion parcial heredaria valores del ultimo barrido.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._am = AssociativeMemory(n=n, m=m, es=es)
@@ -113,6 +116,8 @@ class DirectoryMemory:
         self._n = n
         self._m = m
         self._n_agents = n_agents
+        # Mismo aviso que en HomoAssociativeMemory: pasar los 4 parametros
+        # (ExperimentSettings muta commons.params_defaults).
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._ham = HeteroAssociativeMemory4D(
@@ -138,13 +143,22 @@ class DirectoryMemory:
         proj = self._ham.project(v_q, weights, dim=0)
         return proj[:, 1].copy()
 
+    def _calibrated(self, scores: np.ndarray, mode: str,
+                    eps: float) -> np.ndarray:
+        """Calibracion por masa de registros. mode invalido falla ruidoso:
+        antes cualquier typo distinto de 'linear' caia a sqrt en silencio."""
+        denom = self._counts.astype(float) + eps
+        if mode == "linear":
+            return scores / denom
+        if mode == "sqrt":
+            return scores / np.sqrt(denom)
+        raise ValueError(f"mode desconocido: {mode!r} (usa 'linear' o 'sqrt')")
+
     def predict_normalized(self, v_q: np.ndarray,
                            mode: str = "linear",
                            eps: float = 1.0) -> np.ndarray:
         """Scores calibrados por masa de registros: linear = ÷(count+eps)."""
-        scores = self.predict(v_q)
-        denom = self._counts.astype(float) + eps
-        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
+        return self._calibrated(self.predict(v_q), mode, eps)
 
     def nearest_agent(self, v_q: np.ndarray) -> int:
         """-1 cuando ningun agente tiene señal: el directorio no inventa."""
@@ -181,8 +195,7 @@ class DirectoryMemory:
             scores = proj[:, 1].copy()
         else:
             scores = self.predict(v_q)
-        denom = self._counts.astype(float) + eps
-        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
+        return self._calibrated(scores, mode, eps)
 
     def route(self, v_q: np.ndarray, mode: str = "linear",
               eps: float = 1.0, xi: int = 0) -> int:
@@ -192,6 +205,8 @@ class DirectoryMemory:
         xi>0 usa la lectura eta-tolerante (funciones parciales)."""
         scores = (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
                   if xi > 0 else self.predict_normalized(v_q, mode=mode, eps=eps))
+        # Empate exacto de scores -> indice menor (np.argmax); con lecturas
+        # continuas es practicamente imposible y no se registra por separado.
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
 
     def route_multi(self, cues, mode: str = "linear",

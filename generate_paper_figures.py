@@ -364,11 +364,9 @@ def fig_heatmap(agg):
 def fig_domain_accuracy(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    # NOTE: run_ablation.py's metrics_to_row() currently only emits
-    # mature_acc_{apple,horse,car}_mean columns (not the full 8-class
-    # SYS_CLASSES set). Classes without a column are skipped defensively
-    # rather than raising KeyError; fixing run_ablation.py is out of scope
-    # for this file.
+    # run_ablation.py emite columnas para las 8 clases (itera CLASSES); el
+    # filtrado defensivo se conserva por si se re-procesa un CSV de la era
+    # de 3 clases.
     doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
     x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)
     fig, ax = plt.subplots(figsize=(2 + 1.1 * len(doms_present), 4.5))
@@ -431,8 +429,8 @@ def fig_entropy(agg):
 def fig_registrations(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    # NOTE: run_ablation.py currently only emits mdir_reg_{apple,horse,car}_mean
-    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    # run_ablation.py emite las 8 clases; filtrado defensivo para CSV viejos
+    # (ver fig_domain_accuracy).
     doms_present = [d for d in SYS_CLASSES if f"mdir_reg_{d}_mean" in n80.columns]
     x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)
     fig, ax = plt.subplots(figsize=(2 + 1.1 * len(doms_present), 4.5))
@@ -482,8 +480,8 @@ def fig_early_vs_mature(agg):
 def fig_winner_distribution(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    # NOTE: run_ablation.py currently only emits winner_pct_{apple,horse,car}_mean
-    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    # run_ablation.py emite las 8 clases; filtrado defensivo para CSV viejos
+    # (ver fig_domain_accuracy).
     doms_present = [d for d in SYS_CLASSES if f"winner_pct_{d}_mean" in n80.columns]
     x = np.arange(len(n80))
     fig, ax = plt.subplots(figsize=(10, 4))
@@ -514,8 +512,8 @@ def fig_winner_distribution(agg):
 def fig_summary_table(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    # NOTE: run_ablation.py currently only emits mature_acc_{apple,horse,car}_mean
-    # columns (not the full 8-class SYS_CLASSES set); see fig_domain_accuracy.
+    # run_ablation.py emite las 8 clases; filtrado defensivo para CSV viejos
+    # (ver fig_domain_accuracy).
     doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
     headers = [T["col_cond"], T["col_early"], T["col_fid"], T["col_mature"],
                *[d.capitalize() for d in doms_present], T["col_entropy"]]
