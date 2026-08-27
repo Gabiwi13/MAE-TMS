@@ -106,8 +106,8 @@ def build_label_vectors(cls: str) -> dict:
     labels = json.loads(labels_path.read_text())
     needed = set(labels.keys()) | {cls}
 
-    # Sin fallback: un label sin vector fastText real queda FUERA del
-    # diccionario (y por tanto del llenado). Registrar un vector inventado
+    # Sin fallback, un label sin vector fastText real queda fuera del
+    # diccionario y del llenado. Registrar un vector inventado
     # en la memoria seria fabricar contenido que luego se auto-reconoce.
     result = _stream_lookup(needed, allow_fallback=False)
     _cache.update(result)

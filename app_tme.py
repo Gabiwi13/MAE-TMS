@@ -28,8 +28,8 @@ import plotly.io as pio
 
 # Sistema visual de la app: tema claro (superficie #f7f7fb, paneles blancos,
 # acento índigo). Las figuras Plotly heredan la plantilla clara con fondos
-# transparentes; las DOS animaciones HTML conservan su superficie navy — son
-# paneles tipo «reproductor» con su propia paleta validada en oscuro.
+# transparentes. Las dos animaciones HTML conservan su superficie navy: son
+# paneles de reproductor con su propia paleta, pensada para fondo oscuro.
 pio.templates.default = "plotly_white"
 import torch
 from PIL import Image
@@ -49,9 +49,9 @@ from associative_memory import DirectoryMemory
 
 # Visual constants
 
-# Paleta categórica para la SUPERFICIE CLARA (#f7f7fb), validada con el
-# validador del skill dataviz en orden CLASSES: banda L / croma / CVD
-# (peor par adyacente ΔE 18.6, objetivo ≥12) / contraste (los 8 ≥ 3:1) — PASS.
+# Paleta categórica para la superficie clara (#f7f7fb), en orden CLASSES.
+# Comprobada en banda de luminosidad, croma, visión de color (peor par
+# adyacente ΔE 18.6, objetivo >= 12) y contraste (los 8 por encima de 3:1).
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#17a24f",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
                 "pear": "#85980f", "tomato": "#b3271e"}
@@ -1935,12 +1935,11 @@ def main():
         initial_sidebar_state="expanded",
     )
 
-    # Sistema de diseño CLARO: página #f7f7fb, paneles blancos, tinta
+    # Sistema de diseño claro: página #f7f7fb, paneles blancos, tinta
     # #1c1e33, muted #5a5e7d, acento índigo #4653c9, ámbar #8a6400 para
-    # cifras acentuadas. La paleta categórica de 8 clases (DOMAIN_COLOR)
-    # está VALIDADA con el validador del skill dataviz sobre esta
-    # superficie (lightness band / chroma / CVD / contraste: ALL PASS).
-    # Las animaciones HTML conservan su superficie navy propia.
+    # cifras acentuadas. La paleta de 8 clases (DOMAIN_COLOR) se comprobó
+    # sobre esta superficie en luminosidad, croma, visión de color y
+    # contraste. Las animaciones HTML usan su propia superficie navy.
     st.markdown("""<style>
       :root{ --bg:#f7f7fb; --panel:#ffffff; --panel2:#eef0f8;
              --border:#d9dcea; --ink:#1c1e33; --muted:#5a5e7d;

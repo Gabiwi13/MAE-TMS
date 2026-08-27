@@ -365,7 +365,7 @@ def fig_domain_accuracy(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
     # run_ablation.py emite columnas para las 8 clases (itera CLASSES); el
-    # filtrado defensivo se conserva por si se re-procesa un CSV de la era
+    # filtrado defensivo cubre el caso de re-procesar un CSV antiguo
     # de 3 clases.
     doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
     x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)

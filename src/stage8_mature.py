@@ -68,8 +68,8 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
                 "routed": False, "scores": [0.0] * len(CLASSES),
                 "rejected": True, "reason": "no_representable_tokens"}
 
-    # La decisión multi-pista la toma la MAE (DirectoryMemory.route_multi):
-    # suma calibrada B1 por token + argmax dentro de la memoria.
+    # La decision multi-pista la toma DirectoryMemory.route_multi: suma
+    # calibrada por token y argmax dentro de la memoria.
     dest_idx, agent_scores = entry_agent.mem_dir.route_multi(
         token_vectors.values(), mode="linear")
 
