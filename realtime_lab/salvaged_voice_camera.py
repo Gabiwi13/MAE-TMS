@@ -1,5 +1,5 @@
-"""Código de voz/cámara/en-vivo extirpado de app_tme.py (16 jul 2026)
-para el experimento aislado en tiempo real. Todo VALIDADO en la app:
+"""Código de voz, cámara y modo en vivo sacado de app_tme.py para el
+experimento aislado en tiempo real. Funcionó en la app:
 - load_whisper: GPU vía preload ctypes de DLLs nvidia-pip + fallback CPU
 - transcribe_query: task=translate (es/en -> en) + reintento sin VAD
 - wav_stats/_amplify_wav: detección de silencio + rescate de ganancia
