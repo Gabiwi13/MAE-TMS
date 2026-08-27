@@ -24,6 +24,13 @@ import numpy as np
 import streamlit as st
 import streamlit.components.v1 as components
 import plotly.graph_objects as go
+import plotly.io as pio
+
+# Sistema visual de la app: tema claro (superficie #f7f7fb, paneles blancos,
+# acento índigo). Las figuras Plotly heredan la plantilla clara con fondos
+# transparentes; las DOS animaciones HTML conservan su superficie navy — son
+# paneles tipo «reproductor» con su propia paleta validada en oscuro.
+pio.templates.default = "plotly_white"
 import torch
 from PIL import Image
 from torchvision import transforms
@@ -31,9 +38,9 @@ from torchvision import transforms
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from quantizer import quantize_binary
+from quantizer import quantize_binary, label_scale
 from stage6_interaction import (
-    CLASSES, AGENT_LIST, MODELS_DIR, Agent,
+    CLASSES, AGENT_LIST, MODELS_DIR, Agent, ACCEPTED_POS,
     get_nlp, load_all_vectors,
     tokenize_query, get_fasttext_vector, token_in_vocabulary,
     M_LABEL, N, P_LATENT, Q_LATENT,
@@ -42,15 +49,28 @@ from associative_memory import DirectoryMemory
 
 # Visual constants
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
-DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗"}
+# Paleta categórica para la SUPERFICIE CLARA (#f7f7fb), validada con el
+# validador del skill dataviz en orden CLASSES: banda L / croma / CVD
+# (peor par adyacente ΔE 18.6, objetivo ≥12) / contraste (los 8 ≥ 3:1) — PASS.
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#17a24f",
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#85980f", "tomato": "#b3271e"}
+# Los mismos 8 dominios ajustados para la superficie navy (#101332) de las
+# animaciones HTML. Es la misma identidad por clase, con el tono adaptado a
+# cada superficie.
+DOMAIN_COLOR_DARK = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                     "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                     "pear": "#7d8f22", "tomato": "#c0392b"}
+DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
+                "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
-NODE_POS = {
-    "TME":   (0.0,  0.0),
-    "apple": (-2.0, 0.0),
-    "horse": (1.0,  1.7),
-    "car":   (1.0, -1.7),
-}
+# Posiciones del grafo de ruteo: TME al centro y los agentes repartidos en una
+# elipse. Se generan desde CLASSES para que sirvan con cualquier numero de
+# agentes.
+NODE_POS = {"TME": (0.0, 0.0)}
+for _i, _cls in enumerate(CLASSES):
+    _ang = 2.0 * np.pi * _i / len(CLASSES) + np.pi / 2.0
+    NODE_POS[_cls] = (round(2.3 * np.cos(_ang), 3), round(1.9 * np.sin(_ang), 3))
 
 
 # Model loading (cached — runs once per session)
@@ -132,8 +152,9 @@ def load_experiment_state():
 @st.cache_resource
 def train_mdir_n80(normalized: bool):
     """
-    Train a fresh M_dir IN MEMORY by replaying the ablation's 80-query bank
-    (run_ablation.ALL_QUERIES — read-only import) through the early phase.
+    Train a fresh M_dir IN MEMORY by replaying the first 80 queries of the
+    8-class evaluation bank (eval_bank.ALL_QUERIES, 10 per class — read-only
+    import) through the early phase.
 
     normalized=True routes each query with the official gated M_dom score
     (recognize_gated, gate de containment) → clean associations; False uses
@@ -169,12 +190,8 @@ def train_mdir_n80(normalized: bool):
             v_q = quantize_binary(np.asarray(v, dtype=np.float32), M_LABEL)
             tok_vecs[tok] = v_q
             for cls in CLASSES:
-                ag  = agents[cls]
-                l_w = ag.mem_dom_L.recog_weights(v_q)
-                h = (ag.recognize_gated(v_q) if normalized
-                     else float(ag.mem_dom_H.recognize_from_left(
-                         v_q, left_weights=l_w)))
-                scores[cls] += h
+                _, h_raw, h_gated = agents[cls].recognize_both(v_q)
+                scores[cls] += h_gated if normalized else h_raw
         # Rechazo EAM: sin pistas representables o sin soporte, no se asigna
         # ganador por desempate (apple ganaría siempre con scores en cero).
         if not tok_vecs or max(scores.values()) == 0.0:
@@ -255,16 +272,18 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     # no stochastic sampling, runs in milliseconds.
     per_token = {}
     for tok, raw_v in tok_vecs.items():
-        sign_v = np.where(np.sign(raw_v) == 0, 1.0, np.sign(raw_v))
-        q_v    = quantize_binary(raw_v, M_LABEL)
+        # Paso intermedio de quantize_binary: v/S recortado a [-1, 1] con la
+        # escala global S.
+        scaled_v = np.clip(raw_v / label_scale(), -1.0, 1.0)
+        q_v      = quantize_binary(raw_v, M_LABEL)
 
         per_agent = {}
         for cls in CLASSES:
             ag  = agents[cls]
-            l_w = ag.mem_dom_L.recog_weights(q_v)
-            h_raw = float(ag.mem_dom_H.recognize_from_left(q_v, left_weights=l_w))
+            # h_raw y h_gated salen de la misma llamada a project().
+            l_w, h_raw, h_gated = ag.recognize_both(q_v)
             mem_mean = float(ag.mem_dom_H.mean)
-            h_score = ag.recognize_gated(q_v) if normalize else h_raw
+            h_score = h_gated if normalize else h_raw
             per_agent[cls] = {
                 "l_weights":     l_w,
                 "l_mean":        float(l_w.mean()),
@@ -280,10 +299,10 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             }
 
         per_token[tok] = {
-            "raw_vec":   raw_v,
-            "sign_vec":  sign_v,
-            "q_vec":     q_v,
-            "per_agent": per_agent,
+            "raw_vec":    raw_v,
+            "scaled_vec": scaled_v,
+            "q_vec":      q_v,
+            "per_agent":  per_agent,
         }
 
     # TME decision (after pass 1)
@@ -308,6 +327,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             "normalized": bool(normalize), "rejected": True,
             "reason": "mae_no_support",
             "final_recalled_img": None, "final_recalled_tok": None,
+            "missing_cue": None,
         }
     winner     = max(avg_scores, key=avg_scores.get)
     winner_idx = AGENT_LIST.index(winner)
@@ -315,7 +335,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     # PASS 2: full recall for winner only (slow)
     # recall_from_left calls recall_with_sampling_n_search (127 stochastic
     # iterations + hill-climbing). We do this ONLY for the winner agent,
-    # not all 3 — reduces calls from n_tokens×3 to n_tokens.
+    # not all K — reduces calls from n_tokens×len(CLASSES) to n_tokens.
     final_recalled_img = None
     final_recalled_tok = None
     for tok, td in per_token.items():
@@ -338,6 +358,42 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
             final_recalled_img = rec_img
             final_recalled_tok = tok
 
+    # Pista faltante (Morales & Pineda 2025): para el token de la imagen
+    # final se computan las tres vías de recuperación del paper — Random
+    # Sample (RS), Sample-and-Test (ST) y Sample-and-Search (SS, el recall
+    # oficial de arriba) — más el prototipo emergente (argmax del plano
+    # proyectado). Todas comparables por la distancia retro-proyectada a la
+    # pista, que es el "test" del paper.
+    missing_cue = None
+    if final_recalled_img is not None:
+        td_f  = per_token[final_recalled_tok]
+        q_v_f = td_f["q_vec"]
+        mem_w = agents[winner].mem_dom_H
+        ss_q  = td_f["per_agent"][winner]["recalled_q"]
+
+        def _mc_entry(r_q, dist, tested=None):
+            try:
+                img = _decode(r_q, g_min, g_max, decoder)
+            except Exception:
+                img = None
+            return {"r_q": r_q, "img": img,
+                    "distance": float(dist), "tested": tested}
+
+        proto_q, projection = mem_w.prototype_from_left(q_v_f)
+        rs_q, _, _, _, rs_stats = mem_w.recall_from_left(q_v_f, method="random")
+        st_q, _, _, _, st_stats = mem_w.recall_from_left(q_v_f, method="sample_test")
+        missing_cue = {
+            "token":         final_recalled_tok,
+            "projection":    projection,
+            "random":        _mc_entry(rs_q, rs_stats[1], rs_stats[0]),
+            "sample_test":   _mc_entry(st_q, st_stats[1], st_stats[0]),
+            "sample_search": _mc_entry(
+                ss_q, mem_w.backward_distance_from_left(q_v_f, ss_q)),
+        }
+        if proto_q is not None:
+            missing_cue["prototype"] = _mc_entry(
+                proto_q, mem_w.backward_distance_from_left(q_v_f, proto_q))
+
     return {
         "query":              query,
         "spacy_tokens":       spacy_tokens,
@@ -356,6 +412,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         "reason":             "mae_support",
         "final_recalled_img": final_recalled_img,
         "final_recalled_tok": final_recalled_tok,
+        "missing_cue":        missing_cue,
     }
 
 
@@ -398,7 +455,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         score  = avg_scores.get(cls, 0.0)
         norm   = score / max(max_score, 1e-9)
         is_win = cls == winner
-        color  = DOMAIN_COLOR[cls] if is_win else "#c0c0c0"
+        color  = DOMAIN_COLOR[cls] if is_win else "#c3c6d8"
         width  = 7 if is_win else max(1.0, 3.0 * norm)
 
         fig.add_trace(go.Scatter(
@@ -410,8 +467,8 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
             x=(x0 + x1) / 2, y=(y0 + y1) / 2,
             text=f"{score:.4f}",
             showarrow=False,
-            font=dict(size=10, color=color if is_win else "#999"),
-            bgcolor="white", opacity=0.9,
+            font=dict(size=10, color=color if is_win else "#5a5e7d"),
+            bgcolor="#ffffff", opacity=0.92,
         )
 
     if highlight_path:
@@ -420,12 +477,12 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         fig.add_annotation(
             x=tx, y=ty, ax=fx, ay=fy,
             xref="x", yref="y", axref="x", ayref="y",
-            arrowhead=3, arrowwidth=5, arrowcolor="#f39c12", text="",
+            arrowhead=3, arrowwidth=5, arrowcolor="#d97706", text="",
         )
 
     for name, (nx, ny) in NODE_POS.items():
         is_win = name == winner
-        color  = DOMAIN_COLOR.get(name, "#2c3e50")
+        color  = DOMAIN_COLOR.get(name, "#4653c9")
         label  = f"{DOMAIN_EMOJI.get(name, '')} {name}"
         fig.add_trace(go.Scatter(
             x=[nx], y=[ny],
@@ -434,7 +491,7 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
                 size=33 if name == "TME" else (30 if is_win else 22),
                 color=color,
                 line=dict(width=5 if is_win else 2,
-                          color="gold" if is_win else "white"),
+                          color="#c9930a" if is_win else "#c3c6d8"),
             ),
             text=[label],
             textposition=("middle left" if nx < 0
@@ -446,11 +503,11 @@ def _routing_graph(avg_scores, winner, title="", highlight_path=None):
         ))
 
     fig.update_layout(
-        xaxis=dict(visible=False, range=[-3.2, 2.8]),
+        xaxis=dict(visible=False, range=[-3.4, 3.4]),
         yaxis=dict(visible=False, range=[-2.8, 2.8]),
         height=360, margin=dict(l=10, r=10, t=50, b=10),
         title=dict(text=title, x=0.5, font=dict(size=14)),
-        plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -466,7 +523,7 @@ def _mdir_bar(counts, qn):
         textposition="outside",
     ))
     total = counts.sum()
-    ideal = total / 3.0 if total > 0 else 0.0
+    ideal = total / len(CLASSES) if total > 0 else 0.0
     if ideal > 0:
         fig.add_hline(y=ideal, line_dash="dot", line_color="#7f8c8d",
                       annotation_text=f"Ideal ({ideal:.0f})",
@@ -476,7 +533,7 @@ def _mdir_bar(counts, qn):
                    x=0.5, font=dict(size=13)),
         yaxis_title="Cumulative registrations",
         height=280, margin=dict(l=20, r=20, t=50, b=20),
-        plot_bgcolor="white", paper_bgcolor="#f8f9fa", showlegend=False,
+        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", showlegend=False,
     )
     return fig
 
@@ -622,10 +679,21 @@ body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
 </div>
 <script>
 const D = __DATA__;
-const AG = ["apple","horse","car"];
+// Agentes desde los datos reales (antes hardcodeados a apple/horse/car:
+// con 8 clases el JS reventaba si el ganador/entrada no estaba en la lista).
+const AG = D.agents;
 const $ = id => document.getElementById(id);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const LEFT = {apple:"16%", horse:"50%", car:"84%"};
+// Layout dinamico: hasta 4 agentes por fila (8 agentes -> dos filas).
+const PER_ROW = AG.length > 4 ? Math.ceil(AG.length/2) : AG.length;
+const N_ROWS  = Math.ceil(AG.length / PER_ROW);
+const ROW_H   = 158;
+const POS = {};
+AG.forEach((c,i)=>{
+  const row = Math.floor(i/PER_ROW), col = i%PER_ROW;
+  const inRow = Math.min(PER_ROW, AG.length - row*PER_ROW);
+  POS[c] = {left:(100*(col+0.5)/inRow)+'%', row:row};
+});
 let running = false;
 
 function centerOf(el, ref){
@@ -661,17 +729,21 @@ function setup(){
   document.querySelectorAll('.dot').forEach(d=>d.remove());
   const net=$('net');
   net.querySelectorAll('.agent').forEach(a=>a.remove());
+  net.style.height=(362+(N_ROWS-1)*ROW_H)+'px';
   const H=net.clientHeight;
+  const BIT=AG.length>4?11:15, BFS=AG.length>4?7:9;
+  const MNAME=AG.length<=4?'<span class="mname">M_dir</span>':'';
   for(const cls of AG){
     const d=document.createElement('div'); d.className='agent'; d.id='ag-'+cls;
-    d.style.left=LEFT[cls]; d.style.top=(H-168)+'px';
+    d.style.left=POS[cls].left;
+    d.style.top=(H-168-(N_ROWS-1-POS[cls].row)*ROW_H)+'px';
     d.innerHTML=`<h4>${D.emoji[cls]} ${cls}</h4>
       <div class="barwrap"><div class="bar" id="bar-${cls}"
            style="background:${D.colors[cls]}"></div></div>
       <div class="score" id="sc-${cls}">&mdash;</div>
-      <div class="mdir"><span class="mname">M_dir</span>
+      <div class="mdir">${MNAME}
         <div class="onehot" id="oh-${cls}">${
-          AG.map(a=>`<div class="bit" data-a="${a}">${a[0].toUpperCase()}</div>`).join('')
+          AG.map(a=>`<div class="bit" data-a="${a}" style="width:${BIT}px;height:${BIT}px;font-size:${BFS}px">${a[0].toUpperCase()}</div>`).join('')
         }</div>
         <span class="mcount" id="mc-${cls}">+0</span></div>`;
     net.appendChild(d);
@@ -816,8 +888,10 @@ async function run(){
   }
 
   // ── P6: AMR scores ──
+  // En maduro las barras son la LECTURA del directorio de la entrada (una
+  // operación de memoria, sin broadcast); en temprano sí es cómputo por agente.
   lbl.textContent = isMature
-    ? '6 / M_dir scores per agent (B1 normalized)'
+    ? '6 / lectura B1 del M_dir de la entrada: evidencia por agente (sin broadcast)'
     : '6 / M_dom_L weights → M_dom_H scores';
   const mx=Math.max(...AG.map(c=>D.avg[c]), 1e-9);
   for(const cls of AG){
@@ -870,7 +944,7 @@ async function run(){
     tb.style.opacity=1;
     // losers wake up to learn — everyone registers the association
     for(const cls of AG) $('ag-'+cls).classList.add('relearn');
-    // association pairs fly TME → all 3 agents
+    // association pairs fly TME → ALL agents (los perdedores también registran)
     for(const cls of AG){
       const p=document.createElement('div'); p.className='pair';
       p.innerHTML='v_q&rarr;'+D.emoji[D.winner];
@@ -948,7 +1022,9 @@ window.addEventListener('load', ()=>setTimeout(run, 300));
 
 def build_flow_animation(trace) -> str:
     """Serialize real trace data into the animated HTML component."""
-    accepted_pos = {"NOUN", "ADJ", "PROPN"}
+    # Solo DISPLAY de la razon de descarte: la tokenizacion real (con rescate
+    # de POS) ya decidio "keep" via tokens_representable.
+    accepted_pos = ACCEPTED_POS
     representable = trace.get("tokens_representable", trace["tokens_known"])
     unrepresentable = trace.get("tokens_unrepresentable", trace["tokens_unknown"])
     words = []
@@ -974,27 +1050,33 @@ def build_flow_animation(trace) -> str:
             "vq": [int(x) for x in td["q_vec"][::5]],   # 60-dim sample
         })
 
+    # El trace vive en session_state: memoizar el PNG/base64 ahí evita
+    # re-codificarlo en cada rerun de Streamlit.
+    if trace.get("final_b64") is None and trace["final_recalled_img"] is not None:
+        trace["final_b64"] = _img_b64(trace["final_recalled_img"])
+
     data = {
         "mode":     "early",
         "entry":    None,
         "redirect": False,
+        "agents": list(CLASSES),
         "query":  trace["query"],
         "words":  words,
         "tokens": tokens,
         "avg":    {cls: float(trace["avg_scores"][cls]) for cls in CLASSES},
         "winner": trace["winner"],
         "ntok":   int(trace["n_tokens"]),
-        "colors": DOMAIN_COLOR,
+        "colors": DOMAIN_COLOR_DARK,
         "emoji":  DOMAIN_EMOJI,
-        "img":    (_img_b64(trace["final_recalled_img"])
-                   if trace["final_recalled_img"] is not None else None),
+        "img":    trace.get("final_b64"),
     }
     return _ANIM_TEMPLATE.replace("__DATA__", json.dumps(data))
 
 
 def _decompose_anim_data(query, nlp, vectors_cache):
     """Word/token serialization shared by the mature-phase animation."""
-    accepted_pos = {"NOUN", "ADJ", "PROPN"}
+    # Igual que en build_flow_animation: display de la razon, no decision.
+    accepted_pos = ACCEPTED_POS
     doc = nlp(query.lower())
     tokens  = tokenize_query(query, nlp)
     # Sin filtro léxico: "keep" = token representable por fastText (entra como
@@ -1040,17 +1122,313 @@ def build_mature_animation(query, words, toks, entry, dest,
         "mode":     "mature",
         "entry":    entry,
         "redirect": entry != dest,
+        "agents":   list(CLASSES),
         "query":    query,
         "words":    words,
         "tokens":   toks,
         "avg":      {cls: float(scores.get(cls, 0.0)) for cls in CLASSES},
         "winner":   dest,
         "ntok":     len(toks),
-        "colors":   DOMAIN_COLOR,
+        "colors":   DOMAIN_COLOR_DARK,
         "emoji":    DOMAIN_EMOJI,
         "img":      _img_b64(img_arr) if img_arr is not None else None,
     }
     return _ANIM_TEMPLATE.replace("__DATA__", json.dumps(data))
+
+
+# Animated visual-hemisphere flow (imagen → etiquetas), estilo fase madura:
+# entrada por un agente cualquiera → lectura de SU PROPIO directorio visual
+# (M_dir_R per-agente, B1) → redirige al especialista o rechaza. Sin broadcast:
+# los demás agentes no procesan la pista. Componente autocontenido en su propio
+# iframe; no reutiliza _ANIM_TEMPLATE ni los builders de la fase de texto.
+_ANIM_IMG2LBL_TEMPLATE = r"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:'Segoe UI',system-ui,sans-serif}
+#anim{position:relative;width:100%;max-width:1000px;margin:0 auto;
+  background:linear-gradient(160deg,#0e1130 0%,#1b1f4b 55%,#101332 100%);
+  border-radius:16px;padding:22px 24px 18px;color:#e8eaf6;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.phase-label{position:absolute;top:16px;right:22px;font-size:11px;letter-spacing:2px;
+  color:#8d93c8;text-transform:uppercase;text-align:right}
+#replay{position:absolute;top:12px;left:16px;background:#2b3060;border:1px solid #4a508f;
+  color:#cfd4ff;border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;z-index:9}
+#replay:hover{background:#3a4080}
+#top{display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-top:30px;min-height:132px}
+.stagebox{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cap{font-size:10px;letter-spacing:1px;color:#8d93c8;text-transform:uppercase}
+#cue{opacity:0;transition:opacity .6s}
+#cueimg{width:96px;height:96px;border-radius:10px;border:2px solid #6b79e8;
+  box-shadow:0 0 16px rgba(107,121,232,.4);object-fit:cover}
+.arrow{font-size:26px;color:#5c6190}
+#eye{width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3d4db7,#1d2566);
+  border:3px solid #6b79e8;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;color:#fff;font-weight:700}
+#eye .ico{font-size:24px;line-height:1}
+#eye small{font-size:8px;color:#aab3ff;font-weight:400;margin-top:2px}
+#eye.pulse{animation:pulse .9s ease-out 2}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(120,140,255,.8)}
+  100%{box-shadow:0 0 0 30px rgba(120,140,255,0)}}
+#latentwrap{transition:opacity .5s}
+.grid{display:grid;grid-template-columns:repeat(16,10px);gap:1px}
+.cell{width:10px;height:10px;border-radius:2px;background:#1a1d3d;opacity:0;
+  transform:scale(0);transition:all .25s}
+.cell.on{opacity:1;transform:scale(1)}
+#net{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:16px}
+.agent{width:212px;background:#181c44;border:2px solid #303670;border-radius:14px;
+  padding:11px 13px;transition:all .5s}
+.agent h4{font-size:15px;display:flex;align-items:center;gap:6px;color:#fff}
+.agent .sub{font-size:9px;color:#8d93c8;margin-top:2px;letter-spacing:.5px}
+.agent .crown{margin-left:auto;opacity:0;transform:scale(0);
+  transition:all .5s cubic-bezier(.3,1.6,.4,1)}
+.agent .crown.show{opacity:1;transform:scale(1.25)}
+.agent .barwrap{height:9px;background:#0d0f29;border-radius:5px;margin-top:9px;overflow:hidden}
+.agent .bar{height:100%;width:0%;border-radius:5px;transition:width 1.1s cubic-bezier(.2,.8,.3,1)}
+.agent .score{font-family:monospace;font-size:12px;color:#aab3ff;margin-top:4px;text-align:right}
+.agent.win{border-color:#ffd54f;box-shadow:0 0 26px rgba(255,213,79,.45);transform:scale(1.05)}
+.agent.lose{opacity:.4;filter:saturate(.4)}
+.agent.reject{border-color:#ff6b6b;box-shadow:0 0 18px rgba(255,107,107,.35)}
+.agent.entry{border-color:#7da4ff;box-shadow:0 0 18px rgba(125,164,255,.4)}
+.agent .tag{font-size:8px;letter-spacing:1px;color:#7da4ff;opacity:0;transition:opacity .4s}
+.agent .tag.show{opacity:1}
+#hubwrap{display:flex;justify-content:center;margin-top:14px}
+#hub{padding:10px 18px;border-radius:12px;text-align:center;
+  background:radial-gradient(circle at 35% 30%,#3d4db7,#1d2566);
+  border:2px solid #6b79e8;color:#fff;font-weight:700;font-size:14px;transition:all .5s}
+#hub small{display:block;font-size:9px;color:#aab3ff;font-weight:400;margin-top:2px}
+#hub.pulse{animation:pulse .9s ease-out 2}
+#labels{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
+  min-height:42px;margin-top:14px}
+.lchip{padding:6px 15px;border-radius:16px;background:#0e7c66;color:#fff;font-size:15px;
+  font-weight:600;box-shadow:0 0 14px rgba(36,222,166,.4);opacity:0;
+  transform:translateY(-12px) scale(.8);transition:all .45s cubic-bezier(.2,.8,.3,1.2)}
+.lchip.show{opacity:1;transform:none}
+#result{display:flex;align-items:center;gap:16px;justify-content:center;min-height:118px;
+  margin-top:8px;opacity:0;transform:translateY(16px);transition:all .7s}
+#result.show{opacity:1;transform:none}
+#result img{width:100px;height:100px;border-radius:10px;border:2px solid #6b79e8;object-fit:cover}
+#result img.recon{border-color:#ffd54f;box-shadow:0 0 22px rgba(255,213,79,.4)}
+#result .arrowbig{font-size:30px;color:#ffd54f}
+#result .txt{font-size:14px;line-height:1.6;max-width:520px}
+#result .txt b{color:#ffd54f}
+#result .txt code{background:#0e7c66;color:#fff;padding:1px 7px;border-radius:8px;font-size:13px}
+#result .muted{color:#8d93c8;font-size:12px}
+.dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#ffd54f;
+  box-shadow:0 0 12px #ffd54f;z-index:5;transition:all .8s cubic-bezier(.45,.05,.4,1);
+  transform:translate(-50%,-50%)}
+</style></head><body>
+<div id="anim">
+  <button id="replay" onclick="run()">&#8635; Replay</button>
+  <div class="phase-label" id="plabel"></div>
+  <div id="top">
+    <div class="stagebox" id="cue"><div class="cap">imagen (pista)</div><img id="cueimg"></div>
+    <div class="arrow">&rarr;</div>
+    <div id="eye"><div class="ico">&#128065;</div><small>ResNet18</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stagebox" id="latentwrap"><div class="cap">z_q &#8712; [0,31]&#8310;&#8308;</div>
+      <div class="grid" id="latentgrid"></div></div>
+  </div>
+  <div id="hubwrap"><div id="hub">M_dir_R<small>directorio visual del agente &middot; B1</small></div></div>
+  <div id="net"></div>
+  <div id="labels"></div>
+  <div id="result"></div>
+</div>
+<script>
+const D=__DATA__;
+// Agentes desde los datos reales (antes hardcodeados a apple/horse/car).
+const AG=D.agents;
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let running=false;
+function centerOf(el,ref){const a=el.getBoundingClientRect(),b=ref.getBoundingClientRect();
+  return [a.left+a.width/2-b.left,a.top+a.height/2-b.top];}
+function cellColor(v){const t=v/31,a=[26,29,61],b=[124,164,255];
+  const c=a.map((x,i)=>Math.round(x+(b[i]-x)*t));return `rgb(${c[0]},${c[1]},${c[2]})`;}
+function countUp(el,target,dur){const t0=performance.now();
+  function f(t){const p=Math.min(1,(t-t0)/dur);el.textContent=(target*p).toFixed(3);
+  if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+function mkdot(c,color){const d=document.createElement('div');d.className='dot';
+  d.style.left=c[0]+'px';d.style.top=c[1]+'px';d.style.background=color;
+  d.style.boxShadow='0 0 12px '+color;return d;}
+function move(d,c){requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  d.style.left=c[0]+'px';d.style.top=c[1]+'px';}));}
+
+function setup(){
+  const net=$('net');net.innerHTML='';
+  for(const cls of AG){
+    const d=document.createElement('div');d.className='agent';d.id='ag-'+cls;
+    d.innerHTML=`<h4>${D.emoji[cls]} ${cls}<span class="crown" id="cr-${cls}">&#128081;</span></h4>
+      <div class="sub">evidencia que el directorio de ${D.entry} le asigna</div>
+      <div class="tag" id="tag-${cls}">ENTRADA</div>
+      <div class="barwrap"><div class="bar" id="bar-${cls}" style="background:${D.colors[cls]}"></div></div>
+      <div class="score" id="sc-${cls}">&mdash;</div>`;
+    net.appendChild(d);
+  }
+  // El hub es el directorio DEL AGENTE DE ENTRADA (per-agente), no un nodo
+  // central compartido tipo TME.
+  $('hub').innerHTML='M_dir_R de '+D.entry+
+    '<small>directorio visual propio &middot; lectura B1 (&xi;=2)</small>';
+  const g=$('latentgrid');g.innerHTML='';
+  for(let i=0;i<D.latent.length;i++){const c=document.createElement('div');c.className='cell';g.appendChild(c);}
+  $('cueimg').src='data:image/png;base64,'+D.queryImg;
+  $('labels').innerHTML='';$('result').innerHTML='';$('result').classList.remove('show');
+  $('cue').style.opacity=0;$('eye').classList.remove('pulse');$('latentwrap').style.opacity=.25;
+  $('hub').classList.remove('pulse');
+  document.querySelectorAll('.dot').forEach(x=>x.remove());
+}
+
+function showResult(rejected){
+  const res=$('result');let inner='';
+  inner+=`<img src="data:image/png;base64,${D.queryImg}" title="entrada">`;
+  if(rejected){
+    inner+=`<div class="txt"><b style="color:#ff6b6b">RECHAZADA</b><br>`+
+      `<span class="muted">el directorio visual M_dir_R no tiene soporte &middot; `+
+      `ning&uacute;n especialista lo conoce &middot; el grupo no inventa referente</span></div>`;
+  }else{
+    inner+=`<div class="arrowbig">&rarr;</div>`;
+    if(D.reconImg)inner+=`<img class="recon" src="data:image/png;base64,${D.reconImg}" title="reconstruccion">`;
+    const route=D.redirect
+      ? `${D.emoji[D.entry]} ${D.entry} &rarr; redirige a <b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b>`
+      : `<b>${D.emoji[D.winner]} ${D.winner.toUpperCase()}</b> (entrada = especialista)`;
+    inner+=`<div class="txt">${route}`+
+      `<br>etiquetas: ${D.labels.map(w=>'<code>'+w+'</code>').join(' ')}`+
+      `<br><span class="muted">la reconstrucci&oacute;n la evoca la MAE (no es la entrada)</span></div>`;
+  }
+  res.innerHTML=inner;res.classList.add('show');
+}
+
+async function run(){
+  if(running)return;running=true;setup();
+  const lbl=$('plabel'),anim=$('anim');
+
+  lbl.textContent='1 / percepción (imagen de entrada)';
+  $('cue').style.opacity=1;await sleep(750);
+
+  lbl.textContent='2 / ResNet18 (ojo) → z ∈ ℝ⁶⁴';
+  {const dot=mkdot(centerOf($('cueimg'),anim),'#7da4ff');anim.appendChild(dot);
+   move(dot,centerOf($('eye'),anim));await sleep(800);dot.remove();}
+  $('eye').classList.add('pulse');await sleep(500);
+
+  lbl.textContent='3 / cuantización z → z_q ∈ [0,31]⁶⁴';
+  {const dot=mkdot(centerOf($('eye'),anim),'#9d7bff');anim.appendChild(dot);
+   move(dot,centerOf($('latentgrid'),anim));await sleep(750);dot.remove();}
+  $('latentwrap').style.opacity=1;
+  const cells=$('latentgrid').querySelectorAll('.cell');
+  for(let i=0;i<cells.length;i++){cells[i].style.background=cellColor(D.latent[i]);
+    cells[i].classList.add('on');if(i%4===0)await sleep(6);}
+  await sleep(500);
+
+  // P4: z_q llega a un agente de entrada cualquiera
+  lbl.textContent='4 / z_q llega al agente de entrada ('+D.entry+')';
+  $('ag-'+D.entry).classList.add('entry');$('tag-'+D.entry).classList.add('show');
+  {const dot=mkdot(centerOf($('latentgrid'),anim),D.colors[D.entry]);anim.appendChild(dot);
+   move(dot,centerOf($('ag-'+D.entry),anim));await sleep(850);dot.remove();}
+
+  // P5: la entrada consulta SU PROPIO directorio visual (lectura interna:
+  // los demás agentes NO reciben la pista ni procesan nada — a diferencia
+  // del broadcast de la fase temprana).
+  lbl.textContent='5 / '+D.entry+' consulta SU directorio visual M_dir_R';
+  {const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#7da4ff');anim.appendChild(dot);
+   move(dot,centerOf($('hub'),anim));await sleep(800);dot.remove();}
+  $('hub').classList.add('pulse');await sleep(500);
+
+  // P6: LECTURA del directorio — una sola operación de memoria devuelve la
+  // evidencia registrada por especialista. Las barras muestran el CONTENIDO
+  // del directorio, no cómputo de los agentes; por eso NO vuelan puntos
+  // hacia ellos (eso sería un broadcast, que aquí no existe).
+  lbl.textContent='6 / lectura B1: evidencia registrada por especialista (sin broadcast)';
+  $('hub').classList.add('pulse');
+  const mx=Math.max(...AG.map(c=>D.scores[c]),1e-9);
+  for(const cls of AG){$('bar-'+cls).style.width=(100*D.scores[cls]/mx)+'%';
+    countUp($('sc-'+cls),D.scores[cls],900);}
+  await sleep(1250);
+
+  // P7: rechazo, o redirección punto a punto al especialista
+  if(D.winner===null){
+    lbl.textContent='7 / RECHAZADA — M_dir_R sin soporte: nadie lo conoce';
+    for(const cls of AG)$('ag-'+cls).classList.add('reject');
+    await sleep(400);showResult(true);
+    lbl.textContent='done — replay ↻';running=false;return;
+  }
+  for(const cls of AG){
+    if(cls===D.winner){$('ag-'+cls).classList.add('win');$('cr-'+cls).classList.add('show');}
+    else if(cls!==D.entry)$('ag-'+cls).classList.add('lose');
+  }
+  if(D.redirect){
+    lbl.textContent='7 / redirige '+D.entry+' → '+D.winner+' (punto a punto)';
+    const dot=mkdot(centerOf($('ag-'+D.entry),anim),'#ffd54f');anim.appendChild(dot);
+    move(dot,centerOf($('ag-'+D.winner),anim));await sleep(950);dot.remove();
+  }else{
+    lbl.textContent='7 / '+D.entry+' se queda la consulta (entrada = especialista)';
+    await sleep(700);
+  }
+
+  lbl.textContent='8 / evoke_labels en el destino (recall inverso → top-3 coseno)';
+  const lw=$('labels');
+  for(const w of D.labels){
+    const chip=document.createElement('span');chip.className='lchip';chip.textContent=w;
+    lw.appendChild(chip);await sleep(130);chip.classList.add('show');
+  }
+  await sleep(700);
+
+  if(D.reconImg){lbl.textContent='9 / mem_dom_R.recall → decode → reconstrucción';await sleep(250);}
+  showResult(false);
+  lbl.textContent='done — replay ↻';running=false;
+}
+window.addEventListener('load',()=>setTimeout(run,250));
+</script></body></html>"""
+
+
+def build_image_to_labels_animation(pil, z_q, scores, entry, winner, agents,
+                                    all_vecs, decoder, gmin_v, gmax_v) -> str:
+    """Serializa el flujo imagen → etiquetas estilo fase madura: la imagen entra
+    por `entry`, que lee SU PROPIO directorio visual (M_dir_R per-agente, B1) y
+    redirige al especialista `winner` (None = rechazo), que evoca etiquetas y
+    reconstruye. Sin broadcast: los demás agentes no procesan la pista.
+    La decisión de ruteo la toma el tab (vía la memoria) y se recibe aquí; este
+    builder NO re-decide. Solo visualiza; no altera nada."""
+    import io as _io
+    import contextlib as _ctx
+    from stage7_bidirectional import evoke_labels
+
+    scores = {c: float(scores[c]) for c in CLASSES}
+
+    labels, recon_b64 = [], None
+    if winner is not None:
+        labels = list(evoke_labels(agents[winner], z_q, all_vecs))
+        with _ctx.redirect_stdout(_io.StringIO()):
+            r_io, recognized, _w = agents[winner].mem_dom_R.recall(z_q)
+        if recognized:
+            recon_b64 = _img_b64(_decode(r_io, gmin_v, gmax_v, decoder))
+
+    q_np = np.asarray(pil.convert("RGB").resize((128, 128)), dtype=np.float32) / 255.0
+    data = {
+        "queryImg": _img_b64(q_np),
+        "reconImg": recon_b64,
+        "agents":   list(CLASSES),
+        "latent":   [int(x) for x in np.asarray(z_q).ravel().tolist()],
+        "scores":   scores,
+        "winner":   winner,
+        "entry":    entry,
+        "redirect": (winner is not None and winner != entry),
+        "labels":   labels,
+        "colors":   DOMAIN_COLOR_DARK,
+        "emoji":    DOMAIN_EMOJI,
+    }
+    return _ANIM_IMG2LBL_TEMPLATE.replace("__DATA__", json.dumps(data))
+
+
+# Alturas de los iframes de animación: con más de 4 agentes el grid de
+# especialistas ocupa una fila extra.
+_ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
+_ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
+
+
+# La app no exporta video: las animaciones se capturan con la grabacion de
+# pantalla del sistema (Win+G / Win+Alt+R), usando el boton Replay de cada
+# animacion. Un screencast headless con Edge + ffmpeg resulta intermitente y
+# a veces corta el final.
 
 
 # Session state management
@@ -1059,7 +1437,7 @@ def _init_session():
     if "mdir_mem" not in st.session_state:
         st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
     if "mdir_counts" not in st.session_state:
-        st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+        st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     if "history" not in st.session_state:
         st.session_state.history     = []
     if "query_n" not in st.session_state:
@@ -1070,7 +1448,7 @@ def _init_session():
 
 def _reset_session():
     st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
-    st.session_state.mdir_counts = np.zeros(3, dtype=np.int64)
+    st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     st.session_state.history     = []
     st.session_state.query_n     = 0
     st.session_state.last_trace  = None
@@ -1079,17 +1457,17 @@ def _reset_session():
 # Pipeline Trace UI renderer
 
 def _stage_header(num, icon, title, subtitle=""):
-    sub = (f"<div style='color:#aaa;font-size:12px;margin-top:2px'>{subtitle}</div>"
-           if subtitle else "")
+    sub = (f"<div style='color:#5a5e7d;font-size:12px;margin-top:3px'>"
+           f"{subtitle}</div>" if subtitle else "")
     st.markdown(
         f"""<div style='
-            background:linear-gradient(90deg,#1a1a2e 0%,#16213e 100%);
-            border-left:4px solid #e94560;
-            border-radius:6px; padding:10px 18px; margin:18px 0 10px 0'>
-          <span style='color:#e94560;font-size:11px;font-weight:700;
+            background:linear-gradient(90deg,#eef0f8 0%,#ffffff 100%);
+            border:1px solid #d9dcea; border-left:4px solid #4653c9;
+            border-radius:10px; padding:10px 18px; margin:18px 0 10px 0'>
+          <span style='color:#4653c9;font-size:11px;font-weight:700;
                        letter-spacing:2px;text-transform:uppercase'>
-            STAGE {num}</span>
-          <div style='color:white;font-size:17px;font-weight:700;margin-top:3px'>
+            ETAPA {num}</span>
+          <div style='color:#1c1e33;font-size:17px;font-weight:700;margin-top:2px'>
             {(icon + " ") if icon else ""}{title}</div>
           {sub}
         </div>""",
@@ -1101,27 +1479,30 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
     """Full 6-stage pipeline visualisation."""
 
     # ANIMATED FLOW — cinematic overview of the whole pipeline
-    st.markdown("### Animated Pipeline Flow")
+    st.markdown("### Flujo animado del pipeline")
     st.caption(
-        "Watch the query decompose into words, transform into quantized cues, "
-        "broadcast through the TME, and return as a reconstructed memory — "
-        "all values are the real ones computed by the AMRs."
+        "Mira la consulta descomponerse en palabras, volverse pistas cuantizadas, "
+        "difundirse por el TME y regresar como memoria reconstruida — todos "
+        "los valores son los reales calculados por las AMRs."
     )
-    components.html(build_flow_animation(trace), height=890, scrolling=False)
+    components.html(build_flow_animation(trace), height=_ANIM_H,
+                    scrolling=False)
+    st.caption("Para exportarla: botón ↻ Replay + grabación de pantalla "
+               "(Win+Alt+R).")
 
     st.markdown("---")
-    st.markdown("### Detailed Stage-by-Stage Breakdown")
+    st.markdown("### Desglose etapa por etapa")
 
     # STAGE 1 — Sentence Decomposition
-    _stage_header(1, "", "Sentence Decomposition",
+    _stage_header(1, "", "Descomposición de la consulta",
         "spaCy en_core_web_sm: tokenise → lemmatise → filter stopwords + keep NOUN/ADJ/PROPN")
 
     c1, c2 = st.columns([1, 2])
     with c1:
-        st.markdown("**Input query**")
+        st.markdown("**Consulta**")
         st.markdown(
-            f"<div style='background:#f0f2f6;padding:10px;border-radius:6px;"
-            f"font-size:17px;font-style:italic'>\"{trace['query']}\"</div>",
+            f"<div class='dcard' style='font-size:17px;font-style:italic'>"
+            f"\"{trace['query']}\"</div>",
             unsafe_allow_html=True,
         )
     with c2:
@@ -1133,12 +1514,11 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             used = t["lemma"] in _repr
             oov  = t["lemma"] in _unrepr
             if used:
-                bg, border = DOMAIN_COLOR.get("apple", "#27ae60"), "2px solid #fff"
-                bg = "#27ae60"
+                bg = "#178f4a"
             elif oov:
-                bg = "#e67e22"
+                bg = "#c05f0e"
             else:
-                bg = "#95a5a6"
+                bg = "#767d94"
             stop_mark = "✗" if t["is_stop"] else ""
             badges += (
                 f"<span style='background:{bg};color:white;padding:4px 10px;"
@@ -1158,8 +1538,9 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"en vocab de labels (diagnóstico): {invocab_str}")
 
     # STAGE 2 — FastText Serialization
-    _stage_header(2, "", "FastText Serialization",
-        f"token → 300D float  →  sign() → {{−1,+1}}  →  quantize_binary(v, M={M_LABEL})  →  v_q ∈ [0,{M_LABEL-1}]^{N}")
+    _stage_header(2, "", "Serialización fastText",
+        f"token → 300D float  →  v/S recortado a [−1,1] (escala global S)  →  "
+        f"quantize_binary(v, M={M_LABEL}) por magnitud  →  v_q ∈ [0,{M_LABEL-1}]^{N}")
 
     tokens_list = list(trace["per_token"].keys())
     sel_tok = (st.selectbox("Inspect token:", tokens_list, key="s2_tok")
@@ -1181,15 +1562,16 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         st.caption(f"μ={td['raw_vec'].mean():.3f}   σ={td['raw_vec'].std():.3f}")
 
     with c_sign:
-        st.markdown("**② sign(v) → {−1, +1}**")
+        st.markdown("**② v/S → [−1, 1]  (magnitud)**")
+        _clipped = int((np.abs(td["scaled_vec"]) >= 1.0).sum())
         fig = _vec_heatmap(
-            td["sign_vec"],
-            title=(f"+1: {int((td['sign_vec']>0).sum())}   "
-                   f"−1: {int((td['sign_vec']<0).sum())}"),
-            rows=15, colorscale="Greys",
+            td["scaled_vec"],
+            title=(f"S={label_scale():.4f}   "
+                   f"recortadas: {_clipped}/300"),
+            rows=15, colorscale="RdBu_r",
         )
-        st.plotly_chart(fig, use_container_width=True, key=f"s2_sign_{sel_tok}")
-        st.caption("Binary projection in semantic space")
+        st.plotly_chart(fig, use_container_width=True, key=f"s2_scaled_{sel_tok}")
+        st.caption("Escala global S (p99 de |componente|) — la magnitud se preserva")
 
     with c_q:
         st.markdown(f"**③ v_q ∈ [0,{M_LABEL-1}]  (input to AMRs)**")
@@ -1202,42 +1584,46 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
         st.caption("This v_q is broadcast to every agent's M_dom_H")
 
     # STAGE 3 — TME Broadcast
-    _stage_header(3, "", "TME Broadcast",
+    _stage_header(3, "", "Broadcast del TME",
         "v_q sent simultaneously to all agents — each processes independently, no inter-agent communication")
 
+    _agents_html = " &nbsp;|&nbsp; ".join(
+        f"<span style='color:{DOMAIN_COLOR[c]}'>{DOMAIN_EMOJI[c]} {c}</span>"
+        for c in CLASSES)
     st.markdown(
-        f"""<div style='text-align:center;padding:14px;background:#f8f9fa;
-            border-radius:8px;margin:8px 0;border:1px solid #ddd'>
-          <span style='font-size:16px;color:#2c3e50'>
+        f"""<div class='dcard' style='text-align:center;margin:8px 0'>
+          <span style='font-size:15px;color:#1c1e33'>
             <b>TME</b> broadcasts
-            <code style='background:#eee;padding:2px 6px;border-radius:4px'>
+            <code>
               v_q[{sel_tok}] ∈ [0,{M_LABEL-1}]^{N}</code>
-            &nbsp;→&nbsp;
-            <span style='color:{DOMAIN_COLOR["apple"]}'>{DOMAIN_EMOJI["apple"]} apple M_dom_H</span>
-            &nbsp;|&nbsp;
-            <span style='color:{DOMAIN_COLOR["horse"]}'>{DOMAIN_EMOJI["horse"]} horse M_dom_H</span>
-            &nbsp;|&nbsp;
-            <span style='color:{DOMAIN_COLOR["car"]}'>{DOMAIN_EMOJI["car"]} car M_dom_H</span>
+            &nbsp;→&nbsp; M_dom_H de: {_agents_html}
           </span>
         </div>""",
         unsafe_allow_html=True,
     )
     st.caption(
-        "Each agent has 4 AMRs. Only M_dom_L and M_dom_H participate in routing. "
-        "M_dom_R (latent homo-AM) and M_dir (routing hetero-AM) are updated separately."
+        "Cada agente tiene 5 AMRs; en el ruteo temprano participan M_dom_L y "
+        "M_dom_H. M_dom_R (homo latente) y los directorios M_dir/M_dir_R se usan "
+        "en el hemisferio visual y la fase madura."
     )
 
     # STAGE 4 — Per-Agent AMR Processing
-    _stage_header(4, "", "Per-Agent AMR Processing",
+    _stage_header(4, "", "Procesamiento por agente",
         "M_dom_L.recog_weights(v_q) → per-feature weights  →  M_dom_H.recognize_from_left(v_q, w) → score")
 
-    agent_cols = st.columns(3)
-    for col, cls in zip(agent_cols, CLASSES):
+    # Filas de 4 columnas para cubrir TODAS las clases (st.columns(3) + zip
+    # truncaba la vista a 3 de los 8 agentes; el ganador podía ni aparecer).
+    _PER_ROW = 4
+    agent_cells = []
+    for _start in range(0, len(CLASSES), _PER_ROW):
+        _chunk = CLASSES[_start:_start + _PER_ROW]
+        agent_cells.extend(zip(st.columns(_PER_ROW), _chunk))
+    for col, cls in agent_cells:
         pa     = td["per_agent"][cls]
         is_win = (cls == trace["winner"])
         color  = DOMAIN_COLOR[cls]
-        border = f"3px solid {color}" if is_win else f"1px solid {color}55"
-        bg     = f"{color}11"         if is_win else "#fafafa"
+        border = f"3px solid {color}" if is_win else "1px solid #d9dcea"
+        bg     = f"{color}22"         if is_win else "#ffffff"
         crown  = ""
 
         with col:
@@ -1246,8 +1632,8 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                     padding:12px 14px;margin-bottom:10px'>
                   <div style='font-size:18px;font-weight:700;color:{color}'>
                     {DOMAIN_EMOJI[cls]} {cls.upper()}{crown}</div>
-                  <div style='font-size:11px;color:#666;margin-top:2px'>
-                    4 AMRs: M_dom_L · M_dom_R · M_dom_H · M_dir</div>
+                  <div style='font-size:11px;color:#5a5e7d;margin-top:2px'>
+                    5 AMRs: M_dom_L · M_dom_R · M_dom_H · M_dir · M_dir_R</div>
                 </div>""",
                 unsafe_allow_html=True,
             )
@@ -1341,13 +1727,13 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                 title=dict(text="M_dom_H score per token × agent", x=0.5,
                            font=dict(size=12)),
                 height=240, margin=dict(l=20, r=20, t=50, b=20),
-                plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                 legend=dict(orientation="h", y=1.1),
             )
             st.plotly_chart(fig, use_container_width=True, key="s4_multitok")
 
     # STAGE 5 — TME Decision + M_dir Update
-    _stage_header(5, "", "TME Decision + M_dir Update",
+    _stage_header(5, "", "Decisión del TME + registro en M_dir",
         "winner = argmax(avg_scores)  →  register all tokens in M_dir[winner]")
 
     winner = trace["winner"]
@@ -1371,7 +1757,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"""<div style='background:{wcolor}22;border-left:5px solid {wcolor};
                 padding:12px;border-radius:6px;margin-top:14px'>
               <b>Winner → {DOMAIN_EMOJI[winner]} {winner.upper()}</b><br>
-              <span style='font-size:12px;color:#555'>
+              <span style='font-size:12px;color:#5a5e7d'>
                 TME routes query to {winner} agent •
                 registers {trace['n_tokens']} token(s) in M_dir
               </span>
@@ -1386,15 +1772,14 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                         use_container_width=True, key="s5_mdir")
         total = counts.sum()
         if total > 0:
-            p = counts / total
-            h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
+            h = st.session_state.mdir_mem.entropy()
             st.caption(
-                f"Entropy: {h:.3f} bits (max={np.log2(3):.3f})  •  "
+                f"Entropy: {h:.3f} bits (max={np.log2(len(CLASSES)):.3f})  •  "
                 f"Counts: {dict(zip(CLASSES, counts.tolist()))}"
             )
 
     # STAGE 6 — Recall & Image Reconstruction
-    _stage_header(6, "", "Recall & Image Reconstruction",
+    _stage_header(6, "", "Recall y reconstrucción",
         f"Winner ({winner}): M_dom_H.recall_from_left(v_q) → recalled_q (64D) → dequantize → decoder → image")
 
     if trace["final_recalled_img"] is not None:
@@ -1445,6 +1830,82 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             f"via token `{best_tok}`  (recall_weight={r_weight:.4f})"
         )
 
+        mc = trace.get("missing_cue")
+        if mc is not None:
+            with st.expander(
+                    "🧩 Pista faltante: plastilina → prototipo → objeto "
+                    "definido  (Morales & Pineda 2025)", expanded=False):
+                st.markdown(
+                    "La pista de texto selecciona un **plano proyectado** en el "
+                    "dominio visual, pero no hay pista visual con qué completar "
+                    "la recuperación: el plano queda indeterminado — la "
+                    "*plastilina* que hay que decodificar. El paper de la pista "
+                    "faltante propone tres formas de extraer una figura "
+                    "definida; las tres se muestran aquí sobre la **misma "
+                    f"proyección** (token `{mc['token']}`), junto con el "
+                    "prototipo emergente. La métrica común es la **distancia "
+                    "retro-proyectada** a la pista original (el *test* del "
+                    "paper): menor = mejor."
+                )
+
+                proj = np.asarray(mc["projection"], dtype=float)
+                fig = go.Figure(go.Heatmap(
+                    z=proj.T, colorscale="Plasma", showscale=False,
+                    xgap=0.4, ygap=0.4,
+                ))
+                fig.update_layout(
+                    title=dict(
+                        text="Plano proyectado Π (64 características × 32 "
+                             "valores) — la «plastilina»",
+                        x=0.5, font=dict(size=11)),
+                    height=190, margin=dict(l=0, r=0, t=30, b=0),
+                    xaxis=dict(visible=False), yaxis=dict(visible=False),
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                )
+                st.plotly_chart(fig, use_container_width=True, key="s6_mc_proj")
+
+                methods = [
+                    ("prototype",     "① Prototipo",
+                     "argmax por columna — lectura determinista, sin muestreo"),
+                    ("random",        "② Random Sample (RS)",
+                     "1 muestra del plano, sin prueba de aceptación"),
+                    ("sample_test",   "③ Sample-and-Test (ST)",
+                     None),   # tested se llena abajo
+                    ("sample_search", "④ Sample-and-Search (SS)",
+                     "ST + descenso local — el recall oficial de arriba"),
+                ]
+                dists  = {k: mc[k]["distance"] for k, _, _ in methods if k in mc}
+                d_min  = min(dists.values()) if dists else None
+
+                cols_mc = st.columns(4)
+                for col, (key, name, note) in zip(cols_mc, methods):
+                    with col:
+                        st.markdown(f"**{name}**")
+                        if key not in mc:
+                            st.caption("no disponible para esta pista")
+                            continue
+                        e = mc[key]
+                        if note is None:
+                            note = (f"{e['tested']} muestras + test de "
+                                    "retro-proyección")
+                        st.caption(note)
+                        if e["img"] is not None:
+                            st.image(_t2img(e["img"]), width=110)
+                        tag = ("  ← mínima"
+                               if abs(e["distance"] - d_min) < 1e-9 else "")
+                        st.caption(f"d(retro, pista) = {e['distance']:.4f}{tag}")
+
+                st.caption(
+                    "RS, ST y SS son *random samples*, *sample-and-test* y "
+                    "*sample-and-search* de Morales & Pineda (2025), Sci. Rep. "
+                    "15:21850. SS reutiliza el resultado del recall oficial "
+                    "(por eso su imagen coincide con la de arriba); RS y ST se "
+                    "computan aquí con la misma maquinaria (project → reduce → "
+                    "distance_recall). El muestreo es estocástico: repetir la "
+                    "query puede variar RS y ST."
+                )
+
     else:
         st.warning(
             f"Winner agent **{winner}** did not recognize any token in M_dom_H "
@@ -1474,70 +1935,145 @@ def main():
         initial_sidebar_state="expanded",
     )
 
+    # Sistema de diseño CLARO: página #f7f7fb, paneles blancos, tinta
+    # #1c1e33, muted #5a5e7d, acento índigo #4653c9, ámbar #8a6400 para
+    # cifras acentuadas. La paleta categórica de 8 clases (DOMAIN_COLOR)
+    # está VALIDADA con el validador del skill dataviz sobre esta
+    # superficie (lightness band / chroma / CVD / contraste: ALL PASS).
+    # Las animaciones HTML conservan su superficie navy propia.
     st.markdown("""<style>
-      .block-container{padding-top:1.6rem}
-      div[data-testid="stMetric"]{background:#f5f6fa;border-radius:10px;
-        padding:8px 12px;border:1px solid #e6e8f0}
-      .stTabs [data-baseweb="tab"]{font-size:15px;font-weight:600}
+      :root{ --bg:#f7f7fb; --panel:#ffffff; --panel2:#eef0f8;
+             --border:#d9dcea; --ink:#1c1e33; --muted:#5a5e7d;
+             --accent:#4653c9; --amber:#8a6400; }
+      .block-container{padding-top:1.1rem; max-width:1240px}
+      header[data-testid="stHeader"]{background:transparent}
+
+      /* Hero */
+      .hero{background:linear-gradient(135deg,#eef0f8 0%,#ffffff 75%);
+        border:1px solid var(--border); border-radius:16px;
+        padding:16px 24px; margin-bottom:6px}
+      .hero h1{font-size:24px;margin:0;color:var(--ink);letter-spacing:.4px}
+      .hero p{margin:5px 0 0;color:var(--muted);font-size:13px}
+      .hero .pill{display:inline-block;margin-left:10px;padding:2px 11px;
+        border-radius:12px;background:rgba(70,83,201,.10);
+        border:1px solid var(--border);color:var(--accent);
+        font-size:11px;font-weight:700;vertical-align:2px}
+
+      /* Métricas */
+      div[data-testid="stMetric"]{background:var(--panel);
+        border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+      div[data-testid="stMetric"] label p{color:var(--muted)!important}
+
+      /* Tabs */
+      .stTabs [data-baseweb="tab-list"]{gap:6px;
+        border-bottom:1px solid var(--border)}
+      .stTabs [data-baseweb="tab"]{font-size:14px;font-weight:600;
+        color:var(--muted);border-radius:10px 10px 0 0;padding:8px 16px}
+      .stTabs [aria-selected="true"]{color:var(--accent);
+        background:var(--panel2)}
+
+      /* Expanders, progreso, divisores, captions */
+      details[data-testid="stExpander"]{background:var(--panel);
+        border:1px solid var(--border);border-radius:12px}
       .stProgress > div > div{border-radius:6px}
+      hr{border-color:var(--border)}
+      div[data-testid="stCaptionContainer"]{color:var(--muted)}
+
+      /* Sidebar */
+      section[data-testid="stSidebar"]{background:#eef0f8;
+        border-right:1px solid var(--border)}
+
+      /* Grid de chips (conteos M_dir en el sidebar) */
+      .chipgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}
+      .mchip{display:flex;align-items:center;gap:6px;background:var(--panel);
+        border:1px solid var(--border);border-radius:10px;padding:5px 9px;
+        font-size:12px;color:var(--ink)}
+      .mchip .dot{width:9px;height:9px;border-radius:3px;flex:none}
+      .mchip b{margin-left:auto;color:var(--amber);font-family:monospace}
+
+      /* Tarjeta de uso general (panel blanco) */
+      .dcard{background:var(--panel);border:1px solid var(--border);
+        border-radius:10px;padding:10px 14px;color:var(--ink)}
+      .dcard code{background:#eef0f8;color:var(--amber);padding:1px 7px;
+        border-radius:6px}
     </style>""", unsafe_allow_html=True)
 
     _init_session()
 
     # Sidebar
     with st.sidebar:
-        st.title("EAM-TMS")
-        st.caption("Multi-Agent Associative Memory\nTransactive Memory System")
+        st.markdown(
+            "<div style='font-size:22px;font-weight:800;color:#1c1e33'>"
+            "EAM-TMS</div>"
+            "<div style='font-size:12px;color:#5a5e7d;line-height:1.5'>"
+            "Memoria transactiva multi-agente<br>sobre memorias asociativas "
+            "entrópicas</div>",
+            unsafe_allow_html=True)
         st.divider()
 
-        st.subheader("Session")
+        st.markdown("**Sesión**")
         qn     = st.session_state.query_n
         counts = st.session_state.mdir_counts
-        st.metric("Queries processed", qn)
-        for i, cls in enumerate(CLASSES):
-            st.metric(f"M_dir {DOMAIN_EMOJI[cls]} {cls}", int(counts[i]))
+        c1, c2 = st.columns(2)
+        with c1:
+            st.metric("Consultas", qn)
+        with c2:
+            total = int(counts.sum())
+            h = (st.session_state.mdir_mem.entropy() if total > 0 else 0.0)
+            st.metric("H (bits)", f"{h:.2f}",
+                      help=f"Entropía del M_dir de sesión; máximo log2({len(CLASSES)}) = {np.log2(len(CLASSES)):.1f} bits")
 
-        total = int(counts.sum())
-        if total > 0:
-            p = counts / total
-            h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
-            st.metric("M_dir entropy", f"{h:.3f} bits",
-                      delta=f"max={np.log2(3):.3f}", delta_color="normal")
+        st.caption("Registros en M_dir por agente:")
+        chips = "".join(
+            f"<div class='mchip'>"
+            f"<span class='dot' style='background:{DOMAIN_COLOR[c]}'></span>"
+            f"{c}<b>{int(counts[i])}</b></div>"
+            for i, c in enumerate(CLASSES))
+        st.markdown(f"<div class='chipgrid'>{chips}</div>",
+                    unsafe_allow_html=True)
 
         st.divider()
-        st.subheader("Architecture")
-        st.markdown(f"""
-**Each Agent — 4 AMRs:**
-| AMR | Type | Dims |
+        with st.expander("Arquitectura (5 AMRs por agente)"):
+            st.markdown(f"""
+| AMR | Tipo | Dims |
 |-----|------|------|
 | M_dom_L | homo label | ({N},{M_LABEL}) |
-| M_dom_R | homo latent | ({P_LATENT},{Q_LATENT}) |
+| M_dom_R | homo latente | ({P_LATENT},{Q_LATENT}) |
 | M_dom_H | hetero | ({N},{M_LABEL}↔{P_LATENT},{Q_LATENT}) |
-| M_dir | hetero routing | ({N},{M_LABEL}→{len(CLASSES)},2) |
+| M_dir | directorio texto | ({N},{M_LABEL}→{len(CLASSES)},2) |
+| M_dir_R | directorio visual | ({P_LATENT},{Q_LATENT}→{len(CLASSES)},2) |
 
-**TME — 2 AMRs:**
-| AMR | Dims |
-|-----|------|
-| M_dir_L | ({N},{M_LABEL}→{len(CLASSES)},2) |
-| M_dir_R | ({P_LATENT},{Q_LATENT}→{len(CLASSES)},2) |
-        """)
-        st.divider()
-        if st.button("Reset session", type="secondary",
+**TME:** M_dir_L + M_dir_R (mismas dims).
+            """)
+        if st.button("↺ Reiniciar sesión", type="secondary",
                      use_container_width=True):
             _reset_session()
             st.rerun()
-        st.caption("Core experiment files are read-only.")
+        st.caption("Los artefactos del experimento son solo-lectura.")
 
     # Model loading
-    with st.spinner("Loading models (first run ~15 s)…"):
+    with st.spinner("Cargando modelos (primera vez ~15 s)…"):
         decoder, agents, vectors_cache, g_min, g_max, nlp, ref_imgs = load_models()
 
-    # Shared query input
-    st.markdown("## Query")
+    # Hero + entrada de consulta compartida
+    st.markdown(
+        f"""<div class="hero">
+          <h1>Sistema de Memoria Transactiva
+            <span class="pill">{len(CLASSES)} especialistas ETH-80</span>
+            <span class="pill">solo operaciones de memoria</span></h1>
+          <p>Escribe una consulta: los agentes la reconocen con sus memorias
+          asociativas, el grupo la asigna al especialista y el directorio
+          aprende quién sabe qué (Wegner, 1987).</p>
+          <p><b>Cómo usar:</b> ① escribe la consulta &nbsp;→&nbsp;
+          ② ▶ Correr pipeline &nbsp;→&nbsp; ③ recorre las pestañas 1→4 en
+          orden (la 5 es para imágenes, la 6 es el dataset).</p>
+        </div>""",
+        unsafe_allow_html=True)
+
     c_q, c_ex = st.columns([3, 1])
     with c_q:
         query = st.text_input(
-            "Enter a natural-language query:",
+            "Consulta en lenguaje natural:",
             placeholder=(
                 "e.g.:  a round red fruit  ·  animal with a mane  ·  "
                 "fast vehicle with wheels  ·  grows on trees"
@@ -1551,10 +2087,10 @@ def main():
             options=[
                 "", "a round red fruit", "animal with a mane",
                 "fast vehicle with wheels", "has an engine",
-                "large powerful mammal", "made into pie",
-                "equine with saddle", "passenger seats inside",
-                "grows on trees", "four legs and hooves",
-                "red color and sweet", "metal body and wheels",
+                "farm animal that gives milk", "a mug for hot coffee",
+                "a barking domestic pet", "a bosc pear from the orchard",
+                "red fruit used for sauce", "made into pie",
+                "a mare with a foal", "a puppy in the kennel",
             ],
             key="example_sel",
         )
@@ -1563,7 +2099,7 @@ def main():
 
     col_run, col_norm = st.columns([2, 2])
     with col_run:
-        run_btn = st.button("Run pipeline", type="primary",
+        run_btn = st.button("▶ Correr pipeline", type="primary",
                              use_container_width=True, disabled=not query)
     with col_norm:
         norm_on = st.toggle(
@@ -1574,7 +2110,7 @@ def main():
         )
 
     if run_btn and query:
-        with st.spinner("Running full pipeline trace…"):
+        with st.spinner("Corriendo el pipeline completo…"):
             trace = compute_pipeline_trace(
                 query, agents, vectors_cache, g_min, g_max, decoder, nlp,
                 normalize=norm_on)
@@ -1608,34 +2144,36 @@ def main():
 
     st.divider()
 
-    # Tabs
+    # Tabs numeradas: 1-4 siguen el orden del flujo de una consulta de texto
+    # (trace → ruteo → directorio → fase madura); 5 es el hemisferio visual
+    # y 6 la referencia del dataset. El número orienta — "¿dónde estoy?".
     tab_trace, tab_routing, tab_mdir, tab_mature, tab_image, tab_info = st.tabs([
-        "Pipeline Trace",
-        "Routing Summary",
-        "M_dir Evolution",
-        "Mature Phase",
-        "Imagen → Etiquetas",
-        "ETH-80 Reference",
+        "1 · 🔬 Trace del pipeline",
+        "2 · 🧭 Ruteo",
+        "3 · 📈 Directorio M_dir",
+        "4 · 🌗 Fase madura",
+        "5 · 🖼️ Imagen → Etiquetas",
+        "6 · 📚 Referencia ETH-80",
     ])
 
     # TAB 1: Pipeline Trace
     with tab_trace:
         if st.session_state.last_trace is None:
             st.info(
-                "Enter a query above and click **▶ Run pipeline** to see the "
-                "full step-by-step trace of how EAM-TMS processes it."
+                "Escribe una consulta arriba y pulsa **▶ Correr pipeline** para ver "
+                "el trace completo, etapa por etapa, de cómo la procesa el sistema."
             )
             st.markdown("""
-### What the trace shows
+### Qué muestra el trace
 
-| Stage | What you see |
-|-------|-------------|
-| **1 · Sentence Decomposition** | spaCy tokens with POS tags, stopword flags, vocabulary status |
-| **2 · Serialization** | FastText 300D heatmap → sign() → quantize_binary() visualised as colour grids |
-| **3 · TME Broadcast** | v_q sent simultaneously to all 3 agents |
-| **4 · Per-Agent AMR Processing** | For each agent: M_dom_L recog_weights (300D heatmap), M_dom_H recognition score + recall result |
-| **5 · TME Decision + M_dir** | Aggregated scores, winner, M_dir bar chart after update |
-| **6 · Recall & Reconstruction** | recalled_q (64D heatmap) → dequantize → decoder → reconstructed image vs. ETH-80 reference |
+| Etapa | Qué se ve |
+|-------|-----------|
+| **1 · Descomposición** | tokens de spaCy con POS, stopwords y estado de vocabulario |
+| **2 · Serialización** | fastText 300D → v/S ∈ [−1,1] → quantize_binary() (magnitud), como grillas de color |
+| **3 · Broadcast del TME** | v_q enviado simultáneamente a todos los agentes |
+| **4 · Procesamiento por agente** | recog_weights de M_dom_L (heatmap 300D), score de M_dom_H y recall |
+| **5 · Decisión + M_dir** | scores agregados, ganador, y el M_dir tras registrar |
+| **6 · Recall y reconstrucción** | recalled_q (64D) → dequantización → decoder → imagen vs referencia ETH-80 |
             """)
         else:
             render_pipeline_trace(
@@ -1643,9 +2181,9 @@ def main():
 
     # TAB 2: Routing Summary
     with tab_routing:
-        st.header("Routing Summary")
+        st.header("Resumen de ruteo")
         if st.session_state.last_trace is None:
-            st.info("Run a query to see routing results.")
+            st.info("Corre una consulta para ver el resultado del ruteo.")
         else:
             trace  = st.session_state.last_trace
             winner = trace["winner"]
@@ -1656,8 +2194,8 @@ def main():
                     padding:16px;border-radius:8px;margin:12px 0'>
                   <span style='font-size:28px'>{DOMAIN_EMOJI[winner]}</span>
                   <span style='font-size:20px;font-weight:bold;color:{wcolor}'>
-                   → Agent <b>{winner.upper()}</b></span>
-                  <span style='color:#555;margin-left:16px'>
+                   → Agente <b>{winner.upper()}</b></span>
+                  <span style='color:#5a5e7d;margin-left:16px'>
                   score={trace['avg_scores'][winner]:.5f}</span>
                 </div>""",
                 unsafe_allow_html=True,
@@ -1677,7 +2215,7 @@ def main():
                     key="tab2_graph",
                 )
             with c_s:
-                st.markdown("**Scores per agent:**")
+                st.markdown("**Score por agente:**")
                 max_s = max(trace["avg_scores"].values())
                 for cls in CLASSES:
                     s   = trace["avg_scores"][cls]
@@ -1686,16 +2224,16 @@ def main():
                     st.markdown(f"{DOMAIN_EMOJI[cls]} {bld}{cls}{bld}")
                     st.progress(float(np.clip(pct, 0, 1)), text=f"{s:.5f}")
             with c_i:
-                st.markdown(f"**Recalled ({winner}):**")
+                st.markdown(f"**Evocado ({winner}):**")
                 if trace["final_recalled_img"] is not None:
                     st.image(_t2img(trace["final_recalled_img"]),
-                             width=120, caption=f"Prototype {winner}")
+                             width=120, caption=f"Prototipo {winner}")
                 else:
-                    st.info("Not recognized")
+                    st.info("No reconocido")
                 ref_np = ref_imgs[winner].permute(1, 2, 0).numpy()
                 st.image(_t2img(ref_np), width=120, caption="ETH-80 ref")
 
-            with st.expander("Per-token score breakdown"):
+            with st.expander("Desglose de score por token"):
                 fig = go.Figure()
                 toks = list(trace["per_token"].keys())
                 for cls in CLASSES:
@@ -1710,14 +2248,14 @@ def main():
                     title=dict(text="M_dom_H score per token × agent",
                                x=0.5, font=dict(size=12)),
                     height=240, margin=dict(l=20, r=20, t=50, b=20),
-                    plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                     legend=dict(orientation="h", y=1.1),
                 )
                 st.plotly_chart(fig, use_container_width=True, key="tab2_tokbar")
 
         if len(st.session_state.history) > 1:
             with st.expander(
-                    f"Session history ({len(st.session_state.history)} queries)"):
+                    f"Historial de la sesión ({len(st.session_state.history)} consultas)"):
                 import pandas as pd
                 rows = []
                 for r in reversed(st.session_state.history):
@@ -1732,7 +2270,7 @@ def main():
 
     # TAB 3: M_dir Evolution
     with tab_mdir:
-        st.header("M_dir Evolution — Bias Accumulation")
+        st.header("Evolución de M_dir — acumulación de registros")
         st.caption(
             "Every time a query routes to an agent, that agent's M_dir slot grows. "
             "Over many queries, dominant agents accumulate bias. "
@@ -1763,14 +2301,13 @@ def main():
                           delta_color="inverse" if ratio > 2 else "normal")
             with c3:
                 if total > 0:
-                    p = counts / total
-                    h = float(-np.sum(p * np.log2(np.where(p == 0, 1, p))))
+                    h = st.session_state.mdir_mem.entropy()
                     st.metric("M_dir entropy", f"{h:.3f} bits",
-                              delta=f"max={np.log2(3):.3f}")
+                              delta=f"max={np.log2(len(CLASSES)):.3f}")
 
             if len(st.session_state.history) > 1:
                 st.subheader("Query-by-query evolution")
-                running = np.zeros(3, dtype=np.int64)
+                running = np.zeros(len(CLASSES), dtype=np.int64)
                 evo = {"q": [], **{cls: [] for cls in CLASSES}}
                 for i, r in enumerate(st.session_state.history):
                     running[r["winner_idx"]] += r["n_tokens"]
@@ -1793,7 +2330,7 @@ def main():
                     xaxis_title="Query #",
                     yaxis_title="Cumulative registrations",
                     height=300, legend=dict(orientation="h", y=1.1),
-                    plot_bgcolor="white", paper_bgcolor="#f8f9fa",
+                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
                     margin=dict(l=20, r=20, t=60, b=20),
                 )
                 st.plotly_chart(fig_evo, use_container_width=True, key="tab3_evo")
@@ -1811,7 +2348,7 @@ def main():
 
     # TAB 4: Mature Phase
     with tab_mature:
-        st.header("Mature Phase — Point-to-Point Routing via M_dir")
+        st.header("Fase madura — ruteo punto a punto vía M_dir")
         st.caption(
             "TME disabled. Entry agent receives query, consults its M_dir "
             "(what it learned during early phase), and routes to the correct agent. "
@@ -1823,7 +2360,7 @@ def main():
             "Fuente de M_dir:",
             ["Sesión actual (lo que enseñaste en esta sesión)",
              "Experimento entrenado (stage6 real — models/agent_*.pkl)",
-             "Entrenado en vivo — 80 queries del ablation (máxima precisión)"],
+             "Entrenado en vivo — 80 queries del banco (10 por clase)"],
             horizontal=True, key="mdir_src",
         )
         use_experiment = src_mode.startswith("Experimento")
@@ -1874,7 +2411,7 @@ def main():
         mdir80 = None
         if use_n80:
             norm80 = st.session_state.get("norm_toggle", True)
-            with st.spinner("Entrenando M_dir con las 80 queries del ablation "
+            with st.spinner("Entrenando M_dir con 80 queries del banco "
                             "(en memoria, primera vez ~10–30 s)…"):
                 mdir80, stats80 = train_mdir_n80(norm80)
             acc80 = stats80["correct"] / max(stats80["n"], 1)
@@ -1892,8 +2429,9 @@ def main():
                           f"{len(stats80['vocab'])} tokens",
                           delta=f"counts={mdir80.agent_counts.tolist()}")
             st.caption(
-                "M_dir entrenado en memoria con el mismo banco de 80 queries del "
-                "ablation (run_ablation.ALL_QUERIES, importado solo-lectura). "
+                "M_dir entrenado en memoria con las primeras 80 queries del "
+                "banco de evaluación de 8 clases (eval_bank.ALL_QUERIES, "
+                "10 por clase, importado solo-lectura). "
                 "El routing de entrenamiento usa el toggle de normalización de arriba — "
                 "cámbialo para comparar M_dir limpio vs M_dir sesgado. "
                 "Nada se escribe a disco."
@@ -1995,17 +2533,23 @@ def main():
                     if not tokens_vocab:
                         rejected = True
                     else:
-                        agg = np.zeros(len(CLASSES), dtype=float)
-                        for tok in tokens_vocab:
-                            v_q = quantize_binary(np.array(
-                                get_fasttext_vector(tok, vectors_cache),
-                                dtype=np.float32), M_LABEL)
-                            agg += (mdir.predict_normalized(v_q, mode="linear")
-                                    if b1_on else mdir.predict(v_q))
-                        if agg.sum() == 0:
+                        cues = [quantize_binary(np.array(
+                                    get_fasttext_vector(tok, vectors_cache),
+                                    dtype=np.float32), M_LABEL)
+                                for tok in tokens_vocab]
+                        if b1_on:
+                            # Decisión multi-pista DENTRO de la MAE (B1)
+                            widx, agg = mdir.route_multi(cues, mode="linear")
+                        else:
+                            # Lectura cruda: condición A del ablation (diagnóstico)
+                            agg = np.zeros(len(CLASSES), dtype=float)
+                            for v_q in cues:
+                                agg += mdir.predict(v_q)
+                            widx = -1 if agg.sum() == 0 else int(np.argmax(agg))
+                        if widx < 0:
                             rejected = True
                         else:
-                            dest_cls    = CLASSES[int(np.argmax(agg))]
+                            dest_cls    = CLASSES[widx]
                             mdir_scores = {cls: float(agg[i])
                                            for i, cls in enumerate(CLASSES)}
                         if dest_cls is not None:
@@ -2023,8 +2567,8 @@ def main():
 
                 if rejected:
                     st.warning(
-                        "REJECTED — sin señal de routing. "
-                        "(El sistema rechaza en vez de rutear al azar — audit fix #6.)")
+                        "REJECTED — sin señal de routing: el sistema rechaza "
+                        "en vez de rutear al azar.")
                     # Per-token diagnostics: WHY was it rejected?
                     st.markdown("**Diagnóstico por token:**")
                     if use_experiment:
@@ -2078,18 +2622,19 @@ def main():
                     )
                     words_m, toks_m, known_m = _decompose_anim_data(
                         query_m, nlp, vectors_cache)
+                    _mat_html = None
                     if toks_m:
                         components.html(
                             build_mature_animation(
                                 query_m, words_m, toks_m, entry_cls, dest_cls,
                                 mdir_scores, recalled_img),
-                            height=890, scrolling=False)
+                            height=_ANIM_H, scrolling=False)
 
                     # Banner
                     if redirected:
                         st.markdown(
-                            f"""<div style='background:#f39c1222;
-                                border-left:6px solid #f39c12;
+                            f"""<div style='background:#d9770622;
+                                border-left:6px solid #d97706;
                                 padding:14px;border-radius:8px;margin:10px 0'>
                               <b>Redirect detected</b>
                               {'· <i>experimento real (stage8)</i>' if use_experiment else ''}<br>
@@ -2105,8 +2650,8 @@ def main():
                         )
                     else:
                         st.markdown(
-                            f"""<div style='background:#2ecc7122;
-                                border-left:6px solid #2ecc71;
+                            f"""<div style='background:#178f4a22;
+                                border-left:6px solid #178f4a;
                                 padding:14px;border-radius:8px;margin:10px 0'>
                               <b>No redirect</b> — entry = destination:
                               {DOMAIN_EMOJI[entry_cls]} {entry_cls}
@@ -2153,10 +2698,16 @@ def main():
                             st.info("Not recalled")
 
                     with st.expander("Compare early vs mature"):
-                        early = compute_pipeline_trace(
-                            query_m, agents, vectors_cache,
-                            g_min, g_max, decoder, nlp,
-                            normalize=st.session_state.get("norm_toggle", True))
+                        # Cache por (query, gate): re-clicar la misma query no
+                        # vuelve a pagar Pass 1 + Pass 2 completos.
+                        _norm  = st.session_state.get("norm_toggle", True)
+                        _ckey  = (query_m, _norm)
+                        _cache = st.session_state.setdefault("early_trace_cache", {})
+                        if _ckey not in _cache:
+                            _cache[_ckey] = compute_pipeline_trace(
+                                query_m, agents, vectors_cache,
+                                g_min, g_max, decoder, nlp, normalize=_norm)
+                        early = _cache[_ckey]
                         if early:
                             e_w = early["winner"]
                             st.metric("Early phase (M_dom)",
@@ -2177,55 +2728,121 @@ def main():
         st.header("Imagen → Etiquetas (hemisferio visual)")
         st.caption(
             "El encoder ResNet18 es solo el «ojo» que convierte la imagen en una "
-            "pista vectorial. El reconocimiento, el rechazo y la reconstrucción "
-            "salen de la MAE: si ninguna memoria contiene la percepción, se rechaza; "
-            "si la contiene, el agente ganador evoca etiquetas y reconstruye desde su "
-            "propia memoria (no es la imagen de entrada — los falsos positivos son "
-            "honestos).")
+            "pista vectorial. Ruteo estilo fase madura: la imagen entra por el agente "
+            "que elijas, y ese agente consulta SU PROPIO directorio visual "
+            "(M_dir_R, lectura B1) — si ningún especialista la conoce se rechaza, y si "
+            "alguien la conoce redirige a ese especialista, que evoca etiquetas y "
+            "reconstruye desde su memoria (no es la imagen de entrada).")
 
-        up = st.file_uploader("Sube una imagen (png/jpg)",
-                              type=["png", "jpg", "jpeg"])
-        if up is not None:
+        entry = st.selectbox(
+            "Agente de entrada (cualquiera puede recibir la imagen)", CLASSES,
+            format_func=lambda c: f"{DOMAIN_EMOJI[c]} {c}", key="img_entry")
+
+        # Fuente de la imagen: dataset ETH-80 integrado (un clic, sin subir
+        # nada) o archivo propio. Con el dataset, la animación y su descarga
+        # están disponibles al instante.
+        src = st.radio(
+            "Fuente de la imagen:",
+            ["Imagen de ejemplo del dataset ETH-80",
+             "Subir mi propia imagen (png/jpg)"],
+            horizontal=True, key="img_src")
+
+        pil = None          # imagen elegida (cualquiera de las dos fuentes)
+        _splits = json.loads((ROOT / "data" / "eth80" / "splits.json").read_text())
+
+        if src.startswith("Imagen de ejemplo"):
+            c_cls, c_idx, c_rnd = st.columns([2, 2, 1])
+            with c_cls:
+                ex_cls = st.selectbox(
+                    "Clase de la imagen (la verdad de terreno):", CLASSES,
+                    format_func=lambda c: f"{DOMAIN_EMOJI[c]} {c}",
+                    key="img_ex_cls")
+            n_test = len(_splits[ex_cls]["test"])
+            # Índice gestionado en estado propio (evita el conflicto
+            # key/value del slider de Streamlit); se clampa al cambiar de clase.
+            idx0 = min(st.session_state.get("img_ex_idx_val", 0), n_test - 1)
+            with c_rnd:
+                st.write("")
+                st.write("")
+                if st.button("🎲 Aleatoria", key="img_rand",
+                             use_container_width=True):
+                    idx0 = int(np.random.randint(0, n_test))
+            with c_idx:
+                ex_idx = st.slider(
+                    "Ejemplo # (imagen de test)", 0, max(n_test - 1, 1), idx0)
+            st.session_state["img_ex_idx_val"] = ex_idx
+            _path = _splits[ex_cls]["test"][ex_idx]
+            pil = Image.open(_path)
+            st.caption(
+                f"Entrada real de **{ex_cls}** (test). Como entra por "
+                f"**{entry}**, el directorio visual debería redirigir a "
+                f"**{ex_cls}** — o rechazar si no la reconoce.")
+        else:
+            up = st.file_uploader("Sube una imagen (png/jpg)",
+                                  type=["png", "jpg", "jpeg"])
+            if up is not None:
+                import io as _io0
+                pil = Image.open(_io0.BytesIO(up.getvalue()))
+
+        if pil is not None:
             from stage5_fill import quantize_latent_global
-            from stage7_bidirectional import (
-                recognize_gated_right, evoke_labels, load_global_stats)
+            from stage7_bidirectional import evoke_labels, load_global_stats
             import io as _io
             import contextlib as _ctx
             encoder = load_image_encoder()
             gmin_v, gmax_v = load_global_stats()
+            tme, exp_agents = load_experiment_state()  # agentes con su mem_dir_R
             all_vecs = {}
             for _c in CLASSES:
                 all_vecs.update(vectors_cache.get(_c, {}))
 
-            pil = Image.open(_io.BytesIO(up.getvalue()))
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
-            scores = {c: float(recognize_gated_right(agents[c], z_q))
-                      for c in CLASSES}
+
+            # Ruteo estilo fase madura, per-agente: el agente de entrada consulta SU
+            # propio directorio visual (mem_dir_R, lectura B1 con tolerancia eta
+            # XI_VISUAL — funciones parciales nativas de la EHAM) y redirige, o
+            # rechaza si nadie lo conoce. La decisión la toma la MAE
+            # (DirectoryMemory.route); una sola decisión para estático y animación.
+            from stage7_bidirectional import XI_VISUAL
+            entry_agent = exp_agents[entry]
+            agg = entry_agent.mem_dir_R.predict_tolerant(z_q, xi=XI_VISUAL,
+                                                         mode="linear")
+            scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
+            widx = entry_agent.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
+            winner = CLASSES[widx] if widx >= 0 else None
 
             c_in, c_out = st.columns([1, 1.4])
             with c_in:
                 st.image(pil.convert("RGB").resize((128, 128)),
-                         caption="Entrada (pista)", use_container_width=True)
+                         caption=f"Entrada · agente de entrada: "
+                                 f"{DOMAIN_EMOJI[entry]} {entry}",
+                         use_container_width=True)
                 for c in CLASSES:
-                    st.metric(f"{DOMAIN_EMOJI[c]} {c} · recognize_gated_right",
+                    st.metric(f"{DOMAIN_EMOJI[c]} {c} · M_dir_R (B1)",
                               f"{scores[c]:.3f}")
 
             with c_out:
-                if max(scores.values()) == 0.0:
+                if winner is None:
                     st.error(
-                        "RECHAZADA por la MAE — ninguna memoria contiene esta "
-                        "percepción (containment ξ=0). No se asigna ganador.")
+                        "RECHAZADA — el directorio visual (M_dir_R) no tiene soporte "
+                        "para esta percepción: ningún especialista la conoce. "
+                        "El grupo no inventa referente.")
                 else:
-                    winner = max(scores, key=scores.get)
-                    st.success(
-                        f"Aceptada → agente **{DOMAIN_EMOJI[winner]} {winner}** "
-                        f"(score {scores[winner]:.3f})")
-                    labels = evoke_labels(agents[winner], z_q, all_vecs)
+                    if winner == entry:
+                        st.success(
+                            f"El agente de entrada {DOMAIN_EMOJI[entry]} {entry} "
+                            f"**se queda la consulta** (M_dir_R B1 {scores[winner]:.3f}).")
+                    else:
+                        st.success(
+                            f"{DOMAIN_EMOJI[entry]} {entry} no la conoce → **redirige a "
+                            f"{DOMAIN_EMOJI[winner]} {winner}** vía M_dir_R "
+                            f"(B1 {scores[winner]:.3f}).")
+                    labels = evoke_labels(exp_agents[winner], z_q, all_vecs)
                     st.markdown("**Etiquetas evocadas (top-3):** " +
                                 "  ".join(f"`{w}`" for w in labels))
                     with _ctx.redirect_stdout(_io.StringIO()):
-                        r_io, recognized, _w = agents[winner].mem_dom_R.recall(z_q)
+                        r_io, recognized, _w = exp_agents[winner].mem_dom_R.recall(z_q)
                     if recognized:
                         rec_img = _decode(r_io, gmin_v, gmax_v, decoder)
                         st.image(_t2img(rec_img),
@@ -2233,33 +2850,49 @@ def main():
                                          "(decode(mem_dom_R.recall), no la entrada)",
                                  use_container_width=True)
                     else:
-                        st.info("El agente reconoce la percepción para routing pero "
-                                "su recall no produjo un patrón estable para "
-                                "reconstruir.")
+                        st.info("El especialista destino recibió la consulta pero su "
+                                "recall no produjo un patrón estable para reconstruir.")
+
+            # Animación del flujo imagen → etiquetas (estilo fase madura: entrada →
+            # lectura de SU M_dir_R per-agente → redirige/rechaza, sin broadcast).
+            st.divider()
+            st.subheader("Animación del flujo imagen → etiquetas (estilo fase madura)")
+            components.html(
+                build_image_to_labels_animation(
+                    pil, z_q, scores, entry, winner, exp_agents, all_vecs,
+                    decoder, gmin_v, gmax_v),
+                height=_ANIM_IMG_H, scrolling=False)
+            st.caption("Para exportarla: botón ↻ Replay + grabación de "
+                       "pantalla (Win+Alt+R).")
 
     with tab_info:
-        st.header("ETH-80 Reference Images")
+        st.header("Referencia ETH-80")
         st.caption("One representative training image per domain.")
 
-        cols = st.columns(3)
-        for col, cls in zip(cols, CLASSES):
-            with col:
-                st.subheader(f"{DOMAIN_EMOJI[cls]} {cls}")
-                img_np = ref_imgs[cls].permute(1, 2, 0).numpy()
-                st.image(_t2img(img_np), caption=f"ETH-80 — {cls}",
-                         use_container_width=True)
+        # Filas de 4 columnas, recorriendo CLASSES por bloques.
+        _PR = 4
+        for _start in range(0, len(CLASSES), _PR):
+            _chunk = CLASSES[_start:_start + _PR]
+            for col, cls in zip(st.columns(_PR), _chunk):
+                with col:
+                    st.subheader(f"{DOMAIN_EMOJI[cls]} {cls}")
+                    img_np = ref_imgs[cls].permute(1, 2, 0).numpy()
+                    st.image(_t2img(img_np), caption=f"ETH-80 — {cls}",
+                             use_container_width=True)
 
         st.divider()
         st.subheader("ConceptNet labels per domain")
-        c_a, c_h, c_c = st.columns(3)
-        for col, cls in zip([c_a, c_h, c_c], CLASSES):
-            with col:
-                lpath  = ROOT / f"labels_{cls}.json"
-                labels = json.loads(lpath.read_text())
-                st.markdown(f"**{DOMAIN_EMOJI[cls]} {cls}** — {len(labels)} labels")
-                for word, freq in sorted(labels.items(),
-                                         key=lambda x: -x[1])[:15]:
-                    st.markdown(f"- `{word}` (freq={freq})")
+        for _start in range(0, len(CLASSES), _PR):
+            _chunk = CLASSES[_start:_start + _PR]
+            for col, cls in zip(st.columns(_PR), _chunk):
+                with col:
+                    lpath  = ROOT / f"labels_{cls}.json"
+                    labels = json.loads(lpath.read_text())
+                    st.markdown(f"**{DOMAIN_EMOJI[cls]} {cls}** — "
+                                f"{len(labels)} labels")
+                    for word, freq in sorted(labels.items(),
+                                             key=lambda x: -x[1])[:15]:
+                        st.markdown(f"- `{word}` (freq={freq})")
 
 
 if __name__ == "__main__":

@@ -1,12 +1,37 @@
 {
-  "old": {
+  "delta": {
     "entropy": {
-      "apple": 0.8042632779481806,
-      "horse": 0.7515250920276896,
-      "car": 0.7683013843239345
+      "apple": 2.7048525890213257,
+      "car": 2.6854529567088425,
+      "cow": 2.6615263036338015,
+      "cup": 2.703275021269684,
+      "dog": 2.7725042260311707,
+      "horse": 2.6726510485863377,
+      "pear": 2.4835411086985286,
+      "tomato": 2.407290727393513
     },
     "variety": {
       "apple": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "car": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "cow": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "cup": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "dog": {
         "n_ok": 12,
         "distinct": 1,
         "mean_pair_l1": 0.0
@@ -16,7 +41,12 @@
         "distinct": 1,
         "mean_pair_l1": 0.0
       },
-      "car": {
+      "pear": {
+        "n_ok": 12,
+        "distinct": 1,
+        "mean_pair_l1": 0.0
+      },
+      "tomato": {
         "n_ok": 12,
         "distinct": 1,
         "mean_pair_l1": 0.0
@@ -27,41 +57,91 @@
         "train": 0.0,
         "test": 0.0
       },
+      "car": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "cow": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "cup": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "dog": {
+        "train": 0.0,
+        "test": 0.0
+      },
       "horse": {
         "train": 0.0,
         "test": 0.0
       },
-      "car": {
+      "pear": {
+        "train": 0.0,
+        "test": 0.0
+      },
+      "tomato": {
         "train": 0.0,
         "test": 0.0
       }
     },
     "early": {
-      "acc": 0.975,
-      "rej": 0.025
+      "acc": 0.7,
+      "rej": 0.05
     }
   },
-  "new": {
+  "inst": {
     "entropy": {
-      "apple": 3.9677018581871093,
-      "horse": 3.7603559892576444,
-      "car": 4.071797037701074
+      "apple": 5.10509178095081,
+      "car": 5.333625153115912,
+      "cow": 4.827630958822579,
+      "cup": 5.034382592609458,
+      "dog": 5.3602211294307756,
+      "horse": 5.024331188913766,
+      "pear": 4.2699048243238655,
+      "tomato": 4.247426758844667
     },
     "variety": {
       "apple": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 2.983191287878788
-      },
-      "horse": {
-        "n_ok": 12,
-        "distinct": 12,
-        "mean_pair_l1": 1.4623579545454546
+        "mean_pair_l1": 2.0790719696969697
       },
       "car": {
         "n_ok": 12,
         "distinct": 12,
-        "mean_pair_l1": 3.4874526515151514
+        "mean_pair_l1": 2.2012310606060606
+      },
+      "cow": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.138967803030303
+      },
+      "cup": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 2.203835227272727
+      },
+      "dog": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.9126420454545454
+      },
+      "horse": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.3778409090909092
+      },
+      "pear": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.120501893939394
+      },
+      "tomato": {
+        "n_ok": 12,
+        "distinct": 12,
+        "mean_pair_l1": 1.7341382575757576
       }
     },
     "reverse": {
@@ -69,18 +149,38 @@
         "train": 1.0,
         "test": 0.0
       },
+      "car": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "cow": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "cup": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "dog": {
+        "train": 1.0,
+        "test": 0.0
+      },
       "horse": {
         "train": 1.0,
         "test": 0.0
       },
-      "car": {
+      "pear": {
+        "train": 1.0,
+        "test": 0.0
+      },
+      "tomato": {
         "train": 1.0,
         "test": 0.0
       }
     },
     "early": {
-      "acc": 0.975,
-      "rej": 0.025
+      "acc": 0.7625,
+      "rej": 0.05
     }
   }
 }

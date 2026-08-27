@@ -4,20 +4,21 @@ Etapa 6 — Fase temprana del sistema transactivo.
 Implementa los tres procesos de la memoria transactiva de Wegner:
   asignacion de informacion   cada consulta se asigna al especialista
                               que mejor la reconoce (broadcast + argmax),
-  actualizacion de directorio el TME y los tres agentes registran
+  actualizacion de directorio el TME y TODOS los agentes registran
                               (cue -> ganador) en sus directorios,
   coordinacion de recuperacion el ganador evoca el contenido asociado
                               (recall hetero -> decoder -> imagen).
 
-Arquitectura por agente (4 memorias):
+Arquitectura por agente (5 memorias, K = len(CLASSES) agentes):
   mem_dom_L  HomoAssociativeMemory(300,16)   dominio label, pesos por feature
   mem_dom_R  HomoAssociativeMemory(64,32)    dominio latente, pesos por feature
   mem_dom_H  HeteroAssociativeMemory(300,16,64,32)  contenido label <-> latente
-  mem_dir    DirectoryMemory(300,16 -> 3,2)  quien sabe que (labels)
+  mem_dir    DirectoryMemory(300,16 -> K,2)  quien sabe que (labels)
+  mem_dir_R  DirectoryMemory(64,32 -> K,2)   quien sabe que (latentes visuales)
 
 TME (2 memorias):
-  mem_dir_L  DirectoryMemory(300,16 -> 3,2)  directorio por labels
-  mem_dir_R  DirectoryMemory(64,32 -> 3,2)   directorio por latentes,
+  mem_dir_L  DirectoryMemory(300,16 -> K,2)  directorio por labels
+  mem_dir_R  DirectoryMemory(64,32 -> K,2)   directorio por latentes,
              se entrena en la etapa 7 con percepciones visuales
 """
 import hashlib
@@ -35,7 +36,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from associative_memory import HomoAssociativeMemory, DirectoryMemory
 from quantizer import quantize_binary
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 AGENT_LIST = CLASSES
 N, M_LABEL = 300, 16
 P_LATENT, Q_LATENT = 64, 32
@@ -50,27 +51,74 @@ def get_nlp():
 
 ACCEPTED_POS = {"NOUN", "ADJ", "PROPN"}
 
+# Cache de POS fuera de contexto (etiqueta "de diccionario" de una palabra
+# aislada). Ver el rescate en tokenize_query.
+_ISOLATED_POS_CACHE = {}
+
+
+def _isolated_pos(word: str, nlp) -> str:
+    if word not in _ISOLATED_POS_CACHE:
+        _ISOLATED_POS_CACHE[word] = nlp(word)[0].pos_
+    return _ISOLATED_POS_CACHE[word]
+
+
+_LABEL_VOCAB = None
+
+
+def _label_vocab() -> set:
+    """Labels registrados en el sistema (los que llenaron las memorias).
+    Se usa SOLO para rescatar la atención de tokens mal etiquetados por el
+    tagger — admite pistas adicionales, nunca censura ninguna."""
+    global _LABEL_VOCAB
+    if _LABEL_VOCAB is None:
+        vocab = set()
+        for cls in CLASSES:
+            try:
+                vocab |= set(json.loads(
+                    (ROOT / f"label_vectors_{cls}.json").read_text()))
+            except OSError:
+                pass
+        _LABEL_VOCAB = vocab
+    return _LABEL_VOCAB
+
 
 def tokenize_query(query: str, nlp) -> list:
     """Lemas NOUN/ADJ/PROPN sin stopwords, deduplicados preservando el
     orden de aparicion (un set desordenado haria no determinista que
-    token alimenta el recall)."""
+    token alimenta el recall).
+
+    Rescate de errores del tagger en frases nominales cortas: spaCy etiqueta
+    'pear' como VERB en "a bosc pear from the orchard" (o AUX en "pear grown
+    in..."), matando la pista mas distintiva ANTES de llegar a la memoria.
+    Un token descartado por POS se rescata si (a) AISLADO se etiqueta
+    NOUN/ADJ/PROPN, o (b) es un label registrado del sistema (_label_vocab:
+    el conocimiento propio recupera la atencion — 'pear' se reconoce como
+    pista aunque el tagger lo lea como verbo). Los verbos reales (grown,
+    gives) siguen fuera y la EAM sigue decidiendo el resto."""
     doc = nlp(query.lower())
     tokens = []
     seen = set()
     for tok in doc:
         if tok.is_stop or not tok.is_alpha:
             continue
+        cue = tok.lemma_
         if tok.pos_ not in ACCEPTED_POS:
-            continue
-        if tok.lemma_ not in seen:
-            seen.add(tok.lemma_)
-            tokens.append(tok.lemma_)
+            if _isolated_pos(tok.text, nlp) in ACCEPTED_POS:
+                pass                      # rescate por etiqueta de diccionario
+            elif tok.text in _label_vocab():
+                cue = tok.text            # forma EXACTA del label conocido
+            elif tok.lemma_ in _label_vocab():
+                cue = tok.lemma_
+            else:
+                continue
+        if cue not in seen:
+            seen.add(cue)
+            tokens.append(cue)
     return tokens
 
 
 class Agent:
-    """Especialista de dominio con sus cuatro memorias asociativas."""
+    """Especialista de dominio con sus cinco memorias asociativas."""
 
     def __init__(self, name: str, mem_dom_H,
                  mem_dom_L: HomoAssociativeMemory = None,
@@ -81,7 +129,13 @@ class Agent:
             else HomoAssociativeMemory(N, M_LABEL)
         self.mem_dom_R = mem_dom_R if mem_dom_R is not None \
             else HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        # Un directorio por modalidad de pista:
+        #   mem_dir   : pista de texto  (label 300x16) -> agente
+        #   mem_dir_R : pista de imagen (latente 64x32) -> agente
+        # El destino es el mismo (la identidad del agente), pero el dominio
+        # izquierdo de una HAM es fijo, asi que hacen falta dos memorias.
         self.mem_dir = DirectoryMemory(N, M_LABEL, len(AGENT_LIST))
+        self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(AGENT_LIST))
 
     def recognize(self, v_label_q: np.ndarray) -> float:
         """Score crudo: activacion media sin gate ni calibracion.
@@ -105,8 +159,12 @@ class Agent:
         import contextlib as _ctx
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
-        weights = (l_w / mx) if mx > 0 else np.ones(len(v_label_q),
-                                                    dtype=float)
+        if mx <= 0:
+            # La homo no vio ninguna coordenada de la pista: rechazo directo
+            # (con pesos unos la hetero opinaria sobre una pista que su
+            # arbitro de pertenencia desconoce por completo).
+            return 0.0
+        weights = l_w / mx
         mem_H = self.mem_dom_H
         ca = mem_H.validate(v_label_q, 0)
         with _ctx.redirect_stdout(_io.StringIO()):
@@ -116,13 +174,45 @@ class Agent:
         count = int(np.count_nonzero(proj))
         return float(np.sum(proj)) / count if count > 0 else 0.0
 
+    def recognize_both(self, v_label_q: np.ndarray):
+        """(l_weights, h_raw, h_gated) compartiendo UNA sola proyeccion.
+
+        Equivalente exacto a llamar recognize() y recognize_gated() por
+        separado: _norm_weights de la memoria hetero normaliza igual que
+        aqui (l_w/max) y project() es invariante a escala, asi que ambos
+        scores salen de la misma proyeccion — solo se evita repetirla.
+        """
+        import io as _io
+        import contextlib as _ctx
+        l_w = self.mem_dom_L.recog_weights(v_label_q)
+        mx = l_w.max()
+        if mx <= 0:
+            # Mismo rechazo directo que recognize_gated: pista totalmente
+            # desconocida para la homo izquierda.
+            return l_w, 0.0, 0.0
+        weights = l_w / mx
+        mem_H = self.mem_dom_H
+        ca = mem_H.validate(v_label_q, 0)
+        with _ctx.redirect_stdout(_io.StringIO()):
+            proj = mem_H.project(ca, weights, 0)
+        count = int(np.count_nonzero(proj))
+        h_raw = float(np.sum(proj)) / count if count > 0 else 0.0
+        gated_out = np.count_nonzero(np.sum(proj, axis=1) == 0) > 0
+        return l_w, h_raw, (0.0 if gated_out else h_raw)
+
     def recall(self, v_label_q: np.ndarray):
         """label -> latente via la memoria de contenido."""
         return self.mem_dom_H.recall_from_left(v_label_q)
 
     def update_directory(self, v_label_q: np.ndarray, winner_idx: int):
-        """Wegner: tambien los no-ganadores anotan quien gano."""
+        """Wegner: tambien los no-ganadores anotan quien gano (pista de texto)."""
         self.mem_dir.register(v_label_q, winner_idx)
+
+    def update_directory_latent(self, v_latent_q: np.ndarray, winner_idx: int):
+        """Wegner para el hemisferio visual: cada agente anota qué agente ganó
+        esta percepción de imagen en su propio directorio visual. Solo se
+        registran percepciones reales, nunca ecos del recall."""
+        self.mem_dir_R.register(v_latent_q, winner_idx)
 
 
 class TME:
@@ -439,17 +529,27 @@ def visualize_result(result: dict, idx: int):
     plt.close()
 
 
+# Interacciones de la fase temprana del pipeline oficial: 2 por dominio,
+# intercaladas (16 en total). La versión anterior eran las 10 queries de la
+# era de 3 clases (apple/horse/car) y dejaba 5 dominios sin presenciar:
+# sus directorios quedaban vacíos ("no ruteas lo que no presenciaste").
 TEST_QUERIES = [
-    "a round red fruit",
-    "fast vehicle with wheels",
-    "animal with a mane",
-    "sweet edible thing",
-    "large powerful mammal",
-    "machine for transportation",
-    "grows on trees",
-    "has four legs and hooves",
-    "has an engine",
-    "fruit with seeds inside",
+    "a crunchy red fruit with a core",             # apple
+    "fast vehicle with wheels",                    # car
+    "farm animal that gives milk",                 # cow
+    "a mug for drinking coffee",                   # cup
+    "a barking domestic pet",                      # dog
+    "animal with a mane",                          # horse
+    "a ripe green pear from the orchard",          # pear
+    "a tomato used for sauce and soup",            # tomato
+    "sweet fruit from an orchard tree",            # apple
+    "machine for transportation with an engine",   # car
+    "bovine beast that moos",                      # cow
+    "small container for a hot drink",             # cup
+    "canine with a wagging tail",                  # dog
+    "riding animal with hooves",                   # horse
+    "a bosc pear with a narrow neck",              # pear
+    "red vegetable for ketchup and salads",        # tomato
 ]
 
 

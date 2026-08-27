@@ -1,0 +1,77 @@
+\section{Conclusiones}
+\label{sec:conclusiones}
+
+Este trabajo describió la extensión multimodal en tiempo real de EAM-TMS: un canal de
+voz con escucha continua, un canal de visión con etiqueta viva y la implementación de
+los tres métodos de recuperación con pista faltante de Morales \& Pineda
+\cite{morales2025missing}, todo ello operando sobre los modelos del experimento de
+ocho agentes en modo de solo lectura.
+
+\paragraph{Logros principales.}
+El presupuesto de tiempo real se cumplió con margen: fin de habla $\to$ decisión de
+enrutamiento en $\approx$0.6 s (transcripción 336 ms $+$ enrutamiento 302 ms),
+análisis visual en 54 ms por cuadro a 26 fps, y evocación asíncrona en $\approx$2 s
+sin congelar la interfaz.
+Los dos modos transactivos operan en vivo: el temprano con el directorio de sesión
+aprendiendo frase a frase, y el maduro con redirección punto a punto verificada
+(\textit{apple} $\to$ \textit{cow} en 56 ms, con el TME apagado).
+La política de color ``reintentar con lentes'' recuperó el canal visual físico desde
+el colapso ($\sim$0/24 bajo degradación fuerte) hasta 15/24 sin dañar entradas limpias
+(22/24 en ambos casos).
+Los métodos RS, ST y SS quedaron implementados como variantes seleccionables de la
+recuperación hetero-asociativa, y su caracterización distribucional (30 corridas con
+semillas fijas por método y pista) reprodujo la jerarquía del artículo:
+$\mathrm{SS} \le \mathrm{ST} < \mathrm{RS} < \text{prototipo}$, con desigualdad
+estricta $\mathrm{SS} < \mathrm{ST}$ en las pistas difíciles y empate en el techo
+($0.00$) en \texttt{green}, aportando valor precisamente donde la pista es difícil
+(\texttt{animal}: media $1.17 \to 0.19$), RS errático (distancia cero en 2 de 120
+corridas) y el prototipo emergente ---la lectura determinista del plano---
+consistentemente el peor (7.0--9.0), la evidencia cuantitativa de que la
+superposición ``amontonada'' no es un objeto.
+
+\paragraph{Respuesta a la pregunta de investigación.}
+La maquinaria transactiva sobre memorias asociativas entrópicas \emph{sí} opera en
+tiempo real con entrada sensorial continua, y lo hace sin concesiones al principio del
+proyecto: las traducciones de modalidad (voz$\to$texto, pixeles$\to$latente) viven en
+los bordes, y todas las decisiones siguen siendo operaciones de memoria.
+La viabilidad no es un accidente de optimización sino una propiedad de la
+arquitectura: enrutar es proyectar (milisegundos) y solo recordar es lento
+---y recordar admite asincronía.
+En cuanto a la segunda parte de la pregunta, el paso de la masa indeterminada al
+objeto definido lo da la \emph{prueba de retro-proyección}: muestrear candidatos y
+exigir que, vistos de regreso, reproduzcan la pista.
+El sistema ya lo hacía (su recall oficial es sample-and-search); ahora además lo
+muestra.
+
+\paragraph{Lecciones de esta extensión.}
+Primero, la frontera de percepción es una fuente más de límites de representación: la
+cadena impresora$+$cámara desplaza la distribución del estímulo, y la respuesta
+correcta fue una corrección de frontera condicionada al rechazo, no un cambio en las
+memorias.
+Segundo, el rechazo honesto volvió a ser un instrumento y no un defecto: detectó la
+cámara bloqueada por el sistema operativo, el estímulo de pantalla inviable y los
+colores corridos, en cada caso señalando la causa real.
+Tercero, exponer el mecanismo tiene valor propio: la distinción prototipo/objeto
+definido existía en la teoría y en el código, pero solo al mostrarla lado a lado con
+una métrica común se volvió un resultado comunicable.
+
+\paragraph{Trabajo futuro.}
+Los siguientes pasos más relevantes son:
+\begin{enumerate}
+    \item \textbf{Banco ampliado de pistas para RS/ST/SS}: la caracterización de 30
+    corridas cubrió cuatro pistas de un token; extenderla a pistas multi-token y de
+    más dominios trazaría la curva completa de dificultad que la pista
+    \texttt{animal} ya insinúa.
+    \item \textbf{Banco físico ampliado}: múltiples cámaras, iluminaciones y papeles
+    para la política de color, y la partición leave-object-out heredada del reporte de
+    ocho agentes.
+    \item \textbf{Evocación visual inversa en vivo}: mostrar los labels evocados
+    cuando el canal de visión reconoce (imagen $\to$ etiquetas), cerrando el ciclo
+    bidireccional también en la ventana en tiempo real.
+    \item \textbf{Medición con hablantes reales}: tasa de transcripciones erróneas de
+    Whisper que la memoria acepta vs.\ rechaza, para cuantificar la robustez del
+    borde de voz.
+    \item \textbf{RS y ST en la ventana en vivo}: hoy la suite completa vive en la
+    aplicación de trazado; llevarla al panel en vivo (con su costo de $\sim$1 s
+    adicional) permitiría la demostración completa de la jerarquía ante audiencia.
+\end{enumerate}

@@ -35,7 +35,7 @@ acumulativa con ejemplos de cada dominio?
 El sistema construido, denominado \textbf{EAM-TMS} (Sistema de Memoria Transactiva Multi-Agente sobre Memorias Asociativas Entrópicas), se compone de tres agentes especialistas
 alimentados con el conjunto de imágenes ETH-80 \cite{leibe2003eth80}: uno para la
 categoría \textit{apple}, uno para \textit{horse} y uno para \textit{car}.
-Un mediador central denominado TME (\textit{Transactive Memory Engine}) coordina la fase
+Un mediador central denominado TME (\textit{Transactive Memory Expert}) coordina la fase
 temprana y registra en sus propios directorios qué agente responde a cada tipo de
 consulta.
 Conforme cada agente acumula registros en su memoria de directorio interna,
@@ -45,7 +45,8 @@ a quién reenviar una consulta desconocida sin intervención del mediador.
 El sistema no emplea ningún mecanismo de optimización numérica.
 Todas las operaciones (registro, reconocimiento, recuperación y enrutamiento) son
 operaciones definidas formalmente sobre las \textbf{Memorias Asociativas Entrópicas}
-(EAM) de Pineda \& Morales \cite{pineda2021entropic,pineda2024hetero}.
+(EAM) de Pineda \& Morales y su extensión hetero-asociativa (EHAM)
+\cite{pineda2021entropic,morales2024hetero}.
 Las representaciones semánticas se obtienen con embeddings fastText
 \cite{bojanowski2017fasttext}.
 Después se usa ConceptNet 5.7 \cite{speer2017conceptnet}
@@ -59,9 +60,9 @@ Este trabajo aporta tres contribuciones concretas:
 
 \begin{enumerate}
     \item \textbf{Arquitectura de múltiples memorias asociativas operando bidireccionalmente.}
-    Cada agente emplea cuatro memorias (dos homo-asociativas de dominio y una
-    hetero-asociativa de contenido texto$\leftrightarrow$imagen, más una hetero-asociativa
-    de directorio); el TME incorpora dos directorios adicionales.
+    Cada agente emplea cinco memorias (dos homo-asociativas de dominio, una
+    hetero-asociativa de contenido texto$\leftrightarrow$imagen, y dos hetero-asociativas
+    de directorio: una de texto y una visual); el TME incorpora dos directorios adicionales.
     Las memorias homo-asociativas actúan como árbitros de pertenencia y fuente de pesos
     para la proyección hetero-asociativa, resolviendo la asimetría fundamental entre
     dominios sin ninguna capa adicional.

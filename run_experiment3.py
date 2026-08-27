@@ -19,8 +19,8 @@ Protocolo (idéntico al exp. 1 / stages 6+8, arquitectura 4-AMR completa):
   - Fase madura: TME apagado, entrada aleatoria (seed 42), routing por M_dir
     del agente de entrada con B1, rechazo explícito.
 
-Corpus: banco de 80 queries del ablation (ground truth 27/27/26) +
-réplica del protocolo original de 10 TEST_QUERIES para comparación directa.
+Corpus: primeras 80 queries del banco de 8 clases (ground truth, 10 por
+clase) + réplica del protocolo de TEST_QUERIES para comparación directa.
 
 No modifica ningún artefacto del exp. 1 (models/*.pkl intactos).
 Salidas en results/exp3_corrected_routing/
@@ -58,7 +58,9 @@ from stage6_interaction import (
     get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
 )
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
 
 
 # Routing oficial (exp. 2): gate de containment, sin división por mem.mean
@@ -69,8 +71,7 @@ def corrected_score(agent, v_q):
     return agent.recognize_gated(v_q)
 
 
-def process_query_early(query, agents, tme, nlp, vectors, tok_cache,
-                        do_recall=True):
+def process_query_early(query, agents, tme, nlp, vectors, tok_cache):
     """
     Fase temprana — protocolo oficial: tokenize → representar con fastText real
     (sin filtro lexico) → recognize_gated → argmax → aprendizaje en los 4 M_dir.
@@ -191,8 +192,9 @@ def main():
     early_rej = e_rej / len(queries)
     from collections import Counter
     reason_counts = Counter(r.get("reason", "?") for r in early_results)
-    n_norep = reason_counts.get("no_representable_tokens", 0) + \
-        reason_counts.get("no_tokens", 0)
+    # process_query_early solo emite no_representable_tokens, mae_no_support y
+    # mae_support. "no_tokens" pertenece a mature_log y no aparece aqui.
+    n_norep = reason_counts.get("no_representable_tokens", 0)
     n_mae_rej = reason_counts.get("mae_no_support", 0)
     n_routed = reason_counts.get("mae_support", 0)
     print(f"  Desglose: ruteadas={n_routed}  "
@@ -252,8 +254,9 @@ def main():
     print(f"  Mature accuracy (RAW): {mature_raw_acc*100:.1f}%")
     print(f"  Fidelidad (madura == temprana): {fidelity*100:.1f}%")
 
-    # Réplica del protocolo original: 10 TEST_QUERIES
-    print("\n--- Réplica 10 TEST_QUERIES (protocolo exacto del exp. 1) ---")
+    # Réplica del protocolo del pipeline oficial: TEST_QUERIES (2 por dominio)
+    print(f"\n--- Réplica {len(TEST_QUERIES)} TEST_QUERIES "
+          f"(protocolo del pipeline oficial) ---")
     with contextlib.redirect_stdout(io.StringIO()):
         agents10 = {}
         for cls in CLASSES:
@@ -263,7 +266,7 @@ def main():
     tq_winners = []
     for query in TEST_QUERIES:
         res = process_query_early(query, agents10, tme10, nlp, vectors,
-                                  tok_cache, do_recall=False)
+                                  tok_cache)
         tq_winners.append((query, res["winner"]))
         print(f"  '{query}' -> {res['winner']}")
     counts10 = tme10.mem_dir_L.agent_counts
@@ -302,26 +305,34 @@ def main():
         },
         "test_queries_counts": counts10.tolist(),
         "exp1_reference": {
-            "_nota": "Exp. 1 ORIGINAL (llenado promediado, score crudo sin "
-                     "gate). Ancla histórica, NO es la condición A del ablation "
-                     "actual (que usa el directorio hetero).",
-            "early_acc_raw": "~34% (Exp. 1 original)",
+            "_nota": "ADVERTENCIA: cifras NO VERIFICABLES en el estado actual "
+                     "del repo. Provienen de un ablation intermedio (3 clases, "
+                     "pre-refactor v3) sin artefacto que las respalde, y "
+                     "CONTRADICEN notes_historicas/conclusiones_experimento1.md "
+                     "(que reporta fidelidad 50% = 5/10 y counts apple=5/horse=3/"
+                     "car=2). NO citar como ancla; se conservan solo como "
+                     "referencia cualitativa del sesgo apple de la era 3-clases.",
+            "early_acc_raw": "~34% (no verificable)",
             "mature_acc_raw": 0.338, "mature_acc_b1": 0.988,
             "test_queries_counts": [7, 4, 2],
+            "_fuente_documentada": "notes_historicas/conclusiones_experimento1.md "
+                                   "reporta fidelidad 50%, counts [5,3,2]",
         },
     }
     (OUT_DIR / "summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8")
 
     # Figuras
-    # 1) comparativa exp1 vs exp3
+    # 1) comparativa exp1 vs exp3. NOTA: las barras "Exp. 1" son cifras
+    # históricas NO VERIFICABLES (ver exp1_reference en summary.json) y se
+    # etiquetan como tales para no presentarlas como dato citable.
     fig, ax = plt.subplots(figsize=(8.4, 5))
     labels = ["Early acc.", "Mature acc. (B1)", "Fidelidad"]
     exp1_v = [0.34, 0.988, 1.00]
     exp3_v = [early_acc, mature_acc, fidelity]
     x = np.arange(len(labels)); wdt = 0.36
-    b1 = ax.bar(x - wdt/2, exp1_v, wdt, label="Exp. 1 (scores crudos)",
-                color="#95a5a6")
+    b1 = ax.bar(x - wdt/2, exp1_v, wdt,
+                label="Exp. 1 (histórico, no verificable)", color="#95a5a6")
     b2 = ax.bar(x + wdt/2, exp3_v, wdt,
                 label="Exp. 3 (gate η + B1)", color="#1D9E75")
     for bars in (b1, b2):
@@ -334,16 +345,16 @@ def main():
     fig.tight_layout(); fig.savefig(OUT_DIR / "fig1_exp1_vs_exp3.png", dpi=150)
     plt.close(fig)
 
-    # 2) counts M_dir exp1 vs exp3 (sesgo de registro)
+    # 2) counts M_dir exp3 (sesgo de registro). La referencia histórica del
+    # exp. 1 ([81, 52, 31]) era del sistema de 3 clases y no es comparable
+    # barra a barra con 8 agentes; queda documentada en summary.json.
     fig, ax = plt.subplots(figsize=(8.4, 4.6))
     x = np.arange(len(CLASSES))
-    exp1_c = np.array([81, 52, 31]); exp1_c = exp1_c / exp1_c.sum()
     exp3_c = counts / max(counts.sum(), 1)
-    ax.bar(x - 0.18, exp1_c, 0.36, label="Exp. 1-estilo (crudo, exp2 downstream)",
-           color="#95a5a6")
-    ax.bar(x + 0.18, exp3_c, 0.36, label="Exp. 3 (corregido)",
+    ax.bar(x, exp3_c, 0.6, label="Exp. 3 (corregido)",
            color=[DOMAIN_COLOR[c] for c in CLASSES])
-    ax.axhline(1/3, ls=":", c="k", lw=1, label="ideal (1/3)")
+    ax.axhline(1 / len(CLASSES), ls=":", c="k", lw=1,
+               label=f"ideal (1/{len(CLASSES)})")
     ax.set_xticks(x, CLASSES)
     ax.set_ylabel("proporción de registros M_dir")
     ax.set_title("Distribución de registros en M_dir — el sesgo de captura")
@@ -360,30 +371,33 @@ def main():
         "media de celdas no nulas), sin ÷mem.mean",
         "- Sin filtro léxico: tokens representables por fastText entran como "
         "pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder",
-        "- Aprendizaje: solo los directorios de labels registran (TME + 3 "
-        "agentes), token → ganador. mem_dir_R NO se actualiza con recalls "
-        "(solo percepciones reales de imágenes en stage7)",
+        "- Aprendizaje: solo los directorios de labels registran (TME + un "
+        "directorio por agente), token → ganador. mem_dir_R NO se actualiza "
+        "con recalls (solo percepciones reales de imágenes en stage7)",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
         "- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",
         "",
-        "## Resultados (banco de 80 queries, GT 27/27/26)",
+        "## Resultados (banco de 80 queries, 10 por clase)",
         "",
-        "| métrica | exp. 1 (crudo) | exp. 3 (corregido) |",
+        "| métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, "
+        "8 clases) |",
         "|---|---|---|",
         f"| early accuracy | ~34% | **{early_acc:.1%}** |",
         f"| early rechazo | — | {early_rej:.1%} |",
-        f"| mature accuracy B1 | 98.8% (ablation B1) | **{mature_acc:.1%}** |",
+        f"| mature accuracy B1 | 98.8% (ablation B1, v3) | **{mature_acc:.1%}** |",
         f"| mature accuracy RAW | 33.8% | {mature_raw_acc:.1%} |",
         f"| fidelidad | 100% (sobre routing sesgado) | **{fidelity:.1%}** "
         "(sobre routing correcto) |",
-        f"| M_dir counts | [81, 52, 31] estilo-crudo | {counts.tolist()} |",
+        f"| M_dir counts | [81, 52, 31] estilo-crudo (v3) | {counts.tolist()} |",
         f"| M_dir entropía | — | {tme.mem_dir_L.entropy():.3f} bits "
-        "(máx 1.585) |",
+        f"(máx {np.log2(len(CLASSES)):.3f}) |",
         "",
-        "## Réplica de las 10 TEST_QUERIES del exp. 1",
+        f"## Réplica de las {len(TEST_QUERIES)} TEST_QUERIES del pipeline "
+        "oficial (2 por dominio)",
         "",
-        f"- counts exp. 1: [7, 4, 2] (apple capturó vehicle, engine, red…)",
+        f"- counts exp. 1 (v3, 10 queries de 3 clases): [7, 4, 2] "
+        "(apple capturó vehicle, engine, red…)",
         f"- counts exp. 3: {counts10.tolist()}",
         "",
         "| query | winner exp. 3 |",

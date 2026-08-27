@@ -1,0 +1,232 @@
+\section{Metodología}
+\label{sec:metodologia}
+
+Este capítulo describe el conjunto de datos, el pipeline de representación, los
+parámetros del sistema, la auditoría de fidelidad y las métricas usadas para evaluar el
+sistema EAM-TMS de ocho agentes.
+
+% ---------------------------------------------------------------
+\subsection{Conjunto de datos}
+\label{sec:dataset}
+
+Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, con sus
+\textbf{ocho clases}: \texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup},
+\texttt{dog}, \texttt{horse}, \texttt{pear} y \texttt{tomato}.
+Cada clase cuenta con 410 imágenes de $128\times128$ píxeles.
+Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba.
+La partición se realizó a nivel de archivo de imagen.
+Por tanto, no hay solapamiento de imágenes entre train y test, pero no se impone una
+separación leave-object-out entre objetos físicos de ETH-80.
+La consecuencia, verificada sobre la partición persistida, es que \textbf{los diez
+objetos físicos de cada clase aportan vistas tanto a train como a test} (solape de
+instancias del 100\%): toda imagen de prueba es una vista nueva de un objeto cuyas
+demás vistas participaron del llenado o de la formación del directorio.
+Las cifras del hemisferio visual de este reporte miden, en consecuencia,
+generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos nuevos;
+la partición leave-one-object-out, protocolo estándar de ETH-80, queda declarada
+como trabajo futuro (Sección~\ref{sec:limitaciones}).
+
+Dentro de la fase de alimentación, se definieron 3 particiones disjuntas con propósitos distintos:
+\begin{itemize}
+    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada
+    clase, utilizadas para registrar patrones en las memorias de dominio de cada agente
+    especialista.
+    Cada imagen se registra junto con variantes de \emph{augmentación} (imagen espejo y
+    dos rotaciones de $\pm 12^{\circ}$), lo que densifica la distribución latente
+    acumulada sin tocar el mecanismo de la memoria: es más percepción, no otro modelo.
+    \item \textbf{Interacciones visuales}: imágenes \texttt{train[200:328]} de cada
+    clase, usadas para simular las interacciones de percepción durante la formación del
+    directorio visual (1024 imágenes en total, 128 por clase).
+    \item \textbf{Evaluación}: las 82 imágenes de prueba (\texttt{test}) de cada clase
+    (656 en total), nunca vistas durante el llenado ni la formación del directorio.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Pipeline semántico}
+\label{sec:pipeline-semantico}
+
+Cada consulta en lenguaje natural transita por un pipeline de cuatro etapas antes de
+llegar a las memorias asociativas.
+
+\paragraph{Extracción de conceptos con ConceptNet.}
+Se consultó ConceptNet~5.7~\cite{speer2017conceptnet} con las relaciones \texttt{IsA},
+\texttt{HasProperty}, \texttt{RelatedTo}, \texttt{HasPart}, \texttt{HasA},
+\texttt{MadeOf} y \texttt{CapableOf}.
+La extracción de esta versión es \emph{bidireccional}: el concepto de la clase puede
+aparecer en cualquiera de los dos extremos de la aserción, lo que multiplica los
+candidatos de las clases con vocabulario pobre (\texttt{pear} pasó de 11 a 70 candidatos
+crudos; \texttt{tomato} de 12 a 93).
+El peso de cada label es su \textbf{masa asociativa} (la suma de los pesos de todas sus
+aserciones, no el máximo), y los empates se ordenan por similitud coseno al centroide de
+los labels fuertes de la clase.
+Los candidatos sin vector fastText real se excluyen \emph{antes} del corte, de modo que
+las ocho clases quedan con $\approx$21 labels efectivos y ninguno sintético.
+
+\paragraph{Vectorización con fastText y cuantización por magnitud.}
+Cada etiqueta del vocabulario se representó con su vector crudo de 300 dimensiones del
+modelo fastText preentrenado~\cite{bojanowski2017fasttext}.
+A diferencia de la versión anterior (binarización por signo, que colapsaba cada
+componente a 2 de los 16 niveles disponibles), esta versión cuantiza \emph{por
+magnitud}: cada vector se escala como $v/S$ con una \textbf{escala global persistida}
+$S$ (el percentil 99 de las magnitudes de componente sobre el vocabulario completo,
+$S = 0.1864$), se recorta a $[-1, 1]$ y se mapea uniformemente a $m = 16$ niveles.
+La misma escala se aplica en el llenado y en la consulta, lo que garantiza que ambos
+lados hablen el mismo alfabeto.
+Con esto los 16 niveles se pueblan efectivamente (véase la
+Figura~\ref{fig:espacio-semantico}).
+
+\paragraph{Procesamiento de consultas con spaCy.}
+Las consultas en lenguaje natural se preprocesaron con spaCy~\cite{honnibal2020spacy}:
+se aplicó lematización y se retuvieron tokens de categoría gramatical \texttt{NOUN},
+\texttt{ADJ} o \texttt{PROPN}, con eliminación de palabras vacías y deduplicación estable.
+Se añadió un \emph{rescate de atención léxica}: un token descartado por el etiquetador
+POS se rescata si, aislado, se etiqueta como \texttt{NOUN}/\texttt{ADJ}/\texttt{PROPN},
+o si es un label registrado en las memorias (este segundo criterio solo \emph{admite}
+pistas, nunca censura).
+El rescate corrige errores del etiquetador en frases nominales cortas (p.ej.\
+\texttt{pear} etiquetado como verbo en ``a bosc pear\ldots''), que de otro modo
+eliminarían la pista más distintiva de la consulta antes de llegar a la memoria.
+El efecto de esta regla está medido y se declara como parte del protocolo: sobre el
+banco completo afecta a 42 consultas, que con el rescate aciertan 41/42 (97.6\%) y
+sin él 31/42 (73.8\%) --- \textbf{+23.8 puntos sobre las consultas afectadas}, con
+los diez cambios de ganador moviéndose todos hacia la clase correcta (los tokens
+rescatados son precisamente los más discriminativos: \texttt{bark}, \texttt{moo},
+\texttt{saddle}, \texttt{wheel}, \texttt{brake}\ldots).
+Conviene precisar su estatus: la regla no decide el ganador (eso sigue siendo la
+proyección gateada de las memorias) ni censura token alguno, pero sí decide
+\emph{qué tokens entran como pista} con un criterio derivado del vocabulario que
+llenó las memorias, y por eso se reporta aquí con su delta en lugar de tratarse
+como un detalle de preprocesamiento neutro.
+
+\paragraph{Representación de tokens, sin filtro de vocabulario.}
+El vocabulario de ConceptNet sirve para \emph{llenar} las memorias, no para decidir qué
+consultas son conocidas.
+Cada token de la consulta se convierte en una pista vectorial tomando su vector del
+modelo fastText completo, exista o no como etiqueta de ConceptNet.
+No se aplica ningún filtro de pertenencia léxica: una vez obtenida la pista, es la
+propia memoria la que, mediante el reconocimiento y el \textit{containment}, decide si
+hay soporte o se rechaza (puntuación cero).
+Solo queda fuera lo que no es representable: un token sin vector fastText real no genera
+pista, lo cual es una frontera del codificador lingüístico y no un rechazo de la memoria.
+
+% ---------------------------------------------------------------
+\subsection{Percepción visual: encoder ResNet-18}
+\label{sec:percepcion}
+
+Para obtener representaciones latentes de las imágenes se entrenó un autoencoder
+convolucional con encoder basado en ResNet-18~\cite{he2016resnet} sobre las ocho clases
+(no es un \textit{masked autoencoder}: no hay enmascaramiento de la entrada).
+El espacio latente tiene dimensión 64.
+La pérdida combina reconstrucción y una señal auxiliar de clasificación
+($\text{MSE} + 0.1\cdot\text{CE}$); la cabeza clasificadora solo guía el entrenamiento
+del codificador y \textbf{no participa} en el enrutamiento ni en la recuperación del
+sistema de memorias.
+El entrenamiento es \emph{determinista} (semilla 42 en \texttt{torch}, \texttt{numpy} y
+\texttt{random}, con cuDNN determinista), de modo que una réplica desde cero es
+reproducible; el encoder oficial de esta versión alcanza RMSE 0.110 y precisión de la
+cabeza auxiliar de 99.7\%.
+Una precisión de protocolo que debe declararse: no existe partición de validación
+separada, de modo que el punto de control ganador se selecciona por RMSE mínimo
+evaluado \emph{sobre el propio conjunto de prueba} (una evaluación cada 10 épocas,
+$\approx$5 candidatos).
+Es una selección de modelo sobre test, de alcance acotado, pero significa que el
+espacio latente con el que después se evalúa el hemisferio visual fue elegido
+mirando ese conjunto (Sección~\ref{sec:limitaciones}).
+Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
+min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado
+(\texttt{train[0:200]} por clase).
+Esta cuantización global evita que la escala relativa entre clases afecte la codificación.
+
+% ---------------------------------------------------------------
+\subsection{Banco de evaluación semántica}
+\label{sec:banco}
+
+Se construyó un banco de \textbf{411 consultas} en lenguaje natural con etiqueta de
+clase correcta conocida (\textit{ground truth}), aproximadamente 50 por dominio,
+presentadas de forma intercalada.
+Las consultas varían en longitud y vocabulario (p.ej.\ ``a red crunchy fruit'',
+``a barking domestic pet'', ``a mug for drinking coffee'') y cubren tanto descripciones
+directas como perifrásticas; las clases con léxico compartido (\texttt{pear},
+\texttt{tomato}) incluyen consultas con contenido \emph{distintivo}
+(``a bosc pear with a narrow neck'', ``tomato on the vine''), reflejando la comunicación
+realista de un grupo de Wegner: quien pregunta aporta las señas del dominio.
+Para los experimentos de protocolo completo (Secciones~\ref{sec:proto-completo}
+a~\ref{sec:formacion}) se usa el subconjunto de las primeras 80 consultas
+(10 por clase); el estudio de calibración (Sección~\ref{sec:calibracion}) usa el banco
+completo.
+
+% ---------------------------------------------------------------
+\subsection{Parámetros de la EAM}
+\label{sec:parametros}
+
+Los parámetros de la EAM se fijaron en:
+$\iota = 0$, $\kappa = 0$, $\sigma = 0.1$, y tolerancia de reconocimiento
+$\xi = 0$ para el dominio textual y $\xi = 2$ para el directorio visual.
+Estos valores siguen el modelo W-EAM y su extensión hetero-asociativa, descritos en el
+marco teórico.
+La propia línea W-EAM ha mostrado que estos hiperparámetros admiten optimización
+automática multi-objetivo \cite{lopez2025hyperopt}; aquí se fijan por barrido directo,
+cuya justificación experimental se presenta en la Sección~\ref{sec:param-iota-kappa}
+(barrido $\iota \times \kappa$) y en la Sección~\ref{sec:hemisferio-visual}
+(barrido de $\xi$ visual).
+En síntesis: $\iota > 0$ elimina conocimiento escaso pero válido antes de eliminar
+relaciones espurias, $\kappa$ no cambió ningún resultado en el rango probado, y
+$\xi = 2$ en el directorio visual amplía la cobertura sin costo en especificidad.
+Debe declararse que el barrido de $\xi$ visual se midió sobre el enrutamiento del
+conjunto de \emph{prueba}: $\xi = 2$ es, por tanto, un hiperparámetro seleccionado
+sobre el mismo conjunto que después se reporta.
+$\xi$ es un mecanismo nativo de la EHAM (tolerancia de funciones parciales), no un
+umbral supervisado ad hoc --- la observación afecta al protocolo de selección, no a
+la operación (Sección~\ref{sec:limitaciones}).
+
+% ---------------------------------------------------------------
+\subsection{Auditoría de fidelidad}
+\label{sec:auditoria}
+
+Antes de producir los números citables se auditó que todas las decisiones del sistema
+provengan de operaciones de las memorias y que ningún dato esté fabricado.
+La auditoría encontró y corrigió un desvío real: el constructor de vectores de labels
+admitía un \emph{fallback} sintético ($\pm 1$ por componente) para labels sin vector
+fastText; un único label lo activaba y, además de esquivar el rechazo en consulta, sus
+300 componentes de magnitud 1.0 inflaban el percentil 99 y \textbf{distorsionaban la
+escala global de cuantización} de todos los labels ($S = 0.2276$ con el sintético
+frente a $S = 0.1864$ real).
+El fallback quedó deshabilitado (los labels sin vector se excluyen del llenado), las
+memorias se rellenaron desde cero y toda la batería experimental se recorrió.
+Los resultados de este reporte provienen exclusivamente de corridas posteriores a esa
+auditoría; el impacto numérico de la contaminación resultó pequeño, pero los números
+actuales son trazables a datos no fabricados.
+La auditoría verificó además que el código de las memorias de Pineda \& Morales
+permanece byte-idéntico al original y que la verdad de terreno del banco se usa
+únicamente para calcular métricas, nunca dentro del circuito de decisión.
+
+% ---------------------------------------------------------------
+\subsection{Métricas de evaluación}
+\label{sec:metricas}
+
+Se emplearon las siguientes métricas:
+
+\begin{itemize}
+    \item \textbf{Precisión temprana} (\textit{early accuracy}): fracción de consultas para las que el agente ganador en la fase de activación temprana coincide con la clase real.
+    \item \textbf{Precisión madura} (\textit{mature accuracy}): ídem tras la fase de recuperación madura, con lectura de directorio corregida por conteo (B1) o cruda.
+    \item \textbf{Tasa de rechazo}: fracción de consultas para las que ningún agente supera el umbral de aceptación.
+    \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
+    \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{conteos} de los agentes especialistas, con máximo $\log_2(8) = 3$ bits.
+    \item \textbf{Conteos por agente}: número de registros acumulados en el directorio transactivo por cada agente especialista.
+    \item \textbf{Participación del ganador} (\textit{winner share}): fracción de victorias maduras capturadas por cada agente; el ideal balanceado es $1/8 = 12.5\%$.
+    \item \textbf{Enrutamiento de test} (hemisferio visual): fracción de imágenes de prueba asignadas correctamente por el directorio visual, junto con la precisión sobre las imágenes aceptadas.
+    \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recuperación inversa imagen $\to$ palabras).
+\end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Organización del experimento}
+\label{sec:organizacion}
+
+La evaluación se organiza en un estudio principal de calibración del directorio
+(9 condiciones de lectura $\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$
+5 semillas, sobre el banco de 411), cuatro secciones de caracterización bajo protocolo
+único (protocolo completo, parámetros nativos $\iota \times \kappa$, formación del
+directorio y capacidad de llenado, Secciones~\ref{sec:proto-completo}
+a~\ref{sec:capacidad}), la evaluación del hemisferio visual
+(Sección~\ref{sec:hemisferio-visual}) y la medición del costo computacional de la
+reproducción completa (Sección~\ref{sec:costo}).

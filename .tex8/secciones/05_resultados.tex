@@ -1,0 +1,412 @@
+\section{Resultados}
+\label{sec:resultados}
+
+Los resultados se presentan en seis subsecciones: el estudio de calibración del
+directorio (el estudio principal de esta versión), el protocolo completo, los
+parámetros nativos, la formación del directorio, la capacidad de llenado y el
+hemisferio visual, más la medición del costo computacional.
+Salvo indicación en contrario, los experimentos usan los parámetros de la
+Sección~\ref{sec:parametros}; todos los números provienen de corridas posteriores a la
+auditoría de fidelidad (Sección~\ref{sec:auditoria}).
+
+% ---------------------------------------------------------------
+\subsection{Calibración del directorio a ocho agentes}
+\label{sec:calibracion}
+
+El estudio principal evalúa nueve condiciones de lectura del directorio transactivo
+sobre el banco de 411 consultas, con $N \in \{50, 100, 200, 400\}$ consultas de
+formación y 5 semillas por celda.
+La Tabla~\ref{tab:calibracion} muestra los resultados en $N = 400$ (promedio de 5
+semillas); la Figura~\ref{fig:mature-vs-n} muestra la curva completa de la fase madura
+y la Figura~\ref{fig:heatmap-condicion} el mapa completo condición $\times$ $N$.
+
+\begin{table}[H]
+    \centering
+    \caption{Precisión bajo distintas condiciones de lectura del directorio
+    ($N = 400$, media de 5 semillas, banco de 411 consultas).
+    La precisión temprana no depende de la lectura del directorio, por lo que solo
+    varía en las condiciones que alteran las consultas (D, G).
+    F es inoperante en esta versión: los labels polisémicos que curaba
+    (Apple~Inc.) ya no existen en el vocabulario por masa asociativa, así que
+    $F \equiv A$.}
+    \label{tab:calibracion}
+    \small
+    \begin{tabular}{llccc}
+        \toprule
+        Condición & Descripción & Temprana (\%) & Fidelidad (\%) & Madura (\%) \\
+        \midrule
+        A (cruda)  & Score de activación sin normalizar             & 88.0 & 87.3 & 80.0 \\
+        B1         & División entre conteo de registros por agente  & 88.0 & 93.5 & \textbf{93.2} \\
+        B2         & División entre raíz cuadrada del conteo        & 88.0 & 95.0 & 89.0 \\
+        C          & Cap de número máximo de registros por agente   & 88.0 & 91.5 & 86.5 \\
+        D          & Consultas balanceadas entre clases             & 88.6 & 89.6 & 82.8 \\
+        E32        & Cuantización en 32 niveles                     & 88.0 & 91.3 & 84.8 \\
+        E64        & Cuantización en 64 niveles                     & 88.0 & 92.0 & 86.5 \\
+        F          & Vocabulario curado ($\equiv$ A en v4)          & 88.0 & 87.3 & 80.0 \\
+        G (D+B1+F) & Combinación                                    & 88.6 & 93.6 & 92.9 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{B1 sigue siendo la corrección irreducible.}
+Igual que en el sistema de tres agentes, la lectura cruda del directorio (A) pierde
+13 puntos frente a la lectura normalizada por conteo (80.0\% frente a 93.2\%), y
+ninguna condición que manipula síntomas (B2, C, D, E32, E64) la alcanza.
+La combinación G no supera a B1 sola (92.9\% frente a 93.2\%): una vez corregida la
+causa (evidencia por registro en vez de evidencia total), el balanceo de consultas y la
+curación de vocabulario no aportan nada adicional.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{fig02_mature_accuracy_vs_N.png}
+    \caption{Precisión madura en función de $N$ por condición de lectura.
+    B1 es la mejor lectura en todo el rango; la cruda (A) queda sistemáticamente por debajo.}
+    \label{fig:mature-vs-n}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig03_heatmap_condition_N.png}
+    \caption{Mapa de calor de precisión madura por condición experimental y número de
+    consultas $N$.}
+    \label{fig:heatmap-condicion}
+\end{figure}
+
+\paragraph{Desglose por dominio.}
+Con la lectura B1 en $N = 400$, la precisión madura por dominio fue:
+\texttt{cup} y \texttt{tomato} 100\%, \texttt{car} 98\%, \texttt{cow} y \texttt{dog}
+96\%, \texttt{apple} 88\%, \texttt{pear} 86\% y \texttt{horse} 82\%
+(Figura~\ref{fig:dominio}).
+Las clases de fruta comparten el léxico genérico (\textit{fruit}, \textit{red},
+\textit{green}, \textit{round}, \textit{tree}), lo que explica que concentren los
+errores residuales.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig04_domain_accuracy_N80.png}
+    \caption{Precisión madura por dominio y condición ($N = 400$).}
+    \label{fig:dominio}
+\end{figure}
+
+\paragraph{El sesgo hacia \texttt{apple} quedó esencialmente resuelto.}
+Las corridas tempranas de 8 clases mostraban al agente \texttt{apple} capturando
+$\approx$20\% de las victorias maduras (frente al ideal de 12.5\%) y a \texttt{pear}
+colapsando por debajo del 55\%.
+Con el encoder determinista oficial y el vocabulario por masa asociativa, la
+participación de \texttt{apple} bajo la lectura B1 baja a \textbf{13.0\%} y
+\texttt{pear} se recupera a 86\% \emph{sin cambiar el vocabulario}
+(Figura~\ref{fig:winner}).
+La misma figura muestra que bajo la lectura cruda (A) \texttt{apple} todavía captura el
+24\% de las victorias: el residuo que persiste es el sesgo de lectura que B1 corrige,
+y con B1 ningún agente se desvía más de 2.5 puntos del ideal.
+El análisis de este hallazgo se desarrolla en la Sección~\ref{sec:disc-dominancia}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig09_winner_distribution_N80.png}
+    \caption{Distribución de agentes ganadores en fase madura por condición ($N = 400$).
+    La línea discontinua marca el ideal balanceado de $1/8 = 12.5\%$.}
+    \label{fig:winner}
+\end{figure}
+
+\paragraph{Estado del directorio.}
+La entropía del directorio transactivo alcanza 2.955 bits en la condición A y 2.961
+bits en G, sobre un máximo teórico de 3.000 bits ($\log_2 8$): la especialización queda
+balanceada al 98.5\% incluso sin corrección, porque el desequilibrio de masas es un
+sesgo de \emph{lectura}, no de estructura.
+La fidelidad temprana-madura con B1 es del 93.5\%.
+
+% ---------------------------------------------------------------
+\subsection{Protocolo completo}
+\label{sec:proto-completo}
+
+El protocolo completo (fase temprana $\to$ formación del directorio $\to$ fase madura
+con el TME apagado) se corrió sobre el subconjunto de 80 consultas (10 por clase).
+
+\paragraph{Fase temprana.}
+El sistema alcanzó una \textbf{precisión temprana del 80.0\%} con una tasa de rechazo
+del 5.0\%.
+El rechazo no proviene de un filtro de vocabulario: cada token con representación
+fastText entra como pista, y es la propia memoria la que rechaza cuando ningún agente
+obtiene soporte.
+
+\paragraph{Fase madura.}
+Con la lectura B1 la \textbf{precisión madura fue del 82.5\%}; con lectura cruda,
+68.8\%.
+La fidelidad temprana-madura fue del \textbf{90.0\%}.
+Los conteos del directorio al final del experimento fueron
+$[50, 16, 44, 25, 30, 14, 17, 31]$ para
+(\texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup}, \texttt{dog}, \texttt{horse},
+\texttt{pear}, \texttt{tomato}), con una entropía de \textbf{2.866 bits} sobre un máximo
+de 3.000.
+Nótese que la fase madura sobre este subconjunto (82.5\%) es inferior a la del banco
+completo (93.2\%): con solo 10 consultas por clase, el directorio dispone de menos
+evidencia por dominio; la diferencia mide el efecto del volumen de interacciones, no un
+cambio de mecanismo.
+
+\paragraph{Réplica con las 16 consultas del pipeline oficial.}
+La réplica con las 16 \texttt{TEST\_QUERIES} (2 por dominio) enruta correctamente las
+ocho clases, con conteos $[12, 6, 6, 7, 5, 5, 4, 7]$; los errores residuales
+corresponden a consultas de fruta con léxico compartido
+(``sweet fruit from an orchard tree'' $\to$ \texttt{apple}).
+
+\paragraph{Sonda de rechazo fuera de dominio.}
+Como diagnóstico separado del benchmark, se presentaron 12 consultas
+\emph{representables} (todas producen vectores fastText reales) que describen objetos
+fuera de los ocho dominios.
+La memoria rechazó \textbf{10 de 12} por containment puro (puntuación cero en los ocho
+agentes), sin regla léxica alguna.
+Las 2 restantes rutean porque comparten tokens con labels legítimos de algún dominio
+(p.ej.\ \textit{food}): la frontera entre ``fuera de dominio'' y ``comparte conceptos
+con el dominio'' es semántica, no léxica, y el diagnóstico la mide en lugar de esconderla.
+
+% ---------------------------------------------------------------
+\subsection[Parámetros nativos iota x kappa]{Parámetros nativos $\iota \times \kappa$}
+\label{sec:param-iota-kappa}
+
+Se realizó un barrido de cuadrícula con $\iota \in \{0, 0.25, 0.5, 1.0\}$ y
+$\kappa \in \{0, 0.5, 1.0, 1.5\}$ sobre el subconjunto de 80 consultas.
+Los resultados se muestran en la Tabla~\ref{tab:grid-iota-kappa}.
+
+\begin{table}[H]
+    \centering
+    \caption{Precisión temprana y tasa de rechazo en función de $\iota$ y $\kappa$.
+    Las columnas de $\kappa$ son idénticas para cada fila, por lo que se muestra una
+    sola columna representativa.}
+    \label{tab:grid-iota-kappa}
+    \begin{tabular}{cccc}
+        \toprule
+        $\iota$ & $\kappa$ (cualquier valor) & Precisión (\%) & Rechazo (\%) \\
+        \midrule
+        0.00  & 0 -- 1.5 & 80.0 &   5.0 \\
+        0.25  & 0 -- 1.5 & 82.5 &   5.0 \\
+        0.50  & 0 -- 1.5 & 65.0 &  14.0 \\
+        1.00  & 0 -- 1.5 &  0.0 & 100.0 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Efecto de $\iota$.}
+Con la cuantización por magnitud, una poda ligera ($\iota = 0.25$) mejora marginalmente
+la fase temprana (82.5\% frente a 80.0\%) al eliminar algo de ruido de baja
+frecuencia, pero la mejora no se traslada de forma sustancial a la fase madura
+(B1: 83.8\% frente a 82.5\%) y el patrón destructivo reaparece de inmediato:
+$\iota = 0.5$ pierde 15 puntos con un rechazo del 14\%, y $\iota = 1.0$ rechaza todo.
+La poda elimina conocimiento escaso pero válido antes de eliminar relaciones espurias.
+
+\paragraph{Efecto de $\kappa$.}
+El parámetro de umbral $\kappa$ no cambió ningún resultado en el rango probado: las
+proyecciones superan la media del tensor en órdenes de magnitud, de modo que el umbral
+relativo nunca es vinculante.
+
+\paragraph{Ninguna condición nativa sustituye a B1.}
+En todas las celdas del grid, la lectura madura cruda queda por debajo de la lectura B1
+(68.8\% frente a 82.5\% en la línea base; 77.5\% frente a 83.8\% en la mejor
+condición nativa).
+La calibración alternativa por división entre la media de la memoria
+($\div$\texttt{mem.mean}) \emph{empeora} la fase temprana (76.2\%) y distorsiona los
+conteos del directorio: con el llenado por instancias las masas de contenido ya están
+igualadas por construcción y esa corrección sobra.
+
+% ---------------------------------------------------------------
+\subsection{Formación del directorio transactivo}
+\label{sec:formacion}
+
+Para estudiar cómo el orden de las interacciones afecta la formación del directorio, se
+evaluó la precisión madura completa en un \textit{snapshot} tras cada interacción $k$,
+usando cuatro condiciones de presentación (intercalado, barajado con 5 semillas,
+bloqueado por dominio, y control con puntuación cruda) sobre el subconjunto de 80
+consultas.
+
+\paragraph{Hallazgo principal: a ocho agentes, 10 consultas por clase no bastan.}
+A diferencia del sistema de tres agentes (donde el orden intercalado cruzaba el umbral
+del 90\% en $k \approx 13$ interacciones), \textbf{ninguna condición alcanza el
+umbral del 90\%} con este volumen de interacciones: todas convergen al 82.5\% final.
+No es un fallo de convergencia sino de evidencia disponible: con 8 dominios y consultas
+que comparten léxico, 10 interacciones por dominio no acumulan suficiente evidencia
+distintiva (el mismo protocolo con el banco completo alcanza 93.2\%,
+Sección~\ref{sec:calibracion}).
+
+\paragraph{El orden afecta la velocidad, no el destino.}
+Todas las condiciones convergen exactamente al mismo estado final: conteos
+$[50, 16, 44, 25, 30, 14, 17, 31]$ y entropía 2.866 bits, independientemente del orden
+de presentación.
+Esta invariancia del destino replica el resultado de tres agentes y confirma que el
+directorio acumula evidencia conmutativa: el orden solo determina cuándo se vuelve
+utilizable, no qué se aprende.
+
+% ---------------------------------------------------------------
+\subsection{Capacidad de llenado}
+\label{sec:capacidad}
+
+Se varió el número de imágenes registradas por clase $N \in \{25, 50, 100, 200, 328\}$
+utilizando llenado imagen-por-imagen (\textit{imagen-etiqueta}).
+La aceptación se determinó por containment inverso con $\xi = 0$.
+Los \textit{falsos} son imágenes de otras clases presentadas al agente.
+
+\begin{table}[H]
+    \centering
+    \caption{Métricas de capacidad en función del número de imágenes registradas $N$
+    por clase.
+    ``Enrutamiento'' es la precisión del directorio de labels; ``Variedad $L_1$'' es la
+    distancia media $L_1$ entre recuperaciones distintas; $H$ es la entropía de la
+    memoria de contenido.}
+    \label{tab:capacidad}
+    \small
+    \begin{tabular}{ccccccc}
+        \toprule
+        $N$ & Train propio (\%) & Test propio (\%) & Falsos (\%) & Variedad $L_1$ & Enrutamiento (\%) & $H$ (bits) \\
+        \midrule
+         25  & 100 &  0 & 0 & 1.91 & 61.3 & 3.648 \\
+         50  & 100 &  0 & 0 & 1.87 & 71.2 & 4.369 \\
+        100  & 100 &  2 & 0 & 1.74 & 78.8 & 4.950 \\
+        200  & 100 & 20 & 0 & 1.94 & 81.2 & 5.204 \\
+        328  & 100 & 56 & 0 & 2.18 & 81.2 & 5.318 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Generalización por cobertura.}
+Con $\xi = 0$ el sistema no generaliza desde cero; la generalización a imágenes de test
+aparece a medida que el llenado cubre más del espacio latente de la clase (del 0\% en
+$N = 25$ al 56\% en $N = 328$), sin necesidad de ajustar $\xi > 0$ en el contenido.
+
+\paragraph{Especificidad perfecta.}
+La tasa de falsos aceptados es del \textbf{0\% en todo el rango} de $N$ probado, ahora
+con siete clases contrarias por agente en lugar de dos: el containment inverso mantiene
+la discriminación exacta también a ocho clases.
+
+\paragraph{Enrutamiento y entropía.}
+El enrutamiento de labels crece con la cobertura y se estabiliza en torno al 81\%
+desde $N = 200$; la entropía de la memoria de contenido crece de forma logarítmica con
+$N$, coherente con la acumulación de variedad real.
+La \textbf{zona de operación} se mantiene en $N = 200$, que además reserva
+\texttt{train[200:328]} para las interacciones visuales.
+
+% ---------------------------------------------------------------
+\subsection{Hemisferio visual}
+\label{sec:hemisferio-visual}
+
+El hemisferio visual opera en dos fases: formación (registro de percepciones reales de
+\texttt{train[200:328]} en los directorios visuales) y evaluación (enrutamiento de las
+656 imágenes de test mediante el directorio visual por agente).
+
+\paragraph{Fase A: formación con 1024 imágenes.}
+Se presentaron 1024 imágenes (128 por clase) en orden intercalado.
+Sobre las imágenes aceptadas, la precisión del agente visual fue del \textbf{100\%},
+con una tasa de rechazo de solo el \textbf{4.2\%} (la augmentación del llenado redujo
+el rechazo de fase A desde el $\approx$50\% de la versión de tres agentes).
+Los conteos del directorio visual al final de la fase A fueron
+$[128, 121, 123, 120, 121, 121, 122, 125]$ con entropía de \textbf{3.000 bits}: el
+máximo teórico, especialización visual perfectamente balanceada.
+
+\paragraph{Fase B: enrutamiento de imágenes de test.}
+Las 656 imágenes de test se enrutaron mediante los directorios visuales por agente
+($M^R_{\mathrm{dir}}$) con lectura B1 y tolerancia $\xi = 2$: cada imagen entra por un
+agente aleatorio, que la redirige o la rechaza.
+El resultado fue \textbf{492/656 = 75.0\%} de imágenes correctamente asignadas, con un
+rechazo del 25.0\% y \textbf{cero falsos enrutamientos}: sobre las imágenes aceptadas,
+la precisión es del \textbf{100\%}.
+El directorio visual nunca se equivoca; cuando no sabe, rechaza.
+
+\paragraph{Justificación de $\xi = 2$.}
+El barrido $\xi \in \{0, \ldots, 3\}$ mostró que $\xi = 2$ es el punto dulce de
+cobertura, con saturación en $\xi = 3$ y especificidad intacta en todo el rango
+(0 falsos sobre sondas sintéticas fuera de dominio).
+El análisis del residual es informativo: 625 de las 656 imágenes de test tienen
+\emph{cero} coordenadas sin soporte marginal, de modo que el rechazo restante no viene
+de huecos por coordenada (que $\xi$ tolera) sino del \emph{containment conjunto}: la
+proyección AND no encuentra celdas que sobrevivan a las 64 coordenadas simultáneamente.
+Por eso $\xi$ satura, y la palanca para ese residual es densificar el llenado, no
+aumentar la tolerancia.
+
+\paragraph{Evocación de labels: imagen $\to$ palabras.}
+Sobre las imágenes de evaluación aceptadas, la evocación inversa (recuperación $\beta$
+desde el latente, decodificada por similitud coseno top-3) produjo al menos una etiqueta
+del vocabulario de la clase real en \textbf{81/95 = 85.3\%} de los casos.
+
+\paragraph{El rechazo y la salida semántica los decide la memoria.}
+Reconocimiento, rechazo y reconstrucción son operaciones de la propia memoria: el
+encoder ResNet18 solo convierte la imagen en una pista latente, y a partir de ahí la
+EAM decide.
+La Figura~\ref{fig:rechazo-imagenes} ilustra el rechazo por containment: imágenes
+reales que la memoria contiene se aceptan y enrutan, mientras que imágenes reales no
+contenidas y las sondas sintéticas de ruido y de píxeles barajados reciben puntuación
+cero en los ocho agentes y se rechazan, sin que intervenga ningún filtro externo.
+La tercera sonda sintética, un lienzo de color sólido uniforme, \emph{sí} obtiene
+soporte y se acepta: es la excepción honesta del panel, presumiblemente porque las
+imágenes de ETH-80 contienen grandes regiones de fondo liso y un latente degenerado
+pero uniforme cae dentro de la distribución acumulada.
+Esta fuga con entradas degeneradas se retoma en la Sección~\ref{sec:limitaciones}.
+La Figura~\ref{fig:imagen-etiquetas} muestra la salida semántica: para cada imagen
+aceptada, la reconstrucción es lo que la memoria \emph{evoca} (decodificación de la
+recuperación de $M^R_{\mathrm{dom}}$), no la imagen de entrada, y el sistema devuelve
+las etiquetas asociadas.
+Que la reconstrucción difiera de la entrada es esperado y honesto: refleja que decide
+la distribución acumulada en la memoria.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig15_image_rejection.png}
+    \caption{Rechazo de imágenes por la memoria (containment, sin filtro léxico).
+    Arriba: imágenes reales aceptadas y enrutadas. En medio: imágenes reales no
+    contenidas, rechazadas ($\xi = 0$). Abajo: sondas sintéticas fuera de dominio:
+    el ruido y los píxeles barajados se rechazan; el color sólido uniforme se acepta,
+    una fuga con entradas degeneradas que se discute en la
+    Sección~\ref{sec:limitaciones}. El rechazo emerge de la ausencia de soporte, y la
+    figura muestra también su excepción.}
+    \label{fig:rechazo-imagenes}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{fig16_image_to_labels.png}
+    \caption{Salida semántica imagen $\to$ etiquetas (dos ejemplos por clase). Por cada
+    imagen aceptada: entrada (pista), reconstrucción evocada por la memoria (no la
+    entrada) y las etiquetas recuperadas, con marca de coincidencia con el vocabulario
+    de la clase real.
+    Se muestran tanto aciertos como fallos de evocación, coherentes con el 85.3\%
+    agregado; los fallos se concentran en \texttt{car}, \texttt{dog} y \texttt{pear}.}
+    \label{fig:imagen-etiquetas}
+\end{figure}
+
+% ---------------------------------------------------------------
+\subsection{Costo computacional}
+\label{sec:costo}
+
+Se midió el tiempo de pared (\textit{wall-clock}) de reproducir el experimento completo
+de ocho clases desde cero en una laptop modesta: Intel Core i5 de 13\textsuperscript{a}
+generación (12 hilos lógicos, PyTorch usa 8), 16~GB de RAM, \textbf{sin uso de GPU}
+(PyTorch en modo CPU; la tarjeta NVIDIA presente no participa).
+La Tabla~\ref{tab:costo} resume los tiempos.
+
+\begin{table}[H]
+    \centering
+    \caption{Costo computacional de la reproducción completa a ocho clases (CPU, sin
+    GPU). El entrenamiento del encoder concentra el costo; las decisiones del sistema de
+    memorias son operaciones matriciales sobre vectores cuantizados.}
+    \label{tab:costo}
+    \small
+    \begin{tabular}{lc}
+        \toprule
+        Componente & Tiempo \\
+        \midrule
+        Encoder ResNet18 (50 épocas, 2624 imágenes, 8 clases) & 79.9 min \\
+        Llenado de memorias (instancias + augmentación, 8 agentes) & 15.7 min \\
+        Fase temprana + fase madura & 2.9 min \\
+        Hemisferio visual (1024 interacciones + test completo) & 34.0 min \\
+        \midrule
+        Pipeline completo (etapas 1--8) & \textbf{133.5 min} \\
+        Batería de análisis completa (calibración, barridos, figuras) & 293.4 min \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+El entrenamiento del encoder visual (la única parte con gradientes y retropropagación)
+sigue concentrando la mayor parte del costo del pipeline.
+El crecimiento respecto a la versión de tres agentes (26.6 min $\to$ 133.5 min) escala
+con los datos ($8/3$ de imágenes en el encoder, $\approx$2.7$\times$) y con la
+augmentación del llenado, no con el número de agentes en sí: las operaciones de memoria
+siguen siendo álgebra matricial sin entrenamiento y se ejecutan en minutos.
+La batería de análisis (miles de corridas de evaluación) es trabajo de medición, no
+parte de un despliegue del sistema.

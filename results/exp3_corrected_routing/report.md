@@ -3,40 +3,46 @@
 ## Configuración
 - Scoring oficial: recognize_gated (gate de containment, activación media de celdas no nulas), sin ÷mem.mean
 - Sin filtro léxico: tokens representables por fastText entran como pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder
-- Aprendizaje: solo los directorios de labels registran (TME + 3 agentes), token → ganador. mem_dir_R NO se actualiza con recalls (solo percepciones reales de imágenes en stage7)
+- Aprendizaje: solo los directorios de labels registran (TME + un directorio por agente), token → ganador. mem_dir_R NO se actualiza con recalls (solo percepciones reales de imágenes en stage7)
 - Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1
 - Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)
 - ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar
 
-## Resultados (banco de 80 queries, GT 27/27/26)
+## Resultados (banco de 80 queries, 10 por clase)
 
-| métrica | exp. 1 (crudo) | exp. 3 (corregido) |
+| métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, 8 clases) |
 |---|---|---|
-| early accuracy | ~34% | **97.5%** |
-| early rechazo | — | 1.2% |
-| mature accuracy B1 | 98.8% (ablation B1) | **98.8%** |
-| mature accuracy RAW | 33.8% | 53.8% |
-| fidelidad | 100% (sobre routing sesgado) | **97.5%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo | [78, 65, 53] |
-| M_dir entropía | — | 1.567 bits (máx 1.585) |
+| early accuracy | ~34% | **80.0%** |
+| early rechazo | — | 5.0% |
+| mature accuracy B1 | 98.8% (ablation B1, v3) | **82.5%** |
+| mature accuracy RAW | 33.8% | 68.8% |
+| fidelidad | 100% (sobre routing sesgado) | **90.0%** (sobre routing correcto) |
+| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [50, 16, 44, 25, 30, 14, 17, 31] |
+| M_dir entropía | — | 2.866 bits (máx 3.000) |
 
-## Réplica de las 10 TEST_QUERIES del exp. 1
+## Réplica de las 16 TEST_QUERIES del pipeline oficial (2 por dominio)
 
-- counts exp. 1: [7, 4, 2] (apple capturó vehicle, engine, red…)
-- counts exp. 3: [6, 7, 6]
+- counts exp. 1 (v3, 10 queries de 3 clases): [7, 4, 2] (apple capturó vehicle, engine, red…)
+- counts exp. 3: [12, 6, 6, 7, 5, 5, 4, 7]
 
 | query | winner exp. 3 |
 |---|---|
-| a round red fruit | apple |
+| a crunchy red fruit with a core | apple |
 | fast vehicle with wheels | car |
+| farm animal that gives milk | cow |
+| a mug for drinking coffee | cup |
+| a barking domestic pet | dog |
 | animal with a mane | horse |
-| sweet edible thing | None |
-| large powerful mammal | horse |
-| machine for transportation | car |
-| grows on trees | apple |
-| has four legs and hooves | horse |
-| has an engine | car |
-| fruit with seeds inside | apple |
+| a ripe green pear from the orchard | apple |
+| a tomato used for sauce and soup | tomato |
+| sweet fruit from an orchard tree | apple |
+| machine for transportation with an engine | car |
+| bovine beast that moos | cow |
+| small container for a hot drink | cup |
+| canine with a wagging tail | dog |
+| riding animal with hooves | horse |
+| a bosc pear with a narrow neck | pear |
+| red vegetable for ketchup and salads | tomato |
 
 ## Archivos
 - summary.json · results_per_query.csv · exp3_mdir_state.pkl

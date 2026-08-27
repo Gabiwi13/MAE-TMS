@@ -49,7 +49,8 @@
 
 \begin{abstract}
 Este documento presenta el sistema EAM-TMS: un sistema de memoria transactiva
-multi-agente construido con EAM \cite{pineda2021entropic,pineda2024hetero},
+multi-agente construido con EAM y su extensión hetero-asociativa (EHAM)
+\cite{pineda2021entropic,morales2024hetero},
 sin gradientes ni retropropagación.
 Tres agentes especialistas trabajan sobre ETH-80 \cite{leibe2003eth80}: uno
 para \textit{apple}, uno para \textit{horse} y uno para \textit{car}.
@@ -95,14 +96,14 @@ acumulativa con ejemplos de cada dominio?
 Los experimentos muestran que sí.
 El sistema construido, \textbf{EAM-TMS}, se compone de tres agentes
 especialistas (uno por categoría visual de ETH-80) y un mediador central, el
-TME (\textit{Transactive Memory Engine}), que coordina la fase temprana y deja
+TME (\textit{Transactive Memory Expert}), que coordina la fase temprana y deja
 de hacer falta cuando cada agente forma su propio directorio interno.
 
 % -------------------------------------------------------
 \section{Memoria Asociativa Entrópica}
 
-Toda la maquinaria del sistema se apoya en la EAM de Pineda y Morales
-\cite{pineda2021entropic,pineda2024hetero}.
+Toda la maquinaria del sistema se apoya en la EAM de Pineda y Morales y en su
+extensión hetero-asociativa (EHAM) \cite{pineda2021entropic,morales2024hetero}.
 Un \textbf{cue} es un vector discreto $\mathbf{a} \in \{0,\ldots,m-1\}^n$
 ($n$ features, alfabeto de tamaño $m$) y la memoria es una relación
 $\mathbf{R} \in \mathbb{N}^{n \times m}$ que cuenta cuántas veces cada feature
@@ -131,8 +132,9 @@ Es una imagen prototípica producida por la acumulación de registros en la memo
 sale de la distribución que la EAM fue formando al registrar muchas instancias.
 
 \paragraph{Proyección AND-ponderada.}
-La memoria hetero-asociativa \cite{pineda2024hetero} relaciona dos dominios en
-un tensor $\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$.
+La Memoria Hetero-Asociativa Entrópica (EHAM) \cite{morales2024hetero} relaciona
+dos dominios en un tensor
+$\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$.
 Dado un cue izquierdo $\mathbf{a}$ con pesos $\mathbf{w}$ normalizados a media
 unitaria ($w'_i = n\, w_i / \sum_k w_k$), la proyección sobre el dominio derecho
 es:
@@ -147,12 +149,13 @@ La condición de anulación es una conjunción AND: la proyección solo produce
 masa donde \emph{todos} los features del cue tienen soporte simultáneo.
 Los pesos $w'_i$ hacen que la memoria homo-asociativa module a la
 hetero-asociativa de forma nativa; esta asimetría entre dominios es la razón de
-que cada agente requiera exactamente cuatro memorias.
+que cada agente requiera cinco memorias (dos homo, una de contenido y dos
+directorios: texto y visual).
 
 % -------------------------------------------------------
 \section{El sistema EAM-TMS}
 
-El sistema contiene \textbf{14 memorias asociativas}: cuatro por agente y dos
+El sistema contiene \textbf{17 memorias asociativas}: cinco por agente y dos
 en el TME (Tabla~\ref{tab:memorias}).
 La percepción corre por fuera del sistema de memorias: un encoder ResNet18
 \cite{he2016resnet} preentrenado proyecta las imágenes a un latente
@@ -163,20 +166,22 @@ consultas procesadas con spaCy \cite{honnibal2020spacy}.
 
 \begin{table}[H]
 \centering
-\caption{Las 14 memorias del sistema. Las de directorio asocian la
+\caption{Las 17 memorias del sistema. Las de directorio asocian la
 representación del cue con la identidad del agente ganador $g$ (one-hot,
-$q{=}2$: bit ``conoce'' / ``no-conoce'').}
+$q{=}2$). Cada agente tiene dos directorios: texto ($M_{\mathrm{dir}}$) y
+visual ($M^R_{\mathrm{dir}}$), uno por modalidad de pista.}
 \label{tab:memorias}
 \small
 \begin{tabular}{@{}llll@{}}
 \toprule
 \textbf{Componente} & \textbf{Memoria} & \textbf{Tipo} & \textbf{Dimensiones} \\
 \midrule
-\multirow{4}{*}{Agente $k$ (×3)} &
+\multirow{5}{*}{Agente $k$ (×3)} &
   $M^L_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}300,\; m{=}16)$ \\
 & $M^R_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}64,\; m{=}32)$ \\
 & $M^H_{\mathrm{dom}}$ & Hetero-asociativa & $(300, 16 \leftrightarrow 64, 32)$ \\
 & $M_{\mathrm{dir}}$   & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\
+& $M^R_{\mathrm{dir}}$ & Hetero-asociativa & $(64, 32 \to 3, 2)$ \\
 \midrule
 \multirow{2}{*}{TME} &
   $M^L_{\mathrm{dir}}$ & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\

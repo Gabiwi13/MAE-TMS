@@ -1,114 +1,114 @@
 [
   {
     "step": "stage1_dataset",
-    "seconds": 0.17,
-    "minutes": 0.003,
+    "seconds": 0.27,
+    "minutes": 0.005,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage2_train_encoder",
-    "seconds": 1459.49,
-    "minutes": 24.325,
+    "seconds": 4794.28,
+    "minutes": 79.905,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage3_conceptnet",
-    "seconds": 0.0,
-    "minutes": 0.0,
+    "seconds": 27.42,
+    "minutes": 0.457,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage4_fasttext",
-    "seconds": 7.22,
-    "minutes": 0.12,
+    "seconds": 25.63,
+    "minutes": 0.427,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage5_fill",
-    "seconds": 30.17,
-    "minutes": 0.503,
+    "seconds": 943.63,
+    "minutes": 15.727,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage6_interaction",
-    "seconds": 29.47,
-    "minutes": 0.491,
+    "seconds": 60.23,
+    "minutes": 1.004,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage7_bidirectional",
-    "seconds": 13.31,
-    "minutes": 0.222,
+    "seconds": 2039.14,
+    "minutes": 33.986,
     "ok": true,
     "note": ""
   },
   {
     "step": "stage8_mature",
-    "seconds": 47.14,
-    "minutes": 0.786,
+    "seconds": 111.86,
+    "minutes": 1.864,
     "ok": true,
     "note": ""
   },
   {
     "step": "exp2_iota_kappa",
-    "seconds": 174.75,
-    "minutes": 2.912,
+    "seconds": 494.59,
+    "minutes": 8.243,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "exp3_routing",
-    "seconds": 18.74,
-    "minutes": 0.312,
+    "seconds": 35.25,
+    "minutes": 0.588,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "exp4_formation",
-    "seconds": 337.58,
-    "minutes": 5.626,
+    "seconds": 506.58,
+    "minutes": 8.443,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "exp5_entropic",
-    "seconds": 165.78,
-    "minutes": 2.763,
+    "seconds": 1042.59,
+    "minutes": 17.377,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "exp6_capacity",
-    "seconds": 516.22,
-    "minutes": 8.604,
+    "seconds": 1627.38,
+    "minutes": 27.123,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "ablation",
-    "seconds": 464.01,
-    "minutes": 7.733,
-    "ok": true,
-    "note": "rc=0"
+    "seconds": 2351.67,
+    "minutes": 39.195,
+    "ok": false,
+    "note": "rc=1"
   },
   {
     "step": "rejection_probe",
-    "seconds": 13.78,
-    "minutes": 0.23,
+    "seconds": 15.43,
+    "minutes": 0.257,
     "ok": true,
     "note": "rc=0"
   },
   {
     "step": "paper_figures",
-    "seconds": 553.58,
-    "minutes": 9.226,
-    "ok": false,
-    "note": "rc=1"
+    "seconds": 3518.44,
+    "minutes": 58.641,
+    "ok": true,
+    "note": "rc=0"
   }
 ]

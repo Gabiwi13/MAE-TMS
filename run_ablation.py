@@ -1,23 +1,23 @@
 """
 Ablation study — diagnóstico del sesgo de M_dir hacia apple.
 
-Directorio: el DirectoryMemory hetero OFICIAL (associative_memory), el mismo que
-usa el sistema en produccion. La version previa usaba SlotDirectoryMemory (una
-HomoAssociativeMemory por agente), archivada en archive/legacy_slot_directory/;
-sus numeros no representaban la arquitectura final y no deben citarse como tales.
+Directorio: el DirectoryMemory hetero de associative_memory, el mismo que usa
+el sistema completo, para que las condiciones se midan sobre esa memoria.
 
 Condiciones:
   A   — Baseline: lectura cruda del directorio (predict, sin normalizar)
   B1  — Score normalizado / count_agente  (penaliza sobrerepresentados)
   B2  — Score normalizado / sqrt(count_agente)
   C   — Registro balanceado: cap proporcional de registros por agente
-  D   — Queries estrictamente balanceadas por dominio (N//3 por clase)
-  E32 — M_dir con m=32 (binario — confirma que m>2 no ayuda para sign(v))
-  E64 — M_dir con m=64 (binario — ídem)
-  F   — ConceptNet curado: apple sin computer/mac/macintosh/eden
-  G   — Mejor combinación: D + B1 + F
+  D   — Queries estrictamente balanceadas por dominio (N//K por clase, K=8)
+  E32 — M_dir con m=32  [HISTÓRICO: nació para probar m>2 con sign(v); con la
+        cuantización por MAGNITUD vigente ya no mide lo mismo]
+  E64 — M_dir con m=64  [HISTÓRICO, ídem]
+  F   — ConceptNet curado: apple sin computer/mac/macintosh/eden  [NO-OP en v4:
+        esos labels ya no están en labels_apple.json → F ≡ A]
+  G   — Mejor combinación: D + B1 + F  (con F no-op, G ≡ D + B1)
 
-N ∈ [10,20,40,80]  ×  seeds ∈ [0,1,2,3,4]  →  CSV → gráficas → reporte Markdown
+N ∈ [50,100,200,400]  ×  seeds ∈ [0,1,2,3,4]  →  CSV → gráficas → reporte Markdown
 """
 import csv
 import json
@@ -41,10 +41,7 @@ import matplotlib.pyplot as plt
 from hetero_memory import HeteroAssociativeMemory
 from associative_memory import DirectoryMemory
 from quantizer import quantize_binary
-from eval_bank import (
-    ALL_QUERIES, GROUND_TRUTH, DOMAIN_QUERIES,
-    APPLE_QUERIES, HORSE_QUERIES, CAR_QUERIES,
-)
+from eval_bank import ALL_QUERIES, GROUND_TRUTH, DOMAIN_QUERIES
 from stage6_interaction import (
     Agent, TME, CLASSES, AGENT_LIST, MODELS_DIR,
     get_nlp, load_all_vectors, prevectorize,
@@ -52,13 +49,18 @@ from stage6_interaction import (
 )
 
 
+# Las condiciones A-G se evaluan sobre el DirectoryMemory hetero importado de
+# associative_memory, el mismo del sistema completo. Un directorio hecho de una
+# HomoAssociativeMemory por agente exagera el sesgo de densidad, porque el score
+# homo crece con la masa de registros mas que la proyeccion hetero.
 
 
 class DirectoryMemoryCapped(DirectoryMemory):
     """Condicion C: DirectoryMemory hetero que limita la acumulacion
     desproporcionada por agente (cap proporcional por max_ratio)."""
 
-    def __init__(self, n=300, m=16, n_agents=3, max_ratio=3.0):
+    def __init__(self, n=300, m=16, n_agents=None, max_ratio=3.0):
+        # n_agents obligatorio (lo valida DirectoryMemory).
         super().__init__(n=n, m=m, n_agents=n_agents)
         self._max_ratio = max_ratio
 
@@ -71,7 +73,8 @@ class DirectoryMemoryCapped(DirectoryMemory):
 
 # Configuración global
 
-N_VALUES   = [10, 20, 40, 80]
+# Banco de 411 consultas (8 clases): N escala respecto al banco original de 80.
+N_VALUES   = [50, 100, 200, 400]
 SEEDS      = [0, 1, 2, 3, 4]
 CONDITIONS = ["A", "B1", "B2", "C", "D", "E32", "E64", "F", "G"]
 
@@ -98,6 +101,15 @@ COND_COLORS = {
     "F":   "#f39c12",
     "G":   "#c0392b",
 }
+
+# Paleta por dominio (8 clases ETH-80) para los plots diagnósticos.
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
+# N de referencia para los plots por dominio: el banco completo. Tiene que
+# estar en N_VALUES o los plots agregan 0 filas.
+N_PLOT = N_VALUES[-1]
+CHANCE = 1.0 / len(CLASSES)
 
 # El banco de 80 consultas (APPLE/HORSE/CAR_QUERIES, DOMAIN_QUERIES,
 # ALL_QUERIES, GROUND_TRUTH) vive en src/eval_bank.py y se importa arriba:
@@ -134,6 +146,12 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
     removed = NOISE & set(labels)
     print(f"  Curated apple: {len(labels)} -> {len(curated)} labels "
           f"(removed: {removed})")
+    if not removed:
+        # Si el vocabulario no trae labels de Apple Inc., la curacion no
+        # remueve nada y F queda igual que A. Se avisa para no reportar un
+        # efecto que no ocurrio.
+        print("  AVISO: la curacion F/G no removio NADA (los labels de Apple "
+              "Inc. ya no estan en labels_apple.json). F == A en esta corrida.")
 
     label_seq = []
     for word, freq in curated.items():
@@ -184,6 +202,35 @@ def get_condition_config(condition: str):
 
 # Factory de agentes
 
+# Memoizaciones de rendimiento (resultados idénticos):
+#   _LR_CACHE     evita re-deserializar L/R (y la H de ~160MB que
+#                 load_agent_memories arrastra) en cada uno de los experimentos.
+#                 L/R solo se LEEN durante la ablación (los registros van al
+#                 mem_dir fresco de cada experimento), así que compartirlas es seguro.
+#   _SCORE_CACHE  recognize_gated(token) es determinista dado (M_dom_H, M_dom_L);
+#                 las mdoms se construyen UNA vez (base y curada) y se reusan, así
+#                 que (id(mem_dom_H), token) identifica el score entre experimentos.
+_LR_CACHE = {}
+_SCORE_CACHE = {}
+
+
+def _load_LR(cls: str):
+    if cls not in _LR_CACHE:
+        with open(MODELS_DIR / f"mem_dom_L_{cls}.pkl", "rb") as f:
+            mem_L = pickle.load(f)
+        with open(MODELS_DIR / f"mem_dom_R_{cls}.pkl", "rb") as f:
+            mem_R = pickle.load(f)
+        _LR_CACHE[cls] = (mem_L, mem_R)
+    return _LR_CACHE[cls]
+
+
+def _gated_score_cached(agent, tok: str, vq_mdom) -> float:
+    key = (id(agent.mem_dom_H), tok)
+    if key not in _SCORE_CACHE:
+        _SCORE_CACHE[key] = agent.recognize_gated(vq_mdom)
+    return _SCORE_CACHE[key]
+
+
 def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
                 mdir_kwargs: dict = None):
     """Create fresh Agent+TME set for one ablation experiment.
@@ -191,28 +238,29 @@ def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
     mdoms[cls] is the H memory (may be curated for conditions F/G).
     M_dom_L/R are loaded from disk (non-curated) for weighted recognition.
     """
-    from stage5_fill import load_agent_memories
     mdir_kwargs = mdir_kwargs or {}
     agents = {}
     for cls in CLASSES:
-        # Load L/R for weighted recognition (H is provided via mdoms)
-        _, mem_L, mem_R = load_agent_memories(cls)
+        # L/R para el reconocimiento ponderado (H llega vía mdoms)
+        mem_L, mem_R = _load_LR(cls)
         ag = Agent(cls, mdoms[cls], mem_dom_L=mem_L, mem_dom_R=mem_R)
-        # Override the default mem_dir with the ablation-specific class
-        ag.mem_dir = mdir_class(m=m_mdir, **mdir_kwargs)
+        # Override the default mem_dir with the ablation-specific class.
+        # n_agents explícito: el default de DirectoryMemory es 3 y el sistema
+        # ahora tiene len(CLASSES) agentes.
+        ag.mem_dir = mdir_class(m=m_mdir, n_agents=len(CLASSES), **mdir_kwargs)
         agents[cls] = ag
     tme = TME()
     # mem_dir is a read-only property alias; set mem_dir_L directly
-    tme.mem_dir_L = mdir_class(m=m_mdir, **mdir_kwargs)
+    tme.mem_dir_L = mdir_class(m=m_mdir, n_agents=len(CLASSES), **mdir_kwargs)
     return agents, tme
 
 
 # Selección de queries
 
 def balanced_queries(N: int, seed: int):
-    """Condición D: floor(N/3) queries por dominio, shuffled, interleaved."""
+    """Condición D: floor(N/K) queries por dominio, shuffled, interleaved."""
     rng = np.random.RandomState(seed)
-    n_per = N // 3
+    n_per = N // len(CLASSES)
     pools = []
     for cls in CLASSES:
         pool = DOMAIN_QUERIES[cls][:]
@@ -222,8 +270,11 @@ def balanced_queries(N: int, seed: int):
     interleaved_q, interleaved_gt = [], []
     for i in range(n_per):
         for j, cls in enumerate(CLASSES):
-            interleaved_q.append(pools[j][i])
-            interleaved_gt.append(cls)
+            # Tolerar pools desiguales: una clase puede tener menos consultas
+            # que n_per (p.ej. dog tiene 49 y N=400//8 pide 50).
+            if i < len(pools[j]):
+                interleaved_q.append(pools[j][i])
+                interleaved_gt.append(cls)
 
     return interleaved_q, interleaved_gt
 
@@ -258,7 +309,7 @@ def run_early_phase(queries, agents, tme, nlp, vectors_cache, m_mdir):
             vq_mdom = quantize_binary(v, M_LABEL)             # m=16 para M_dom
             tok_vecs_mdir[tok] = quantize_binary(v, m_mdir)   # variable para M_dir
             for cls in CLASSES:
-                agent_scores[cls] += agents[cls].recognize_gated(vq_mdom)
+                agent_scores[cls] += _gated_score_cached(agents[cls], tok, vq_mdom)
 
         if not tok_vecs_mdir:
             winners.append("REJ")   # no_representable_tokens
@@ -331,7 +382,7 @@ def compute_metrics(early_winners, mature_winners, ground_truth, agents):
         else:
             domain_early[cls] = domain_fid[cls] = domain_mat[cls] = 0.0
 
-    cm = np.zeros((3, 3), dtype=int)
+    cm = np.zeros((len(CLASSES), len(CLASSES)), dtype=int)
     for g, m in zip(ground_truth, mature_winners):
         if m in CLASSES:
             cm[CLASSES.index(g), CLASSES.index(m)] += 1
@@ -369,23 +420,15 @@ def metrics_to_row(condition, N, seed, m):
         "early_accuracy":   round(m["early_acc"],   4),
         "mature_fidelity":  round(m["fidelity"],    4),
         "mature_accuracy":  round(m["mature_acc"],  4),
-        "early_acc_apple":  round(m["domain_early"]["apple"], 4),
-        "early_acc_horse":  round(m["domain_early"]["horse"], 4),
-        "early_acc_car":    round(m["domain_early"]["car"],   4),
-        "fidelity_apple":   round(m["domain_fid"]["apple"],   4),
-        "fidelity_horse":   round(m["domain_fid"]["horse"],   4),
-        "fidelity_car":     round(m["domain_fid"]["car"],     4),
-        "mature_acc_apple": round(m["domain_mat"]["apple"],   4),
-        "mature_acc_horse": round(m["domain_mat"]["horse"],   4),
-        "mature_acc_car":   round(m["domain_mat"]["car"],     4),
-        "winner_pct_apple": round(m["winner_dist"]["apple"],  4),
-        "winner_pct_horse": round(m["winner_dist"]["horse"],  4),
-        "winner_pct_car":   round(m["winner_dist"]["car"],    4),
-        "mdir_reg_apple":   m["reg_counts"]["apple"],
-        "mdir_reg_horse":   m["reg_counts"]["horse"],
-        "mdir_reg_car":     m["reg_counts"]["car"],
         "mdir_entropy":     round(m["mdir_entropy"], 4),
     }
+    # Una columna por clase, generadas desde CLASSES.
+    for cls in CLASSES:
+        row[f"early_acc_{cls}"]  = round(m["domain_early"][cls], 4)
+        row[f"fidelity_{cls}"]   = round(m["domain_fid"][cls],   4)
+        row[f"mature_acc_{cls}"] = round(m["domain_mat"][cls],   4)
+        row[f"winner_pct_{cls}"] = round(m["winner_dist"][cls],  4)
+        row[f"mdir_reg_{cls}"]   = m["reg_counts"][cls]
     cm = m["cm"]
     for i, tc in enumerate(CLASSES):
         for j, pc in enumerate(CLASSES):
@@ -534,7 +577,8 @@ def plot_scaling_comparison(rows):
         ax.set_title(ylabel + " por condicion")
         ax.set_ylim(0, 1.05)
         ax.set_xticks(N_VALUES)
-        ax.axhline(1/3, color="gray", lw=0.8, ls=":", label="chance (33%)")
+        ax.axhline(CHANCE, color="gray", lw=0.8, ls=":",
+                   label=f"chance ({CHANCE*100:.1f}%)")
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=7, ncol=2, loc="lower right")
 
@@ -547,12 +591,13 @@ def plot_scaling_comparison(rows):
     print(f"  Guardado: {out.name}")
 
 
-# Plot 2: Domain accuracy por condición (N=80)
+# Plot 2: Domain accuracy por condición (N=N_PLOT)
 
 def plot_domain_accuracy(rows):
-    N_PLOT = 80
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    dom_colors = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+    ncol = 4
+    nrow = int(np.ceil(len(CLASSES) / ncol))
+    fig, axes = plt.subplots(nrow, ncol, figsize=(5 * ncol, 4.2 * nrow))
+    axes = np.atleast_1d(axes).ravel()
     x = np.arange(len(CONDITIONS))
     width = 0.6
 
@@ -561,7 +606,7 @@ def plot_domain_accuracy(rows):
         means = [mean_cond(rows, c, N_PLOT, key) for c in CONDITIONS]
         stds  = [std_cond(rows, c, N_PLOT, key)  for c in CONDITIONS]
         ax.bar(x, means, width, yerr=stds, capsize=4,
-               color=dom_colors[cls], alpha=0.75,
+               color=DOMAIN_COLOR[cls], alpha=0.75,
                edgecolor="black", linewidth=0.5)
         ax.set_xticks(x)
         ax.set_xticklabels([CONDITION_LABELS[c] for c in CONDITIONS],
@@ -569,9 +614,12 @@ def plot_domain_accuracy(rows):
         ax.set_ylabel("Mature accuracy")
         ax.set_title(f"Dominio: {cls}  (N={N_PLOT})", fontweight="bold")
         ax.set_ylim(0, 1.05)
-        ax.axhline(1/3, color="gray", ls=":", lw=1, label="chance (33%)")
+        ax.axhline(CHANCE, color="gray", ls=":", lw=1,
+                   label=f"chance ({CHANCE*100:.0f}%)")
         ax.grid(axis="y", alpha=0.3)
         ax.legend(fontsize=7)
+    for ax in axes[len(CLASSES):]:      # apagar ejes sobrantes de la grilla
+        ax.axis("off")
 
     plt.suptitle(f"Accuracy por dominio en fase madura — N={N_PLOT}",
                  fontsize=12, fontweight="bold")
@@ -582,13 +630,12 @@ def plot_domain_accuracy(rows):
     print(f"  Guardado: {out.name}")
 
 
-# Plot 3: Distribución de ganadores (fase madura, N=80)
+# Plot 3: Distribución de ganadores (fase madura, N=N_PLOT)
 
 def plot_winner_distribution(rows):
-    N_PLOT = 80
-    dom_colors = ["#e74c3c", "#2980b9", "#27ae60"]
+    dom_colors = [DOMAIN_COLOR[c] for c in CLASSES]
     n_cond = len(CONDITIONS)
-    fig, axes = plt.subplots(1, n_cond, figsize=(22, 5))
+    fig, axes = plt.subplots(1, n_cond, figsize=(2.4 * n_cond, 5))
 
     for ax, cond in zip(axes, CONDITIONS):
         means = [mean_cond(rows, cond, N_PLOT, f"winner_pct_{cls}")
@@ -597,19 +644,20 @@ def plot_winner_distribution(rows):
                  for cls in CLASSES]
         ax.bar(CLASSES, means, color=dom_colors, alpha=0.8,
                edgecolor="black", linewidth=0.5)
-        ax.errorbar(range(3), means, yerr=stds, fmt="none",
+        ax.errorbar(range(len(CLASSES)), means, yerr=stds, fmt="none",
                     ecolor="black", capsize=4, linewidth=1.2)
         ax.set_title(CONDITION_LABELS[cond].replace(" ", "\n", 1),
                      fontsize=8, fontweight="bold")
         ax.set_ylim(0, 1.05)
-        ax.axhline(1/3, color="gray", ls=":", lw=1)
-        ax.set_xticklabels(CLASSES, fontsize=8)
+        ax.axhline(CHANCE, color="gray", ls=":", lw=1)
+        ax.set_xticks(range(len(CLASSES)))
+        ax.set_xticklabels(CLASSES, fontsize=7, rotation=45, ha="right")
         if cond == CONDITIONS[0]:
             ax.set_ylabel("% victorias fase madura")
         ax.grid(axis="y", alpha=0.3)
 
-    plt.suptitle("Distribucion de ganadores en fase madura (N=80) — sesgo de M_dir",
-                 fontsize=11, fontweight="bold")
+    plt.suptitle(f"Distribucion de ganadores en fase madura (N={N_PLOT}) "
+                 "— sesgo de M_dir", fontsize=11, fontweight="bold")
     plt.tight_layout()
     out = RESULTS_DIR / "winner_distribution.png"
     plt.savefig(out, dpi=130, bbox_inches="tight")
@@ -623,18 +671,19 @@ def _draw_confusion_matrix(cm: np.ndarray, title: str, filename: str):
     fig, ax = plt.subplots(figsize=(5, 4))
     im = ax.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
     plt.colorbar(im, ax=ax)
-    ax.set_xticks(range(3)); ax.set_yticks(range(3))
-    ax.set_xticklabels(CLASSES, fontsize=10)
+    k = len(CLASSES)
+    ax.set_xticks(range(k)); ax.set_yticks(range(k))
+    ax.set_xticklabels(CLASSES, fontsize=10, rotation=45, ha="right")
     ax.set_yticklabels(CLASSES, fontsize=10)
     ax.set_xlabel("Predicho (fase madura)")
     ax.set_ylabel("Real (ground truth)")
     ax.set_title(title, fontweight="bold")
     vmax = cm.max() if cm.max() > 0 else 1
-    for i in range(3):
-        for j in range(3):
+    for i in range(k):
+        for j in range(k):
             ax.text(j, i, str(cm[i, j]), ha="center", va="center",
                     color="white" if cm[i, j] > vmax * 0.5 else "black",
-                    fontsize=12, fontweight="bold")
+                    fontsize=9, fontweight="bold")
     plt.tight_layout()
     out = RESULTS_DIR / filename
     plt.savefig(out, dpi=130, bbox_inches="tight")
@@ -643,12 +692,13 @@ def _draw_confusion_matrix(cm: np.ndarray, title: str, filename: str):
 
 
 def plot_confusion_matrices(rows):
-    N_PLOT = 80
     for cond, fname, title in [
-        ("A", "confusion_matrix_baseline.png",      "Confusion matrix — Baseline A (N=80)"),
-        ("G", "confusion_matrix_best_condition.png", "Confusion matrix — Mejor cond. G (N=80)"),
+        ("A", "confusion_matrix_baseline.png",
+         f"Confusion matrix — Baseline A (N={N_PLOT})"),
+        ("G", "confusion_matrix_best_condition.png",
+         f"Confusion matrix — Mejor cond. G (N={N_PLOT})"),
     ]:
-        cm_total = np.zeros((3, 3), dtype=int)
+        cm_total = np.zeros((len(CLASSES), len(CLASSES)), dtype=int)
         for r in rows:
             if r["condition"] == cond and r["N"] == N_PLOT:
                 for i, tc in enumerate(CLASSES):
@@ -660,11 +710,9 @@ def plot_confusion_matrices(rows):
 # Plot 6: Registros en M_dir por condición
 
 def plot_registration_counts(rows):
-    N_PLOT = 80
-    fig, ax = plt.subplots(figsize=(13, 5))
+    fig, ax = plt.subplots(figsize=(15, 5))
     x = np.arange(len(CONDITIONS))
-    width = 0.25
-    dom_colors = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+    width = 0.10                       # 8 barras por condición
 
     for k, cls in enumerate(CLASSES):
         key = f"mdir_reg_{cls}"
@@ -675,14 +723,15 @@ def plot_registration_counts(rows):
             means.append(np.mean(vals) if vals else 0)
             stds.append(np.std(vals)   if vals else 0)
         ax.bar(x + k * width, means, width, yerr=stds, capsize=3,
-               label=cls, color=dom_colors[cls], alpha=0.75,
+               label=cls, color=DOMAIN_COLOR[cls], alpha=0.75,
                edgecolor="black", linewidth=0.5)
 
-    ax.set_xticks(x + width)
+    ax.set_xticks(x + width * (len(CLASSES) - 1) / 2)
     ax.set_xticklabels([CONDITION_LABELS[c] for c in CONDITIONS],
                        rotation=30, ha="right", fontsize=8)
     ax.set_ylabel("Registros en M_dir (promedio sobre seeds)")
-    ax.set_title("Registros en M_dir por agente — N=80", fontweight="bold")
+    ax.set_title(f"Registros en M_dir por agente — N={N_PLOT}",
+                 fontweight="bold")
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
@@ -698,44 +747,45 @@ def generate_report(rows):
     def mv(cond, N, key):
         return mean_cond(rows, cond, N, key)
 
-    best_cond = max(CONDITIONS, key=lambda c: mv(c, 80, "mature_accuracy"))
-    baseline_acc = mv("A", 80, "mature_accuracy")
-    best_acc     = mv(best_cond, 80, "mature_accuracy")
+    best_cond = max(CONDITIONS, key=lambda c: mv(c, N_PLOT, "mature_accuracy"))
+    baseline_acc = mv("A", N_PLOT, "mature_accuracy")
+    best_acc     = mv(best_cond, N_PLOT, "mature_accuracy")
 
     header = ("| Condicion              | N   | EarlyAcc | Fidelidad | "
-              "MatureAcc | Apple | Horse | Car   |")
+              "MatureAcc |")
     separator = ("|------------------------|-----|----------|-----------|"
-                 "----------|-------|-------|-------|")
+                 "----------|")
     rows_md = [header, separator]
     for cond in CONDITIONS:
         for N in N_VALUES:
             ea  = mv(cond, N, "early_accuracy")
             fid = mv(cond, N, "mature_fidelity")
             acc = mv(cond, N, "mature_accuracy")
-            a   = mv(cond, N, "mature_acc_apple")
-            h   = mv(cond, N, "mature_acc_horse")
-            c   = mv(cond, N, "mature_acc_car")
             rows_md.append(
                 f"| {CONDITION_LABELS[cond]:22s} | {N:3d} | "
-                f"{ea:.2%}   | {fid:.2%}    | {acc:.2%}    | "
-                f"{a:.2%} | {h:.2%} | {c:.2%} |"
+                f"{ea:.2%}   | {fid:.2%}    | {acc:.2%}    |"
             )
 
     def pct(cond, N, key):
         return f"{mv(cond, N, key):.2%}"
 
     content = f"""# Ablation Report — Sesgo de M_dir en EAM-TMS
-**Fecha:** 2026-06-07
 **Arquitectura:** HeteroAssociativeMemory (n=300, m=16, p=64, q=32) + ConceptNet 5.7.0
-**Dominios:** apple / horse / car (ETH-80)
+**Dominios:** {" / ".join(CLASSES)} (ETH-80, {len(CLASSES)} clases)
+
+> **Nota:** los NÚMEROS de este reporte salen de la corrida actual de 8 clases
+> (N={N_PLOT}, 5 seeds). La NARRATIVA cualitativa de P1–P7 abajo es el
+> diagnóstico histórico de la era v2 (3 clases, cuantización `sign(v)`,
+> polisemia de Apple Inc.); la cuantización actual es por MAGNITUD y el
+> análisis vigente vive en el paper (.tex) y en generate_paper_figures.py.
 
 ---
 
 ## Resumen ejecutivo
 
 El baseline (A) muestra sesgo estructural donde apple domina la fase madura con
-{pct("A",80,"winner_pct_apple")} de victorias vs {pct("A",80,"winner_pct_horse")} (horse)
-y {pct("A",80,"winner_pct_car")} (car) en N=80.
+{pct("A", N_PLOT,"winner_pct_apple")} de victorias vs {pct("A", N_PLOT,"winner_pct_horse")} (horse)
+y {pct("A", N_PLOT,"winner_pct_car")} (car) en N={N_PLOT}.
 
 La mejor condición encontrada es **{best_cond}** ({CONDITION_LABELS[best_cond]}):
 mejora mature accuracy de {baseline_acc:.2%} a {best_acc:.2%}
@@ -751,35 +801,40 @@ mejora mature accuracy de {baseline_acc:.2%} a {best_acc:.2%}
 
 ## Respuestas a las 7 preguntas de investigación
 
+> **[HISTÓRICO v2/3-clases]** P1–P7 describen el diagnóstico de la era de
+> `sign(v)` + Apple Inc.; NO aplican a la cuantización por magnitud vigente
+> (ver disclaimer arriba). Los NÚMEROS de la tabla sí son de la corrida actual.
+
 ### P1 — ¿El sesgo hacia apple es estructural o aleatorio?
 
-**Estructural.** Tres mecanismos se combinan:
-1. **Cuantización binaria**: `quantize_binary(sign(v), m=16)` mapea exactamente 2 valores
+**[HISTÓRICO]** **Estructural.** Tres mecanismos se combinan:
+1. **Cuantización binaria** *(ya no vigente: hoy es por magnitud)*:
+   `quantize_binary(sign(v), m=16)` mapeaba exactamente 2 valores
    (0 y 15). Apple acumula más registros cuando sus labels ganan el early phase.
 2. **Acumulación asimétrica**: si apple gana N_a queries y el resto gana menos, M_dir
    acumula N_a × n_tokens registros para apple vs. menos para los demás.
 3. **Polisemia de ConceptNet**: labels de Apple Inc. (computer, mac, macintosh) permiten
    que tokens de car/horse activen el agente apple en early phase.
 
-Baseline N=80: winner_apple={pct("A",80,"winner_pct_apple")},
-winner_horse={pct("A",80,"winner_pct_horse")}, winner_car={pct("A",80,"winner_pct_car")}.
+Baseline N={N_PLOT}: winner_apple={pct("A", N_PLOT,"winner_pct_apple")},
+winner_horse={pct("A", N_PLOT,"winner_pct_horse")}, winner_car={pct("A", N_PLOT,"winner_pct_car")}.
 
 ### P2 — ¿Normalización B1/B2 reduce el sesgo?
 
-B1 (÷count): mature_acc N=80 = {pct("B1",80,"mature_accuracy")} vs baseline {pct("A",80,"mature_accuracy")}
-B2 (÷√count): mature_acc N=80 = {pct("B2",80,"mature_accuracy")}
+B1 (÷count): mature_acc N={N_PLOT} = {pct("B1", N_PLOT,"mature_accuracy")} vs baseline {pct("A", N_PLOT,"mature_accuracy")}
+B2 (÷√count): mature_acc N={N_PLOT} = {pct("B2", N_PLOT,"mature_accuracy")}
 
 La normalización penaliza al agente con más registros (apple). B1 divide directamente
 por el número de veces que el agente fue registrado, equilibrando los scores.
 El efecto es parcial si el sesgo también viene de M_dom (reconocimiento).
 
-Horse N=80: A={pct("A",80,"mature_acc_horse")} → B1={pct("B1",80,"mature_acc_horse")}
-Car  N=80: A={pct("A",80,"mature_acc_car")} → B1={pct("B1",80,"mature_acc_car")}
+Horse N={N_PLOT}: A={pct("A", N_PLOT,"mature_acc_horse")} → B1={pct("B1", N_PLOT,"mature_acc_horse")}
+Car  N={N_PLOT}: A={pct("A", N_PLOT,"mature_acc_car")} → B1={pct("B1", N_PLOT,"mature_acc_car")}
 
 ### P3 — ¿El balanceo de queries (D) mejora el early phase?
 
-D early_acc N=80 = {pct("D",80,"early_accuracy")} vs A = {pct("A",80,"early_accuracy")}
-D mature_acc N=80 = {pct("D",80,"mature_accuracy")}
+D early_acc N={N_PLOT} = {pct("D", N_PLOT,"early_accuracy")} vs A = {pct("A", N_PLOT,"early_accuracy")}
+D mature_acc N={N_PLOT} = {pct("D", N_PLOT,"mature_accuracy")}
 
 Con floor(N/3) queries exactas por dominio e interleaved, los registros en M_dir
 deberían ser más balanceados. Sin embargo, si M_dom tiene sesgos propios (reconoce
@@ -787,8 +842,8 @@ mejor apple), el efecto es limitado.
 
 ### P4 — ¿El registro balanceado (C) es efectivo?
 
-C mature_acc N=80 = {pct("C",80,"mature_accuracy")}
-C winner_apple = {pct("C",80,"winner_pct_apple")} vs A = {pct("A",80,"winner_pct_apple")}
+C mature_acc N={N_PLOT} = {pct("C", N_PLOT,"mature_accuracy")}
+C winner_apple = {pct("C", N_PLOT,"winner_pct_apple")} vs A = {pct("A", N_PLOT,"winner_pct_apple")}
 
 El cap (max_ratio=3.0) previene que un agente acumule >3× los registros del mínimo.
 Esto ayuda si el sesgo es de registro; si el sesgo viene de M_dom (reconocimiento en
@@ -796,21 +851,23 @@ early phase), C no puede compensarlo completamente.
 
 ### P5 — ¿Aumentar m (E32, E64) mejora discriminación?
 
-E32 mature_acc N=80 = {pct("E32",80,"mature_accuracy")}
-E64 mature_acc N=80 = {pct("E64",80,"mature_accuracy")}
+E32 mature_acc N={N_PLOT} = {pct("E32", N_PLOT,"mature_accuracy")}
+E64 mature_acc N={N_PLOT} = {pct("E64", N_PLOT,"mature_accuracy")}
 
-**Resultado esperado y confirmado**: cambiar m NO mejora discriminación para vectores
-binarios. `quantize_binary` mapea sign(v)∈{{-1,+1}} a {{0, m-1}}, usando solo 2 de m bins.
-Con m=32: usa posiciones 0 y 31. Con m=64: posiciones 0 y 63. El patrón de bits es
-idéntico, cambian solo los índices absolutos.
-
-**Recomendación**: usar vectores fastText continuos (no sign(v)) para M_dir con
-normalización global min/max permitiría aprovechar la resolución de m>2.
+**[HISTÓRICO — sign(v), ya no vigente]** Cuando la cuantización era binaria,
+cambiar m NO mejoraba discriminación: `quantize_binary` mapeaba sign(v)∈{{-1,+1}}
+a {{0, m-1}}, usando solo 2 de m bins. HOY la cuantización es por MAGNITUD y usa
+todos los m niveles, así que E32/E64 ya no prueban lo que su nombre sugiere;
+la recomendación de "usar vectores continuos" YA se aplicó (fastText crudo).
 
 ### P6 — ¿La curación de ConceptNet (F) reduce engine→apple?
 
-F mature_acc_car N=80 = {pct("F",80,"mature_acc_car")} vs A = {pct("A",80,"mature_acc_car")}
-F mature_acc N=80 = {pct("F",80,"mature_accuracy")}
+**[NO-OP en v4]** Los labels de Apple Inc. (computer/mac/macintosh/eden) ya no
+están en labels_apple.json (vocabulario por masa asociativa), así que F no
+remueve nada y F ≡ A; los números F/A abajo deben coincidir.
+
+F mature_acc_car N={N_PLOT} = {pct("F", N_PLOT,"mature_acc_car")} vs A = {pct("A", N_PLOT,"mature_acc_car")}
+F mature_acc N={N_PLOT} = {pct("F", N_PLOT,"mature_accuracy")}
 
 Remover {{computer, mac, macintosh, eden}} del M_dom de apple hace que tokens como
 "engine", "machine", "motor" tengan menos afinidad con apple en early phase.
@@ -819,16 +876,16 @@ El agente car gana más queries con tokens mecanicos → M_dir aprende correctam
 ### P7 — ¿Cuál es la mejor combinación?
 
 Mejor condicion: {best_cond} ({CONDITION_LABELS[best_cond]})
-N=80: mature_acc={best_acc:.2%} (baseline: {baseline_acc:.2%}, mejora: +{best_acc-baseline_acc:.2%})
+N={N_PLOT}: mature_acc={best_acc:.2%} (baseline: {baseline_acc:.2%}, mejora: +{best_acc-baseline_acc:.2%})
 
-Entropía M_dir (A): {mv("A",80,"mdir_entropy"):.3f} bits
-Entropía M_dir (G): {mv("G",80,"mdir_entropy"):.3f} bits
-(máximo posible: {math.log2(3):.3f} bits para 3 agentes)
+Entropía M_dir (A): {mv("A", N_PLOT,"mdir_entropy"):.3f} bits
+Entropía M_dir (G): {mv("G", N_PLOT,"mdir_entropy"):.3f} bits
+(máximo posible: {math.log2(len(CLASSES)):.3f} bits para {len(CLASSES)} agentes)
 
-Registros M_dir (A): apple={mv("A",80,"mdir_reg_apple"):.0f},
-  horse={mv("A",80,"mdir_reg_horse"):.0f}, car={mv("A",80,"mdir_reg_car"):.0f}
-Registros M_dir (G): apple={mv("G",80,"mdir_reg_apple"):.0f},
-  horse={mv("G",80,"mdir_reg_horse"):.0f}, car={mv("G",80,"mdir_reg_car"):.0f}
+Registros M_dir (A): apple={mv("A", N_PLOT,"mdir_reg_apple"):.0f},
+  horse={mv("A", N_PLOT,"mdir_reg_horse"):.0f}, car={mv("A", N_PLOT,"mdir_reg_car"):.0f}
+Registros M_dir (G): apple={mv("G", N_PLOT,"mdir_reg_apple"):.0f},
+  horse={mv("G", N_PLOT,"mdir_reg_horse"):.0f}, car={mv("G", N_PLOT,"mdir_reg_car"):.0f}
 
 ---
 
@@ -852,13 +909,11 @@ Registros M_dir (G): apple={mv("G",80,"mdir_reg_apple"):.0f},
 |---------|-------------|
 | `ablation_metrics.csv` | Metricas completas N × seed × condition |
 | `scaling_comparison_ablation.png` | Mature accuracy y fidelidad vs N |
-| `domain_accuracy_ablation.png` | Accuracy por dominio por condicion (N=80) |
+| `domain_accuracy_ablation.png` | Accuracy por dominio por condicion (N={N_PLOT}) |
 | `winner_distribution.png` | Distribucion de ganadores en fase madura |
 | `confusion_matrix_baseline.png` | Matriz de confusion baseline A |
 | `confusion_matrix_best_condition.png` | Matriz de confusion mejor condicion |
 | `mdir_registration_counts.png` | Registros en M_dir por agente |
-| `semantic_cosine_engine.csv` | Similitudes coseno de "engine" |
-| `semantic_nn_engine.csv` | Vecinos mas cercanos de "engine" |
 """
 
     out = RESULTS_DIR / "ablation_report.md"

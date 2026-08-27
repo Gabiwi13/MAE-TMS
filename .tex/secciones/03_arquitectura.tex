@@ -11,8 +11,8 @@ operaciones del sistema (Sección~\ref{sec:operaciones}).
 \subsection{Componentes del sistema}
 \label{sec:componentes}
 
-El sistema EAM-TMS contiene en total \textbf{14 memorias asociativas} distribuidas entre
-tres agentes especialistas y el mediador TME.
+El sistema EAM-TMS contiene en total \textbf{17 memorias asociativas} (cinco por agente
+y dos en el TME) distribuidas entre tres agentes especialistas y el mediador TME.
 La Tabla~\ref{tab:memorias} resume todas las memorias, sus dominios y sus dimensiones.
 Fuera del sistema de memorias, dos componentes de percepción actúan como interfaz con
 el mundo: un encoder ResNet18 \cite{he2016resnet} que proyecta imágenes de $128\times128$
@@ -25,7 +25,7 @@ enriquecidos con relaciones de ConceptNet 5.7 \cite{speer2017conceptnet}.
 
 \begin{table}[H]
 \centering
-\caption{Las 14 memorias asociativas del sistema EAM-TMS.
+\caption{Las 17 memorias asociativas del sistema EAM-TMS.
 Para las memorias homo-asociativas se indica $(n, m)$ (dimensión, alfabeto).
 Para las hetero-asociativas se indica $(n_L, m_L \leftrightarrow n_R, m_R)$ o
 $(n_L, m_L \to n_R, m_R)$ cuando la relación es unidireccional.
@@ -40,11 +40,12 @@ El dominio derecho de los directorios tiene una coordenada binaria por agente
 \toprule
 \textbf{Componente} & \textbf{Memoria} & \textbf{Tipo} & \textbf{Dimensiones} \\
 \midrule
-\multirow{4}{*}{Agente $k$ (×3)} &
+\multirow{5}{*}{Agente $k$ (×3)} &
   $M^L_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}300,\; m{=}16)$ \\
 & $M^R_{\mathrm{dom}}$ & Homo-asociativa & $(n{=}64,\; m{=}32)$ \\
 & $M^H_{\mathrm{dom}}$ & Hetero-asociativa & $(300, 16 \leftrightarrow 64, 32)$ \\
 & $M_{\mathrm{dir}}$   & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\
+& $M^R_{\mathrm{dir}}$ & Hetero-asociativa & $(64, 32 \to 3, 2)$ \\
 \midrule
 \multirow{2}{*}{TME} &
   $M^L_{\mathrm{dir}}$ & Hetero-asociativa & $(300, 16 \to 3, 2)$ \\
@@ -53,14 +54,28 @@ El dominio derecho de los directorios tiene una coordenada binaria por agente
 \end{tabular}
 \end{table}
 
-Las memorias de directorio ($M_{\mathrm{dir}}$, $M^L_{\mathrm{dir}}$,
-$M^R_{\mathrm{dir}}$) son hetero-asociativas cuyo dominio derecho es la identidad del
-agente ganador codificada en \emph{one-hot} con $q=2$ (un bit de ``conoce'' y uno de
-``no-conoce'').
-Cuando se registra un par $(\mathbf{v}_q, g)$ en un directorio, la representación
-semántica (o latente) de la pista se asocia al identificador del agente que ganó el
-enrutamiento; todos los agentes, incluidos los perdedores, registran esta asociación
-(\emph{directory updating} de Wegner).
+Todas las memorias de directorio son hetero-asociativas cuyo dominio derecho codifica la
+identidad del agente ganador.
+El vector $\mathbf{g} \in \{0,1\}^{3}$ la codifica en one-hot: cada coordenada corresponde
+a un agente y toma valores binarios ($q{=}2$).
+El estado ``desconocido'' no se codifica como una coordenada adicional; se obtiene
+operacionalmente cuando ningún agente alcanza soporte suficiente durante la lectura del
+directorio.
+
+Cada agente mantiene \emph{dos} directorios, uno por modalidad de la pista: el de
+\textbf{texto} $M_{\mathrm{dir}}$ (pista de etiqueta $300\times16$) y el \textbf{visual}
+$M^R_{\mathrm{dir}}$ (pista de latente $64\times32$). Ambos apuntan al mismo destino (la
+identidad del agente), pero las pistas viven en espacios distintos, por lo que requieren
+relaciones hetero-asociativas separadas: una sola relación no admite dos formas de pista.
+El TME conserva además sus propios $M^L_{\mathrm{dir}}$ y $M^R_{\mathrm{dir}}$, usados en
+la formación temprana.
+Cuando se registra un par $(\mathbf{v}_q, g)$, la representación de la pista (semántica en
+$M_{\mathrm{dir}}$, latente en $M^R_{\mathrm{dir}}$) se asocia al identificador del agente
+ganador; \emph{todos} los agentes, incluidos los perdedores, registran esta asociación en
+el directorio de la modalidad correspondiente (\emph{directory updating} de Wegner).
+Esto permite la coordinación de recuperación de Wegner también para imágenes: una imagen
+puede entrar por \emph{cualquier} agente, que consulta su propio $M^R_{\mathrm{dir}}$ y
+redirige al especialista (o rechaza si nadie la contiene).
 
 \subsection{Diagramas de flujo}
 \label{sec:diagramas}
@@ -360,7 +375,7 @@ el proceso de enrutamiento es el siguiente.
     \end{equation}
     según la ecuación~\eqref{eq:proyeccion-AND}.
 
-    \item El puntuación del agente $k$ incorpora un \textbf{compuerta de containment}:
+    \item La puntuación del agente $k$ incorpora una \textbf{compuerta de containment}:
     \begin{equation}
         s_k = \begin{cases}
             0 & \text{si } \exists\, j : \sum_l \Pi_k[j, l] = 0 \\[4pt]
@@ -389,7 +404,7 @@ $s_k$ es directamente comparable entre agentes sin ajustes adicionales.
 Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección de la pista $\mathbf{v}_q$
 en el directorio $M_{\mathrm{dir}}$ del agente, restringida al bit $b=1$
 (``el agente $k$ conoce'').
-El puntuación B1 se define como:
+La puntuación B1 se define como:
 \begin{equation}
     \hat{s}_k = \frac{\Pi^{\mathrm{dir}}_k(\mathbf{v}_q,\; b{=}1)}{c_k + 1}
     \label{eq:b1}
@@ -399,7 +414,7 @@ donde $c_k$ es el número total de registros del agente $k$ en el directorio.
 \paragraph{Justificación.}
 La especialización real produce masas desiguales entre agentes: por ejemplo,
 $c_0 = 78$, $c_1 = 65$, $c_2 = 53$ en una sesión típica.
-El puntuación cruda de una proyección hetero-asociativa crece con la masa de registros,
+La puntuación cruda de una proyección hetero-asociativa crece con la masa de registros,
 por lo que un agente con más registros en el directorio obtendría ventaja sin mérito.
 La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
 registro}, haciendo que la puntuación refleje calidad de especialización y no cantidad.
@@ -437,7 +452,7 @@ de labels procede como sigue.
 \end{enumerate}
 
 \paragraph{Justificación del diccionario.}
-El recuperación $\beta$ devuelve una \emph{muestra} de la distribución de labels acumulada
+La recuperación $\beta$ devuelve una \emph{muestra} de la distribución de labels acumulada
 por el agente, no una palabra exacta: el vector muestreado puede no coincidir con ningún
 embedding almacenado.
 El diccionario actúa como un decodificador que interpreta esa muestra en términos del

@@ -1,0 +1,110 @@
+\section{Metodología}
+\label{sec:metodologia}
+
+La verificación de un sistema en tiempo real exige métodos distintos a los bancos de
+consultas de los reportes anteriores: aquí se combinan pruebas inyectadas
+reproducibles (sin micrófono ni cámara), pruebas físicas con estímulos controlados y
+mediciones de latencia sobre el hardware real.
+
+\subsection{Entorno}
+
+Todas las mediciones se realizaron en el equipo de desarrollo del proyecto: GPU
+NVIDIA RTX 2050 (usada exclusivamente por Whisper, con carga explícita de las
+bibliotecas CUDA de distribución pip y validación por inferencia de silencio al
+arrancar, con respaldo a CPU int8 si la GPU no responde) y CPU para el encoder
+ResNet18 (suficiente a $128\times128$) y todas las operaciones de memoria.
+Los modelos del experimento base se cargan una única vez ($\sim$30 s) y permanecen en
+solo lectura.
+
+\subsection{Pruebas inyectadas (sin hardware)}
+
+\begin{description}
+    \item[Inyección de audio (\texttt{--wavtest}).] Un archivo WAV se alimenta por el
+    mismo camino del micrófono (remuestreo a 16 kHz $\to$ VAD $\to$ transcripción
+    $\to$ enrutamiento $\to$ evocación), lo que permite medir la cadena completa de
+    voz de forma reproducible y sin variabilidad del hablante.
+
+    \item[Autoprueba sin ventana (\texttt{--selftest}).] El sistema corre $n$ segundos
+    sin interfaz, reporta fps, RMS inicial del micrófono y estado del canal visual, y
+    guarda un cuadro anotado con todos los overlays para inspección.
+
+    \item[Cuadros sintéticos.] Imágenes ETH-80 reales colocadas digitalmente dentro
+    del recuadro de análisis (llenándolo al 55\%) y cuadros vacíos, para validar por
+    separado el enrutamiento visual y el rechazo sin la variabilidad de la cámara.
+
+    \item[Detección de bloqueos del sistema operativo.] Sondas al arrancar: RMS del
+    micrófono $\approx 0$ dispara una advertencia con instrucciones (el permiso de
+    privacidad de Windows para aplicaciones de escritorio aplica también a WASAPI); el
+    bloqueo de cámara entrega un cuadro gris con candado que el directorio rechaza
+    ---comportamiento correcto que la autoprueba hace visible.
+\end{description}
+
+\subsection{Pruebas físicas de percepción}
+\label{sec:met_fisica}
+
+Se probaron dos formas de presentar estímulos ETH-80 a la cámara web:
+
+\begin{enumerate}
+    \item \textbf{Pantalla de teléfono} mostrando imágenes pre-validadas
+    (160 imágenes de $512^2$).
+    Falló de forma consistente: brillo de pantalla, moiré y encuadre colapsan el
+    enrutamiento.
+    El fallo fue \emph{anticipado} por una simulación previa que degradaba
+    sistemáticamente encuadre y brillo, y una segunda simulación midió qué rescates
+    eran posibles.
+
+    \item \textbf{Hoja impresa} (4 páginas carta a 300 dpi, 16 imágenes pre-validadas
+    a $\sim$8.5 cm por lado, papel mate).
+    El papel elimina brillo y moiré; con el recuadro ajustable la impresión se llena a
+    distancia de enfoque cómoda.
+    El diagnóstico de la primera sesión física (solo \textit{cow} fiable) condujo a la
+    política de color de la Sección~\ref{sec:arquitectura}.
+\end{enumerate}
+
+\subsubsection*{Banco de validación de la política de color}
+
+La corrección~\eqref{eq:colorfix} se validó fuera de línea sobre 24 imágenes ETH-80
+(3 por clase) bajo tres condiciones simuladas de cámara: limpia, degradación grisácea
+media y fuerte (contracción de contraste y corrimiento de canal medidos en la cámara
+real).
+Se reporta el enrutamiento correcto con la política completa (crudo, y rescate solo
+tras rechazo) contra la línea base sin rescate.
+
+\subsection{Caracterización de los métodos de pista faltante}
+\label{sec:met_pista}
+
+Los métodos RS, ST y SS y el prototipo se caracterizaron sobre la misma proyección por
+pista, en dos escenarios:
+
+\begin{enumerate}
+    \item \textbf{Caracterización distribucional} (guion reproducible
+    \texttt{run\_missing\_cue.py}): cuatro pistas de un token con su agente
+    especialista (\texttt{pear} $\to$ \textit{pear}; \texttt{car} $\to$ \textit{car};
+    \texttt{green} $\to$ \textit{apple}; \texttt{animal} $\to$ \textit{horse}),
+    \textbf{30 corridas por método y pista} con semillas fijas (1000--1029, sembrando
+    los generadores de Python y NumPy por corrida), reportando media, desviación
+    estándar, rango, fracción de corridas con distancia exactamente cero y tiempo
+    medio por corrida.
+    El prototipo es determinista y aporta un único valor por pista.
+
+    \item \textbf{En las interfaces}: la aplicación de trazado (consulta
+    ``a ripe green pear from the orchard'', suite completa sobre el token ganador) y
+    la ventana en tiempo real (frase ``animal with a mane'' $\to$ \textit{horse},
+    prototipo y objeto definido con sus distancias en el panel), como verificación de
+    integración con corridas individuales.
+\end{enumerate}
+
+\subsection{Métricas}
+
+\begin{itemize}
+    \item \textbf{Latencia de voz}: transcripción (fin de habla $\to$ texto) y
+    enrutamiento (texto $\to$ decisión), por separado y extremo a extremo.
+    \item \textbf{Latencia de visión}: tiempo por análisis de cuadro y fps de la
+    interfaz con la cámara activa.
+    \item \textbf{Latencia de evocación}: fin del enrutamiento $\to$ imagen
+    reconstruida (incluyendo prototipo y distancias).
+    \item \textbf{Enrutamiento correcto} bajo las condiciones del banco de color
+    (aciertos sobre 24).
+    \item \textbf{Distancia de retro-proyección}~\eqref{eq:test} como métrica común de
+    los métodos de recuperación.
+\end{itemize}

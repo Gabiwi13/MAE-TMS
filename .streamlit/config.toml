@@ -1,0 +1,13 @@
+# Tema de la app EAM-TMS: claro (página #f7f7fb, paneles blancos, acento
+# índigo). La paleta categórica de 8 clases está validada (dataviz skill)
+# para esta superficie: ver DOMAIN_COLOR en app_tme. Las animaciones HTML
+# conservan su superficie navy propia (DOMAIN_COLOR_DARK).
+[theme]
+base = "light"
+primaryColor = "#4653c9"
+backgroundColor = "#f7f7fb"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1c1e33"
+
+[server]
+headless = true

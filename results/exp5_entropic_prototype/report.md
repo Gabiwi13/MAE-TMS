@@ -1,30 +1,37 @@
-# Experimento 5 — prototipo emergente (llenado entrópico)
+# Experimento 5 — prototipo emergente: delta vs instancias
 
-La MAE debe construir su propia abstracción: se registran las 50
-instancias reales por clase (round-robin label×freq → z_real) en
-lugar del promedio artificial. Misma masa de registros que stage5;
-M_dom_L idéntico; solo cambia el lado derecho de M_dom_H y M_dom_R.
+Ablación del protocolo de llenado con ambos brazos EN MEMORIA sobre
+las mismas 50 imágenes/clase y la misma masa de registros. DELTA:
+label×freq → el mismo latente promediado (abstracción fuera de la
+memoria, protocolo v1). INSTANCIAS: label×freq → latente real
+round-robin (la relación acumula la distribución, protocolo v2+).
+M_dom_L compartido; solo cambia el lado derecho de M_dom_H y M_dom_R.
 
 ## Resultados
 
-| hipótesis | métrica | viejo (promedio) | nuevo (instancias) |
+| hipótesis | métrica | delta (promedio) | instancias |
 |---|---|---|---|
 | H1 variedad | recalls distintos /12 | 1.0 | 12.0 |
-| H2 aceptación inversa (train) | media 3 clases | 0.0% | 100.0% |
-| H2 aceptación inversa (test) | media 3 clases | 0.0% | 0.0% |
-| H3 routing temprano | acc (rechazo) | 97.5% (2.5%) | 97.5% (2.5%) |
-| H4 entropía M_dom_H | media 3 clases | 0.7747 | 3.9333 |
+| H2 aceptación inversa (train) | media 8 clases | 0.0% | 100.0% |
+| H2 aceptación inversa (test) | media 8 clases | 0.0% | 0.0% |
+| H3 routing temprano | acc (rechazo) | 70.0% (5.0%) | 76.2% (5.0%) |
+| H4 entropía M_dom_H | media 8 clases | 2.6364 | 4.9003 |
 
 ## Detalle variedad por clase
 
-| clase | cue | distintos viejo | distintos nuevo | L1 viejo | L1 nuevo |
+| clase | cue | distintos delta | distintos inst | L1 delta | L1 inst |
 |---|---|---|---|---|---|
-| apple | fruit | 1/12 | 12/12 | 0.000 | 2.983 |
-| horse | mane | 1/12 | 12/12 | 0.000 | 1.462 |
-| car | vehicle | 1/12 | 12/12 | 0.000 | 3.487 |
+| apple | fruit | 1/12 | 12/12 | 0.000 | 2.079 |
+| car | vehicle | 1/12 | 12/12 | 0.000 | 2.201 |
+| cow | milk | 1/12 | 12/12 | 0.000 | 1.139 |
+| cup | drink | 1/12 | 12/12 | 0.000 | 2.204 |
+| dog | pet | 1/12 | 12/12 | 0.000 | 1.913 |
+| horse | mane | 1/12 | 12/12 | 0.000 | 1.378 |
+| pear | pome | 1/12 | 12/12 | 0.000 | 1.121 |
+| tomato | vegetable | 1/12 | 12/12 | 0.000 | 1.734 |
 
 ## Archivos
 - metrics.json · fig1_recall_variety_grid.png · fig2_reverse_acceptance.png
 
-Nota: ningún artefacto previo modificado; el brazo nuevo vive solo
+Nota: ningún artefacto previo modificado; ambos brazos viven solo
 en memoria durante la corrida.

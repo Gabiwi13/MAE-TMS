@@ -1,12 +1,13 @@
 """
 Micro-test diagnóstico — rechazo por la EAM, no por filtro léxico.
 
-El banco principal de 80 consultas casi nunca rechaza por falta de soporte:
-sus consultas describen apple/horse/car. Este probe usa consultas que (a)
-producen al menos un vector fastText real —son representables, no se filtran
-por léxico— y (b) NO pertenecen a ningún dominio del sistema. Si la EAM es el
-mecanismo de rechazo, deberían rechazarse por containment (recognize_gated → 0
-en los tres agentes), no por una regla externa.
+El banco principal casi nunca rechaza por falta de soporte: sus consultas
+describen los 8 dominios ETH-80. Este probe usa consultas que (a) producen al
+menos un vector fastText real —son representables, no se filtran por léxico—
+y (b) NO pertenecen a ninguno de los 8 dominios del sistema (apple, car, cow,
+cup, dog, horse, pear, tomato). Si la EAM es el mecanismo de rechazo, deberían
+rechazarse por containment (recognize_gated → 0 en todos los agentes), no por
+una regla externa.
 
 NO se asume 100 % de rechazo: se corre y se reporta lo que salga. Es
 diagnóstico, separado del benchmark de accuracy principal.
@@ -38,16 +39,20 @@ from stage5_fill import load_agent_memories
 from stage6_interaction import (
     Agent, CLASSES, M_LABEL,
     get_nlp, load_all_vectors, tokenize_query, prevectorize,
-    get_fasttext_vector, token_in_vocabulary,
+    get_fasttext_vector,
 )
 
 # Consultas representables (palabras reales con vector fastText) que NO
-# pertenecen a apple / horse / car. La EAM debería rechazarlas por containment.
+# pertenecen a ninguno de los 8 dominios. La EAM debería rechazarlas por
+# containment. Nota v4: con 8 clases se retiraron dos probes de la versión
+# de 3 clases que ahora SÍ son de dominio ("a glass container for water" →
+# cup; "a green plant in a pot" → tomato/herb): contarlas como falso ruteo
+# sería miscalibrar el diagnóstico.
 PROBE_QUERIES = [
     "a musical instrument with strings",
     "a kitchen appliance that heats food",
     "a flying bird with feathers",
-    "a glass container for water",
+    "a sailing boat on the ocean",
     "a piece of furniture for sitting",
     "a tall building with many floors",
     "a cold mountain covered in snow",
@@ -55,7 +60,7 @@ PROBE_QUERIES = [
     "a river flowing to the sea",
     "a telephone for making calls",
     "a wooden table and chairs",
-    "a green plant in a pot",
+    "a pair of leather shoes",
 ]
 
 
@@ -122,8 +127,9 @@ def main():
         "mae_false_routes": n_false_routes,
         "no_representable": len(PROBE_QUERIES) - n_representable,
         "notes": ("Probe diagnóstico de rechazo, no parte del benchmark de "
-                  "accuracy. Consultas representables fuera de apple/horse/car; "
-                  "el rechazo (o no) sale de recognize_gated, sin filtro léxico."),
+                  "accuracy. Consultas representables fuera de los 8 dominios "
+                  "ETH-80; el rechazo (o no) sale de recognize_gated, sin "
+                  "filtro léxico."),
     }
     (OUT_DIR / "summary.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")

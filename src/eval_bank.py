@@ -1,15 +1,15 @@
 """
-Banco de evaluacion neutral: las 80 consultas con ground truth.
+Banco de evaluacion neutral: las consultas con ground truth para las 8 clases ETH-80.
 
 Vive aqui (y no en run_ablation.py) para que los experimentos oficiales no
 dependan de un script. Modulo sin dependencias pesadas: solo listas de texto.
 
-  APPLE/HORSE/CAR_QUERIES  consultas por dominio
+  APPLE/CAR/COW/CUP/DOG/HORSE/PEAR/TOMATO_QUERIES  consultas por dominio (~50 c/u)
   DOMAIN_QUERIES           dict dominio -> consultas
-  ALL_QUERIES, GROUND_TRUTH  banco interleaved apple/horse/car (80 items)
+  ALL_QUERIES, GROUND_TRUTH  banco interleaved de las 8 clases ETH-80 (~400 total)
 """
 
-CLASSES = ("apple", "horse", "car")
+CLASSES = ("apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato")
 
 APPLE_QUERIES = [
     "a round red fruit", "green food from trees", "red or green round food",
@@ -22,6 +22,17 @@ APPLE_QUERIES = [
     "adam and eve fruit", "orange red green food", "core inside skin fruit",
     "tree fruit food", "pome variety fruit", "green round food",
     "red sweet fruit food",
+    "a crunchy apple", "an apple from the orchard", "a granny smith apple",
+    "a crunchy red apple", "an apple with a stem and leaf",
+    "a shiny red apple", "an apple picked from a tree",
+    "a bushel of apples", "a crisp apple snack", "an apple for a pie",
+    "an apple with thin skin", "a fresh orchard apple",
+    "an apple cut in half showing seeds", "a bruised red apple",
+    "a basket of orchard apples", "an apple tree in the orchard",
+    "a crunchy green apple", "an apple with a woody stem",
+    "a whole apple fruit", "a shiny green apple",
+    "a sweet crunchy fruit", "an apple sliced for a pie",
+    "a firm crunchy apple", "an apple orchard harvest", "a polished apple",
 ]
 
 HORSE_QUERIES = [
@@ -35,6 +46,18 @@ HORSE_QUERIES = [
     "four legged riding mammal", "mammal with hooves and mane",
     "equine with saddle", "big farm riding animal",
     "domesticated equine mammal", "animal with mane and tail",
+    "a horse galloping in a field", "a horse with a flowing mane",
+    "a pony trotting in a paddock", "a horse wearing a saddle and bridle",
+    "an equine galloping at a gallop", "a horse being ridden by a rider",
+    "a stable full of horses", "a horse with a long mane and tail",
+    "a mare and foal in a pasture", "a horse trained for a race",
+    "a horse pulling a cart", "a saddled horse ready to ride",
+    "a horse with strong hooves", "a horse grazing in a paddock",
+    "a jockey riding a horse", "a horse in a stable eating hay",
+    "a wild horse galloping free", "a horse with a bridle and reins",
+    "a pony giving children a ride", "a horse trotting down a trail",
+    "a horse with shiny hooves", "an equine bred for racing",
+    "a horse cantering across a field", "a stallion with a thick mane",
 ]
 
 CAR_QUERIES = [
@@ -49,13 +72,179 @@ CAR_QUERIES = [
     "heavy automobile", "motor vehicle transport", "driver automobile",
     "wheeled transportation", "crash vehicle", "automobile commuting",
     "auto transportation machine",
+    "a car with a powerful engine", "a car parked in a driveway",
+    "a car with four wheels and doors", "driving a car on the highway",
+    "a car engine under the hood", "a shiny new car",
+    "a car with a steering wheel", "a car speeding down the road",
+    "a family car with seats for five", "a car parked in a garage",
+    "a car with tinted windows", "a car driving through traffic",
+    "a car with a full tank of fuel", "an automobile with a trunk",
+    "a car braking at a red light", "a car with alloy wheels",
+    "a sedan car on the street", "a car engine roaring to life",
+    "a car with headlights on", "driving a car down a highway",
+    "a car parked at the curb", "an automobile with four doors",
+    "a car with a dashboard and steering wheel", "a car refueling at a station",
+    "a car cruising down the road",
 ]
 
-DOMAIN_QUERIES = {"apple": APPLE_QUERIES, "horse": HORSE_QUERIES, "car": CAR_QUERIES}
+COW_QUERIES = [
+    "a farm animal that gives milk", "bovine cattle beast", "moo animal on the farm",
+    "large placental mammal on a farm", "a milk producing cattle beast",
+    "farm bull or cattle animal", "animal with udders and milk",
+    "bovine farm mammal that moos", "beef cattle on the farm",
+    "big farm animal that says moo", "a cattle beast with udder",
+    "domestic bovine farm animal", "farm mammal raised for beef",
+    "cattle grazing on the farm", "a bull or cow bovine",
+    "milk giving farm mammal", "placental mammal with udders",
+    "farm beast that produces milk", "bovine animal on a farm",
+    "large cattle farm mammal", "an animal that says moo",
+    "farm bovine with beef and milk", "a grazing farm cattle beast",
+    "udder bearing farm mammal", "cattle bull bovine beast",
+    "big domestic farm bovine",
+    "a cow grazing in a green pasture", "a dairy cow being milked",
+    "a cow chewing its cud in a field", "a herd of cattle in a pasture",
+    "a black and white dairy cow", "a cow with a bell around its neck",
+    "a calf standing next to its mother cow", "a cow mooing in the barn",
+    "a cow with large udders full of milk", "a farmer milking a cow",
+    "a cow standing in a muddy pasture", "a bull with horns in a field",
+    "a cow grazing near a barn", "a herd of cows on a dairy farm",
+    "a cow swishing its tail at flies", "a cow with a calf in a pasture",
+    "a spotted cow in a green field", "a cow being led to the barn",
+    "a cow chewing grass in a meadow", "a cattle herd moving across a field",
+    "a dairy cow producing fresh milk", "a cow with a large belly grazing",
+    "a cow standing beside a fence", "a beef cow raised on a ranch",
+    "a cow mooing at the farm gate",
+]
 
-# Banco interleaved apple/horse/car (mismo orden de construccion que el original)
+CUP_QUERIES = [
+    "a container to drink from", "a mug for liquid", "small drinking container",
+    "a cup for holding drink", "crockery to drink liquid from",
+    "a hollow container with a hole", "a trophy shaped drinking container",
+    "punch cup for a drink", "containerful of liquid to drink",
+    "a mug or cup crockery", "small vessel for drinking liquid",
+    "a drink holding container", "a cup shaped like a trophy",
+    "hollow crockery for drink", "a coffee mug container",
+    "vessel used to hold liquid", "a cup with a hole for handle",
+    "small container for a drink", "crockery cup for punch",
+    "a drinking vessel with a handle", "cup used to drink liquid",
+    "a tea cup container", "hollow vessel to drink from",
+    "a mug of liquid drink", "small round drinking cup",
+    "container to hold liquid drink",
+    "a cup with a curved handle", "a ceramic mug on a table",
+    "a cup filled with hot coffee", "a mug with a handle for drinking",
+    "a cup of tea on a saucer", "a plastic cup for water",
+    "a cup sitting on a shelf", "a mug of steaming coffee",
+    "a cup with a printed design", "a glass cup for a beverage",
+    "a mug used to hold water", "a cup and saucer on a table",
+    "a cup with a handle and a rim", "a stack of mugs on a counter",
+    "a cup being filled with liquid", "a mug of cold water",
+    "a cup used as a vessel for drink", "a coffee cup with steam rising",
+    "a cup with a wide handle", "a small cup for espresso",
+    "a mug hanging on a hook", "a cup holding a hot drink",
+    "a cup used at breakfast", "a vessel with a handle for tea",
+    "a mug filled to the brim",
+]
+
+DOG_QUERIES = [
+    "a barking domestic pet", "canine mammal with a tail",
+    "man's best friend animal", "a dog that barks and runs",
+    "domestic canine house pet", "a puppy with paws and fleas",
+    "a wolf related domestic animal", "four legged barking pet",
+    "canine friend with a wet nose", "a black dog with teeth and paws",
+    "a stray dog on the street", "a house pet that barks",
+    "domestic mammal that goes woof", "a canine with fleas and a tail",
+    "pet dog with four legs", "a puppy or stray canine",
+    "an animal that barks and bites", "wolf like canine pet",
+    "a dog with paws and teeth", "best friend canine mammal",
+    "a barking pet with a tail", "domestic dog chasing a cat",
+    "a fun loving house pet", "canine animal with fleas",
+    "a puppy that likes to run", "a house dog with a wagging tail",
+    "a dog fetching a ball", "a puppy playing in the yard",
+    "a dog wagging its tail happily", "a dog on a leash for a walk",
+    "a dog sleeping on a soft bed", "a dog barking at the mailman",
+    "a puppy chewing on a bone", "a dog with floppy ears",
+    "a dog running across the yard", "a loyal pet dog beside its owner",
+    "a dog panting after a walk", "a puppy with soft fur and paws",
+    "a dog guarding the front door", "a dog jumping to catch a frisbee",
+    "a dog resting its paws on the floor", "a small dog barking at strangers",
+    "a dog wagging its tail at the door", "a puppy learning to sit and stay",
+    "a dog with a collar and tag", "a dog digging in the garden",
+    "a canine companion on a walk", "a dog licking its paws",
+    "a dog howling at the moon",
+]
+
+PEAR_QUERIES = [
+    "a green sweet pear fruit", "a pome fruit like an apple",
+    "sweet green fruit with a stem", "a pear shaped juicy fruit",
+    "green fruit with a narrow top", "a pome fruit from a tree",
+    "sweet juicy pear food", "fruit shaped like a teardrop",
+    "a green or yellow pear", "pome fruit with sweet flesh",
+    "tree fruit shaped like a pear", "a juicy sweet pome fruit",
+    "green fruit that tapers at the top", "a pear with a stem and core",
+    "sweet fruit grown on a tree", "a pome fruit with soft flesh",
+    "fruit with a rounded bottom and narrow top", "a yellow green pear fruit",
+    "sweet tree fruit similar to apple", "pear fruit with juicy flesh",
+    "a pome variety of orchard fruit", "a fruit with a bulbous base",
+    "green pear grown in an orchard", "a soft sweet pome fruit",
+    "orchard fruit shaped like a pear", "a ripe juicy green pear",
+    "a bell shaped pear", "a pear with a narrow neck",
+    "a teardrop shaped pear", "a grainy sweet pear", "a ripe juicy pear",
+    "a pear fruit", "a pear with a tapered neck", "a pear hanging on a branch",
+    "a pear with a wide bottom and thin neck", "a pear sliced in half",
+    "a bosc pear with brown skin", "a pear with grainy flesh",
+    "a pear picked from an orchard tree", "a pear with a long tapered stem",
+    "a pear ripening on the tree", "a pear with a bell shaped body",
+    "a pear fruit basket", "a pear with a smooth curved neck",
+    "a juicy pear with a narrow top and round base",
+    "a pear fruit ready to eat", "a pear with a slender neck and round base",
+    "a pear tree in an orchard", "a pear with soft grainy texture",
+    "a pear shaped like a bell", "a pear with a distinct narrow neck",
+    "a pear cut open showing seeds", "a pear fruit on a kitchen counter",
+]
+
+TOMATO_QUERIES = [
+    "a round red salad vegetable", "red juicy tomato fruit",
+    "a red herb garden vegetable", "round red fruit used in salad",
+    "juicy red fruit from a vine", "a red vegetable used for sauce",
+    "a herb plant with a red fruit", "round juicy red produce",
+    "red fruit often called a vegetable", "a salad vegetable that is red",
+    "tomato fruit grown on a herb", "a red round fruit for cooking",
+    "juicy red produce from the garden", "a vine grown red fruit",
+    "red fruit used in ketchup", "a round red herb fruit",
+    "garden herb with a red round fruit", "red vegetable used in sauces",
+    "a juicy red salad fruit", "round red fruit on a vine",
+    "a red fruit often eaten in salads", "herb garden red round produce",
+    "a soft juicy red fruit", "red fruit used for pasta sauce",
+    "round red fruit from a herb plant", "a ripe red tomato fruit",
+    "a ripe red tomato", "a tomato on the vine", "a plump salad tomato",
+    "a tomato vegetable", "a juicy tomato", "a garden tomato",
+    "a tomato growing on the vine", "a tomato plant in the garden",
+    "a plump ripe tomato", "a tomato sliced for a salad",
+    "a tomato picked from the garden", "a vine ripened tomato",
+    "a tomato used in a salad", "a bunch of tomatoes on the vine",
+    "a tomato plant with green leaves", "a tomato harvested from the garden",
+    "a plump red tomato on the vine", "a tomato vegetable in a bowl",
+    "a tomato grown in a greenhouse", "a tomato with smooth red skin",
+    "a cherry tomato on the vine", "a tomato salad with fresh vegetables",
+    "a tomato vine heavy with fruit", "a tomato cut into slices",
+    "a garden fresh tomato", "a tomato staked in the garden",
+    "a bright red tomato on the vine",
+]
+
+DOMAIN_QUERIES = {
+    "apple": APPLE_QUERIES,
+    "car": CAR_QUERIES,
+    "cow": COW_QUERIES,
+    "cup": CUP_QUERIES,
+    "dog": DOG_QUERIES,
+    "horse": HORSE_QUERIES,
+    "pear": PEAR_QUERIES,
+    "tomato": TOMATO_QUERIES,
+}
+
+# Banco interleaved de las 8 clases (mismo orden de construccion que el original)
 ALL_QUERIES, GROUND_TRUTH = [], []
-for _i in range(max(len(APPLE_QUERIES), len(HORSE_QUERIES), len(CAR_QUERIES))):
+for _i in range(max(len(DOMAIN_QUERIES[_cls]) for _cls in CLASSES)):
     for _cls in CLASSES:
         _pool = DOMAIN_QUERIES[_cls]
         if _i < len(_pool):

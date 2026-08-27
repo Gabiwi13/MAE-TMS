@@ -2,11 +2,19 @@
 models/*.pkl
 models/*.pt
 
+# Estado local del encoder: manifiesto de entrenamiento y temporales de guardado
+# atómico (describen modelos locales, que de por sí no se versionan)
+models/*.meta.json
+models/*.tmp
+
 # Token-vector cache (derivado del modelo fastText de 1 GB; regenerable)
 models/token_vectors.json
 
 # ETH-80 dataset (205 MB) — download separately
 data/
+
+# Imágenes de muestra para la app (derivadas de ETH-80; locales, no se versionan)
+app_sample_images/
 
 # ConceptNet corpus (474 MB)
 cache/conceptnet-assertions-5.7.0.csv.gz
@@ -15,6 +23,22 @@ cache/conceptnet-assertions-5.7.0.csv.gz
 __pycache__/
 *.pyc
 *.pyo
+
+# realtime_lab: material derivado de ETH-80 (regenerable con
+# export_phone_images.py / make_print_sheet.py; mismo criterio que data/)
+realtime_lab/phone_test_images/
+realtime_lab/phone_test_images.zip
+realtime_lab/hoja_impresion_eth80.pdf
+
+# Artefactos de compilación LaTeX (los reportes versionan solo fuentes,
+# como .tex y .tex8)
+.SMTex/main.pdf
+.SMTex/*.aux
+.SMTex/*.log
+.SMTex/*.out
+.SMTex/*.toc
+.SMTex/*.bbl
+.SMTex/*.blg
 
 # Local Claude settings
 .claude/
@@ -50,3 +74,4 @@ models_pre_cost_backup/
 
 # Log del benchmark de costo
 cost_benchmark.log
+models_v4_official_backup/
