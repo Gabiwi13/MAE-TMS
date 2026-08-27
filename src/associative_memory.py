@@ -108,8 +108,8 @@ class DirectoryMemory:
     def __init__(self, n: int = 300, m: int = 16, n_agents: int = None,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
-        # n_agents es obligatorio: un default silencioso (el 3 histórico)
-        # construiría un directorio del tamaño equivocado sin fallar.
+        # n_agents es obligatorio: un default construiría un directorio del
+        # tamaño equivocado sin fallar.
         if n_agents is None:
             raise TypeError("DirectoryMemory requiere n_agents explícito "
                             "(número de agentes del sistema).")
@@ -125,9 +125,9 @@ class DirectoryMemory:
         self._counts = np.zeros(n_agents, dtype=np.int64)
 
     def register(self, v_q: np.ndarray, agent_idx: int) -> None:
-        # Índice inválido = bug de indexación aguas arriba (p.ej. índice de
-        # clase vs de agente desalineado). Se falla ruidoso en vez de recortar
-        # en silencio, que corrompería el directorio sin dejar rastro.
+        # Un indice fuera de rango viene de confundir indice de clase con
+        # indice de agente. Se lanza en vez de recortar, porque recortar lo
+        # guardaria en el agente equivocado.
         k = int(agent_idx)
         if not 0 <= k < self._n_agents:
             raise ValueError(
@@ -145,8 +145,8 @@ class DirectoryMemory:
 
     def _calibrated(self, scores: np.ndarray, mode: str,
                     eps: float) -> np.ndarray:
-        """Calibracion por masa de registros. mode invalido falla ruidoso:
-        antes cualquier typo distinto de 'linear' caia a sqrt en silencio."""
+        """Divide los scores por el numero de registros de cada agente.
+        Un mode desconocido lanza en vez de caer a un default."""
         denom = self._counts.astype(float) + eps
         if mode == "linear":
             return scores / denom
@@ -161,15 +161,14 @@ class DirectoryMemory:
         return self._calibrated(self.predict(v_q), mode, eps)
 
     def nearest_agent(self, v_q: np.ndarray) -> int:
-        """-1 cuando ningun agente tiene señal: el directorio no inventa."""
+        """Indice del agente con mayor score crudo, o -1 si ninguno tiene señal."""
         scores = self.predict(v_q)
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
 
     def support_gaps(self, v_q: np.ndarray) -> list:
-        """Coordenadas de la pista SIN soporte en la relacion del directorio
-        (ese valor nunca fue registrado para ningun agente). Operacion nativa
-        de la memoria: espejo del recog_weights de la homo (w_i = R[i, a_i])
-        para el dominio izquierdo del tensor 4D."""
+        """Coordenadas de la pista sin soporte en la relacion: ese valor nunca
+        se registro para ningun agente. Equivale al recog_weights de la homo
+        (w_i = R[i, a_i]) sobre el dominio izquierdo del tensor 4D."""
         ham = self._ham
         v = ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
         rel = ham._full_iota_relation
@@ -179,10 +178,9 @@ class DirectoryMemory:
 
     def predict_tolerant(self, v_q: np.ndarray, xi: int = 0,
                          mode: str = "linear", eps: float = 1.0) -> np.ndarray:
-        """Lectura eta-tolerante (B1): hasta xi coordenadas sin soporte se marcan
-        como 'undefined' — las funciones parciales nativas de la EHAM, que la
-        proyeccion salta — y el resto decide. Con mas de xi huecos: rechazo
-        (scores en cero). xi=0 reproduce exactamente la lectura estricta."""
+        """Hasta xi coordenadas sin soporte se marcan como 'undefined' y la
+        proyeccion las salta; el resto de la pista decide. Con mas de xi
+        huecos devuelve scores en cero. xi=0 es la lectura estricta."""
         gaps = self.support_gaps(v_q)
         if len(gaps) > xi:
             return np.zeros(self._n_agents, dtype=float)
@@ -199,25 +197,20 @@ class DirectoryMemory:
 
     def route(self, v_q: np.ndarray, mode: str = "linear",
               eps: float = 1.0, xi: int = 0) -> int:
-        """Ruteo calibrado por masa (B1): indice del agente ganador, o -1 si
-        ningun agente tiene soporte (rechazo). Encapsula la regla de seleccion
-        dentro de la MAE — quien consume no decide con operaciones sueltas.
-        xi>0 usa la lectura eta-tolerante (funciones parciales)."""
+        """Indice del agente ganador, o -1 si ninguno tiene soporte. Calibra
+        por masa de registros antes del argmax; xi>0 usa la lectura tolerante."""
         scores = (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
                   if xi > 0 else self.predict_normalized(v_q, mode=mode, eps=eps))
-        # Empate exacto de scores -> indice menor (np.argmax); con lecturas
-        # continuas es practicamente imposible y no se registra por separado.
+        # En empate exacto np.argmax devuelve el indice menor.
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
 
     def route_multi(self, cues, mode: str = "linear",
                     eps: float = 1.0, xi: int = 0):
-        """Coordinación de recuperación con VARIAS pistas (una por token):
-        suma de lecturas calibradas por pista y argmax DENTRO de la memoria.
-        Cierra el único punto donde el protocolo agregaba con operaciones
-        sueltas (auditoría jul 2026): quien consume no decide, la MAE decide.
+        """Rutea con varias pistas a la vez (una por token): suma los scores
+        calibrados de cada pista y saca el argmax dentro de la memoria.
 
-        Devuelve (winner_idx, scores_agregados); winner_idx = -1 si ninguna
-        pista tiene soporte (rechazo)."""
+        Devuelve (winner_idx, scores_sumados); winner_idx = -1 si ninguna
+        pista tiene soporte."""
         total = np.zeros(self._n_agents, dtype=float)
         for v_q in cues:
             total += (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)

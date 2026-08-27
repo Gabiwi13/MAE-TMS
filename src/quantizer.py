@@ -7,6 +7,19 @@ from pathlib import Path
 
 import numpy as np
 
+# Escala global para cuantizar las pistas semánticas por magnitud: cada
+# componente fastText pasa de [-S, S] a [0, levels-1], con S = percentil 99 de
+# |componente| sobre el vocabulario. La EAM solo acepta valores discretos
+# (n características × m niveles), así que este es el paso de entrada.
+#
+# Por qué p99 y no el máximo: con el máximo (0.579) casi todo se concentra en
+# pocos niveles (1.95 de 4 bits); con p99 se usan los 16 niveles (3.46 bits) y
+# se recorta el 1% de las componentes. Por signo solo quedan 2 niveles y las
+# clases parecidas no se separan. Sin escala, los valores caen en [-0.41, 0.58]
+# y los 159 labels van todos al bin 0.
+#
+# S es global y se guarda en disco porque la misma palabra tiene que cuantizar
+# igual al llenar y al consultar; si no, la memoria no la reconoce.
 _SCALE_PATH = Path(__file__).parent.parent / "models" / "label_quant_scale.json"
 _LABEL_SCALE = None
 
@@ -22,11 +35,9 @@ def label_scale() -> float:
         try:
             _LABEL_SCALE = float(json.loads(_SCALE_PATH.read_text())["scale"])
         except FileNotFoundError:
-            # Fallar ruidoso: una escala 0.5 de relleno cuantizaria distinto de
-            # la escala real (p.ej. S=0.18809 con memorias ya llenadas) y
-            # produciria cuantizacion inconsistente en silencio entre llenado
-            # y consulta. Un archivo CORRUPTO (JSON/clave invalida) tampoco se
-            # captura aqui a proposito: debe fallar ruidoso igual.
+            # Una escala de relleno cuantizaria distinto que la real y el
+            # llenado dejaria de coincidir con la consulta. Un archivo
+            # corrupto tampoco se captura aqui: debe propagarse igual.
             raise FileNotFoundError(
                 f"{_SCALE_PATH} no existe. La escala global de cuantizacion "
                 f"se genera en Etapa 4 (src/stage4_fasttext.py, funcion "
@@ -36,15 +47,12 @@ def label_scale() -> float:
     return _LABEL_SCALE
 
 
-
-
 def quantize_binary(vec: np.ndarray, levels: int) -> np.ndarray:
-    """Cuantización por MAGNITUD de una pista semántica (fastText 300D en crudo).
+    """Cuantiza una pista semántica (fastText 300D en crudo) por magnitud.
 
-    (Se conserva el nombre por compatibilidad con las llamadas existentes, pero
-    ya NO es binaria por signo.) Escala global S -> [-1,1] -> [0, levels-1],
-    preservando la magnitud de cada componente. La misma S se usa en el llenado
-    y en la consulta, así que la cuantización es consistente y comparable.
+    A pesar del nombre, no binariza por signo: divide entre la S global para
+    caer en [-1, 1] y mapea a [0, levels-1], conservando la magnitud de cada
+    componente. Usa la misma S en el llenado y en la consulta.
     """
     s = label_scale()
     v = np.clip(np.asarray(vec, dtype=float) / s, -1.0, 1.0)   # [-1, 1]
