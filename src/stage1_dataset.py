@@ -34,8 +34,8 @@ def download():
         if _is_valid_tgz(TGZ_PATH):
             print(f"Archive already downloaded: {TGZ_PATH}")
             return
-        # Una descarga interrumpida deja un .tgz truncado: antes se daba por bueno
-        # y reventaba en extract() con un error críptico. Lo descartamos y rebajamos.
+        # Una descarga interrumpida deja un .tgz truncado que falla en
+        # extract() con un error poco claro. Se descarta y se baja de nuevo.
         print(f"Existing archive is corrupt/truncated — re-downloading: {TGZ_PATH}")
         TGZ_PATH.unlink()
 

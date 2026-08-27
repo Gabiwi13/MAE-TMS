@@ -33,7 +33,7 @@ from hetero_associative_4d import HeteroAssociativeMemory4D
 #                   menor distancia retro-proyectada a la pista (el "test").
 #   "sample_search" Sample-and-Search (SS): ST + descenso local por vecindad.
 #                   Es el recall original de Pineda & Morales y el default
-#                   histórico de este sistema.
+#                   de este sistema.
 MISSING_CUE_METHODS = ("random", "sample_test", "sample_search")
 
 

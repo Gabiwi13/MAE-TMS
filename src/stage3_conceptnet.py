@@ -58,6 +58,16 @@ MIN_LABELS = 15
 # Tope de labels por clase: equilibra el vocabulario para que ninguna clase
 # domine el routing por tamaño (clases pobres ~10-12, ricas se recortan aquí).
 MAX_LABELS = 20
+# No se filtra por coseno entre el candidato y el nombre de la clase: el
+# nombre es polisémico en fastText ("cup" queda dominado por World Cup y poda
+# drink/mug/glass; "apple" por Apple Inc. y poda red/green/core). El filtrado
+# se hace por masa asociativa y por representabilidad: un candidato sin vector
+# fastText real queda fuera.
+# Versión del formato/parámetros de extracción: invalida el cache crudo
+# cuando cambian RELATIONS o la direccionalidad (v2 = bidireccional;
+# v3 = sin DerivedFrom + solo labels ASCII; v4 = el peso de un label es la
+# MASA ASOCIATIVA acumulada — suma de pesos de todas sus aserciones, no el
+# máximo: un label respaldado por varias aristas pesa más que uno casual).
 EXTRACT_VERSION = 4
 # Ruido de polisemia / términos no visuales que ConceptNet asocia con peso alto
 # pero contaminan el routing (Apple Inc. vs manzana-fruta; cf. condición F).

@@ -235,8 +235,8 @@ def train(seed: int = SEED):
             rmse, acc = evaluate(encoder, decoder, classifier, test_loader, inv_norm)
             print(f"Epoch {epoch:3d}/{EPOCHS}  loss={avg_loss:.4f}  "
                   f"RMSE={rmse:.4f}  acc={acc:.1f}%")
-            # El mejor modelo se conserva EN MEMORIA, no en disco: así lo validado
-            # y lo guardado son siempre el mismo modelo (antes podían diferir).
+            # El mejor modelo se conserva en memoria, no en disco, para que lo
+            # validado y lo guardado sean siempre el mismo modelo.
             if rmse < best["rmse"]:
                 best.update(rmse=rmse, acc=acc,
                             state=_snapshot(encoder, decoder, classifier))

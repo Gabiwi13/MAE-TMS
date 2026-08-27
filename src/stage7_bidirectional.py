@@ -36,11 +36,10 @@ from stage6_interaction import (
 DATA_DIR = ROOT / "data" / "eth80"
 N, M_LABEL, P, Q_IMG = 300, 16, 64, 32
 N_EVOKE = 15
-# Tolerancia eta del ruteo VISUAL (lectura del directorio mem_dir_R): hasta
-# XI_VISUAL coordenadas sin soporte se tratan como funcion parcial (undefined).
-# Barrido medido: xi=2 es el punto dulce (+1.7 pts de ruteo test, 0 falsos OOD,
-# 100% acierto sobre aceptadas; xi=3 ya no agrega). El directorio de TEXTO se
-# queda en xi=0: alli la tolerancia agravaria la aceptacion de fuera-de-dominio.
+# Tolerancia del ruteo visual (directorio mem_dir_R): hasta XI_VISUAL
+# coordenadas sin soporte se tratan como undefined. xi=2 da +1.7 pts de ruteo
+# en test con 0 falsos fuera-de-dominio; xi=3 no agrega nada. El directorio de
+# texto usa xi=0, porque ahi la tolerancia deja pasar fuera-de-dominio.
 XI_VISUAL = 2
 
 IMG_TRANSFORM = transforms.Compose([
