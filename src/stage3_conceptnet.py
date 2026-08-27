@@ -27,11 +27,11 @@ CACHE_DIR = ROOT / "cache"
 CACHE_DIR.mkdir(exist_ok=True)
 
 CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
-# En ConceptNet 5.7 el grueso de las propiedades cualitativas (red, round, fast)
-# está en /r/RelatedTo — omitirla deja solo ~3 labels por concepto. El set se
-# amplió (v4.1) con relaciones semánticas adicionales porque las clases pobres
-# (pear/tomato) quedaban con ~10 candidatos crudos y su experto nunca
-# presenciaba sus propias palabras distintivas: apple capturaba sus queries.
+# En ConceptNet 5.7 el grueso de las propiedades cualitativas (red, round,
+# fast) esta en /r/RelatedTo: sin ella quedan unos 3 labels por concepto. El
+# set incluye relaciones semanticas adicionales porque las clases pobres
+# (pear, tomato) se quedaban en ~10 candidatos y su experto no presenciaba
+# sus propias palabras distintivas, asi que apple capturaba sus queries.
 RELATIONS = {
     "/r/HasProperty",
     "/r/IsA",
@@ -45,13 +45,13 @@ RELATIONS = {
     "/r/PartOf",
     "/r/Synonym",
     "/r/SimilarTo",
-    # /r/DerivedFrom se probó y se DESCARTÓ: aporta casi solo morfología
-    # (pearlike, tomatoless, tomatoey) que desplaza candidatos semánticos
+    # /r/DerivedFrom queda fuera: aporta casi solo morfologia
+    # (pearlike, tomatoless, tomatoey) que desplaza candidatos semanticos
     # reales del cap por clase.
 }
 TAU = 1.0
 # Piso de vocabulario por clase: si tras el filtro τ una clase queda por
-# debajo, se relaja τ SOLO para ella (tomando por peso descendente) hasta
+# debajo, se relaja τ para esa clase, tomando por peso descendente hasta
 # alcanzar el piso. Balancea el conocimiento entre expertos sin curación
 # manual: todo label sigue saliendo de ConceptNet.
 MIN_LABELS = 15

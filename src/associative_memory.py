@@ -39,9 +39,9 @@ class HomoAssociativeMemory:
     def __init__(self, n: int, m: int,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
-        # Pasar SIEMPRE los 4 parametros: ExperimentSettings escribe sobre
-        # commons.params_defaults (lista global compartida, bug upstream);
-        # una construccion parcial heredaria valores del ultimo barrido.
+        # Se pasan los 4 parametros: ExperimentSettings escribe sobre
+        # commons.params_defaults, que es global y compartida, y una
+        # construccion parcial heredaria valores del ultimo barrido.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._am = AssociativeMemory(n=n, m=m, es=es)
@@ -116,8 +116,7 @@ class DirectoryMemory:
         self._n = n
         self._m = m
         self._n_agents = n_agents
-        # Mismo aviso que en HomoAssociativeMemory: pasar los 4 parametros
-        # (ExperimentSettings muta commons.params_defaults).
+        # Los 4 parametros, por lo mismo que en HomoAssociativeMemory.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._ham = HeteroAssociativeMemory4D(

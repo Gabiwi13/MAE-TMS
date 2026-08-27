@@ -71,9 +71,8 @@ from stage6_interaction import (
 IOTAS  = [0.0, 0.25, 0.5, 1.0]
 KAPPAS = [0.0, 0.5, 1.0, 1.5]
 
-# Cues diagnósticos (token, dominio esperado). OJO: heredados de la era de 3
-# clases — solo cubren car/apple/horse; cow/cup/dog/pear/tomato NO tienen cue
-# aquí, así que diag_acc es una métrica PARCIAL (3 de 8 dominios), no global.
+# Cues diagnósticos (token, dominio esperado). Solo cubren car, apple y
+# horse, asi que diag_acc mide 3 de los 8 dominios, no el sistema completo.
 DIAG_CUES = [
     ("vehicle", "car"), ("automobile", "car"), ("engine", "car"),
     ("wheels", "car"),

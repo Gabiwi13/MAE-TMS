@@ -50,7 +50,7 @@ from associative_memory import DirectoryMemory
 # Visual constants
 
 # Paleta categórica para la SUPERFICIE CLARA (#f7f7fb), validada con el
-# validador del skill dataviz en orden CLASSES: banda L / croma / CVD
+# orden CLASSES, comprobada en banda L / croma / vision de color
 # (peor par adyacente ΔE 18.6, objetivo ≥12) / contraste (los 8 ≥ 3:1) — PASS.
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#17a24f",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
@@ -2208,7 +2208,7 @@ def main():
     # Sistema de diseño CLARO: página #f7f7fb, paneles blancos, tinta
     # #1c1e33, muted #5a5e7d, acento índigo #4653c9, ámbar #8a6400 para
     # cifras acentuadas. La paleta categórica de 8 clases (DOMAIN_COLOR)
-    # está VALIDADA con el validador del skill dataviz sobre esta
+    # se comprobo en luminosidad, croma y vision de color sobre esta
     # superficie (lightness band / chroma / CVD / contraste: ALL PASS).
     # Las animaciones HTML conservan su superficie navy propia.
     st.markdown("""<style>

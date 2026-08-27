@@ -42,11 +42,11 @@ from stage6_interaction import (
     get_fasttext_vector,
 )
 
-# Consultas representables (palabras reales con vector fastText) que NO
-# pertenecen a ninguno de los 8 dominios. La EAM debería rechazarlas por
-# containment. Nota v4: con 8 clases se retiraron dos probes de la versión
-# de 3 clases que ahora SÍ son de dominio ("a glass container for water" →
-# cup; "a green plant in a pot" → tomato/herb): contarlas como falso ruteo
+# Consultas representables (palabras reales con vector fastText) que no
+# pertenecen a ninguno de los 8 dominios. La EAM deberia rechazarlas por
+# containment. Quedan fuera dos consultas que con 8 clases si son de dominio
+# ("a glass container for water" -> cup; "a green plant in a pot" ->
+# tomato/herb): contarlas como falso ruteo
 # sería miscalibrar el diagnóstico.
 PROBE_QUERIES = [
     "a musical instrument with strings",
