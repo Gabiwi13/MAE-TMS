@@ -43,9 +43,9 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
     def __init__(self, n: int, m: int, p: int, q: int,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
-        # Pasar SIEMPRE los 4 parametros: ExperimentSettings muta
-        # commons.params_defaults (lista global, bug upstream) y una
-        # construccion parcial heredaria valores del ultimo barrido.
+        # Se pasan los 4 parametros: ExperimentSettings muta
+        # commons.params_defaults, que es global, y una construccion parcial
+        # heredaria los valores del ultimo barrido.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             super().__init__(n=n, p=p, m=m, q=q, es=es, fold=None)
@@ -146,38 +146,28 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         ca = self.validate(cue_a, 0)
         projection = self.project(ca, w, 0)
 
-        # r_q trae el sentinel (== self.q) en las coordenadas sin resultado.
-        # validate() por si solo clipea cualquier valor >= self.q al indice
-        # valido mas alto (self.q - 1) SIN pasar por su camino de "undefined"
-        # (ese solo dispara con NaN): un candidato sin resultado terminaria
-        # indexado en q-1 y, mas abajo, con distancia 0.0 (el mejor valor
-        # posible) para un no-resultado. Mapeamos sentinel -> NaN primero
-        # para que validate() lo reconozca como undefined de verdad.
+        # r_q marca con self.q las coordenadas sin resultado. validate()
+        # recorta cualquier valor >= self.q a q-1 y solo trata como undefined
+        # los NaN, asi que sin esta conversion un no-resultado acabaria en q-1
+        # y con distancia 0.0, la mejor posible.
         q_arr = np.asarray(r_q, dtype=float)
         q_arr = np.where(q_arr == self.q, np.nan, q_arr)
         q_io = self.validate(q_arr, 1)
 
-        # weights_in_projection indexa projection[i, q_io[i]], pero projection
-        # solo tiene self.q columnas (0..q-1): un q_io[i] == self.q (undefined)
-        # cae fuera de rango. Leemos con un indice recortado (el valor leido
-        # se descarta) y forzamos peso 0 en esas coordenadas, para que no
-        # aporten masa ni distorsionen la normalizacion de pesos mas abajo.
-        # q_io conserva su sentinel real: distance_recall()/project() ya
-        # saben ignorar coordenadas == self.q via is_undefined, asi que la
-        # coordenada undefined queda excluida del calculo, no premiada.
+        # weights_in_projection indexa projection[i, q_io[i]] y projection
+        # solo tiene q columnas, asi que un q_io[i] == self.q se sale de rango.
+        # Se lee con un indice recortado, se descarta el valor y se pone peso 0.
+        # q_io conserva su marca: distance_recall() y project() ya ignoran esas
+        # coordenadas.
         undefined = (q_io == self.q)
         safe_idx = np.where(undefined, 0, q_io)
         q_ws = self.weights_in_projection(projection, safe_idx, 1)
         q_ws = np.where(undefined, 0.0, q_ws)
 
-        # Candidato sin NINGUNA coordenada definida: no hay peso alguno para
-        # el project() de mas abajo (sum_weights == 0), que entonces atajo-
-        # corta y devuelve la matriz cero; calculate_distance() del vendor,
-        # ante una columna en cero, usa ps=columna=0 y arroja d=0 por esa
-        # coordenada, asi que el resultado final terminaria en 0.0 -- la
-        # misma "distancia perfecta gratis" que el fix de arriba evita para
-        # el indexado, pero por otra puerta. Un candidato sin ninguna
-        # coordenada definida no es comparable: NaN, no 0.0.
+        # Si ninguna coordenada esta definida, sum_weights vale 0, project()
+        # devuelve la matriz cero y calculate_distance() da 0.0 por columna.
+        # Seria otra vez distancia perfecta para un no-resultado. Un candidato
+        # asi no es comparable: NaN.
         if bool(np.all(undefined)):
             return float("nan")
 
@@ -189,10 +179,11 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
 
 def _norm_weights(weights, n: int) -> np.ndarray:
     """project() es invariante a escala; esto solo evita NaN y desbordes.
-    Pesos todo-cero se PRESERVAN (proyeccion vacia -> rechazo): convertirlos
-    en unos haria opinar a una memoria cuya homo no vio la pista. Hoy ese
-    caso no ocurre porque el soporte de la homo contiene al de la hetero
-    (propiedad del llenado, no invariante custodiado)."""
+    Los pesos todo-cero se conservan, para que la proyeccion quede vacia y
+    la consulta se rechace: ponerlos a uno haria opinar a una memoria cuya
+    homo no vio la pista. Ese caso no ocurre mientras el soporte de la homo
+    contenga al de la hetero, que es una propiedad del llenado y no algo
+    que se verifique aqui."""
     if weights is None:
         return np.ones(n, dtype=float)
     w = np.nan_to_num(np.asarray(weights, dtype=float),

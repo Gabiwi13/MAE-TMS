@@ -37,9 +37,9 @@ BATCH_SIZE = 32
 EPOCHS = 50
 LR = 1e-3
 SEED = 42
-# Criterios de aceptación del encoder. Un modelo que no los cumpla NO debe usarse
-# aguas abajo: las etapas 5-8 cuantizan los latentes de este encoder, así que un
-# encoder a medio entrenar contamina todo el experimento sin lanzar errores.
+# Criterios de aceptación del encoder. Las etapas 5-8 cuantizan sus latentes,
+# asi que un encoder a medio entrenar contamina el experimento entero sin
+# lanzar ningun error.
 RMSE_MAX = 0.3
 ACC_MIN = 85.0
 MODEL_FILES = ("encoder.pt", "decoder.pt", "classifier.pt")
@@ -203,9 +203,9 @@ def train(seed: int = SEED):
     ce_loss = nn.CrossEntropyLoss()
     inv_norm = _inv_norm()
 
-    # Cualquier manifiesto previo deja de ser válido en cuanto empieza un
-    # entrenamiento nuevo: lo borramos para que, si esto se interrumpe a la
-    # mitad, no quede un centinela mintiendo que el entrenamiento terminó.
+    # El manifiesto previo deja de valer al empezar un entrenamiento nuevo.
+    # Se borra para que una interrupcion a la mitad no deje un centinela que
+    # afirme que termino.
     if META_PATH.exists():
         META_PATH.unlink()
 
