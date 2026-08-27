@@ -108,7 +108,7 @@ src/                        # Core modules
   stage3_conceptnet.py      # Label extraction from ConceptNet 5.7.0
   stage4_fasttext.py        # fastText raw vectors + global magnitude scale (no fallback)
   stage5_fill.py            # mem_dom filling by instances (H + L + R per agent)
-  stage6_interaction.py     # Agent + TME early phase: routing + 4-AMR learning
+  stage6_interaction.py     # Agent + TME early phase: routing + 5-AMR learning
   stage7_bidirectional.py   # Bidirectional recall (image → labels), visual hemisphere
   stage8_mature.py          # Mature phase: point-to-point routing via mem_dir
 
