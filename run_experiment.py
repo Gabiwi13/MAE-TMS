@@ -43,9 +43,9 @@ def run():
     from stage2_encoder import (ensure_models, evaluate, get_loaders,
                                  visualize_reconstructions, _inv_norm)
 
-    # ensure_models() valida lo que haya en disco y reentrena automáticamente si
-    # falta, está corrupto (entrenamiento interrumpido) o no cumple criterios.
-    # Nunca continúa en silencio con un encoder a medio entrenar.
+    # ensure_models() valida lo que haya en disco y reentrena si falta, esta
+    # corrupto o no cumple los criterios, en vez de seguir con un encoder a
+    # medio entrenar.
     try:
         encoder, decoder, classifier = ensure_models()
     except RuntimeError as e:

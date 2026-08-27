@@ -134,8 +134,8 @@ def main():
     def s2():
         rmse, acc, encoder, decoder, classifier = train()
         _, test_loader = get_loaders()
-        # Reusar la normalización inversa oficial en vez de re-escribir sus
-        # constantes (se desincronizaría en silencio si cambia el dataset).
+        # Se reusa la normalizacion inversa de stage2 en vez de copiar sus
+        # constantes, que quedarian desfasadas si cambia el dataset.
         evaluate(encoder, decoder, classifier, test_loader, _inv_norm())
         visualize_reconstructions(encoder, decoder, test_loader)
     timed_call("stage2_train_encoder", s2)
