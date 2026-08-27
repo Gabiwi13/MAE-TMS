@@ -9,7 +9,9 @@ Scoring oficial (validado en exp. 2):
      redundante (exp. 2 lo confirma: gate solo da 100% en el diagnóstico).
   2. B1 (÷count+1) en fase madura, como en la condición B1 del ablation.
 
-Protocolo (idéntico al exp. 1 / stages 6+8, arquitectura 4-AMR completa):
+Protocolo (idéntico al exp. 1 / stages 6+8). Ejercita la vía textual: las
+tres memorias de dominio y el directorio de labels. El directorio visual
+mem_dir_R queda vacío, se entrena en stage7 con percepciones de imágenes:
   - Agentes con M_dom_L/R/H de stage5 (solo lectura) + M_dir EHAM fresco.
   - TME con M_dir_L / M_dir_R (DirectoryMemory) frescos.
   - Fase temprana: broadcast → recognize_gated → argmax → los directorios de
@@ -74,7 +76,8 @@ def corrected_score(agent, v_q):
 def process_query_early(query, agents, tme, nlp, vectors, tok_cache):
     """
     Fase temprana — protocolo oficial: tokenize → representar con fastText real
-    (sin filtro lexico) → recognize_gated → argmax → aprendizaje en los 4 M_dir.
+    (sin filtro lexico) → recognize_gated → argmax → aprendizaje en los
+    directorios de labels: el del TME y el de cada agente.
 
     El rechazo lo decide la EAM, no el vocabulario de labels. Se distinguen dos
     causas: no_representable_tokens (ningun token tiene vector fastText) y
@@ -110,7 +113,8 @@ def process_query_early(query, agents, tme, nlp, vectors, tok_cache):
     winner = max(scores, key=scores.get)
     widx = AGENT_LIST.index(winner)
 
-    # Aprendizaje — los 4 componentes del directorio de labels registran.
+    # Aprendizaje — registran el directorio de labels del TME y el de cada
+    # agente.
     # NOTA: mem_dir_R (directorio visual) NO se actualiza aqui. El latente de
     # un recall es un eco de la propia memoria, no una percepcion real; el
     # directorio visual solo indexa latentes de imagenes (stage7).
@@ -375,7 +379,8 @@ def main():
         "directorio por agente), token → ganador. mem_dir_R NO se actualiza "
         "con recalls (solo percepciones reales de imágenes en stage7)",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
-        "- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)",
+        "- Vía textual completa con DirectoryMemory (EHAM real); el "
+        "directorio visual no participa",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",
         "",
         "## Resultados (banco de 80 queries, 10 por clase)",
