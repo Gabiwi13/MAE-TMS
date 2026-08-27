@@ -37,9 +37,9 @@ from quantizer import quantize_binary
 
 CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 N, M, P, Q = 300, 16, 64, 32
-# N_FILL=200 se mantiene: deja train[200:328] libre para las interacciones
-# visuales de stage7 (formación del directorio). El enriquecimiento del llenado
-# viene de la AUGMENTACIÓN (4× por imagen), no de consumir más imágenes.
+# N_FILL=200 deja train[200:328] libre para las interacciones visuales de
+# stage7. El llenado se enriquece por augmentación (4x por imagen), no
+# consumiendo más imágenes.
 N_FILL = 200
 FILL_AUGMENT = True      # augmentar cada imagen (espejo + rotaciones) al llenar
 FILL_AUG_ANGLES = (-12, 12)
@@ -293,9 +293,8 @@ def run():
     encoder = load_encoder()
 
     stats_path = MODELS_DIR / "latent_global_stats.json"
-    # Si el encoder cambió, las stats globales y las memorias previas quedaron
-    # stale (otro espacio latente). Forzar recálculo/rellenado en vez de
-    # reutilizarlas en silencio (mismo criterio que el manifiesto del encoder).
+    # Si el encoder cambió, las stats y las memorias guardadas pertenecen a
+    # otro espacio latente. Se borran para forzar el recálculo.
     if stats_path.exists() and _is_stale(stats_path):
         stats_path.unlink()
 
