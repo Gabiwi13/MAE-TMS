@@ -9,13 +9,12 @@ sobre las mismas 50 imágenes por clase y la misma masa de registros:
   INSTANCIAS  label×freq → latente real (round-robin sobre las 50).
               La abstracción la acumula la propia relación (protocolo v2+).
 
-Nota de vigencia (limpia jul 2026): la versión anterior usaba los pickles de
-stage5 como brazo "viejo", lo cual quedó obsoleto cuando stage5 pasó a llenar
-por instancias + augmentación: esa comparación medía cobertura (800 registros
-vs 50), no la estrategia de llenado. Ahora ambos brazos son en-memoria y solo
-difieren en DÓNDE ocurre la abstracción.
+Los dos brazos se construyen en memoria con el mismo numero de registros y
+solo difieren en donde ocurre la abstraccion. Usar los pickles de stage5 como
+brazo "viejo" mediria cobertura (800 registros contra 50) en vez de la
+estrategia de llenado.
 
-Hipótesis (las originales, sobre brazos comparables):
+Hipótesis:
   H1. instancias → variedad genuina del recall (muestrea modos reales).
   H2. instancias → el reconocimiento inverso acepta imágenes individuales
       (la nube está contenida, no solo el centroide).
