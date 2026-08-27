@@ -1,10 +1,8 @@
 """
 Ablation study — diagnóstico del sesgo de M_dir hacia apple.
 
-Directorio: el DirectoryMemory hetero OFICIAL (associative_memory), el mismo que
-usa el sistema en produccion. La version previa usaba SlotDirectoryMemory (una
-HomoAssociativeMemory por agente), archivada en archive/legacy_slot_directory/;
-sus numeros no representaban la arquitectura final y no deben citarse como tales.
+Directorio: el DirectoryMemory hetero de associative_memory, el mismo que usa
+el sistema completo, para que las condiciones se midan sobre esa memoria.
 
 Condiciones:
   A   — Baseline: lectura cruda del directorio (predict, sin normalizar)
@@ -51,6 +49,10 @@ from stage6_interaction import (
 )
 
 
+# Las condiciones A-G se evaluan sobre el DirectoryMemory hetero importado de
+# associative_memory, el mismo del sistema completo. Un directorio hecho de una
+# HomoAssociativeMemory por agente exagera el sesgo de densidad, porque el score
+# homo crece con la masa de registros mas que la proyeccion hetero.
 
 
 class DirectoryMemoryCapped(DirectoryMemory):
@@ -104,9 +106,8 @@ COND_COLORS = {
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
                 "pear": "#7d8f22", "tomato": "#c0392b"}
-# N de referencia para los plots por dominio: el banco completo (debe estar
-# en N_VALUES). Antes era 80 —de la era de 3 clases y AUSENTE de N_VALUES—,
-# así que los plots agregaban 0 filas.
+# N de referencia para los plots por dominio: el banco completo. Tiene que
+# estar en N_VALUES o los plots agregan 0 filas.
 N_PLOT = N_VALUES[-1]
 CHANCE = 1.0 / len(CLASSES)
 
@@ -146,9 +147,9 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
     print(f"  Curated apple: {len(labels)} -> {len(curated)} labels "
           f"(removed: {removed})")
     if not removed:
-        # El vocabulario v4 (masa asociativa) ya no contiene los labels de
-        # Apple Inc.: las condiciones F/G quedan como NO-OP (F ≡ A). Se avisa
-        # en vez de narrar en el reporte un efecto que no ocurre.
+        # Si el vocabulario no trae labels de Apple Inc., la curacion no
+        # remueve nada y F queda igual que A. Se avisa para no reportar un
+        # efecto que no ocurrio.
         print("  AVISO: la curacion F/G no removio NADA (los labels de Apple "
               "Inc. ya no estan en labels_apple.json). F == A en esta corrida.")
 
@@ -421,7 +422,7 @@ def metrics_to_row(condition, N, seed, m):
         "mature_accuracy":  round(m["mature_acc"],  4),
         "mdir_entropy":     round(m["mdir_entropy"], 4),
     }
-    # Columnas por dominio para TODAS las clases (antes hardcodeadas a 3).
+    # Una columna por clase, generadas desde CLASSES.
     for cls in CLASSES:
         row[f"early_acc_{cls}"]  = round(m["domain_early"][cls], 4)
         row[f"fidelity_{cls}"]   = round(m["domain_fid"][cls],   4)

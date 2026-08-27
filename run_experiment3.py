@@ -192,9 +192,8 @@ def main():
     early_rej = e_rej / len(queries)
     from collections import Counter
     reason_counts = Counter(r.get("reason", "?") for r in early_results)
-    # process_query_early solo emite no_representable_tokens/mae_no_support/
-    # mae_support; "no_tokens" pertenece a otro dict (mature_log) y nunca
-    # aparece aquí, así que no se suma (antes era un +0 muerto).
+    # process_query_early solo emite no_representable_tokens, mae_no_support y
+    # mae_support. "no_tokens" pertenece a mature_log y no aparece aqui.
     n_norep = reason_counts.get("no_representable_tokens", 0)
     n_mae_rej = reason_counts.get("mae_no_support", 0)
     n_routed = reason_counts.get("mae_support", 0)

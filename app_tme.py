@@ -55,18 +55,18 @@ from associative_memory import DirectoryMemory
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#17a24f",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
                 "pear": "#85980f", "tomato": "#b3271e"}
-# Los mismos 8 dominios escalonados para la superficie navy (#101332) de las
-# animaciones HTML — paleta previa, validada en oscuro. No son dos paletas:
-# es la misma identidad por clase con pasos por superficie.
+# Los mismos 8 dominios ajustados para la superficie navy (#101332) de las
+# animaciones HTML. Es la misma identidad por clase, con el tono adaptado a
+# cada superficie.
 DOMAIN_COLOR_DARK = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
                      "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
                      "pear": "#7d8f22", "tomato": "#c0392b"}
 DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
                 "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
-# Posiciones del grafo de ruteo: TME al centro y los agentes en una elipse,
-# generadas desde CLASSES (antes hardcodeadas a las 3 clases originales, lo
-# que rompía _routing_graph con el sistema de 8 agentes).
+# Posiciones del grafo de ruteo: TME al centro y los agentes repartidos en una
+# elipse. Se generan desde CLASSES para que sirvan con cualquier numero de
+# agentes.
 NODE_POS = {"TME": (0.0, 0.0)}
 for _i, _cls in enumerate(CLASSES):
     _ang = 2.0 * np.pi * _i / len(CLASSES) + np.pi / 2.0
@@ -272,17 +272,15 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     # no stochastic sampling, runs in milliseconds.
     per_token = {}
     for tok, raw_v in tok_vecs.items():
-        # Paso intermedio REAL de quantize_binary (cuantización por magnitud):
-        # v/S recortado a [-1,1] con la escala global S. (La visualización
-        # anterior mostraba sign(v), un paso que ya no existe en el pipeline.)
+        # Paso intermedio de quantize_binary: v/S recortado a [-1, 1] con la
+        # escala global S.
         scaled_v = np.clip(raw_v / label_scale(), -1.0, 1.0)
         q_v      = quantize_binary(raw_v, M_LABEL)
 
         per_agent = {}
         for cls in CLASSES:
             ag  = agents[cls]
-            # Una sola proyección por agente: h_raw y h_gated salen del mismo
-            # project() (antes se proyectaba dos veces con gate ON).
+            # h_raw y h_gated salen de la misma llamada a project().
             l_w, h_raw, h_gated = ag.recognize_both(q_v)
             mem_mean = float(ag.mem_dom_H.mean)
             h_score = h_gated if normalize else h_raw
@@ -1427,6 +1425,10 @@ _ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
 _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
+# La app no exporta video: las animaciones se capturan con la grabacion de
+# pantalla del sistema (Win+G / Win+Alt+R), usando el boton Replay de cada
+# animacion. Un screencast headless con Edge + ffmpeg resulta intermitente y
+# a veces corta el final.
 
 
 # Session state management
@@ -2867,7 +2869,7 @@ def main():
         st.header("Referencia ETH-80")
         st.caption("One representative training image per domain.")
 
-        # Filas de 4 para las 8 clases (antes st.columns(3)+zip truncaba a 3).
+        # Filas de 4 columnas, recorriendo CLASSES por bloques.
         _PR = 4
         for _start in range(0, len(CLASSES), _PR):
             _chunk = CLASSES[_start:_start + _PR]
