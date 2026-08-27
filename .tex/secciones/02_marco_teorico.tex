@@ -96,13 +96,26 @@ o no ha sido suficientemente alimentada.
 \subsection{Memoria Hetero-asociativa 4D}
 \label{sec:hetero4d}
 
-La memoria hetero-asociativa \cite{pineda2024hetero} relaciona dos dominios:
-un dominio izquierdo con $n$ características y alfabeto de tamaño $m$, y un dominio
-derecho con $p$ características y alfabeto de tamaño $q$.
+La Memoria Hetero-Asociativa Entrópica (EHAM) de Morales y Pineda~\cite{morales2024hetero}
+extiende la EAM al almacenamiento de pares de objetos posiblemente pertenecientes a dominios
+o modalidades distintas.
+En lugar de una relación bidimensional, la EHAM almacena las asociaciones en una relación
+ponderada de cuatro dimensiones, de modo que una pista en un dominio puede proyectar una
+relación en el dominio asociado.
+Formalmente, relaciona un dominio izquierdo con $n$ características y alfabeto de tamaño $m$,
+y un dominio derecho con $p$ características y alfabeto de tamaño $q$.
 La relación se almacena en un tensor
 $\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$,
 donde los tamaños $(m+1)$ y $(q+1)$ incorporan \emph{centinelas} en la posición cero
 para representar funciones parciales (características no definidas).
+
+La recuperación hetero-asociativa introduce además el \textbf{problema de la pista faltante}
+(\emph{missing cue problem}): la pista fuente selecciona un plano de memoria en el dominio
+destino, pero no existe una pista destino adicional para completar la recuperación.
+El paper original propone métodos como \emph{random}, \emph{sample-and-test} y
+\emph{sample-and-search}/\emph{search-and-test} para resolverlo.
+El presente sistema usa esa idea como sustrato de asociación texto$\leftrightarrow$imagen y
+como base para los directorios hetero-asociativos agente$\leftrightarrow$especialidad.
 
 \subsubsection*{Registro hetero-asociativo}
 
@@ -140,7 +153,7 @@ todas las características de la pista tienen soporte simultáneo en la memoria.
 Los pesos $w'_i$ ponderan la suma por la frecuencia con que cada característica de la pista
 ha sido observada en la memoria homo-asociativa: características muy frecuentes en la pista
 pesan más, lo cual permite que la memoria homo-asociativa module la hetero-asociativa
-de forma nativa y justifica la arquitectura de cuatro memorias por agente.
+de forma nativa y justifica la arquitectura de cinco memorias por agente.
 
 La recuperación hetero-asociativa $\beta$ aplica muestreo por columna sobre $\Pi$ y,
 cuando es necesario, una búsqueda local (\emph{sample-and-search}) para mejorar la
@@ -153,9 +166,9 @@ dominio: genera pesos $w_i$ que reflejan cuán típica es una pista dentro de es
 La memoria hetero-asociativa, en cambio, modela la \emph{distribución conjunta} de dos
 dominios y, por construcción, \textbf{no genera pesos por característica} del dominio derecho.
 Esta asimetría es propia del modelo y justifica que cada agente en EAM-TMS requiera
-\emph{cuatro} memorias: dos homo-asociativas (una por dominio, como
+\emph{cinco} memorias: dos homo-asociativas (una por dominio, como
 árbitros de pertenencia y fuente de pesos), una hetero-asociativa de contenido, y
-una hetero-asociativa de directorio.
+dos hetero-asociativas de directorio (una de texto y una visual, una por modalidad de pista).
 
 \subsection{Memoria Transactiva}
 \label{sec:tmt}

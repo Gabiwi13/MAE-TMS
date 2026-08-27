@@ -5,6 +5,15 @@ Ejecuta las 8 etapas en orden, verifica cada una antes de continuar.
 import sys
 from pathlib import Path
 
+# En Windows la consola usa cp1252 por defecto y los print con símbolos como
+# '✓', '→' o '≈' (presentes en todas las etapas) revientan con UnicodeEncodeError.
+# Forzar UTF-8 aquí arregla la salida de las 8 etapas, que comparten este stdout.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
@@ -31,30 +40,21 @@ def run():
     # -----------------------------------------------------------
     banner(2, "CNN Encoder/Decoder")
     # -----------------------------------------------------------
-    from stage2_encoder import (train, load_models, evaluate,
-                                 get_loaders, visualize_reconstructions)
-    from torchvision import transforms
+    from stage2_encoder import (ensure_models, evaluate, get_loaders,
+                                 visualize_reconstructions, _inv_norm)
 
-    models_dir = ROOT / "models"
-    if (models_dir / "encoder.pt").exists():
-        print("Models already trained. Loading...")
-        encoder, decoder, classifier = load_models()
-    else:
-        rmse, acc, encoder, decoder, classifier = train()
-        if rmse >= 0.3 or acc < 85.0:
-            sys.exit(f"Etapa 2 fallida: RMSE={rmse:.4f} acc={acc:.1f}%")
+    # ensure_models() valida lo que haya en disco y reentrena si falta, esta
+    # corrupto o no cumple los criterios, en vez de seguir con un encoder a
+    # medio entrenar.
+    try:
+        encoder, decoder, classifier = ensure_models()
+    except RuntimeError as e:
+        sys.exit(f"Etapa 2 fallida: {e}")
 
     _, test_loader = get_loaders()
-    inv_norm = transforms.Normalize(
-        mean=[-0.485/0.229, -0.456/0.224, -0.406/0.225],
-        std=[1/0.229, 1/0.224, 1/0.225])
-    rmse, acc = evaluate(encoder, decoder, classifier, test_loader, inv_norm)
+    rmse, acc = evaluate(encoder, decoder, classifier, test_loader, _inv_norm())
     print(f"  RMSE={rmse:.4f}  accuracy={acc:.1f}%")
     visualize_reconstructions(encoder, decoder, test_loader)
-
-    if rmse >= 0.3 or acc < 85.0:
-        print(f"WARNING: criteria not met (RMSE={rmse:.3f}, acc={acc:.1f}%)")
-        print("  Continuing anyway — tune hyperparameters post-run.")
     print("\n✓ Etapa 2 OK")
 
     # -----------------------------------------------------------

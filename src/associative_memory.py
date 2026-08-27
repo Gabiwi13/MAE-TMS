@@ -39,6 +39,9 @@ class HomoAssociativeMemory:
     def __init__(self, n: int, m: int,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
+        # Pasar SIEMPRE los 4 parametros: ExperimentSettings escribe sobre
+        # commons.params_defaults (lista global compartida, bug upstream);
+        # una construccion parcial heredaria valores del ultimo barrido.
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._am = AssociativeMemory(n=n, m=m, es=es)
@@ -102,12 +105,19 @@ class DirectoryMemory:
     (B1: ÷count) o se compara via argmax sobre scores ya calibrados.
     """
 
-    def __init__(self, n: int = 300, m: int = 16, n_agents: int = 3,
+    def __init__(self, n: int = 300, m: int = 16, n_agents: int = None,
                  iota: float = 0.0, kappa: float = 0.0,
                  xi: int = 0, sigma: float = 0.1):
+        # n_agents es obligatorio: un default construiría un directorio del
+        # tamaño equivocado sin fallar.
+        if n_agents is None:
+            raise TypeError("DirectoryMemory requiere n_agents explícito "
+                            "(número de agentes del sistema).")
         self._n = n
         self._m = m
         self._n_agents = n_agents
+        # Mismo aviso que en HomoAssociativeMemory: pasar los 4 parametros
+        # (ExperimentSettings muta commons.params_defaults).
         es = commons.ExperimentSettings(iota=iota, kappa=kappa, xi=xi, sigma=sigma)
         with contextlib.redirect_stdout(io.StringIO()):
             self._ham = HeteroAssociativeMemory4D(
@@ -115,7 +125,13 @@ class DirectoryMemory:
         self._counts = np.zeros(n_agents, dtype=np.int64)
 
     def register(self, v_q: np.ndarray, agent_idx: int) -> None:
-        k = int(np.clip(agent_idx, 0, self._n_agents - 1))
+        # Un indice fuera de rango viene de confundir indice de clase con
+        # indice de agente. Se lanza en vez de recortar, porque recortar lo
+        # guardaria en el agente equivocado.
+        k = int(agent_idx)
+        if not 0 <= k < self._n_agents:
+            raise ValueError(
+                f"agent_idx={agent_idx} fuera de rango [0, {self._n_agents}).")
         agent_id = np.zeros(self._n_agents, dtype=np.int32)
         agent_id[k] = 1
         self._ham.register(v_q, agent_id)
@@ -127,18 +143,81 @@ class DirectoryMemory:
         proj = self._ham.project(v_q, weights, dim=0)
         return proj[:, 1].copy()
 
+    def _calibrated(self, scores: np.ndarray, mode: str,
+                    eps: float) -> np.ndarray:
+        """Divide los scores por el numero de registros de cada agente.
+        Un mode desconocido lanza en vez de caer a un default."""
+        denom = self._counts.astype(float) + eps
+        if mode == "linear":
+            return scores / denom
+        if mode == "sqrt":
+            return scores / np.sqrt(denom)
+        raise ValueError(f"mode desconocido: {mode!r} (usa 'linear' o 'sqrt')")
+
     def predict_normalized(self, v_q: np.ndarray,
                            mode: str = "linear",
                            eps: float = 1.0) -> np.ndarray:
         """Scores calibrados por masa de registros: linear = ÷(count+eps)."""
-        scores = self.predict(v_q)
-        denom = self._counts.astype(float) + eps
-        return scores / denom if mode == "linear" else scores / np.sqrt(denom)
+        return self._calibrated(self.predict(v_q), mode, eps)
 
     def nearest_agent(self, v_q: np.ndarray) -> int:
-        """-1 cuando ningun agente tiene señal: el directorio no inventa."""
+        """Indice del agente con mayor score crudo, o -1 si ninguno tiene señal."""
         scores = self.predict(v_q)
         return -1 if scores.sum() == 0 else int(np.argmax(scores))
+
+    def support_gaps(self, v_q: np.ndarray) -> list:
+        """Coordenadas de la pista sin soporte en la relacion: ese valor nunca
+        se registro para ningun agente. Equivale al recog_weights de la homo
+        (w_i = R[i, a_i]) sobre el dominio izquierdo del tensor 4D."""
+        ham = self._ham
+        v = ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
+        rel = ham._full_iota_relation
+        return [i for i in range(v.size)
+                if not ham.is_undefined(int(v[i]), 0)
+                and rel[i, :, int(v[i]), :ham.q].sum() == 0]
+
+    def predict_tolerant(self, v_q: np.ndarray, xi: int = 0,
+                         mode: str = "linear", eps: float = 1.0) -> np.ndarray:
+        """Hasta xi coordenadas sin soporte se marcan como 'undefined' y la
+        proyeccion las salta; el resto de la pista decide. Con mas de xi
+        huecos devuelve scores en cero. xi=0 es la lectura estricta."""
+        gaps = self.support_gaps(v_q)
+        if len(gaps) > xi:
+            return np.zeros(self._n_agents, dtype=float)
+        if gaps:
+            v = self._ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
+            v[gaps] = self._ham.undefined(0)
+            weights = np.ones(len(v), dtype=float)
+            with contextlib.redirect_stdout(io.StringIO()):
+                proj = self._ham.project(v, weights, dim=0)
+            scores = proj[:, 1].copy()
+        else:
+            scores = self.predict(v_q)
+        return self._calibrated(scores, mode, eps)
+
+    def route(self, v_q: np.ndarray, mode: str = "linear",
+              eps: float = 1.0, xi: int = 0) -> int:
+        """Indice del agente ganador, o -1 si ninguno tiene soporte. Calibra
+        por masa de registros antes del argmax; xi>0 usa la lectura tolerante."""
+        scores = (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
+                  if xi > 0 else self.predict_normalized(v_q, mode=mode, eps=eps))
+        # En empate exacto np.argmax devuelve el indice menor.
+        return -1 if scores.sum() == 0 else int(np.argmax(scores))
+
+    def route_multi(self, cues, mode: str = "linear",
+                    eps: float = 1.0, xi: int = 0):
+        """Rutea con varias pistas a la vez (una por token): suma los scores
+        calibrados de cada pista y saca el argmax dentro de la memoria.
+
+        Devuelve (winner_idx, scores_sumados); winner_idx = -1 si ninguna
+        pista tiene soporte."""
+        total = np.zeros(self._n_agents, dtype=float)
+        for v_q in cues:
+            total += (self.predict_tolerant(v_q, xi=xi, mode=mode, eps=eps)
+                      if xi > 0
+                      else self.predict_normalized(v_q, mode=mode, eps=eps))
+        winner = -1 if total.sum() == 0 else int(np.argmax(total))
+        return winner, total
 
     @property
     def agent_counts(self) -> np.ndarray:

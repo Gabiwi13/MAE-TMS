@@ -15,16 +15,51 @@ DATA_DIR = ROOT / "data" / "eth80"
 ETH80_URL = "http://datasets.d2.mpi-inf.mpg.de/eth80/eth80-cropped-close128.tgz"
 TGZ_PATH = ROOT / "data" / "eth80-cropped-close128.tgz"
 
-CLASSES = ["apple", "horse", "car"]
+CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
+
+
+def _is_valid_tgz(path):
+    """True si el archivo es un .tar.gz legible (detecta descargas truncadas)."""
+    try:
+        with tarfile.open(path, "r:gz") as tar:
+            return tar.next() is not None
+    except Exception:
+        return False
 
 
 def download():
     DATA_DIR.parent.mkdir(parents=True, exist_ok=True)
+
     if TGZ_PATH.exists():
-        print(f"Archive already downloaded: {TGZ_PATH}")
-        return
+        if _is_valid_tgz(TGZ_PATH):
+            print(f"Archive already downloaded: {TGZ_PATH}")
+            return
+        # Una descarga interrumpida deja un .tgz truncado que falla en
+        # extract() con un error poco claro. Se descarta y se baja de nuevo.
+        print(f"Existing archive is corrupt/truncated — re-downloading: {TGZ_PATH}")
+        TGZ_PATH.unlink()
+
     print(f"Downloading ETH-80 from {ETH80_URL} ...")
-    urllib.request.urlretrieve(ETH80_URL, TGZ_PATH)
+    part = TGZ_PATH.with_suffix(TGZ_PATH.suffix + ".part")
+    try:
+        urllib.request.urlretrieve(ETH80_URL, part)
+    except Exception as e:
+        if part.exists():
+            part.unlink()
+        raise RuntimeError(
+            f"No se pudo descargar ETH-80 desde {ETH80_URL} ({e}).\n"
+            f"La URL de MPI suele estar caída. Coloca manualmente el archivo en\n"
+            f"  {TGZ_PATH}\n"
+            f"(o el dataset ya extraído en data/eth80/<clase>/) y vuelve a ejecutar."
+        ) from e
+
+    if not _is_valid_tgz(part):
+        part.unlink()
+        raise RuntimeError(
+            f"El archivo descargado desde {ETH80_URL} no es un .tgz válido "
+            f"(descarga incompleta o URL que devuelve HTML). Reintenta o consigue "
+            f"el dataset manualmente.")
+    os.replace(part, TGZ_PATH)   # rename atómico: solo aparece el .tgz si está completo
     print(f"Saved to {TGZ_PATH}")
 
 
@@ -32,9 +67,13 @@ def extract():
     if (DATA_DIR / "apple").exists():
         print("ETH-80 already extracted.")
         return
+    if not (TGZ_PATH.exists() and _is_valid_tgz(TGZ_PATH)):
+        raise RuntimeError(
+            f"No hay un .tgz válido en {TGZ_PATH}. Ejecuta download() primero "
+            f"(o coloca el dataset manualmente).")
     print(f"Extracting {TGZ_PATH} ...")
     with tarfile.open(TGZ_PATH, "r:gz") as tar:
-        tar.extractall(path=DATA_DIR.parent)
+        tar.extractall(path=DATA_DIR.parent, filter="data")
     print("Extraction complete.")
 
 

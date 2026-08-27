@@ -25,7 +25,7 @@ from quantizer import quantize_binary
 from stage6_interaction import (
     CLASSES, MODELS_DIR, DEVICE,
     load_tme_and_agents, get_nlp, load_decoder, load_all_vectors,
-    tokenize_query, get_fasttext_vector, token_in_vocabulary, TEST_QUERIES,
+    tokenize_query, get_fasttext_vector, TEST_QUERIES,
 )
 
 M_LABEL = 16
@@ -68,19 +68,18 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
                 "routed": False, "scores": [0.0] * len(CLASSES),
                 "rejected": True, "reason": "no_representable_tokens"}
 
-    agent_scores = np.zeros(len(CLASSES), dtype=float)
-    for v_q in token_vectors.values():
-        agent_scores += entry_agent.mem_dir.predict_normalized(
-            v_q, mode="linear")
+    # La decisión multi-pista la toma la MAE (DirectoryMemory.route_multi):
+    # suma calibrada B1 por token + argmax dentro de la memoria.
+    dest_idx, agent_scores = entry_agent.mem_dir.route_multi(
+        token_vectors.values(), mode="linear")
 
-    if agent_scores.sum() == 0:
+    if dest_idx < 0:
         if verbose:
             print(f"  RECHAZADA (directory_no_support): '{query}'.")
         return {"query": query, "winner": None, "image": None,
                 "routed": False, "scores": agent_scores.tolist(),
                 "rejected": True, "reason": "directory_no_support"}
 
-    dest_idx = int(np.argmax(agent_scores))
     dest_name = CLASSES[dest_idx]
     dest_agent = agents[dest_name]
     routed = dest_name != entry_agent.name
@@ -138,7 +137,7 @@ def run():
     for i, query in enumerate(TEST_QUERIES):
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
         res = route_mature(query, agents[entry_cls], agents, nlp,
-                           vectors_cache, decoder, g_min, g_max)
+                           vectors_cache, decoder, g_min, g_max, verbose=False)
         mature_results[query] = res["winner"]
         early_winner = early_results.get(query)
         match = res["winner"] == early_winner

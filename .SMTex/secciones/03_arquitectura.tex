@@ -1,0 +1,155 @@
+\section{Arquitectura Multimodal en Tiempo Real}
+\label{sec:arquitectura}
+
+La extensión vive en un módulo aislado (\texttt{realtime\_lab/}) construido sobre una
+ventana nativa (OpenCV \cite{bradski2000opencv} $+$ \texttt{sounddevice}) con tres
+hilos concurrentes y colas seguras entre ellos.
+El principio rector es un \textbf{puente de solo lectura}: los modelos del experimento
+base (agentes, TME, encoder, decoder, estadísticas de cuantización) se cargan una sola
+vez al inicio y nunca se escriben; el único estado que aprende en vivo es un
+\emph{directorio de sesión} que existe solo en memoria.
+
+\subsection{Componentes}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=6mm and 10mm,
+    caja/.style={draw, rounded corners=2pt, align=center, font=\small,
+                 minimum height=8mm, inner sep=4pt},
+    hilo/.style={caja, fill=gray!12},
+    mem/.style={caja, fill=gray!30},
+    flecha/.style={-{Stealth[length=2.5mm]}, thick}
+]
+\node[hilo] (audio) {Hilo de audio\\ \footnotesize 16 kHz mono, bloques de 30 ms};
+\node[caja, below=of audio] (vad) {VAD por energía + Whisper \emph{small}\\
+    \footnotesize subtítulo parcial $\sim$1/s;\\
+    \footnotesize pausa $\sim$600 ms $\to$ transcripción (\texttt{translate})};
+\node[hilo, right=22mm of audio] (vision) {Hilo de visión\\
+    \footnotesize 1 análisis cada $\sim$250 ms};
+\node[caja, below=of vision] (enc) {recorte central ajustable\\
+    \footnotesize $\to 128^2 \to$ ResNet18 $\to$ latente cuantizado};
+\node[mem, below=10mm of $(vad.south)!0.5!(enc.south)$] (router)
+    {\textbf{Router (solo lectura)}\\
+     \footnotesize texto: broadcast TME (temprano) o $M_{\mathrm{dir}}$ del agente
+     de entrada, lectura B1 (maduro)\\
+     \footnotesize visión: $M^{R}_{\mathrm{dir}}$ del agente de entrada,
+     lectura tolerante $\xi=2$\\
+     \footnotesize evocación asíncrona: SS $+$ prototipo $+$ distancias};
+\node[hilo, below=8mm of router] (ui) {Hilo de interfaz ($\sim$26--30 fps)\\
+    \footnotesize video $+$ etiqueta viva $+$ subtítulos $+$ panel de sistema
+    (redirecciones, barras, recuerdo evocado, $M_{\mathrm{dir}}$ de sesión)};
+\draw[flecha] (audio) -- (vad);
+\draw[flecha] (vision) -- (enc);
+\draw[flecha] (vad) -- (router);
+\draw[flecha] (enc) -- (router);
+\draw[flecha] (router) -- (ui);
+\end{tikzpicture}
+\caption{Arquitectura de tres hilos. Las traducciones de modalidad (voz$\to$texto,
+pixeles$\to$latente) ocurren antes del router; dentro del router solo hay operaciones
+de memoria.}
+\label{fig:arquitectura}
+\end{figure}
+
+\subsection{Canal de voz: los dos modos transactivos}
+
+Cada frase transcrita se tokeniza y vectoriza con el pipeline oficial del experimento
+(spaCy \cite{honnibal2020spacy} $+$ fastText con cuantización por magnitud) y se
+enruta según el modo activo, conmutable en vivo:
+
+\begin{description}
+    \item[Modo temprano (TME activo).] Difusión a los ocho agentes: cada uno puntúa la
+    pista con su score gateado por containment (el promedio de activación de la
+    proyección, cero si alguna fila queda sin soporte) y el grupo asigna al máximo.
+    Cada pista se \emph{registra} a nombre del ganador en el directorio de sesión, cuyo
+    conteo por agente es visible al pie del panel: el directorio se forma frente al
+    usuario, frase a frase.
+
+    \item[Modo maduro (TME apagado).] Protocolo punto a punto del experimento base: el
+    \emph{agente de entrada} (seleccionable en vivo) consulta su directorio textual
+    entrenado con la lectura normalizada B1 y redirige al especialista ---o rechaza si
+    su directorio no tiene señal (\texttt{directory\_no\_support}).
+    El panel muestra la relación \textsc{entrada} $\to$ \textsc{destino} con la
+    anotación ``redirige'' o ``se queda (es el experto)''.
+\end{description}
+
+El rechazo es de primera clase en ambos modos: una frase sin tokens representables o
+sin soporte en ninguna memoria produce \textsc{rechazo} explícito con su causa, nunca
+un ganador por desempate.
+
+\subsection{Canal de visión: etiqueta viva y percepción honesta}
+
+El cuadro de la cámara pasa por un recorte cuadrado central \emph{ajustable}
+(55\% del lado menor por defecto), se reescala a $128\times128$ y se codifica con el
+encoder ResNet18 del experimento; el latente cuantizado consulta el directorio visual
+$M^{R}_{\mathrm{dir}}$ del agente de entrada con la lectura tolerante ($\xi = 2$) del
+protocolo oficial.
+La etiqueta sobre el video se suaviza por mayoría sobre los últimos 5 análisis para
+evitar parpadeo, y el rechazo muestra siempre el candidato más cercano con su score.
+
+Dos decisiones de interfaz resultaron determinantes en las pruebas físicas
+(Sección~\ref{sec:met_fisica}):
+
+\begin{itemize}
+    \item \textbf{El recuadro ajustable.} La primera versión exigía llenar todo el
+    alto del video ($480$ px), lo que obligaba a acercar el estímulo impreso más allá
+    de la distancia de enfoque de la cámara web. El recuadro al 55\% se llena a
+    20--30 cm, donde la óptica sí enfoca.
+    \item \textbf{``Lo que ve el ojo''.} Un recuadro en vivo con el $128\times128$
+    exacto que recibe el encoder. Desenfoque, reflejo o desencuadre dejan de ser
+    hipótesis: se ven.
+\end{itemize}
+
+\subsubsection*{Política de color: reintentar con lentes}
+
+La cadena física impresora$+$cámara desplaza los momentos de color (imágenes grisáceas,
+brillo corrido) y el latente resultante cae fuera del soporte del directorio.
+La mitigación es una renormalización por canal hacia los momentos de referencia de
+ETH-80 (media y desviación RGB promediadas sobre imágenes de entrenamiento):
+\begin{equation}
+    x'_c \;=\; \frac{x_c - \mu_c}{\sigma_c + \epsilon}\,\hat{\sigma}_c + \hat{\mu}_c,
+    \qquad c \in \{R, G, B\}.
+    \label{eq:colorfix}
+\end{equation}
+La política es deliberadamente \emph{sin umbral}: intento 1 con el cuadro crudo; solo
+si el directorio rechaza, intento 2 con la corrección~\eqref{eq:colorfix}.
+Se descartó un detector previo por distancia de momentos porque, medido, las
+distribuciones de entradas limpias y degradadas se traslapan (mediana 24.2 vs.\ 27.1):
+no existe el umbral que las separe.
+El reintento condicionado no puede dañar una entrada limpia ---esta ya fue aceptada en
+el intento crudo--- y la interfaz marca \texttt{[color-fixed]} cuando el rescate actuó.
+
+\subsection{Evocación asíncrona: prototipo y objeto definido}
+\label{sec:arq_pista}
+
+Lo único lento del sistema es la recuperación estocástica (SS: 127 muestras más
+descenso local, $\sim$2 s).
+Para no congelar video ni voz, la evocación corre en un hilo aparte: el panel muestra
+``recalling\ldots'' y la imagen aparece al estar lista.
+
+La evocación implementa el contraste de la Sección~\ref{sec:pista_faltante}.
+Para la pista ganadora se calculan:
+(i) el \textbf{objeto definido}: el patrón devuelto por el recall oficial (SS),
+decodificado a imagen;
+(ii) el \textbf{prototipo emergente}~\eqref{eq:prototipo} del mismo plano proyectado,
+decodificado a imagen; y
+(iii) la \textbf{distancia de retro-proyección}~\eqref{eq:test} de ambos.
+El panel los apila con sus distancias: la masa leída columna a columna arriba
+(borde gris), el objeto definido abajo (borde del color del agente).
+Solo se muestra la reconstrucción de memoria ---nunca la fotografía ETH-80 de
+referencia al lado--- para que no parezca que la imagen proviene del encoder en lugar
+de la memoria.
+
+\subsection{Los tres métodos en la aplicación de trazado}
+
+En paralelo a la ventana en tiempo real, la aplicación de trazado del experimento
+(la interfaz Streamlit del pipeline, etapa de recall) incorpora la suite completa:
+para el token que produce la imagen final se calculan RS, ST y SS sobre la
+\emph{misma} proyección, junto con el prototipo, y se muestran las cuatro imágenes con
+sus distancias y el plano proyectado como mapa de calor
+($64$ características $\times$ $32$ valores).
+Los métodos se implementaron en la envoltura del sistema
+(\texttt{recall\_from\_left($\cdot$, method)}) reutilizando las primitivas de la
+implementación de referencia (\texttt{project}, \texttt{reduce},
+\texttt{distance\_recall}); el método por defecto sigue siendo SS, de modo que ningún
+resultado previo del sistema cambia.

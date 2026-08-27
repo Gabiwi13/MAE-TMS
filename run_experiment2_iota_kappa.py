@@ -71,7 +71,9 @@ from stage6_interaction import (
 IOTAS  = [0.0, 0.25, 0.5, 1.0]
 KAPPAS = [0.0, 0.5, 1.0, 1.5]
 
-# Cues diagnósticos del exp. 1 (token, dominio esperado)
+# Cues diagnósticos (token, dominio esperado). OJO: heredados de la era de 3
+# clases — solo cubren car/apple/horse; cow/cup/dog/pear/tomato NO tienen cue
+# aquí, así que diag_acc es una métrica PARCIAL (3 de 8 dominios), no global.
 DIAG_CUES = [
     ("vehicle", "car"), ("automobile", "car"), ("engine", "car"),
     ("wheels", "car"),
@@ -387,13 +389,15 @@ def main():
         "",
         "## Setup",
         f"- Grid: ι ∈ {IOTAS} × κ ∈ {KAPPAS} (mutación en-memoria, setters originales)",
-        "- Banco: 80 queries del ablation con ground truth (27/27/26)",
+        "- Banco: primeras 80 queries del banco de 8 clases con ground truth "
+        "(10 por clase)",
         "- Score: activación media de project() con pesos de M_dom_L,",
         "  gateada por containment-ι y por κ·mem.mean (adaptación unilateral",
         "  del criterio original de recognize()).",
         "",
         "## Resultados clave",
-        f"- Baseline ι=0 κ=0 (exp. 1): early {base['early_acc_gated']:.1%}, "
+        f"- Baseline ι=0 κ=0 (la condición que usó exp. 1; número FRESCO de "
+        f"8 clases, no la cifra histórica): early {base['early_acc_gated']:.1%}, "
         f"diag {base['diag_acc_gated']:.1%}",
         f"- Referencia ÷mem.mean (ι=0 κ=0): early {norm_ref:.1%}",
         f"- Mejor condición nativa: ι={best['iota']} κ={best['kappa']} → "

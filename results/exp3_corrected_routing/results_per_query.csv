@@ -1,81 +1,81 @@
 query,truth,early,entry,mature_b1,mature_raw,reason
-a round red fruit,apple,apple,car,apple,apple,directory_support
-animal with a mane,horse,horse,apple,horse,horse,directory_support
-fast vehicle with wheels,car,car,car,car,apple,directory_support
-green food from trees,apple,apple,car,apple,apple,directory_support
-large powerful mammal,horse,horse,apple,horse,horse,directory_support
-machine for transportation,car,car,apple,car,apple,directory_support
-red or green round food,apple,apple,car,apple,apple,directory_support
-has four legs and hooves,horse,horse,horse,horse,apple,directory_support
-automobile with seats,car,car,car,car,apple,directory_support
-has core and seeds,apple,apple,car,apple,apple,directory_support
-riding and racing animal,horse,horse,car,horse,apple,directory_support
-has wheels and engine,car,car,car,car,apple,directory_support
-a delicious pome,apple,apple,apple,apple,apple,directory_support
-an equine animal,horse,horse,car,horse,horse,directory_support
-a heavy vehicle,car,car,horse,car,apple,directory_support
-red fruit with a stem,apple,apple,apple,apple,apple,directory_support
-big farm animal,horse,horse,horse,horse,apple,directory_support
-passenger transportation machine,car,car,horse,car,apple,directory_support
+a round red fruit,apple,apple,pear,tomato,apple,directory_support
+fast vehicle with wheels,car,car,cup,car,car,directory_support
+a farm animal that gives milk,cow,cow,dog,cow,cow,directory_support
+a container to drink from,cup,cup,pear,cup,cup,directory_support
+a barking domestic pet,dog,dog,cow,dog,dog,directory_support
+animal with a mane,horse,horse,tomato,horse,cow,directory_support
+a green sweet pear fruit,pear,pear,dog,pear,apple,directory_support
+a round red salad vegetable,tomato,tomato,dog,tomato,tomato,directory_support
+green food from trees,apple,apple,pear,apple,apple,directory_support
+machine for transportation,car,REJ,car,REJ,REJ,directory_no_support
+bovine cattle beast,cow,cow,cow,cow,cow,directory_support
+a mug for liquid,cup,cup,pear,cup,cup,directory_support
+canine mammal with a tail,dog,dog,cow,dog,dog,directory_support
+large powerful mammal,horse,cow,cow,cow,cow,directory_support
+a pome fruit like an apple,pear,apple,tomato,pear,apple,directory_support
+red juicy tomato fruit,tomato,tomato,dog,tomato,apple,directory_support
+red or green round food,apple,apple,cup,apple,apple,directory_support
+automobile with seats,car,car,tomato,car,car,directory_support
+moo animal on the farm,cow,cow,tomato,cow,cow,directory_support
+small drinking container,cup,cup,cow,cup,cup,directory_support
+man's best friend animal,dog,cow,horse,cow,cow,directory_support
+has four legs and hooves,horse,REJ,dog,REJ,REJ,directory_no_support
+sweet green fruit with a stem,pear,apple,car,apple,apple,directory_support
+a red herb garden vegetable,tomato,tomato,tomato,tomato,tomato,directory_support
+has core and seeds,apple,apple,cup,apple,apple,directory_support
+has wheels and engine,car,car,horse,car,car,directory_support
+large placental mammal on a farm,cow,cow,horse,cow,cow,directory_support
+a cup for holding drink,cup,cup,car,cup,cup,directory_support
+a dog that barks and runs,dog,dog,tomato,dog,dog,directory_support
+riding and racing animal,horse,horse,cup,horse,cow,directory_support
+a pear shaped juicy fruit,pear,pear,dog,pear,apple,directory_support
+round red fruit used in salad,tomato,apple,apple,tomato,apple,directory_support
+a delicious pome,apple,apple,cup,apple,apple,directory_support
+a heavy vehicle,car,car,car,car,car,directory_support
+a milk producing cattle beast,cow,cow,horse,cow,cow,directory_support
+crockery to drink liquid from,cup,cup,dog,cup,cup,directory_support
+domestic canine house pet,dog,dog,cup,dog,dog,directory_support
+an equine animal,horse,horse,apple,horse,cow,directory_support
+green fruit with a narrow top,pear,apple,apple,apple,apple,directory_support
+juicy red fruit from a vine,tomato,tomato,cow,tomato,apple,directory_support
+red fruit with a stem,apple,apple,cow,apple,apple,directory_support
+passenger transportation machine,car,REJ,pear,REJ,REJ,directory_no_support
+farm bull or cattle animal,cow,cow,car,cow,cow,directory_support
+a hollow container with a hole,cup,cup,tomato,cup,cup,directory_support
+a puppy with paws and fleas,dog,dog,cup,dog,dog,directory_support
+big farm animal,horse,cow,cup,cow,cow,directory_support
+a pome fruit from a tree,pear,apple,tomato,apple,apple,directory_support
+a red vegetable used for sauce,tomato,tomato,pear,tomato,tomato,directory_support
 grows on fruit trees,apple,apple,horse,apple,apple,directory_support
-has a long tail,horse,horse,horse,horse,horse,directory_support
-seats and windows inside,car,car,apple,car,apple,directory_support
-juicy round fruit,apple,apple,apple,apple,apple,directory_support
-a pony or donkey,horse,horse,horse,horse,apple,directory_support
-a motor vehicle,car,car,horse,car,apple,directory_support
-sweet core fruit,apple,apple,apple,apple,apple,directory_support
-mammal with saddle,horse,horse,apple,horse,horse,directory_support
-used for driving,car,REJ,NA,REJ,REJ,no_tokens
-a pear or apple fruit,apple,apple,apple,apple,apple,directory_support
-racing animal with mane,horse,horse,car,horse,horse,directory_support
-wheeled automobile,car,car,car,car,apple,directory_support
-fruit with skin and seeds,apple,apple,car,apple,apple,directory_support
-big four legged animal,horse,horse,horse,horse,apple,directory_support
-driving machine,car,apple,car,car,apple,directory_support
-orange cousin red food,apple,apple,horse,apple,apple,directory_support
-riding farm animal,horse,horse,horse,horse,apple,directory_support
-automobile with heavy seats,car,car,car,car,apple,directory_support
-green and red food,apple,apple,horse,apple,apple,directory_support
-farm mammal with mane,horse,horse,car,horse,horse,directory_support
-crash and accident vehicle,car,car,car,car,car,directory_support
-a macintosh variety,apple,apple,apple,apple,apple,directory_support
-equine riding beast,horse,horse,car,horse,horse,directory_support
-passenger seats inside,car,car,apple,car,apple,directory_support
-made into pie,apple,apple,car,apple,apple,directory_support
-has hooves and tail,horse,horse,car,horse,apple,directory_support
-vehicle with driver,car,car,apple,car,apple,directory_support
-round red food,apple,apple,apple,apple,apple,directory_support
-donkey and zebra relative,horse,horse,car,horse,apple,directory_support
-red automobile,car,car,horse,car,apple,directory_support
-stem leaf core inside,apple,apple,apple,apple,apple,directory_support
-big strong animal,horse,horse,horse,horse,apple,directory_support
-transportation vehicle,car,car,horse,car,apple,directory_support
-a green fruit,apple,apple,horse,apple,apple,directory_support
-saddle riding animal,horse,horse,apple,horse,apple,directory_support
-automobile for transport,car,car,horse,car,apple,directory_support
-fruit with seeds inside,apple,apple,apple,apple,apple,directory_support
-cow and horse farm animals,horse,horse,horse,horse,apple,directory_support
-seats and windows vehicle,car,car,car,car,apple,directory_support
-delicious red round fruit,apple,apple,car,apple,apple,directory_support
-animal that races,horse,horse,apple,horse,horse,directory_support
-heavy automobile,car,car,car,car,apple,directory_support
-adam and eve fruit,apple,apple,car,apple,apple,directory_support
-a ridden animal,horse,horse,horse,horse,horse,directory_support
-motor vehicle transport,car,car,apple,car,apple,directory_support
-orange red green food,apple,apple,horse,apple,apple,directory_support
-four legged riding mammal,horse,horse,horse,horse,horse,directory_support
-driver automobile,car,car,horse,car,apple,directory_support
-core inside skin fruit,apple,apple,horse,apple,apple,directory_support
-mammal with hooves and mane,horse,horse,horse,horse,horse,directory_support
-wheeled transportation,car,car,horse,car,apple,directory_support
-tree fruit food,apple,apple,horse,apple,apple,directory_support
-equine with saddle,horse,horse,apple,horse,apple,directory_support
-crash vehicle,car,car,car,car,car,directory_support
-pome variety fruit,apple,apple,horse,apple,apple,directory_support
-big farm riding animal,horse,horse,horse,horse,apple,directory_support
-automobile commuting,car,car,horse,car,apple,directory_support
-green round food,apple,apple,horse,apple,apple,directory_support
-domesticated equine mammal,horse,horse,horse,horse,horse,directory_support
-auto transportation machine,car,car,horse,car,apple,directory_support
-red sweet fruit food,apple,apple,car,apple,apple,directory_support
-animal with mane and tail,horse,horse,car,horse,horse,directory_support
+seats and windows inside,car,car,horse,car,car,directory_support
+animal with udders and milk,cow,cow,pear,cow,cow,directory_support
+a trophy shaped drinking container,cup,cup,horse,cup,cup,directory_support
+a wolf related domestic animal,dog,dog,cow,dog,dog,directory_support
+has a long tail,horse,REJ,cup,dog,dog,directory_support
+sweet juicy pear food,pear,apple,pear,pear,apple,directory_support
+a herb plant with a red fruit,tomato,tomato,cup,tomato,tomato,directory_support
+juicy round fruit,apple,apple,tomato,apple,apple,directory_support
+a motor vehicle,car,car,apple,car,car,directory_support
+bovine farm mammal that moos,cow,cow,cow,cow,cow,directory_support
+punch cup for a drink,cup,cup,dog,cup,cup,directory_support
+four legged barking pet,dog,dog,cow,dog,dog,directory_support
+a pony or donkey,horse,horse,pear,horse,horse,directory_support
+fruit shaped like a teardrop,pear,tomato,dog,tomato,apple,directory_support
+round juicy red produce,tomato,apple,apple,apple,apple,directory_support
+sweet core fruit,apple,apple,pear,apple,apple,directory_support
+used for driving,car,car,car,car,car,directory_support
+beef cattle on the farm,cow,cow,cup,cow,cow,directory_support
+containerful of liquid to drink,cup,cup,apple,cup,cup,directory_support
+canine friend with a wet nose,dog,dog,cup,dog,dog,directory_support
+mammal with saddle,horse,horse,horse,horse,cow,directory_support
+a green or yellow pear,pear,pear,car,pear,apple,directory_support
+red fruit often called a vegetable,tomato,tomato,car,tomato,tomato,directory_support
+a pear or apple fruit,apple,pear,apple,pear,apple,directory_support
+wheeled automobile,car,car,car,car,car,directory_support
+big farm animal that says moo,cow,cow,dog,cow,cow,directory_support
+a mug or cup crockery,cup,cup,car,cup,cup,directory_support
+a black dog with teeth and paws,dog,dog,cup,dog,dog,directory_support
+racing animal with mane,horse,horse,cup,horse,horse,directory_support
+pome fruit with sweet flesh,pear,pear,pear,pear,apple,directory_support
+a salad vegetable that is red,tomato,tomato,cup,tomato,tomato,directory_support

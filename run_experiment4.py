@@ -18,13 +18,13 @@ madura completa (80 queries, routing B1, rechazo explícito) → curvas de:
 
 Condiciones
 -----------
-  A  corregido · orden original (intercalado apple/horse/car)
+  A  corregido · orden original (intercalado sobre las 8 clases)
   B  corregido · 5 órdenes barajados (media ± desv.)
-  C  corregido · orden bloqueado (27 apple, luego 27 horse, luego 26 car)
+  C  corregido · orden bloqueado (todas las de una clase, luego la siguiente)
   D  crudo (exp. 1: sin gate, sin norm) · orden original — control del sesgo
 
-Nota de instrumentación: en la arquitectura real los 4 M_dir (TME + 3
-agentes) reciben registros idénticos; aquí se instrumenta uno solo
+Nota de instrumentación: en la arquitectura real los M_dir (TME + un
+directorio por agente) reciben registros idénticos; aquí se instrumenta uno solo
 (DirectoryMemory, EHAM real) que representa ese estado compartido.
 La fase temprana semántica actualiza solo el directorio de labels (token →
 ganador). mem_dir_R no se actualiza con recalls: el directorio visual se
@@ -66,7 +66,9 @@ from stage6_interaction import (
     get_fasttext_vector, token_in_vocabulary,
 )
 
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
+                "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
+                "pear": "#7d8f22", "tomato": "#c0392b"}
 SHUFFLE_SEEDS = [0, 1, 2, 3, 4]
 ACC_THRESHOLD = 0.90
 
@@ -252,16 +254,16 @@ def main():
               encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["run", "k", "mature_acc", "mature_rej", "entropy",
-                    "count_apple", "count_horse", "count_car",
+                    *[f"count_{c}" for c in CLASSES],
                     "early_acc_running"])
         for name, s in runs.items():
             for i in range(len(s["k"])):
-                c = s["counts"][i]
+                c = s["counts"][i]      # longitud len(CLASSES)=8
                 w.writerow([name, s["k"][i],
                             round(s["mature_acc"][i], 4),
                             round(s["mature_rej"][i], 4),
                             round(s["entropy"][i], 4),
-                            c[0], c[1], c[2],
+                            *c,
                             round(s["early_winner_ok"][i], 4)])
 
     # Figuras
@@ -304,8 +306,8 @@ def main():
             label="C · bloqueado")
     ax.plot(ks, runs["D_raw"]["entropy"], color="#95a5a6", lw=2, ls=":",
             label="D · crudo")
-    ax.axhline(np.log2(3), color="k", lw=0.8, ls=":",
-               label="máx (log₂3 = 1.585)")
+    ax.axhline(np.log2(len(CLASSES)), color="k", lw=0.8, ls=":",
+               label=f"máx (log₂{len(CLASSES)} = {np.log2(len(CLASSES)):.3f})")
     ax.set_xlabel("interacciones (k)"); ax.set_ylabel("entropía M_dir (bits)")
     ax.set_title("Balance del directorio durante la formación")
     ax.legend(fontsize=9); ax.spines[["top", "right"]].set_visible(False)

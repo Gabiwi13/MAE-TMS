@@ -66,8 +66,9 @@ N_VALUES   = [25, 50, 100, 200, 328]
 N_EVAL     = 20      # imágenes muestreadas por métrica de aceptación
 N_SAMPLES  = 12      # recalls por cue para variedad
 GRID_SHOW  = 5
-CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle"}
-DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60"}
+CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle",
+              "cow": "milk", "cup": "drink", "dog": "pet",
+              "pear": "pome", "tomato": "vegetable"}
 
 
 def class_latents_q(encoder, cls, split, k, g_min, g_max):

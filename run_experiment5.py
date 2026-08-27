@@ -1,26 +1,27 @@
 """
-Experimento 5 — Prototipo emergente: devolverle al autoencoder su rol abstractor.
+Experimento 5 — Prototipo emergente: delta (promedio) vs instancias.
 
-Problema detectado: stage5 registra UN latente artificial (np.mean de 50
-imágenes) repetido ~92 veces. La abstracción se hizo FUERA de la memoria;
-la EAM recibió una distribución degenerada (un delta). Consecuencias
-medidas: recall content-determinista, imágenes borrosas (centroide),
-rechazo de imágenes individuales en reversa.
+Ablación del PROTOCOLO DE LLENADO con ambos brazos reconstruidos EN MEMORIA
+sobre las mismas 50 imágenes por clase y la misma masa de registros:
 
-Hipótesis: registrando las 50 instancias reales (label_i → z_imagen_j),
-la relación acumula la distribución verdadera de la clase y:
-  H1. El recall produce variedad genuina (muestrea modos reales).
-  H2. El reconocimiento inverso acepta imágenes individuales (la nube
-      está contenida, no solo el centroide) y generaliza a test.
-  H3. El routing temprano corregido (exp. 3) no se degrada.
-  H4. La entropía de M_dom_H sube (distribución rica, fiel a Pineda).
+  DELTA       label×freq → el MISMO latente promediado (np.mean de las 50).
+              La abstracción se hace FUERA de la memoria (protocolo v1).
+  INSTANCIAS  label×freq → latente real (round-robin sobre las 50).
+              La abstracción la acumula la propia relación (protocolo v2+).
 
-Diseño (comparación pareada, misma masa de registros):
-  VIEJO  — pickles de stage5 (label×freq → proto_promedio)   [solo lectura]
-  NUEVO  — en memoria: label×freq → z_real(round-robin de 50) [misma masa]
-  M_dom_L idéntico en ambos brazos (lado label no cambia).
-  M_dom_R nuevo: 50 latentes reales (antes: 1 promedio).
+Los dos brazos se construyen en memoria con el mismo numero de registros y
+solo difieren en donde ocurre la abstraccion. Usar los pickles de stage5 como
+brazo "viejo" mediria cobertura (800 registros contra 50) en vez de la
+estrategia de llenado.
 
+Hipótesis:
+  H1. instancias → variedad genuina del recall (muestrea modos reales).
+  H2. instancias → el reconocimiento inverso acepta imágenes individuales
+      (la nube está contenida, no solo el centroide).
+  H3. el routing temprano corregido no se degrada al cambiar el llenado.
+  H4. la entropía de M_dom_H sube (distribución rica, fiel a Pineda).
+
+M_dom_L compartido (el lado label no cambia entre brazos).
 No modifica ningún artefacto previo. Salidas en results/exp5_entropic_prototype/
 
 Uso:  python run_experiment5.py
@@ -66,7 +67,9 @@ N_IMAGES   = 50     # mismas 50 que usó stage5 para el promedio
 N_TEST     = 10     # imágenes held-out por clase para generalización
 N_SAMPLES  = 12     # repeticiones de recall para medir variedad
 GRID_SHOW  = 5      # muestras decodificadas en la figura
-CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle"}
+CUE_BY_CLS = {"apple": "fruit", "horse": "mane", "car": "vehicle",
+              "cow": "milk", "cup": "drink", "dog": "pet",
+              "pear": "pome", "tomato": "vegetable"}
 
 
 # Construcción del llenado entrópico
@@ -107,6 +110,33 @@ def build_entropic_agent(cls, latents_q, mem_L_shared):
         mem_R.register(z_q)
     print(f"    {cls}: {n_reg} registros hetero (round-robin sobre "
           f"{len(latents_q)} latentes reales)")
+    return Agent(cls, mem_H, mem_dom_L=mem_L_shared, mem_dom_R=mem_R)
+
+
+def build_delta_agent(cls, z_mean_q, n_latents, mem_L_shared):
+    """Protocolo v1 reconstruido: label×freq → SIEMPRE el mismo latente
+    promediado (la abstracción ocurre fuera de la memoria, que recibe una
+    distribución degenerada — un delta). Misma masa de registros que el
+    brazo de instancias: mem_H registra label_seq completo y mem_R recibe
+    el delta n_latents veces."""
+    labels = json.loads((ROOT / f"labels_{cls}.json").read_text())
+    raw    = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
+    with contextlib.redirect_stdout(io.StringIO()):
+        mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
+        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
+    n_reg = 0
+    for word, freq in labels.items():
+        if word not in raw:
+            continue
+        v_q = quantize_binary(np.array(raw[word], dtype=np.float32), M_LABEL)
+        for _ in range(freq):
+            with contextlib.redirect_stdout(io.StringIO()):
+                mem_H.register(v_q, z_mean_q)
+            n_reg += 1
+    for _ in range(n_latents):
+        mem_R.register(z_mean_q)
+    print(f"    {cls}: {n_reg} registros hetero (todos al mismo latente "
+          f"promediado)")
     return Agent(cls, mem_H, mem_dom_L=mem_L_shared, mem_dom_R=mem_R)
 
 
@@ -194,41 +224,39 @@ def main():
     decoder.eval()
     g_min, g_max = compute_global_latent_stats(encoder)
 
-    print("Cargando brazo VIEJO (pickles stage5, solo lectura)...")
-    old_agents = {}
+    print("Cargando M_dom_L compartido (stage5, solo lectura)...")
+    mem_Ls = {}
     with contextlib.redirect_stdout(io.StringIO()):
         for cls in CLASSES:
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
-            old_agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L,
-                                    mem_dom_R=mem_R)
+            _, mem_L, _ = load_agent_memories(cls)
+            mem_Ls[cls] = mem_L
 
-    print("Construyendo brazo NUEVO (instancias reales, en memoria)...")
-    new_agents = {}
+    print("Construyendo ambos brazos EN MEMORIA (mismas 50 imágenes/clase, "
+          "misma masa)...")
+    delta_agents, inst_agents = {}, {}
     train_latents_q = {}
     for cls in CLASSES:
         zs = class_latents(encoder, cls, "train", N_IMAGES)
         zq = [quantize_latent_global(z, g_min, g_max, Q_LATENT) for z in zs]
         train_latents_q[cls] = zq
-        new_agents[cls] = build_entropic_agent(
-            cls, zq, old_agents[cls].mem_dom_L)
+        z_mean_q = quantize_latent_global(
+            np.mean(np.stack(zs), axis=0), g_min, g_max, Q_LATENT)
+        delta_agents[cls] = build_delta_agent(
+            cls, z_mean_q, len(zq), mem_Ls[cls])
+        inst_agents[cls] = build_entropic_agent(cls, zq, mem_Ls[cls])
 
-    mem_means = {"old": {}, "new": {}}
-    with contextlib.redirect_stdout(io.StringIO()):
-        for cls in CLASSES:
-            mem_means["old"][cls] = float(old_agents[cls].mem_dom_H.mean)
-            mem_means["new"][cls] = float(new_agents[cls].mem_dom_H.mean)
-
-    metrics = {"old": {}, "new": {}}
+    ARMS = [("delta", delta_agents), ("inst", inst_agents)]
+    metrics = {"delta": {}, "inst": {}}
 
     # H4: entropía de M_dom_H
     print("\n[H4] Entropía de M_dom_H (media del tensor):")
     with contextlib.redirect_stdout(io.StringIO()):
-        for arm, ags in [("old", old_agents), ("new", new_agents)]:
+        for arm, ags in ARMS:
             metrics[arm]["entropy"] = {
                 cls: float(ags[cls].mem_dom_H.entropy) for cls in CLASSES}
     for cls in CLASSES:
-        print(f"  {cls:<6} viejo={metrics['old']['entropy'][cls]:.4f}   "
-              f"nuevo={metrics['new']['entropy'][cls]:.4f}")
+        print(f"  {cls:<6} delta={metrics['delta']['entropy'][cls]:.4f}   "
+              f"inst={metrics['inst']['entropy'][cls]:.4f}")
 
     # H1: variedad del recall
     print(f"\n[H1] Variedad del recall ({N_SAMPLES} muestras por cue):")
@@ -239,8 +267,8 @@ def main():
     for _q in ALL_QUERIES:
         _toks.update(tokenize_query(_q, nlp))
     prevectorize(vectors, _toks, allow_fallback=False)
-    grid_imgs = {"old": {}, "new": {}}
-    for arm, ags in [("old", old_agents), ("new", new_agents)]:
+    grid_imgs = {"delta": {}, "inst": {}}
+    for arm, ags in ARMS:
         metrics[arm]["variety"] = {}
         for cls in CLASSES:
             cue = CUE_BY_CLS[cls]
@@ -258,7 +286,7 @@ def main():
 
     # H2: aceptación inversa de imágenes reales
     print(f"\n[H2] Reconocimiento inverso (containment dim=1):")
-    for arm, ags in [("old", old_agents), ("new", new_agents)]:
+    for arm, ags in ARMS:
         metrics[arm]["reverse"] = {}
         for cls in CLASSES:
             tr_acc = np.mean([reverse_accept(ags[cls], zq)
@@ -274,7 +302,7 @@ def main():
 
     # H3: routing temprano corregido intacto
     print("\n[H3] Routing temprano corregido (banco de 80):")
-    for arm, ags in [("old", old_agents), ("new", new_agents)]:
+    for arm, ags in ARMS:
         acc, rej = early_accuracy(ags, nlp, vectors)
         metrics[arm]["early"] = {"acc": acc, "rej": rej}
         print(f"  [{arm:>4}] acc={acc*100:5.1f}%   rechazo={rej*100:4.1f}%")
@@ -282,8 +310,8 @@ def main():
     # Figura 1: grid de recalls decodificados
     rows = []
     for cls in CLASSES:
-        rows.append(("viejo · " + cls, grid_imgs["old"][cls]))
-        rows.append(("nuevo · " + cls, grid_imgs["new"][cls]))
+        rows.append(("delta · " + cls, grid_imgs["delta"][cls]))
+        rows.append(("inst · " + cls, grid_imgs["inst"][cls]))
     fig, axes = plt.subplots(len(rows), GRID_SHOW,
                              figsize=(2.1 * GRID_SHOW, 2.15 * len(rows)))
     for r, (label, imgs) in enumerate(rows):
@@ -294,8 +322,8 @@ def main():
             ax.set_xticks([]); ax.set_yticks([])
             if c == 0:
                 ax.set_ylabel(label, fontsize=9)
-    fig.suptitle("Recall ×5 del mismo cue — llenado promedio (viejo) vs "
-                 "instancias (nuevo)", fontsize=12)
+    fig.suptitle("Recall ×5 del mismo cue — llenado delta (promedio) vs "
+                 "instancias (round-robin)", fontsize=12)
     fig.tight_layout()
     fig.savefig(OUT_DIR / "fig1_recall_variety_grid.png", dpi=140)
     plt.close(fig)
@@ -303,14 +331,13 @@ def main():
     # Figura 2: aceptación inversa
     fig, ax = plt.subplots(figsize=(8.6, 4.6))
     x = np.arange(len(CLASSES))
-    for off, arm, color in [(-0.27, "old", "#95a5a6"),
-                            (0.07, "new", "#1D9E75")]:
+    for off, arm, color in [(-0.27, "delta", "#95a5a6"),
+                            (0.07, "inst", "#1D9E75")]:
         tr = [metrics[arm]["reverse"][c]["train"] for c in CLASSES]
         te = [metrics[arm]["reverse"][c]["test"] for c in CLASSES]
-        ax.bar(x + off, tr, 0.17, color=color,
-               label=f"{'viejo' if arm=='old' else 'nuevo'} · train")
+        ax.bar(x + off, tr, 0.17, color=color, label=f"{arm} · train")
         ax.bar(x + off + 0.17, te, 0.17, color=color, alpha=0.55,
-               label=f"{'viejo' if arm=='old' else 'nuevo'} · test")
+               label=f"{arm} · test")
     ax.set_xticks(x, CLASSES); ax.set_ylim(0, 1.05)
     ax.set_ylabel("tasa de aceptación (containment inverso)")
     ax.set_title("Reconocimiento de imágenes reales — centroide vs nube")
@@ -324,48 +351,50 @@ def main():
         json.dumps(metrics, indent=2), encoding="utf-8")
 
     rep = [
-        "# Experimento 5 — prototipo emergente (llenado entrópico)",
+        "# Experimento 5 — prototipo emergente: delta vs instancias",
         "",
-        "El autoencoder debe construir su propia abstracción: se registran las 50",
-        "instancias reales por clase (round-robin label×freq → z_real) en",
-        "lugar del promedio artificial. Misma masa de registros que stage5;",
-        "M_dom_L idéntico; solo cambia el lado derecho de M_dom_H y M_dom_R.",
+        "Ablación del protocolo de llenado con ambos brazos EN MEMORIA sobre",
+        "las mismas 50 imágenes/clase y la misma masa de registros. DELTA:",
+        "label×freq → el mismo latente promediado (abstracción fuera de la",
+        "memoria, protocolo v1). INSTANCIAS: label×freq → latente real",
+        "round-robin (la relación acumula la distribución, protocolo v2+).",
+        "M_dom_L compartido; solo cambia el lado derecho de M_dom_H y M_dom_R.",
         "",
         "## Resultados",
         "",
-        "| hipótesis | métrica | viejo (promedio) | nuevo (instancias) |",
+        "| hipótesis | métrica | delta (promedio) | instancias |",
         "|---|---|---|---|",
     ]
-    v_old = np.mean([metrics["old"]["variety"][c]["distinct"]
+    v_old = np.mean([metrics["delta"]["variety"][c]["distinct"]
                      for c in CLASSES])
-    v_new = np.mean([metrics["new"]["variety"][c]["distinct"]
+    v_new = np.mean([metrics["inst"]["variety"][c]["distinct"]
                      for c in CLASSES])
     rep.append(f"| H1 variedad | recalls distintos /{N_SAMPLES} | "
                f"{v_old:.1f} | {v_new:.1f} |")
     for split in ("train", "test"):
-        o = np.mean([metrics["old"]["reverse"][c][split] for c in CLASSES])
-        nw = np.mean([metrics["new"]["reverse"][c][split] for c in CLASSES])
-        rep.append(f"| H2 aceptación inversa ({split}) | media 3 clases | "
-                   f"{o:.1%} | {nw:.1%} |")
+        o = np.mean([metrics["delta"]["reverse"][c][split] for c in CLASSES])
+        nw = np.mean([metrics["inst"]["reverse"][c][split] for c in CLASSES])
+        rep.append(f"| H2 aceptación inversa ({split}) | media "
+                   f"{len(CLASSES)} clases | {o:.1%} | {nw:.1%} |")
     rep.append(f"| H3 routing temprano | acc (rechazo) | "
-               f"{metrics['old']['early']['acc']:.1%} "
-               f"({metrics['old']['early']['rej']:.1%}) | "
-               f"{metrics['new']['early']['acc']:.1%} "
-               f"({metrics['new']['early']['rej']:.1%}) |")
-    eo = np.mean(list(metrics["old"]["entropy"].values()))
-    en = np.mean(list(metrics["new"]["entropy"].values()))
-    rep.append(f"| H4 entropía M_dom_H | media 3 clases | {eo:.4f} | "
-               f"{en:.4f} |")
+               f"{metrics['delta']['early']['acc']:.1%} "
+               f"({metrics['delta']['early']['rej']:.1%}) | "
+               f"{metrics['inst']['early']['acc']:.1%} "
+               f"({metrics['inst']['early']['rej']:.1%}) |")
+    eo = np.mean(list(metrics["delta"]["entropy"].values()))
+    en = np.mean(list(metrics["inst"]["entropy"].values()))
+    rep.append(f"| H4 entropía M_dom_H | media {len(CLASSES)} clases | "
+               f"{eo:.4f} | {en:.4f} |")
     rep += [
         "",
         "## Detalle variedad por clase",
         "",
-        "| clase | cue | distintos viejo | distintos nuevo | L1 viejo | L1 nuevo |",
+        "| clase | cue | distintos delta | distintos inst | L1 delta | L1 inst |",
         "|---|---|---|---|---|---|",
     ]
     for cls in CLASSES:
-        ov = metrics["old"]["variety"][cls]
-        nv = metrics["new"]["variety"][cls]
+        ov = metrics["delta"]["variety"][cls]
+        nv = metrics["inst"]["variety"][cls]
         rep.append(f"| {cls} | {CUE_BY_CLS[cls]} | "
                    f"{ov['distinct']}/{ov['n_ok']} | "
                    f"{nv['distinct']}/{nv['n_ok']} | "
@@ -376,7 +405,7 @@ def main():
         "- metrics.json · fig1_recall_variety_grid.png · "
         "fig2_reverse_acceptance.png",
         "",
-        "Nota: ningún artefacto previo modificado; el brazo nuevo vive solo",
+        "Nota: ningún artefacto previo modificado; ambos brazos viven solo",
         "en memoria durante la corrida.",
     ]
     (OUT_DIR / "report.md").write_text("\n".join(rep), encoding="utf-8")
