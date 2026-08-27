@@ -118,7 +118,7 @@ def tokenize_query(query: str, nlp) -> list:
 
 
 class Agent:
-    """Especialista de dominio con sus cuatro memorias asociativas."""
+    """Especialista de dominio con sus cinco memorias asociativas."""
 
     def __init__(self, name: str, mem_dom_H,
                  mem_dom_L: HomoAssociativeMemory = None,
@@ -129,11 +129,11 @@ class Agent:
             else HomoAssociativeMemory(N, M_LABEL)
         self.mem_dom_R = mem_dom_R if mem_dom_R is not None \
             else HomoAssociativeMemory(P_LATENT, Q_LATENT)
-        # Directorios transactivos por agente (Wegner): uno por modalidad de pista.
+        # Un directorio por modalidad de pista:
         #   mem_dir   : pista de texto  (label 300x16) -> agente
         #   mem_dir_R : pista de imagen (latente 64x32) -> agente
-        # Mismo destino (identidad de agente), dos espacios de entrada distintos,
-        # por eso son dos DirectoryMemory (una HAM no admite dos formas de pista).
+        # El destino es el mismo (la identidad del agente), pero el dominio
+        # izquierdo de una HAM es fijo, asi que hacen falta dos memorias.
         self.mem_dir = DirectoryMemory(N, M_LABEL, len(AGENT_LIST))
         self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(AGENT_LIST))
 
