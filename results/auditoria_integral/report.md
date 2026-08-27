@@ -2,7 +2,7 @@
 
 Fecha: 2 de agosto de 2026 · Rama: `v5-multimodal` · Modalidad: solo lectura (ningún archivo modificado durante la auditoría).
 
-Cinco auditores independientes en paralelo: núcleo asociativo (Opus), fidelidad del pipeline (Opus), apps interactivas (Sonnet), reportes vs. fuentes (Sonnet), scripts y results/ (Sonnet). Este informe consolida y deduplica sus hallazgos; los verificados por más de un auditor se indican.
+Cinco revisiones independientes en paralelo, una por área: núcleo asociativo, fidelidad del pipeline, apps interactivas, reportes contra sus fuentes, y scripts junto con results/. Este informe consolida y deduplica sus hallazgos; se indica cuáles quedaron verificados por más de una revisión.
 
 ---
 
@@ -54,7 +54,7 @@ Proviene de una medición real (2089 ms, corrida del 30 jul) pero no está docum
 **M10 — Documentación de teclas del lab desactualizada.**
 `realtime_lab/README.md` y el docstring de `main.py` listan 2 de 6 teclas e incluyen una tecla `espacio` que no existe. El overlay en pantalla sí las lista todas.
 
-## MINOR (selección; detalle completo en los informes de cada auditor)
+## MINOR (selección; detalle completo en el informe de cada área)
 
 - **N1** `backward_distance_from_left`: un sentinel (32) se recorta a 31 en silencio por `validate()` y produciría d=0.0 — *el mejor valor posible* — para un no-resultado. Hoy inalcanzable (los 3 callers filtran por `recognized`; 0/40 pistas reales reconocidas con sentinel), pero la protección vive fuera de la función y el modo de falla es silencioso y favorable. Fix barato: mapear sentinel→NaN antes de `validate`.
 - **N2** `_norm_weights` convierte pesos todo-cero en unos (opinaría donde debería rechazar). Hoy inocuo por una propiedad *accidental* del llenado (verificado: 0/8725 coordenadas problema) — no un invariante custodiado.
@@ -71,7 +71,7 @@ Proviene de una medición real (2089 ms, corrida del 30 jul) pero no está docum
 - Vendorizado byte-idéntico al upstream (3 archivos, diff contra blobs commiteados); sin monkeypatching en todo el proyecto.
 - ST/RS/SS fieles: mismo `distance_recall`, misma proyección; `stats[1]` ≡ `backward_distance_from_left` (6/6 corridas); conteos de candidatos 1/127/128; números del reporte reproducidos con las semillas del script (prototipo pear 9.015 exacto).
 - `run_missing_cue.py`: estadística recomputada desde las 360 distancias crudas — coincidencia exacta; sembrar `random` de Python es suficiente (único generador del camino estocástico); métrica uniforme entre métodos.
-- Tabla 3 del .SMTex verificada dígito a dígito contra el JSON por dos auditores independientes.
+- Tabla 3 del .SMTex verificada dígito a dígito contra el JSON en dos revisiones independientes.
 - Cero vectores sintéticos en camino oficial (26 call-sites revisados + cache auditado numéricamente); cero binarización por signo viva; cuantización por magnitud consistente en todos los puntos de uso; escala S=0.18809 fresca respecto de las memorias.
 - Lectura B1 derivable de la propia relación (counts ≡ suma de la relación, verificado en directorio real): no introduce información externa a la MAE. Lectura tolerante ξ usa el mecanismo nativo de funciones parciales.
 - Rechazos bien separados (`no_representable_tokens` / `mae_no_support` / `directory_no_support`); `token_in_vocabulary` confinado a logging/display.

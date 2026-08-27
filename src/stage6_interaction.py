@@ -160,9 +160,9 @@ class Agent:
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
         if mx <= 0:
-            # La homo no vio ninguna coordenada de la pista: rechazo directo
-            # (con pesos unos la hetero opinaria sobre una pista que su
-            # arbitro de pertenencia desconoce por completo).
+            # La homo no vio ninguna coordenada de la pista, asi que se
+            # rechaza aqui: con pesos en uno la hetero opinaria sobre una
+            # pista que su arbitro de pertenencia no conoce.
             return 0.0
         weights = l_w / mx
         mem_H = self.mem_dom_H
@@ -430,7 +430,7 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         score_str = "  ".join(f"{c}={agent_scores[c]:.2f}" for c in CLASSES)
         print(f"  Scores: {score_str}  -> ganador: {winner}")
 
-    # Actualizacion de directorio en los cuatro componentes.
+    # Registran el directorio del TME y el de cada agente.
     for tok, v_q in token_vectors.items():
         tme.update_directory(v_q, winner_idx)
         for agent in agents.values():
@@ -529,10 +529,9 @@ def visualize_result(result: dict, idx: int):
     plt.close()
 
 
-# Interacciones de la fase temprana del pipeline oficial: 2 por dominio,
-# intercaladas (16 en total). La versión anterior eran las 10 queries de la
-# era de 3 clases (apple/horse/car) y dejaba 5 dominios sin presenciar:
-# sus directorios quedaban vacíos ("no ruteas lo que no presenciaste").
+# Interacciones de la fase temprana: 2 por dominio, intercaladas, 16 en
+# total. Cubre las 8 clases porque un dominio que no se presencia deja su
+# directorio vacio y no puede rutear.
 TEST_QUERIES = [
     "a crunchy red fruit with a core",             # apple
     "fast vehicle with wheels",                    # car

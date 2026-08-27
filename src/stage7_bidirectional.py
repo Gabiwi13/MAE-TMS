@@ -142,7 +142,7 @@ def run():
             widx = AGENT_LIST.index(winner)
             with contextlib.redirect_stdout(io.StringIO()):
                 tme.update_directory_latent(z_q, widx)
-                # Wegner: cada agente (incl. perdedores) anota en SU directorio visual.
+                # Cada agente, tambien los perdedores, anota en su directorio visual.
                 for ag in agents.values():
                     ag.update_directory_latent(z_q, widx)
             a_seen += 1
@@ -166,10 +166,9 @@ def run():
             z = image_to_latent(p, encoder)
             z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             b_total += 1
-            # Entrada NO-especialista a propósito: el agente de la clase siguiente
-            # consulta SU propio directorio visual y redirige (coordinación de
-            # recuperación de Wegner). Los directorios per-agente son idénticos,
-            # así que cualquier agente de entrada da el mismo destino.
+            # La entrada es a proposito un agente no especialista: consulta su
+            # propio directorio visual y redirige. Los directorios por agente
+            # son identicos, asi que cualquier entrada da el mismo destino.
             entry = agents[CLASSES[(ci + 1) % len(CLASSES)]]
             with contextlib.redirect_stdout(io.StringIO()):
                 widx = entry.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)

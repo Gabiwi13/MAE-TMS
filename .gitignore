@@ -40,8 +40,6 @@ realtime_lab/hoja_impresion_eth80.pdf
 .SMTex/*.bbl
 .SMTex/*.blg
 
-# Local Claude settings
-.claude/
 memory/
 
 # External libraries with their own git repos
