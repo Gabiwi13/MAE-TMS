@@ -65,8 +65,7 @@ DOMAIN_EMOJI = {"apple": "🍎", "horse": "🐴", "car": "🚗",
                 "cow": "🐄", "cup": "☕", "dog": "🐕", "pear": "🍐", "tomato": "🍅"}
 
 # Posiciones del grafo de ruteo: TME al centro y los agentes en una elipse,
-# generadas desde CLASSES (antes hardcodeadas a las 3 clases originales, lo
-# que rompía _routing_graph con el sistema de 8 agentes).
+# Se generan desde CLASSES para que sirvan con cualquier numero de agentes.
 NODE_POS = {"TME": (0.0, 0.0)}
 for _i, _cls in enumerate(CLASSES):
     _ang = 2.0 * np.pi * _i / len(CLASSES) + np.pi / 2.0
@@ -463,7 +462,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
     containment: activación media de las celdas no nulas). NO divide por
     mem.mean — con el llenado por instancias las masas quedan igualadas y esa
     calibración es redundante (exp. 2). normalize=False usa el score crudo
-    h_raw, que reproduce el sesgo de masa histórico para comparación.
+    h_raw, que conserva el sesgo por masa de registros, para comparación.
     Diagnóstico: crudo 64% → gateado 100%.
     """
     # Stage 1: spaCy decomposition
@@ -510,7 +509,7 @@ def compute_pipeline_trace(query, agents, vectors_cache, g_min, g_max, decoder, 
         for cls in CLASSES:
             ag  = agents[cls]
             # Una sola proyección por agente: h_raw y h_gated salen del mismo
-            # project() (antes se proyectaba dos veces con gate ON).
+            # project(), en una sola llamada.
             l_w, h_raw, h_gated = ag.recognize_both(q_v)
             mem_mean = float(ag.mem_dom_H.mean)
             h_score = h_gated if normalize else h_raw
@@ -1614,6 +1613,10 @@ _ANIM_H     = 890 + (158 if len(CLASSES) > 4 else 0)
 _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 
+# La app no exporta video: las animaciones se capturan con la grabacion de
+# pantalla del sistema (Win+G / Win+Alt+R), usando el boton Replay de cada
+# animacion. Un screencast headless con Edge + ffmpeg resulta intermitente y
+# a veces corta el final.
 
 
 # Session state management
@@ -3254,7 +3257,7 @@ def main():
         st.header("Referencia ETH-80")
         st.caption("One representative training image per domain.")
 
-        # Filas de 4 para las 8 clases (antes st.columns(3)+zip truncaba a 3).
+        # Filas de 4 columnas, recorriendo CLASSES por bloques.
         _PR = 4
         for _start in range(0, len(CLASSES), _PR):
             _chunk = CLASSES[_start:_start + _PR]
