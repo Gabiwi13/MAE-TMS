@@ -26,6 +26,7 @@ Salidas en results/experimento7/
 
 Uso:  python run_experiment7_unified_dir.py
 """
+import copy
 import csv
 import io
 import json
@@ -456,21 +457,30 @@ def main():
     # ---------- acople por counts (único canal entre mitades) ----------
     print("\n--- Acople por el denominador B1 (counts compartidos) ---")
     acc0 = ev_text_uni(dirs["A"])
+    counts_A = dirs["A"].agent_counts.tolist()
+    # sandbox desechable: la prueba muta el directorio y A debe quedar intacto
+    dir_coupling = copy.deepcopy(dirs["A"])
+    with contextlib.redirect_stdout(io.StringIO()):
+        dir_coupling.register(cue_img(train_by_cls["apple"][0]),
+                              AGENT_LIST.index("apple"))
+    assert dirs["A"].agent_counts.tolist() == counts_A  # sin refs compartidas
+    dir_coupling = copy.deepcopy(dirs["A"])
     for cue, ti in [(cue_img(zq), ti) for zq, ti in img_stream]:
         with contextlib.redirect_stdout(io.StringIO()):
-            dirs["A"].register(cue, ti)
-    acc1 = ev_text_uni(dirs["A"])
+            dir_coupling.register(cue, ti)
+    acc1 = ev_text_uni(dir_coupling)
     # desbalance: re-registrar imágenes de apple (solo infla sus counts)
     for zq in train_by_cls["apple"][:N_EXTRA_UNBAL]:
         with contextlib.redirect_stdout(io.StringIO()):
-            dirs["A"].register(cue_img(zq), AGENT_LIST.index("apple"))
-    acc2 = ev_text_uni(dirs["A"])
+            dir_coupling.register(cue_img(zq), AGENT_LIST.index("apple"))
+    acc2 = ev_text_uni(dir_coupling)
     coupling = {
         "text_only": acc0,
         "plus_balanced_imgs": acc1,
         "plus_unbalanced_apple": acc2,
-        "counts_final": dirs["A"].agent_counts.tolist(),
+        "counts_final": dir_coupling.agent_counts.tolist(),
     }
+    assert dirs["A"].agent_counts.tolist() == counts_A
     print(f"  texto solo:              acc={acc0[0]:.1%}")
     print(f"  + {len(img_stream)} imgs balanceadas:  acc={acc1[0]:.1%}")
     print(f"  + {N_EXTRA_UNBAL} re-reg. apple:     acc={acc2[0]:.1%}  "
