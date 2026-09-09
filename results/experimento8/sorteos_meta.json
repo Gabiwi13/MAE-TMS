@@ -1,0 +1,50 @@
+[
+  {
+    "clase": "apple",
+    "recupera": "car",
+    "niveles_por_coordenada": 9.90625,
+    "dispersion_entre_sorteos": 33.75339889526367
+  },
+  {
+    "clase": "car",
+    "recupera": "cow",
+    "niveles_por_coordenada": 10.703125,
+    "dispersion_entre_sorteos": 36.17819595336914
+  },
+  {
+    "clase": "cow",
+    "recupera": "cup",
+    "niveles_por_coordenada": 8.671875,
+    "dispersion_entre_sorteos": 32.26439666748047
+  },
+  {
+    "clase": "cup",
+    "recupera": "dog",
+    "niveles_por_coordenada": 10.578125,
+    "dispersion_entre_sorteos": 37.22269821166992
+  },
+  {
+    "clase": "dog",
+    "recupera": "horse",
+    "niveles_por_coordenada": 9.8125,
+    "dispersion_entre_sorteos": 34.28951644897461
+  },
+  {
+    "clase": "horse",
+    "recupera": "pear",
+    "niveles_por_coordenada": 8.78125,
+    "dispersion_entre_sorteos": 30.876707077026367
+  },
+  {
+    "clase": "pear",
+    "recupera": "tomato",
+    "niveles_por_coordenada": 8.5,
+    "dispersion_entre_sorteos": 28.938390731811523
+  },
+  {
+    "clase": "tomato",
+    "recupera": "apple",
+    "niveles_por_coordenada": 7.78125,
+    "dispersion_entre_sorteos": 30.14671516418457
+  }
+]

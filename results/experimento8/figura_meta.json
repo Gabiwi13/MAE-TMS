@@ -1,0 +1,50 @@
+[
+  {
+    "clase": "apple",
+    "no_especialista": "car",
+    "label_vivido": "apple",
+    "d_recuperado_a_instancia_mas_cercana": 27.464725494384766
+  },
+  {
+    "clase": "car",
+    "no_especialista": "cow",
+    "label_vivido": "car",
+    "d_recuperado_a_instancia_mas_cercana": 27.164072036743164
+  },
+  {
+    "clase": "cow",
+    "no_especialista": "cup",
+    "label_vivido": "cow",
+    "d_recuperado_a_instancia_mas_cercana": 22.33119773864746
+  },
+  {
+    "clase": "cup",
+    "no_especialista": "dog",
+    "label_vivido": "cup",
+    "d_recuperado_a_instancia_mas_cercana": 27.881061553955078
+  },
+  {
+    "clase": "dog",
+    "no_especialista": "horse",
+    "label_vivido": "dog",
+    "d_recuperado_a_instancia_mas_cercana": 24.01041030883789
+  },
+  {
+    "clase": "horse",
+    "no_especialista": "pear",
+    "label_vivido": "horse",
+    "d_recuperado_a_instancia_mas_cercana": 21.26004409790039
+  },
+  {
+    "clase": "pear",
+    "no_especialista": "tomato",
+    "label_vivido": "pear",
+    "d_recuperado_a_instancia_mas_cercana": 23.36612319946289
+  },
+  {
+    "clase": "tomato",
+    "no_especialista": "apple",
+    "label_vivido": "tomato",
+    "d_recuperado_a_instancia_mas_cercana": 25.63042449951172
+  }
+]
