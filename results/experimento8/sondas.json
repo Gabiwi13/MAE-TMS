@@ -1,0 +1,465 @@
+{
+  "directorios_identicos": true,
+  "tres_condiciones": {
+    "vivido": {
+      "aciertos": 80,
+      "de": 80,
+      "tasa": 1.0
+    },
+    "dir_propio": {
+      "aciertos": 80,
+      "de": 80,
+      "tasa": 1.0
+    },
+    "dir_ajeno": {
+      "aciertos": 112,
+      "de": 112,
+      "tasa": 1.0
+    }
+  },
+  "control_latente_azar": {
+    "apple": 61,
+    "car": 59,
+    "cow": 84,
+    "cup": 59,
+    "dog": 139,
+    "horse": 40,
+    "pear": 43,
+    "tomato": 15
+  },
+  "fidelidad": {
+    "apple": {
+      "d_a_instancia_mas_cercana": 24.8249719619751,
+      "d_tipica_entre_instancias": 4.39251184463501,
+      "radio_de_clase": 19.46878433227539,
+      "dispersion_entre_sorteos": 35.071529388427734
+    },
+    "car": {
+      "d_a_instancia_mas_cercana": 27.505320358276368,
+      "d_tipica_entre_instancias": 5.451950550079346,
+      "radio_de_clase": 22.678308486938477,
+      "dispersion_entre_sorteos": 37.354835510253906
+    },
+    "cow": {
+      "d_a_instancia_mas_cercana": 21.970241355895997,
+      "d_tipica_entre_instancias": 5.113144397735596,
+      "radio_de_clase": 16.183950424194336,
+      "dispersion_entre_sorteos": 31.117816925048828
+    },
+    "cup": {
+      "d_a_instancia_mas_cercana": 24.892800521850585,
+      "d_tipica_entre_instancias": 4.78392219543457,
+      "radio_de_clase": 19.19536590576172,
+      "dispersion_entre_sorteos": 33.78511428833008
+    },
+    "dog": {
+      "d_a_instancia_mas_cercana": 24.759930992126463,
+      "d_tipica_entre_instancias": 6.564899921417236,
+      "radio_de_clase": 22.293352127075195,
+      "dispersion_entre_sorteos": 33.70159149169922
+    },
+    "horse": {
+      "d_a_instancia_mas_cercana": 21.17258071899414,
+      "d_tipica_entre_instancias": 5.727811336517334,
+      "radio_de_clase": 16.368043899536133,
+      "dispersion_entre_sorteos": 29.60348129272461
+    },
+    "pear": {
+      "d_a_instancia_mas_cercana": 21.26247158050537,
+      "d_tipica_entre_instancias": 5.902573108673096,
+      "radio_de_clase": 17.445619583129883,
+      "dispersion_entre_sorteos": 29.460493087768555
+    },
+    "tomato": {
+      "d_a_instancia_mas_cercana": 20.53607006072998,
+      "d_tipica_entre_instancias": 2.8869080543518066,
+      "radio_de_clase": 14.51049518585205,
+      "dispersion_entre_sorteos": 28.314369201660156
+    }
+  },
+  "superposicion": {
+    "texto_300x16": {
+      "apple": {
+        "niveles_vivos_por_coordenada": 5.863333333333333,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 227.89116670638657
+      },
+      "car": {
+        "niveles_vivos_por_coordenada": 4.02,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 177.89114944532898
+      },
+      "cow": {
+        "niveles_vivos_por_coordenada": 4.3966666666666665,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 190.0172845924859
+      },
+      "cup": {
+        "niveles_vivos_por_coordenada": 4.683333333333334,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 198.10513742115546
+      },
+      "dog": {
+        "niveles_vivos_por_coordenada": 3.8466666666666667,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 172.31459429203375
+      },
+      "horse": {
+        "niveles_vivos_por_coordenada": 3.296666666666667,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 152.26686073760987
+      },
+      "pear": {
+        "niveles_vivos_por_coordenada": 3.283333333333333,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 151.86352569705113
+      },
+      "tomato": {
+        "niveles_vivos_por_coordenada": 4.536666666666667,
+        "niveles": 16,
+        "coordenadas": 300,
+        "log10_patrones_admitidos": 193.90574144490722
+      }
+    },
+    "vision_64x32": {
+      "apple": {
+        "niveles_vivos_por_coordenada": 9.90625,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 62.38765269728358
+      },
+      "car": {
+        "niveles_vivos_por_coordenada": 10.703125,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 65.23110881599018
+      },
+      "cow": {
+        "niveles_vivos_por_coordenada": 8.671875,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 58.828661837590204
+      },
+      "cup": {
+        "niveles_vivos_por_coordenada": 10.578125,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 64.40074818139189
+      },
+      "dog": {
+        "niveles_vivos_por_coordenada": 9.8125,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 62.839578859565904
+      },
+      "horse": {
+        "niveles_vivos_por_coordenada": 8.78125,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 59.38487774573173
+      },
+      "pear": {
+        "niveles_vivos_por_coordenada": 8.5,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 58.63619978667447
+      },
+      "tomato": {
+        "niveles_vivos_por_coordenada": 7.78125,
+        "niveles": 32,
+        "coordenadas": 64,
+        "log10_patrones_admitidos": 55.61280074376225
+      }
+    }
+  },
+  "masa_por_cara": {
+    "texto_300x16": {
+      "registros": 52,
+      "masa_gano": 15600.0,
+      "masa_no_gano": 109200.0,
+      "razon": 7.0,
+      "celdas_gano": 0.26505208333333335,
+      "celdas_no_gano": 0.6128385416666666
+    },
+    "vision_64x32": {
+      "registros": 981,
+      "masa_gano": 62784.0,
+      "masa_no_gano": 439488.0,
+      "razon": 7.0,
+      "celdas_gano": 0.29193115234375,
+      "celdas_no_gano": 0.76556396484375
+    }
+  },
+  "lecturas_de_identidad": {
+    "positivo_solo": {
+      "niveles_vivos_por_coordenada": 9.90625,
+      "coordenadas_vacias": 0
+    },
+    "one_hot": {
+      "niveles_vivos_por_coordenada": 9.90625,
+      "coordenadas_vacias": 0
+    },
+    "negativo_solo": {
+      "niveles_vivos_por_coordenada": 24.109375,
+      "coordenadas_vacias": 0
+    },
+    "negativo_de_los_ocho": {
+      "niveles_vivos_por_coordenada": 18.140625,
+      "coordenadas_vacias": 0
+    }
+  },
+  "caras": {
+    "apple": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.36495850533246993
+      },
+      "negativo": {
+        "compat_max": 0.6296875,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9306281417608261
+      }
+    },
+    "car": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.4529161751270294
+      },
+      "negativo": {
+        "compat_max": 0.61796875,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9310183972120285
+      }
+    },
+    "cow": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.3099256828427315
+      },
+      "negativo": {
+        "compat_max": 0.61328125,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9519463092088699
+      }
+    },
+    "cup": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.42567830681800845
+      },
+      "negativo": {
+        "compat_max": 0.60546875,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9459336638450623
+      }
+    },
+    "dog": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.4177530661225319
+      },
+      "negativo": {
+        "compat_max": 0.60859375,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9425724983215332
+      }
+    },
+    "horse": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.3541872799396515
+      },
+      "negativo": {
+        "compat_max": 0.60234375,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9542967021465302
+      }
+    },
+    "pear": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.3436461746692657
+      },
+      "negativo": {
+        "compat_max": 0.62890625,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9437083721160888
+      }
+    },
+    "tomato": {
+      "positivo": {
+        "compat_max": 1.0,
+        "agentes_sobre_90pct": 1.0,
+        "separacion": 0.34719948321580885
+      },
+      "negativo": {
+        "compat_max": 0.603125,
+        "agentes_sobre_90pct": 0.0,
+        "separacion": 0.9524450540542603
+      }
+    }
+  },
+  "cobertura_soporte_por_agente": [
+    0.3095703125,
+    0.33447265625,
+    0.27099609375,
+    0.33056640625,
+    0.306640625,
+    0.2744140625,
+    0.265625,
+    0.2431640625
+  ],
+  "propio_en_cara_negativa": {
+    "aciertos": 1,
+    "sorteos": 160,
+    "azar": 0.125
+  },
+  "identidades_imposibles": {
+    "todo_ceros": {
+      "niveles_vivos_por_coordenada": 18.140625,
+      "coordenadas_vacias": 0,
+      "responde": 10,
+      "de": 10
+    },
+    "todo_unos": {
+      "niveles_vivos_por_coordenada": 0.03125,
+      "coordenadas_vacias": 63,
+      "responde": 0,
+      "de": 10
+    },
+    "dos_hot_apple_car": {
+      "niveles_vivos_por_coordenada": 4.421875,
+      "coordenadas_vacias": 13,
+      "responde": 0,
+      "de": 10
+    },
+    "dos_hot_apple_dog": {
+      "niveles_vivos_por_coordenada": 4.15625,
+      "coordenadas_vacias": 9,
+      "responde": 0,
+      "de": 10
+    },
+    "bits_azar_00010110": {
+      "niveles_vivos_por_coordenada": 1.9375,
+      "coordenadas_vacias": 30,
+      "responde": 0,
+      "de": 10
+    },
+    "bits_azar_10001000": {
+      "niveles_vivos_por_coordenada": 4.15625,
+      "coordenadas_vacias": 9,
+      "responde": 0,
+      "de": 10
+    },
+    "bits_azar_11110010": {
+      "niveles_vivos_por_coordenada": 0.34375,
+      "coordenadas_vacias": 52,
+      "responde": 0,
+      "de": 10
+    }
+  },
+  "capacidad": [
+    {
+      "registros_por_agente": 1,
+      "niveles_vivos_por_coordenada": 1.0,
+      "dispersion_entre_sorteos": 0.0,
+      "d_a_instancia_mas_cercana": 3.289722293615341,
+      "acierto": "80/80",
+      "separacion": 0.3743382394313812
+    },
+    {
+      "registros_por_agente": 2,
+      "niveles_vivos_por_coordenada": 1.58203125,
+      "dispersion_entre_sorteos": 8.024556159973145,
+      "d_a_instancia_mas_cercana": 7.3567858159542086,
+      "acierto": "80/80",
+      "separacion": 0.35607616901397704
+    },
+    {
+      "registros_por_agente": 4,
+      "niveles_vivos_por_coordenada": 2.60546875,
+      "dispersion_entre_sorteos": 14.948829650878906,
+      "d_a_instancia_mas_cercana": 11.973500150442124,
+      "acierto": "80/80",
+      "separacion": 0.4135736256837845
+    },
+    {
+      "registros_por_agente": 8,
+      "niveles_vivos_por_coordenada": 4.091796875,
+      "dispersion_entre_sorteos": 21.448970794677734,
+      "d_a_instancia_mas_cercana": 15.910428607463837,
+      "acierto": "80/80",
+      "separacion": 0.45082433298230173
+    },
+    {
+      "registros_por_agente": 16,
+      "niveles_vivos_por_coordenada": 6.021484375,
+      "dispersion_entre_sorteos": 26.71742057800293,
+      "d_a_instancia_mas_cercana": 19.03439873456955,
+      "acierto": "80/80",
+      "separacion": 0.432732480764389
+    },
+    {
+      "registros_por_agente": 32,
+      "niveles_vivos_por_coordenada": 7.529296875,
+      "dispersion_entre_sorteos": 28.559682846069336,
+      "d_a_instancia_mas_cercana": 20.560215330123903,
+      "acierto": "80/80",
+      "separacion": 0.4724810473620892
+    },
+    {
+      "registros_por_agente": 64,
+      "niveles_vivos_por_coordenada": 8.642578125,
+      "dispersion_entre_sorteos": 30.24230194091797,
+      "d_a_instancia_mas_cercana": 21.631183481216432,
+      "acierto": "80/80",
+      "separacion": 0.4962450198829174
+    },
+    {
+      "registros_por_agente": 128,
+      "niveles_vivos_por_coordenada": 9.62890625,
+      "dispersion_entre_sorteos": 32.74279022216797,
+      "d_a_instancia_mas_cercana": 23.22913227081299,
+      "acierto": "80/80",
+      "separacion": 0.5268583960831166
+    },
+    {
+      "registros_por_agente": 256,
+      "niveles_vivos_por_coordenada": 10.431640625,
+      "dispersion_entre_sorteos": 34.53468322753906,
+      "d_a_instancia_mas_cercana": 24.54823088645935,
+      "acierto": "80/80",
+      "separacion": 0.5485807031393051
+    },
+    {
+      "registros_por_agente": 512,
+      "niveles_vivos_por_coordenada": 11.0390625,
+      "dispersion_entre_sorteos": 36.00560760498047,
+      "d_a_instancia_mas_cercana": 25.494206190109253,
+      "acierto": "80/80",
+      "separacion": 0.5638678472489118
+    },
+    {
+      "registros_por_agente": 800,
+      "niveles_vivos_por_coordenada": 11.341796875,
+      "dispersion_entre_sorteos": 36.35869598388672,
+      "d_a_instancia_mas_cercana": 25.7553466796875,
+      "acierto": "79/80",
+      "separacion": 0.60471106544137
+    }
+  ]
+}
