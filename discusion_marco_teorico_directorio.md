@@ -89,7 +89,46 @@ El "TME generalista" (un noveno agente lleno con las ocho clases) no prueba ning
 
 ## 4. Resultados
 
-_(Se completa con las corridas de la noche del 13 al 14 de septiembre; ver `results/experimento9/README.md` y `results/experimento10/README.md`.)_
+Corridas de la noche del 13 al 14 de septiembre de 2026. Detalle, tablas por clase y figuras en `results/experimento9/README.md` y `results/experimento10/README.md`.
+
+### 4.1 Experimento 9: la tesis A no se sostiene como se formuló, y se reformula
+
+Se quitó cada uno de los ocho agentes y las 411 consultas del banco entraron por un sobreviviente.
+
+- **El índice sobrevive al miembro.** El directorio rutea a k igual que antes (55.7% del banco en texto, 81% en imagen; el resto lo rechaza o lo manda a otro, como con k presente). No sabe que k no está. La pérdida transactiva es asimétrica: se pierde la respuesta, no la ubicación.
+- **La sustitución confabula o calla.** Cuando el mejor sobreviviente responde (24.5%), responde siempre con su propia clase (tomate por manzana, vaca por caballo). En imagen→texto no responde nunca.
+- **La descripción responde siempre y conserva la clase siempre.** Latente decodificado: 100% en la clase perdida por los dos jueces, a 23.3 de la instancia real más cercana contra 21.9 del especialista (+6%), con 9.3 niveles vivos por coordenada contra 8.4 (+11%). Etiquetas evocadas desde una imagen: 98.5% en el vocabulario del dominio perdido, contra 100% del especialista, que sin embargo responde menos (89% contra 100%).
+- **Ninguna respuesta depende de la pista, tampoco la del especialista.** La dispersión entre consultas distintas iguala a la dispersión entre sorteos de la misma consulta (32.3 contra 31.4), y la razón F está cerca de 1 (1.64 vivido, 1.46 descripción). "Manzana roja" y "manzana verde" producen en el especialista la misma envolvente.
+
+La predicción central de la tesis A era que la descripción se distinguiría de la familiaridad en fidelidad y en dependencia de la pista. No se distingue en ninguna de las dos de manera apreciable. La causa está en el llenado, no en la maquinaria: las etiquetas de ConceptNet son del dominio y no de la imagen, y cada etiqueta se empareja con una instancia arbitraria, así que la memoria de contenido nunca recibió pares con correspondencia y solo puede devolver la envolvente del dominio (lo que exp5 llamó prototipo emergente). Para *reproducir*, el especialista y el testigo saben lo mismo.
+
+**Dónde vive entonces la familiaridad.** Una sonda sobre el mismo banco: el especialista reconoce el 98.3% de las consultas de su dominio con su contenido; un no-especialista, el 16%; el directorio de 52 registros rutea el 55.7%. El 43.6% de lo que el especialista reconoce, el directorio no lo presenció. La familiaridad no está en lo que el especialista reproduce sino en lo que reconoce: acepta pistas de su dominio que nadie le vio ganar, mientras el testigo solo conoce lo presenciado. Russell se reformula sin abandonarse: conocer por familiaridad es poder decir "esto es mío" ante lo nunca visto; conocer por descripción es poder decir "esto era de él" ante lo que se le vio. La distinción es de cobertura del reconocimiento, no de fidelidad de la reproducción.
+
+Consecuencia para la idea del TME con dominio: un miembro que sabe todo por descripción puede sostener las respuestas del grupo cuando falta un especialista, con la misma clase y casi la misma fidelidad. Lo que no puede es reconocer lo que no vio ganar. Y la peor política para el grupo es redirigir al segundo mejor.
+
+### 4.2 Experimento 10: Vygotsky gana en imagen; en texto gana si la consulta compara
+
+Cada agente presenció solo parte de los broadcasts ajenos (al azar con probabilidad f, o solo los de sus vecinos en un anillo de radio r). Los directorios divergieron hasta en el 83% de sus celdas. Tres protocolos contra el pizarrón (un directorio con todo): directo (sin soporte, rechaza), encadenado (sin soporte, pregunta a los que conoce hasta que alguien tiene soporte) y agregado (pregunta a todos los conocidos y suma scores).
+
+- **Imagen.** El encadenado iguala al pizarrón (81.9%, cero errores) en toda condición con f>0 o r≥1, incluso con f=1/64. El costo es el salto: 3.5 consultas extra con f=1/64, 1.9 con anillo r=1, 0.5 con f=1/2. El ruteo directo, en cambio, se queda en el piso del dominio propio (10%) hasta f=1/8: nadie rutea lo que no presenció.
+- **Texto.** El encadenado elimina el rechazo pero deja errores del 20 al 33% con f pequeño, porque la contención de texto es laxa: un directorio que solo se conoce a sí mismo acepta una pista ajena el 20% de las veces y, sin competidores, el argmax la manda al propio dominio. El agregado sí alcanza al pizarrón: 91% en consultas reservadas desde f=1/32 (pizarrón 93.6) y 94.3% con f=1/4, por encima del pizarrón. La ventaja del pizarrón no era tener los registros sino tener a los competidores juntos; sumar perspectivas parciales lo reconstruye.
+- **Alcance y comparación.** El encadenado llega a todo el grupo por transitividad pero decide con la primera perspectiva; el agregado decide comparando pero solo hasta los conocidos directos (con anillo r=1 cae al 55%). Un protocolo transactivo completo necesita las dos operaciones.
+
+Lectura: la internalización perspectival basta (Vygotsky) siempre que la coordinación de la recuperación, el tercer proceso de Wegner, sea una consulta a los conocidos y no una consulta a un artefacto. El pizarrón (Hutchins) no aporta nada que la red de directorios parciales no pueda reconstruir, en imagen desde f=1/64 y en texto desde f=1/32. Lo que sí aporta es ahorro: una consulta en vez de hasta ocho.
+
+Dos hallazgos laterales. La diferencia entre modalidades es de resolución del signo, no de arquitectura: con 32 niveles sobre 64 rasgos el directorio es un índice absoluto (cabe o no cabe), con 16 niveles sobre 300 es relativo (quién cabe mejor), lo que conecta con exp1 y exp7. Y la tolerancia xi es una propiedad del grupo: sus huecos se definen sobre el soporte de todos los agentes, así que en directorios perspectivales cambia con lo que presenciaron los demás.
+
+### 4.3 Balance
+
+| tesis | predicción | resultado |
+|---|---|---|
+| A. La descripción rutea pero no reemplaza a la familiaridad | descripción: misma clase, menor fidelidad, sin dependencia de la pista; vivido: dependiente de la pista | **Parcialmente refutada.** Misma clase (100%), fidelidad casi igual (+6%), y *ninguna* de las dos depende de la pista. La familiaridad se desplaza al reconocimiento: 98% contra 16% contra 56% del directorio. |
+| B. Internalización perspectival contra artefacto | el encadenado recupera al pizarrón con pocos saltos | **Confirmada en imagen** (81.9%, cero errores desde f=1/64). **Confirmada en texto con consulta comparativa** (agregado, 91–94% desde f=1/32). El pizarrón ahorra consultas, no acierto. |
+
+Lo que cambia en el encuadre de los reportes:
+1. El TME de la fase temprana es un andamio que se internaliza. En la fase madura no hace falta como artefacto: la red de directorios perspectivales más una coordinación de la recuperación (encadenar, agregar) recupera su función. El diseño actual de nueve copias idénticas debería reemplazarse por directorios que registran lo que cada agente presenció.
+2. El directorio es metamemoria: contiene una descripción del dominio de cada agente (Russell, codificación superficial de Wegner) que basta para responder en su ausencia con la clase correcta. El privilegio del especialista es de reconocimiento, no de reproducción.
+3. La idea del "TME con dominio" queda definida y acotada: un miembro que sabe todo por descripción puede sostener respuestas, no reconocimientos. Para que el especialista reproduzca mejor que el testigo haría falta un llenado con correspondencia etiqueta-instancia, que los datos actuales (ConceptNet por dominio) no tienen.
 
 ## 5. Bibliografía comentada
 
