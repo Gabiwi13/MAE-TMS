@@ -130,6 +130,25 @@ Lo que cambia en el encuadre de los reportes:
 2. El directorio es metamemoria: contiene una descripción del dominio de cada agente (Russell, codificación superficial de Wegner) que basta para responder en su ausencia con la clase correcta. El privilegio del especialista es de reconocimiento, no de reproducción.
 3. La idea del "TME con dominio" queda definida y acotada: un miembro que sabe todo por descripción puede sostener respuestas, no reconocimientos. Para que el especialista reproduzca mejor que el testigo haría falta un llenado con correspondencia etiqueta-instancia, que los datos actuales (ConceptNet por dominio) no tienen.
 
+### 4.4 Cambio de protocolo aplicado (14 de septiembre)
+
+Con el balance anterior, el protocolo oficial pasó a directorios perspectivales:
+
+- **Actualización por transacción** (`register_transaction`, etapas 6 y 7): registran la transacción el agente por el que entró la consulta, el ganador y el TME. El TME conserva el registro completo solo como diagnóstico; ningún ruteo de la fase madura lo consulta.
+- **Coordinación de la recuperación** (`route_transactive`, etapas 7 y 8 y la app): el agente de entrada agrega su directorio y los de los agentes que conoce; si nadie de ese círculo tiene soporte, la consulta pasa a los conocidos y cada uno agrega el suyo.
+- **Lectura visual estricta** (xi=0), por la razón de exp10.
+
+Resultado de re-correr las etapas 6, 7 y 8 con la regla nueva:
+
+| medida | antes (v4, nueve copias) | ahora (v5, perspectival) |
+|---|---|---|
+| directorios visuales por agente | idénticos, 981 registros cada uno | ~120 propios + 11–22 de cada otro, entropía ≈2.3 bits (registro completo 3.0) |
+| ruteo visual de test (656 imágenes) | 75.0%, rechazo 25%, 0 errores | 73.6%, rechazo 26.4%, 0 errores; decide en el primer círculo (todos se conocen) |
+| evocación imagen→etiquetas (top-3) | 85.3% | 85.3% |
+| fidelidad temprana↔madura (16 consultas) | 100% | 100% |
+
+Los 1.4 puntos de ruteo visual los cuesta xi=0, no la perspectiva. En texto, con 16 consultas de fase temprana, tres agentes quedan conociéndose solo a sí mismos (apple, car, horse) y aun así la fase madura rutea las 16 consultas igual que la temprana, porque los que sí conocen a otros alcanzan a todos por encadenamiento.
+
 ## 5. Bibliografía comentada
 
 Cada entrada dice qué aporta al marco y dónde leerla. Las marcadas **[acceso abierto]** tienen el texto completo en línea sin suscripción. Las referencias se verificaron el 14 de septiembre de 2026 contra las fuentes enlazadas.

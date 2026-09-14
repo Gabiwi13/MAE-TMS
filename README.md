@@ -10,7 +10,7 @@ The system combines:
 - **ResNet18 autoencoder** (with an auxiliary classification head): pretrained ResNet18 encoder → 64-dim latent; ConvTranspose decoder trained on the 8 ETH-80 classes (apple, car, cow, cup, dog, horse, pear, tomato). Loss is `MSE + 0.1·CE`; the classification head is used only during encoder training and does **not** participate in routing or recall. (It is *not* a masked autoencoder — there is no masking.)
 - **`HeteroAssociativeMemory`** (`mem_dom_H`): subclass of `HeteroAssociativeMemory4D` (Pineda & Morales) — the content bridge mapping binary label vectors ↔ quantized prototype latents, modulated by per-feature weights from the homo-associative memories.
 - **`HomoAssociativeMemory`** (`mem_dom_L`, `mem_dom_R`): wrapper around `AssociativeMemory` (Pineda & Morales) — models the distribution of a single domain and is the only memory that produces per-feature recognition weights (`recog_weights`).
-- **`DirectoryMemory`** (`mem_dir` text + `mem_dir_R` visual, one per modality per agent): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" and supports directory updating, retrieval coordination, and (externally) information allocation. Each agent keeps both a text directory (label→agent) and a visual directory (latent→agent), so an image can enter through any agent and be redirected to the right specialist via that agent's own `mem_dir_R`.
+- **`DirectoryMemory`** (`mem_dir` text + `mem_dir_R` visual, one per modality per agent): Wegner's transactive directory — a `HeteroAssociativeMemory4D` whose right domain is the agent identity (one-hot, q=2). Answers "who knows this cue?" (`route`), and read backwards, "what does this agent know?" (`recall_domain`). Supports directory updating, retrieval coordination, and (externally) information allocation. Directories are **perspectival** (v5): a transaction (cue → winner) is recorded only by the agent the query entered through and by the winner (`register_transaction`), so each agent's directory holds what that agent took part in. Mature-phase routing is transactive (`route_transactive`): the entry agent aggregates the calibrated scores of its own directory and of the directories of the agents it knows, and forwards the query along acquaintances when nobody in that circle has support. The TME keeps the complete record of transactions for diagnostics only.
 - **fastText + spaCy**: NLP pipeline tokenizing queries into 300-D cues quantized **by magnitude** (v4: `v/S` clipped to [−1,1] with a persisted global scale `S`, mapped to m=16 levels; the old sign(v) binarization used only 2 of 16 levels). Lemma-normalized vocabulary; words without a real fastText vector are rejected as cues, never synthesized.
 
 ### Architecture per agent (5 AMRs, K = 8 agents)
@@ -20,12 +20,12 @@ Agent (apple / car / cow / cup / dog / horse / pear / tomato)
   ├── mem_dom_H  HeteroAssociativeMemory(n=300, m=16, p=64, q=32)   hetero label↔latent
   ├── mem_dom_L  HomoAssociativeMemory(n=300, m=16)                 homo label  → recog weights
   ├── mem_dom_R  HomoAssociativeMemory(n=64,  m=32)                 homo latent → recog weights
-  ├── mem_dir    DirectoryMemory(n=300, m=16, n_agents=8)           routing label→agent (text)
-  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           routing latent→agent (visual)
+  ├── mem_dir    DirectoryMemory(n=300, m=16, n_agents=8)           routing label→agent (text), perspectival
+  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           routing latent→agent (visual), perspectival
 
-TME
-  ├── mem_dir_L  DirectoryMemory(n=300, m=16, n_agents=8)           label-space routing
-  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           latent-space routing (inverse)
+TME (early phase only)
+  ├── mem_dir_L  DirectoryMemory(n=300, m=16, n_agents=8)           complete record of text transactions (diagnostic)
+  └── mem_dir_R  DirectoryMemory(n=64,  m=32, n_agents=8)           complete record of visual transactions (diagnostic)
 ```
 
 ### What changed in v3
@@ -44,6 +44,35 @@ TME
 - **No synthetic vectors anywhere** (fidelity audit): label vectors are built with `allow_fallback=False`; labels outside the fastText vocabulary are excluded from filling instead of receiving a fabricated ±1 vector.
 - **Early-phase interactions cover the 8 domains** (`TEST_QUERIES`, 2 per class): directories cannot route what they never witnessed.
 
+### What changed in v5 (perspectival directories)
+
+- **Directory updating by transaction** (`register_transaction`): a cue → winner
+  transaction is recorded by the agent the query entered through, by the winner,
+  and by the TME (complete record, diagnostics only). Until v4 all eight agents
+  and the TME recorded every broadcast, so the nine directories were the same
+  relation (exp8). Now each agent's directory holds what it took part in: in the
+  visual hemisphere each specialist has ~120 own registrations and 11–22 of every
+  other agent (entropy ≈2.3 bits vs 3.0 for the complete record).
+- **Transactive retrieval coordination** (`route_transactive`): the entry agent
+  sums the calibrated scores of its own directory and of the directories of the
+  agents it knows (aggregate), and forwards the query along acquaintances when
+  nobody in that circle has support (chain). Exp10 showed the aggregate gives
+  comparison and the chain gives reach; together they match the shared-record
+  routing without a shared record. Used by stage 7 (phase B), stage 8 and the
+  app's mature-phase paths.
+- **Strict visual read** (`XI_VISUAL = 0`): the tolerant read defined its gaps
+  over the support of *all* agents in a directory, which under perspectival
+  directories depends on what the others witnessed (exp10). Cost: visual test
+  routing 75.0% → 73.6%, still with 0 false routes.
+- **Inverse read declared** (`DirectoryMemory.recall_domain`, `domain_projection`):
+  agent identity → cue in the agent's domain; used by exp8/exp9.
+- Theoretical framing, theses and the two experiments that motivated the change:
+  `discusion_marco_teorico_directorio.md`, `results/experimento9/`,
+  `results/experimento10/`.
+- Pending: the app's live early-phase tab still trains a single session directory
+  and its animation still shows every agent registering; only its mature-phase and
+  image paths use the new protocol.
+
 ## Key Results — v4 (8-class system, official)
 
 All numbers below come from one consistent set of models (fresh deterministic
@@ -59,7 +88,8 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Mature accuracy, best combo (G) | 92.9% | D + B1 + F |
 | Directory winner share, apple | **13.0%** | ideal 12.5% — bias essentially resolved |
 | Per-domain mature (B1) | cup/tomato 100, car 98, cow/dog 96, pear 86, apple 88, horse 82 | |
-| Visual routing (test, mem_dir_R) | 75.0% | 25% rejection, **0 false routes** |
+| Visual routing (test, mem_dir_R) | 75.0% (v4) · **73.6% (v5, perspectival directories, xi=0)** | 25% / 26.4% rejection, **0 false routes** in both |
+| Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
 | Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
 | Image→labels evocation (top-3 hit) | 85.3% | |
 | Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
@@ -110,7 +140,7 @@ src/                        # Core modules
   stage5_fill.py            # mem_dom filling by instances (H + L + R per agent)
   stage6_interaction.py     # Agent + TME early phase: routing + 5-AMR learning
   stage7_bidirectional.py   # Bidirectional recall (image → labels), visual hemisphere
-  stage8_mature.py          # Mature phase: point-to-point routing via mem_dir
+  stage8_mature.py          # Mature phase: transactive routing over per-agent directories (route_transactive)
 
 run_experiment3.py          # Sec. A — full protocol (early → directory → mature)
 run_experiment2_iota_kappa.py  # Sec. B — native parameters ι × κ

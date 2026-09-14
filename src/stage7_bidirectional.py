@@ -2,16 +2,17 @@
 Etapa 7 — Hemisferio visual: el directorio de imagenes.
 
 Fase A (interacciones visuales): las imagenes de entrenamiento que no
-participaron del llenado (indices [N_FILL:]) se presentan al grupo,
-intercaladas por clase. Cada agente puntua la percepcion con su lado
-latente —pesos de M_dom_R modulando la proyeccion de M_dom_H, el espejo
-derecho del scoring de la etapa 6— y el TME registra (latente -> ganador)
-en su directorio visual. Solo percepciones reales entran al directorio.
+participaron del llenado (indices [N_FILL:]) entran al grupo por un agente
+de entrada, intercaladas por clase. Cada agente puntua la percepcion con su
+homo latente (M_dom_R) y la transaccion (latente -> ganador) la registran
+el agente de entrada, el ganador y el TME (register_transaction): los
+directorios visuales son perspectivales. Solo percepciones reales entran.
 
-Fase B (evaluacion): las imagenes de test rutean por mem_dir_R con
-lectura B1, y el agente destino evoca labels con recall_from_right
-modulado por los pesos de M_dom_R. La metrica de evocacion es top-3
-domain hit: algun label evocado pertenece al vocabulario de la clase.
+Fase B (evaluacion): las imagenes de test entran por un agente no
+especialista y rutean con route_transactive (agregado de los directorios
+conocidos, encadenado si nadie tiene soporte); el agente destino evoca
+labels con recall_from_right modulado por los pesos de M_dom_R. La metrica
+de evocacion es top-3 domain hit.
 """
 import io
 import json
@@ -31,16 +32,18 @@ from stage5_fill import quantize_latent_global, N_FILL
 from stage6_interaction import (
     CLASSES, AGENT_LIST, MODELS_DIR, DEVICE,
     load_tme_and_agents, load_all_vectors,
+    register_transaction, route_transactive,
 )
 
 DATA_DIR = ROOT / "data" / "eth80"
 N, M_LABEL, P, Q_IMG = 300, 16, 64, 32
 N_EVOKE = 15
-# Tolerancia del ruteo visual (directorio mem_dir_R): hasta XI_VISUAL
-# coordenadas sin soporte se tratan como undefined. xi=2 da +1.7 pts de ruteo
-# en test con 0 falsos fuera-de-dominio; xi=3 no agrega nada. El directorio de
-# texto usa xi=0, porque ahi la tolerancia deja pasar fuera-de-dominio.
-XI_VISUAL = 2
+# Tolerancia del ruteo visual (directorio mem_dir_R). Con directorios
+# identicos y completos xi=2 daba +1.7 pts; con directorios perspectivales
+# los huecos tolerados se definen sobre el soporte de todos los agentes del
+# directorio y dependen de lo que presenciaron los demas (exp10), asi que la
+# lectura vuelve a ser estricta.
+XI_VISUAL = 0
 
 IMG_TRANSFORM = transforms.Compose([
     transforms.ToTensor(),
@@ -127,6 +130,7 @@ def run():
     pools = {cls: splits[cls]["train"][N_FILL:] for cls in CLASSES}
     n_inter = max(len(p) for p in pools.values())
     a_ok = a_seen = a_rej = 0
+    rng = np.random.RandomState(42)   # agente de entrada por percepcion
     for i in range(n_inter):
         for cls in CLASSES:
             if i >= len(pools[cls]):
@@ -140,11 +144,10 @@ def run():
                 continue
             winner = max(scores, key=scores.get)
             widx = AGENT_LIST.index(winner)
+            entry = AGENT_LIST[int(rng.randint(len(AGENT_LIST)))]
             with contextlib.redirect_stdout(io.StringIO()):
-                tme.update_directory_latent(z_q, widx)
-                # Cada agente, tambien los perdedores, anota en su directorio visual.
-                for ag in agents.values():
-                    ag.update_directory_latent(z_q, widx)
+                # Registran quien recibio la percepcion, quien la gano y el TME.
+                register_transaction(entry, widx, agents, tme, z_q, "image")
             a_seen += 1
             a_ok += int(winner == cls)
         if (i + 1) % 32 == 0:
@@ -154,11 +157,14 @@ def run():
     print(f"  Fase A: {total_a} imagenes · routing visual "
           f"{a_ok/max(a_seen,1)*100:.1f}% · rechazo "
           f"{a_rej/max(total_a,1)*100:.1f}%")
-    print(f"  mem_dir_R counts: {tme.mem_dir_R.agent_counts.tolist()}  "
-          f"entropia: {tme.mem_dir_R.entropy():.3f} bits")
+    print(f"  TME mem_dir_R (registro completo): counts={tme.mem_dir_R.agent_counts.tolist()}"
+          f"  entropia {tme.mem_dir_R.entropy():.3f} bits")
+    for cls in CLASSES:
+        agents[cls].mem_dir_R.print_stats(f"{cls} visual")
 
-    print("\n--- Fase B: routing por mem_dir_R per-agente (B1) sobre test ---")
+    print("\n--- Fase B: routing transactivo por mem_dir_R per-agente sobre test ---")
     b_ok = b_rej = b_total = 0
+    hops_total = consulted_total = 0
     evoke_hits = evoke_tried = 0
     sample_rows = []
     for ci, cls in enumerate(CLASSES):
@@ -166,12 +172,13 @@ def run():
             z = image_to_latent(p, encoder)
             z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             b_total += 1
-            # La entrada es a proposito un agente no especialista: consulta su
-            # propio directorio visual y redirige. Los directorios por agente
-            # son identicos, asi que cualquier entrada da el mismo destino.
-            entry = agents[CLASSES[(ci + 1) % len(CLASSES)]]
-            with contextlib.redirect_stdout(io.StringIO()):
-                widx = entry.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
+            # La entrada es a proposito un agente no especialista: agrega los
+            # directorios visuales que conoce y encadena si hace falta.
+            entry = CLASSES[(ci + 1) % len(CLASSES)]
+            widx, _scores, consulted, hops = route_transactive(
+                entry, agents, z_q, modality="image", xi=XI_VISUAL)
+            hops_total += hops
+            consulted_total += len(consulted)
             if widx < 0:
                 b_rej += 1
                 continue
@@ -190,7 +197,8 @@ def run():
     rej_b = b_rej / max(b_total, 1)
     evoke_rate = evoke_hits / max(evoke_tried, 1)
     print(f"  Routing test: {b_ok}/{b_total} = {acc_b*100:.1f}%  "
-          f"(rechazo {rej_b*100:.1f}%)")
+          f"(rechazo {rej_b*100:.1f}%)  directorios consultados "
+          f"{consulted_total/max(b_total,1):.2f}  saltos {hops_total/max(b_total,1):.2f}")
     print(f"  Evocacion top-3 domain-hit: {evoke_hits}/{evoke_tried} "
           f"= {evoke_rate*100:.1f}%")
     print("\n  Muestras (clase real -> ruteado · labels evocados):")
@@ -204,7 +212,7 @@ def run():
     for cls in CLASSES:
         with open(MODELS_DIR / f"agent_{cls}.pkl", "wb") as f:
             pickle.dump(agents[cls], f)
-    print("\n  TME + agentes actualizados (mem_dir_R per-agente) -> *.pkl")
+    print("\n  TME + agentes actualizados (mem_dir_R perspectival por agente) -> *.pkl")
 
     print("\nEtapa 7 COMPLETADA.")
     return {"visual_early_acc": a_ok / max(a_seen, 1),

@@ -2798,17 +2798,16 @@ def main():
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
 
-            # Ruteo estilo fase madura, per-agente: el agente de entrada consulta SU
-            # propio directorio visual (mem_dir_R, lectura B1 con tolerancia eta
-            # XI_VISUAL — funciones parciales nativas de la EHAM) y redirige, o
-            # rechaza si nadie lo conoce. La decisión la toma la MAE
-            # (DirectoryMemory.route); una sola decisión para estático y animación.
+            # Ruteo de fase madura sobre directorios visuales perspectivales: el
+            # agente de entrada agrega su mem_dir_R y los de los agentes que
+            # conoce, y encadena si nadie tiene soporte (route_transactive, la
+            # misma operacion de la etapa 7). Una sola decision para estatico y
+            # animacion.
             from stage7_bidirectional import XI_VISUAL
-            entry_agent = exp_agents[entry]
-            agg = entry_agent.mem_dir_R.predict_tolerant(z_q, xi=XI_VISUAL,
-                                                         mode="linear")
+            from stage6_interaction import route_transactive
+            widx, agg, _consulted, _hops = route_transactive(
+                entry, exp_agents, z_q, modality="image", xi=XI_VISUAL)
             scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
-            widx = entry_agent.mem_dir_R.route(z_q, mode="linear", xi=XI_VISUAL)
             winner = CLASSES[widx] if widx >= 0 else None
 
             c_in, c_out = st.columns([1, 1.4])

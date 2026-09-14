@@ -25,7 +25,7 @@ from quantizer import quantize_binary
 from stage6_interaction import (
     CLASSES, MODELS_DIR, DEVICE,
     load_tme_and_agents, get_nlp, load_decoder, load_all_vectors,
-    tokenize_query, get_fasttext_vector, TEST_QUERIES,
+    tokenize_query, get_fasttext_vector, TEST_QUERIES, route_transactive,
 )
 
 M_LABEL = 16
@@ -41,8 +41,10 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
                  vectors_cache: dict, decoder,
                  g_min: np.ndarray, g_max: np.ndarray,
                  verbose: bool = True) -> dict:
-    """El agente de entrada decide con su directorio a quien rutear.
-    Sin señal en el directorio, rechaza: el grupo no inventa expertos."""
+    """El agente de entrada decide a quien rutear con su directorio y los de
+    los agentes que conoce (route_transactive: agregado, y encadenado si
+    nadie tiene soporte). Sin señal alcanzable, rechaza: el grupo no inventa
+    expertos."""
     tokens = tokenize_query(query, nlp)
     if not tokens:
         return {"query": query, "winner": None, "image": None,
@@ -68,16 +70,19 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
                 "routed": False, "scores": [0.0] * len(CLASSES),
                 "rejected": True, "reason": "no_representable_tokens"}
 
-    # La decision multi-pista la toma DirectoryMemory.route_multi: suma
-    # calibrada por token y argmax dentro de la memoria.
-    dest_idx, agent_scores = entry_agent.mem_dir.route_multi(
-        token_vectors.values(), mode="linear")
+    # Coordinacion de la recuperacion sobre directorios perspectivales: cada
+    # directorio decide con route_multi (suma calibrada por token) y el grupo
+    # agrega y encadena.
+    dest_idx, agent_scores, consulted, hops = route_transactive(
+        entry_agent.name, agents, list(token_vectors.values()), modality="text")
 
     if dest_idx < 0:
         if verbose:
-            print(f"  RECHAZADA (directory_no_support): '{query}'.")
+            print(f"  RECHAZADA (directory_no_support): '{query}' "
+                  f"(consultados {consulted}).")
         return {"query": query, "winner": None, "image": None,
                 "routed": False, "scores": agent_scores.tolist(),
+                "consulted": consulted, "hops": hops,
                 "rejected": True, "reason": "directory_no_support"}
 
     dest_name = CLASSES[dest_idx]
@@ -88,7 +93,8 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
         score_str = "  ".join(f"{c}={agent_scores[i]:.1f}"
                               for i, c in enumerate(CLASSES))
         print(f"  Entrada={entry_agent.name}  scores=[{score_str}]"
-              f"  -> destino={dest_name}  routed={routed}")
+              f"  -> destino={dest_name}  routed={routed}"
+              f"  consultados={consulted} saltos={hops}")
 
     recalled_image = None
     for tok, v_q in token_vectors.items():
@@ -108,6 +114,8 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
         "image": recalled_image,
         "routed": routed,
         "scores": agent_scores.tolist(),
+        "consulted": consulted,
+        "hops": hops,
     }
 
 

@@ -21,7 +21,9 @@ TME (2 memorias):
   mem_dir_R  DirectoryMemory(64,32 -> K,2)   directorio por latentes,
              se entrena en la etapa 7 con percepciones visuales
 """
+import contextlib
 import hashlib
+import io
 import json
 import pickle
 import sys
@@ -216,11 +218,12 @@ class Agent:
 
 
 class TME:
-    """Mediador transactivo: mantiene los directorios compartidos.
-
-    Activo solo en la fase temprana; en la madura los agentes rutean
-    punto a punto con sus propios directorios y el TME queda fuera
-    del circuito.
+    """Mediador de la fase temprana: difunde la consulta al grupo y lleva el
+    registro completo de las transacciones (el pizarron). Ese registro sirve
+    para diagnostico y para la curva de formacion; ningun ruteo de la fase
+    madura lo consulta. Los directorios que rutean son los de cada agente,
+    y son perspectivales: cada agente registra solo las transacciones en
+    las que participo (ver register_transaction).
     """
 
     def __init__(self):
@@ -236,6 +239,74 @@ class TME:
         Las salidas del recall no se registran nunca: el directorio
         indexa experiencias, no ecos de la propia memoria."""
         self.mem_dir_R.register(v_latent_q, winner_idx)
+
+
+def register_transaction(entry_name: str, winner_idx: int, agents: dict,
+                         tme: TME, cue_q: np.ndarray, modality: str = "text"):
+    """Actualizacion perspectival del directorio (Wegner, directory updating
+    por transaccion; Vygotsky, cada quien internaliza lo que participo).
+
+    Registran la transaccion (pista -> ganador) el agente por el que entro
+    la consulta y el agente que la gano; los demas no la presenciaron. El
+    TME anota todas, como registro del grupo. Antes registraban los ocho
+    agentes y el TME, y los nueve directorios eran la misma relacion (exp8);
+    exp10 mostro que con directorios parciales encadenados y agregados el
+    grupo rutea igual que con el registro completo."""
+    winner_name = AGENT_LIST[winner_idx]
+    participants = {entry_name, winner_name}
+    if modality == "text":
+        tme.update_directory(cue_q, winner_idx)
+        for name in participants:
+            agents[name].update_directory(cue_q, winner_idx)
+    else:
+        tme.update_directory_latent(cue_q, winner_idx)
+        for name in participants:
+            agents[name].update_directory_latent(cue_q, winner_idx)
+
+
+def route_transactive(entry_name: str, agents: dict, cues, modality: str = "text",
+                      xi: int = 0, mode: str = "linear"):
+    """Coordinacion de la recuperacion (Wegner) sobre directorios
+    perspectivales. El agente de entrada suma los scores calibrados de su
+    directorio y de los directorios de los agentes que conoce (aquellos a
+    los que vio ganar algo): decision comparativa entre perspectivas. Si
+    nadie de ese circulo tiene soporte, la consulta pasa a los conocidos, por
+    familiaridad, y cada uno agrega su propio circulo, sin repetir. Exp10:
+    el agregado da comparacion, el encadenado da alcance.
+
+    cues: lista de pistas de texto (una por token) o una sola pista latente.
+    Devuelve (winner_idx, scores, consultados, saltos); winner_idx = -1 si
+    ningun directorio alcanzable tiene soporte."""
+    def scores_of(agent):
+        with contextlib.redirect_stdout(io.StringIO()):
+            if modality == "text":
+                _, total = agent.mem_dir.route_multi(cues, mode=mode, xi=xi)
+                return total
+            return agent.mem_dir_R.predict_tolerant(cues, xi=xi, mode=mode)
+
+    def known_by(agent):
+        d = agent.mem_dir if modality == "text" else agent.mem_dir_R
+        counts = d.agent_counts
+        return [AGENT_LIST[int(j)] for j in np.argsort(-counts)
+                if counts[j] > 0 and AGENT_LIST[int(j)] != agent.name]
+
+    summed, total = set(), np.zeros(len(AGENT_LIST), dtype=float)
+    visited, queue, hops = set(), [entry_name], 0
+    while queue:
+        a = queue.pop(0)
+        if a in visited:
+            continue
+        visited.add(a)
+        circle = [a] + known_by(agents[a])
+        for name in circle:
+            if name not in summed:
+                summed.add(name)
+                total += scores_of(agents[name])
+        if total.sum() > 0:
+            return int(np.argmax(total)), total, sorted(summed), hops
+        hops += 1
+        queue = [n for n in known_by(agents[a]) if n not in visited] + queue
+    return -1, total, sorted(summed), hops
 
 
 _TOKENS_CACHE_PATH = ROOT / "models" / "token_vectors.json"
@@ -347,8 +418,12 @@ def load_all_vectors(nlp=None) -> dict:
 
 def process_query(query: str, agents: dict, tme: TME, nlp,
                   vectors_cache: dict, decoder, verbose: bool = True,
-                  allow_fallback: bool = False) -> dict:
+                  allow_fallback: bool = False, entry: str = None) -> dict:
     """Una interaccion de fase temprana completa.
+
+    La consulta entra por un agente (entry; al azar si no se indica), el TME
+    la difunde, el grupo decide al ganador, y registran la transaccion el
+    agente de entrada, el ganador y el TME (register_transaction).
 
     Devuelve el triple de Wegner (imagen, labels, ubicacion) o el rechazo
     explicito. Hay dos clases de rechazo, distintas conceptualmente:
@@ -361,16 +436,18 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
     memoria, no censura consultas. Una palabra real que no sea label (p.ej.
     'powerful') entra como pista y la EAM la rechaza sola via recognize_gated.
     """
+    if entry is None:
+        entry = AGENT_LIST[int(np.random.randint(len(AGENT_LIST)))]
     tokens = tokenize_query(query, nlp)
     if not tokens:
         return {"query": query, "tokens": [], "winner": None,
-                "image": None, "labels": [], "agent": None,
+                "image": None, "labels": [], "agent": None, "entry": entry,
                 "rejected": True, "reason": "no_tokens",
                 "represented_tokens": [], "unrepresented_tokens": [],
                 "token_logs": []}
 
     if verbose:
-        print(f"  Query: '{query}'  tokens={tokens}")
+        print(f"  Query: '{query}'  tokens={tokens}  entrada={entry}")
 
     agent_scores = {cls: 0.0 for cls in CLASSES}
     token_vectors = {}
@@ -401,7 +478,7 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         if verbose:
             print(f"  RECHAZADA (no_representable_tokens): tokens={tokens}.")
         return {"query": query, "tokens": tokens, "winner": None,
-                "image": None, "labels": tokens, "agent": None,
+                "image": None, "labels": tokens, "agent": None, "entry": entry,
                 "rejected": True, "reason": "no_representable_tokens",
                 "agent_scores": agent_scores,
                 "represented_tokens": list(token_vectors),
@@ -412,7 +489,7 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         if verbose:
             print(f"  RECHAZADA (mae_no_support): la EAM no contiene las pistas.")
         return {"query": query, "tokens": tokens, "winner": None,
-                "image": None, "labels": tokens, "agent": None,
+                "image": None, "labels": tokens, "agent": None, "entry": entry,
                 "rejected": True, "reason": "mae_no_support",
                 "agent_scores": agent_scores,
                 "represented_tokens": list(token_vectors),
@@ -430,11 +507,9 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
         score_str = "  ".join(f"{c}={agent_scores[c]:.2f}" for c in CLASSES)
         print(f"  Scores: {score_str}  -> ganador: {winner}")
 
-    # Registran el directorio del TME y el de cada agente.
+    # Registran la transaccion quien pregunto, quien gano y el TME.
     for tok, v_q in token_vectors.items():
-        tme.update_directory(v_q, winner_idx)
-        for agent in agents.values():
-            agent.update_directory(v_q, winner_idx)
+        register_transaction(entry, winner_idx, agents, tme, v_q, "text")
 
     # Recuperacion en el ganador con el primer token reconocido.
     recalled_image = None
@@ -454,6 +529,7 @@ def process_query(query: str, agents: dict, tme: TME, nlp,
     return {
         "query": query,
         "tokens": tokens,
+        "entry": entry,
         "agent_scores": agent_scores,
         "winner": winner,
         "image": recalled_image,
@@ -561,15 +637,23 @@ def run():
     vectors_cache = load_all_vectors(nlp)
 
     results = []
+    # Agente de entrada por consulta, reproducible: define quien presencia
+    # cada transaccion ademas del ganador.
+    rng = np.random.RandomState(42)
     print("\n--- Fase temprana (TME activo) ---")
     for i, query in enumerate(TEST_QUERIES):
-        res = process_query(query, agents, tme, nlp, vectors_cache, decoder)
+        entry = AGENT_LIST[int(rng.randint(len(AGENT_LIST)))]
+        res = process_query(query, agents, tme, nlp, vectors_cache, decoder,
+                            entry=entry)
         results.append(res)
         visualize_result(res, i)
         print(f"  -> Triple: imagen={'si' if res['image'] is not None else 'no'}, "
               f"labels={res['labels']}, ubicacion={res['winner']}")
 
     save_tme_and_agents(tme, agents)
+    for name, ag in agents.items():
+        ag.mem_dir.print_stats(f"{name} texto")
+    tme.mem_dir_L.print_stats("TME texto (registro completo)")
     print("\nEtapa 6 COMPLETADA.")
     return tme, agents, results
 
