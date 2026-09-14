@@ -218,6 +218,39 @@ class DirectoryMemory:
         winner = -1 if total.sum() == 0 else int(np.argmax(total))
         return winner, total
 
+    def _identity_cue(self, agent_idx: int) -> np.ndarray:
+        k = int(agent_idx)
+        if not 0 <= k < self._n_agents:
+            raise ValueError(
+                f"agent_idx={agent_idx} fuera de rango [0, {self._n_agents}).")
+        cue = np.zeros(self._n_agents, dtype=np.int32)
+        cue[k] = 1
+        return cue
+
+    def domain_projection(self, agent_idx: int) -> np.ndarray:
+        """Proyeccion (n x m) del dominio izquierdo condicionada a la identidad
+        del agente: que valores de cada rasgo registro ese agente como ganador.
+        Lectura determinista; la fila de un rasgo queda en cero si el agente
+        nunca gano nada con soporte en el."""
+        cue = self._identity_cue(agent_idx)
+        with contextlib.redirect_stdout(io.StringIO()):
+            proj = self._ham.project(self._ham.validate(cue, 1),
+                                     np.ones(self._n_agents, dtype=float), 1)
+        return proj[:, :self._m].copy()
+
+    def recall_domain(self, agent_idx: int):
+        """Lectura inversa del directorio: identidad de agente -> pista en el
+        dominio izquierdo. Es el sentido quien -> que, simetrico del ruteo
+        (que -> quien). Muestrea de la distribucion registrada para ese
+        agente; devuelve (cue_q, recognized). recognized es False si el
+        agente no tiene soporte en alguna coordenada (nunca gano nada, o la
+        pista de identidad no pudo ocurrir)."""
+        cue = self._identity_cue(agent_idx)
+        with contextlib.redirect_stdout(io.StringIO()):
+            cue_q, recognized, _w, _p, _s = self._ham.recall_from_right(
+                cue, weights=np.ones(self._n_agents, dtype=float))
+        return cue_q, bool(recognized)
+
     @property
     def agent_counts(self) -> np.ndarray:
         return self._counts.copy()
