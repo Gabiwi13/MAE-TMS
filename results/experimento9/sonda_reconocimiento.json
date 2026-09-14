@@ -1,0 +1,93 @@
+{
+  "por_clase": {
+    "apple": {
+      "n": 52,
+      "especialista_reconoce": 51,
+      "no_especialista_reconoce": 0,
+      "directorio_a_k": 35,
+      "directorio_a_otro": 4,
+      "directorio_rechaza": 13,
+      "especialista_reconoce_y_directorio_no": 16
+    },
+    "car": {
+      "n": 51,
+      "especialista_reconoce": 48,
+      "no_especialista_reconoce": 0,
+      "directorio_a_k": 23,
+      "directorio_a_otro": 2,
+      "directorio_rechaza": 26,
+      "especialista_reconoce_y_directorio_no": 28
+    },
+    "cow": {
+      "n": 51,
+      "especialista_reconoce": 51,
+      "no_especialista_reconoce": 0,
+      "directorio_a_k": 31,
+      "directorio_a_otro": 4,
+      "directorio_rechaza": 16,
+      "especialista_reconoce_y_directorio_no": 20
+    },
+    "cup": {
+      "n": 51,
+      "especialista_reconoce": 51,
+      "no_especialista_reconoce": 2,
+      "directorio_a_k": 35,
+      "directorio_a_otro": 0,
+      "directorio_rechaza": 16,
+      "especialista_reconoce_y_directorio_no": 16
+    },
+    "dog": {
+      "n": 49,
+      "especialista_reconoce": 49,
+      "no_especialista_reconoce": 7,
+      "directorio_a_k": 23,
+      "directorio_a_otro": 4,
+      "directorio_rechaza": 22,
+      "especialista_reconoce_y_directorio_no": 26
+    },
+    "horse": {
+      "n": 51,
+      "especialista_reconoce": 48,
+      "no_especialista_reconoce": 0,
+      "directorio_a_k": 22,
+      "directorio_a_otro": 5,
+      "directorio_rechaza": 24,
+      "especialista_reconoce_y_directorio_no": 27
+    },
+    "pear": {
+      "n": 53,
+      "especialista_reconoce": 53,
+      "no_especialista_reconoce": 25,
+      "directorio_a_k": 19,
+      "directorio_a_otro": 34,
+      "directorio_rechaza": 0,
+      "especialista_reconoce_y_directorio_no": 34
+    },
+    "tomato": {
+      "n": 53,
+      "especialista_reconoce": 53,
+      "no_especialista_reconoce": 32,
+      "directorio_a_k": 41,
+      "directorio_a_otro": 12,
+      "directorio_rechaza": 0,
+      "especialista_reconoce_y_directorio_no": 12
+    }
+  },
+  "total": {
+    "n": 411,
+    "especialista_reconoce": 404,
+    "no_especialista_reconoce": 66,
+    "directorio_a_k": 229,
+    "directorio_a_otro": 65,
+    "directorio_rechaza": 117,
+    "especialista_reconoce_y_directorio_no": 179
+  },
+  "tasas": {
+    "especialista_reconoce": 0.9829683698296837,
+    "no_especialista_reconoce": 0.16058394160583941,
+    "directorio_a_k": 0.5571776155717761,
+    "directorio_a_otro": 0.15815085158150852,
+    "directorio_rechaza": 0.2846715328467153,
+    "especialista_reconoce_y_directorio_no": 0.43552311435523117
+  }
+}
