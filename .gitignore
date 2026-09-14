@@ -10,8 +10,13 @@ models/*.tmp
 # Token-vector cache (derivado del modelo fastText de 1 GB; regenerable)
 models/token_vectors.json
 
-# ETH-80 dataset (205 MB) — download separately
-data/
+# ETH-80 dataset (205 MB) — download separately. El corte train/test si se
+# versiona, con rutas relativas a data/eth80 (stage1_dataset.make_splits lo
+# restaura a splits.json con rutas absolutas)
+data/*
+!data/eth80/
+data/eth80/*
+!data/eth80/splits_relative.json
 
 # Imágenes de muestra para la app (derivadas de ETH-80; locales, no se versionan)
 app_sample_images/

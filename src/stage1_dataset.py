@@ -110,10 +110,26 @@ def organize():
 
 
 def make_splits(seed: int = 42):
+    """Corte train/test 80/20 por clase (328 / 82 imagenes).
+
+    splits.json guarda rutas absolutas de esta maquina y no se versiona.
+    splits_relative.json guarda el mismo corte con rutas relativas a data/eth80
+    y si se versiona: si existe, el corte se restaura de ahi en vez de
+    barajar, para que un clon nuevo reproduzca exactamente el mismo corte.
+    Un corte nuevo (sin ninguno de los dos archivos) se escribe en ambos."""
     splits_path = DATA_DIR / "splits.json"
+    relative_path = DATA_DIR / "splits_relative.json"
     if splits_path.exists():
         print("Splits already exist.")
         return json.loads(splits_path.read_text())
+
+    if relative_path.exists():
+        rel = json.loads(relative_path.read_text())
+        splits = {cls: {k: [str(DATA_DIR / p) for p in v] for k, v in d.items()}
+                  for cls, d in rel.items()}
+        splits_path.write_text(json.dumps(splits, indent=2))
+        print(f"Splits restored from {relative_path} -> {splits_path}")
+        return splits
 
     random.seed(seed)
     splits = {}
@@ -125,7 +141,10 @@ def make_splits(seed: int = 42):
         print(f"  {cls}: {n_train} train / {len(imgs)-n_train} test")
 
     splits_path.write_text(json.dumps(splits, indent=2))
-    print(f"Splits saved to {splits_path}")
+    rel = {cls: {k: [Path(p).relative_to(DATA_DIR).as_posix() for p in v]
+                 for k, v in d.items()} for cls, d in splits.items()}
+    relative_path.write_text(json.dumps(rel, indent=1))
+    print(f"Splits saved to {splits_path} and {relative_path}")
     return splits
 
 

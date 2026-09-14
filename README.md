@@ -199,6 +199,16 @@ executes the eight stages in order and produces every artifact the experiments n
 python run_experiment.py             # stages 1–8: dataset → encoder → fill → phases
 ```
 
+- **Train/test split.** `stage1_dataset.make_splits(seed=42)` sorts the PNGs of
+  each class, shuffles them with Python's `random` seeded at 42 and cuts 80/20:
+  328 train / 82 test per class. The cut is versioned in
+  `data/eth80/splits_relative.json` (paths relative to `data/eth80`); on a fresh
+  clone `make_splits` restores `splits.json` from it instead of reshuffling.
+  The visual experiments (exp7 onwards) derive their pools from that split in
+  `run_experiment7_unified_dir.py:148`: formation = `train[200:328]` (the 128
+  images per class that did not fill the memories, `N_FILL = 200`) and test =
+  `test[:20]` (the first 20 of the 82 test images per class). Everything that
+  reads `results/experimento7/latents_cache.json` uses those same 128 + 20.
 - **Stage 1 (dataset)** downloads ETH-80 atomically (a `.part` file is renamed only
   when the download is complete and verified as a valid `.tgz`). If the MPI mirror is
   down, it stops with an actionable message — drop the archive in `data/` manually and
