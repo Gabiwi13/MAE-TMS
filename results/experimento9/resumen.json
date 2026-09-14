@@ -1,0 +1,75 @@
+{
+  "texto_a_imagen": {
+    "vivido": {
+      "responde": 0.982532751091703,
+      "clase_clf": 1.0,
+      "clase_nn": 1.0,
+      "d_nn_perdido": 21.915799732914678,
+      "d_nn_cualquiera": 21.915799732914678,
+      "n": 687,
+      "disp_entre_consultas": 32.260417222976685,
+      "disp_dentro_consulta": 31.401967029879202,
+      "dependencia_de_la_pista": 1.0273374655887213,
+      "F_dependencia": 1.6404455838096963,
+      "niveles_vivos_por_coordenada": 8.409513888888888
+    },
+    "sustitucion": {
+      "responde": 0.2445414847161572,
+      "clase_clf": 0.0,
+      "clase_nn": 0.0,
+      "d_nn_perdido": 48.2899664015997,
+      "d_nn_cualquiera": 21.5420925787517,
+      "n": 687,
+      "disp_entre_consultas": 34.39466171264648,
+      "disp_dentro_consulta": 30.494474659455125,
+      "dependencia_de_la_pista": 1.1278981552148846,
+      "F_dependencia": 2.888524622988963,
+      "niveles_vivos_por_coordenada": 7.984654017857143
+    },
+    "descripcion": {
+      "responde": 1.0,
+      "clase_clf": 1.0,
+      "clase_nn": 1.0,
+      "d_nn_perdido": 23.33622745586101,
+      "d_nn_cualquiera": 23.33622745586101,
+      "n": 687,
+      "disp_entre_consultas": 32.71618580818176,
+      "disp_dentro_consulta": 32.50295249064159,
+      "dependencia_de_la_pista": 1.0065604291672139,
+      "F_dependencia": 1.4648581983034026,
+      "niveles_vivos_por_coordenada": 9.307246179039302
+    },
+    "ruteo": {
+      "consultas": 411.0,
+      "a_perdido": 229.0,
+      "a_otro": 65.0,
+      "rechazadas": 117.0
+    }
+  },
+  "imagen_a_texto": {
+    "vivido": {
+      "responde": 0.8923076923076924,
+      "hit_perdido": 1.0,
+      "hit_sustituto": 0.0,
+      "n": 65
+    },
+    "sustitucion": {
+      "responde": 0.0,
+      "hit_perdido": NaN,
+      "hit_sustituto": NaN,
+      "n": 65
+    },
+    "descripcion": {
+      "responde": 1.0,
+      "hit_perdido": 0.9846153846153847,
+      "hit_sustituto": 0.0,
+      "n": 65
+    },
+    "ruteo": {
+      "consultas": 80.0,
+      "a_perdido": 65.0,
+      "a_otro": 0.0,
+      "rechazadas": 15.0
+    }
+  }
+}
