@@ -38,6 +38,7 @@ import contextlib
 import io
 import json
 import pickle
+import random
 import sys
 import time
 from pathlib import Path
@@ -156,6 +157,7 @@ def figure_recovered_object():
     # el recall muestrea con el RNG global de numpy: sin esto la figura sale
     # distinta en cada corrida (cada recall es un sorteo entre ~10^60 patrones)
     np.random.seed(SEED)
+    random.seed(SEED)
 
     label_vecs = {c: json.loads((ROOT / f"label_vectors_{c}.json").read_text())
                   for c in CLASSES}
@@ -250,6 +252,7 @@ def figure_draws(n_draws: int = 4):
     splits = json.loads((DATA_DIR / "splits.json").read_text())
     decoder = load_decoder()
     np.random.seed(SEED)
+    random.seed(SEED)
 
     n_cols = 2 + n_draws
     fig, axes = plt.subplots(len(CLASSES), n_cols,
@@ -338,6 +341,7 @@ def figure_negative_face(n_draws: int = 2, reps: int = 20):
     decoder = load_decoder()
     clf = load_classifier()
     np.random.seed(SEED)
+    random.seed(SEED)
 
     instances = {c: np.array(json.loads(
         (MODELS_DIR / f"instance_latents_{c}.json").read_text()), dtype=np.float32)
@@ -562,6 +566,7 @@ def probes():
     clf = load_classifier()
     rng = np.random.RandomState(SEED)
     np.random.seed(SEED)
+    random.seed(SEED)
     out = {}
 
     instances = {c: np.array(json.loads(

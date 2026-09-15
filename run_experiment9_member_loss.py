@@ -36,6 +36,7 @@ import csv
 import io
 import json
 import pickle
+import random
 import sys
 import time
 from pathlib import Path
@@ -569,6 +570,7 @@ def main():
     args = ap.parse_args()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     np.random.seed(SEED)
+    random.seed(SEED)
 
     if args.report:
         rows = read_csv(OUT_DIR / "results_text.csv")
