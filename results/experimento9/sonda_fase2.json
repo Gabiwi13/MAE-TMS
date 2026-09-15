@@ -1,0 +1,1112 @@
+{
+ "colapso_primera_pista": {
+  "apple": {
+   "ruteadas": 35,
+   "responden": 35,
+   "primeras_pistas_distintas_ruteadas": 12,
+   "consultas_por_pista_ruteadas": {
+    "apple": 8,
+    "green": 6,
+    "fruit": 5,
+    "red": 4,
+    "core": 3,
+    "round": 2,
+    "orchard": 2,
+    "stem": 1,
+    "delicious": 1,
+    "orange": 1,
+    "tree": 1,
+    "pome": 1
+   },
+   "banco": 52,
+   "primeras_pistas_distintas_banco": 13,
+   "consultas_por_pista_banco": {
+    "apple": 18,
+    "green": 6,
+    "red": 6,
+    "fruit": 5,
+    "round": 3,
+    "core": 3
+   }
+  },
+  "car": {
+   "ruteadas": 23,
+   "responden": 20,
+   "primeras_pistas_distintas_ruteadas": 8,
+   "consultas_por_pista_ruteadas": {
+    "car": 7,
+    "vehicle": 4,
+    "wheel": 2,
+    "motor": 2,
+    "crash": 2,
+    "drive": 1,
+    "seat": 1,
+    "auto": 1
+   },
+   "banco": 51,
+   "primeras_pistas_distintas_banco": 9,
+   "consultas_por_pista_banco": {
+    "car": 21,
+    "automobile": 9,
+    "vehicle": 4,
+    "drive": 4,
+    "seat": 3,
+    "wheel": 2
+   }
+  },
+  "cow": {
+   "ruteadas": 31,
+   "responden": 31,
+   "primeras_pistas_distintas_ruteadas": 11,
+   "consultas_por_pista_ruteadas": {
+    "farm": 8,
+    "cow": 6,
+    "bovine": 4,
+    "cattle": 4,
+    "milk": 2,
+    "animal": 2,
+    "moo": 1,
+    "mammal": 1,
+    "beef": 1,
+    "bull": 1,
+    "udder": 1
+   },
+   "banco": 51,
+   "primeras_pistas_distintas_banco": 13,
+   "consultas_por_pista_banco": {
+    "cow": 19,
+    "farm": 8,
+    "cattle": 6,
+    "bovine": 4,
+    "mammal": 2,
+    "milk": 2
+   }
+  },
+  "cup": {
+   "ruteadas": 35,
+   "responden": 35,
+   "primeras_pistas_distintas_ruteadas": 8,
+   "consultas_por_pista_ruteadas": {
+    "mug": 12,
+    "cup": 9,
+    "drink": 5,
+    "drinking": 3,
+    "liquid": 2,
+    "vessel": 2,
+    "hole": 1,
+    "trophy": 1
+   },
+   "banco": 51,
+   "primeras_pistas_distintas_banco": 9,
+   "consultas_por_pista_banco": {
+    "cup": 22,
+    "mug": 12,
+    "drink": 5,
+    "vessel": 4,
+    "drinking": 3,
+    "liquid": 2
+   }
+  },
+  "dog": {
+   "ruteadas": 23,
+   "responden": 23,
+   "primeras_pistas_distintas_ruteadas": 8,
+   "consultas_por_pista_ruteadas": {
+    "canine": 6,
+    "dog": 6,
+    "pet": 4,
+    "house": 3,
+    "bark": 1,
+    "mammal": 1,
+    "puppy": 1,
+    "wolf": 1
+   },
+   "banco": 49,
+   "primeras_pistas_distintas_banco": 9,
+   "consultas_por_pista_banco": {
+    "dog": 22,
+    "canine": 7,
+    "puppy": 7,
+    "pet": 4,
+    "house": 3,
+    "animal": 2
+   }
+  },
+  "horse": {
+   "ruteadas": 22,
+   "responden": 21,
+   "primeras_pistas_distintas_ruteadas": 9,
+   "consultas_por_pista_ruteadas": {
+    "animal": 6,
+    "riding": 4,
+    "horse": 3,
+    "equine": 2,
+    "mammal": 2,
+    "racing": 1,
+    "saddle": 1,
+    "jockey": 1,
+    "stallion": 1
+   },
+   "banco": 51,
+   "primeras_pistas_distintas_banco": 12,
+   "consultas_por_pista_banco": {
+    "horse": 17,
+    "animal": 7,
+    "equine": 6,
+    "mammal": 4,
+    "riding": 4,
+    "pony": 3
+   }
+  },
+  "pear": {
+   "ruteadas": 19,
+   "responden": 19,
+   "primeras_pistas_distintas_ruteadas": 3,
+   "consultas_por_pista_ruteadas": {
+    "pear": 17,
+    "fruit": 1,
+    "bosc": 1
+   },
+   "banco": 53,
+   "primeras_pistas_distintas_banco": 4,
+   "consultas_por_pista_banco": {
+    "pear": 35,
+    "fruit": 10,
+    "pome": 7,
+    "bosc": 1
+   }
+  },
+  "tomato": {
+   "ruteadas": 41,
+   "responden": 41,
+   "primeras_pistas_distintas_ruteadas": 4,
+   "consultas_por_pista_ruteadas": {
+    "tomato": 23,
+    "red": 16,
+    "vegetable": 1,
+    "herb": 1
+   },
+   "banco": 53,
+   "primeras_pistas_distintas_banco": 4,
+   "consultas_por_pista_banco": {
+    "tomato": 25,
+    "red": 24,
+    "herb": 3,
+    "vegetable": 1
+   }
+  },
+  "total": {
+   "ruteadas": 229,
+   "consultas_que_comparten_primera_pista_con_otra": 198,
+   "fraccion_ruteadas": 0.8646288209606987,
+   "primeras_pistas_distintas_ruteadas": 63
+  }
+ },
+ "niveles_y_entropia": {
+  "apple": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 9.90625,
+    "entropia_bits": 2.855637938366156,
+    "registros": 128
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 7.618489583333333,
+    "entropia_bits": 2.6309723309355917,
+    "pistas": 12
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "round": {
+     "niveles_vivos": 7.234375,
+     "entropia_bits": 2.6110234597509097
+    },
+    "green": {
+     "niveles_vivos": 8.859375,
+     "entropia_bits": 2.803086168207672
+    },
+    "red": {
+     "niveles_vivos": 8.96875,
+     "entropia_bits": 2.787325813416829
+    },
+    "core": {
+     "niveles_vivos": 8.578125,
+     "entropia_bits": 2.788259580750451
+    },
+    "fruit": {
+     "niveles_vivos": 9.46875,
+     "entropia_bits": 2.8492048294563794
+    },
+    "apple": {
+     "niveles_vivos": 8.203125,
+     "entropia_bits": 2.705440346999598
+    },
+    "stem": {
+     "niveles_vivos": 7.046875,
+     "entropia_bits": 2.598737598153808
+    },
+    "delicious": {
+     "niveles_vivos": 6.21875,
+     "entropia_bits": 2.4227257137115714
+    },
+    "orange": {
+     "niveles_vivos": 6.65625,
+     "entropia_bits": 2.5037161903930834
+    },
+    "tree": {
+     "niveles_vivos": 8.140625,
+     "entropia_bits": 2.718672268045391
+    },
+    "pome": {
+     "niveles_vivos": 6.453125,
+     "entropia_bits": 2.4568609906942283
+    },
+    "orchard": {
+     "niveles_vivos": 5.59375,
+     "entropia_bits": 2.326615011647179
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 11.140625,
+    "entropia_bits": 2.8871454445947253
+   }
+  },
+  "car": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 10.703125,
+    "entropia_bits": 3.017909879791703,
+    "registros": 121
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 9.546875,
+    "entropia_bits": 2.9606585917273556,
+    "pistas": 8
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "vehicle": {
+     "niveles_vivos": 10.265625,
+     "entropia_bits": 3.01678295151262
+    },
+    "wheel": {
+     "niveles_vivos": 8.3125,
+     "entropia_bits": 2.8160639795537836
+    },
+    "motor": {
+     "niveles_vivos": 9.921875,
+     "entropia_bits": 2.992621163736785
+    },
+    "drive": {
+     "niveles_vivos": 9.53125,
+     "entropia_bits": 2.971067600265541
+    },
+    "crash": {
+     "niveles_vivos": 8.8125,
+     "entropia_bits": 2.905633007414223
+    },
+    "seat": {
+     "niveles_vivos": 9.28125,
+     "entropia_bits": 2.9434655172175694
+    },
+    "auto": {
+     "niveles_vivos": 10.359375,
+     "entropia_bits": 3.049867381735479
+    },
+    "car": {
+     "niveles_vivos": 9.890625,
+     "entropia_bits": 2.989767132382844
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 14.09375,
+    "entropia_bits": 3.176943924716227
+   }
+  },
+  "cow": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 8.671875,
+    "entropia_bits": 2.5936896939129737,
+    "registros": 123
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 7.731534090909091,
+    "entropia_bits": 2.5411300525821874,
+    "pistas": 11
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "farm": {
+     "niveles_vivos": 7.6875,
+     "entropia_bits": 2.534014417155106
+    },
+    "bovine": {
+     "niveles_vivos": 7.875,
+     "entropia_bits": 2.526230967892375
+    },
+    "moo": {
+     "niveles_vivos": 7.375,
+     "entropia_bits": 2.5067592952273916
+    },
+    "mammal": {
+     "niveles_vivos": 6.640625,
+     "entropia_bits": 2.3824352826803548
+    },
+    "milk": {
+     "niveles_vivos": 8.1875,
+     "entropia_bits": 2.5978037602391275
+    },
+    "animal": {
+     "niveles_vivos": 7.390625,
+     "entropia_bits": 2.5230480114706038
+    },
+    "beef": {
+     "niveles_vivos": 8.25,
+     "entropia_bits": 2.609387395363683
+    },
+    "cattle": {
+     "niveles_vivos": 8.234375,
+     "entropia_bits": 2.589507672963631
+    },
+    "bull": {
+     "niveles_vivos": 7.28125,
+     "entropia_bits": 2.4938834042353824
+    },
+    "udder": {
+     "niveles_vivos": 7.578125,
+     "entropia_bits": 2.5537131555743695
+    },
+    "cow": {
+     "niveles_vivos": 8.546875,
+     "entropia_bits": 2.6356472156020363
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 10.609375,
+    "entropia_bits": 2.6758648145901187
+   }
+  },
+  "cup": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 10.578125,
+    "entropia_bits": 2.9656401396449183,
+    "registros": 120
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 8.7109375,
+    "entropia_bits": 2.782308780422745,
+    "pistas": 8
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "drink": {
+     "niveles_vivos": 9.640625,
+     "entropia_bits": 2.8715644299911784
+    },
+    "mug": {
+     "niveles_vivos": 8.171875,
+     "entropia_bits": 2.7342881913329693
+    },
+    "drinking": {
+     "niveles_vivos": 7.859375,
+     "entropia_bits": 2.707899575966007
+    },
+    "cup": {
+     "niveles_vivos": 9.921875,
+     "entropia_bits": 2.918139032778603
+    },
+    "hole": {
+     "niveles_vivos": 8.203125,
+     "entropia_bits": 2.72162346121919
+    },
+    "trophy": {
+     "niveles_vivos": 9.328125,
+     "entropia_bits": 2.834833470966141
+    },
+    "liquid": {
+     "niveles_vivos": 8.8125,
+     "entropia_bits": 2.8008617798492716
+    },
+    "vessel": {
+     "niveles_vivos": 7.75,
+     "entropia_bits": 2.6692603012786
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 11.84375,
+    "entropia_bits": 2.9617349796489574
+   }
+  },
+  "dog": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 9.8125,
+    "entropia_bits": 2.880566674820648,
+    "registros": 121
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 9.314453125,
+    "entropia_bits": 2.9142205212038004,
+    "pistas": 8
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "bark": {
+     "niveles_vivos": 9.0625,
+     "entropia_bits": 2.8719787879148213
+    },
+    "canine": {
+     "niveles_vivos": 9.453125,
+     "entropia_bits": 2.9103325754710516
+    },
+    "dog": {
+     "niveles_vivos": 9.890625,
+     "entropia_bits": 2.970066822430333
+    },
+    "pet": {
+     "niveles_vivos": 9.75,
+     "entropia_bits": 2.9708618656946157
+    },
+    "house": {
+     "niveles_vivos": 9.015625,
+     "entropia_bits": 2.8802430202336957
+    },
+    "mammal": {
+     "niveles_vivos": 9.28125,
+     "entropia_bits": 2.908032501047237
+    },
+    "puppy": {
+     "niveles_vivos": 9.25,
+     "entropia_bits": 2.930324113039581
+    },
+    "wolf": {
+     "niveles_vivos": 8.8125,
+     "entropia_bits": 2.8719244837990665
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 13.0,
+    "entropia_bits": 3.0762914858558568
+   }
+  },
+  "horse": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 8.78125,
+    "entropia_bits": 2.6767670027009367,
+    "registros": 121
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 7.614583333333333,
+    "entropia_bits": 2.62186630298555,
+    "pistas": 9
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "animal": {
+     "niveles_vivos": 8.140625,
+     "entropia_bits": 2.697525432254417
+    },
+    "riding": {
+     "niveles_vivos": 8.1875,
+     "entropia_bits": 2.682516370184893
+    },
+    "equine": {
+     "niveles_vivos": 7.765625,
+     "entropia_bits": 2.659929344146694
+    },
+    "racing": {
+     "niveles_vivos": 7.09375,
+     "entropia_bits": 2.5304532484704514
+    },
+    "mammal": {
+     "niveles_vivos": 7.90625,
+     "entropia_bits": 2.664833270178759
+    },
+    "saddle": {
+     "niveles_vivos": 8.15625,
+     "entropia_bits": 2.6747248779280866
+    },
+    "horse": {
+     "niveles_vivos": 7.890625,
+     "entropia_bits": 2.667141169699056
+    },
+    "jockey": {
+     "niveles_vivos": 6.609375,
+     "entropia_bits": 2.4787741632258538
+    },
+    "stallion": {
+     "niveles_vivos": 6.78125,
+     "entropia_bits": 2.5408988507817387
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 10.640625,
+    "entropia_bits": 2.787326604011162
+   }
+  },
+  "pear": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 8.5,
+    "entropia_bits": 2.6655834144493973,
+    "registros": 122
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 8.557291666666666,
+    "entropia_bits": 2.7577515410174165,
+    "pistas": 3
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "fruit": {
+     "niveles_vivos": 8.78125,
+     "entropia_bits": 2.778950442137075
+    },
+    "pear": {
+     "niveles_vivos": 8.640625,
+     "entropia_bits": 2.7641871927616495
+    },
+    "bosc": {
+     "niveles_vivos": 8.25,
+     "entropia_bits": 2.7301169881535245
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 10.703125,
+    "entropia_bits": 2.849239801892121
+   }
+  },
+  "tomato": {
+   "directorio_inverso_nan": {
+    "niveles_vivos": 7.78125,
+    "entropia_bits": 2.596076448916362,
+    "registros": 125
+   },
+   "mem_dom_H_condicionada_media": {
+    "niveles_vivos": 7.14453125,
+    "entropia_bits": 2.4588248107860604,
+    "pistas": 4
+   },
+   "mem_dom_H_condicionada_por_pista": {
+    "red": {
+     "niveles_vivos": 6.828125,
+     "entropia_bits": 2.433243099533057
+    },
+    "vegetable": {
+     "niveles_vivos": 6.734375,
+     "entropia_bits": 2.401379364845712
+    },
+    "herb": {
+     "niveles_vivos": 6.984375,
+     "entropia_bits": 2.4457236345672957
+    },
+    "tomato": {
+     "niveles_vivos": 8.03125,
+     "entropia_bits": 2.554953144198177
+    }
+   },
+   "mem_dom_R_dominio_800": {
+    "niveles_vivos": 8.703125,
+    "entropia_bits": 2.538846718318857
+   }
+  }
+ },
+ "emparejamiento_llenado": {
+  "apple": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 99,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 16,
+    "media": 38.095238095238095,
+    "max": 72
+   },
+   "ejemplos": {
+    "red": 72,
+    "fruit": 64,
+    "green": 64,
+    "core": 64
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "car": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 145,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 25,
+    "media": 38.095238095238095,
+    "max": 48
+   },
+   "ejemplos": {
+    "drive": 48,
+    "automobile": 48,
+    "vehicle": 48,
+    "engine": 48
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "cow": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 104,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 14,
+    "media": 38.095238095238095,
+    "max": 64
+   },
+   "ejemplos": {
+    "milk": 64,
+    "animal": 64,
+    "bovine": 64,
+    "cattle": 64
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "cup": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 85,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 18,
+    "media": 38.095238095238095,
+    "max": 80
+   },
+   "ejemplos": {
+    "drink": 80,
+    "cup": 72,
+    "trophy": 60,
+    "glass": 60
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "dog": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 146,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 25,
+    "media": 38.095238095238095,
+    "max": 48
+   },
+   "ejemplos": {
+    "pet": 48,
+    "bark": 48,
+    "canine": 48,
+    "puppy": 48
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "horse": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 142,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 20,
+    "media": 38.095238095238095,
+    "max": 48
+   },
+   "ejemplos": {
+    "animal": 48,
+    "pony": 48,
+    "riding": 48,
+    "mare": 48
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "pear": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 34,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 23,
+    "media": 38.095238095238095,
+    "max": 72
+   },
+   "ejemplos": {
+    "bosc": 72,
+    "seckel": 72,
+    "anjou": 72,
+    "bartlett": 72
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  },
+  "tomato": {
+   "instancias": 800,
+   "registros_de_etiqueta_L": 39,
+   "etiquetas_distintas": 21,
+   "instancias_distintas_por_etiqueta": {
+    "min": 20,
+    "media": 38.095238095238095,
+    "max": 105
+   },
+   "ejemplos": {
+    "fruit": 105,
+    "tomato": 100,
+    "red": 63,
+    "vegetable": 63
+   },
+   "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
+  }
+ },
+ "fallos_del_especialista": {
+  "apple": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  },
+  "car": {
+   "consultas_sin_respuesta": 3,
+   "detalle": [
+    {
+     "query": "machine for transportation",
+     "tokens": [
+      {
+       "token": "machine",
+       "coordenadas_etiqueta_sin_soporte": [
+        3,
+        20,
+        24,
+        31,
+        40,
+        51,
+        67,
+        87,
+        106,
+        109,
+        115,
+        125,
+        135,
+        141,
+        190,
+        196,
+        221,
+        246,
+        252,
+        299
+       ],
+       "n_sin_soporte": 20,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 20
+      },
+      {
+       "token": "transportation",
+       "coordenadas_etiqueta_sin_soporte": [
+        7,
+        18,
+        24,
+        35,
+        62,
+        81,
+        92,
+        105,
+        134,
+        149,
+        199,
+        271
+       ],
+       "n_sin_soporte": 12,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 12
+      }
+     ]
+    },
+    {
+     "query": "passenger transportation machine",
+     "tokens": [
+      {
+       "token": "passenger",
+       "coordenadas_etiqueta_sin_soporte": [
+        13,
+        24,
+        54,
+        61,
+        82,
+        88,
+        116,
+        126,
+        134,
+        146,
+        182,
+        196,
+        200,
+        219,
+        235,
+        246,
+        252,
+        271
+       ],
+       "n_sin_soporte": 18,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 18
+      },
+      {
+       "token": "transportation",
+       "coordenadas_etiqueta_sin_soporte": [
+        7,
+        18,
+        24,
+        35,
+        62,
+        81,
+        92,
+        105,
+        134,
+        149,
+        199,
+        271
+       ],
+       "n_sin_soporte": 12,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 12
+      },
+      {
+       "token": "machine",
+       "coordenadas_etiqueta_sin_soporte": [
+        3,
+        20,
+        24,
+        31,
+        40,
+        51,
+        67,
+        87,
+        106,
+        109,
+        115,
+        125,
+        135,
+        141,
+        190,
+        196,
+        221,
+        246,
+        252,
+        299
+       ],
+       "n_sin_soporte": 20,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 20
+      }
+     ]
+    },
+    {
+     "query": "wheeled transportation",
+     "tokens": [
+      {
+       "token": "wheeled",
+       "coordenadas_etiqueta_sin_soporte": [
+        20,
+        24,
+        28,
+        41,
+        50,
+        55,
+        59,
+        80,
+        87,
+        98,
+        116,
+        127,
+        129,
+        134,
+        149,
+        150,
+        190,
+        195,
+        216,
+        241,
+        246,
+        262,
+        263,
+        287
+       ],
+       "n_sin_soporte": 24,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 24
+      },
+      {
+       "token": "transportation",
+       "coordenadas_etiqueta_sin_soporte": [
+        7,
+        18,
+        24,
+        35,
+        62,
+        81,
+        92,
+        105,
+        134,
+        149,
+        199,
+        271
+       ],
+       "n_sin_soporte": 12,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 12
+      }
+     ]
+    }
+   ]
+  },
+  "cow": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  },
+  "cup": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  },
+  "dog": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  },
+  "horse": {
+   "consultas_sin_respuesta": 1,
+   "detalle": [
+    {
+     "query": "has four legs and hooves",
+     "tokens": [
+      {
+       "token": "leg",
+       "coordenadas_etiqueta_sin_soporte": [
+        0,
+        8,
+        12,
+        18,
+        20,
+        33,
+        34,
+        47,
+        56,
+        70,
+        71,
+        72,
+        73,
+        80,
+        82,
+        88,
+        90,
+        93,
+        98,
+        99,
+        100,
+        102,
+        103,
+        104,
+        112,
+        114,
+        118,
+        121,
+        125,
+        131,
+        134,
+        145,
+        150,
+        153,
+        154,
+        156,
+        157,
+        159,
+        165,
+        169,
+        171,
+        172,
+        177,
+        184,
+        185,
+        186,
+        188,
+        189,
+        196,
+        205,
+        211,
+        224,
+        225,
+        226,
+        228,
+        231,
+        242,
+        249,
+        250,
+        252,
+        253,
+        255,
+        262,
+        263,
+        266,
+        269,
+        270,
+        272,
+        274,
+        278,
+        287,
+        288,
+        290,
+        292,
+        298,
+        299
+       ],
+       "n_sin_soporte": 76,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 76
+      },
+      {
+       "token": "hoof",
+       "coordenadas_etiqueta_sin_soporte": [
+        8,
+        9,
+        10,
+        12,
+        22,
+        36,
+        52,
+        53,
+        67,
+        70,
+        75,
+        76,
+        78,
+        80,
+        83,
+        88,
+        96,
+        99,
+        101,
+        102,
+        103,
+        106,
+        108,
+        109,
+        114,
+        125,
+        130,
+        134,
+        135,
+        141,
+        147,
+        153,
+        157,
+        163,
+        165,
+        170,
+        173,
+        178,
+        182,
+        196,
+        202,
+        218,
+        224,
+        237,
+        257,
+        261,
+        263,
+        278,
+        286
+       ],
+       "n_sin_soporte": 49,
+       "filas_latentes_vacias": 64,
+       "homo_L_coords_en_cero": 49
+      }
+     ]
+    }
+   ]
+  },
+  "pear": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  },
+  "tomato": {
+   "consultas_sin_respuesta": 0,
+   "detalle": []
+  }
+ }
+}
