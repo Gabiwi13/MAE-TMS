@@ -29,52 +29,52 @@
   },
   "fidelidad": {
     "apple": {
-      "d_a_instancia_mas_cercana": 24.8249719619751,
+      "d_a_instancia_mas_cercana": 20.704240989685058,
       "d_tipica_entre_instancias": 4.39251184463501,
       "radio_de_clase": 19.46878433227539,
-      "dispersion_entre_sorteos": 35.071529388427734
+      "dispersion_entre_sorteos": 28.798480987548828
     },
     "car": {
-      "d_a_instancia_mas_cercana": 27.505320358276368,
+      "d_a_instancia_mas_cercana": 22.17253017425537,
       "d_tipica_entre_instancias": 5.451950550079346,
       "radio_de_clase": 22.678308486938477,
-      "dispersion_entre_sorteos": 37.354835510253906
+      "dispersion_entre_sorteos": 30.48677635192871
     },
     "cow": {
-      "d_a_instancia_mas_cercana": 21.970241355895997,
+      "d_a_instancia_mas_cercana": 16.85541696548462,
       "d_tipica_entre_instancias": 5.113144397735596,
       "radio_de_clase": 16.183950424194336,
-      "dispersion_entre_sorteos": 31.117816925048828
+      "dispersion_entre_sorteos": 24.415712356567383
     },
     "cup": {
-      "d_a_instancia_mas_cercana": 24.892800521850585,
+      "d_a_instancia_mas_cercana": 22.39249744415283,
       "d_tipica_entre_instancias": 4.78392219543457,
       "radio_de_clase": 19.19536590576172,
-      "dispersion_entre_sorteos": 33.78511428833008
+      "dispersion_entre_sorteos": 31.07724952697754
     },
     "dog": {
-      "d_a_instancia_mas_cercana": 24.759930992126463,
+      "d_a_instancia_mas_cercana": 19.287618827819824,
       "d_tipica_entre_instancias": 6.564899921417236,
       "radio_de_clase": 22.293352127075195,
-      "dispersion_entre_sorteos": 33.70159149169922
+      "dispersion_entre_sorteos": 28.112483978271484
     },
     "horse": {
-      "d_a_instancia_mas_cercana": 21.17258071899414,
+      "d_a_instancia_mas_cercana": 16.932115459442137,
       "d_tipica_entre_instancias": 5.727811336517334,
       "radio_de_clase": 16.368043899536133,
-      "dispersion_entre_sorteos": 29.60348129272461
+      "dispersion_entre_sorteos": 24.574798583984375
     },
     "pear": {
-      "d_a_instancia_mas_cercana": 21.26247158050537,
+      "d_a_instancia_mas_cercana": 18.078468132019044,
       "d_tipica_entre_instancias": 5.902573108673096,
       "radio_de_clase": 17.445619583129883,
-      "dispersion_entre_sorteos": 29.460493087768555
+      "dispersion_entre_sorteos": 25.943437576293945
     },
     "tomato": {
-      "d_a_instancia_mas_cercana": 20.53607006072998,
+      "d_a_instancia_mas_cercana": 15.877333068847657,
       "d_tipica_entre_instancias": 2.8869080543518066,
       "radio_de_clase": 14.51049518585205,
-      "dispersion_entre_sorteos": 28.314369201660156
+      "dispersion_entre_sorteos": 22.94057846069336
     }
   },
   "superposicion": {
@@ -220,96 +220,96 @@
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.36495850533246993
+        "separacion": 0.35564664751291275
       },
       "negativo": {
-        "compat_max": 0.6296875,
+        "compat_max": 0.61953125,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9306281417608261
+        "separacion": 0.967046070098877
       }
     },
     "car": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.4529161751270294
+        "separacion": 0.4413795664906502
       },
       "negativo": {
-        "compat_max": 0.61796875,
+        "compat_max": 0.62578125,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9310183972120285
+        "separacion": 0.9451232075691223
       }
     },
     "cow": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.3099256828427315
+        "separacion": 0.310817052423954
       },
       "negativo": {
-        "compat_max": 0.61328125,
+        "compat_max": 0.61640625,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9519463092088699
+        "separacion": 0.9490078151226043
       }
     },
     "cup": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.42567830681800845
+        "separacion": 0.42070063650608064
       },
       "negativo": {
-        "compat_max": 0.60546875,
+        "compat_max": 0.5953125,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9459336638450623
+        "separacion": 0.9413581907749176
       }
     },
     "dog": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.4177530661225319
+        "separacion": 0.4194832772016525
       },
       "negativo": {
-        "compat_max": 0.60859375,
+        "compat_max": 0.61171875,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9425724983215332
+        "separacion": 0.9473188519477844
       }
     },
     "horse": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.3541872799396515
+        "separacion": 0.35124231576919557
       },
       "negativo": {
-        "compat_max": 0.60234375,
+        "compat_max": 0.61640625,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9542967021465302
+        "separacion": 0.9497831672430038
       }
     },
     "pear": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.3436461746692657
+        "separacion": 0.3487859651446342
       },
       "negativo": {
-        "compat_max": 0.62890625,
+        "compat_max": 0.6265625,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9437083721160888
+        "separacion": 0.9565591990947724
       }
     },
     "tomato": {
       "positivo": {
         "compat_max": 1.0,
         "agentes_sobre_90pct": 1.0,
-        "separacion": 0.34719948321580885
+        "separacion": 0.34034700244665145
       },
       "negativo": {
-        "compat_max": 0.603125,
+        "compat_max": 0.6453125,
         "agentes_sobre_90pct": 0.0,
-        "separacion": 0.9524450540542603
+        "separacion": 0.9363322079181671
       }
     }
   },
@@ -324,7 +324,7 @@
     0.2431640625
   ],
   "propio_en_cara_negativa": {
-    "aciertos": 1,
+    "aciertos": 4,
     "sorteos": 160,
     "azar": 0.125
   },
@@ -384,82 +384,82 @@
     {
       "registros_por_agente": 2,
       "niveles_vivos_por_coordenada": 1.58203125,
-      "dispersion_entre_sorteos": 8.024556159973145,
-      "d_a_instancia_mas_cercana": 7.3567858159542086,
+      "dispersion_entre_sorteos": 8.342884063720703,
+      "d_a_instancia_mas_cercana": 7.271146512031555,
       "acierto": "80/80",
-      "separacion": 0.35607616901397704
+      "separacion": 0.35852122101932765
     },
     {
       "registros_por_agente": 4,
       "niveles_vivos_por_coordenada": 2.60546875,
-      "dispersion_entre_sorteos": 14.948829650878906,
-      "d_a_instancia_mas_cercana": 11.973500150442124,
+      "dispersion_entre_sorteos": 15.439024925231934,
+      "d_a_instancia_mas_cercana": 12.070948392152786,
       "acierto": "80/80",
-      "separacion": 0.4135736256837845
+      "separacion": 0.40259695928543804
     },
     {
       "registros_por_agente": 8,
       "niveles_vivos_por_coordenada": 4.091796875,
-      "dispersion_entre_sorteos": 21.448970794677734,
-      "d_a_instancia_mas_cercana": 15.910428607463837,
+      "dispersion_entre_sorteos": 22.352447509765625,
+      "d_a_instancia_mas_cercana": 16.055825960636138,
       "acierto": "80/80",
-      "separacion": 0.45082433298230173
+      "separacion": 0.416508150100708
     },
     {
       "registros_por_agente": 16,
       "niveles_vivos_por_coordenada": 6.021484375,
-      "dispersion_entre_sorteos": 26.71742057800293,
-      "d_a_instancia_mas_cercana": 19.03439873456955,
+      "dispersion_entre_sorteos": 26.144784927368164,
+      "d_a_instancia_mas_cercana": 18.455553269386293,
       "acierto": "80/80",
-      "separacion": 0.432732480764389
+      "separacion": 0.38145775645971297
     },
     {
       "registros_por_agente": 32,
       "niveles_vivos_por_coordenada": 7.529296875,
-      "dispersion_entre_sorteos": 28.559682846069336,
-      "d_a_instancia_mas_cercana": 20.560215330123903,
+      "dispersion_entre_sorteos": 27.663921356201172,
+      "d_a_instancia_mas_cercana": 18.951733243465423,
       "acierto": "80/80",
-      "separacion": 0.4724810473620892
+      "separacion": 0.3786698248237371
     },
     {
       "registros_por_agente": 64,
       "niveles_vivos_por_coordenada": 8.642578125,
-      "dispersion_entre_sorteos": 30.24230194091797,
-      "d_a_instancia_mas_cercana": 21.631183481216432,
+      "dispersion_entre_sorteos": 28.187026977539062,
+      "d_a_instancia_mas_cercana": 19.55256781578064,
       "acierto": "80/80",
-      "separacion": 0.4962450198829174
+      "separacion": 0.3835413381457329
     },
     {
       "registros_por_agente": 128,
       "niveles_vivos_por_coordenada": 9.62890625,
-      "dispersion_entre_sorteos": 32.74279022216797,
-      "d_a_instancia_mas_cercana": 23.22913227081299,
+      "dispersion_entre_sorteos": 29.088512420654297,
+      "d_a_instancia_mas_cercana": 19.83661034107208,
       "acierto": "80/80",
-      "separacion": 0.5268583960831166
+      "separacion": 0.3871019959449768
     },
     {
       "registros_por_agente": 256,
       "niveles_vivos_por_coordenada": 10.431640625,
-      "dispersion_entre_sorteos": 34.53468322753906,
-      "d_a_instancia_mas_cercana": 24.54823088645935,
+      "dispersion_entre_sorteos": 29.246871948242188,
+      "d_a_instancia_mas_cercana": 20.147566890716554,
       "acierto": "80/80",
-      "separacion": 0.5485807031393051
+      "separacion": 0.38605368956923486
     },
     {
       "registros_por_agente": 512,
       "niveles_vivos_por_coordenada": 11.0390625,
-      "dispersion_entre_sorteos": 36.00560760498047,
-      "d_a_instancia_mas_cercana": 25.494206190109253,
+      "dispersion_entre_sorteos": 29.11040496826172,
+      "d_a_instancia_mas_cercana": 20.17107012271881,
       "acierto": "80/80",
-      "separacion": 0.5638678472489118
+      "separacion": 0.38561746999621394
     },
     {
       "registros_por_agente": 800,
       "niveles_vivos_por_coordenada": 11.341796875,
-      "dispersion_entre_sorteos": 36.35869598388672,
-      "d_a_instancia_mas_cercana": 25.7553466796875,
-      "acierto": "79/80",
-      "separacion": 0.60471106544137
+      "dispersion_entre_sorteos": 29.501968383789062,
+      "d_a_instancia_mas_cercana": 20.503079688549043,
+      "acierto": "80/80",
+      "separacion": 0.38844461292028426
     }
   ]
 }

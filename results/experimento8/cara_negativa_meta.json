@@ -4,20 +4,20 @@
     "directorio_de": "car",
     "positivo": {
       "clase": "apple",
-      "separacion": 0.3327067196369171
+      "separacion": 0.3367935121059418
     },
     "negativo": {
       "distribucion": {
         "car": 2,
-        "cow": 4,
-        "cup": 2,
-        "dog": 1,
-        "horse": 7,
+        "cow": 7,
+        "cup": 1,
+        "dog": 4,
+        "horse": 2,
         "pear": 2,
         "tomato": 2
       },
       "devuelve_la_propia": 0,
-      "separacion_media": 0.960003662109375,
+      "separacion_media": 0.9528569996356964,
       "sorteos": 20
     }
   },
@@ -26,21 +26,20 @@
     "directorio_de": "cow",
     "positivo": {
       "clase": "car",
-      "separacion": 0.4730355739593506
+      "separacion": 0.42003151774406433
     },
     "negativo": {
       "distribucion": {
-        "apple": 3,
-        "car": 1,
-        "cow": 4,
-        "cup": 3,
-        "dog": 4,
-        "horse": 1,
+        "apple": 5,
+        "cow": 1,
+        "cup": 1,
+        "dog": 7,
+        "horse": 2,
         "pear": 3,
         "tomato": 1
       },
-      "devuelve_la_propia": 1,
-      "separacion_media": 0.9543597638607025,
+      "devuelve_la_propia": 0,
+      "separacion_media": 0.9531617611646652,
       "sorteos": 20
     }
   },
@@ -49,20 +48,20 @@
     "directorio_de": "cup",
     "positivo": {
       "clase": "cow",
-      "separacion": 0.35706883668899536
+      "separacion": 0.2721787989139557
     },
     "negativo": {
       "distribucion": {
-        "apple": 3,
+        "apple": 4,
         "car": 3,
         "cup": 2,
-        "dog": 6,
+        "dog": 5,
         "horse": 2,
-        "pear": 3,
-        "tomato": 1
+        "pear": 2,
+        "tomato": 2
       },
       "devuelve_la_propia": 0,
-      "separacion_media": 0.9519160985946655,
+      "separacion_media": 0.9473318785429001,
       "sorteos": 20
     }
   },
@@ -71,20 +70,20 @@
     "directorio_de": "dog",
     "positivo": {
       "clase": "cup",
-      "separacion": 0.44025638699531555
+      "separacion": 0.45043453574180603
     },
     "negativo": {
       "distribucion": {
-        "apple": 1,
+        "apple": 4,
         "car": 1,
-        "cow": 4,
+        "cow": 1,
         "dog": 6,
-        "horse": 4,
-        "pear": 2,
+        "horse": 3,
+        "pear": 3,
         "tomato": 2
       },
       "devuelve_la_propia": 0,
-      "separacion_media": 0.9299849092960357,
+      "separacion_media": 0.9584747850894928,
       "sorteos": 20
     }
   },
@@ -93,21 +92,21 @@
     "directorio_de": "horse",
     "positivo": {
       "clase": "dog",
-      "separacion": 0.4156613051891327
+      "separacion": 0.4452144205570221
     },
     "negativo": {
       "distribucion": {
-        "apple": 2,
-        "car": 4,
+        "apple": 1,
+        "car": 5,
         "cow": 3,
         "cup": 2,
         "dog": 1,
         "horse": 3,
-        "pear": 2,
-        "tomato": 3
+        "pear": 4,
+        "tomato": 1
       },
       "devuelve_la_propia": 1,
-      "separacion_media": 0.9489069432020187,
+      "separacion_media": 0.9618821501731872,
       "sorteos": 20
     }
   },
@@ -116,21 +115,20 @@
     "directorio_de": "pear",
     "positivo": {
       "clase": "horse",
-      "separacion": 0.395534873008728
+      "separacion": 0.3692611753940582
     },
     "negativo": {
       "distribucion": {
-        "apple": 5,
-        "car": 3,
-        "cow": 2,
+        "apple": 4,
+        "car": 1,
+        "cow": 1,
         "cup": 2,
-        "dog": 2,
-        "horse": 1,
-        "pear": 4,
-        "tomato": 1
+        "dog": 7,
+        "horse": 2,
+        "pear": 3
       },
-      "devuelve_la_propia": 1,
-      "separacion_media": 0.9580469936132431,
+      "devuelve_la_propia": 2,
+      "separacion_media": 0.9560170203447342,
       "sorteos": 20
     }
   },
@@ -139,20 +137,19 @@
     "directorio_de": "tomato",
     "positivo": {
       "clase": "pear",
-      "separacion": 0.3708721697330475
+      "separacion": 0.35626378655433655
     },
     "negativo": {
       "distribucion": {
-        "apple": 3,
+        "apple": 1,
         "car": 2,
         "cow": 3,
         "cup": 1,
-        "dog": 6,
-        "horse": 3,
-        "tomato": 2
+        "dog": 7,
+        "horse": 6
       },
       "devuelve_la_propia": 0,
-      "separacion_media": 0.9552221536636353,
+      "separacion_media": 0.9508940726518631,
       "sorteos": 20
     }
   },
@@ -161,19 +158,19 @@
     "directorio_de": "apple",
     "positivo": {
       "clase": "tomato",
-      "separacion": 0.3688134253025055
+      "separacion": 0.36385151743888855
     },
     "negativo": {
       "distribucion": {
-        "apple": 1,
+        "apple": 5,
         "cow": 1,
-        "cup": 3,
-        "dog": 13,
-        "horse": 1,
+        "cup": 1,
+        "dog": 6,
+        "horse": 6,
         "pear": 1
       },
       "devuelve_la_propia": 0,
-      "separacion_media": 0.9476693451404572,
+      "separacion_media": 0.9472677350044251,
       "sorteos": 20
     }
   }
