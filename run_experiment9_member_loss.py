@@ -291,7 +291,9 @@ def run_text(agents, bank, judge, decoder, quick=False):
                         else live_levels_lived(agents[CLASSES[sub_idx]], it["cues"]))
         # dependencia de la pista: dispersión entre consultas distintas (un
         # sorteo por consulta) contra dispersión entre sorteos de la misma
-        # consulta; y razón F = var(medias por consulta) / (var dentro / REPS)
+        # consulta; y razón F = var(medias por consulta) / (var dentro / REPS),
+        # con las dos varianzas insesgadas (Bessel: G-1 y REPS-1). Bajo el
+        # nulo de independencia de la pista, E[F] = 1.
         dep = {}
         for p in POLICIES:
             groups = [g for g in per_query[p] if len(g) > 1]
@@ -300,8 +302,9 @@ def run_text(agents, bank, judge, decoder, quick=False):
             entre = spread([g[0] for g in groups])
             if len(groups) > 1:
                 means = np.stack([g.mean(axis=0) for g in groups])
-                var_b = float(((means - means.mean(axis=0)) ** 2).sum(axis=1).mean())
-                var_w = float(np.mean([((g - g.mean(axis=0)) ** 2).sum(axis=1).mean()
+                G = len(groups)
+                var_b = float(((means - means.mean(axis=0)) ** 2).sum(axis=1).sum() / (G - 1))
+                var_w = float(np.mean([((g - g.mean(axis=0)) ** 2).sum(axis=1).sum() / (len(g) - 1)
                                        for g in groups]))
                 F = var_b / (var_w / REPS) if var_w > 0 else float("nan")
             else:
