@@ -219,12 +219,19 @@ class DirectoryMemory:
         return winner, total
 
     def _identity_cue(self, agent_idx: int) -> np.ndarray:
+        """Pista de identidad para leer el directorio al reves: 1 en el agente
+        k y nan (indefinido) en los demas. Un 0 explicito en los demas no es
+        neutro: el registro es un producto exterior y la cara 'no gano' de
+        cada otro agente carga toda la masa ajena, asi que la columna de
+        muestreo quedaria en 6*N_all + 2*N_k en vez de N_k. Con nan la
+        proyeccion salta esas coordenadas y la lectura es la distribucion que
+        k registro como ganador."""
         k = int(agent_idx)
         if not 0 <= k < self._n_agents:
             raise ValueError(
                 f"agent_idx={agent_idx} fuera de rango [0, {self._n_agents}).")
-        cue = np.zeros(self._n_agents, dtype=np.int32)
-        cue[k] = 1
+        cue = np.full(self._n_agents, np.nan)
+        cue[k] = 1.0
         return cue
 
     def domain_projection(self, agent_idx: int) -> np.ndarray:
