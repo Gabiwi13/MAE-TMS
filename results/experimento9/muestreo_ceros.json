@@ -1,0 +1,1058 @@
+{
+ "condicion": "ceros",
+ "semillas": [
+  1000,
+  1001,
+  1002,
+  1003,
+  1004,
+  1005,
+  1006,
+  1007,
+  1008,
+  1009,
+  1010,
+  1011,
+  1012,
+  1013,
+  1014,
+  1015,
+  1016,
+  1017,
+  1018,
+  1019
+ ],
+ "consultas_ruteadas": {
+  "apple": 35,
+  "car": 23,
+  "cow": 31,
+  "cup": 35,
+  "dog": 23,
+  "horse": 22,
+  "pear": 19,
+  "tomato": 41
+ },
+ "descripcion": [
+  {
+   "semilla": 1000,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.683860724312918,
+    "dispersion_entre_consultas": 34.55516052246094,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.554906928020976,
+    "dispersion_entre_consultas": 36.602943420410156,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.147513112714215,
+    "dispersion_entre_consultas": 31.047483444213867,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.1445989881243,
+    "dispersion_entre_consultas": 35.969058990478516,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.445367564325746,
+    "dispersion_entre_consultas": 35.555538177490234,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.21862940354781,
+    "dispersion_entre_consultas": 29.462039947509766,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.260314339085628,
+    "dispersion_entre_consultas": 29.618732452392578,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.382963924873167,
+    "dispersion_entre_consultas": 28.238204956054688,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1001,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.80974360874721,
+    "dispersion_entre_consultas": 34.561180114746094,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.763609761777133,
+    "dispersion_entre_consultas": 36.38113784790039,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.30722987267279,
+    "dispersion_entre_consultas": 31.813457489013672,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.843664005824497,
+    "dispersion_entre_consultas": 35.233341217041016,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.107160070668098,
+    "dispersion_entre_consultas": 35.138545989990234,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.650596011768688,
+    "dispersion_entre_consultas": 30.149232864379883,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.0218919452868,
+    "dispersion_entre_consultas": 29.397144317626953,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.552833371046113,
+    "dispersion_entre_consultas": 28.944583892822266,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1002,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.274303109305247,
+    "dispersion_entre_consultas": 35.25788116455078,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.290469542793605,
+    "dispersion_entre_consultas": 36.7138671875,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.623695435062533,
+    "dispersion_entre_consultas": 30.77947235107422,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.660316794259206,
+    "dispersion_entre_consultas": 35.382057189941406,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.042474414991297,
+    "dispersion_entre_consultas": 35.157432556152344,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.980999773198906,
+    "dispersion_entre_consultas": 29.388246536254883,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.43761594671952,
+    "dispersion_entre_consultas": 30.475648880004883,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.169135163470013,
+    "dispersion_entre_consultas": 28.082338333129883,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1003,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.365257208687918,
+    "dispersion_entre_consultas": 34.06752014160156,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 25.734982117362645,
+    "dispersion_entre_consultas": 35.16400146484375,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.191806977795018,
+    "dispersion_entre_consultas": 30.88209342956543,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.659869221278598,
+    "dispersion_entre_consultas": 35.35584259033203,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.645533022673234,
+    "dispersion_entre_consultas": 35.22648620605469,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.195042089982465,
+    "dispersion_entre_consultas": 29.86553192138672,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.141252618086966,
+    "dispersion_entre_consultas": 30.13758659362793,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.158957272041135,
+    "dispersion_entre_consultas": 28.244407653808594,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1004,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.63426230294364,
+    "dispersion_entre_consultas": 34.211021423339844,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.015433518782906,
+    "dispersion_entre_consultas": 35.503814697265625,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.762033400997037,
+    "dispersion_entre_consultas": 31.015810012817383,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.1859740121024,
+    "dispersion_entre_consultas": 35.914703369140625,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.288242423016094,
+    "dispersion_entre_consultas": 33.727638244628906,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.302752408114348,
+    "dispersion_entre_consultas": 29.39678955078125,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 20.86925586901213,
+    "dispersion_entre_consultas": 29.82286834716797,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.396208274655226,
+    "dispersion_entre_consultas": 28.06908416748047,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1005,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.71309541974749,
+    "dispersion_entre_consultas": 34.58955001831055,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.21031852390455,
+    "dispersion_entre_consultas": 35.84584045410156,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.27800787648847,
+    "dispersion_entre_consultas": 31.41498565673828,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.584020832606726,
+    "dispersion_entre_consultas": 36.42351150512695,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.407550811767578,
+    "dispersion_entre_consultas": 34.99628829956055,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.04636504433372,
+    "dispersion_entre_consultas": 29.16215705871582,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.873573805156507,
+    "dispersion_entre_consultas": 30.81066131591797,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.518525053815143,
+    "dispersion_entre_consultas": 28.383651733398438,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1006,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.096136256626675,
+    "dispersion_entre_consultas": 34.3626823425293,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.04539149740468,
+    "dispersion_entre_consultas": 35.661582946777344,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.392737603956654,
+    "dispersion_entre_consultas": 30.500974655151367,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.998023659842357,
+    "dispersion_entre_consultas": 35.81204605102539,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.228000889653746,
+    "dispersion_entre_consultas": 34.16372299194336,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.07908023487438,
+    "dispersion_entre_consultas": 29.652910232543945,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.451794875295537,
+    "dispersion_entre_consultas": 29.928619384765625,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.429475086491284,
+    "dispersion_entre_consultas": 28.244976043701172,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1007,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.766512244088307,
+    "dispersion_entre_consultas": 34.74470138549805,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.79173121245011,
+    "dispersion_entre_consultas": 36.97136306762695,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.379926312354304,
+    "dispersion_entre_consultas": 31.22953224182129,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.179414422171458,
+    "dispersion_entre_consultas": 35.820884704589844,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.768416694972824,
+    "dispersion_entre_consultas": 34.47332000732422,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.167445876381613,
+    "dispersion_entre_consultas": 29.54969024658203,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.35010217365466,
+    "dispersion_entre_consultas": 30.387649536132812,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.297208786010742,
+    "dispersion_entre_consultas": 28.121179580688477,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1008,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.19893248421805,
+    "dispersion_entre_consultas": 35.402191162109375,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.57042810191279,
+    "dispersion_entre_consultas": 36.19972229003906,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.839298309818393,
+    "dispersion_entre_consultas": 30.685165405273438,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.869453593662808,
+    "dispersion_entre_consultas": 35.43722915649414,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.9401796589727,
+    "dispersion_entre_consultas": 34.90156936645508,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.3935323195024,
+    "dispersion_entre_consultas": 30.12396812438965,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 20.623512067292864,
+    "dispersion_entre_consultas": 29.594554901123047,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.40789455320777,
+    "dispersion_entre_consultas": 28.202848434448242,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1009,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.82843813214983,
+    "dispersion_entre_consultas": 34.92345428466797,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.397981063179348,
+    "dispersion_entre_consultas": 36.76662063598633,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.20860364360194,
+    "dispersion_entre_consultas": 31.569931030273438,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.940602820260185,
+    "dispersion_entre_consultas": 35.53853225708008,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.07144878221595,
+    "dispersion_entre_consultas": 33.874637603759766,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.431935136968438,
+    "dispersion_entre_consultas": 29.742876052856445,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 20.751590628372995,
+    "dispersion_entre_consultas": 29.244232177734375,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.59028518490675,
+    "dispersion_entre_consultas": 28.77276039123535,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1010,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.38750468662807,
+    "dispersion_entre_consultas": 35.266815185546875,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.51379270138948,
+    "dispersion_entre_consultas": 36.36056900024414,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.678929359682144,
+    "dispersion_entre_consultas": 30.765335083007812,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.15672035217285,
+    "dispersion_entre_consultas": 35.957523345947266,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.166665284529977,
+    "dispersion_entre_consultas": 35.171634674072266,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.829635966907848,
+    "dispersion_entre_consultas": 28.597780227661133,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.52495765686035,
+    "dispersion_entre_consultas": 30.206899642944336,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.37114799313429,
+    "dispersion_entre_consultas": 28.063671112060547,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1011,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.563609640938896,
+    "dispersion_entre_consultas": 33.90650939941406,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.487375674040422,
+    "dispersion_entre_consultas": 36.310935974121094,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.13125462685862,
+    "dispersion_entre_consultas": 31.767690658569336,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.694752665928434,
+    "dispersion_entre_consultas": 35.0119514465332,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.34265841608462,
+    "dispersion_entre_consultas": 35.72713088989258,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.94042647968639,
+    "dispersion_entre_consultas": 28.905027389526367,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 20.669876299406354,
+    "dispersion_entre_consultas": 28.611967086791992,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.28783379531488,
+    "dispersion_entre_consultas": 28.111404418945312,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1012,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.17850080217634,
+    "dispersion_entre_consultas": 35.316890716552734,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.028591238934062,
+    "dispersion_entre_consultas": 36.2768669128418,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.354360149752708,
+    "dispersion_entre_consultas": 30.781620025634766,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.72513324192592,
+    "dispersion_entre_consultas": 34.93351364135742,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.80402241582456,
+    "dispersion_entre_consultas": 35.0380973815918,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.47992116754705,
+    "dispersion_entre_consultas": 28.603515625,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.184931805259303,
+    "dispersion_entre_consultas": 30.212453842163086,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.143424429544588,
+    "dispersion_entre_consultas": 28.074438095092773,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1013,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.761531938825335,
+    "dispersion_entre_consultas": 34.71379470825195,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.28547709921132,
+    "dispersion_entre_consultas": 35.98593521118164,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.973501390026463,
+    "dispersion_entre_consultas": 30.628414154052734,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.168631090436662,
+    "dispersion_entre_consultas": 36.13949203491211,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.284839132557746,
+    "dispersion_entre_consultas": 34.26272201538086,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.834327264265582,
+    "dispersion_entre_consultas": 28.703128814697266,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.601865366885537,
+    "dispersion_entre_consultas": 30.31366539001465,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.420424275281952,
+    "dispersion_entre_consultas": 28.37249755859375,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1014,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.801690455845424,
+    "dispersion_entre_consultas": 36.337310791015625,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.65756897304369,
+    "dispersion_entre_consultas": 36.53036880493164,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.48763724296324,
+    "dispersion_entre_consultas": 30.240644454956055,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.098197991507394,
+    "dispersion_entre_consultas": 36.28841018676758,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.25874428127123,
+    "dispersion_entre_consultas": 35.43906021118164,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.014419989152387,
+    "dispersion_entre_consultas": 28.888587951660156,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.759308363261976,
+    "dispersion_entre_consultas": 29.79947853088379,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.61906851791754,
+    "dispersion_entre_consultas": 28.7506046295166,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1015,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.094386563982283,
+    "dispersion_entre_consultas": 34.980995178222656,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.684325757233992,
+    "dispersion_entre_consultas": 36.67926788330078,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 22.10332888941611,
+    "dispersion_entre_consultas": 30.914026260375977,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.878161893572127,
+    "dispersion_entre_consultas": 35.53936767578125,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.467627235080887,
+    "dispersion_entre_consultas": 34.66053009033203,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.062054200605914,
+    "dispersion_entre_consultas": 29.425628662109375,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.533239063463714,
+    "dispersion_entre_consultas": 29.960235595703125,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.944703497537752,
+    "dispersion_entre_consultas": 28.72705078125,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1016,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.891467612130302,
+    "dispersion_entre_consultas": 34.981746673583984,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.722447934358016,
+    "dispersion_entre_consultas": 37.06489562988281,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.14169625313051,
+    "dispersion_entre_consultas": 30.01641273498535,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.662674931117465,
+    "dispersion_entre_consultas": 35.36189651489258,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 25.18685432102369,
+    "dispersion_entre_consultas": 35.97813034057617,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.813377467068758,
+    "dispersion_entre_consultas": 29.14534568786621,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.63669907419305,
+    "dispersion_entre_consultas": 30.63037109375,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.439020203381048,
+    "dispersion_entre_consultas": 27.97981071472168,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1017,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.580585970197404,
+    "dispersion_entre_consultas": 34.382720947265625,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.271056714265242,
+    "dispersion_entre_consultas": 35.91850662231445,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.438826468683057,
+    "dispersion_entre_consultas": 30.48851203918457,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.022591945103237,
+    "dispersion_entre_consultas": 35.89508819580078,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.809199042942215,
+    "dispersion_entre_consultas": 35.035125732421875,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 21.458667928522285,
+    "dispersion_entre_consultas": 29.82863426208496,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 20.706867519177887,
+    "dispersion_entre_consultas": 29.35749053955078,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.32823427712045,
+    "dispersion_entre_consultas": 28.192434310913086,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1018,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 25.000629752022878,
+    "dispersion_entre_consultas": 35.00297546386719,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.227862399557363,
+    "dispersion_entre_consultas": 36.63943862915039,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.824219488328502,
+    "dispersion_entre_consultas": 31.449989318847656,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 26.120953805106026,
+    "dispersion_entre_consultas": 35.29646301269531,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.451905872510828,
+    "dispersion_entre_consultas": 34.77356719970703,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.512626041065563,
+    "dispersion_entre_consultas": 28.56342315673828,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.611433531108656,
+    "dispersion_entre_consultas": 30.242366790771484,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 21.088914917736517,
+    "dispersion_entre_consultas": 29.526268005371094,
+    "acierto_nn": 1.0
+   }
+  },
+  {
+   "semilla": 1019,
+   "apple": {
+    "responde": 1.0,
+    "d_nn": 24.775379398890905,
+    "dispersion_entre_consultas": 34.993377685546875,
+    "acierto_nn": 1.0
+   },
+   "car": {
+    "responde": 1.0,
+    "d_nn": 26.967404987501062,
+    "dispersion_entre_consultas": 36.820499420166016,
+    "acierto_nn": 1.0
+   },
+   "cow": {
+    "responde": 1.0,
+    "d_nn": 21.77859737027076,
+    "dispersion_entre_consultas": 31.167211532592773,
+    "acierto_nn": 1.0
+   },
+   "cup": {
+    "responde": 1.0,
+    "d_nn": 25.935908290318082,
+    "dispersion_entre_consultas": 35.2995719909668,
+    "acierto_nn": 1.0
+   },
+   "dog": {
+    "responde": 1.0,
+    "d_nn": 24.58220904806386,
+    "dispersion_entre_consultas": 34.87521743774414,
+    "acierto_nn": 1.0
+   },
+   "horse": {
+    "responde": 1.0,
+    "d_nn": 20.78293332186612,
+    "dispersion_entre_consultas": 28.829792022705078,
+    "acierto_nn": 1.0
+   },
+   "pear": {
+    "responde": 1.0,
+    "d_nn": 21.332289444772822,
+    "dispersion_entre_consultas": 30.519927978515625,
+    "acierto_nn": 1.0
+   },
+   "tomato": {
+    "responde": 1.0,
+    "d_nn": 20.496916654633313,
+    "dispersion_entre_consultas": 28.745603561401367,
+    "acierto_nn": 1.0
+   }
+  }
+ ],
+ "vivido": []
+}
