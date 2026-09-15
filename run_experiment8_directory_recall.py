@@ -87,12 +87,6 @@ plt.rcParams.update({
 
 # ---------- utilidades comunes ----------
 
-def onehot(idx: int) -> np.ndarray:
-    v = np.zeros(K, dtype=np.int32)
-    v[idx] = 1
-    return v
-
-
 def safe_mean(values) -> float:
     """Media ignorando NaN. Con f=0 el agente no presenció nada ajeno y la
     celda entera queda vacía: eso es un resultado, no un error."""
@@ -132,12 +126,10 @@ def decode_image(z: np.ndarray, decoder) -> np.ndarray:
     return img.cpu().permute(1, 2, 0).numpy()
 
 
-def recall_domain(ham, agent_idx: int):
-    """Identidad de agente -> pista latente. El directorio leído al revés."""
-    with contextlib.redirect_stdout(io.StringIO()):
-        z_q, recognized, _w, _p, _s = ham.recall_from_right(
-            onehot(agent_idx), weights=np.ones(K, dtype=float))
-    return z_q, bool(recognized)
+def recall_domain(mdir: DirectoryMemory, agent_idx: int):
+    """Identidad de agente -> pista latente. El directorio leído al revés,
+    con la operación declarada de la memoria (DirectoryMemory.recall_domain)."""
+    return mdir.recall_domain(agent_idx)
 
 
 def instance_image(cls: str, idx: int, splits) -> np.ndarray:
@@ -198,8 +190,8 @@ def figure_recovered_object():
         panels.append(decode_image(lived[1], decoder) if lived else None)
 
         # directorio: propio y de un no-especialista
-        z_own, ok_own = recall_domain(spec.mem_dir_R._ham, ci)
-        z_oth, ok_oth = recall_domain(nonspec.mem_dir_R._ham, ci)
+        z_own, ok_own = recall_domain(spec.mem_dir_R, ci)
+        z_oth, ok_oth = recall_domain(nonspec.mem_dir_R, ci)
         lat_own = dequantize_latent(z_own, g_min, g_max) if ok_own else None
         lat_oth = dequantize_latent(z_oth, g_min, g_max) if ok_oth else None
         panels.append(decode_image(lat_own, decoder) if ok_own else None)
@@ -269,23 +261,21 @@ def figure_draws(n_draws: int = 4):
     for ci, cls in enumerate(CLASSES):
         other = CLASSES[(ci + 1) % len(CLASSES)]
         nonspec = load_agent(other)
-        ham = nonspec.mem_dir_R._ham
+        mdir = nonspec.mem_dir_R
 
         panels = [np.asarray(Image.open(splits[cls]["train"][0])
                              .convert("RGB").resize((128, 128)),
                              dtype=np.float32) / 255.0]
         lats = []
         for _ in range(n_draws):
-            z_q, ok = recall_domain(ham, ci)
+            z_q, ok = recall_domain(mdir, ci)
             if ok:
                 lats.append(dequantize_latent(z_q, g_min, g_max))
                 panels.append(decode_image(lats[-1], decoder))
             else:
                 panels.append(None)
 
-        with contextlib.redirect_stdout(io.StringIO()):
-            proj = ham.project(ham.validate(onehot(ci), 1),
-                               np.ones(K, dtype=float), 1)
+        proj = mdir.domain_projection(ci)
         z_arg = dequantize_latent(np.argmax(proj, axis=1), g_min, g_max)
         panels.append(decode_image(z_arg, decoder))
 
@@ -498,12 +488,11 @@ def sweep_witnessed_fraction():
         counts = [int(d.agent_counts.sum()) for d in dirs]
 
         for ai in range(K):
-            ham = dirs[ai]._ham
             for bi in range(K):
                 ok = hit = 0
                 ratios = []
                 for _ in range(REPS):
-                    z_q, recognized = recall_domain(ham, bi)
+                    z_q, recognized = recall_domain(dirs[ai], bi)
                     if not recognized:
                         continue
                     ok += 1
@@ -597,7 +586,8 @@ def probes():
         all(np.array_equal(ref, rels[a]) for a in AGENT_LIST))
     del rels
     car = agents["car"]
-    ham_r, ham_l = car.mem_dir_R._ham, car.mem_dir._ham
+    mdir_r, mdir_l = car.mem_dir_R, car.mem_dir
+    ham_r, ham_l = mdir_r._ham, mdir_l._ham   # para las sondas con pistas explicitas
     print(f"  directorios idénticos entre agentes: {out['directorios_identicos']}")
 
     # 1b. las tres condiciones de la comparación, sobre el mismo clasificador:
@@ -615,11 +605,11 @@ def probes():
             if recognized:
                 tres["vivido"][0] += int(
                     classify(dequantize_latent(z_q, g_min, g_max)) == ai)
-        ham = ag.mem_dir_R._ham
+        mdir = ag.mem_dir_R
         for bi in range(K):
             key = "dir_propio" if bi == ai else "dir_ajeno"
             for _ in range(REPS if bi == ai else 2):
-                z_q, ok = recall_domain(ham, bi)
+                z_q, ok = recall_domain(mdir, bi)
                 tres[key][1] += 1
                 if ok:
                     tres[key][0] += int(
@@ -647,7 +637,7 @@ def probes():
         np.fill_diagonal(D, np.inf)
         dn, disp, zs = [], [], []
         for _ in range(REPS):
-            z_q, ok = recall_domain(ham_r, bi)
+            z_q, ok = recall_domain(mdir_r, bi)
             if not ok:
                 continue
             z = dequantize_latent(z_q, g_min, g_max)
@@ -665,16 +655,14 @@ def probes():
 
     # 4. superposición en los dos directorios
     sup = {}
-    for tag, ham, m in (("texto_300x16", ham_l, M_LABEL),
-                        ("vision_64x32", ham_r, Q_LATENT)):
+    for tag, mdir, m in (("texto_300x16", mdir_l, M_LABEL),
+                         ("vision_64x32", mdir_r, Q_LATENT)):
         per = {}
         for bi, b in enumerate(AGENT_LIST):
-            with contextlib.redirect_stdout(io.StringIO()):
-                proj = ham.project(ham.validate(onehot(bi), 1),
-                                   np.ones(K, dtype=float), 1)
+            proj = mdir.domain_projection(bi)
             adm = (proj > 0).sum(axis=1)
             per[b] = {"niveles_vivos_por_coordenada": float(adm.mean()),
-                      "niveles": m, "coordenadas": int(ham.n),
+                      "niveles": m, "coordenadas": int(mdir._n),
                       "log10_patrones_admitidos": float(
                           np.sum(np.log10(np.maximum(adm, 1))))}
         sup[tag] = per
@@ -707,9 +695,11 @@ def probes():
         return float(adm.mean()), int(np.count_nonzero(adm == 0))
 
     bi = 0
+    one_hot_explicito = np.zeros(K, dtype=float)
+    one_hot_explicito[bi] = 1.0
     lecturas = {}
     for tag, cue in (("positivo_solo", cue_face(bi, 1)),
-                     ("one_hot", onehot(bi).astype(float)),
+                     ("one_hot", one_hot_explicito),
                      ("negativo_solo", cue_face(bi, 0)),
                      ("negativo_de_los_ocho", np.zeros(K, dtype=float))):
         n, vac = niveles(ham_r, cue)
@@ -791,16 +781,13 @@ def probes():
         for ci, c in enumerate(CLASSES):
             for z_q in qz[c][:N]:
                 d.register(z_q, ci)
-        ham = d._ham
         adm, disp, dnn, seps, hit, tot = [], [], [], [], 0, 0
         for ci, c in enumerate(CLASSES):
-            with contextlib.redirect_stdout(io.StringIO()):
-                proj = ham.project(ham.validate(onehot(ci), 1),
-                                   np.ones(K, dtype=float), 1)
+            proj = d.domain_projection(ci)
             adm.append((proj > 0).sum(axis=1).mean())
             zs = []
             for _ in range(REPS):
-                z_q, ok = recall_domain(ham, ci)
+                z_q, ok = recall_domain(d, ci)
                 if not ok:
                     continue
                 z = dequantize_latent(z_q, g_min, g_max)
@@ -838,7 +825,12 @@ def main():
     ap.add_argument("--negative", action="store_true")
     ap.add_argument("--probes", action="store_true")
     ap.add_argument("--sweep", action="store_true")
+    ap.add_argument("--fractions", type=float, nargs="+", default=None,
+                    help="fracciones del barrido (por defecto FRACTIONS)")
     args = ap.parse_args()
+    if args.fractions is not None:
+        global FRACTIONS
+        FRACTIONS = tuple(args.fractions)
     run_all = not (args.figure or args.draws or args.negative
                    or args.probes or args.sweep)
     if args.figure or run_all:
