@@ -186,6 +186,36 @@ def same_as_official(agents):
     return ok
 
 
+CACHE_DIR = ROOT / "cache" / "exp11"
+
+
+def build_cache(cut):
+    """Las memorias no dependen de la semilla: se construyen una vez por corte.
+    Cada registro cuesta ~80 ms en hetero_lib, así que un corte completo tarda
+    unos 17 minutos; cargarlo del caché, segundos."""
+    import pickle
+    path = CACHE_DIR / f"N{cut}.pkl"
+    if path.exists():
+        return str(path)
+    t0 = time.time()
+    pool, seqs = load_pool()
+    specialists = build_specialists(pool, seqs, cut)
+    mono = build_monolithic(pool, seqs, cut)
+    control = same_as_official(specialists) if cut == 200 else None
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    with open(path, "wb") as f:
+        pickle.dump({"specialists": specialists, "mono": mono, "control": control},
+                    f, protocol=pickle.HIGHEST_PROTOCOL)
+    print(f"  cache N={cut} construido en {time.time()-t0:.0f}s", flush=True)
+    return str(path)
+
+
+def load_cache(cut):
+    import pickle
+    with open(CACHE_DIR / f"N{cut}.pkl", "rb") as f:
+        return pickle.load(f)
+
+
 # ---------- protocolo ----------
 
 def gate_accepts(agent_list, cues):
@@ -278,17 +308,16 @@ def run_job(args):
     rng = np.random.RandomState(seed)
     t0 = time.time()
 
-    pool, seqs = load_pool()
-    specialists = build_specialists(pool, seqs, cut)
-    mono = build_monolithic(pool, seqs, cut)
+    cached = load_cache(cut)
+    specialists, mono = cached["specialists"], cached["mono"]
     g_min, g_max = load_global_stats()
     judge = Judge(load_classifier(), g_min, g_max)
     centroids = np.stack([judge.instances[c].mean(axis=0) for c in CLASSES])
     meta = {"semilla": seed, "corte": cut,
             "registros_por_clase": VARIANTS * cut,
             "registros_monolitica": VARIANTS * cut * K}
-    if cut == 200 and seed == SEEDS[0]:
-        meta["control_igual_al_oficial"] = same_as_official(specialists)
+    if cached["control"] is not None:
+        meta["control_igual_al_oficial"] = cached["control"]
 
     tme = TME()
     train_set = set(train_idx)
@@ -296,13 +325,15 @@ def run_job(args):
     meta["formacion_texto"] = form_text_directories(specialists, tme, train, rng)
 
     rows, groups = [], {arm: [] for arm in ARMS}
+    n_done = 0
     for idx, it in enumerate(bank):
-        if not it["cues"]:
+        if not it["cues"] or idx in train_set:
             continue
-        banco = "formacion" if idx in train_set else "reservado"
+        banco = "reservado"
+        n_done += 1
+        if n_done % 40 == 0:
+            print(f"    s{seed} N{cut}: {n_done} consultas ({time.time()-t0:.0f}s)", flush=True)
         for arm in ARMS:
-            if arm == "T-protocolo" and banco != "reservado":
-                continue
             base = {"semilla": seed, "corte": cut, "brazo": arm, "banco": banco,
                     "query": it["query"], "truth": it["truth"]}
             if arm == "M":
@@ -502,7 +533,7 @@ def write_report(summary):
     L = ["# Experimento 11 — MAE monolítica contra sistema transactivo", "",
          f"Semillas: {summary['semillas']}. Cortes N (imágenes por clase, ×4 variantes): "
          f"{summary['cortes']}. Intervalos: bootstrap del 95% sobre las medias por semilla. "
-         "Banco: las consultas reservadas (no usadas para formar directorios). "
+         "Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. "
          "Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.", ""]
     if summary["control"]:
         ok = all(summary["control"].values())
@@ -649,6 +680,15 @@ def main():
         jobs = [(s, c, bank, train_idx, ood, img_pools, reps, shared, args.image)
                 for s in seeds for c in cuts]
         t0 = time.time()
+        missing = [c for c in cuts if not (CACHE_DIR / f"N{c}.pkl").exists()]
+        if missing:
+            print(f"Construyendo memorias de los cortes {missing}...", flush=True)
+            if args.workers > 1 and len(missing) > 1:
+                with Pool(processes=min(4, len(missing))) as pool:
+                    pool.map(build_cache, missing)
+            else:
+                for c in missing:
+                    build_cache(c)
         if args.workers > 1:
             with Pool(processes=min(args.workers, len(jobs)), maxtasksperchild=1) as pool:
                 pool.map(run_job, jobs, chunksize=1)
