@@ -216,6 +216,52 @@ def load_cache(cut):
         return pickle.load(f)
 
 
+# Las dos relaciones de cada hetero (86 MB cada una, 9 memorias por corte) se
+# comparten entre procesos en memoria compartida de solo lectura. Los procesos
+# reciben un esqueleto de los objetos sin esos arreglos y los reconectan.
+BIG_ATTRS = ("_relation", "_iota_relation")
+
+
+def share_cut(cut):
+    """Devuelve (esqueleto en bytes, lista de bloques, handles) para un corte."""
+    import pickle
+    from multiprocessing import shared_memory
+    cached = load_cache(cut)
+    agents = dict(cached["specialists"], monolitica=cached["mono"])
+    blocks, handles = [], []
+    for name, ag in agents.items():
+        mem = ag.mem_dom_H
+        with contextlib.redirect_stdout(io.StringIO()):
+            _ = mem.entropy          # actualiza iota_relation y entropías si hace falta
+        for attr in BIG_ATTRS:
+            arr = np.ascontiguousarray(getattr(mem, attr))
+            shm = shared_memory.SharedMemory(create=True, size=arr.nbytes)
+            view = np.ndarray(arr.shape, dtype=arr.dtype, buffer=shm.buf)
+            view[:] = arr
+            blocks.append((name, attr, shm.name, arr.shape, str(arr.dtype)))
+            handles.append(shm)
+            setattr(mem, attr, None)
+    skeleton = pickle.dumps({"agents": agents, "control": cached["control"]},
+                            protocol=pickle.HIGHEST_PROTOCOL)
+    return skeleton, blocks, handles
+
+
+def attach_cut(skeleton, blocks):
+    import pickle
+    from multiprocessing import shared_memory
+    data = pickle.loads(skeleton)
+    handles = []
+    for name, attr, shm_name, shape, dtype in blocks:
+        shm = shared_memory.SharedMemory(name=shm_name)
+        view = np.ndarray(shape, dtype=np.dtype(dtype), buffer=shm.buf)
+        view.flags.writeable = False
+        setattr(data["agents"][name].mem_dom_H, attr, view)
+        handles.append(shm)
+    mono = data["agents"].pop("monolitica")
+    return {"specialists": data["agents"], "mono": mono,
+            "control": data["control"], "_handles": handles}
+
+
 # ---------- protocolo ----------
 
 def gate_accepts(agent_list, cues):
@@ -302,13 +348,13 @@ def dependence(groups, reps):
 # ---------- un trabajo (semilla, corte) ----------
 
 def run_job(args):
-    seed, cut, bank, train_idx, ood, img_pools, reps, shared, do_image = args
+    seed, cut, bank, train_idx, ood, img_pools, reps, shared, do_image, shm = args
     random.seed(seed)
     np.random.seed(seed)
     rng = np.random.RandomState(seed)
     t0 = time.time()
 
-    cached = load_cache(cut)
+    cached = attach_cut(*shm) if shm is not None else load_cache(cut)
     specialists, mono = cached["specialists"], cached["mono"]
     g_min, g_max = load_global_stats()
     judge = Judge(load_classifier(), g_min, g_max)
@@ -677,8 +723,6 @@ def main():
         print(f"  formación {len(train_idx)} · reservadas {n_held} · fuera de dominio {len(ood)} · "
               f"cortes {cuts} · semillas {seeds} · sorteos {reps} · etiquetas compartidas {sorted(shared)}")
 
-        jobs = [(s, c, bank, train_idx, ood, img_pools, reps, shared, args.image)
-                for s in seeds for c in cuts]
         t0 = time.time()
         missing = [c for c in cuts if not (CACHE_DIR / f"N{c}.pkl").exists()]
         if missing:
@@ -690,11 +734,23 @@ def main():
                 for c in missing:
                     build_cache(c)
         if args.workers > 1:
-            with Pool(processes=min(args.workers, len(jobs)), maxtasksperchild=1) as pool:
-                pool.map(run_job, jobs, chunksize=1)
+            # Un corte a la vez: sus 9 memorias viven en memoria compartida y
+            # los procesos solo cargan el esqueleto. Los cortes van en el
+            # orden pedido.
+            for c in cuts:
+                skeleton, blocks, handles = share_cut(c)
+                jobs = [(s, c, bank, train_idx, ood, img_pools, reps, shared,
+                         args.image, (skeleton, blocks)) for s in seeds]
+                print(f"Corte N={c}: {len(jobs)} semillas en {min(args.workers, len(jobs))} procesos",
+                      flush=True)
+                with Pool(processes=min(args.workers, len(jobs)), maxtasksperchild=1) as pool:
+                    pool.map(run_job, jobs, chunksize=1)
+                for h in handles:
+                    h.close(); h.unlink()
         else:
-            for j in jobs:
-                run_job(j)
+            for s in seeds:
+                for c in cuts:
+                    run_job((s, c, bank, train_idx, ood, img_pools, reps, shared, args.image, None))
         print(f"Corridas terminadas en {(time.time()-t0)/60:.1f} min")
 
     summary = aggregate()
