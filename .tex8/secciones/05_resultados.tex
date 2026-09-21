@@ -371,6 +371,32 @@ la distribución acumulada en la memoria.
 \end{figure}
 
 % ---------------------------------------------------------------
+\subsection{Línea base: una sola EHAM con las ocho clases}
+
+Para medir qué aporta la partición en especialistas, se construyó una
+EHAM única (hetero y dos homo) con los mismos 6400 pares etiqueta--latente
+que reciben los ocho especialistas y se evaluó con las mismas operaciones
+(\texttt{recognize\_gated}, \texttt{recall\_from\_left}), sin ruteo. Se
+compararon tres brazos: la EHAM única, los especialistas con el agente
+elegido por la verdad de terreno (oráculo, un techo) y el protocolo
+transactivo completo, sobre las 171 consultas reservadas, diez semillas y
+cortes de 25 a 200 imágenes por clase. Los especialistas reconstruidos son
+bit a bit los modelos oficiales.
+
+Con 200 imágenes por clase, la EHAM única acierta la clase el 97.4\,\%
+(juez: vecino real más cercano) frente al 97.5\,\% del protocolo y al
+100\,\% del oráculo; pero su respuesta cae a 26.7 de la instancia real más
+cercana frente a 22.8 y 22.2, y la brecha crece con el contenido (2.0 con
+100 registros por clase, 4.5 con 800). Cuando la primera pista reconocida es
+una etiqueta compartida entre clases (\emph{fruit}, \emph{animal},
+\emph{red}), la EHAM única acierta la clase el 44\,\% y su patrón mezcla
+clases (73\,\% de las coordenadas de una sola clase); los especialistas,
+100\,\%. En imagen\,$\to$\,texto la EHAM única responde al 96\,\% de las
+imágenes de prueba frente al 79\,\% del especialista, y responde con un
+dominio ajeno el 8\,\% frente al 1\,\%. El protocolo queda 2.5 puntos por
+debajo del oráculo en todos los cortes: el precio del directorio. Tablas
+completas en \texttt{results/experimento11/}.
+
 \subsection{Costo computacional}
 \label{sec:costo}
 
