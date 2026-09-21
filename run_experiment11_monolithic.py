@@ -612,8 +612,40 @@ def load_runs():
     return list(runs.values())
 
 
+def exclusive_vocab():
+    """Etiquetas que solo aparecen en el vocabulario de una clase. El acierto
+    laxo (top-3 en el vocabulario del dominio) cuenta 'animal' para cow; el
+    estricto exige una etiqueta exclusiva."""
+    vocab = {c: set(json.loads((ROOT / f"label_vectors_{c}.json").read_text())) for c in CLASSES}
+    owner = {}
+    for c in CLASSES:
+        for w in vocab[c]:
+            owner.setdefault(w, set()).add(c)
+    return {c: {w for w in vocab[c] if len(owner[w]) == 1} for c in CLASSES}
+
+
+def image_strict(rows, excl):
+    """Añade a cada fila: hit_exclusivo, dominio por mayoría de etiquetas
+    exclusivas (dominio_ok) y si ese dominio es otro (otro_dominio)."""
+    for r in rows:
+        labels = r.get("labels") or []
+        r["hit_exclusivo"] = any(w in excl[r["truth"]] for w in labels)
+        votes = {}
+        for w in labels:
+            for c in CLASSES:
+                if w in excl[c]:
+                    votes[c] = votes.get(c, 0) + 1
+        dom = max(votes, key=votes.get) if votes else None
+        r["dominio_ok"] = dom == r["truth"]
+        r["otro_dominio"] = dom is not None and dom != r["truth"]
+    return rows
+
+
 def aggregate():
     raws = load_runs()
+    excl = exclusive_vocab()
+    for raw in raws:
+        image_strict(raw["imagen"], excl)
     cuts = sorted({r["meta"]["corte"] for r in raws})
     seeds = sorted({r["meta"]["semilla"] for r in raws})
     summary = {"cortes": cuts, "semillas": seeds, "texto": {}, "ood": {}, "imagen": {},
@@ -626,7 +658,9 @@ def aggregate():
         for arm in ARMS:
             key = f"{arm}|N={cut}"
             per_seed = {name: [] for name, _, _ in METRICS}
-            ood_seed, img_seed, f_seed, form_seed = [], {"acepta": [], "hit": [], "ruteo_ok": []}, [], []
+            ood_seed, f_seed, form_seed = [], [], []
+            img_seed = {k: [] for k in ("acepta", "responde", "hit", "hit_exclusivo",
+                                        "dominio_ok", "otro_dominio", "ruteo_ok")}
             for raw in raws:
                 if raw["meta"]["corte"] != cut:
                     continue
@@ -699,11 +733,18 @@ def write_report(summary):
             L += ["", f"Formación de directorios (T-protocolo): registradas {_fmt(f['registradas'], False)}, "
                   f"rechazadas {_fmt(f['rechazadas'], False)}, acierto temprano {_fmt(f['acierto_temprano'])}."]
         if f"M|N={cut}" in summary["imagen"]:
-            L += ["", "Imagen → texto (top-3 domain hit):", "", "| brazo | acepta | hit | ruteo ok |", "|---|---|---|---|"]
+            L += ["", "Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario "
+                  "del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de "
+                  "etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. "
+                  "Todo sobre el total de imágenes.", "",
+                  "| brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |",
+                  "|---|---|---|---|---|---|---|---|"]
             for arm in ARMS:
                 im = summary["imagen"].get(f"{arm}|N={cut}")
                 if im:
-                    L.append(f"| {arm} | {_fmt(im['acepta'])} | {_fmt(im['hit'])} | {_fmt(im['ruteo_ok'])} |")
+                    L.append(f"| {arm} | {_fmt(im['acepta'])} | {_fmt(im['responde'])} | {_fmt(im['hit'])} | "
+                             f"{_fmt(im['hit_exclusivo'])} | {_fmt(im['dominio_ok'])} | "
+                             f"{_fmt(im['otro_dominio'])} | {_fmt(im['ruteo_ok'])} |")
         L.append("")
     L += ["## Qué operaciones de la MAE usa cada brazo", "",
           "Ningún brazo tiene reglas propias: todos pasan por las mismas operaciones de la memoria.", "",
