@@ -18,6 +18,7 @@ import argparse
 import contextlib
 import io
 import json
+import os
 import random
 import sys
 import time
@@ -47,7 +48,7 @@ from run_experiment9_member_loss import (
 )
 from run_rejection_probe import PROBE_QUERIES
 
-OUT_DIR = ROOT / "results" / "experimento11"
+OUT_DIR = Path(os.environ.get("EXP11_OUT", ROOT / "results" / "experimento11"))
 RAW_DIR = OUT_DIR / "raw"
 LATENT_CACHE = ROOT / "results" / "experimento7" / "latents_cache.json"
 DATA_DIR = ROOT / "data" / "eth80"
@@ -351,22 +352,34 @@ def dependence(groups, reps):
 
 # ---------- un trabajo (semilla, corte) ----------
 
+CTX = {}
+
+
+def init_worker(cut, shm, bank, train_idx, ood, img_pools, reps, shared, do_image):
+    """Cada proceso recibe los datos y reconecta las memorias una sola vez; las
+    tareas quedan reducidas a (semilla, corte, trozo)."""
+    CTX.update(cut=cut, bank=bank, train_idx=train_idx, ood=ood, img_pools=img_pools,
+               reps=reps, shared=shared, do_image=do_image,
+               cached=attach_cut(*shm) if shm is not None else load_cache(cut))
+
+
 def run_job(args):
     """Un trozo de las consultas reservadas de una semilla y un corte. Los
     directorios de T-protocolo se forman igual en cada trozo (la formación es
     determinista dada la semilla); el muestreo del recall usa una semilla
     distinta por trozo y la entrada de cada consulta se sortea con su índice."""
-    (seed, cut, chunk, n_chunks, bank, train_idx, ood, img_pools, reps, shared,
-     do_image, shm) = args
+    seed, cut, chunk, n_chunks = args
     out = RAW_DIR / f"s{seed}_N{cut}_c{chunk}.json"
     if out.exists():
         return str(out)          # la corrida se puede reanudar
+    bank, train_idx, ood = CTX["bank"], CTX["train_idx"], CTX["ood"]
+    img_pools, reps, shared, do_image = CTX["img_pools"], CTX["reps"], CTX["shared"], CTX["do_image"]
     random.seed(seed * 100 + chunk)
     np.random.seed(seed * 100 + chunk)
     rng = np.random.RandomState(seed)
     t0 = time.time()
 
-    cached = attach_cut(*shm) if shm is not None else load_cache(cut)
+    cached = CTX["cached"]
     specialists, mono = cached["specialists"], cached["mono"]
     g_min, g_max = load_global_stats()
     judge = Judge(load_classifier(), g_min, g_max)
@@ -789,22 +802,27 @@ def main():
             # los procesos solo cargan el esqueleto. Los cortes van en el
             # orden pedido.
             for c in cuts:
+                jobs = [(s, c, k, args.chunks) for s in seeds for k in range(args.chunks)]
+                jobs = [j for j in jobs if not (RAW_DIR / f"s{j[0]}_N{c}_c{j[2]}.json").exists()]
+                if not jobs:
+                    print(f"Corte N={c}: ya completo", flush=True)
+                    continue
                 skeleton, blocks, handles = share_cut(c)
-                jobs = [(s, c, k, args.chunks, bank, train_idx, ood, img_pools, reps,
-                         shared, args.image, (skeleton, blocks))
-                        for s in seeds for k in range(args.chunks)]
-                print(f"Corte N={c}: {len(jobs)} trabajos en {min(args.workers, len(jobs))} procesos",
-                      flush=True)
-                with Pool(processes=min(args.workers, len(jobs))) as pool:
-                    pool.map(run_job, jobs, chunksize=1)
+                n_proc = min(args.workers, len(jobs))
+                print(f"Corte N={c}: {len(jobs)} trabajos en {n_proc} procesos", flush=True)
+                with Pool(processes=n_proc, initializer=init_worker,
+                          initargs=(c, (skeleton, blocks), bank, train_idx, ood, img_pools,
+                                    reps, shared, args.image)) as pool:
+                    for _ in pool.imap_unordered(run_job, jobs, chunksize=1):
+                        pass
                 for h in handles:
                     h.close(); h.unlink()
         else:
-            for s in seeds:
-                for c in cuts:
+            for c in cuts:
+                init_worker(c, None, bank, train_idx, ood, img_pools, reps, shared, args.image)
+                for s in seeds:
                     for k in range(args.chunks):
-                        run_job((s, c, k, args.chunks, bank, train_idx, ood, img_pools,
-                                 reps, shared, args.image, None))
+                        run_job((s, c, k, args.chunks))
         print(f"Corridas terminadas en {(time.time()-t0)/60:.1f} min")
 
     summary = aggregate()
