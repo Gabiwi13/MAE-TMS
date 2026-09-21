@@ -1,6 +1,6 @@
 # Experimento 11: lectura de los resultados
 
-**Corridas:** 21 de septiembre de 2026. Cortes N ∈ {25, 50, 100, 200} imágenes por clase (×4 variantes), 10 semillas (42–51), 3 sorteos por consulta, 171 consultas reservadas. Tablas completas con intervalos en `README.md`; criterio de refutación en `../../propuesta_fase5_mae_monolitica.md` §8. Control: en N=200 los especialistas reconstruidos son bit a bit los `agent_*.pkl` oficiales (8/8).
+**Corridas:** 21 de septiembre de 2026. Texto→imagen: cortes N ∈ {25, 50, 100, 200} imágenes por clase (×4 variantes), 10 semillas (42–51), 3 sorteos por consulta, 171 consultas reservadas. Tablas completas con intervalos en `README.md`; criterio de refutación en `../../propuesta_fase5_mae_monolitica.md` §8. Control: en N=200 los especialistas reconstruidos son bit a bit los `agent_*.pkl` oficiales (8/8).
 
 ## Las curvas
 
@@ -48,8 +48,29 @@ La tesis **no queda refutada**: el criterio exigía las tres condiciones a la ve
 
 **Dependencia de la pista.** F dentro de clase queda en 1.08 para el oráculo en N=200 (exp9 midió 1.14 para el especialista con las memorias oficiales, consistente). M da 1.36 y T-protocolo 1.75. En T-protocolo la F sube porque los ruteos equivocados producen respuestas de otra clase para algunas consultas, lo que infla la varianza entre consultas dentro de la clase; no es dependencia de la pista sino del destino.
 
+## Imagen → texto (corte 200, 5 semillas, 10 imágenes de test por clase)
+
+| medida (sobre 400 imágenes por brazo) | M | T-oráculo | T-protocolo |
+|---|---|---|---|
+| acepta (containment de la homo latente; T-protocolo: el directorio rutea) | 100 | 97.5 | 81.2 |
+| responde (recall_from_right reconoce) | 96.2 | 78.8 | 72.5 |
+| hit laxo (alguna etiqueta del vocabulario del dominio, etapa 7) | 95.2 | 78.8 | 72.5 |
+| hit estricto (alguna etiqueta exclusiva de la clase) | 93.0 | 78.5 | 71.5 |
+| dominio correcto por mayoría de etiquetas exclusivas | 88.2 | 77.8 | 71.2 |
+| dominio de otra clase | 8.0 | 1.0 | 1.2 |
+| precisión del dominio cuando responde | 91.7 | 98.7 | 98.2 |
+| ruteo correcto | — | — | 100 |
+
+Aquí la memoria única gana en cobertura y pierde en precisión, y las dos cosas salen del mismo mecanismo. El recall de un especialista exige que el latente de test quede contenido en su relación en las 64 coordenadas; el 21% de las imágenes de test caen fuera del soporte del especialista y no hay respuesta (es el rechazo residual del 25% que la tesis reporta en el hemisferio visual). La memoria única tiene la unión de los ocho soportes por coordenada, así que contiene al 96%. A cambio, el 8% de sus respuestas tienen dominio de otra clase: apple evocado como `vegetable`, `fruitwood` o `pear`, cup como `car`. Los especialistas se equivocan de dominio el 1%. El ruteo visual de T-protocolo no comete errores (0 falsos ruteos, como en la tesis), pero rechaza el 19% en el directorio y otro 9% en el recall.
+
+Lectura conjunta de los dos hemisferios: partir el contenido compra precisión y fidelidad, y cuesta cobertura. En texto→imagen la cobertura no se ve porque las pistas de texto son cortas y ambas arquitecturas contienen casi todas; en imagen→texto la pista tiene 64 coordenadas a 32 niveles y el containment estricto del especialista se nota.
+
+## Por clase y ejemplos
+
+`por_clase.md` desglosa clase, fidelidad y compat por clase y corte. Los errores de M se concentran donde se predijo: apple↔tomato (por `red` y `fruit`) y horse→cow (por `animal` y `mammal`); car, cow, cup, dog y pear quedan al 100%, igual que el especialista. `fig5_quimeras.png` muestra dos casos con la pista `red`: para la consulta de tomate M devuelve una manzana (compat 0.69, distancia 46 a una instancia real de tomate contra 17.9 del especialista) y para la de manzana una mezcla cuya instancia real más cercana es un caballo.
+
 ## Lo que este experimento no decide
 
 - La especificidad fuera de dominio (P3) necesita un banco mayor: 12 consultas dan 2 contra 3.
-- El hemisferio imagen→texto no se corrió (`--image` disponible; cada evocación tarda ~20 s).
+- El hemisferio imagen→texto se corrió en versión corta (un corte, 5 semillas, 80 imágenes de test). Con los cuatro cortes se vería si la cobertura del especialista sube con N como en exp6.
 - La comparación es a misma memoria y mismos datos (§3.1 y §3.2 de la propuesta). T usa ocho veces más celdas; ese costo no se compensa aquí con nada, se declara.

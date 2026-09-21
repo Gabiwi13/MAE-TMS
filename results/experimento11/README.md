@@ -108,6 +108,14 @@ Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 85.4 [85.4, 85.4].
 
+Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. Todo sobre el total de imágenes.
+
+| brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |
+|---|---|---|---|---|---|---|---|
+| M | 100.0 [100.0, 100.0] | 96.2 [96.2, 96.2] | 95.2 [95.0, 95.8] | 93.0 [92.5, 94.0] | 88.2 [85.8, 90.2] | 8.0 [6.0, 10.5] | — |
+| T-oraculo | 97.5 [97.5, 97.5] | 78.8 [78.8, 78.8] | 78.8 [78.8, 78.8] | 78.5 [78.0, 78.8] | 77.8 [76.2, 78.8] | 1.0 [0.0, 2.5] | — |
+| T-protocolo | 81.2 [81.2, 81.2] | 72.5 [72.5, 72.5] | 72.5 [72.5, 72.5] | 71.5 [70.7, 72.2] | 71.2 [70.5, 72.0] | 1.2 [0.5, 2.0] | 100.0 [100.0, 100.0] |
+
 ## Qué operaciones de la MAE usa cada brazo
 
 Ningún brazo tiene reglas propias: todos pasan por las mismas operaciones de la memoria.
