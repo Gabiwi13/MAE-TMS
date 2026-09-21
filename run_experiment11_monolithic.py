@@ -358,6 +358,9 @@ def run_job(args):
     distinta por trozo y la entrada de cada consulta se sortea con su índice."""
     (seed, cut, chunk, n_chunks, bank, train_idx, ood, img_pools, reps, shared,
      do_image, shm) = args
+    out = RAW_DIR / f"s{seed}_N{cut}_c{chunk}.json"
+    if out.exists():
+        return str(out)          # la corrida se puede reanudar
     random.seed(seed * 100 + chunk)
     np.random.seed(seed * 100 + chunk)
     rng = np.random.RandomState(seed)
@@ -487,7 +490,6 @@ def run_job(args):
     meta["segundos"] = round(time.time() - t0, 1)
     meta["trozo"] = chunk
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    out = RAW_DIR / f"s{seed}_N{cut}_c{chunk}.json"
     out.write_text(json.dumps({"meta": meta, "texto": rows, "ood": ood_rows,
                                "imagen": img_rows}, ensure_ascii=False))
     print(f"  s{seed} N{cut} trozo {chunk}: {len(mine)} consultas, {len(rows)} filas "
