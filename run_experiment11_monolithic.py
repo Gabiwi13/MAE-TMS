@@ -352,9 +352,14 @@ def dependence(groups, reps):
 # ---------- un trabajo (semilla, corte) ----------
 
 def run_job(args):
-    seed, cut, bank, train_idx, ood, img_pools, reps, shared, do_image, shm = args
-    random.seed(seed)
-    np.random.seed(seed)
+    """Un trozo de las consultas reservadas de una semilla y un corte. Los
+    directorios de T-protocolo se forman igual en cada trozo (la formación es
+    determinista dada la semilla); el muestreo del recall usa una semilla
+    distinta por trozo y la entrada de cada consulta se sortea con su índice."""
+    (seed, cut, chunk, n_chunks, bank, train_idx, ood, img_pools, reps, shared,
+     do_image, shm) = args
+    random.seed(seed * 100 + chunk)
+    np.random.seed(seed * 100 + chunk)
     rng = np.random.RandomState(seed)
     t0 = time.time()
 
@@ -374,15 +379,13 @@ def run_job(args):
     train = [bank[i] for i in train_idx]
     meta["formacion_texto"] = form_text_directories(specialists, tme, train, rng)
 
-    rows, groups = [], {arm: [] for arm in ARMS}
-    n_done = 0
-    for idx, it in enumerate(bank):
-        if not it["cues"] or idx in train_set:
-            continue
+    held_idx = [i for i, it in enumerate(bank) if it["cues"] and i not in train_set]
+    mine = held_idx[chunk::n_chunks]
+    rows = []
+    for idx in mine:
+        it = bank[idx]
         banco = "reservado"
-        n_done += 1
-        if n_done % 40 == 0:
-            print(f"    s{seed} N{cut}: {n_done} consultas ({time.time()-t0:.0f}s)", flush=True)
+        entry_rng = np.random.RandomState(seed * 1000 + idx)
         for arm in ARMS:
             base = {"semilla": seed, "corte": cut, "brazo": arm, "banco": banco,
                     "query": it["query"], "truth": it["truth"]}
@@ -394,7 +397,7 @@ def run_job(args):
                 acepta = gate_accepts(list(specialists.values()), it["cues"])
                 base.update({"destino": it["truth"], "ruteo_ok": True})
             else:
-                entry = AGENT_LIST[int(rng.randint(K))]
+                entry = AGENT_LIST[int(entry_rng.randint(K))]
                 with contextlib.redirect_stdout(io.StringIO()):
                     dest, _s, consulted, hops = route_transactive(
                         entry, specialists, [v for _, v in it["cues"]], modality="text")
@@ -421,20 +424,17 @@ def run_job(args):
                             "nn_cls": CLASSES[j["nn_cls"]],
                             "d_nn_truth": j["d_nn_target"], "d_nn_any": j["d_nn_any"],
                             "compat_max": cmax, "compat_ok": ccls == it["tidx"],
-                            "compat_cls": CLASSES[ccls]})
-                        zs.append(j["z"])
+                            "compat_cls": CLASSES[ccls],
+                            "z": [round(float(x), 4) for x in j["z"]]})
                         if r == 0:
                             row["niveles_vivos"] = live_levels_lived(responder, it["cues"])
                 rows.append(row)
-            if zs and banco == "reservado":
-                groups[arm].append(np.stack(zs))
-
-    meta["dependencia"] = {arm: dependence(groups[arm], reps) for arm in ARMS}
 
     ood_rows = []
-    for it in ood:
+    for k, it in enumerate(ood if chunk == 0 else []):
         if not it["cues"]:
             continue
+        entry_rng = np.random.RandomState(seed * 1000 + 900 + k)
         for arm in ARMS:
             if arm == "M":
                 acepta = gate_accepts([mono], it["cues"])
@@ -443,7 +443,7 @@ def run_job(args):
                 acepta = gate_accepts(list(specialists.values()), it["cues"])
                 dest = None
             else:
-                entry = AGENT_LIST[int(rng.randint(K))]
+                entry = AGENT_LIST[int(entry_rng.randint(K))]
                 with contextlib.redirect_stdout(io.StringIO()):
                     d, *_ = route_transactive(entry, specialists,
                                               [v for _, v in it["cues"]], modality="text")
@@ -452,7 +452,7 @@ def run_job(args):
                              "query": it["query"], "acepta": acepta, "destino": dest})
 
     img_rows = []
-    if do_image:
+    if do_image and chunk == 0:
         img_train, img_test = img_pools
         meta["formacion_imagen"] = form_image_directories(specialists, tme, img_train, rng)
         vectors = load_all_vectors()
@@ -485,12 +485,13 @@ def run_job(args):
                 img_rows.append(row)
 
     meta["segundos"] = round(time.time() - t0, 1)
+    meta["trozo"] = chunk
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    out = RAW_DIR / f"s{seed}_N{cut}.json"
+    out = RAW_DIR / f"s{seed}_N{cut}_c{chunk}.json"
     out.write_text(json.dumps({"meta": meta, "texto": rows, "ood": ood_rows,
                                "imagen": img_rows}, ensure_ascii=False))
-    print(f"  semilla {seed} corte {cut}: {len(rows)} filas texto, "
-          f"{len(ood_rows)} ood, {len(img_rows)} imagen ({meta['segundos']}s)", flush=True)
+    print(f"  s{seed} N{cut} trozo {chunk}: {len(mine)} consultas, {len(rows)} filas "
+          f"({meta['segundos']}s)", flush=True)
     return str(out)
 
 
@@ -528,9 +529,32 @@ METRICS = (("acepta", "acepta", None),
            ("fraccion_pista_compartida", "pista_compartida", "responde"))
 
 
+def load_runs():
+    """Une los trozos de cada (semilla, corte) y calcula la dependencia de la
+    pista (F) por brazo a partir de los latentes guardados en las filas."""
+    runs = {}
+    for f in sorted(RAW_DIR.glob("s*_N*_c*.json")):
+        raw = json.loads(f.read_text())
+        key = (raw["meta"]["semilla"], raw["meta"]["corte"])
+        run = runs.setdefault(key, {"meta": raw["meta"], "texto": [], "ood": [], "imagen": []})
+        for k in ("texto", "ood", "imagen"):
+            run[k] += raw[k]
+    for run in runs.values():
+        dep = {}
+        for arm in ARMS:
+            by_query = {}
+            for r in run["texto"]:
+                if r["brazo"] == arm and r.get("responde"):
+                    by_query.setdefault(r["query"], []).append(np.array(r["z"]))
+            groups = [np.stack(v) for v in by_query.values()]
+            reps = max((len(g) for g in groups), default=1)
+            dep[arm] = dependence(groups, reps)
+        run["meta"]["dependencia"] = dep
+    return list(runs.values())
+
+
 def aggregate():
-    files = sorted(RAW_DIR.glob("s*_N*.json"))
-    raws = [json.loads(f.read_text()) for f in files]
+    raws = load_runs()
     cuts = sorted({r["meta"]["corte"] for r in raws})
     seeds = sorted({r["meta"]["semilla"] for r in raws})
     summary = {"cortes": cuts, "semillas": seeds, "texto": {}, "ood": {}, "imagen": {},
@@ -690,6 +714,7 @@ def main():
     ap.add_argument("--seeds", default=None)
     ap.add_argument("--reps", type=int, default=None)
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--chunks", type=int, default=6, help="trozos por semilla y corte")
     ap.add_argument("--image", action="store_true")
     ap.add_argument("--report-only", action="store_true")
     args = ap.parse_args()
@@ -744,18 +769,21 @@ def main():
             # orden pedido.
             for c in cuts:
                 skeleton, blocks, handles = share_cut(c)
-                jobs = [(s, c, bank, train_idx, ood, img_pools, reps, shared,
-                         args.image, (skeleton, blocks)) for s in seeds]
-                print(f"Corte N={c}: {len(jobs)} semillas en {min(args.workers, len(jobs))} procesos",
+                jobs = [(s, c, k, args.chunks, bank, train_idx, ood, img_pools, reps,
+                         shared, args.image, (skeleton, blocks))
+                        for s in seeds for k in range(args.chunks)]
+                print(f"Corte N={c}: {len(jobs)} trabajos en {min(args.workers, len(jobs))} procesos",
                       flush=True)
-                with Pool(processes=min(args.workers, len(jobs)), maxtasksperchild=1) as pool:
+                with Pool(processes=min(args.workers, len(jobs))) as pool:
                     pool.map(run_job, jobs, chunksize=1)
                 for h in handles:
                     h.close(); h.unlink()
         else:
             for s in seeds:
                 for c in cuts:
-                    run_job((s, c, bank, train_idx, ood, img_pools, reps, shared, args.image, None))
+                    for k in range(args.chunks):
+                        run_job((s, c, k, args.chunks, bank, train_idx, ood, img_pools,
+                                 reps, shared, args.image, None))
         print(f"Corridas terminadas en {(time.time()-t0)/60:.1f} min")
 
     summary = aggregate()
