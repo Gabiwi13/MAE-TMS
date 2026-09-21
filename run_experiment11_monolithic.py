@@ -471,34 +471,7 @@ def run_job(args):
     if do_image and chunk == 0:
         img_train, img_test = img_pools
         meta["formacion_imagen"] = form_image_directories(specialists, tme, img_train, rng)
-        vectors = load_all_vectors()
-        vocab = {c: set(vectors[c]) for c in CLASSES}
-        all_vecs = {}
-        for c in CLASSES:
-            all_vecs.update(vectors[c])
-        for path, z_q, ci in img_test:
-            for arm in ARMS:
-                row = {"semilla": seed, "corte": cut, "brazo": arm,
-                       "imagen": path, "truth": CLASSES[ci]}
-                if arm == "M":
-                    acepta = recognize_gated_right(mono, z_q) > 0
-                    responder, dest = mono, "monolitica"
-                elif arm == "T-oraculo":
-                    acepta = any(recognize_gated_right(specialists[c], z_q) > 0 for c in CLASSES)
-                    responder, dest = specialists[CLASSES[ci]], CLASSES[ci]
-                else:
-                    entry = CLASSES[(ci + 1) % K]
-                    with contextlib.redirect_stdout(io.StringIO()):
-                        d, *_ = route_transactive(entry, specialists, z_q,
-                                                  modality="image", xi=XI_VISUAL)
-                    acepta = d >= 0
-                    responder = specialists[CLASSES[d]] if d >= 0 else None
-                    dest = CLASSES[d] if d >= 0 else None
-                    row["ruteo_ok"] = (d == ci) if d >= 0 else None
-                labels = evoke_labels(responder, z_q, all_vecs) if (acepta and responder) else []
-                row.update({"acepta": acepta, "destino": dest, "responde": bool(labels),
-                            "labels": labels, "hit": any(w in vocab[CLASSES[ci]] for w in labels)})
-                img_rows.append(row)
+        img_rows = image_rows(seed, cut, specialists, mono, img_test)
 
     meta["segundos"] = round(time.time() - t0, 1)
     meta["trozo"] = chunk
@@ -507,6 +480,69 @@ def run_job(args):
                                "imagen": img_rows}, ensure_ascii=False))
     print(f"  s{seed} N{cut} trozo {chunk}: {len(mine)} consultas, {len(rows)} filas "
           f"({meta['segundos']}s)", flush=True)
+    return str(out)
+
+
+def image_rows(seed, cut, specialists, mono, img_test):
+    """Imagen -> etiquetas: cada brazo evoca top-3 y acierta si alguna
+    pertenece al vocabulario de la clase verdadera (como la etapa 7)."""
+    vectors = load_all_vectors()
+    vocab = {c: set(vectors[c]) for c in CLASSES}
+    all_vecs = {}
+    for c in CLASSES:
+        all_vecs.update(vectors[c])
+    rows = []
+    for path, z_q, ci in img_test:
+        for arm in ARMS:
+            row = {"semilla": seed, "corte": cut, "brazo": arm,
+                   "imagen": path, "truth": CLASSES[ci]}
+            if arm == "M":
+                acepta = recognize_gated_right(mono, z_q) > 0
+                responder, dest = mono, "monolitica"
+            elif arm == "T-oraculo":
+                acepta = any(recognize_gated_right(specialists[c], z_q) > 0 for c in CLASSES)
+                responder, dest = specialists[CLASSES[ci]], CLASSES[ci]
+            else:
+                entry = CLASSES[(ci + 1) % K]
+                with contextlib.redirect_stdout(io.StringIO()):
+                    d, *_ = route_transactive(entry, specialists, z_q,
+                                              modality="image", xi=XI_VISUAL)
+                acepta = d >= 0
+                responder = specialists[CLASSES[d]] if d >= 0 else None
+                dest = CLASSES[d] if d >= 0 else None
+                row["ruteo_ok"] = (d == ci) if d >= 0 else None
+            labels = evoke_labels(responder, z_q, all_vecs) if (acepta and responder) else []
+            row.update({"acepta": acepta, "destino": dest, "responde": bool(labels),
+                        "labels": labels, "hit": any(w in vocab[CLASSES[ci]] for w in labels)})
+            rows.append(row)
+    return rows
+
+
+def run_image_job(args):
+    """Solo el hemisferio imagen -> texto, por trozos de imágenes de test. Los
+    directorios visuales se forman igual en cada trozo (deterministas por
+    semilla)."""
+    seed, cut, chunk, n_chunks = args
+    out = RAW_DIR / f"s{seed}_N{cut}_i{chunk}.json"
+    if out.exists():
+        return str(out)
+    random.seed(seed * 100 + chunk)
+    np.random.seed(seed * 100 + chunk)
+    rng = np.random.RandomState(seed)
+    t0 = time.time()
+    cached = CTX["cached"]
+    specialists, mono = cached["specialists"], cached["mono"]
+    img_train, img_test = CTX["img_pools"]
+    tme = TME()
+    meta = {"semilla": seed, "corte": cut, "trozo_imagen": chunk,
+            "formacion_imagen": form_image_directories(specialists, tme, img_train, rng)}
+    rows = image_rows(seed, cut, specialists, mono, img_test[chunk::n_chunks])
+    meta["segundos"] = round(time.time() - t0, 1)
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({"meta": meta, "texto": [], "ood": [], "imagen": rows},
+                              ensure_ascii=False))
+    print(f"  s{seed} N{cut} imagen trozo {chunk}: {len(rows)} filas ({meta['segundos']}s)",
+          flush=True)
     return str(out)
 
 
@@ -548,10 +584,11 @@ def load_runs():
     """Une los trozos de cada (semilla, corte) y calcula la dependencia de la
     pista (F) por brazo a partir de los latentes guardados en las filas."""
     runs = {}
-    for f in sorted(RAW_DIR.glob("s*_N*_c*.json")):
+    for f in sorted(list(RAW_DIR.glob("s*_N*_c*.json")) + list(RAW_DIR.glob("s*_N*_i*.json"))):
         raw = json.loads(f.read_text())
         key = (raw["meta"]["semilla"], raw["meta"]["corte"])
-        run = runs.setdefault(key, {"meta": raw["meta"], "texto": [], "ood": [], "imagen": []})
+        run = runs.setdefault(key, {"meta": dict(raw["meta"]), "texto": [], "ood": [], "imagen": []})
+        run["meta"].update({k: v for k, v in raw["meta"].items() if k not in run["meta"]})
         for k in ("texto", "ood", "imagen"):
             run[k] += raw[k]
     for run in runs.values():
@@ -603,7 +640,7 @@ def aggregate():
                     for k in img_seed:
                         img_seed[k].append(_rate(img, k))
                 f_seed.append(raw["meta"]["dependencia"][arm]["F"])
-                if arm == "T-protocolo":
+                if arm == "T-protocolo" and "formacion_texto" in raw["meta"]:
                     form_seed.append(raw["meta"]["formacion_texto"])
             summary["texto"][key] = {name: _ci(v) for name, v in per_seed.items()}
             summary["ood"][key] = _ci(ood_seed)
@@ -750,6 +787,9 @@ def main():
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--chunks", type=int, default=6, help="trozos por semilla y corte")
     ap.add_argument("--image", action="store_true")
+    ap.add_argument("--image-only", action="store_true",
+                    help="solo imagen -> texto, en trozos de imágenes (archivos _i)")
+    ap.add_argument("--img-per-class", type=int, default=N_IMG_TEST)
     ap.add_argument("--report-only", action="store_true")
     args = ap.parse_args()
 
@@ -779,9 +819,10 @@ def main():
         ood = load_ood(nlp, vectors)
         shared = shared_labels()
         g_min, g_max = load_global_stats()
+        want_image = args.image or args.image_only
         img_pools = load_image_pools(g_min, g_max,
                                      16 if args.quick else N_IMG_TRAIN,
-                                     2 if args.quick else N_IMG_TEST) if args.image else None
+                                     2 if args.quick else args.img_per_class) if want_image else None
         n_held = len([it for it in bank if it["cues"]]) - len(train_idx)
         print(f"  formación {len(train_idx)} · reservadas {n_held} · fuera de dominio {len(ood)} · "
               f"cortes {cuts} · semillas {seeds} · sorteos {reps} · etiquetas compartidas {sorted(shared)}")
@@ -801,9 +842,10 @@ def main():
             # Un corte a la vez: sus 9 memorias viven en memoria compartida y
             # los procesos solo cargan el esqueleto. Los cortes van en el
             # orden pedido.
+            job_fn, tag = (run_image_job, "i") if args.image_only else (run_job, "c")
             for c in cuts:
                 jobs = [(s, c, k, args.chunks) for s in seeds for k in range(args.chunks)]
-                jobs = [j for j in jobs if not (RAW_DIR / f"s{j[0]}_N{c}_c{j[2]}.json").exists()]
+                jobs = [j for j in jobs if not (RAW_DIR / f"s{j[0]}_N{c}_{tag}{j[2]}.json").exists()]
                 if not jobs:
                     print(f"Corte N={c}: ya completo", flush=True)
                     continue
@@ -813,16 +855,17 @@ def main():
                 with Pool(processes=n_proc, initializer=init_worker,
                           initargs=(c, (skeleton, blocks), bank, train_idx, ood, img_pools,
                                     reps, shared, args.image)) as pool:
-                    for _ in pool.imap_unordered(run_job, jobs, chunksize=1):
+                    for _ in pool.imap_unordered(job_fn, jobs, chunksize=1):
                         pass
                 for h in handles:
                     h.close(); h.unlink()
         else:
+            job_fn = run_image_job if args.image_only else run_job
             for c in cuts:
                 init_worker(c, None, bank, train_idx, ood, img_pools, reps, shared, args.image)
                 for s in seeds:
                     for k in range(args.chunks):
-                        run_job((s, c, k, args.chunks))
+                        job_fn((s, c, k, args.chunks))
         print(f"Corridas terminadas en {(time.time()-t0)/60:.1f} min")
 
     summary = aggregate()
