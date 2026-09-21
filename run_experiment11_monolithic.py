@@ -12,7 +12,10 @@ Cortes N (imágenes por clase, x4 variantes) para los tres brazos. Diseño y
 criterio de refutación en propuesta_fase5_mae_monolitica.md.
 
 Uso:  python run_experiment11_monolithic.py [--quick] [--cuts 25,50,100,200]
-          [--seeds 42-51] [--reps 3] [--workers 6] [--image] [--report-only]
+          [--seeds 42-51] [--reps 3] [--chunks 6] [--workers 6] [--report-only]
+      --image-only [--img-per-class 10]      solo imagen -> texto
+      --ood-only --ood-file consultas.txt    solo fuera de dominio, banco nuevo
+      EXP11_OUT=<carpeta>                    salida alternativa (pruebas)
 """
 import argparse
 import contextlib
@@ -98,13 +101,14 @@ def split_bank(bank, per_class):
     return train, held
 
 
-def load_ood(nlp, vectors):
+def load_ood(nlp, vectors, queries=None):
+    queries = list(PROBE_QUERIES) if queries is None else queries
     tokens = set()
-    for q in PROBE_QUERIES:
+    for q in queries:
         tokens.update(tokenize_query(q, nlp))
     prevectorize(vectors, tokens, allow_fallback=False)
     out = []
-    for q in PROBE_QUERIES:
+    for q in queries:
         cues = []
         for tok in tokenize_query(q, nlp):
             v = get_fasttext_vector(tok, vectors, allow_fallback=False)
@@ -446,8 +450,28 @@ def run_job(args):
                             row["niveles_vivos"] = live_levels_lived(responder, it["cues"])
                 rows.append(row)
 
-    ood_rows = []
-    for k, it in enumerate(ood if chunk == 0 else []):
+    ood_rows = ood_rows_for(seed, cut, specialists, mono, ood) if chunk == 0 else []
+
+    img_rows = []
+    if do_image and chunk == 0:
+        img_train, img_test = img_pools
+        meta["formacion_imagen"] = form_image_directories(specialists, tme, img_train, rng)
+        img_rows = image_rows(seed, cut, specialists, mono, img_test)
+
+    meta["segundos"] = round(time.time() - t0, 1)
+    meta["trozo"] = chunk
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({"meta": meta, "texto": rows, "ood": ood_rows,
+                               "imagen": img_rows}, ensure_ascii=False))
+    print(f"  s{seed} N{cut} trozo {chunk}: {len(mine)} consultas, {len(rows)} filas "
+          f"({meta['segundos']}s)", flush=True)
+    return str(out)
+
+
+def ood_rows_for(seed, cut, specialists, mono, ood):
+    """Fuera de dominio: solo la puerta de aceptación de cada brazo, sin recall."""
+    rows = []
+    for k, it in enumerate(ood):
         if not it["cues"]:
             continue
         entry_rng = np.random.RandomState(seed * 1000 + 900 + k)
@@ -464,22 +488,31 @@ def run_job(args):
                     d, *_ = route_transactive(entry, specialists,
                                               [v for _, v in it["cues"]], modality="text")
                 acepta, dest = d >= 0, (CLASSES[d] if d >= 0 else None)
-            ood_rows.append({"semilla": seed, "corte": cut, "brazo": arm,
-                             "query": it["query"], "acepta": acepta, "destino": dest})
+            rows.append({"semilla": seed, "corte": cut, "brazo": arm,
+                         "query": it["query"], "acepta": acepta, "destino": dest})
+    return rows
 
-    img_rows = []
-    if do_image and chunk == 0:
-        img_train, img_test = img_pools
-        meta["formacion_imagen"] = form_image_directories(specialists, tme, img_train, rng)
-        img_rows = image_rows(seed, cut, specialists, mono, img_test)
 
-    meta["segundos"] = round(time.time() - t0, 1)
-    meta["trozo"] = chunk
+def run_ood_job(args):
+    """Solo fuera de dominio, para un banco nuevo: forma los directorios de
+    T-protocolo (determinista por semilla) y evalúa la aceptación."""
+    seed, cut, chunk, n_chunks = args
+    out = RAW_DIR / f"s{seed}_N{cut}_o{chunk}.json"
+    if out.exists():
+        return str(out)
+    rng = np.random.RandomState(seed)
+    t0 = time.time()
+    cached = CTX["cached"]
+    specialists, mono = cached["specialists"], cached["mono"]
+    bank, train_idx, ood = CTX["bank"], CTX["train_idx"], CTX["ood"]
+    tme = TME()
+    form_text_directories(specialists, tme, [bank[i] for i in train_idx], rng)
+    rows = ood_rows_for(seed, cut, specialists, mono, ood)
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"meta": meta, "texto": rows, "ood": ood_rows,
-                               "imagen": img_rows}, ensure_ascii=False))
-    print(f"  s{seed} N{cut} trozo {chunk}: {len(mine)} consultas, {len(rows)} filas "
-          f"({meta['segundos']}s)", flush=True)
+    out.write_text(json.dumps({"meta": {"semilla": seed, "corte": cut, "ood_n": len(ood),
+                                        "segundos": round(time.time() - t0, 1)},
+                               "texto": [], "ood": rows, "imagen": []}, ensure_ascii=False))
+    print(f"  s{seed} N{cut} fuera de dominio: {len(rows)} filas ({time.time()-t0:.0f}s)", flush=True)
     return str(out)
 
 
@@ -591,6 +624,13 @@ def load_runs():
         run["meta"].update({k: v for k, v in raw["meta"].items() if k not in run["meta"]})
         for k in ("texto", "ood", "imagen"):
             run[k] += raw[k]
+    # Un banco fuera de dominio nuevo (archivos _o) sustituye al de los trozos.
+    for f in sorted(RAW_DIR.glob("s*_N*_o*.json")):
+        raw = json.loads(f.read_text())
+        key = (raw["meta"]["semilla"], raw["meta"]["corte"])
+        if key in runs:
+            runs[key]["ood"] = raw["ood"]
+            runs[key]["meta"]["ood_n"] = raw["meta"]["ood_n"]
     for run in runs.values():
         dep = {}
         for arm in ARMS:
@@ -654,6 +694,8 @@ def aggregate():
         m = raw["meta"]
         if "control_igual_al_oficial" in m:
             summary["control"] = m["control_igual_al_oficial"]
+        if "ood_n" in m:
+            summary["ood_n"] = m["ood_n"]
     for cut in cuts:
         for arm in ARMS:
             key = f"{arm}|N={cut}"
@@ -724,7 +766,8 @@ def write_report(summary):
             t = summary["texto"][f"{arm}|N={cut}"]
             L.append(f"| {arm} | {_fmt(t['fraccion_pista_compartida'])} | "
                      f"{_fmt(t['nn_ok_pista_compartida'])} | {_fmt(t['compat_max_pista_compartida'], False)} |")
-        L += ["", "Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.", "",
+        n_ood = summary.get("ood_n", 12)
+        L += ["", f"Fuera de dominio ({n_ood} consultas): tasa de aceptación.", "",
               "| brazo | acepta |", "|---|---|"]
         for arm in ARMS:
             L.append(f"| {arm} | {_fmt(summary['ood'][f'{arm}|N={cut}'])} |")
@@ -831,6 +874,10 @@ def main():
     ap.add_argument("--image-only", action="store_true",
                     help="solo imagen -> texto, en trozos de imágenes (archivos _i)")
     ap.add_argument("--img-per-class", type=int, default=N_IMG_TEST)
+    ap.add_argument("--ood-only", action="store_true",
+                    help="solo fuera de dominio, con --ood-file (archivos _o)")
+    ap.add_argument("--ood-file", default=None,
+                    help="consultas fuera de dominio, una por línea (por defecto run_rejection_probe)")
     ap.add_argument("--report-only", action="store_true")
     args = ap.parse_args()
 
@@ -857,7 +904,11 @@ def main():
             held = keep
         bank = train + held
         train_idx = list(range(len(train)))
-        ood = load_ood(nlp, vectors)
+        ood_queries = None
+        if args.ood_file:
+            ood_queries = [l.strip() for l in Path(args.ood_file).read_text(encoding="utf-8").splitlines()
+                           if l.strip() and not l.startswith("#")]
+        ood = load_ood(nlp, vectors, ood_queries)
         shared = shared_labels()
         g_min, g_max = load_global_stats()
         want_image = args.image or args.image_only
@@ -883,9 +934,11 @@ def main():
             # Un corte a la vez: sus 9 memorias viven en memoria compartida y
             # los procesos solo cargan el esqueleto. Los cortes van en el
             # orden pedido.
-            job_fn, tag = (run_image_job, "i") if args.image_only else (run_job, "c")
+            job_fn, tag = ((run_image_job, "i") if args.image_only else
+                           (run_ood_job, "o") if args.ood_only else (run_job, "c"))
+            n_chunks = 1 if args.ood_only else args.chunks
             for c in cuts:
-                jobs = [(s, c, k, args.chunks) for s in seeds for k in range(args.chunks)]
+                jobs = [(s, c, k, n_chunks) for s in seeds for k in range(n_chunks)]
                 jobs = [j for j in jobs if not (RAW_DIR / f"s{j[0]}_N{c}_{tag}{j[2]}.json").exists()]
                 if not jobs:
                     print(f"Corte N={c}: ya completo", flush=True)
@@ -901,12 +954,14 @@ def main():
                 for h in handles:
                     h.close(); h.unlink()
         else:
-            job_fn = run_image_job if args.image_only else run_job
+            job_fn = (run_image_job if args.image_only else
+                      run_ood_job if args.ood_only else run_job)
+            n_chunks = 1 if args.ood_only else args.chunks
             for c in cuts:
                 init_worker(c, None, bank, train_idx, ood, img_pools, reps, shared, args.image)
                 for s in seeds:
-                    for k in range(args.chunks):
-                        job_fn((s, c, k, args.chunks))
+                    for k in range(n_chunks):
+                        job_fn((s, c, k, n_chunks))
         print(f"Corridas terminadas en {(time.time()-t0)/60:.1f} min")
 
     summary = aggregate()
