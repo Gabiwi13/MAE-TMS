@@ -544,13 +544,20 @@ def load_runs():
     for run in runs.values():
         dep = {}
         for arm in ARMS:
-            by_query = {}
+            # F dentro de cada clase, como exp9: entre clases distintas la
+            # respuesta cambia por la clase, no por la pista.
+            by_cls = {}
             for r in run["texto"]:
                 if r["brazo"] == arm and r.get("responde"):
-                    by_query.setdefault(r["query"], []).append(np.array(r["z"]))
-            groups = [np.stack(v) for v in by_query.values()]
-            reps = max((len(g) for g in groups), default=1)
-            dep[arm] = dependence(groups, reps)
+                    by_cls.setdefault(r["truth"], {}).setdefault(r["query"], []).append(np.array(r["z"]))
+            per_cls = {}
+            for cls, by_query in by_cls.items():
+                groups = [np.stack(v) for v in by_query.values()]
+                reps = max((len(g) for g in groups), default=1)
+                per_cls[cls] = dependence(groups, reps)
+            dep[arm] = {k: float(np.nanmean([d[k] for d in per_cls.values()])) if per_cls else float("nan")
+                        for k in ("entre_consultas", "dentro_consulta", "F")}
+            dep[arm]["por_clase"] = per_cls
         run["meta"]["dependencia"] = dep
     return list(runs.values())
 
@@ -648,7 +655,19 @@ def write_report(summary):
                 if im:
                     L.append(f"| {arm} | {_fmt(im['acepta'])} | {_fmt(im['hit'])} | {_fmt(im['ruteo_ok'])} |")
         L.append("")
-    L += ["## Archivos", "- `raw/s<semilla>_N<corte>.json`: filas por consulta, sorteo y brazo",
+    L += ["## Qué operaciones de la MAE usa cada brazo", "",
+          "Ningún brazo tiene reglas propias: todos pasan por las mismas operaciones de la memoria.", "",
+          "| paso | M | T-oráculo | T-protocolo | dónde |",
+          "|---|---|---|---|---|",
+          "| llenado | `register` de una hetero y dos homo con las 8 clases | `register` por clase | igual que T-oráculo | `stage5_fill.fill_agent`, `run_experiment11_monolithic.build_*` |",
+          "| aceptación | `Agent.recognize_gated` (containment de la homo + proyección de la hetero) | máximo de `recognize_gated` sobre los 8 | `route_transactive` sobre directorios | `stage6_interaction.py` |",
+          "| quién responde | la única memoria | el especialista de la verdad de terreno | el destino del directorio (agregado + encadenado) | `stage6_interaction.route_transactive` |",
+          "| respuesta | `mem_dom_H.recall_from_left` con la primera pista reconocida | igual | igual | `run_experiment9_member_loss.recall_lived` |",
+          "| directorios | no se usan | no se usan | `register_transaction` en la formación | `stage6_interaction.register_transaction` |",
+          "| jueces | 1-NN y centroide sobre las 6400 instancias reales, clasificador latente, `d_nn`; `compat` con `mem_dom_R.recog_weights` de cada clase | igual | igual | `run_experiment9_member_loss.Judge`, `run_experiment11_monolithic.compat` |",
+          "",
+          "F es la razón de exp9 (Bessel), calculada dentro de cada clase y promediada entre clases.", "",
+          "## Archivos", "- `raw/s<semilla>_N<corte>_c<trozo>.json`: filas por consulta, sorteo y brazo",
           "- `resumen.json`: medias e intervalos", "- `fig1_clase_vs_N.png`, `fig2_dnn_vs_N.png`, "
           "`fig3_compat.png`, `fig4_ood.png`"]
     (OUT_DIR / "README.md").write_text("\n".join(L), encoding="utf-8")
