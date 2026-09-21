@@ -1,8 +1,86 @@
 # Experimento 11 — MAE monolítica contra sistema transactivo
 
-Semillas: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]. Cortes N (imágenes por clase, ×4 variantes): [200]. Intervalos: bootstrap del 95% sobre las medias por semilla. Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.
+Semillas: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]. Cortes N (imágenes por clase, ×4 variantes): [25, 50, 100, 200]. Intervalos: bootstrap del 95% sobre las medias por semilla. Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.
 
 Control del llenado en N=200: especialistas reconstruidos idénticos a los `agent_*.pkl` oficiales (8/8 clases).
+
+## N = 25 (100 registros por clase; monolítica 800)
+
+| brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| M | 81.3 [81.3, 81.3] | 81.3 [81.3, 81.3] | 95.9 [95.7, 96.1] | 95.8 [95.6, 96.0] | 96.2 [96.1, 96.4] | 17.26 [17.21, 17.32] | 0.99 [0.99, 0.99] | 96.1 [95.9, 96.3] | 4.04 [4.04, 4.04] | — | 3.37 [3.29, 3.45] |
+| T-oraculo | 81.3 [81.3, 81.3] | 80.1 [80.1, 80.1] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 15.25 [15.21, 15.30] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 3.88 [3.88, 3.88] | 100.0 [100.0, 100.0] | 1.83 [1.79, 1.87] |
+| T-protocolo | 100.0 [100.0, 100.0] | 78.9 [78.5, 79.3] | 98.5 [97.8, 99.1] | 98.5 [97.8, 99.1] | 98.5 [97.8, 99.1] | 15.72 [15.51, 15.98] | 1.00 [1.00, 1.00] | 98.5 [97.8, 99.1] | 3.88 [3.87, 3.88] | 95.4 [94.6, 96.3] | 2.95 [2.46, 3.55] |
+
+Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
+
+| brazo | fracción de respuestas | clase 1-NN | compat máx |
+|---|---|---|---|
+| M | 4.3 [4.3, 4.3] | 37.2 [33.3, 42.2] | 0.71 [0.71, 0.72] |
+| T-oraculo | 4.4 [4.4, 4.4] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
+| T-protocolo | 5.2 [5.2, 5.2] | 78.6 [68.5, 85.7] | 1.00 [1.00, 1.00] |
+
+Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+
+| brazo | acepta |
+|---|---|
+| M | 16.7 [16.7, 16.7] |
+| T-oraculo | 16.7 [16.7, 16.7] |
+| T-protocolo | 16.7 [16.7, 16.7] |
+
+Formación de directorios (T-protocolo): registradas 221.00 [221.00, 221.00], rechazadas 19.00 [19.00, 19.00], acierto temprano 82.8 [82.8, 82.8].
+
+## N = 50 (200 registros por clase; monolítica 1600)
+
+| brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.1 [96.9, 97.3] | 97.0 [96.8, 97.2] | 97.5 [97.3, 97.8] | 21.29 [21.26, 21.33] | 0.99 [0.99, 0.99] | 97.3 [97.2, 97.5] | 5.68 [5.68, 5.68] | — | 1.83 [1.80, 1.86] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 18.85 [18.78, 18.91] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 5.48 [5.48, 5.48] | 100.0 [100.0, 100.0] | 1.26 [1.25, 1.27] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.5 [98.0, 98.9] | 97.9 [97.5, 98.3] | 97.9 [97.5, 98.3] | 97.9 [97.5, 98.3] | 19.60 [19.44, 19.78] | 1.00 [1.00, 1.00] | 97.9 [97.5, 98.3] | 5.47 [5.47, 5.48] | 96.4 [96.0, 96.8] | 2.15 [1.96, 2.36] |
+
+Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
+
+| brazo | fracción de respuestas | clase 1-NN | compat máx |
+|---|---|---|---|
+| M | 3.5 [3.5, 3.5] | 33.9 [29.4, 38.9] | 0.72 [0.72, 0.73] |
+| T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.2 [4.1, 4.2] | 65.7 [55.7, 77.1] | 1.00 [1.00, 1.00] |
+
+Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+
+| brazo | acepta |
+|---|---|
+| M | 16.7 [16.7, 16.7] |
+| T-oraculo | 16.7 [16.7, 16.7] |
+| T-protocolo | 16.7 [16.7, 16.7] |
+
+Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
+
+## N = 100 (400 registros por clase; monolítica 3200)
+
+| brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.7 [97.4, 97.9] | 97.3 [97.1, 97.5] | 97.9 [97.7, 98.1] | 23.88 [23.82, 23.94] | 0.98 [0.98, 0.98] | 97.5 [97.3, 97.7] | 7.51 [7.51, 7.51] | — | 1.59 [1.56, 1.61] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 19.66 [19.60, 19.71] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 7.23 [7.23, 7.23] | 100.0 [100.0, 100.0] | 1.15 [1.14, 1.17] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.6 [98.1, 99.1] | 97.3 [96.7, 97.9] | 97.3 [96.7, 97.9] | 97.3 [96.7, 97.9] | 20.42 [20.22, 20.65] | 1.00 [1.00, 1.00] | 97.3 [96.7, 97.9] | 7.20 [7.19, 7.21] | 96.0 [95.2, 96.7] | 1.98 [1.80, 2.18] |
+
+Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
+
+| brazo | fracción de respuestas | clase 1-NN | compat máx |
+|---|---|---|---|
+| M | 3.5 [3.5, 3.5] | 50.6 [43.9, 57.2] | 0.74 [0.74, 0.75] |
+| T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.4 [4.1, 4.7] | 62.5 [52.7, 73.8] | 1.00 [1.00, 1.00] |
+
+Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+
+| brazo | acepta |
+|---|---|
+| M | 25.0 [25.0, 25.0] |
+| T-oraculo | 16.7 [16.7, 16.7] |
+| T-protocolo | 16.7 [16.7, 16.7] |
+
+Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
 
 ## N = 200 (800 registros por clase; monolítica 6400)
 
