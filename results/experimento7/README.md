@@ -46,11 +46,11 @@ Counts finales tras el desbalance: [188, 149, 162, 153, 162, 152, 161, 165].
 
 ## Hallazgos
 1. Por modalidad, el unificado replica a los dos directorios: la curva de imagen es idéntica snapshot a snapshot (final 81.9% en ambos) y la de texto difiere solo por la recuantización 32 vs 16 niveles (96.2% vs 95.0%). No se forma ninguna representación compartida: las mitades son independientes por construcción.
-2. La query emparejada es el punto débil del unificado: el veto conjuntivo corre sobre TODAS las features definidas del cue, así que una mitad imagen sin soporte suficiente tumba la pista entera aunque la mitad texto rutee sola al 96.2% — emparejada 25.0% contra 97.5% de la fusión de dos directorios, donde cada modalidad se rechaza por separado.
+2. La query emparejada es el punto débil del unificado, y el 25.0% no es una cifra del veto sino de la cobertura de la mitad de imagen: en el mismo directorio C, la consulta solo-imagen acierta 26.9% y rechaza 73.1%, y la emparejada acierta 25.0% y rechaza 75.0%. El veto conjuntivo corre sobre todas las features definidas del cue, así que la consulta plena hereda el rechazo de su mitad de imagen aunque la mitad de texto rutee sola al 96.2%. La fusión de dos directorios, donde cada modalidad se rechaza por separado, da 97.5%.
 3. La imagen en C queda corta por cobertura, no por la unificación: el llenado emparejado solo aporta tantas imágenes distintas como tokens (21-37 por clase) contra las 128 de B; consistente con la curva de capacidad de exp6.
 4. Compartir el espacio sí cobra un costo real vía B1: sumar registros de imagen al directorio de texto baja su ruteo de 96.2% a 90.0% (balanceado) y 87.5% (desbalanceado) sin tocar la relación: solo cambió el denominador compartido.
 
-En suma: bajo esta proyección el directorio unificado no puede transferir nada entre modalidades y sí paga el veto conjuntivo en queries plenas y el denominador compartido. Los dos directorios separados son la arquitectura correcta.
+En suma: bajo esta proyección el directorio unificado no puede transferir nada entre modalidades y sí paga dos costos: en queries plenas hereda por el veto conjuntivo el rechazo de la modalidad menos cubierta, y el denominador compartido degrada el texto. Los dos directorios separados son la arquitectura correcta.
 
 ## Archivos
 - `results_formation.csv` — series de formación (k, acc, rechazo, entropía, counts por corrida)
