@@ -120,10 +120,21 @@ Con la pista corregida, la descripción supera al especialista en fidelidad en 7
 
 Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 5532c93, 82b6e16, 65a7829, 9c99157, bbde155, a936f0a.
 
+## 9. Fases 4 y 5 (20 y 21 de septiembre)
+
+- Fase 4: material en `revision_fase4_directorio_entropico_vs_metamemoria.md`. La contradicción es real y acotada: `recall_domain` sí llama a `recall` (`recall_from_right` → `sample_n_search_recall` → `choose`, `random.random()`), pero ningún camino del protocolo lo usa. σ sigue sin importar porque el muestreo por defecto no lo usa. Tres salidas; decisión pendiente.
+- Fase 5: diseño en `propuesta_fase5_mae_monolitica.md`, implementación `run_experiment11_monolithic.py`, resultados y `veredicto.md` en `results/experimento11/`. Tres brazos (M, T-oráculo, T-protocolo), cortes {25, 50, 100, 200}, 10 semillas, 3 sorteos, 171 reservadas. Control: los especialistas reconstruidos en float32 son bit a bit los `agent_*.pkl`. No refutada por el criterio pre-registrado (clase empata en 0.1 puntos, fidelidad difiere en 3.9). La partición compra fidelidad (brecha 2.0 → 4.5 con N), coherencia con pista compartida (M 44% de clase, compat 0.73) y precisión en imagen→texto (dominio ajeno 8% contra 1%); cuesta cobertura (79% contra 96% en imagen), 2.5 puntos de directorio y 8× las celdas.
+- Infraestructura: cache de memorias por corte (`cache/exp11/`, 1.5 GB cada uno; el registro de hetero_lib cuesta 80 ms), relaciones en memoria compartida entre procesos, trabajos por trozos, `--image-only`, `--ood-only`.
+- Hallazgo de reproducibilidad: la etapa 5 cuantizó en float32; en float64 cambia un nivel en un latente de car, cow y dog.
+- Fase 3 aplicada el 21 de septiembre (`revision_fase3_prosa.md`): READMEs de exp7, exp8, exp9 y exp10, cifras del marco teórico, README principal y este archivo.
+- Deck mínimo: `hallazgos_exp7_a_exp11.pptx`.
+
 ## 8. Pendiente
 
-- Fase 3: correcciones de texto en los README (exp7 veto, exp10 superación, exp8 óptimo 4 a 8 registros con tabla de ruteo por registros presenciados, exp8 curva `1 − (1 − f)^128`), más toda la lista de prosa desactualizada. La reescribe el usuario.
-- Fase 4: material para la contradicción entre `discusion_directorio_entropico.md` (el directorio no es entrópico, nunca llama a `recall`) y `discusion_marco_teorico_directorio.md` (metamemoria, `recall_domain` en exp8 y exp9). Citas por línea y dependencias; la decisión es del usuario.
-- Fase 5: comparación contra la MAE monolítica, el experimento central de la tesis. Primero propuesta de diseño (capacidad equivalente, orden de alimentación, métricas, ruteo, criterio de refutación, código reutilizable), después implementación con varias semillas.
+- Fase 4: decidir entre las tres salidas de `revision_fase4_directorio_entropico_vs_metamemoria.md`; después ajustar `discusion_directorio_entropico.md` y la sección 2.4 del marco teórico.
+- Reporte `.tex8`: revisar la ubicación de los tres párrafos de exp11 insertados el 21 de septiembre (resultados, discusión, conclusiones).
+- Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
+- Exp11: banco fuera de dominio de ~40 consultas (`--ood-only --ood-file`); imagen→texto con los cuatro cortes si se quiere la versión larga.
+- Experimento de solapamiento: los tres brazos de exp11 con pares de clases elegidos por distancia entre centroides.
 - Restaurar los modelos v5 en `models/` cuando cierren las fases de arreglos.
 - App: migrar la fase temprana en vivo a directorios perspectivales.
