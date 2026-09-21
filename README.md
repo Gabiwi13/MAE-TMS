@@ -73,6 +73,30 @@ TME (early phase only)
   and its animation still shows every agent registering; only its mature-phase and
   image paths use the new protocol.
 
+### Experiment 11 (monolithic EHAM baseline)
+
+- **The control the thesis lacked**: one EHAM (hetero + two homo) holding all 8
+  classes, filled with the same 6400 (label, latent) pairs the eight specialists
+  receive, evaluated with the same operations (`recognize_gated`,
+  `recall_from_left`, `recall_from_right`). Three arms: M (single memory),
+  T-oracle (specialists, ground-truth routing) and T-protocol (official v5).
+  Cuts N ∈ {25, 50, 100, 200}, 10 seeds, 3 draws, 171 held-out queries.
+- **Class accuracy ties**: M 97.4% vs T-protocol 97.5% (1-NN judge) at N=200;
+  T-protocol wins only at N=25 (98.5 vs 95.9).
+- **Fidelity does not**: distance of the recalled latent to the nearest real
+  instance is 26.7 for M vs 22.8 (protocol) / 22.2 (oracle), and the gap grows
+  with N (2.0 → 4.5). Mixing happens per coordinate, not per word.
+- **Chimeras where predicted**: with a shared first cue (`fruit`, `animal`,
+  `mammal`, `red`, `pome`, `table`) M gets the class right 44% of the time
+  with 73% of the coordinates from one class; specialists 100% / 100%.
+- **Image → text**: M covers more (93% strict hit vs 78.5% oracle) because the
+  union support contains 96% of test latents where a specialist contains 79%,
+  but answers with another class's domain 8× more often (8.0% vs 1.0%).
+- **Price of the directory**: 2.5 points below the oracle at every N.
+- Verdict against the pre-registered criterion (`propuesta_fase5_mae_monolitica.md` §8):
+  not refuted. Partitioning buys fidelity, coherence and precision; it costs
+  coverage, an index and 8× the cells. Full tables: `results/experimento11/`.
+
 ## Key Results — v4 (8-class system, official)
 
 All numbers below come from one consistent set of models (fresh deterministic
@@ -93,6 +117,7 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
 | Image→labels evocation (top-3 hit) | 85.3% | |
 | Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
+| Single-EHAM baseline (exp11, N=200) | class 97.4 / d_nn 26.7 | vs T-protocol 97.5 / 22.8 (`results/experimento11/`) |
 
 **Finding on apple dominance (v4):** earlier 8-class runs showed apple capturing
 ~20% of mature wins (vs ideal 12.5%) and pear collapsing to ~52%. A fresh
@@ -226,6 +251,15 @@ python run_experiment.py             # stages 1–8: dataset → encoder → fil
   This removes the old trap where an interrupted training left a half-trained
   `encoder.pt` that was then loaded silently, poisoning every downstream result.
   Force a clean rebuild with `python src/stage2_encoder.py --force-retrain`.
+
+- **Quantization dtype.** Stage 5 quantizes latents in float32 (encoder output
+  and float32 stats). Re-quantizing `instance_latents_*.json` in float64 flips
+  one level in one latent of car, cow and dog, so the memories stop being
+  bit-identical to `models/`. Scripts that rebuild memories from the pool must
+  quantize in float32 (`run_experiment11_monolithic.load_pool`).
+- **Sampling RNG.** `hetero_lib` samples with Python's `random`, not numpy
+  (`hetero_associative_4d.py:538`). Seed both (`random.seed`, `np.random.seed`)
+  for reproducible draws; exp8 and exp9 do so since commit 82b6e16.
 
 > Exact paper numbers were produced with the authors' original encoder weights. A fresh
 > deterministic train yields a comparable but not bit-identical encoder; request the
