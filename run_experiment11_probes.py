@@ -135,13 +135,115 @@ def chimera_figure(rows, cut, seed, n_show=6):
               f"(compat {m['M_compat']:.2f}, d {m['M_d_nn']:.1f}); oráculo d {m['oraculo_d_nn']}")
 
 
+COLOR = {"M": "#2a78d6", "T-oraculo": "#1baf7a", "T-protocolo": "#eb6834"}
+NAME = {"M": "EHAM única", "T-oraculo": "transactivo, oráculo", "T-protocolo": "transactivo, protocolo"}
+
+
+def comparison_figure():
+    """Un panel con los cuatro ejes de la comparación: fidelidad y clase por N,
+    coherencia con pista compartida, y cobertura contra precisión en imagen."""
+    s = json.loads((OUT_DIR / "resumen.json").read_text())
+    cuts = s["cortes"]
+    top = cuts[-1]
+    fig, ax = plt.subplots(2, 2, figsize=(11, 7.6))
+    fig.patch.set_facecolor("#fcfcfb")
+    for a in ax.flat:
+        a.set_facecolor("#fcfcfb")
+        a.spines[["top", "right"]].set_visible(False)
+        a.spines[["left", "bottom"]].set_color("#c3c2b7")
+        a.grid(axis="y", color="#e6e5e0", lw=0.8)
+        a.set_axisbelow(True)
+        a.tick_params(colors="#52514e", labelsize=9)
+
+    def line(a, metric, ylabel, pct):
+        f = 100 if pct else 1
+        ends = {}
+        for arm in ARMS:
+            v = np.array([s["texto"][f"{arm}|N={c}"][metric] for c in cuts]) * f
+            a.plot(cuts, v[:, 0], "-", color=COLOR[arm], lw=2, marker="o", ms=6, label=NAME[arm])
+            a.fill_between(cuts, v[:, 1], v[:, 2], color=COLOR[arm], alpha=0.15, lw=0)
+            ends[arm] = v[-1, 0]
+        # etiquetas al final de cada línea, separadas si quedan muy juntas
+        span = max(ends.values()) - min(ends.values()) or 1.0
+        order = sorted(ARMS, key=lambda k: ends[k])
+        ys = [ends[k] for k in order]
+        gap = max(0.12 * span, 0.06 * (a.get_ylim()[1] - a.get_ylim()[0]) if a.get_ylim()[1] > a.get_ylim()[0] else 0)
+        for i in range(1, len(ys)):
+            if ys[i] - ys[i - 1] < gap:
+                ys[i] = ys[i - 1] + gap
+        for arm, y in zip(order, ys):
+            a.annotate(NAME[arm], (cuts[-1], ends[arm]), xytext=(cuts[-1] + 6, y),
+                       textcoords="data", fontsize=8, color="#52514e", va="center",
+                       arrowprops=dict(arrowstyle="-", color="#c3c2b7", lw=0.8)
+                       if abs(y - ends[arm]) > 1e-9 else None)
+        a.set_xlabel("imágenes por clase (N)", color="#52514e", fontsize=9)
+        a.set_ylabel(ylabel, color="#52514e", fontsize=9)
+        a.set_xticks(cuts)
+        a.set_xlim(cuts[0] - 10, cuts[-1] + 75)
+
+    line(ax[0, 0], "d_nn_truth", "distancia a la instancia real más cercana", False)
+    ax[0, 0].set_title("Fidelidad: menor es mejor, y la brecha crece con N", fontsize=10, loc="left")
+    line(ax[0, 1], "nn_ok", "clase correcta, vecino real (%)", True)
+    ax[0, 1].set_title("Clase: iguales desde N=100", fontsize=10, loc="left")
+    ax[0, 1].set_ylim(94, 100.6)
+
+    def bars(a, groups, labels, ylabel, title, ylim=None):
+        x = np.arange(len(labels))
+        w = 0.26
+        for i, arm in enumerate(ARMS):
+            vals = groups[arm]
+            b = a.bar(x + (i - 1) * (w + 0.02), vals, w, color=COLOR[arm], label=NAME[arm],
+                      edgecolor="#fcfcfb", lw=1)
+            for r, v in zip(b, vals):
+                a.text(r.get_x() + r.get_width() / 2, v + 1.2, f"{v:.0f}", ha="center",
+                       fontsize=8, color="#52514e")
+        a.set_xticks(x)
+        a.set_xticklabels(labels, fontsize=9)
+        a.set_ylabel(ylabel, color="#52514e", fontsize=9)
+        a.set_title(title, fontsize=10, loc="left")
+        if ylim:
+            a.set_ylim(*ylim)
+
+    t = {arm: s["texto"][f"{arm}|N={top}"] for arm in ARMS}
+    bars(ax[1, 0],
+         {arm: [100 * t[arm]["nn_ok_pista_compartida"][0], 100 * t[arm]["compat_max_pista_compartida"][0],
+                100 * t[arm]["nn_ok"][0]] for arm in ARMS},
+         ["clase correcta,\npista compartida", "coordenadas de\nuna sola clase", "clase correcta,\ntodo el banco"],
+         "%", f"Coherencia (N={top}): la pista compartida mezcla clases en la EHAM única", (0, 112))
+
+    im = {arm: s["imagen"].get(f"{arm}|N={top}") for arm in ARMS}
+    if all(im.values()):
+        prec = {arm: 100 * im[arm]["dominio_ok"][0] / max(im[arm]["responde"][0], 1e-9) for arm in ARMS}
+        bars(ax[1, 1],
+             {arm: [100 * im[arm]["responde"][0], prec[arm], 100 * im[arm]["otro_dominio"][0]] for arm in ARMS},
+             ["responde\n(cobertura)", "dominio correcto\nsi responde", "dominio de\notra clase"],
+             "% de imágenes de test", f"Imagen → texto (N={top}): cobertura contra precisión", (0, 112))
+    else:
+        ax[1, 1].set_visible(False)
+
+    handles = [plt.Line2D([], [], color=COLOR[a], lw=6, label=NAME[a]) for a in ARMS]
+    fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False, fontsize=9,
+               bbox_to_anchor=(0.5, -0.005))
+    fig.suptitle("Una EHAM con las ocho clases contra el sistema transactivo: mismo contenido, mismo sustrato",
+                 fontsize=12, x=0.02, ha="left")
+    fig.tight_layout(rect=[0, 0.04, 1, 0.96])
+    path = OUT_DIR / "fig6_comparacion.png"
+    fig.savefig(path, dpi=160, facecolor=fig.get_facecolor())
+    plt.close(fig)
+    print(f"-> {path}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cut", type=int, default=200)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--only-figure", action="store_true")
     args = ap.parse_args()
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    comparison_figure()
+    if args.only_figure:
+        return
     rows = load_text_rows()
     print(f"{len(rows)} filas de texto")
     per_class(rows)
