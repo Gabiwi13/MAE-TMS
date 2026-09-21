@@ -67,12 +67,16 @@ VARIANTS = 4                     # variantes por imagen en el pool de llenado
 
 def load_pool():
     """Latentes del pool de llenado ya codificados (800 por clase, image-major)
-    y secuencias de etiquetas, cuantizados como en la etapa 5."""
+    y secuencias de etiquetas, cuantizados como en la etapa 5. La etapa 5
+    cuantizó en float32 (latentes del encoder y stats de un stack float32);
+    en float64 un latente de car, cow y dog cae en otro nivel y la memoria
+    deja de ser bit a bit la oficial."""
     g_min, g_max = load_global_stats()
+    g_min, g_max = g_min.astype(np.float32), g_max.astype(np.float32)
     pool, seqs = {}, {}
     for cls in CLASSES:
         lat = json.loads((MODELS_DIR / f"instance_latents_{cls}.json").read_text())
-        pool[cls] = [quantize_latent_global(np.array(z), g_min, g_max, Q_LATENT)
+        pool[cls] = [quantize_latent_global(np.array(z, dtype=np.float32), g_min, g_max, Q_LATENT)
                      for z in lat]
         seqs[cls] = build_label_sequence(cls)
     return pool, seqs
@@ -728,7 +732,8 @@ def main():
         if missing:
             print(f"Construyendo memorias de los cortes {missing}...", flush=True)
             if args.workers > 1 and len(missing) > 1:
-                with Pool(processes=min(4, len(missing))) as pool:
+                # Cada construcción ocupa unos 2.3 GB de RAM.
+                with Pool(processes=min(3, len(missing))) as pool:
                     pool.map(build_cache, missing)
             else:
                 for c in missing:
