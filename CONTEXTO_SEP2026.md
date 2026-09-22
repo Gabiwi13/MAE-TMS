@@ -122,7 +122,7 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 
 ## 9. Fases 4 y 5 (20 y 21 de septiembre)
 
-- Fase 4: material en `revision_fase4_directorio_entropico_vs_metamemoria.md`. La contradicción es real y acotada: `recall_domain` sí llama a `recall` (`recall_from_right` → `sample_n_search_recall` → `choose`, `random.random()`), pero ningún camino del protocolo lo usa. σ sigue sin importar porque el muestreo por defecto no lo usa. Tres salidas; decisión pendiente.
+- Fase 4: material en `revision_fase4_directorio_entropico_vs_metamemoria.md`. La contradicción es real y acotada: `recall_domain` sí llama a `recall` (`recall_from_right` → `sample_n_search_recall` → `choose`, `random.random()`), pero ningún camino del protocolo lo usa. σ sigue sin importar porque el muestreo por defecto no lo usa. Tres salidas; se aplicó la 5.1 el 21 de septiembre: las frases de `discusion_directorio_entropico.md` se restringen al ruteo y se añade el párrafo de los dos lados de la relación; el marco teórico no cambia.
 - Fase 5: diseño en `propuesta_fase5_mae_monolitica.md`, implementación `run_experiment11_monolithic.py`, resultados y `veredicto.md` en `results/experimento11/`. Tres brazos (M, T-oráculo, T-protocolo), cortes {25, 50, 100, 200}, 10 semillas, 3 sorteos, 171 reservadas. Control: los especialistas reconstruidos en float32 son bit a bit los `agent_*.pkl`. No refutada por el criterio pre-registrado (clase empata en 0.1 puntos, fidelidad difiere en 3.9). La partición compra fidelidad (brecha 2.0 → 4.5 con N), coherencia con pista compartida (M 44% de clase, compat 0.73) y precisión en imagen→texto (dominio ajeno 8% contra 1%); cuesta cobertura (79% contra 96% en imagen), 2.5 puntos de directorio y 8× las celdas.
 - Infraestructura: cache de memorias por corte (`cache/exp11/`, 1.5 GB cada uno; el registro de hetero_lib cuesta 80 ms), relaciones en memoria compartida entre procesos, trabajos por trozos, `--image-only`, `--ood-only`.
 - Hallazgo de reproducibilidad: la etapa 5 cuantizó en float32; en float64 cambia un nivel en un latente de car, cow y dog.
@@ -131,7 +131,6 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 
 ## 8. Pendiente
 
-- Fase 4: decidir entre las tres salidas de `revision_fase4_directorio_entropico_vs_metamemoria.md`; después ajustar `discusion_directorio_entropico.md` y la sección 2.4 del marco teórico.
 - Reporte `.tex8`: revisar la ubicación de los tres párrafos de exp11 insertados el 21 de septiembre (resultados, discusión, conclusiones).
 - Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
 - Exp11: banco fuera de dominio de ~40 consultas (`--ood-only --ood-file`); imagen→texto con los cuatro cortes si se quiere la versión larga.

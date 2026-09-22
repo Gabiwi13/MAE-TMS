@@ -1,6 +1,8 @@
 # El estatus del directorio en la MAE transactiva: revisión, evidencia y posición
 
 **Fecha:** 30 de agosto de 2026
+**Nota del 21 de septiembre de 2026:** tres frases de este documento (secciones 2.2, 4 y 5) decían que el directorio nunca llama a `recall`. Desde el 14 de septiembre `DirectoryMemory.recall_domain` sí lo hace (exp8, exp9), aunque ningún camino del protocolo lo usa. Se restringieron esas frases al ruteo y se añadió el párrafo de los dos lados de la relación; el resto queda como se escribió. Material y salidas consideradas en `revision_fase4_directorio_entropico_vs_metamemoria.md`.
+
 **Contexto:** Los doctores observaron que la memoria directorio "parece la memoria asociativa de MINERVA", que "no se ve entrópica" y que "parece una tabla, no una heteroasociativa". Este documento recoge la revisión del código, un experimento nuevo (directorio unificado texto+visión) y la posición teórica que proponemos defender.
 
 ---
@@ -24,7 +26,7 @@ MINERVA 2 guarda cada episodio como traza separada, su almacenamiento crece con 
 ### 2.2 "No es entrópica" — correcto, para el directorio tal como se usa
 
 - El ruteo nunca consulta la entropía. `_update_entropies` corre, pero sus números no van a ninguna parte.
-- Todos los parámetros operativos entrópicos están neutralizados: ι=κ=ξ=0 en el protocolo oficial (y el experimento 2 mostró κ inerte, ι destructiva); σ nunca importa porque el directorio **nunca llama a `recall`**. La parte genuinamente entrópica de una MAE —el recall constructivo y estocástico (`reduce`/`choose` sobre la distribución de la celda)— jamás se ejercita en el directorio.
+- Todos los parámetros operativos entrópicos están neutralizados en el ruteo: ι=κ=ξ=0 en el protocolo oficial (y el experimento 2 mostró κ inerte, ι destructiva). El ruteo **nunca llama a `recall`**: `predict`, `route` y `route_transactive` proyectan y toman argmax. La parte genuinamente entrópica de una MAE, el recall constructivo y estocástico (`reduce`/`choose` sobre la distribución de la celda), solo se ejercita en el directorio por la lectura inversa `recall_domain` (declarada el 14 de septiembre; exp8 y exp9), que no forma parte del protocolo. σ sigue sin importar, pero por otra razón: el muestreo por defecto (`sample_n_search_recall`) no lo usa; σ solo entra en `cue_recall` y en las rutas con prototipo.
 - Con q=2 la distribución del dominio derecho por celda es una Bernoulli degenerada; casi no hay distribución sobre la cual ser entrópico.
 - La `entropy()` que reportamos para el directorio es la entropía del **balance de cuentas entre agentes** —un diagnóstico de formación—, no la entropía de la relación en el formalismo MAE. La colisión de nombres invita a la lectura equivocada.
 
@@ -58,7 +60,9 @@ Este resultado además alimenta la crítica de los doctores: ninguna representac
 
 ## 4. Posición: el punto medio tiene nombre
 
-El directorio no es MINERVA (abstrae al almacenar) y no es entrópico (nunca opera sobre sus distribuciones). Lo que es: **una representación distribucional con una operación determinista**. Acumula frecuencias —casi una estimación frecuentista de P(agente|pista), una tabla de transición si se quiere— pero lo único que hace con esa distribución es el argmax. Entropía en potencia, nunca en acto.
+El directorio no es MINERVA (abstrae al almacenar) y su ruteo no es entrópico (nunca opera sobre sus distribuciones). Lo que es: **una representación distribucional con una operación determinista en el sentido en que el protocolo la usa**. Acumula frecuencias, casi una estimación frecuentista de P(agente|pista), una tabla de transición si se quiere, y para rutear lo único que hace con esa distribución es el argmax. Entropía en potencia en el ruteo; en acto solo en la lectura inversa (exp8 y exp9: 9.3 niveles vivos por coordenada y 2.8 bits en el directorio visual), que es diagnóstica y sirve para medir qué guarda la relación.
+
+La relación del directorio tiene dos lados, y el principio se aplica a cada uno. El lado izquierdo es la pista: icónico, con métrica. El derecho es la identidad: indicial, sin métrica (Peirce y Kripke, `discusion_marco_teorico_directorio.md` §2.3). Leer de izquierda a derecha es rutear; indeterminación en el lado derecho sería error, así que argmax. Leer de derecha a izquierda es describir; indeterminación en el lado izquierdo es generalización, así que muestreo. La misma relación es nítida en un sentido y entrópica en el otro. No es una inconsistencia: es la forma que toma el principio en una memoria con un lado de cada clase.
 
 ### Por qué no se puede meter todo en una hetero
 
@@ -89,4 +93,4 @@ Aun así, el acto final sigue siendo nombrar a alguien. La entropía puede llega
 
 ## 5. Recomendación de encuadre para los reportes
 
-Dejar de presentar el *directorio* como memoria heteroasociativa entrópica. Presentarlo como: *índice transactivo implementado sobre el sustrato MAE por uniformidad arquitectónica; la maquinaria entrópica del sustrato deliberadamente no se ejercita ahí, y el carácter entrópico del sistema vive en las memorias de contenido*. Renombrar o glosar la `entropy()` del directorio como "entropía del balance de especialización" para evitar el equívoco.
+Presentar el *directorio* como una heteroasociativa completa cuyo protocolo solo ejercita la lectura determinista: *índice transactivo sobre el sustrato MAE; el ruteo proyecta y decide por argmax, sin recall; la lectura entrópica (`recall_domain`) existe y se usa para medir qué guarda el índice, no para coordinar*. El carácter entrópico del sistema en operación vive en las memorias de contenido. Renombrar o glosar la `entropy()` del directorio como "entropía del balance de especialización" para evitar el equívoco con la entropía de la relación.

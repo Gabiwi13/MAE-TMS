@@ -1,7 +1,9 @@
 # Fase 4: la contradicción entre los dos documentos sobre el directorio
 
 **Fecha:** 20 de septiembre de 2026
-**Alcance:** material para decidir. No se modificó ningún documento ni código. Las citas van por archivo y línea, sobre el commit c60a2ae de la rama `exp7-directorio-unificado`. La decisión es del autor.
+**Decisión (21 de septiembre de 2026):** salida 5.1, aplicada en `discusion_directorio_entropico.md` (nota inicial, líneas 27, 61 y 92, y el párrafo de los dos lados de la relación). `discusion_marco_teorico_directorio.md` no cambia.
+
+**Alcance:** material para decidir. Cuando se escribió no se había modificado ningún documento ni código. Las citas van por archivo y línea, sobre el commit c60a2ae de la rama `exp7-directorio-unificado`. La decisión es del autor.
 
 ---
 
