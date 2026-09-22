@@ -1,0 +1,47 @@
+# Banco fuera de dominio para exp11 (40 consultas).
+# Las 12 primeras son las de run_rejection_probe.PROBE_QUERIES. Las 28 nuevas
+# se escribieron el 21 de septiembre de 2026 con esta regla: objetos y escenas
+# cotidianas de categorías ausentes de ETH-80 (instrumentos, edificios, clima,
+# ropa, herramientas, muebles, deportes, oficina, mar y aire, hogar, astronomía),
+# sin ninguna palabra del vocabulario de etiquetas (label_vectors_*.json) y sin
+# animales ni plantas, que serían vecinos legítimos de los dominios.
+a musical instrument with strings
+a kitchen appliance that heats food
+a flying bird with feathers
+a sailing boat on the ocean
+a piece of furniture for sitting
+a tall building with many floors
+a cold mountain covered in snow
+a book with printed pages
+a river flowing to the sea
+a telephone for making calls
+a wooden table and chairs
+a pair of leather shoes
+a piano with black and white keys
+a violin played with a bow
+a lighthouse on a rocky coast
+a bridge across a wide river
+a snowstorm in the mountains
+a thunderstorm with heavy rain
+a wool sweater for winter
+a pair of denim jeans
+a hammer and a box of nails
+a screwdriver for tightening screws
+a library full of old novels
+a wooden desk with drawers
+a soccer match in a stadium
+a tennis racket and a net
+a laptop computer with a keyboard
+a printer with an empty ink cartridge
+a sailboat anchored in the harbor
+a submarine deep under the sea
+an airplane landing on a runway
+a bicycle with two pedals and a chain
+a candle burning on a windowsill
+a clock ticking on the wall
+a pillow and a blanket on a bed
+a toothbrush and a tube of toothpaste
+a rainbow after the storm
+a planet orbiting a distant star
+a volcano erupting with lava
+a desert with sand dunes at noon
