@@ -127,13 +127,14 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Infraestructura: cache de memorias por corte (`cache/exp11/`, 1.5 GB cada uno; el registro de hetero_lib cuesta 80 ms), relaciones en memoria compartida entre procesos, trabajos por trozos, `--image-only`, `--ood-only`.
 - Hallazgo de reproducibilidad: la etapa 5 cuantizó en float32; en float64 cambia un nivel en un latente de car, cow y dog.
 - Fase 3 aplicada el 21 de septiembre (`revision_fase3_prosa.md`): READMEs de exp7, exp8, exp9 y exp10, cifras del marco teórico, README principal y este archivo.
+- Fuera de dominio con 40 consultas (21 de septiembre, `results/experimento11/consultas_fuera_dominio.txt`): EHAM única 3/40, oráculo 2/40, protocolo 4/40; el directorio deja pasar dos consultas que el contenido rechaza (piano → dog, thunderstorm → car).
 - Deck mínimo: `hallazgos_exp7_a_exp11.pptx`.
 
 ## 8. Pendiente
 
 - Reporte `.tex8`: revisar la ubicación de los tres párrafos de exp11 insertados el 21 de septiembre (resultados, discusión, conclusiones).
 - Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
-- Exp11: banco fuera de dominio de ~40 consultas (`--ood-only --ood-file`); imagen→texto con los cuatro cortes si se quiere la versión larga.
+- Exp11: imagen→texto con los cuatro cortes si se quiere la versión larga.
 - Experimento de solapamiento: los tres brazos de exp11 con pares de clases elegidos por distancia entre centroides.
 - Restaurar los modelos v5 en `models/` cuando cierren las fases de arreglos.
 - App: migrar la fase temprana en vivo a directorios perspectivales.
