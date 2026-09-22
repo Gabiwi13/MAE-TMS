@@ -128,6 +128,7 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Hallazgo de reproducibilidad: la etapa 5 cuantizó en float32; en float64 cambia un nivel en un latente de car, cow y dog.
 - Fase 3 aplicada el 21 de septiembre (`revision_fase3_prosa.md`): READMEs de exp7, exp8, exp9 y exp10, cifras del marco teórico, README principal y este archivo.
 - Fuera de dominio con 40 consultas (21 de septiembre, `results/experimento11/consultas_fuera_dominio.txt`): EHAM única 3/40, oráculo 2/40, protocolo 4/40; el directorio deja pasar dos consultas que el contenido rechaza (piano → dog, thunderstorm → car).
+- Experimento 12 (21 de septiembre, `run_experiment12_overlap.py`, `results/experimento12/`): brecha de fidelidad de una EHAM de dos clases contra el solapamiento entre ellas, 28 pares, 5 semillas. La brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el solapamiento del latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay pares disjuntos en esta representación (Jaccard 0.57–0.65). Lectura en `veredicto.md`.
 - Deck mínimo: `hallazgos_exp7_a_exp11.pptx`.
 
 ## 8. Pendiente
@@ -135,6 +136,5 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Reporte `.tex8`: revisar la ubicación de los tres párrafos de exp11 insertados el 21 de septiembre (resultados, discusión, conclusiones).
 - Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
 - Exp11: imagen→texto con los cuatro cortes si se quiere la versión larga.
-- Experimento de solapamiento: los tres brazos de exp11 con pares de clases elegidos por distancia entre centroides.
 - Restaurar los modelos v5 en `models/` cuando cierren las fases de arreglos.
 - App: migrar la fase temprana en vivo a directorios perspectivales.
