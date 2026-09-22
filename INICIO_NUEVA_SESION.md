@@ -1,12 +1,12 @@
-# Arranque para una sesión nueva (estado al 21 de septiembre de 2026)
+# Arranque para una sesión nueva (estado al 22 de septiembre de 2026)
 
-Léelo entero antes de tocar nada. Complementa a `CLAUDE.md` (reglas) y a `CONTEXTO_SEP2026.md` (historia detallada del 13 al 21 de septiembre). Este archivo es el resumen operativo.
+Léelo entero antes de tocar nada. Complementa a `CLAUDE.md` (reglas) y a `CONTEXTO_SEP2026.md` (historia detallada del 13 al 22 de septiembre). Este archivo es el resumen operativo.
 
 ## 1. Qué es el proyecto
 
 MAE-TMS: sistema de memoria transactiva (Wegner) sobre memorias asociativas entrópicas (EAM/EHAM de Pineda y Morales). Ocho agentes especialistas (clases de ETH-80: apple, car, cow, cup, dog, horse, pear, tomato), cada uno con una hetero de contenido etiqueta↔latente, dos homo y dos directorios (texto e imagen). Texto→imagen e imagen→texto con rechazo. Es una tesis; el dueño del repo es `Gabiwi13`.
 
-Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. Clon local: `C:\Users\aq99l\Projects\MAE-TMS`. Al 21 de septiembre la rama local y el remoto están al día (último commit 6365c91).
+Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. Clon local: `C:\Users\aq99l\Projects\MAE-TMS`. Al 22 de septiembre la rama local va por delante del remoto: código de la doble compuerta (3538b4a), resultados largos de exp11 (ee06bd6) y la prosa de esta ronda; sin push.
 
 ## 2. Reglas (resumen de `CLAUDE.md`)
 
@@ -41,6 +41,8 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | exp12 | brecha de fidelidad de una EHAM de dos clases contra el solapamiento, 28 pares | `run_experiment12_overlap.py`, `results/experimento12/` |
 | app | fase temprana en vivo con directorios perspectivales; fase madura de sesión con `route_transactive` | `app_tme.py` |
 | deck | 12 diapositivas con los hallazgos de exp7 a exp11 | `hallazgos_exp7_a_exp11.pptx` |
+| imagen→texto largo | 4 cortes × 10 semillas; cobertura del especialista 0 → 79 % con N | `results/experimento11/README.md` |
+| compuerta | doble compuerta de contenido en la fase madura textual; protocolo fuera de dominio 4/40 → 2/40 | `stage8_mature.py`, `app_tme.py`, `run_experiment11_monolithic.py` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -51,10 +53,11 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | clase correcta, 1-NN (%) | 97.4 | 100 | 97.5 |
 | distancia a instancia real | 26.7 | 22.2 | 22.8 |
 | clase con pista compartida (%) | 44 | 100 | 66 |
-| imagen→texto: responde / dominio ajeno (%) | 96 / 8 | 79 / 1 | 72 / 1 |
+| imagen→texto: responde / dominio ajeno (%) | 96 / 9 | 79 / 1 | 72 / 2 |
 | fuera de dominio aceptadas (de 40) | 3 | 2 | 4 |
+| fuera de dominio con doble compuerta | 3 | 2 | 2 |
 
-Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad difiere en 3.9 con umbral 1). Partir compra fidelidad (brecha crece 2.0 → 4.5 con N), coherencia y precisión; cuesta cobertura (containment estricto del especialista), 2.5 puntos de directorio y 8× las celdas. El directorio de texto deja pasar dos consultas fuera de dominio que el contenido rechaza (piano → dog, thunderstorm → car).
+Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad difiere en 3.9 con umbral 1). Partir compra fidelidad (brecha crece 2.0 → 4.5 con N), coherencia y precisión; cuesta cobertura (containment estricto del especialista), 2.5 puntos de directorio y 8× las celdas. El directorio de texto deja pasar dos consultas fuera de dominio que el contenido rechaza (piano → dog, thunderstorm → car). Con la doble compuerta el protocolo acepta 2/40 en los cuatro cortes. Imagen→texto con los cuatro cortes: la cobertura del especialista sube 0 → 79 % con N; la EHAM única 5 → 96 % y su dominio ajeno 0 → 9 %.
 
 **Exp12:** la brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay dominios disjuntos con esta cuantización (Jaccard 0.57–0.65). Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.
 
@@ -70,7 +73,7 @@ $env:CUDA_VISIBLE_DEVICES=""; $env:OMP_NUM_THREADS="1"; $env:PYTHONUNBUFFERED="1
 
 # exp11 (reanudable: salta los trozos con archivo)
 python run_experiment11_monolithic.py --cuts 200,50,100,25 --seeds 42-51 --reps 3 --chunks 6 --workers 10
-python run_experiment11_monolithic.py --image-only --cuts 200 --seeds 42-46 --img-per-class 10 --workers 12
+python run_experiment11_monolithic.py --image-only --cuts 200,50,100,25 --seeds 42-51 --img-per-class 10 --workers 6   # 134 min; con Chrome abierto caben 6
 python run_experiment11_monolithic.py --ood-only --ood-file results\experimento11\consultas_fuera_dominio.txt --cuts 200,50,100,25 --seeds 42-51 --workers 10
 python run_experiment11_monolithic.py --report-only
 python run_experiment11_probes.py            # por clase, fig5 quimeras, fig6 comparación
@@ -93,12 +96,10 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 - **Los latentes de test** de imagen solo están en caché para 20 por clase; para las 82 hay que codificar con el encoder.
 - **Primer arranque de la app** descarga los pesos de ResNet18 desde PyTorch (45 MB); en esta red fue lento (45 kB/s). Queda en `~/.cache/torch/hub/checkpoints/`.
 - **`import` locales dentro de `main()` de `app_tme.py`** hacen sombra a los de módulo (ya se quitó uno de `route_transactive`).
+- **Streamlit no recarga los módulos de `src/` importados dentro de `main()`** (`from stage8_mature import route_mature`): tras editar uno hay que reiniciar el servidor, no basta con recargar la página.
 - No tocar `src/hetero_lib/` (código vendido de Pineda y Morales).
 
 ## 9. Pendiente
 
-- Deck externo de Drive (no está en el repo): «3.6 a 7.1 veces» → «2.9 a 5.5 veces»; si cita 23.3 contra 21.9 o el 98.5 % de imagen→texto, aplicar B3 y B5 de `revision_fase3_prosa.md`.
-- Imagen→texto de exp11 con los cuatro cortes y diez semillas (unas 5 horas), solo si se quiere la versión larga.
-- Revisar la ubicación de los tres párrafos de exp11 insertados en `.tex8` (resultados, discusión, conclusiones).
-- Las 28 consultas nuevas fuera de dominio las escribió el asistente con regla declarada en la cabecera del archivo; si el autor quiere reemplazarlas, el recálculo tarda 6 minutos.
-- Trabajo futuro del reporte: doble compuerta de contenido en la fase madura textual (la fuga piano → dog lo motiva).
+- Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
+- Medir el costo de la doble compuerta sobre el banco reservado de exp11 (171 consultas), si se quiere cerrar la limitación (a) del reporte con las dos cifras.
