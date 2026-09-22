@@ -57,7 +57,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | fuera de dominio aceptadas (de 40) | 3 | 2 | 4 |
 | fuera de dominio con doble compuerta | 3 | 2 | 2 |
 
-Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad difiere en 3.9 con umbral 1). Partir compra fidelidad (brecha crece 2.0 → 4.5 con N), coherencia y precisión; cuesta cobertura (containment estricto del especialista), 2.5 puntos de directorio y 8× las celdas. El directorio de texto deja pasar dos consultas fuera de dominio que el contenido rechaza (piano → dog, thunderstorm → car). Con la doble compuerta el protocolo acepta 2/40 en los cuatro cortes. Imagen→texto con los cuatro cortes: la cobertura del especialista sube 0 → 79 % con N; la EHAM única 5 → 96 % y su dominio ajeno 0 → 9 %.
+Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad difiere en 3.9 con umbral 1). Partir compra fidelidad (brecha crece 2.0 → 4.5 con N), coherencia y precisión; cuesta cobertura (containment estricto del especialista), 2.5 puntos de directorio y 8× las celdas. El directorio de texto deja pasar dos consultas fuera de dominio que el contenido rechaza (piano → dog, thunderstorm → car). Con la doble compuerta el protocolo acepta 2/40 en los cuatro cortes y no pierde ninguna respuesta sobre las 171 reservadas. Imagen→texto con los cuatro cortes: la cobertura del especialista sube 0 → 79 % con N; la EHAM única 5 → 96 % y su dominio ajeno 0 → 9 %.
 
 **Exp12:** la brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay dominios disjuntos con esta cuantización (Jaccard 0.57–0.65). Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.
 
@@ -97,9 +97,9 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 - **Primer arranque de la app** descarga los pesos de ResNet18 desde PyTorch (45 MB); en esta red fue lento (45 kB/s). Queda en `~/.cache/torch/hub/checkpoints/`.
 - **`import` locales dentro de `main()` de `app_tme.py`** hacen sombra a los de módulo (ya se quitó uno de `route_transactive`).
 - **Streamlit no recarga los módulos de `src/` importados dentro de `main()`** (`from stage8_mature import route_mature`): tras editar uno hay que reiniciar el servidor, no basta con recargar la página.
+- **`$env:CUDA_VISIBLE_DEVICES=""` en PowerShell borra la variable** (torch sí ve la GPU); para ocultarla hay que usar `"-1"`. `run_experiment5.py`, `run_experiment6.py` y `generate_paper_figures.py` fallan con GPU visible (encoder en cuda, tensores en CPU).
 - No tocar `src/hetero_lib/` (código vendido de Pineda y Morales).
 
 ## 9. Pendiente
 
 - Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
-- Medir el costo de la doble compuerta sobre el banco reservado de exp11 (171 consultas), si se quiere cerrar la limitación (a) del reporte con las dos cifras.
