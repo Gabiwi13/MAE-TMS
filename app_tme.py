@@ -2531,6 +2531,7 @@ def main():
                 mdir_scores = {}
                 recalled_img = None
                 rejected = False
+                reject_reason = None
 
                 # Shared tokenization. Sin filtro léxico: tokens representables
                 # (con vector fastText real); el rechazo lo decide la memoria.
@@ -2552,6 +2553,9 @@ def main():
                             vectors_cache, decoder, g_min, g_max, verbose=False)
                         if res.get("rejected") or res["winner"] is None:
                             rejected = True
+                            reject_reason = res.get("reason")
+                            if reject_reason == "content_no_support":
+                                dest_cls = res["winner"]
                         else:
                             dest_cls = res["winner"]
                             scores_list = res.get("scores", [0.0]*len(CLASSES))
@@ -2578,10 +2582,15 @@ def main():
                                 dest_cls = CLASSES[int(np.argmax(agg))]
                                 mdir_scores = {c: float(agg[i])
                                                for i, c in enumerate(CLASSES)}
-                                for tok in tokens_vocab:
-                                    v_q = quantize_binary(np.array(
-                                        get_fasttext_vector(tok, vectors_cache),
-                                        dtype=np.float32), M_LABEL)
+                                cues_exp = [quantize_binary(np.array(
+                                    get_fasttext_vector(tok, vectors_cache),
+                                    dtype=np.float32), M_LABEL)
+                                    for tok in tokens_vocab]
+                                if max(agents_exp[dest_cls].recognize_gated(v)
+                                       for v in cues_exp) <= 0:
+                                    rejected = True
+                                    reject_reason = "content_no_support"
+                                for v_q in ([] if rejected else cues_exp):
                                     r_q2, rec2, wt2, *_ = (
                                         agents_exp[dest_cls].mem_dom_H
                                         .recall_from_left(v_q))
@@ -2627,10 +2636,12 @@ def main():
                             mdir_scores = {cls: float(agg[i])
                                            for i, cls in enumerate(CLASSES)}
                         if dest_cls is not None:
-                            for tok in tokens_vocab:
-                                v_q = quantize_binary(np.array(
-                                    get_fasttext_vector(tok, vectors_cache),
-                                    dtype=np.float32), M_LABEL)
+                            # Doble compuerta: el destino debe contener la pista.
+                            if max(agents[dest_cls].recognize_gated(v)
+                                   for v in cues) <= 0:
+                                rejected = True
+                                reject_reason = "content_no_support"
+                            for v_q in ([] if rejected else cues):
                                 r_q2, rec2, wt2, *_ = (
                                     agents[dest_cls].mem_dom_H
                                     .recall_from_left(v_q))
@@ -2639,7 +2650,22 @@ def main():
                                         r_q2, g_min, g_max, decoder)
                                     break
 
-                if rejected:
+                if rejected and reject_reason == "content_no_support":
+                    st.warning(
+                        f"REJECTED — el directorio señala a "
+                        f"{DOMAIN_EMOJI[dest_cls]} {dest_cls}, pero {dest_cls} "
+                        "no contiene la pista: la doble compuerta de contenido "
+                        "rechaza en vez de evocar un dominio ajeno.")
+                    st.markdown("**Diagnóstico por token en el destino:**")
+                    _ag_d = (agents_exp if use_experiment else agents)[dest_cls]
+                    for tok in tokens_vocab:
+                        v_q = quantize_binary(np.array(
+                            get_fasttext_vector(tok, vectors_cache),
+                            dtype=np.float32), M_LABEL)
+                        sc = _ag_d.recognize_gated(v_q)
+                        st.caption(f"{'OK' if sc > 0 else '!!'}  `{tok}` — "
+                                   f"containment en {dest_cls}: {sc:.2f}")
+                elif rejected:
                     st.warning(
                         "REJECTED — sin señal de routing: el sistema rechaza "
                         "en vez de rutear al azar.")

@@ -479,17 +479,22 @@ def ood_rows_for(seed, cut, specialists, mono, ood):
             if arm == "M":
                 acepta = gate_accepts([mono], it["cues"])
                 dest = "monolitica" if acepta else None
+                acepta_compuerta = acepta
             elif arm == "T-oraculo":
                 acepta = gate_accepts(list(specialists.values()), it["cues"])
                 dest = None
+                acepta_compuerta = acepta
             else:
                 entry = AGENT_LIST[int(entry_rng.randint(K))]
                 with contextlib.redirect_stdout(io.StringIO()):
                     d, *_ = route_transactive(entry, specialists,
                                               [v for _, v in it["cues"]], modality="text")
                 acepta, dest = d >= 0, (CLASSES[d] if d >= 0 else None)
+                # Doble compuerta: el destino debe contener la pista.
+                acepta_compuerta = acepta and gate_accepts([specialists[dest]], it["cues"])
             rows.append({"semilla": seed, "corte": cut, "brazo": arm,
-                         "query": it["query"], "acepta": acepta, "destino": dest})
+                         "query": it["query"], "acepta": acepta,
+                         "acepta_compuerta": acepta_compuerta, "destino": dest})
     return rows
 
 
@@ -688,8 +693,8 @@ def aggregate():
         image_strict(raw["imagen"], excl)
     cuts = sorted({r["meta"]["corte"] for r in raws})
     seeds = sorted({r["meta"]["semilla"] for r in raws})
-    summary = {"cortes": cuts, "semillas": seeds, "texto": {}, "ood": {}, "imagen": {},
-               "formacion": {}, "dependencia": {}, "control": {}}
+    summary = {"cortes": cuts, "semillas": seeds, "texto": {}, "ood": {}, "ood_compuerta": {},
+               "imagen": {}, "formacion": {}, "dependencia": {}, "control": {}}
     for raw in raws:
         m = raw["meta"]
         if "control_igual_al_oficial" in m:
@@ -700,7 +705,7 @@ def aggregate():
         for arm in ARMS:
             key = f"{arm}|N={cut}"
             per_seed = {name: [] for name, _, _ in METRICS}
-            ood_seed, f_seed, form_seed = [], [], []
+            ood_seed, oodc_seed, f_seed, form_seed = [], [], [], []
             img_seed = {k: [] for k in ("acepta", "responde", "hit", "hit_exclusivo",
                                         "dominio_ok", "otro_dominio", "ruteo_ok")}
             for raw in raws:
@@ -710,7 +715,10 @@ def aggregate():
                 for name, k, cond in METRICS:
                     c = (None if cond is None else (lambda r, cond=cond: bool(r.get(cond))))
                     per_seed[name].append(_rate(rows, k, c))
-                ood_seed.append(_rate([r for r in raw["ood"] if r["brazo"] == arm], "acepta"))
+                ood_rows = [r for r in raw["ood"] if r["brazo"] == arm]
+                ood_seed.append(_rate(ood_rows, "acepta"))
+                if ood_rows and all("acepta_compuerta" in r for r in ood_rows):
+                    oodc_seed.append(_rate(ood_rows, "acepta_compuerta"))
                 img = [r for r in raw["imagen"] if r["brazo"] == arm]
                 if img:
                     for k in img_seed:
@@ -720,6 +728,8 @@ def aggregate():
                     form_seed.append(raw["meta"]["formacion_texto"])
             summary["texto"][key] = {name: _ci(v) for name, v in per_seed.items()}
             summary["ood"][key] = _ci(ood_seed)
+            if len(oodc_seed) == len(ood_seed):
+                summary["ood_compuerta"][key] = _ci(oodc_seed)
             if img_seed["hit"]:
                 summary["imagen"][key] = {k: _ci(v) for k, v in img_seed.items()}
             summary["dependencia"][key] = _ci(f_seed)
@@ -767,10 +777,13 @@ def write_report(summary):
             L.append(f"| {arm} | {_fmt(t['fraccion_pista_compartida'])} | "
                      f"{_fmt(t['nn_ok_pista_compartida'])} | {_fmt(t['compat_max_pista_compartida'], False)} |")
         n_ood = summary.get("ood_n", 12)
-        L += ["", f"Fuera de dominio ({n_ood} consultas): tasa de aceptación.", "",
-              "| brazo | acepta |", "|---|---|"]
+        L += ["", f"Fuera de dominio ({n_ood} consultas): tasa de aceptación. "
+              "«Con compuerta»: el agente destino además debe contener la pista "
+              "(en M y oráculo coincide con la aceptación).", "",
+              "| brazo | acepta | acepta con compuerta |", "|---|---|---|"]
         for arm in ARMS:
-            L.append(f"| {arm} | {_fmt(summary['ood'][f'{arm}|N={cut}'])} |")
+            L.append(f"| {arm} | {_fmt(summary['ood'][f'{arm}|N={cut}'])} | "
+                     f"{_fmt(summary['ood_compuerta'].get(f'{arm}|N={cut}'))} |")
         if f"T-protocolo|N={cut}" in summary["formacion"]:
             f = summary["formacion"][f"T-protocolo|N={cut}"]
             L += ["", f"Formación de directorios (T-protocolo): registradas {_fmt(f['registradas'], False)}, "
@@ -847,6 +860,10 @@ def make_figures(summary):
         v = np.array([summary["ood"][f"{arm}|N={c}"] for c in cuts]) * 100
         ax.bar(np.arange(len(cuts)) + (i - 1) * w, v[:, 0], w, color=color[arm], label=arm,
                yerr=[v[:, 0] - v[:, 1], v[:, 2] - v[:, 0]], capsize=2)
+        if arm == "T-protocolo" and all(f"{arm}|N={c}" in summary["ood_compuerta"] for c in cuts):
+            vc = np.array([summary["ood_compuerta"][f"{arm}|N={c}"] for c in cuts]) * 100
+            ax.bar(np.arange(len(cuts)) + (i - 1) * w, vc[:, 0], w, color="none",
+                   edgecolor=color[arm], hatch="//", label=f"{arm} con compuerta")
     ax.set_xticks(range(len(cuts))); ax.set_xticklabels([f"N={c}" for c in cuts])
     ax.set_ylabel("consultas fuera de dominio aceptadas (%)"); ax.legend()
     ax.spines[["top", "right"]].set_visible(False)
