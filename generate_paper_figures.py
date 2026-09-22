@@ -1109,6 +1109,7 @@ def _encode_img(pil, enc):
     import torch
     from stage7_bidirectional import IMG_TRANSFORM
     t = IMG_TRANSFORM(pil.convert("RGB").resize((128, 128))).unsqueeze(0)
+    t = t.to(next(enc.parameters()).device)
     with torch.no_grad():
         return enc(t).cpu().numpy()[0]
 
