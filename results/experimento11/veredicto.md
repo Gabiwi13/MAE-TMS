@@ -21,8 +21,9 @@
 | | T-oráculo | 100 | 100 | 100 | 100 |
 | | T-protocolo | 78.6 | 65.7 | 62.5 | 65.7 |
 | compat máx con pista compartida | M | 0.71 | 0.72 | 0.74 | 0.73 |
-| fuera de dominio aceptadas (de 12) | M | 2 | 2 | 3 | 3 |
-| | T-oráculo / T-protocolo | 2 | 2 | 2 | 2 |
+| fuera de dominio aceptadas (de 40) | M | 2 | 2 | 3 | 3 |
+| | T-oráculo | 2 | 2 | 2 | 2 |
+| | T-protocolo | 3 | 4 | 4 | 4 |
 | ruteo correcto (%) | T-protocolo | 95.4 | 96.4 | 96.0 | 96.1 |
 | F (dentro de clase) | M | 3.37 | 1.83 | 1.59 | 1.36 |
 | | T-oráculo | 1.83 | 1.26 | 1.15 | 1.08 |
@@ -32,7 +33,7 @@
 
 1. Clase 1-NN: M 97.4 [97.3, 97.7] contra T-protocolo 97.5 [97.1, 97.9]. Diferencia de 0.1 puntos, intervalos solapados. **Se cumple.**
 2. Fidelidad: M 26.69 [26.64, 26.75] contra T-protocolo 22.75 [22.59, 22.88]. Diferencia de 3.9 unidades, umbral 1. **No se cumple.**
-3. Fuera de dominio: M acepta 3 de 12, T acepta 2 de 12. Misma dirección que la predicción P3, pero 12 consultas no separan nada.
+3. Fuera de dominio, con el banco de 40 consultas (`consultas_fuera_dominio.txt`: las 12 originales más 28 nuevas de categorías ausentes, sin palabras del vocabulario de etiquetas): la EHAM única acepta 3 de 40 en N ≥ 100 (2 en N ≤ 50), el oráculo 2 de 40 en todos los cortes, el protocolo 4 de 40. Las dos que aceptan todos son las originales con palabras del vocabulario (`food`, `table`); de las 28 nuevas la EHAM única acepta una (`a piece of furniture for sitting`) y los especialistas ninguna. Misma dirección que P3, con una consulta de diferencia: no separable. **No se cumple como refutación ni como confirmación.**
 
 La tesis **no queda refutada**: el criterio exigía las tres condiciones a la vez. Tampoco se sostiene en la forma fuerte que preveía la propuesta (M perdiendo en clase sobre el banco completo).
 
@@ -71,6 +72,6 @@ Lectura conjunta de los dos hemisferios: partir el contenido compra precisión y
 
 ## Lo que este experimento no decide
 
-- La especificidad fuera de dominio (P3) necesita un banco mayor: 12 consultas dan 2 contra 3.
+- La especificidad fuera de dominio (P3): con 40 consultas la diferencia entre la EHAM única y los especialistas es una consulta. Lo que sí aparece es que el directorio deja pasar dos consultas que el contenido rechaza (`a piano with black and white keys` → dog, `a thunderstorm with heavy rain` → car, en las diez semillas): el índice de texto es relativo (16 niveles sobre 300 rasgos, exp10) y acepta pistas que la memoria de contenido no contiene. Es la fuga de la limitación (a) del reporte y el argumento para la doble compuerta.
 - El hemisferio imagen→texto se corrió en versión corta (un corte, 5 semillas, 80 imágenes de test). Con los cuatro cortes se vería si la cobertura del especialista sube con N como en exp6.
 - La comparación es a misma memoria y mismos datos (§3.1 y §3.2 de la propuesta). T usa ocho veces más celdas; ese costo no se compensa aquí con nada, se declara.

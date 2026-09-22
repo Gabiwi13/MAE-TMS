@@ -20,13 +20,13 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 4.4 [4.4, 4.4] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 5.2 [5.2, 5.2] | 78.6 [68.5, 85.7] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación.
 
 | brazo | acepta |
 |---|---|
-| M | 16.7 [16.7, 16.7] |
-| T-oraculo | 16.7 [16.7, 16.7] |
-| T-protocolo | 16.7 [16.7, 16.7] |
+| M | 5.0 [5.0, 5.0] |
+| T-oraculo | 5.0 [5.0, 5.0] |
+| T-protocolo | 7.5 [7.5, 7.5] |
 
 Formación de directorios (T-protocolo): registradas 221.00 [221.00, 221.00], rechazadas 19.00 [19.00, 19.00], acierto temprano 82.8 [82.8, 82.8].
 
@@ -46,13 +46,13 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.2 [4.1, 4.2] | 65.7 [55.7, 77.1] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación.
 
 | brazo | acepta |
 |---|---|
-| M | 16.7 [16.7, 16.7] |
-| T-oraculo | 16.7 [16.7, 16.7] |
-| T-protocolo | 16.7 [16.7, 16.7] |
+| M | 5.0 [5.0, 5.0] |
+| T-oraculo | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
 
@@ -72,13 +72,13 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.4 [4.1, 4.7] | 62.5 [52.7, 73.8] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación.
 
 | brazo | acepta |
 |---|---|
-| M | 25.0 [25.0, 25.0] |
-| T-oraculo | 16.7 [16.7, 16.7] |
-| T-protocolo | 16.7 [16.7, 16.7] |
+| M | 7.5 [7.5, 7.5] |
+| T-oraculo | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
 
@@ -98,13 +98,13 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.2 [4.1, 4.2] | 65.7 [57.1, 75.7] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (12 consultas de `run_rejection_probe`): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación.
 
 | brazo | acepta |
 |---|---|
-| M | 25.0 [25.0, 25.0] |
-| T-oraculo | 16.7 [16.7, 16.7] |
-| T-protocolo | 16.7 [16.7, 16.7] |
+| M | 7.5 [7.5, 7.5] |
+| T-oraculo | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 85.4 [85.4, 85.4].
 
