@@ -153,11 +153,16 @@ veces las celdas.
 
 \paragraph{(a) Fuga de consultas fuera de dominio en el hemisferio textual.}
 La sonda de rechazo (Sección~\ref{sec:proto-completo}) muestra que 2 de 12 consultas
-fuera de dominio rutean hacia algún agente porque comparten tokens con labels legítimos.
+fuera de dominio rutean hacia algún agente porque comparten tokens con labels legítimos;
+con el banco de 40 consultas de la comparación con la EHAM única, el directorio del
+protocolo acepta 4, y en 2 de ellas (\emph{piano}, \emph{thunderstorm}) el agente
+destino no contiene la consulta.
 Con la cuantización por magnitud y directorios densos, el containment textual pasa con
 más facilidad que en la versión binaria, y la frontera semántica queda expuesta.
 Una doble compuerta de contenido (verificar que el agente destino contenga la consulta,
-no solo que el directorio la señale) es la mitigación diseñada pendiente de evaluación.
+no solo que el directorio la señale) cierra esa fuga: el protocolo acepta 2 de 40 en los
+cuatro cortes, las mismas que el oráculo, sin rechazar ninguna de las 16 consultas de
+referencia de la fase madura. Su costo sobre el banco reservado no se midió.
 
 \paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
 El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por
