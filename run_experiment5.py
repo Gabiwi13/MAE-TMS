@@ -79,10 +79,11 @@ def class_latents(encoder, cls, split, k):
     paths = splits[cls][split][:k]
     zs = []
     encoder.eval()
+    dev = next(encoder.parameters()).device
     with torch.no_grad():
         for p in paths:
             img = Image.open(p).convert("RGB").resize((128, 128))
-            t = IMG_TRANSFORM(img).unsqueeze(0)
+            t = IMG_TRANSFORM(img).unsqueeze(0).to(dev)
             zs.append(encoder(t).cpu().numpy()[0])
     return zs
 
@@ -205,9 +206,10 @@ def early_accuracy(agents, nlp, vectors):
 def decode(decoder, r_q, g_min, g_max):
     v = r_q.astype(float) / (Q_LATENT - 1)
     z = (v * (g_max - g_min) + g_min).astype(np.float32)
+    dev = next(decoder.parameters()).device
     with torch.no_grad():
-        img = decoder(torch.tensor(z).unsqueeze(0))[0].clamp(0, 1)
-    return img.permute(1, 2, 0).numpy()
+        img = decoder(torch.tensor(z).unsqueeze(0).to(dev))[0].clamp(0, 1)
+    return img.permute(1, 2, 0).cpu().numpy()
 
 
 # Main

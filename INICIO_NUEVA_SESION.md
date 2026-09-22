@@ -97,7 +97,7 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 - **Primer arranque de la app** descarga los pesos de ResNet18 desde PyTorch (45 MB); en esta red fue lento (45 kB/s). Queda en `~/.cache/torch/hub/checkpoints/`.
 - **`import` locales dentro de `main()` de `app_tme.py`** hacen sombra a los de módulo (ya se quitó uno de `route_transactive`).
 - **Streamlit no recarga los módulos de `src/` importados dentro de `main()`** (`from stage8_mature import route_mature`): tras editar uno hay que reiniciar el servidor, no basta con recargar la página.
-- **`$env:CUDA_VISIBLE_DEVICES=""` en PowerShell borra la variable** (torch sí ve la GPU); para ocultarla hay que usar `"-1"`. `run_experiment5.py`, `run_experiment6.py` y `generate_paper_figures.py` fallan con GPU visible (encoder en cuda, tensores en CPU).
+- **`$env:CUDA_VISIBLE_DEVICES=""` en PowerShell borra la variable** (torch sí ve la GPU); para ocultarla hay que usar `"-1"`. Los modelos se cargan en `DEVICE` (cuda si torch la ve): toda entrada nueva va con `.to(next(modelo.parameters()).device)`; `run_experiment5.py`, `run_experiment6.py` y `generate_paper_figures.py` fallaban por eso hasta el 22 de septiembre.
 - No tocar `src/hetero_lib/` (código vendido de Pineda y Morales).
 
 ## 9. Pendiente

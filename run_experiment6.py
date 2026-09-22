@@ -79,7 +79,8 @@ def class_latents_q(encoder, cls, split, k, g_min, g_max):
     with torch.no_grad():
         for p in paths:
             img = Image.open(p).convert("RGB").resize((128, 128))
-            z = encoder(IMG_TRANSFORM(img).unsqueeze(0)).cpu().numpy()[0]
+            t = IMG_TRANSFORM(img).unsqueeze(0).to(next(encoder.parameters()).device)
+            z = encoder(t).cpu().numpy()[0]
             out.append(quantize_latent_global(z, g_min, g_max, Q_LATENT))
     return out
 
@@ -150,9 +151,10 @@ def recall_samples(agent, v_q, n):
 def decode(decoder, r_q, g_min, g_max):
     v = r_q.astype(float) / (Q_LATENT - 1)
     z = (v * (g_max - g_min) + g_min).astype(np.float32)
+    dev = next(decoder.parameters()).device
     with torch.no_grad():
-        img = decoder(torch.tensor(z).unsqueeze(0))[0].clamp(0, 1)
-    return img.permute(1, 2, 0).numpy()
+        img = decoder(torch.tensor(z).unsqueeze(0).to(dev))[0].clamp(0, 1)
+    return img.permute(1, 2, 0).cpu().numpy()
 
 
 def main():
