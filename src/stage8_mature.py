@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quantizer import quantize_binary
 from stage6_interaction import (
-    CLASSES, MODELS_DIR, DEVICE,
+    CLASSES, MODELS_DIR,
     load_tme_and_agents, get_nlp, load_decoder, load_all_vectors,
     tokenize_query, get_fasttext_vector, TEST_QUERIES, route_transactive,
 )
@@ -89,6 +89,17 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
     dest_agent = agents[dest_name]
     routed = dest_name != entry_agent.name
 
+    # Doble compuerta: el directorio señala al agente; el agente decide si
+    # contiene la pista.
+    if max(dest_agent.recognize_gated(v_q) for v_q in token_vectors.values()) <= 0:
+        if verbose:
+            print(f"  RECHAZADA (content_no_support): '{query}' "
+                  f"(el directorio señalaba a {dest_name}).")
+        return {"query": query, "winner": dest_name, "image": None,
+                "routed": routed, "scores": agent_scores.tolist(),
+                "consulted": consulted, "hops": hops,
+                "rejected": True, "reason": "content_no_support"}
+
     if verbose:
         score_str = "  ".join(f"{c}={agent_scores[i]:.1f}"
                               for i, c in enumerate(CLASSES))
@@ -103,7 +114,8 @@ def route_mature(query: str, entry_agent, agents: dict, nlp,
         if recognized:
             v_norm = recalled_q.astype(float) / (Q_LATENT - 1)
             v_latent = (v_norm * (g_max - g_min) + g_min).astype(np.float32)
-            z = torch.tensor(v_latent).unsqueeze(0).to(DEVICE)
+            z = torch.tensor(v_latent).unsqueeze(0).to(
+                next(decoder.parameters()).device)
             with torch.no_grad():
                 recalled_image = decoder(z)[0].cpu()
             break
@@ -146,7 +158,7 @@ def run():
         entry_cls = CLASSES[rng.randint(0, len(CLASSES))]
         res = route_mature(query, agents[entry_cls], agents, nlp,
                            vectors_cache, decoder, g_min, g_max, verbose=False)
-        mature_results[query] = res["winner"]
+        mature_results[query] = None if res.get("rejected") else res["winner"]
         early_winner = early_results.get(query)
         match = res["winner"] == early_winner
         fidelity_count += int(match)
