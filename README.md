@@ -96,6 +96,13 @@ TME (early phase only)
 - Verdict against the pre-registered criterion (`propuesta_fase5_mae_monolitica.md` §8):
   not refuted. Partitioning buys fidelity, coherence and precision; it costs
   coverage, an index and 8× the cells. Full tables: `results/experimento11/`.
+- **Experiment 12** (`run_experiment12_overlap.py`): the same single-memory
+  fidelity gap measured for every pair of classes (28 pairs, 5 seeds). It grows
+  with the overlap of the two classes' label supports (Spearman ρ 0.45,
+  p 0.017) and so does the class error (ρ 0.49, p 0.008); it does not track
+  latent overlap (ρ −0.07). Every pair shows a positive gap (min +0.5): with
+  16 levels over 300 fastText coordinates no two domains are disjoint
+  (support Jaccard 0.57–0.65). `results/experimento12/veredicto.md`.
 
 ## Key Results — v4 (8-class system, official)
 
