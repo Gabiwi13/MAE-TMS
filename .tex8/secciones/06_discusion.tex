@@ -162,7 +162,9 @@ más facilidad que en la versión binaria, y la frontera semántica queda expues
 Una doble compuerta de contenido (verificar que el agente destino contenga la consulta,
 no solo que el directorio la señale) cierra esa fuga: el protocolo acepta 2 de 40 en los
 cuatro cortes, las mismas que el oráculo, sin rechazar ninguna de las 16 consultas de
-referencia de la fase madura. Su costo sobre el banco reservado no se midió.
+referencia de la fase madura. Sobre las 171 consultas reservadas no quita ninguna
+respuesta: las filas que rechaza (1.4\,\% con 200 imágenes por clase, 21\,\% con 25) ya
+no producían recall en el destino, y en los cortes grandes son todas ruteos equivocados.
 
 \paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
 El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por

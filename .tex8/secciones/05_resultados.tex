@@ -441,3 +441,14 @@ augmentación del llenado, no con el número de agentes en sí: las operaciones 
 siguen siendo álgebra matricial sin entrenamiento y se ejecutan en minutos.
 La batería de análisis (miles de corridas de evaluación) es trabajo de medición, no
 parte de un despliegue del sistema.
+
+La misma medición, repetida en una segunda laptop (Intel Core Ultra 7 265HX, 20 hilos,
+16~GB, NVIDIA RTX PRO 1000 de 8~GB), separa lo que aporta cada componente. Con la GPU
+oculta, el pipeline baja de 133.5 a 50.6~min y la batería de 159.9 a 70.5~min: una
+ganancia de 2.3--2.6$\times$ que viene solo de la CPU, porque las memorias asociativas
+corren en \texttt{numpy} y el registro de una hetero es secuencial. Con la GPU activa
+solo cambia el entrenamiento del encoder, de 22.3 a 5.1~min (15.8$\times$ respecto de
+la primera laptop), y el pipeline queda en 31.9~min; el llenado, los directorios y el
+hemisferio visual no la usan. En esa máquina la parte cara del sistema deja de ser el
+entrenamiento y pasa a ser la memoria: llenado y hemisferio visual suman 25 de los
+32~min. Tabla completa en \texttt{results/computational\_cost/comparacion\_laptops.md}.
