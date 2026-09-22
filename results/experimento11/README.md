@@ -20,15 +20,23 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 4.4 [4.4, 4.4] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 5.2 [5.2, 5.2] | 78.6 [68.5, 85.7] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (40 consultas): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
-| brazo | acepta |
-|---|---|
-| M | 5.0 [5.0, 5.0] |
-| T-oraculo | 5.0 [5.0, 5.0] |
-| T-protocolo | 7.5 [7.5, 7.5] |
+| brazo | acepta | acepta con compuerta |
+|---|---|---|
+| M | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-oraculo | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-protocolo | 7.5 [7.5, 7.5] | 5.0 [5.0, 5.0] |
 
 Formación de directorios (T-protocolo): registradas 221.00 [221.00, 221.00], rechazadas 19.00 [19.00, 19.00], acierto temprano 82.8 [82.8, 82.8].
+
+Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. Todo sobre el total de imágenes.
+
+| brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |
+|---|---|---|---|---|---|---|---|
+| M | 86.2 [86.2, 86.2] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 0.0 [0.0, 0.0] | — |
+| T-oraculo | 57.5 [57.5, 57.5] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | — |
+| T-protocolo | 41.2 [41.2, 41.2] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 0.0 [0.0, 0.0] | 100.0 [100.0, 100.0] |
 
 ## N = 50 (200 registros por clase; monolítica 1600)
 
@@ -46,15 +54,23 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.2 [4.1, 4.2] | 65.7 [55.7, 77.1] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (40 consultas): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
-| brazo | acepta |
-|---|---|
-| M | 5.0 [5.0, 5.0] |
-| T-oraculo | 5.0 [5.0, 5.0] |
-| T-protocolo | 10.0 [10.0, 10.0] |
+| brazo | acepta | acepta con compuerta |
+|---|---|---|
+| M | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-oraculo | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] | 5.0 [5.0, 5.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
+
+Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. Todo sobre el total de imágenes.
+
+| brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |
+|---|---|---|---|---|---|---|---|
+| M | 98.8 [98.8, 98.8] | 53.7 [53.7, 53.7] | 53.4 [53.0, 53.7] | 52.8 [52.1, 53.4] | 51.1 [50.4, 51.8] | 2.6 [2.0, 3.4] | — |
+| T-oraculo | 85.0 [85.0, 85.0] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] | 0.0 [0.0, 0.0] | — |
+| T-protocolo | 66.2 [66.2, 66.2] | 3.7 [3.7, 3.7] | 3.7 [3.7, 3.7] | 3.7 [3.7, 3.7] | 3.7 [3.7, 3.7] | 0.0 [0.0, 0.0] | 100.0 [100.0, 100.0] |
 
 ## N = 100 (400 registros por clase; monolítica 3200)
 
@@ -72,15 +88,23 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.4 [4.1, 4.7] | 62.5 [52.7, 73.8] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (40 consultas): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
-| brazo | acepta |
-|---|---|
-| M | 7.5 [7.5, 7.5] |
-| T-oraculo | 5.0 [5.0, 5.0] |
-| T-protocolo | 10.0 [10.0, 10.0] |
+| brazo | acepta | acepta con compuerta |
+|---|---|---|
+| M | 7.5 [7.5, 7.5] | 7.5 [7.5, 7.5] |
+| T-oraculo | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] | 5.0 [5.0, 5.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.5 [84.5, 84.5].
+
+Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. Todo sobre el total de imágenes.
+
+| brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |
+|---|---|---|---|---|---|---|---|
+| M | 98.8 [98.8, 98.8] | 81.2 [81.2, 81.2] | 80.8 [80.1, 81.1] | 79.1 [78.2, 79.9] | 76.2 [74.8, 77.9] | 4.9 [3.4, 6.2] | — |
+| T-oraculo | 93.8 [93.8, 93.8] | 45.0 [45.0, 45.0] | 45.0 [45.0, 45.0] | 44.8 [44.4, 45.0] | 44.6 [44.0, 45.0] | 0.4 [0.0, 1.0] | — |
+| T-protocolo | 75.0 [75.0, 75.0] | 42.5 [42.5, 42.5] | 42.5 [42.5, 42.5] | 42.4 [42.1, 42.5] | 42.0 [41.2, 42.5] | 0.5 [0.0, 1.2] | 100.0 [100.0, 100.0] |
 
 ## N = 200 (800 registros por clase; monolítica 6400)
 
@@ -98,13 +122,13 @@ Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
 | T-protocolo | 4.2 [4.1, 4.2] | 65.7 [57.1, 75.7] | 1.00 [1.00, 1.00] |
 
-Fuera de dominio (40 consultas): tasa de aceptación.
+Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
-| brazo | acepta |
-|---|---|
-| M | 7.5 [7.5, 7.5] |
-| T-oraculo | 5.0 [5.0, 5.0] |
-| T-protocolo | 10.0 [10.0, 10.0] |
+| brazo | acepta | acepta con compuerta |
+|---|---|---|
+| M | 7.5 [7.5, 7.5] | 7.5 [7.5, 7.5] |
+| T-oraculo | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
+| T-protocolo | 10.0 [10.0, 10.0] | 5.0 [5.0, 5.0] |
 
 Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 85.4 [85.4, 85.4].
 
@@ -112,9 +136,9 @@ Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabular
 
 | brazo | acepta | responde | hit laxo | hit estricto | dominio ok | otro dominio | ruteo ok |
 |---|---|---|---|---|---|---|---|
-| M | 100.0 [100.0, 100.0] | 96.2 [96.2, 96.2] | 95.2 [95.0, 95.8] | 93.0 [92.5, 94.0] | 88.2 [85.8, 90.2] | 8.0 [6.0, 10.5] | — |
-| T-oraculo | 97.5 [97.5, 97.5] | 78.8 [78.8, 78.8] | 78.8 [78.8, 78.8] | 78.5 [78.0, 78.8] | 77.8 [76.2, 78.8] | 1.0 [0.0, 2.5] | — |
-| T-protocolo | 81.2 [81.2, 81.2] | 72.5 [72.5, 72.5] | 72.5 [72.5, 72.5] | 71.5 [70.7, 72.2] | 71.2 [70.5, 72.0] | 1.2 [0.5, 2.0] | 100.0 [100.0, 100.0] |
+| M | 100.0 [100.0, 100.0] | 96.2 [96.2, 96.2] | 95.2 [94.8, 95.7] | 92.8 [91.9, 93.6] | 87.4 [85.8, 89.0] | 8.9 [7.3, 10.5] | — |
+| T-oraculo | 97.5 [97.5, 97.5] | 78.7 [78.7, 78.7] | 78.7 [78.7, 78.7] | 78.0 [77.4, 78.6] | 77.5 [76.6, 78.4] | 1.2 [0.4, 2.1] | — |
+| T-protocolo | 81.2 [81.2, 81.2] | 72.5 [72.5, 72.5] | 72.5 [72.5, 72.5] | 71.5 [70.9, 72.1] | 70.9 [70.4, 71.4] | 1.6 [1.1, 2.1] | 100.0 [100.0, 100.0] |
 
 ## Qué operaciones de la MAE usa cada brazo
 
