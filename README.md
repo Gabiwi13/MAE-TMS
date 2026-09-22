@@ -69,9 +69,12 @@ TME (early phase only)
 - Theoretical framing, theses and the two experiments that motivated the change:
   `discusion_marco_teorico_directorio.md`, `results/experimento9/`,
   `results/experimento10/`.
-- Pending: the app's live early-phase tab still trains a single session directory
-  and its animation still shows every agent registering; only its mature-phase and
-  image paths use the new protocol.
+- The app's live early-phase tab uses the same protocol: the query enters through
+  an entry agent (chosen or random), the transaction is registered by the entry,
+  the winner and the TME (`register_transaction`), the animation shows only those
+  two agents learning, tab 3 shows what each agent's directory holds, and the
+  mature session path routes with `route_transactive` over the session's
+  perspectival directories.
 
 ### Experiment 11 (monolithic EHAM baseline)
 

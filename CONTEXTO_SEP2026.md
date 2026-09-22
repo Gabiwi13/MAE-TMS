@@ -129,6 +129,7 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Fase 3 aplicada el 21 de septiembre (`revision_fase3_prosa.md`): READMEs de exp7, exp8, exp9 y exp10, cifras del marco teórico, README principal y este archivo.
 - Fuera de dominio con 40 consultas (21 de septiembre, `results/experimento11/consultas_fuera_dominio.txt`): EHAM única 3/40, oráculo 2/40, protocolo 4/40; el directorio deja pasar dos consultas que el contenido rechaza (piano → dog, thunderstorm → car).
 - Experimento 12 (21 de septiembre, `run_experiment12_overlap.py`, `results/experimento12/`): brecha de fidelidad de una EHAM de dos clases contra el solapamiento entre ellas, 28 pares, 5 semillas. La brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el solapamiento del latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay pares disjuntos en esta representación (Jaccard 0.57–0.65). Lectura en `veredicto.md`.
+- App (21 de septiembre): la fase temprana en vivo usa el protocolo v5 (`SessionAgent` por agente, `TME` de sesión, `register_transaction` con agente de entrada elegido o al azar), la animación muestra solo a entrada y ganador registrando, la pestaña 3 muestra la matriz perspectival y la fase madura de sesión rutea con `route_transactive`. Verificado en el navegador: pear (entrada) → apple con score 568 tras tres consultas. Corregido de paso un import local de `route_transactive` dentro de `main()` que hacía sombra al de módulo.
 - Deck mínimo: `hallazgos_exp7_a_exp11.pptx`.
 
 ## 8. Pendiente
@@ -137,4 +138,3 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
 - Exp11: imagen→texto con los cuatro cortes si se quiere la versión larga.
 - Restaurar los modelos v5 en `models/` cuando cierren las fases de arreglos.
-- App: migrar la fase temprana en vivo a directorios perspectivales.

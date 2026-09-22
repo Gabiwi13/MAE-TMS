@@ -40,12 +40,29 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quantizer import quantize_binary, label_scale
 from stage6_interaction import (
-    CLASSES, AGENT_LIST, MODELS_DIR, Agent, ACCEPTED_POS,
+    CLASSES, AGENT_LIST, MODELS_DIR, Agent, ACCEPTED_POS, TME,
     get_nlp, load_all_vectors,
     tokenize_query, get_fasttext_vector, token_in_vocabulary,
     M_LABEL, N, P_LATENT, Q_LATENT,
+    register_transaction, route_transactive,
 )
 from associative_memory import DirectoryMemory
+
+
+class SessionAgent:
+    """Directorios perspectivales de un agente para la sesion en vivo. Solo lo
+    que register_transaction y route_transactive necesitan."""
+
+    def __init__(self, name):
+        self.name = name
+        self.mem_dir = DirectoryMemory(N, M_LABEL, len(CLASSES))
+        self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(CLASSES))
+
+    def update_directory(self, v_q, winner_idx):
+        self.mem_dir.register(v_q, winner_idx)
+
+    def update_directory_latent(self, z_q, winner_idx):
+        self.mem_dir_R.register(z_q, winner_idx)
 
 # Visual constants
 
@@ -767,6 +784,7 @@ function setup(){
   } else {
     $('tme').classList.remove('off');
     $('tme').querySelector('small').textContent='broadcast';
+    if(D.entry){ $('ag-'+D.entry).classList.add('entry'); }
   }
 }
 
@@ -936,16 +954,16 @@ async function run(){
   // ── P8: M_dir learning (EARLY ONLY — mature phase does not learn) ──
   const onehot='['+AG.map(a=>a===D.winner?'1':'0').join(' ')+']';
   if(!isMature){
-    // Faithful to stage6 process_query: tme.update_directory(v_q, winner_idx) and
-    // every agent.update_directory(v_q, winner_idx) — the directory EHAMs fill up.
-    lbl.textContent='8 / learning: register(v_q → '+D.winner+') in every M_dir';
+    // Protocolo v5 (register_transaction): registran la transaccion el agente
+    // de entrada, el ganador y el TME. Los demas no la presenciaron.
+    const learners = D.entry ? Array.from(new Set([D.entry, D.winner])) : AG;
+    lbl.textContent='8 / learning: register(v_q → '+D.winner+') in '+learners.join(' & ')+' M_dir · TME keeps the record';
     const tb=$('tmebadge');
-    tb.innerHTML='M_dir_L.register(v_q, '+onehot+')';
+    tb.innerHTML='TME.mem_dir_L.register(v_q, '+onehot+')';
     tb.style.opacity=1;
-    // losers wake up to learn — everyone registers the association
-    for(const cls of AG) $('ag-'+cls).classList.add('relearn');
-    // association pairs fly TME → ALL agents (los perdedores también registran)
-    for(const cls of AG){
+    for(const cls of learners) $('ag-'+cls).classList.add('relearn');
+    // association pairs fly TME → entry and winner only
+    for(const cls of learners){
       const p=document.createElement('div'); p.className='pair';
       p.innerHTML='v_q&rarr;'+D.emoji[D.winner];
       p.style.left=tc[0]+'px'; p.style.top=tc[1]+'px';
@@ -957,8 +975,7 @@ async function run(){
     }
     await sleep(950);
     document.querySelectorAll('.pair').forEach(p=>p.remove());
-    // every agent's M_dir lights the winner bit + counter pops
-    for(const cls of AG){
+    for(const cls of learners){
       $('oh-'+cls).querySelectorAll('.bit').forEach(b=>{
         if(b.dataset.a===D.winner){
           b.style.background=D.colors[D.winner];
@@ -1057,7 +1074,7 @@ def build_flow_animation(trace) -> str:
 
     data = {
         "mode":     "early",
-        "entry":    None,
+        "entry":    trace.get("entry"),
         "redirect": False,
         "agents": list(CLASSES),
         "query":  trace["query"],
@@ -1433,9 +1450,17 @@ _ANIM_IMG_H = 760 + (140 if len(CLASSES) > 4 else 0)
 
 # Session state management
 
+def _new_session_dirs():
+    # TME: registro completo (diagnostico). Cada agente: solo lo que presencio.
+    st.session_state.tme            = TME()
+    st.session_state.session_agents = {c: SessionAgent(c) for c in CLASSES}
+    st.session_state.mdir_mem       = st.session_state.tme.mem_dir_L
+    st.session_state.rng            = np.random.RandomState(42)
+
+
 def _init_session():
     if "mdir_mem" not in st.session_state:
-        st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
+        _new_session_dirs()
     if "mdir_counts" not in st.session_state:
         st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     if "history" not in st.session_state:
@@ -1447,7 +1472,7 @@ def _init_session():
 
 
 def _reset_session():
-    st.session_state.mdir_mem    = DirectoryMemory(N, M_LABEL, len(CLASSES))
+    _new_session_dirs()
     st.session_state.mdir_counts = np.zeros(len(CLASSES), dtype=np.int64)
     st.session_state.history     = []
     st.session_state.query_n     = 0
@@ -1734,7 +1759,7 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
 
     # STAGE 5 — TME Decision + M_dir Update
     _stage_header(5, "", "Decisión del TME + registro en M_dir",
-        "winner = argmax(avg_scores)  →  register all tokens in M_dir[winner]")
+        "winner = argmax(avg_scores)  →  entry, winner and TME register the tokens (v5)")
 
     winner = trace["winner"]
     wcolor = DOMAIN_COLOR[winner]
@@ -1758,15 +1783,16 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
                 padding:12px;border-radius:6px;margin-top:14px'>
               <b>Winner → {DOMAIN_EMOJI[winner]} {winner.upper()}</b><br>
               <span style='font-size:12px;color:#5a5e7d'>
-                TME routes query to {winner} agent •
-                registers {trace['n_tokens']} token(s) in M_dir
+                TME routes query to {winner} •
+                {trace.get('entry', '?')} (entry) and {winner} register
+                {trace['n_tokens']} token(s) in their M_dir; the TME keeps the record
               </span>
             </div>""",
             unsafe_allow_html=True,
         )
 
     with c_mdir:
-        st.markdown("**M_dir state after this query:**")
+        st.markdown("**Registro completo (TME) after this query:**")
         counts = st.session_state.mdir_mem.agent_counts
         st.plotly_chart(_mdir_bar(counts, st.session_state.query_n),
                         use_container_width=True, key="s5_mdir")
@@ -1776,6 +1802,14 @@ def render_pipeline_trace(trace, ref_imgs, g_min, g_max):
             st.caption(
                 f"Entropy: {h:.3f} bits (max={np.log2(len(CLASSES)):.3f})  •  "
                 f"Counts: {dict(zip(CLASSES, counts.tolist()))}"
+            )
+        sa = st.session_state.session_agents
+        entry = trace.get("entry")
+        if entry:
+            st.caption(
+                "Directorios perspectivales: "
+                f"{entry} {sa[entry].mem_dir.agent_counts.tolist()} · "
+                f"{winner} {sa[winner].mem_dir.agent_counts.tolist()}"
             )
 
     # STAGE 6 — Recall & Image Reconstruction
@@ -2022,7 +2056,7 @@ def main():
             st.metric("H (bits)", f"{h:.2f}",
                       help=f"Entropía del M_dir de sesión; máximo log2({len(CLASSES)}) = {np.log2(len(CLASSES)):.1f} bits")
 
-        st.caption("Registros en M_dir por agente:")
+        st.caption("Registro completo (TME) por ganador; cada agente guarda solo lo que presenció:")
         chips = "".join(
             f"<div class='mchip'>"
             f"<span class='dot' style='background:{DOMAIN_COLOR[c]}'></span>"
@@ -2096,10 +2130,16 @@ def main():
         if example:
             query = example
 
-    col_run, col_norm = st.columns([2, 2])
+    col_run, col_entry, col_norm = st.columns([2, 1.4, 2])
     with col_run:
         run_btn = st.button("▶ Correr pipeline", type="primary",
                              use_container_width=True, disabled=not query)
+    with col_entry:
+        entry_choice = st.selectbox(
+            "Agente de entrada", ["al azar"] + list(CLASSES), key="entry_early",
+            format_func=lambda c: c if c == "al azar" else f"{DOMAIN_EMOJI[c]} {c}",
+            help="Quien recibe la consulta. Registran la transaccion la entrada, "
+                 "el ganador y el TME (protocolo v5).")
     with col_norm:
         norm_on = st.toggle(
             "Scoring oficial (gate de containment)",
@@ -2125,14 +2165,20 @@ def main():
                 "(scores en cero). No se asigna ganador por desempate."
             )
         else:
-            # Register in session M_dir (side effect happens exactly once here)
+            entry = (entry_choice if entry_choice != "al azar"
+                     else CLASSES[int(st.session_state.rng.randint(len(CLASSES)))])
+            trace["entry"] = entry
+            # Registro perspectival (una sola vez): entrada, ganador y TME.
             for td in trace["per_token"].values():
-                st.session_state.mdir_mem.register(td["q_vec"], trace["winner_idx"])
+                register_transaction(entry, trace["winner_idx"],
+                                     st.session_state.session_agents,
+                                     st.session_state.tme, td["q_vec"], "text")
             st.session_state.mdir_counts[trace["winner_idx"]] += trace["n_tokens"]
             st.session_state.query_n += 1
             st.session_state.last_trace = trace
             st.session_state.history.append({
                 "query":      trace["query"],
+                "entry":      trace["entry"],
                 "tokens":     trace.get("tokens_representable",
                                         trace["tokens_known"]),
                 "winner":     trace["winner"],
@@ -2260,6 +2306,7 @@ def main():
                 for r in reversed(st.session_state.history):
                     rows.append({
                         "Query":   r["query"],
+                        "Entry":   r.get("entry", "?"),
                         "Tokens":  " | ".join(r["tokens"]),
                         "Winner":  f"{DOMAIN_EMOJI[r['winner']]} {r['winner']}",
                         "Score":   f"{r['avg_scores'][r['winner']]:.5f}",
@@ -2271,9 +2318,10 @@ def main():
     with tab_mdir:
         st.header("Evolución de M_dir — acumulación de registros")
         st.caption(
-            "Every time a query routes to an agent, that agent's M_dir slot grows. "
-            "Over many queries, dominant agents accumulate bias. "
-            "B1 normalisation (÷count) corrects this in the mature phase."
+            "Registro completo del TME: cada consulta ruteada suma al ganador. "
+            "Los directorios de los agentes son perspectivales: cada uno registra "
+            "solo las transacciones en las que fue entrada o ganador (v5). "
+            "B1 (÷count) corrige el sesgo de frecuencia en la fase madura."
         )
         qn     = st.session_state.query_n
         counts = st.session_state.mdir_counts
@@ -2283,6 +2331,20 @@ def main():
         else:
             st.plotly_chart(_mdir_bar(counts, qn), use_container_width=True,
                             key="tab3_mdir")
+
+            st.subheader("Perspectiva: qué registró cada agente")
+            import pandas as pd
+            sa = st.session_state.session_agents
+            persp = pd.DataFrame(
+                [[int(v) for v in sa[a].mem_dir.agent_counts] for a in CLASSES],
+                index=[f"M_dir de {a}" for a in CLASSES],
+                columns=[f"ganó {c}" for c in CLASSES])
+            st.dataframe(persp, use_container_width=True)
+            known = {a: [c for c in CLASSES
+                         if sa[a].mem_dir.agent_counts[CLASSES.index(c)] > 0 and c != a]
+                     for a in CLASSES}
+            st.caption("Conocidos por agente (a quién vio ganar): " + "; ".join(
+                f"{a} → {', '.join(k) if k else 'nadie'}" for a, k in known.items()))
 
             total = int(counts.sum())
             max_c = int(counts.max())
@@ -2349,8 +2411,9 @@ def main():
     with tab_mature:
         st.header("Fase madura — ruteo punto a punto vía M_dir")
         st.caption(
-            "TME disabled. Entry agent receives query, consults its M_dir "
-            "(what it learned during early phase), and routes to the correct agent. "
+            "TME disabled. Entry agent receives query, aggregates its own M_dir and "
+            "those of the agents it knows, and forwards along acquaintances when "
+            "nobody has support (route_transactive, v5). "
             "B1 normalisation (÷count+eps) corrects frequency bias."
         )
 
@@ -2527,8 +2590,7 @@ def main():
                                             r_q2, g_min, g_max, decoder)
                                         break
                 else:
-                    # Session path OR live-trained N=80 M_dir (same routing logic)
-                    mdir = mdir80 if use_n80 else st.session_state.mdir_mem
+                    # Session path (directorios perspectivales) OR live-trained N=80 M_dir
                     if not tokens_vocab:
                         rejected = True
                     else:
@@ -2536,14 +2598,27 @@ def main():
                                     get_fasttext_vector(tok, vectors_cache),
                                     dtype=np.float32), M_LABEL)
                                 for tok in tokens_vocab]
-                        if b1_on:
-                            # Decisión multi-pista DENTRO de la MAE (B1)
-                            widx, agg = mdir.route_multi(cues, mode="linear")
+                        if use_n80:
+                            if b1_on:
+                                widx, agg = mdir80.route_multi(cues, mode="linear")
+                            else:
+                                agg = np.zeros(len(CLASSES), dtype=float)
+                                for v_q in cues:
+                                    agg += mdir80.predict(v_q)
+                                widx = -1 if agg.sum() == 0 else int(np.argmax(agg))
+                        elif b1_on:
+                            # v5: agregado de los directorios conocidos, encadenado
+                            # si nadie tiene soporte.
+                            widx, agg, _cons, _hops = route_transactive(
+                                entry_cls, st.session_state.session_agents, cues,
+                                modality="text")
                         else:
-                            # Lectura cruda: condición A del ablation (diagnóstico)
+                            # Lectura cruda del directorio propio de la entrada
+                            # (condición A del ablation, diagnóstico)
+                            own = st.session_state.session_agents[entry_cls].mem_dir
                             agg = np.zeros(len(CLASSES), dtype=float)
                             for v_q in cues:
-                                agg += mdir.predict(v_q)
+                                agg += own.predict(v_q)
                             widx = -1 if agg.sum() == 0 else int(np.argmax(agg))
                         if widx < 0:
                             rejected = True
@@ -2576,7 +2651,9 @@ def main():
                     elif use_n80:
                         _mdir_d = mdir80
                     else:
-                        _mdir_d = st.session_state.mdir_mem
+                        _mdir_d = st.session_state.session_agents[entry_cls].mem_dir
+                        st.caption(f"Señal en el M_dir propio de {entry_cls} "
+                                   "(los conocidos se agregan en el ruteo).")
                     if not tokens_all:
                         st.caption("spaCy no extrajo ningún token NOUN/ADJ/PROPN "
                                    "de la query.")
@@ -2677,7 +2754,7 @@ def main():
                         src_lbl = ("M_dir del experimento (stage6 entrenado)"
                                    if use_experiment
                                    else "M_dir N=80 (banco del ablation)"
-                                   if use_n80 else "M_dir de la sesión")
+                                   if use_n80 else f"M_dir perspectivales de la sesión (desde {entry_cls})")
                         b1_lbl = ("B1 ÷count" if b1_on
                                   else "RAW — condición A (sesgo activo)")
                         st.markdown(f"**{src_lbl} — scores {b1_lbl}:**")
@@ -2804,7 +2881,6 @@ def main():
             # misma operacion de la etapa 7). Una sola decision para estatico y
             # animacion.
             from stage7_bidirectional import XI_VISUAL
-            from stage6_interaction import route_transactive
             widx, agg, _consulted, _hops = route_transactive(
                 entry, exp_agents, z_q, modality="image", xi=XI_VISUAL)
             scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
