@@ -9,8 +9,11 @@ encoder (stage2.train, sobrescribe los modelos). Luego la batería de análisis
 Captura hardware (CPU, RAM, torch CPU/GPU) y escribe
 results/computational_cost/{cost.json, report.md}.
 
-Uso:  python run_cost_benchmark.py     (largo: el entrenamiento es la parte cara)
+Uso:  python run_cost_benchmark.py [--pipeline-only] [--tag nombre]
+      (largo: el entrenamiento es la parte cara; --tag escribe en
+      results/computational_cost/<tag>/ para comparar máquinas o dispositivos)
 """
+import argparse
 import os
 import sys
 import time
@@ -26,7 +29,16 @@ sys.path.insert(0, str(ROOT / "src"))
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
+ap = argparse.ArgumentParser()
+ap.add_argument("--pipeline-only", action="store_true", help="solo etapas 1-8, sin la batería")
+ap.add_argument("--battery-only", action="store_true",
+                help="solo la batería de análisis, sobre los modelos ya presentes")
+ap.add_argument("--tag", default=None, help="subcarpeta de salida")
+ARGS = ap.parse_args()
+
 OUT = ROOT / "results" / "computational_cost"
+if ARGS.tag:
+    OUT = OUT / ARGS.tag
 OUT.mkdir(parents=True, exist_ok=True)
 
 timings = []
@@ -74,20 +86,34 @@ def _n_train_imgs() -> int:
         return -1
 
 
+def _cpu_name():
+    if os.name != "nt":
+        return platform.processor() or "desconocido"
+    try:
+        r = subprocess.run(["powershell", "-NoProfile", "-Command",
+                            "(Get-CimInstance Win32_Processor).Name"],
+                           capture_output=True, text=True, timeout=30)
+        return r.stdout.strip() or platform.processor() or "desconocido"
+    except Exception:
+        return platform.processor() or "desconocido"
+
+
 def hardware():
     import torch
+    cuda = torch.cuda.is_available()
     info = {
         "platform": platform.platform(),
         "machine": platform.machine(),
-        # Sin fabricar un modelo de CPU ajeno si platform.processor() viene vacío.
-        "processor": platform.processor() or "desconocido (platform.processor vacío)",
+        "processor": _cpu_name(),
         "cpu_count_logical": os.cpu_count(),
         "ram_total_gb": None,
         "python": platform.python_version(),
         "torch_version": torch.__version__,
-        "torch_cuda_available": torch.cuda.is_available(),
+        "torch_cuda_available": cuda,
         "torch_num_threads": torch.get_num_threads(),
-        "gpu_present_unused": "NVIDIA RTX 2050 4GB (torch es CPU-only, no se usa)",
+        "gpu": (f"{torch.cuda.get_device_name(0)} "
+                f"({torch.cuda.get_device_properties(0).total_memory / 1e9:.0f} GB), usada por torch"
+                if cuda else "no usada (torch sin CUDA o CUDA_VISIBLE_DEVICES vacío)"),
     }
     try:
         import ctypes
@@ -119,11 +145,40 @@ def main():
 
     t_all = time.perf_counter()
 
-    # ---- Pipeline 1–8 (en proceso, en orden) ----
-    from stage1_dataset import download, extract, organize, verify, make_splits
+    if ARGS.battery_only:
+        pipeline_seconds = 0.0
+    else:
+        run_pipeline()
+        pipeline_seconds = time.perf_counter() - t_all
+
+    # ---- Batería de análisis (subprocesos aislados) ----
+    for name, script in [] if ARGS.pipeline_only else [
+        ("exp2_iota_kappa",  "run_experiment2_iota_kappa.py"),
+        ("exp3_routing",     "run_experiment3.py"),
+        ("exp4_formation",   "run_experiment4.py"),
+        ("exp5_entropic",    "run_experiment5.py"),
+        ("exp6_capacity",    "run_experiment6.py"),
+        ("ablation",         "run_ablation.py"),
+        ("rejection_probe",  "run_rejection_probe.py"),
+        ("paper_figures",    "generate_paper_figures.py"),
+    ]:
+        timed_script(name, script)
+
+    total_seconds = time.perf_counter() - t_all
+    write_outputs(hw, pipeline_seconds, total_seconds)
+
+
+def run_pipeline():
+    from stage1_dataset import DATA_DIR, download, extract, organize, verify, make_splits
 
     def s1():
-        download(); extract(); organize(); verify(); make_splits()
+        # Con las imágenes ya organizadas no hacen falta el .tgz ni la carpeta
+        # cruda (en la corrida original ya estaban descargados).
+        if not (DATA_DIR / "apple").exists():
+            download(); extract()
+        if (DATA_DIR.parent / "eth80-cropped-close128").exists():
+            organize()
+        verify(); make_splits()
     timed_call("stage1_dataset", s1)
 
     # Etapa 2: FORZAR entrenamiento (sobrescribe modelos) + regenerar la
@@ -153,23 +208,8 @@ def main():
     from stage8_mature import run as s8
     timed_call("stage8_mature", s8)
 
-    pipeline_seconds = time.perf_counter() - t_all
 
-    # ---- Batería de análisis (subprocesos aislados) ----
-    for name, script in [
-        ("exp2_iota_kappa",  "run_experiment2_iota_kappa.py"),
-        ("exp3_routing",     "run_experiment3.py"),
-        ("exp4_formation",   "run_experiment4.py"),
-        ("exp5_entropic",    "run_experiment5.py"),
-        ("exp6_capacity",    "run_experiment6.py"),
-        ("ablation",         "run_ablation.py"),
-        ("rejection_probe",  "run_rejection_probe.py"),
-        ("paper_figures",    "generate_paper_figures.py"),
-    ]:
-        timed_script(name, script)
-
-    total_seconds = time.perf_counter() - t_all
-
+def write_outputs(hw, pipeline_seconds, total_seconds):
     summary = {
         "hardware": hw,
         "date": datetime.now().isoformat(timespec="seconds"),
@@ -187,15 +227,14 @@ def main():
         "# Costo computacional — reproducción completa del experimento EAM-TMS",
         "",
         "Tiempo de pared (wall-clock) de reproducir el experimento desde cero en "
-        "esta máquina. **Todo corre en CPU** (PyTorch CPU-only); la GPU NVIDIA "
-        "presente no se utiliza.",
+        "esta máquina.",
         "",
         "## Máquina",
         "",
         f"- CPU: {hw['processor']}  ·  {hw['cpu_count_logical']} hilos lógicos  "
         f"(torch usa {hw['torch_num_threads']})",
         f"- RAM: {hw['ram_total_gb']} GB",
-        f"- GPU: {hw['gpu_present_unused']}",
+        f"- GPU: {hw['gpu']}",
         f"- SO: {hw['platform']}",
         f"- Python {hw['python']}  ·  torch {hw['torch_version']}  ·  "
         f"CUDA disponible: {hw['torch_cuda_available']}",
