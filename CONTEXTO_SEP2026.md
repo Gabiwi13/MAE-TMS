@@ -110,8 +110,7 @@ Con la pista corregida, la descripción supera al especialista en fidelidad en 7
 
 ## 7. Estado de modelos y archivos
 
-- `models/` contiene los modelos **v4** (directorios idénticos entre agentes, Jul 5 / Ago 26). Son los que produjeron exp8 y exp9 y sobre los que corrieron las fases 1 y 2. Copia de seguridad en `models_backup_pre_perspectival/`.
-- `models_v5_perspectival/` contiene los agentes y TME del protocolo v5 (re-corrido del 14 de septiembre). Para volver al protocolo oficial: mover esos `agent_*.pkl` y `tme.pkl` a `models/`. Ambos directorios están excluidos vía `.git/info/exclude`.
+- `models/` contiene desde el 21 de septiembre los agentes y TME del protocolo **v5** (directorios perspectivales, re-corrido del 14 de septiembre); las memorias de contenido (`mem_dom_H/L/R`) son bit a bit las mismas que en v4, solo cambian `mem_dir`, `mem_dir_R` y el TME. Verificado con la etapa 8 tras el cambio. Los **v4** (directorios idénticos entre agentes, los que produjeron exp8, exp9 y las fases 1 y 2) quedan en `models_backup_pre_perspectival/`; `models_v5_perspectival/` conserva la copia de los v5. Ambos directorios están excluidos vía `.git/info/exclude`.
 - Scripts nuevos en la raíz: `run_experiment9_member_loss.py`, `run_experiment9_probe_recognition.py`, `run_experiment9_probe_phase2.py`, `run_experiment10_perspectival_routing.py`, `run_experiment8_identity_cue_probe.py`, `run_sampling_distributions.py`, `summarize_sampling_distributions.py`.
 - Cambios en `src/`: `associative_memory.py` (`recall_domain`, `domain_projection`, `_identity_cue` con nan), `stage6_interaction.py` (`register_transaction`, `route_transactive`, `entry` en `process_query`), `stage7_bidirectional.py` (entrada aleatoria, `route_transactive`, `XI_VISUAL=0`), `stage8_mature.py` (`route_transactive`), `stage1_dataset.py` (restauración desde `splits_relative.json`). `app_tme.py`: ruta de imagen con `route_transactive`.
 - Resultados: `results/experimento9/`, `results/experimento10/` (con `v1_sin_agregado/`), `results/experimento8/` regenerado (sin el barrido), `sonda_*.json`, `muestreo_*.json`.
@@ -137,4 +136,3 @@ Commits de este periodo, en orden: ddef014, 39e5cf3, 3a130a8, f54d64f, 565d70d, 
 - Reporte `.tex8`: revisar la ubicación de los tres párrafos de exp11 insertados el 21 de septiembre (resultados, discusión, conclusiones).
 - Deck externo de Drive: «3.6 a 7.1 veces» → «2.9 a 5.5 veces».
 - Exp11: imagen→texto con los cuatro cortes si se quiere la versión larga.
-- Restaurar los modelos v5 en `models/` cuando cierren las fases de arreglos.
