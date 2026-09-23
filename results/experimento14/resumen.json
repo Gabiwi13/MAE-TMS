@@ -1,0 +1,568 @@
+{
+ "tau": {
+  "norma": 16.60726661682129,
+  "desv_latente": 2.0757126331329347,
+  "desv_pixeles": 13.863865540207991,
+  "niveles": 12.0
+ },
+ "margen": 0.1,
+ "intra_nn_mediana": {
+  "apple": 4.924168586730957,
+  "car": 6.715409278869629,
+  "cow": 5.662764549255371,
+  "cup": 4.754678726196289,
+  "dog": 6.682325839996338,
+  "horse": 5.789204120635986,
+  "pear": 5.526176452636719,
+  "tomato": 3.413520336151123
+ },
+ "reales": {
+  "norma": {
+   "llenado": 0,
+   "fase_a": 1,
+   "test": 4,
+   "test_detalle": [
+    {
+     "imagen": "cow3-035-135.png",
+     "clase": "cow",
+     "valor": 13.953369140625,
+     "contenido_propio": true,
+     "destino": null
+    },
+    {
+     "imagen": "cow3-068-090.png",
+     "clase": "cow",
+     "valor": 16.55509376525879,
+     "contenido_propio": false,
+     "destino": null
+    },
+    {
+     "imagen": "cow3-066-117.png",
+     "clase": "cow",
+     "valor": 10.775677680969238,
+     "contenido_propio": true,
+     "destino": null
+    },
+    {
+     "imagen": "cow6-035-045.png",
+     "clase": "cow",
+     "valor": 15.106560707092285,
+     "contenido_propio": true,
+     "destino": null
+    }
+   ]
+  },
+  "desv_latente": {
+   "llenado": 0,
+   "fase_a": 1,
+   "test": 5,
+   "test_detalle": [
+    {
+     "imagen": "cow3-035-135.png",
+     "clase": "cow",
+     "valor": 1.74412202835083,
+     "contenido_propio": true,
+     "destino": null
+    },
+    {
+     "imagen": "cow3-068-090.png",
+     "clase": "cow",
+     "valor": 2.068734884262085,
+     "contenido_propio": false,
+     "destino": null
+    },
+    {
+     "imagen": "cow3-066-117.png",
+     "clase": "cow",
+     "valor": 1.3456032276153564,
+     "contenido_propio": true,
+     "destino": null
+    },
+    {
+     "imagen": "cow6-035-045.png",
+     "clase": "cow",
+     "valor": 1.8848549127578735,
+     "contenido_propio": true,
+     "destino": null
+    },
+    {
+     "imagen": "horse7-035-135.png",
+     "clase": "horse",
+     "valor": 2.054638147354126,
+     "contenido_propio": true,
+     "destino": null
+    }
+   ]
+  },
+  "desv_pixeles": {
+   "llenado": 0,
+   "fase_a": 0,
+   "test": 0,
+   "test_detalle": []
+  },
+  "niveles": {
+   "llenado": 0,
+   "fase_a": 0,
+   "test": 1,
+   "test_detalle": [
+    {
+     "imagen": "cow3-066-117.png",
+     "clase": "cow",
+     "valor": 11,
+     "contenido_propio": true,
+     "destino": null
+    }
+   ]
+  }
+ },
+ "fuga": {
+  "norma": {
+   "aceptadas_oficial": 103,
+   "pasan_oficial": 18,
+   "aceptadas_v16": 179,
+   "pasan_v16": 33
+  },
+  "desv_latente": {
+   "aceptadas_oficial": 103,
+   "pasan_oficial": 17,
+   "aceptadas_v16": 179,
+   "pasan_v16": 31
+  },
+  "desv_pixeles": {
+   "aceptadas_oficial": 103,
+   "pasan_oficial": 50,
+   "aceptadas_v16": 179,
+   "pasan_v16": 92
+  },
+  "niveles": {
+   "aceptadas_oficial": 103,
+   "pasan_oficial": 103,
+   "aceptadas_v16": 179,
+   "pasan_v16": 179
+  }
+ },
+ "separacion": {},
+ "familias": {
+  "gris": {
+   "n": 33,
+   "acepta_oficial": 3,
+   "rutea_oficial": 0,
+   "acepta_v16": 10,
+   "fuga_tras_norma": 0,
+   "fuga_v16_tras_norma": 1
+  },
+  "color": {
+   "n": 12,
+   "acepta_oficial": 1,
+   "rutea_oficial": 0,
+   "acepta_v16": 2,
+   "fuga_tras_norma": 1,
+   "fuga_v16_tras_norma": 2
+  },
+  "desenfoque": {
+   "n": 128,
+   "acepta_oficial": 66,
+   "rutea_oficial": 2,
+   "acepta_v16": 121,
+   "fuga_tras_norma": 6,
+   "fuga_v16_tras_norma": 16
+  },
+  "contraste": {
+   "n": 48,
+   "acepta_oficial": 31,
+   "rutea_oficial": 5,
+   "acepta_v16": 40,
+   "fuga_tras_norma": 11,
+   "fuga_v16_tras_norma": 13
+  },
+  "gris con ruido": {
+   "n": 6,
+   "acepta_oficial": 2,
+   "rutea_oficial": 0,
+   "acepta_v16": 4,
+   "fuga_tras_norma": 0,
+   "fuga_v16_tras_norma": 1
+  },
+  "estructura": {
+   "n": 4,
+   "acepta_oficial": 0,
+   "rutea_oficial": 0,
+   "acepta_v16": 2,
+   "fuga_tras_norma": 0,
+   "fuga_v16_tras_norma": 0
+  }
+ },
+ "curva_norma": [
+  {
+   "tau": 6.0,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 179
+  },
+  {
+   "tau": 6.5,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 179
+  },
+  {
+   "tau": 7.0,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 179
+  },
+  {
+   "tau": 7.5,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 178
+  },
+  {
+   "tau": 8.0,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 178
+  },
+  {
+   "tau": 8.5,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 177
+  },
+  {
+   "tau": 9.0,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 177
+  },
+  {
+   "tau": 9.5,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 103,
+   "fuga_v16": 175
+  },
+  {
+   "tau": 10.0,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 102,
+   "fuga_v16": 174
+  },
+  {
+   "tau": 10.5,
+   "test_rechazadas": 0,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 98,
+   "fuga_v16": 170
+  },
+  {
+   "tau": 11.0,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 75,
+   "fuga_v16": 143
+  },
+  {
+   "tau": 11.5,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 52,
+   "fuga_v16": 118
+  },
+  {
+   "tau": 12.0,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 42,
+   "fuga_v16": 105
+  },
+  {
+   "tau": 12.5,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 37,
+   "fuga_v16": 99
+  },
+  {
+   "tau": 13.0,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 35,
+   "fuga_v16": 96
+  },
+  {
+   "tau": 13.5,
+   "test_rechazadas": 1,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 35,
+   "fuga_v16": 90
+  },
+  {
+   "tau": 14.0,
+   "test_rechazadas": 2,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 30,
+   "fuga_v16": 80
+  },
+  {
+   "tau": 14.5,
+   "test_rechazadas": 2,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 28,
+   "fuga_v16": 71
+  },
+  {
+   "tau": 15.0,
+   "test_rechazadas": 2,
+   "fase_a_rechazadas": 0,
+   "fuga_oficial": 26,
+   "fuga_v16": 60
+  },
+  {
+   "tau": 15.5,
+   "test_rechazadas": 3,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 22,
+   "fuga_v16": 41
+  },
+  {
+   "tau": 16.0,
+   "test_rechazadas": 3,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 20,
+   "fuga_v16": 36
+  },
+  {
+   "tau": 16.5,
+   "test_rechazadas": 3,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 18,
+   "fuga_v16": 33
+  },
+  {
+   "tau": 17.0,
+   "test_rechazadas": 5,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 30
+  },
+  {
+   "tau": 17.5,
+   "test_rechazadas": 5,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 27
+  },
+  {
+   "tau": 18.0,
+   "test_rechazadas": 5,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 27
+  },
+  {
+   "tau": 18.5,
+   "test_rechazadas": 6,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 27
+  },
+  {
+   "tau": 19.0,
+   "test_rechazadas": 6,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 25
+  },
+  {
+   "tau": 19.5,
+   "test_rechazadas": 7,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 17,
+   "fuga_v16": 25
+  },
+  {
+   "tau": 20.0,
+   "test_rechazadas": 7,
+   "fase_a_rechazadas": 1,
+   "fuga_oficial": 16,
+   "fuga_v16": 24
+  },
+  {
+   "tau": 20.5,
+   "test_rechazadas": 8,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 16,
+   "fuga_v16": 22
+  },
+  {
+   "tau": 21.0,
+   "test_rechazadas": 8,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 15,
+   "fuga_v16": 20
+  },
+  {
+   "tau": 21.5,
+   "test_rechazadas": 9,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 15,
+   "fuga_v16": 19
+  },
+  {
+   "tau": 22.0,
+   "test_rechazadas": 9,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 14,
+   "fuga_v16": 18
+  },
+  {
+   "tau": 22.5,
+   "test_rechazadas": 12,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 13,
+   "fuga_v16": 17
+  },
+  {
+   "tau": 23.0,
+   "test_rechazadas": 12,
+   "fase_a_rechazadas": 2,
+   "fuga_oficial": 13,
+   "fuga_v16": 16
+  },
+  {
+   "tau": 23.5,
+   "test_rechazadas": 14,
+   "fase_a_rechazadas": 3,
+   "fuga_oficial": 13,
+   "fuga_v16": 16
+  },
+  {
+   "tau": 24.0,
+   "test_rechazadas": 16,
+   "fase_a_rechazadas": 3,
+   "fuga_oficial": 13,
+   "fuga_v16": 16
+  },
+  {
+   "tau": 24.5,
+   "test_rechazadas": 17,
+   "fase_a_rechazadas": 5,
+   "fuga_oficial": 12,
+   "fuga_v16": 15
+  },
+  {
+   "tau": 25.0,
+   "test_rechazadas": 18,
+   "fase_a_rechazadas": 5,
+   "fuga_oficial": 12,
+   "fuga_v16": 14
+  },
+  {
+   "tau": 25.5,
+   "test_rechazadas": 19,
+   "fase_a_rechazadas": 5,
+   "fuga_oficial": 10,
+   "fuga_v16": 12
+  },
+  {
+   "tau": 26.0,
+   "test_rechazadas": 19,
+   "fase_a_rechazadas": 5,
+   "fuga_oficial": 9,
+   "fuga_v16": 10
+  },
+  {
+   "tau": 26.5,
+   "test_rechazadas": 19,
+   "fase_a_rechazadas": 6,
+   "fuga_oficial": 9,
+   "fuga_v16": 10
+  },
+  {
+   "tau": 27.0,
+   "test_rechazadas": 20,
+   "fase_a_rechazadas": 7,
+   "fuga_oficial": 8,
+   "fuga_v16": 9
+  },
+  {
+   "tau": 27.5,
+   "test_rechazadas": 20,
+   "fase_a_rechazadas": 7,
+   "fuga_oficial": 8,
+   "fuga_v16": 9
+  },
+  {
+   "tau": 28.0,
+   "test_rechazadas": 20,
+   "fase_a_rechazadas": 7,
+   "fuga_oficial": 7,
+   "fuga_v16": 8
+  },
+  {
+   "tau": 28.5,
+   "test_rechazadas": 22,
+   "fase_a_rechazadas": 9,
+   "fuga_oficial": 6,
+   "fuga_v16": 7
+  },
+  {
+   "tau": 29.0,
+   "test_rechazadas": 23,
+   "fase_a_rechazadas": 10,
+   "fuga_oficial": 5,
+   "fuga_v16": 6
+  },
+  {
+   "tau": 29.5,
+   "test_rechazadas": 26,
+   "fase_a_rechazadas": 12,
+   "fuga_oficial": 5,
+   "fuga_v16": 6
+  },
+  {
+   "tau": 30.0,
+   "test_rechazadas": 28,
+   "fase_a_rechazadas": 16,
+   "fuga_oficial": 5,
+   "fuga_v16": 6
+  },
+  {
+   "tau": 30.5,
+   "test_rechazadas": 30,
+   "fase_a_rechazadas": 19,
+   "fuga_oficial": 5,
+   "fuga_v16": 6
+  },
+  {
+   "tau": 31.0,
+   "test_rechazadas": 35,
+   "fase_a_rechazadas": 25,
+   "fuga_oficial": 4,
+   "fuga_v16": 5
+  },
+  {
+   "tau": 31.5,
+   "test_rechazadas": 38,
+   "fase_a_rechazadas": 30,
+   "fuga_oficial": 4,
+   "fuga_v16": 5
+  },
+  {
+   "tau": 32.0,
+   "test_rechazadas": 43,
+   "fase_a_rechazadas": 31,
+   "fuga_oficial": 4,
+   "fuga_v16": 5
+  }
+ ]
+}
