@@ -123,6 +123,7 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Directory winner share, apple | **13.0%** | ideal 12.5% — bias essentially resolved |
 | Per-domain mature (B1) | cup/tomato 100, car 98, cow/dog 96, pear 86, apple 88, horse 82 | |
 | Visual routing (test, mem_dir_R) | 75.0% (v4) · **73.6% (v5, perspectival directories, xi=0)** | 25% / 26.4% rejection, **0 false routes** in both |
+| Visual routing with 16 augmentation variants in content and directory (exp13) | **97.1%** routing · **94.5%** end-to-end (from 73.6 / 66.5) | 1 false route of 656; not adopted as the official fill (`results/experimento13/`) |
 | Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
 | Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
 | Image→labels evocation (top-3 hit) | 85.3% | |

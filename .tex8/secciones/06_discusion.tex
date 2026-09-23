@@ -171,15 +171,26 @@ El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por
 coordenada (625 de 656 imágenes tienen soporte marginal completo) sino de la conjunción
 AND sobre las 64 coordenadas simultáneas, por lo que aumentar $\xi$ no lo reduce
 ($\xi$ satura en 2--3).
-La palanca es densificar el llenado con augmentación más rica, manteniendo el criterio
-conservador que hoy garantiza cero falsos enrutamientos.
+La palanca es densificar, y el experimento 13 midió cuánto rinde. Son dos compuertas,
+el directorio visual (formado en la fase A con una percepción por imagen) y el recall
+de la hetero, y cada una cede solo con su propia augmentación: registrar 16 variantes
+por percepción en el directorio lleva su aceptación de 73.6 a 96.2\,\%; llenar el
+contenido con 16 variantes por imagen lleva la respuesta de la hetero de 76 a 96\,\%;
+con las dos, la cobertura de punta a punta (ruteo correcto y respuesta) pasa de 66.5 a
+94.5\,\% de las 656 imágenes de test, con rendimiento decreciente por escalón de
+variantes. El precio no es cero: un ruteo equivocado de 656 (una vista frontal de
+\texttt{horse} a \texttt{dog}, en las cinco semillas) y cinco imágenes aceptadas por un
+especialista ajeno, siempre el par animal que ya confunde al texto. Son vistas nuevas
+de los mismos objetos, porque el split es por imagen.
 En sentido inverso, el containment visual también tiene una fuga con \emph{entradas
 degeneradas}: una imagen de color sólido uniforme obtiene soporte y se acepta
 (Figura~\ref{fig:rechazo-imagenes}), presumiblemente porque el fondo liso de ETH-80
 puebla esa región del espacio latente; las sondas estructuradas (ruido, píxeles
-barajados) sí se rechazan.
-Un criterio de varianza mínima de la pista latente, previo a la memoria, o la doble
-compuerta del punto (a) aplicada al hemisferio visual, son mitigaciones candidatas.
+barajados) sí se rechazan. Densificar agranda esa fuga: con 16 variantes la aceptan
+tres especialistas en vez de uno y el directorio la rutea.
+Un criterio de varianza mínima de la pista latente, previo a la memoria, es la
+mitigación pendiente; la doble compuerta del punto (a) no la cerraría, porque el
+contenido también la acepta.
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
 El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
