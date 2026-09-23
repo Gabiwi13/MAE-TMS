@@ -17,7 +17,7 @@
 
 **El error de texto no vive en empates estrechos.** Si viviera, el margen lo quitaría barato. La curva muestra que los errores tienen márgenes parecidos a los de los aciertos: para quitar los 3.9 puntos de error hay que abstenerse en el 16 % de las consultas (δ = 0.4) y perder 13 puntos de acierto. La abstención por margen no es una política útil para este directorio.
 
-**En imagen el árbitro es la doble compuerta.** Rechaza lo que el contenido no contiene y nada más; corrige el falso de `horse7` porque ese error es del directorio densificado (Vd = 16) y no del contenido, y ese caso lo cerraba igual el umbral de energía de exp14 (norma 10.8… no: `horse7` tiene energía normal; lo cierra el contenido). El costo de punta a punta es cero.
+**En imagen el árbitro es la doble compuerta.** Rechaza lo que el contenido no contiene y nada más; corrige el falso de `horse7` porque ese error es del directorio densificado (Vd = 16) y no del contenido: la imagen tiene energía normal (el umbral de exp14 no la toca) y ningún especialista le da soporte, así que la compuerta de contenido la detiene. El costo de punta a punta es cero.
 
 **Cota diagnóstica.** El contenido solo rutea el 93.1 % de las imágenes con cero errores, contra 73.6 % del directorio oficial: el directorio cuesta 19.5 puntos de cobertura y no compra precisión en imagen. Es la misma lectura de exp13 (con Vd = 16 el directorio llega a 95.4). En texto es al revés: el contenido solo pierde 5.5 puntos frente al directorio.
 
