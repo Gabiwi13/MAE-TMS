@@ -26,7 +26,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 
 ## 4. Estado de los modelos
 
-- `models/` tiene desde el 21 de septiembre los 9 pickles (8 agentes + TME) del protocolo **v5** (directorios perspectivales). Las memorias de contenido son bit a bit las mismas que en v4; solo cambian `mem_dir`, `mem_dir_R` y el TME. Etapa 8 verificada 16/16 tras el cambio.
+- `models/` tiene desde el 23 de septiembre los 9 pickles (8 agentes + TME) del protocolo **v5 con umbral de energía** (etapa 7 re-corrida; contenido bit a bit v4; TME igual al v5 salvo un registro; directorios perspectivales con otro sorteo de entradas; ruteo 73.6 %, etapa 8 16/16). `models/latent_energy_threshold.json` está versionado.
 - `models_backup_pre_perspectival/` tiene los **v4** (directorios idénticos entre agentes): son los que produjeron exp8, exp9 y las fases 1 y 2. `models_v5_perspectival/` conserva la copia de los v5. Ambas carpetas están excluidas de git.
 - `cache/exp11/N{25,50,100,200}.pkl` (1.5 GB cada uno): memorias reconstruidas por corte para exp11 y exp12. Excluidas de git.
 
@@ -45,6 +45,8 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | compuerta | doble compuerta de contenido en la fase madura textual; protocolo fuera de dominio 4/40 → 2/40 | `stage8_mature.py`, `app_tme.py`, `run_experiment11_monolithic.py` |
 | exp13 | augmentación del llenado visual: dos compuertas, punta a punta 66.5 → 94.5 % con 16 variantes, 1 falso ruteo de 656 | `run_experiment13_augmentation.py`, `results/experimento13/` |
 | exp14 | energía mínima del latente: τ = 16.6 cierra el 94 % de la fuga de entradas degeneradas por 5 imágenes reales de 3280 | `run_experiment14_latent_energy.py`, `results/experimento14/` |
+| umbral | energía mínima del latente instalada en etapa 7 y app; cifras sin cambio | `stage7_bidirectional.py`, `app_tme.py` |
+| exp15 | árbitro por contenido y margen, refutados: el índice compara mejor que el contenido | `run_experiment15_arbiter.py`, `results/experimento15/` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -65,7 +67,9 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 
 **Exp13:** el rechazo visual son dos compuertas (directorio y recall de la hetero) y cada una cede solo con su augmentación; con 16 variantes en las dos, ruteo 73.6 → 97.1 % y punta a punta 66.5 → 94.5 %, con 1 falso ruteo de 656 y la sonda de color sólido aceptada por 3 especialistas. No adoptado como llenado oficial.
 
-**Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. No instalado.
+**Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. Instalado el 23 de septiembre.
+
+**Exp15:** un árbitro por contenido entre los tres mejores del directorio empeora el texto (96.1 → 90.6) y el margen quita un acierto por error; en imagen es la doble compuerta. Nada instalado; el índice compara mejor que el contenido.
 
 **Exp9 tras la corrección de la pista:** la descripción (lectura inversa del directorio) supera al especialista en fidelidad (19.3 contra 21.9); la familiaridad vive en el reconocimiento (98% contra 16%), con la contención por coordenada como puerta que la descripción no tiene.
 
@@ -91,6 +95,7 @@ python run_experiment12_overlap.py --seeds 42-46 --reps 3 --workers 8
 python run_experiment13_augmentation.py --seeds 42-46 --workers 2
 python run_experiment13_augmentation.py --report-only
 python run_experiment14_latent_energy.py     # minutos; requiere cache/exp13/Vc16_N200.pkl
+python run_experiment15_arbiter.py           # minutos; --report-only
 
 # app (o con .claude/launch.json, nombre app-tme)
 python -m streamlit run app_tme.py
@@ -109,6 +114,7 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 - **`import` locales dentro de `main()` de `app_tme.py`** hacen sombra a los de módulo (ya se quitó uno de `route_transactive`).
 - **Streamlit no recarga los módulos de `src/` importados dentro de `main()`** (`from stage8_mature import route_mature`): tras editar uno hay que reiniciar el servidor, no basta con recargar la página.
 - **`$env:CUDA_VISIBLE_DEVICES=""` en PowerShell borra la variable** (torch sí ve la GPU); para ocultarla hay que usar `"-1"`. Los modelos se cargan en `DEVICE` (cuda si torch la ve): toda entrada nueva va con `.to(next(modelo.parameters()).device)`; `run_experiment5.py`, `run_experiment6.py` y `generate_paper_figures.py` fallaban por eso hasta el 22 de septiembre.
+- **La etapa 7 parte de directorios visuales vacíos** (desde el 23 de septiembre); antes, re-correrla sola duplicaba los registros. `form_text_directories` de exp11 acumula si se reutilizan los agentes entre semillas: vaciar `mem_dir` por semilla (exp15 lo hace).
 - **`evoke_labels` / `recall_from_right` cuestan ~17 s por imagen** (búsqueda por muestreo de `hetero_lib`, 3000 proyecciones); para medir cobertura basta una proyección (`hetero_recognizes` de exp13), la evocación completa solo para leer etiquetas.
 - No tocar `src/hetero_lib/` (código vendido de Pineda y Morales).
 
@@ -116,4 +122,3 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 
 - Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
 - Decidir si el llenado con 16 variantes (contenido y fase A) pasa a ser el oficial: rehacer etapa 5 y fase A, re-verificar 8/8 y 16/16, re-correr lo que depende de `models/` (exp8, exp9, exp11, app) y actualizar las cifras de 75 % / 0 falsos del reporte.
-- Instalar el criterio de energía mínima del latente (τ = 16.6, junto a `latent_global_stats.json`) en `image_to_latent` de la etapa 7 y en `encode_pil` de la app, y re-correr la etapa 7 (la fase A pierde una percepción).

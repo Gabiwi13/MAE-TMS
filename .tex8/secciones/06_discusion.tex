@@ -165,6 +165,11 @@ cuatro cortes, las mismas que el oráculo, sin rechazar ninguna de las 16 consul
 referencia de la fase madura. Sobre las 171 consultas reservadas no quita ninguna
 respuesta: las filas que rechaza (1.4\,\% con 200 imágenes por clase, 21\,\% con 25) ya
 no producían recall en el destino, y en los cortes grandes son todas ruteos equivocados.
+Un árbitro más amplio (que el contenido decida entre los tres mejores candidatos del
+directorio) empeora el ruteo de texto (96.1 $\to$ 90.6\,\% de acierto, experimento 15):
+el índice calibrado compara mejor que la activación del contenido, y la abstención por
+margen de score quita un acierto por cada error a cualquier umbral. La doble compuerta
+se queda como está.
 
 \paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
 El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por
@@ -198,7 +203,9 @@ y la varianza del latente son equivalentes; la varianza de píxeles no sirve, po
 objeto desenfocado conserva contraste y pierde estructura. Lo que sobrevive al umbral
 son confusiones de contenido entre clases (un \texttt{dog} desenfocado aceptado por
 \texttt{cow}), no entradas degeneradas. La doble compuerta del punto (a) no la
-cerraría, porque el contenido también la acepta.
+cerraría, porque el contenido también la acepta. El umbral está instalado en la
+codificación de la percepción; en la etapa 7 rechaza una percepción de 1024 en la fase
+A y cuatro imágenes de 656 en test, sin cambiar el ruteo (73.6\,\%).
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
 El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
