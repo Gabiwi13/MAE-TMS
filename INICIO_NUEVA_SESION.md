@@ -43,6 +43,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | deck | 12 diapositivas con los hallazgos de exp7 a exp11 | `hallazgos_exp7_a_exp11.pptx` |
 | imagen→texto largo | 4 cortes × 10 semillas; cobertura del especialista 0 → 79 % con N | `results/experimento11/README.md` |
 | compuerta | doble compuerta de contenido en la fase madura textual; protocolo fuera de dominio 4/40 → 2/40 | `stage8_mature.py`, `app_tme.py`, `run_experiment11_monolithic.py` |
+| exp13 | augmentación del llenado visual: dos compuertas, punta a punta 66.5 → 94.5 % con 16 variantes, 1 falso ruteo de 656 | `run_experiment13_augmentation.py`, `results/experimento13/` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -61,6 +62,8 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 
 **Exp12:** la brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay dominios disjuntos con esta cuantización (Jaccard 0.57–0.65). Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.
 
+**Exp13:** el rechazo visual son dos compuertas (directorio y recall de la hetero) y cada una cede solo con su augmentación; con 16 variantes en las dos, ruteo 73.6 → 97.1 % y punta a punta 66.5 → 94.5 %, con 1 falso ruteo de 656 y la sonda de color sólido aceptada por 3 especialistas. No adoptado como llenado oficial.
+
 **Exp9 tras la corrección de la pista:** la descripción (lectura inversa del directorio) supera al especialista en fidelidad (19.3 contra 21.9); la familiaridad vive en el reconocimiento (98% contra 16%), con la contención por coordenada como puerta que la descripción no tiene.
 
 **Exp8 corregido:** envolvente 2.9 a 5.5 veces la distancia entre instancias; de 8 a 800 registros pierde 4 unidades, no 10; 80/80 en todas las semillas; el óptimo 4–8 es de reconstrucción, para rutear hacen falta 64–128 o encadenar; la transición del barrido presenciado es 1 − (1 − f)^128.
@@ -69,7 +72,7 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
-$env:CUDA_VISIBLE_DEVICES=""; $env:OMP_NUM_THREADS="1"; $env:PYTHONUNBUFFERED="1"
+$env:CUDA_VISIBLE_DEVICES="-1"; $env:OMP_NUM_THREADS="1"; $env:PYTHONUNBUFFERED="1"   # "" no oculta la GPU
 
 # exp11 (reanudable: salta los trozos con archivo)
 python run_experiment11_monolithic.py --cuts 200,50,100,25 --seeds 42-51 --reps 3 --chunks 6 --workers 10
@@ -80,6 +83,10 @@ python run_experiment11_probes.py            # por clase, fig5 quimeras, fig6 co
 
 # exp12
 python run_experiment12_overlap.py --seeds 42-46 --reps 3 --workers 8
+
+# exp13 (reanudable; latentes y contenido en caché; ~50 min de llenados + ~4 h de evaluación con 2 procesos)
+python run_experiment13_augmentation.py --seeds 42-46 --workers 2
+python run_experiment13_augmentation.py --report-only
 
 # app (o con .claude/launch.json, nombre app-tme)
 python -m streamlit run app_tme.py
@@ -98,8 +105,11 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 - **`import` locales dentro de `main()` de `app_tme.py`** hacen sombra a los de módulo (ya se quitó uno de `route_transactive`).
 - **Streamlit no recarga los módulos de `src/` importados dentro de `main()`** (`from stage8_mature import route_mature`): tras editar uno hay que reiniciar el servidor, no basta con recargar la página.
 - **`$env:CUDA_VISIBLE_DEVICES=""` en PowerShell borra la variable** (torch sí ve la GPU); para ocultarla hay que usar `"-1"`. Los modelos se cargan en `DEVICE` (cuda si torch la ve): toda entrada nueva va con `.to(next(modelo.parameters()).device)`; `run_experiment5.py`, `run_experiment6.py` y `generate_paper_figures.py` fallaban por eso hasta el 22 de septiembre.
+- **`evoke_labels` / `recall_from_right` cuestan ~17 s por imagen** (búsqueda por muestreo de `hetero_lib`, 3000 proyecciones); para medir cobertura basta una proyección (`hetero_recognizes` de exp13), la evocación completa solo para leer etiquetas.
 - No tocar `src/hetero_lib/` (código vendido de Pineda y Morales).
 
 ## 9. Pendiente
 
 - Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
+- Decidir si el llenado con 16 variantes (contenido y fase A) pasa a ser el oficial: rehacer etapa 5 y fase A, re-verificar 8/8 y 16/16, re-correr lo que depende de `models/` (exp8, exp9, exp11, app) y actualizar las cifras de 75 % / 0 falsos del reporte.
+- Criterio de varianza mínima de la entrada visual, medido con las tres sondas y las 656 de test (que no rechace ninguna imagen real); cierra la fuga de color sólido que exp13 hizo crecer.
