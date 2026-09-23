@@ -44,6 +44,11 @@ N_EVOKE = 15
 # directorio y dependen de lo que presenciaron los demas (exp10), asi que la
 # lectura vuelve a ser estricta.
 XI_VISUAL = 0
+# Umbral de energía del latente (exp14): el encoder colapsa las entradas sin
+# estructura (gris medio, desenfoque, contraste nulo) cerca del origen, dentro
+# de la envolvente de horse. Nada más débil que lo registrado entra a memoria.
+LATENT_ENERGY_MARGIN = 0.1
+ENERGY_PATH = MODELS_DIR / "latent_energy_threshold.json"
 
 IMG_TRANSFORM = transforms.Compose([
     transforms.ToTensor(),
@@ -63,6 +68,25 @@ def load_encoder():
                                    map_location=DEVICE))
     enc.eval()
     return enc
+
+
+def latent_energy_threshold() -> float:
+    """Mínimo de la norma sobre los originales del llenado, con margen."""
+    if ENERGY_PATH.exists():
+        return float(json.loads(ENERGY_PATH.read_text())["tau"])
+    from stage5_fill import FILL_AUGMENT, FILL_AUG_ANGLES
+    step = 2 + len(FILL_AUG_ANGLES) if FILL_AUGMENT else 1
+    norms = np.concatenate([
+        np.linalg.norm(np.asarray(json.loads((MODELS_DIR / f"instance_latents_{c}.json").read_text()),
+                                  dtype=np.float32)[::step], axis=1) for c in CLASSES])
+    tau = float(norms.min() * (1 - LATENT_ENERGY_MARGIN))
+    ENERGY_PATH.write_text(json.dumps({"tau": tau, "min_norma_llenado": float(norms.min()),
+                                       "margen": LATENT_ENERGY_MARGIN, "n": int(norms.size)}))
+    return tau
+
+
+def latent_has_energy(z: np.ndarray, tau: float) -> bool:
+    return float(np.linalg.norm(z)) >= tau
 
 
 def image_to_latent(img_path: str, encoder) -> np.ndarray:
@@ -120,22 +144,34 @@ def run():
 
     print("Cargando TME + agentes (etapa 6)...")
     tme, agents = load_tme_and_agents()
+    # Los directorios visuales se forman aquí y solo aquí: si los pickles ya
+    # traen una fase A (re-corrida), se parte de cero para no registrarla dos veces.
+    from associative_memory import DirectoryMemory
+    tme.mem_dir_R = DirectoryMemory(P, Q_IMG, len(AGENT_LIST))
+    for cls in CLASSES:
+        agents[cls].mem_dir_R = DirectoryMemory(P, Q_IMG, len(AGENT_LIST))
     label_vecs = load_all_vectors()
     vocab_by_cls = {cls: set(label_vecs[cls].keys()) for cls in CLASSES}
     all_vecs = {}
     for cls in CLASSES:
         all_vecs.update(label_vecs[cls])
 
+    tau = latent_energy_threshold()
+    print(f"Umbral de energía del latente: {tau:.2f}")
+
     print(f"\n--- Fase A: interacciones visuales (train[{N_FILL}:]) ---")
     pools = {cls: splits[cls]["train"][N_FILL:] for cls in CLASSES}
     n_inter = max(len(p) for p in pools.values())
-    a_ok = a_seen = a_rej = 0
+    a_ok = a_seen = a_rej = a_deg = 0
     rng = np.random.RandomState(42)   # agente de entrada por percepcion
     for i in range(n_inter):
         for cls in CLASSES:
             if i >= len(pools[cls]):
                 continue
             z = image_to_latent(pools[cls][i], encoder)
+            if not latent_has_energy(z, tau):
+                a_deg += 1
+                continue
             z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             scores = {c: recognize_gated_right(agents[c], z_q)
                       for c in CLASSES}
@@ -153,25 +189,29 @@ def run():
         if (i + 1) % 32 == 0:
             print(f"  interaccion {i+1}/{n_inter}  "
                   f"(acc visual {a_ok/max(a_seen,1)*100:.1f}%)")
-    total_a = a_seen + a_rej
+    total_a = a_seen + a_rej + a_deg
     print(f"  Fase A: {total_a} imagenes · routing visual "
           f"{a_ok/max(a_seen,1)*100:.1f}% · rechazo "
-          f"{a_rej/max(total_a,1)*100:.1f}%")
+          f"{a_rej/max(total_a,1)*100:.1f}% · sin energía (antes de la memoria) {a_deg}")
     print(f"  TME mem_dir_R (registro completo): counts={tme.mem_dir_R.agent_counts.tolist()}"
           f"  entropia {tme.mem_dir_R.entropy():.3f} bits")
     for cls in CLASSES:
         agents[cls].mem_dir_R.print_stats(f"{cls} visual")
 
     print("\n--- Fase B: routing transactivo por mem_dir_R per-agente sobre test ---")
-    b_ok = b_rej = b_total = 0
+    b_ok = b_rej = b_total = b_deg = 0
     hops_total = consulted_total = 0
     evoke_hits = evoke_tried = 0
     sample_rows = []
     for ci, cls in enumerate(CLASSES):
         for j, p in enumerate(splits[cls]["test"]):
             z = image_to_latent(p, encoder)
-            z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             b_total += 1
+            if not latent_has_energy(z, tau):
+                b_deg += 1
+                b_rej += 1
+                continue
+            z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
             # La entrada es a proposito un agente no especialista: agrega los
             # directorios visuales que conoce y encadena si hace falta.
             entry = CLASSES[(ci + 1) % len(CLASSES)]
@@ -197,7 +237,8 @@ def run():
     rej_b = b_rej / max(b_total, 1)
     evoke_rate = evoke_hits / max(evoke_tried, 1)
     print(f"  Routing test: {b_ok}/{b_total} = {acc_b*100:.1f}%  "
-          f"(rechazo {rej_b*100:.1f}%)  directorios consultados "
+          f"(rechazo {rej_b*100:.1f}%, de las cuales {b_deg} sin energía antes de la memoria)  "
+          f"directorios consultados "
           f"{consulted_total/max(b_total,1):.2f}  saltos {hops_total/max(b_total,1):.2f}")
     print(f"  Evocacion top-3 domain-hit: {evoke_hits}/{evoke_tried} "
           f"= {evoke_rate*100:.1f}%")
