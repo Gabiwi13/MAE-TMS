@@ -1,0 +1,4923 @@
+[
+{
+"norma": 42.19520950317383,
+"desv_latente": 5.230751037597656,
+"desv_pixeles": 0.0,
+"niveles": 21,
+"familia": "gris",
+"nombre": "gris 0",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 41.702213287353516,
+"desv_latente": 5.168545246124268,
+"desv_pixeles": 0.0,
+"niveles": 21,
+"familia": "gris",
+"nombre": "gris 8",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 41.26852798461914,
+"desv_latente": 5.113135814666748,
+"desv_pixeles": 0.0,
+"niveles": 21,
+"familia": "gris",
+"nombre": "gris 16",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 40.88215637207031,
+"desv_latente": 5.06318473815918,
+"desv_pixeles": 0.0,
+"niveles": 21,
+"familia": "gris",
+"nombre": "gris 24",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 40.34736633300781,
+"desv_latente": 4.9946770668029785,
+"desv_pixeles": 0.0,
+"niveles": 19,
+"familia": "gris",
+"nombre": "gris 32",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 39.861572265625,
+"desv_latente": 4.9323601722717285,
+"desv_pixeles": 0.0,
+"niveles": 19,
+"familia": "gris",
+"nombre": "gris 40",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 38.95404052734375,
+"desv_latente": 4.816822052001953,
+"desv_pixeles": 0.0,
+"niveles": 19,
+"familia": "gris",
+"nombre": "gris 48",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 37.79899597167969,
+"desv_latente": 4.670450687408447,
+"desv_pixeles": 0.0,
+"niveles": 18,
+"familia": "gris",
+"nombre": "gris 56",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 35.31638717651367,
+"desv_latente": 4.360095024108887,
+"desv_pixeles": 0.0,
+"niveles": 17,
+"familia": "gris",
+"nombre": "gris 64",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 32.017173767089844,
+"desv_latente": 3.9475386142730713,
+"desv_pixeles": 0.0,
+"niveles": 18,
+"familia": "gris",
+"nombre": "gris 72",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 27.997446060180664,
+"desv_latente": 3.4466092586517334,
+"desv_pixeles": 0.0,
+"niveles": 15,
+"familia": "gris",
+"nombre": "gris 80",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 23.974937438964844,
+"desv_latente": 2.947777509689331,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 88",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 20.101806640625,
+"desv_latente": 2.4699747562408447,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 96",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 15.864611625671387,
+"desv_latente": 1.9500383138656616,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 104",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 12.84583854675293,
+"desv_latente": 1.5809688568115234,
+"desv_pixeles": 0.0,
+"niveles": 15,
+"familia": "gris",
+"nombre": "gris 112",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.732755661010742
+},
+{
+"norma": 11.20757007598877,
+"desv_latente": 1.3835632801055908,
+"desv_pixeles": 0.0,
+"niveles": 13,
+"familia": "gris",
+"nombre": "gris 120",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.454240798950195
+},
+{
+"norma": 10.689976692199707,
+"desv_latente": 1.3234766721725464,
+"desv_pixeles": 0.0,
+"niveles": 12,
+"familia": "gris",
+"nombre": "gris 128",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.244869232177734
+},
+{
+"norma": 10.734718322753906,
+"desv_latente": 1.3312214612960815,
+"desv_pixeles": 0.0,
+"niveles": 12,
+"familia": "gris",
+"nombre": "gris 136",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 11.22956657409668,
+"desv_latente": 1.3932393789291382,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 144",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 11.947075843811035,
+"desv_latente": 1.4821627140045166,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 152",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.038826942443848,
+"desv_latente": 1.6184972524642944,
+"desv_pixeles": 0.0,
+"niveles": 13,
+"familia": "gris",
+"nombre": "gris 160",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.781571388244629,
+"desv_latente": 1.8363900184631348,
+"desv_pixeles": 0.0,
+"niveles": 13,
+"familia": "gris",
+"nombre": "gris 168",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 17.339481353759766,
+"desv_latente": 2.1562652587890625,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 176",
+"contenido": [],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 20.451801300048828,
+"desv_latente": 2.546182632446289,
+"desv_pixeles": 0.0,
+"niveles": 16,
+"familia": "gris",
+"nombre": "gris 184",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 24.113914489746094,
+"desv_latente": 3.00547456741333,
+"desv_pixeles": 0.0,
+"niveles": 18,
+"familia": "gris",
+"nombre": "gris 192",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 27.845901489257812,
+"desv_latente": 3.473778486251831,
+"desv_pixeles": 0.0,
+"niveles": 18,
+"familia": "gris",
+"nombre": "gris 200",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 31.78268051147461,
+"desv_latente": 3.967921018600464,
+"desv_pixeles": 0.0,
+"niveles": 19,
+"familia": "gris",
+"nombre": "gris 208",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 36.035343170166016,
+"desv_latente": 4.5015974044799805,
+"desv_pixeles": 0.0,
+"niveles": 19,
+"familia": "gris",
+"nombre": "gris 216",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 40.369693756103516,
+"desv_latente": 5.04512357711792,
+"desv_pixeles": 0.0,
+"niveles": 22,
+"familia": "gris",
+"nombre": "gris 224",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 44.914424896240234,
+"desv_latente": 5.614233016967773,
+"desv_pixeles": 0.0,
+"niveles": 22,
+"familia": "gris",
+"nombre": "gris 232",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 49.39573669433594,
+"desv_latente": 6.1741743087768555,
+"desv_pixeles": 0.0,
+"niveles": 24,
+"familia": "gris",
+"nombre": "gris 240",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 53.84913635253906,
+"desv_latente": 6.729308605194092,
+"desv_pixeles": 0.0,
+"niveles": 23,
+"familia": "gris",
+"nombre": "gris 248",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 57.7541389465332,
+"desv_latente": 7.214994430541992,
+"desv_pixeles": 0.0,
+"niveles": 23,
+"familia": "gris",
+"nombre": "gris 255",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 30.379196166992188,
+"desv_latente": 3.774338722229004,
+"desv_pixeles": 0.0,
+"niveles": 17,
+"familia": "color",
+"nombre": "color (255, 0, 0)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 184.16659545898438,
+"desv_latente": 23.009750366210938,
+"desv_pixeles": 0.0,
+"niveles": 20,
+"familia": "color",
+"nombre": "color (0, 255, 0)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 19.91752815246582,
+"desv_latente": 2.439321279525757,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "color",
+"nombre": "color (0, 0, 255)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 147.33303833007812,
+"desv_latente": 18.39486312866211,
+"desv_pixeles": 0.0,
+"niveles": 25,
+"familia": "color",
+"nombre": "color (255, 255, 0)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 131.8168487548828,
+"desv_latente": 16.352867126464844,
+"desv_pixeles": 0.0,
+"niveles": 26,
+"familia": "color",
+"nombre": "color (0, 255, 255)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 27.555646896362305,
+"desv_latente": 3.444059133529663,
+"desv_pixeles": 0.0,
+"niveles": 16,
+"familia": "color",
+"nombre": "color (255, 0, 255)",
+"contenido": [
+"apple"
+],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 11.457257270812988
+},
+{
+"norma": 21.938013076782227,
+"desv_latente": 2.7071585655212402,
+"desv_pixeles": 0.0,
+"niveles": 15,
+"familia": "color",
+"nombre": "color (255, 128, 0)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 33.3243522644043,
+"desv_latente": 4.148204803466797,
+"desv_pixeles": 0.0,
+"niveles": 18,
+"familia": "color",
+"nombre": "color (128, 0, 255)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 31.94223976135254,
+"desv_latente": 3.963082790374756,
+"desv_pixeles": 0.0,
+"niveles": 17,
+"familia": "color",
+"nombre": "color (200, 30, 30)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 127.14508056640625,
+"desv_latente": 15.89195442199707,
+"desv_pixeles": 0.0,
+"niveles": 25,
+"familia": "color",
+"nombre": "color (30, 200, 30)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 21.71207046508789,
+"desv_latente": 2.6554601192474365,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "color",
+"nombre": "color (30, 30, 200)",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 18.797475814819336,
+"desv_latente": 2.300361394882202,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "color",
+"nombre": "color (63, 77, 150)",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.552597045898438,
+"desv_latente": 1.8186622858047485,
+"desv_pixeles": 31.672150269990826,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=2",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 10.907942771911621,
+"desv_latente": 1.3632360696792603,
+"desv_pixeles": 29.56108805441766,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=4",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 7.213979721069336,
+"desv_latente": 0.8974405527114868,
+"desv_pixeles": 27.566209586099966,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=6",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 8.113472938537598,
+"desv_latente": 0.9958481788635254,
+"desv_pixeles": 25.61408200444161,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=8",
+"contenido": [],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 9.886739730834961,
+"desv_latente": 1.2105727195739746,
+"desv_pixeles": 23.687456634199965,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=10",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.18585205078125
+},
+{
+"norma": 10.762109756469727,
+"desv_latente": 1.3168023824691772,
+"desv_pixeles": 21.83389485824802,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=12",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.42449951171875
+},
+{
+"norma": 11.13219165802002,
+"desv_latente": 1.361865758895874,
+"desv_pixeles": 20.06762604638197,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=14",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.150890350341797
+},
+{
+"norma": 11.296248435974121,
+"desv_latente": 1.3821792602539062,
+"desv_pixeles": 18.424222980050395,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=16",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.06694793701172
+},
+{
+"norma": 11.356234550476074,
+"desv_latente": 1.3900893926620483,
+"desv_pixeles": 16.891151630751864,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=18",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.05995750427246
+},
+{
+"norma": 11.35056209564209,
+"desv_latente": 1.3900384902954102,
+"desv_pixeles": 15.453793772544664,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=20",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.102128982543945
+},
+{
+"norma": 11.342320442199707,
+"desv_latente": 1.3897348642349243,
+"desv_pixeles": 14.098079953019171,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=22",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.144344329833984
+},
+{
+"norma": 11.304807662963867,
+"desv_latente": 1.385855793952942,
+"desv_pixeles": 12.825845406067376,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=24",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.197032928466797
+},
+{
+"norma": 11.268311500549316,
+"desv_latente": 1.3822474479675293,
+"desv_pixeles": 11.608203170178944,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=26",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.25382423400879
+},
+{
+"norma": 11.237974166870117,
+"desv_latente": 1.379340410232544,
+"desv_pixeles": 10.458185569683762,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=28",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.300748825073242
+},
+{
+"norma": 11.201851844787598,
+"desv_latente": 1.3757284879684448,
+"desv_pixeles": 9.375182675926323,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=30",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.36751937866211
+},
+{
+"norma": 11.179203033447266,
+"desv_latente": 1.3737291097640991,
+"desv_pixeles": 8.365658232972372,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "apple desenfoque r=32",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.424341201782227
+},
+{
+"norma": 24.7196044921875,
+"desv_latente": 3.0846810340881348,
+"desv_pixeles": 16.853548550990823,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "apple contraste 0.5",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 20.175369262695312,
+"desv_latente": 2.516669511795044,
+"desv_pixeles": 13.500924323810414,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "apple contraste 0.4",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.323929786682129,
+"desv_latente": 1.7879374027252197,
+"desv_pixeles": 10.119144244396782,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "apple contraste 0.3",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 9.91468334197998,
+"desv_latente": 1.2381668090820312,
+"desv_pixeles": 6.71712371306071,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "apple contraste 0.2",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 10.564834594726562,
+"desv_latente": 1.307646632194519,
+"desv_pixeles": 3.4192375901526892,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "apple contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.243471145629883
+},
+{
+"norma": 10.73198413848877,
+"desv_latente": 1.3272275924682617,
+"desv_pixeles": 1.7609510408962321,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "apple contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.023983001708984
+},
+{
+"norma": 33.34351348876953,
+"desv_latente": 4.167350769042969,
+"desv_pixeles": 34.49307308593807,
+"niveles": 16,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=2",
+"contenido": [],
+"contenido_v16": [
+"car"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 24.188459396362305,
+"desv_latente": 3.0110867023468018,
+"desv_pixeles": 31.106114125062795,
+"niveles": 16,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=4",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 20.997516632080078,
+"desv_latente": 2.602926015853882,
+"desv_pixeles": 28.18223602873631,
+"niveles": 16,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=6",
+"contenido": [],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 18.50498390197754,
+"desv_latente": 2.2904555797576904,
+"desv_pixeles": 25.4587599732372,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=8",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 16.965917587280273,
+"desv_latente": 2.099790096282959,
+"desv_pixeles": 22.993990639074536,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=10",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 16.30767822265625,
+"desv_latente": 2.0184288024902344,
+"desv_pixeles": 20.863466455105016,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=12",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.951549530029297,
+"desv_latente": 1.9747251272201538,
+"desv_pixeles": 19.064331994982567,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=14",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.653596878051758,
+"desv_latente": 1.9380393028259277,
+"desv_pixeles": 17.555423030205517,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=16",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.438522338867188,
+"desv_latente": 1.9113125801086426,
+"desv_pixeles": 16.284122231537946,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=18",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.262115478515625,
+"desv_latente": 1.8892459869384766,
+"desv_pixeles": 15.224420858663375,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=20",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.071837425231934,
+"desv_latente": 1.8654359579086304,
+"desv_pixeles": 14.288595292971689,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=22",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.89910888671875,
+"desv_latente": 1.8437738418579102,
+"desv_pixeles": 13.436837217708185,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=24",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.732227325439453,
+"desv_latente": 1.8228362798690796,
+"desv_pixeles": 12.704958591587927,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=26",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.583709716796875,
+"desv_latente": 1.8041726350784302,
+"desv_pixeles": 11.987829871705678,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=28",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.483378410339355,
+"desv_latente": 1.7915213108062744,
+"desv_pixeles": 11.371683501187638,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=30",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.376784324645996,
+"desv_latente": 1.7781106233596802,
+"desv_pixeles": 10.80997626117637,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "car desenfoque r=32",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 37.63711929321289,
+"desv_latente": 4.701399326324463,
+"desv_pixeles": 19.444523682693028,
+"niveles": 17,
+"familia": "contraste",
+"nombre": "car contraste 0.5",
+"contenido": [
+"car"
+],
+"contenido_v16": [
+"car"
+],
+"directorio": "car",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "car",
+"d_vecino": 10.940987586975098
+},
+{
+"norma": 30.561304092407227,
+"desv_latente": 3.8153226375579834,
+"desv_pixeles": 15.541319975006815,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "car contraste 0.4",
+"contenido": [
+"car"
+],
+"contenido_v16": [
+"car"
+],
+"directorio": "car",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "car",
+"d_vecino": 16.78464126586914
+},
+{
+"norma": 22.40315055847168,
+"desv_latente": 2.792968511581421,
+"desv_pixeles": 11.683670168683806,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "car contraste 0.3",
+"contenido": [
+"car"
+],
+"contenido_v16": [
+"car"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "car",
+"d_vecino": 22.160621643066406
+},
+{
+"norma": 13.81664752960205,
+"desv_latente": 1.7189239263534546,
+"desv_pixeles": 7.73095637374294,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "car contraste 0.2",
+"contenido": [],
+"contenido_v16": [
+"car"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 12.323257446289062,
+"desv_latente": 1.5364181995391846,
+"desv_pixeles": 4.061767827133902,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "car contraste 0.1",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 10.97396469116211,
+"desv_latente": 1.3634684085845947,
+"desv_pixeles": 2.0899960676283436,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "car contraste 0.05",
+"contenido": [],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 28.249671936035156,
+"desv_latente": 3.5233914852142334,
+"desv_pixeles": 32.196535140253076,
+"niveles": 17,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=2",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 8.737865447998047
+},
+{
+"norma": 15.268831253051758,
+"desv_latente": 1.9050259590148926,
+"desv_pixeles": 28.037220994068786,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=4",
+"contenido": [],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 10.919384002685547,
+"desv_latente": 1.3635382652282715,
+"desv_pixeles": 24.672207656753358,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=6",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 10.99362564086914,
+"desv_latente": 1.3650802373886108,
+"desv_pixeles": 21.83135400676538,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=8",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.983890533447266
+},
+{
+"norma": 11.366570472717285,
+"desv_latente": 1.4084646701812744,
+"desv_pixeles": 19.407280629563118,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=10",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.308069229125977
+},
+{
+"norma": 11.517387390136719,
+"desv_latente": 1.4258290529251099,
+"desv_pixeles": 17.338179441953347,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=12",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.09004783630371
+},
+{
+"norma": 11.571412086486816,
+"desv_latente": 1.4317978620529175,
+"desv_pixeles": 15.56387174403451,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=14",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.029558181762695
+},
+{
+"norma": 11.579872131347656,
+"desv_latente": 1.4322004318237305,
+"desv_pixeles": 14.046542239968364,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=16",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.989238739013672
+},
+{
+"norma": 11.61868953704834,
+"desv_latente": 1.4362837076187134,
+"desv_pixeles": 12.738255935639113,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=18",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.902299880981445
+},
+{
+"norma": 11.680727005004883,
+"desv_latente": 1.4432907104492188,
+"desv_pixeles": 11.634420840770929,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=20",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.805339813232422
+},
+{
+"norma": 11.737220764160156,
+"desv_latente": 1.4496804475784302,
+"desv_pixeles": 10.709059714136322,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=22",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.70353889465332
+},
+{
+"norma": 11.814559936523438,
+"desv_latente": 1.4586859941482544,
+"desv_pixeles": 9.958100007511314,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=24",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.59870147705078
+},
+{
+"norma": 11.893035888671875,
+"desv_latente": 1.4678394794464111,
+"desv_pixeles": 9.348903277716753,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=26",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.498571395874023
+},
+{
+"norma": 11.99323558807373,
+"desv_latente": 1.4797172546386719,
+"desv_pixeles": 8.8400682394708,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=28",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.394107818603516
+},
+{
+"norma": 12.076679229736328,
+"desv_latente": 1.4895102977752686,
+"desv_pixeles": 8.424329827216765,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=30",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.30483627319336
+},
+{
+"norma": 12.165534019470215,
+"desv_latente": 1.499923825263977,
+"desv_pixeles": 8.024779013303146,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cow desenfoque r=32",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.215909957885742
+},
+{
+"norma": 38.15931701660156,
+"desv_latente": 4.764332294464111,
+"desv_pixeles": 18.226415290597764,
+"niveles": 18,
+"familia": "contraste",
+"nombre": "cow contraste 0.5",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": "cow",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 3.955129384994507
+},
+{
+"norma": 34.16557693481445,
+"desv_latente": 4.266622066497803,
+"desv_pixeles": 14.562611726687338,
+"niveles": 17,
+"familia": "contraste",
+"nombre": "cow contraste 0.4",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": "cow",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 6.584768295288086
+},
+{
+"norma": 25.794471740722656,
+"desv_latente": 3.222383975982666,
+"desv_pixeles": 10.952604018696508,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "cow contraste 0.3",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 7.600200176239014
+},
+{
+"norma": 15.022769927978516,
+"desv_latente": 1.8778247833251953,
+"desv_pixeles": 7.246437276167207,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cow contraste 0.2",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 11.342265129089355
+},
+{
+"norma": 11.358240127563477,
+"desv_latente": 1.4041645526885986,
+"desv_pixeles": 3.6774222529695315,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "cow contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.581544876098633
+},
+{
+"norma": 12.276824951171875,
+"desv_latente": 1.513108730316162,
+"desv_pixeles": 1.9051500013557603,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cow contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.98179817199707
+},
+{
+"norma": 23.565204620361328,
+"desv_latente": 2.937227964401245,
+"desv_pixeles": 62.84479066536264,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=2",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 22.798471450805664,
+"desv_latente": 2.8468010425567627,
+"desv_pixeles": 59.46973022024814,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=4",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 20.36564064025879,
+"desv_latente": 2.544137716293335,
+"desv_pixeles": 55.86485269455,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=6",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 17.365665435791016,
+"desv_latente": 2.1706736087799072,
+"desv_pixeles": 52.10025284617362,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=8",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.122838020324707,
+"desv_latente": 1.8898648023605347,
+"desv_pixeles": 48.19150105825194,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=10",
+"contenido": [],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 13.48370361328125,
+"desv_latente": 1.6833693981170654,
+"desv_pixeles": 44.24474436841805,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=12",
+"contenido": [],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 12.236371040344238,
+"desv_latente": 1.5248585939407349,
+"desv_pixeles": 40.324663351198936,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=14",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.573227882385254
+},
+{
+"norma": 11.450211524963379,
+"desv_latente": 1.423703908920288,
+"desv_pixeles": 36.51437095994127,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=16",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.362249374389648
+},
+{
+"norma": 10.962288856506348,
+"desv_latente": 1.3600162267684937,
+"desv_pixeles": 32.84796572850312,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=18",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.32210922241211
+},
+{
+"norma": 10.820517539978027,
+"desv_latente": 1.3400694131851196,
+"desv_pixeles": 29.39756585232228,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=20",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.284947395324707
+},
+{
+"norma": 10.808334350585938,
+"desv_latente": 1.3367654085159302,
+"desv_pixeles": 26.19218777102886,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=22",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.312202453613281
+},
+{
+"norma": 10.884685516357422,
+"desv_latente": 1.3449516296386719,
+"desv_pixeles": 23.201827812540404,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=24",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.330811500549316
+},
+{
+"norma": 10.999823570251465,
+"desv_latente": 1.3581095933914185,
+"desv_pixeles": 20.444814748739752,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=26",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.336264610290527
+},
+{
+"norma": 11.13050651550293,
+"desv_latente": 1.373345971107483,
+"desv_pixeles": 17.90285954813375,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=28",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.321648597717285
+},
+{
+"norma": 11.262929916381836,
+"desv_latente": 1.3889635801315308,
+"desv_pixeles": 15.608799221638336,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=30",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.304132461547852
+},
+{
+"norma": 11.40195083618164,
+"desv_latente": 1.4054386615753174,
+"desv_pixeles": 13.577167630327816,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "cup desenfoque r=32",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 15.263875007629395
+},
+{
+"norma": 21.601640701293945,
+"desv_latente": 2.661421537399292,
+"desv_pixeles": 32.76675661372269,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cup contraste 0.5",
+"contenido": [
+"cup"
+],
+"contenido_v16": [
+"cup"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cup",
+"d_vecino": 11.91089916229248
+},
+{
+"norma": 15.28059196472168,
+"desv_latente": 1.8812689781188965,
+"desv_pixeles": 26.23343563357658,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cup contraste 0.4",
+"contenido": [
+"cup"
+],
+"contenido_v16": [
+"cup"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cup",
+"d_vecino": 14.850324630737305
+},
+{
+"norma": 9.513762474060059,
+"desv_latente": 1.1775411367416382,
+"desv_pixeles": 19.6231915800922,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "cup contraste 0.3",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 8.85117244720459,
+"desv_latente": 1.106328010559082,
+"desv_pixeles": 13.13917559691176,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cup contraste 0.2",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 10.876873016357422,
+"desv_latente": 1.3495254516601562,
+"desv_pixeles": 6.646670979512637,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "cup contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.306137084960938
+},
+{
+"norma": 12.315352439880371,
+"desv_latente": 1.518214225769043,
+"desv_pixeles": 3.4272949801136567,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "cup contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.11286735534668
+},
+{
+"norma": 19.819557189941406,
+"desv_latente": 2.456099033355713,
+"desv_pixeles": 25.990399882798034,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=2",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 12.224251747131348
+},
+{
+"norma": 17.244016647338867,
+"desv_latente": 2.123474359512329,
+"desv_pixeles": 24.311425192642677,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=4",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 16.797548294067383,
+"desv_latente": 2.059514045715332,
+"desv_pixeles": 22.92972417882101,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=6",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 12.165985107421875
+},
+{
+"norma": 16.483978271484375,
+"desv_latente": 2.0196428298950195,
+"desv_pixeles": 21.706124473676184,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=8",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 12.184082984924316
+},
+{
+"norma": 16.105491638183594,
+"desv_latente": 1.9739445447921753,
+"desv_pixeles": 20.53494422081848,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=10",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 12.518905639648438
+},
+{
+"norma": 15.75887680053711,
+"desv_latente": 1.9325534105300903,
+"desv_pixeles": 19.367144856592574,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=12",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 12.861048698425293
+},
+{
+"norma": 15.4858980178833,
+"desv_latente": 1.900089144706726,
+"desv_pixeles": 18.21246986445167,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=14",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 13.165139198303223
+},
+{
+"norma": 15.202011108398438,
+"desv_latente": 1.8660413026809692,
+"desv_pixeles": 17.092853093284504,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=16",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 13.432539939880371
+},
+{
+"norma": 14.933780670166016,
+"desv_latente": 1.8338297605514526,
+"desv_pixeles": 15.996288050471742,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=18",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 13.670978546142578
+},
+{
+"norma": 14.684661865234375,
+"desv_latente": 1.8038650751113892,
+"desv_pixeles": 14.958603138367083,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=20",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 13.872727394104004
+},
+{
+"norma": 14.429179191589355,
+"desv_latente": 1.773105263710022,
+"desv_pixeles": 13.951819044635666,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=22",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.088762283325195
+},
+{
+"norma": 14.18420124053955,
+"desv_latente": 1.7435739040374756,
+"desv_pixeles": 12.990333204018214,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=24",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.276291847229004
+},
+{
+"norma": 13.989545822143555,
+"desv_latente": 1.7201334238052368,
+"desv_pixeles": 12.113209398530778,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=26",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.423870086669922
+},
+{
+"norma": 13.828081130981445,
+"desv_latente": 1.7007359266281128,
+"desv_pixeles": 11.327793771406586,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=28",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.545877456665039
+},
+{
+"norma": 13.676512718200684,
+"desv_latente": 1.6824746131896973,
+"desv_pixeles": 10.560157535883373,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=30",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.662796020507812
+},
+{
+"norma": 13.54061508178711,
+"desv_latente": 1.6660627126693726,
+"desv_pixeles": 9.863616215334046,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "dog desenfoque r=32",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 14.756163597106934
+},
+{
+"norma": 13.55531120300293,
+"desv_latente": 1.6413573026657104,
+"desv_pixeles": 14.138032576384006,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "dog contraste 0.5",
+"contenido": [
+"dog"
+],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 22.18338394165039
+},
+{
+"norma": 12.32590389251709,
+"desv_latente": 1.5001989603042603,
+"desv_pixeles": 11.323148620765018,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "dog contraste 0.4",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 11.913182258605957,
+"desv_latente": 1.4634932279586792,
+"desv_pixeles": 8.492061029517208,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "dog contraste 0.3",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 11.68856143951416,
+"desv_latente": 1.4443162679672241,
+"desv_pixeles": 5.67280806302969,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "dog contraste 0.2",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.349050521850586
+},
+{
+"norma": 11.172158241271973,
+"desv_latente": 1.3798797130584717,
+"desv_pixeles": 2.8506262065138017,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "dog contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.471227645874023
+},
+{
+"norma": 11.273886680603027,
+"desv_latente": 1.391230583190918,
+"desv_pixeles": 1.4661414832112183,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "dog contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.202131271362305
+},
+{
+"norma": 32.48229217529297,
+"desv_latente": 4.001718997955322,
+"desv_pixeles": 25.547563292114724,
+"niveles": 17,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=2",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"horse"
+],
+"directorio": "horse",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 7.155173301696777
+},
+{
+"norma": 26.77716064453125,
+"desv_latente": 3.293985366821289,
+"desv_pixeles": 22.516126464878937,
+"niveles": 16,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=4",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 5.829619407653809
+},
+{
+"norma": 21.222158432006836,
+"desv_latente": 2.6068620681762695,
+"desv_pixeles": 20.066865692240473,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=6",
+"contenido": [],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 16.885086059570312,
+"desv_latente": 2.0734760761260986,
+"desv_pixeles": 17.991989393775167,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=8",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.49057388305664,
+"desv_latente": 1.9031860828399658,
+"desv_pixeles": 16.290391141348795,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=10",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.981736183166504,
+"desv_latente": 1.8411507606506348,
+"desv_pixeles": 14.751206517250209,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=12",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.665536880493164,
+"desv_latente": 1.802785873413086,
+"desv_pixeles": 13.362657479333096,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=14",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.39785099029541,
+"desv_latente": 1.770368218421936,
+"desv_pixeles": 12.109835331534901,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=16",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.179556846618652,
+"desv_latente": 1.7439523935317993,
+"desv_pixeles": 10.975369958138192,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=18",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 14.004874229431152,
+"desv_latente": 1.7228151559829712,
+"desv_pixeles": 9.904658841857275,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=20",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.816422462463379,
+"desv_latente": 1.6999597549438477,
+"desv_pixeles": 8.941799144978722,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=22",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.670127868652344,
+"desv_latente": 1.6822913885116577,
+"desv_pixeles": 8.048649763479029,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=24",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.535052299499512,
+"desv_latente": 1.665874719619751,
+"desv_pixeles": 7.2391897044212845,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=26",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.428935050964355,
+"desv_latente": 1.6529686450958252,
+"desv_pixeles": 6.4744341646770955,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=28",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.358368873596191,
+"desv_latente": 1.6444110870361328,
+"desv_pixeles": 5.824884280704823,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=30",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 13.282693862915039,
+"desv_latente": 1.6352301836013794,
+"desv_pixeles": 5.262845946998405,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "horse desenfoque r=32",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 25.206296920776367,
+"desv_latente": 3.091891050338745,
+"desv_pixeles": 14.478308588197219,
+"niveles": 17,
+"familia": "contraste",
+"nombre": "horse contraste 0.5",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 7.160953044891357
+},
+{
+"norma": 20.761516571044922,
+"desv_latente": 2.5503556728363037,
+"desv_pixeles": 11.590943677398219,
+"niveles": 17,
+"familia": "contraste",
+"nombre": "horse contraste 0.4",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 7.898197650909424
+},
+{
+"norma": 15.658101081848145,
+"desv_latente": 1.9302175045013428,
+"desv_pixeles": 8.723041845358384,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "horse contraste 0.3",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 12.070059776306152
+},
+{
+"norma": 12.561935424804688,
+"desv_latente": 1.5562047958374023,
+"desv_pixeles": 5.844179387560365,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "horse contraste 0.2",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.563594818115234
+},
+{
+"norma": 11.293904304504395,
+"desv_latente": 1.4015138149261475,
+"desv_pixeles": 2.958337281228955,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "horse contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.456161499023438
+},
+{
+"norma": 10.776476860046387,
+"desv_latente": 1.334699034690857,
+"desv_pixeles": 1.5131184790733498,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "horse contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.181270599365234
+},
+{
+"norma": 25.50780487060547,
+"desv_latente": 3.1790475845336914,
+"desv_pixeles": 31.747360016249253,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=2",
+"contenido": [],
+"contenido_v16": [
+"pear"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.000370979309082,
+"desv_latente": 1.8693050146102905,
+"desv_pixeles": 30.339523840185553,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=4",
+"contenido": [],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 12.655521392822266,
+"desv_latente": 1.5819389820098877,
+"desv_pixeles": 28.779303551172493,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=6",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 11.179536819458008,
+"desv_latente": 1.3943089246749878,
+"desv_pixeles": 27.04213886648949,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=8",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 10.558095932006836,
+"desv_latente": 1.311557412147522,
+"desv_pixeles": 25.205098937187486,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=10",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 19.054786682128906
+},
+{
+"norma": 10.371726036071777,
+"desv_latente": 1.2837400436401367,
+"desv_pixeles": 23.311729130770907,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=12",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.06364631652832
+},
+{
+"norma": 10.353240966796875,
+"desv_latente": 1.278612494468689,
+"desv_pixeles": 21.400802729406493,
+"niveles": 12,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=14",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.56586265563965
+},
+{
+"norma": 10.379674911499023,
+"desv_latente": 1.2802292108535767,
+"desv_pixeles": 19.508424672824773,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=16",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.291160583496094
+},
+{
+"norma": 10.443907737731934,
+"desv_latente": 1.2872761487960815,
+"desv_pixeles": 17.68038981840497,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=18",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.170984268188477
+},
+{
+"norma": 10.506922721862793,
+"desv_latente": 1.2947748899459839,
+"desv_pixeles": 15.919657182019881,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=20",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.156452178955078
+},
+{
+"norma": 10.592041969299316,
+"desv_latente": 1.3050891160964966,
+"desv_pixeles": 14.260412343377274,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=22",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.10130500793457
+},
+{
+"norma": 10.671213150024414,
+"desv_latente": 1.3148407936096191,
+"desv_pixeles": 12.71684392719121,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=24",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.05337142944336
+},
+{
+"norma": 10.754068374633789,
+"desv_latente": 1.32500422000885,
+"desv_pixeles": 11.291237267062657,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=26",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.00067901611328
+},
+{
+"norma": 10.845197677612305,
+"desv_latente": 1.3360484838485718,
+"desv_pixeles": 10.00983993577123,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=28",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.939672470092773
+},
+{
+"norma": 10.947789192199707,
+"desv_latente": 1.348464012145996,
+"desv_pixeles": 8.863328377945992,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=30",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.87385368347168
+},
+{
+"norma": 11.058050155639648,
+"desv_latente": 1.3616876602172852,
+"desv_pixeles": 7.84549685229132,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "pear desenfoque r=32",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 16.763919830322266
+},
+{
+"norma": 23.4979248046875,
+"desv_latente": 2.9299490451812744,
+"desv_pixeles": 16.505440364164485,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "pear contraste 0.5",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 25.060396194458008,
+"desv_latente": 3.129744291305542,
+"desv_pixeles": 13.195231335092766,
+"niveles": 16,
+"familia": "contraste",
+"nombre": "pear contraste 0.4",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": "cow",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 10.699691772460938
+},
+{
+"norma": 24.03902816772461,
+"desv_latente": 3.004155397415161,
+"desv_pixeles": 9.919658802169598,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "pear contraste 0.3",
+"contenido": [
+"cow"
+],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 9.159916877746582
+},
+{
+"norma": 15.167098999023438,
+"desv_latente": 1.8956947326660156,
+"desv_pixeles": 6.570852980626415,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "pear contraste 0.2",
+"contenido": [],
+"contenido_v16": [
+"cow"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 11.11884880065918,
+"desv_latente": 1.3757312297821045,
+"desv_pixeles": 3.3590110404221263,
+"niveles": 12,
+"familia": "contraste",
+"nombre": "pear contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.978139877319336
+},
+{
+"norma": 11.28807544708252,
+"desv_latente": 1.393632411956787,
+"desv_pixeles": 1.7574780198926523,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "pear contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.33919906616211
+},
+{
+"norma": 28.84363555908203,
+"desv_latente": 3.5974202156066895,
+"desv_pixeles": 42.16002027648189,
+"niveles": 18,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=2",
+"contenido": [
+"tomato"
+],
+"contenido_v16": [
+"tomato"
+],
+"directorio": "tomato",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true,
+"vecino_clase": "tomato",
+"d_vecino": 2.4562835693359375
+},
+{
+"norma": 16.555957794189453,
+"desv_latente": 2.065866470336914,
+"desv_pixeles": 40.54717324722352,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=4",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 8.128329277038574,
+"desv_latente": 1.0135841369628906,
+"desv_pixeles": 38.63777789957106,
+"niveles": 13,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=6",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 9.485036849975586,
+"desv_latente": 1.1752982139587402,
+"desv_pixeles": 36.52683627363829,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=8",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 11.720233917236328,
+"desv_latente": 1.44821035861969,
+"desv_pixeles": 34.29573737709259,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=10",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 13.141728401184082,
+"desv_latente": 1.6220483779907227,
+"desv_pixeles": 32.04779971479739,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=12",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 13.872803688049316,
+"desv_latente": 1.711052656173706,
+"desv_pixeles": 29.84743749339668,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=14",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.323868751525879,
+"desv_latente": 1.7656009197235107,
+"desv_pixeles": 27.68840551483271,
+"niveles": 14,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=16",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.656129837036133,
+"desv_latente": 1.8054641485214233,
+"desv_pixeles": 25.61090599129045,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=18",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 14.900055885314941,
+"desv_latente": 1.8345153331756592,
+"desv_pixeles": 23.590376704926587,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=20",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.022330284118652,
+"desv_latente": 1.8487924337387085,
+"desv_pixeles": 21.62032329148006,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=22",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.11063003540039,
+"desv_latente": 1.8590285778045654,
+"desv_pixeles": 19.708005597136317,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=24",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.181650161743164,
+"desv_latente": 1.8671998977661133,
+"desv_pixeles": 17.8368686351725,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=26",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.162019729614258,
+"desv_latente": 1.8644649982452393,
+"desv_pixeles": 16.080007549354804,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=28",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.134920120239258,
+"desv_latente": 1.8607739210128784,
+"desv_pixeles": 14.422778660116471,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=30",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.089874267578125,
+"desv_latente": 1.8549537658691406,
+"desv_pixeles": 12.853582585051244,
+"niveles": 15,
+"familia": "desenfoque",
+"nombre": "tomato desenfoque r=32",
+"contenido": [],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 18.0665340423584,
+"desv_latente": 2.252990961074829,
+"desv_pixeles": 21.57469438347657,
+"niveles": 15,
+"familia": "contraste",
+"nombre": "tomato contraste 0.5",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 11.377217292785645,
+"desv_latente": 1.4189555644989014,
+"desv_pixeles": 17.25710702389283,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "tomato contraste 0.4",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 7.041199207305908,
+"desv_latente": 0.8781051635742188,
+"desv_pixeles": 12.957524370453557,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "tomato contraste 0.3",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 9.422115325927734,
+"desv_latente": 1.1670870780944824,
+"desv_pixeles": 8.64611742017792,
+"niveles": 13,
+"familia": "contraste",
+"nombre": "tomato contraste 0.2",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 10.886168479919434,
+"desv_latente": 1.3456703424453735,
+"desv_pixeles": 4.392667997177825,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "tomato contraste 0.1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.770769119262695
+},
+{
+"norma": 10.885115623474121,
+"desv_latente": 1.3455686569213867,
+"desv_pixeles": 2.267092859848287,
+"niveles": 14,
+"familia": "contraste",
+"nombre": "tomato contraste 0.05",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.89630699157715
+},
+{
+"norma": 10.703865051269531,
+"desv_latente": 1.3266748189926147,
+"desv_pixeles": 0.7396962567654352,
+"niveles": 12,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=1",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.441722869873047
+},
+{
+"norma": 10.758977890014648,
+"desv_latente": 1.3355940580368042,
+"desv_pixeles": 1.367180780666733,
+"niveles": 12,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=2",
+"contenido": [
+"horse"
+],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 18.761009216308594
+},
+{
+"norma": 11.203499794006348,
+"desv_latente": 1.3924773931503296,
+"desv_pixeles": 2.679588832512338,
+"niveles": 12,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=4",
+"contenido": [],
+"contenido_v16": [
+"dog",
+"horse"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 22.636737823486328,
+"desv_latente": 2.828155994415283,
+"desv_pixeles": 5.3275335380737285,
+"niveles": 13,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=8",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 109.17903137207031,
+"desv_latente": 13.601044654846191,
+"desv_pixeles": 10.636373389609139,
+"niveles": 25,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=16",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true
+},
+{
+"norma": 152.76528930664062,
+"desv_latente": 18.938344955444336,
+"desv_pixeles": 21.266411503209973,
+"niveles": 27,
+"familia": "gris con ruido",
+"nombre": "gris 127 + ruido sigma=32",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 12.994564056396484,
+"desv_latente": 1.6221164464950562,
+"desv_pixeles": 73.91205670568803,
+"niveles": 13,
+"familia": "estructura",
+"nombre": "gradiente horizontal",
+"contenido": [],
+"contenido_v16": [
+"dog"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 15.40672779083252,
+"desv_latente": 1.9250295162200928,
+"desv_pixeles": 51.54988936912809,
+"niveles": 13,
+"familia": "estructura",
+"nombre": "gradiente radial",
+"contenido": [],
+"contenido_v16": [
+"apple"
+],
+"directorio": null,
+"acepta": false,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 117.37611389160156,
+"desv_latente": 14.478191375732422,
+"desv_pixeles": 49.202727284365565,
+"niveles": 27,
+"familia": "estructura",
+"nombre": "ruido uniforme",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+},
+{
+"norma": 104.84900665283203,
+"desv_latente": 12.931143760681152,
+"desv_pixeles": 49.580171998434594,
+"niveles": 27,
+"familia": "estructura",
+"nombre": "pixeles barajados",
+"contenido": [],
+"contenido_v16": [],
+"directorio": null,
+"acepta": false,
+"acepta_v16": false,
+"pasa_norma": true,
+"pasa_desv_latente": true,
+"pasa_desv_pixeles": true,
+"pasa_niveles": true
+}
+]
