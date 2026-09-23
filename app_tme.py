@@ -2846,7 +2846,8 @@ def main():
         src = st.radio(
             "Fuente de la imagen:",
             ["Imagen de ejemplo del dataset ETH-80",
-             "Subir mi propia imagen (png/jpg)"],
+             "Subir mi propia imagen (png/jpg)",
+             "Sonda degenerada (gris medio)"],
             horizontal=True, key="img_src")
 
         pil = None          # imagen elegida (cualquiera de las dos fuentes)
@@ -2879,6 +2880,10 @@ def main():
                 f"Entrada real de **{ex_cls}** (test). Como entra por "
                 f"**{entry}**, el directorio visual debería redirigir a "
                 f"**{ex_cls}** — o rechazar si no la reconoce.")
+        elif src.startswith("Sonda"):
+            # Gris 127: la entrada sin estructura que la memoria aceptaba (exp14).
+            pil = Image.new("RGB", (128, 128), (127, 127, 127))
+            st.caption("Lienzo gris uniforme: sin el umbral de energía, `horse` le daba soporte.")
         else:
             up = st.file_uploader("Sube una imagen (png/jpg)",
                                   type=["png", "jpg", "jpeg"])
@@ -2901,14 +2906,23 @@ def main():
             z = encode_pil(pil, encoder)
             z_q = quantize_latent_global(z, gmin_v, gmax_v, Q_LATENT)
 
+            # Umbral de energía del latente antes de cualquier memoria (exp14).
+            from stage7_bidirectional import (XI_VISUAL, latent_energy_threshold,
+                                              latent_has_energy)
+            tau_e = latent_energy_threshold()
+            energia = float(np.linalg.norm(z))
+            degenerada = not latent_has_energy(z, tau_e)
+
             # Ruteo de fase madura sobre directorios visuales perspectivales: el
             # agente de entrada agrega su mem_dir_R y los de los agentes que
             # conoce, y encadena si nadie tiene soporte (route_transactive, la
             # misma operacion de la etapa 7). Una sola decision para estatico y
             # animacion.
-            from stage7_bidirectional import XI_VISUAL
-            widx, agg, _consulted, _hops = route_transactive(
-                entry, exp_agents, z_q, modality="image", xi=XI_VISUAL)
+            if degenerada:
+                widx, agg = -1, np.zeros(len(CLASSES))
+            else:
+                widx, agg, _consulted, _hops = route_transactive(
+                    entry, exp_agents, z_q, modality="image", xi=XI_VISUAL)
             scores = {CLASSES[i]: float(agg[i]) for i in range(len(CLASSES))}
             winner = CLASSES[widx] if widx >= 0 else None
 
@@ -2918,12 +2932,18 @@ def main():
                          caption=f"Entrada · agente de entrada: "
                                  f"{DOMAIN_EMOJI[entry]} {entry}",
                          use_container_width=True)
+                st.caption(f"Energía del latente ‖z‖ = {energia:.1f} · umbral τ = {tau_e:.1f}")
                 for c in CLASSES:
                     st.metric(f"{DOMAIN_EMOJI[c]} {c} · M_dir_R (B1)",
                               f"{scores[c]:.3f}")
 
             with c_out:
-                if winner is None:
+                if degenerada:
+                    st.error(
+                        f"RECHAZADA antes de la memoria — energía del latente "
+                        f"{energia:.1f} < τ {tau_e:.1f}: entrada sin estructura "
+                        "(gris medio, desenfoque o contraste nulo). Ninguna memoria la ve.")
+                elif winner is None:
                     st.error(
                         "RECHAZADA — el directorio visual (M_dir_R) no tiene soporte "
                         "para esta percepción: ningún especialista la conoce. "
