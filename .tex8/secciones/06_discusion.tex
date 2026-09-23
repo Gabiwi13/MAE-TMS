@@ -188,9 +188,17 @@ degeneradas}: una imagen de color sólido uniforme obtiene soporte y se acepta
 puebla esa región del espacio latente; las sondas estructuradas (ruido, píxeles
 barajados) sí se rechazan. Densificar agranda esa fuga: con 16 variantes la aceptan
 tres especialistas en vez de uno y el directorio la rutea.
-Un criterio de varianza mínima de la pista latente, previo a la memoria, es la
-mitigación pendiente; la doble compuerta del punto (a) no la cerraría, porque el
-contenido también la acepta.
+El experimento 14 midió la mitigación: un umbral sobre la norma del latente continuo,
+fijado con el mínimo de las imágenes de llenado y un margen del 10\,\% ($\tau = 16.6$),
+cierra el 94\,\% de esa fuga (79 de las 83 entradas degeneradas aceptadas por una clase
+ajena caen bajo $\tau$: grises medios, desenfoques de radio $\geq 8$, contrastes
+$\leq 0.2$) y el 88\,\% con el llenado de 16 variantes, a costa de cinco imágenes reales
+de 3280, todas vistas oscuras de \texttt{cow} que el directorio ya rechazaba. La norma
+y la varianza del latente son equivalentes; la varianza de píxeles no sirve, porque un
+objeto desenfocado conserva contraste y pierde estructura. Lo que sobrevive al umbral
+son confusiones de contenido entre clases (un \texttt{dog} desenfocado aceptado por
+\texttt{cow}), no entradas degeneradas. La doble compuerta del punto (a) no la
+cerraría, porque el contenido también la acepta.
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
 El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que

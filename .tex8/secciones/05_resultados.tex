@@ -337,9 +337,12 @@ reales que la memoria contiene se aceptan y enrutan, mientras que imágenes real
 contenidas y las sondas sintéticas de ruido y de píxeles barajados reciben puntuación
 cero en los ocho agentes y se rechazan, sin que intervenga ningún filtro externo.
 La tercera sonda sintética, un lienzo de color sólido uniforme, \emph{sí} obtiene
-soporte y se acepta: es la excepción honesta del panel, presumiblemente porque las
-imágenes de ETH-80 contienen grandes regiones de fondo liso y un latente degenerado
-pero uniforme cae dentro de la distribución acumulada.
+soporte y se acepta: es la excepción honesta del panel. El experimento 14 localizó la
+causa: no es el fondo liso (los sólidos negro, blanco, de colores y del color de fondo
+de ETH-80 se rechazan) sino que el encoder colapsa toda entrada sin estructura, el gris
+medio, un objeto desenfocado o sin contraste, en un mismo latente cerca del origen, y
+ese punto cae dentro de la envolvente por coordenada de \texttt{horse}, a tres veces la
+distancia intraclase de cualquier instancia registrada.
 Esta fuga con entradas degeneradas se retoma en la Sección~\ref{sec:limitaciones}.
 La Figura~\ref{fig:imagen-etiquetas} muestra la salida semántica: para cada imagen
 aceptada, la reconstrucción es lo que la memoria \emph{evoca} (decodificación de la

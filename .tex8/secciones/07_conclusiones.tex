@@ -54,11 +54,12 @@ cuantización, e hizo trazables todos los números reportados.
 \paragraph{Trabajo futuro.}
 Los siguientes pasos más relevantes son:
 \begin{enumerate}
-    \item \textbf{Criterio de varianza mínima de la entrada visual}: la augmentación
-    del llenado ya se midió (experimento 13: cobertura de 66.5 a 94.5\,\% con 16
-    variantes en contenido y directorio, a costa de un falso ruteo de 656 y de que la
-    sonda de color sólido se acepte más); falta cerrar esa fuga de entradas degeneradas
-    antes de la memoria y decidir si el llenado con 16 variantes pasa a ser el oficial.
+    \item \textbf{Adoptar en el pipeline lo medido en los experimentos 13 y 14}: el
+    llenado con 16 variantes en contenido y directorio (cobertura de 66.5 a 94.5\,\%,
+    un falso ruteo de 656) y el umbral de energía mínima del latente en la codificación
+    de la percepción (cierra el 94\,\% de la fuga de entradas degeneradas por cinco
+    imágenes reales). Ambos están medidos y ninguno instalado; instalarlos exige
+    rehacer la etapa 5, la fase A y las verificaciones.
     \item \textbf{Fuentes de conocimiento complementarias a ConceptNet}: elevar el techo
     de las clases con léxico compartido con conocimiento alineado al lenguaje de las
     consultas, único tipo de enriquecimiento que demostró ayudar.

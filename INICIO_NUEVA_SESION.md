@@ -44,6 +44,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | imagen→texto largo | 4 cortes × 10 semillas; cobertura del especialista 0 → 79 % con N | `results/experimento11/README.md` |
 | compuerta | doble compuerta de contenido en la fase madura textual; protocolo fuera de dominio 4/40 → 2/40 | `stage8_mature.py`, `app_tme.py`, `run_experiment11_monolithic.py` |
 | exp13 | augmentación del llenado visual: dos compuertas, punta a punta 66.5 → 94.5 % con 16 variantes, 1 falso ruteo de 656 | `run_experiment13_augmentation.py`, `results/experimento13/` |
+| exp14 | energía mínima del latente: τ = 16.6 cierra el 94 % de la fuga de entradas degeneradas por 5 imágenes reales de 3280 | `run_experiment14_latent_energy.py`, `results/experimento14/` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -63,6 +64,8 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 **Exp12:** la brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay dominios disjuntos con esta cuantización (Jaccard 0.57–0.65). Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.
 
 **Exp13:** el rechazo visual son dos compuertas (directorio y recall de la hetero) y cada una cede solo con su augmentación; con 16 variantes en las dos, ruteo 73.6 → 97.1 % y punta a punta 66.5 → 94.5 %, con 1 falso ruteo de 656 y la sonda de color sólido aceptada por 3 especialistas. No adoptado como llenado oficial.
+
+**Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. No instalado.
 
 **Exp9 tras la corrección de la pista:** la descripción (lectura inversa del directorio) supera al especialista en fidelidad (19.3 contra 21.9); la familiaridad vive en el reconocimiento (98% contra 16%), con la contención por coordenada como puerta que la descripción no tiene.
 
@@ -87,6 +90,7 @@ python run_experiment12_overlap.py --seeds 42-46 --reps 3 --workers 8
 # exp13 (reanudable; latentes y contenido en caché; ~50 min de llenados + ~4 h de evaluación con 2 procesos)
 python run_experiment13_augmentation.py --seeds 42-46 --workers 2
 python run_experiment13_augmentation.py --report-only
+python run_experiment14_latent_energy.py     # minutos; requiere cache/exp13/Vc16_N200.pkl
 
 # app (o con .claude/launch.json, nombre app-tme)
 python -m streamlit run app_tme.py
@@ -112,4 +116,4 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 
 - Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
 - Decidir si el llenado con 16 variantes (contenido y fase A) pasa a ser el oficial: rehacer etapa 5 y fase A, re-verificar 8/8 y 16/16, re-correr lo que depende de `models/` (exp8, exp9, exp11, app) y actualizar las cifras de 75 % / 0 falsos del reporte.
-- Criterio de varianza mínima de la entrada visual, medido con las tres sondas y las 656 de test (que no rechace ninguna imagen real); cierra la fuga de color sólido que exp13 hizo crecer.
+- Instalar el criterio de energía mínima del latente (τ = 16.6, junto a `latent_global_stats.json`) en `image_to_latent` de la etapa 7 y en `encode_pil` de la app, y re-correr la etapa 7 (la fase A pierde una percepción).
