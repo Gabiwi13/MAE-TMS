@@ -47,14 +47,14 @@ Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacci
 es una medida justa para comparar agentes con historiales de exposición distintos.
 
 El escalado refuerza esta lectura en dos direcciones.
-Primero, la brecha cruda-B1 persiste con $K = 8$ (80.0\% frente a 93.2\%): el sesgo
+Primero, la brecha cruda-B1 persiste con $K = 8$ (87.0\% frente a 93.5\%): el sesgo
 de masa no era un artefacto del caso de tres agentes.
-Segundo, la entropía del directorio es alta incluso en la condición cruda (2.955 de
+Segundo, la entropía del directorio es alta incluso en la condición cruda (2.974 de
 3.000 bits): la \emph{estructura} del directorio está bien formada y balanceada; el
 sesgo vive en la \emph{lectura}, exactamente donde B1 actúa.
 Las condiciones que manipulan síntomas (B2, C, D, E) vuelven a quedar por debajo, y la
-combinación G no supera a B1 sola: una vez corregida la causa, las correcciones
-auxiliares son redundantes.
+combinación G supera a B1 sola por medio punto (94.0\% frente a 93.5\%), dentro del
+ruido: una vez corregida la causa, las correcciones auxiliares aportan poco.
 
 % ---------------------------------------------------------------
 \subsection{El sesgo hacia un agente era un efecto conjunto: encoder y fuente de conocimiento}
@@ -69,8 +69,9 @@ desempate por centroide) movieron poco ese reparto.
 El hallazgo llegó por una vía inesperada: un reentrenamiento determinista del encoder
 (motivado por el benchmark de costo) produjo un espacio latente con mejor separación de
 \texttt{pear} y \texttt{tomato} respecto a \texttt{apple}, y con él la participación de
-\texttt{apple} bajo la lectura B1 cayó de 20.0\% a 13.0\% (ideal 12.5\%) y \texttt{pear}
-subió de $\approx$52\% a 86\% \emph{sin cambiar el vocabulario}.
+\texttt{apple} bajo la lectura B1 cayó de 20.0\% a 13.2\% (ideal 12.5\%) y \texttt{pear}
+subió de $\approx$52\% a 86\% \emph{sin cambiar el vocabulario} (78\% con el llenado de
+16 variantes).
 
 La conclusión corregida es que el sesgo era un efecto \emph{conjunto} de la
 separabilidad del espacio latente y de la asimetría léxica de la fuente de
@@ -104,8 +105,8 @@ mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
     \item \textbf{Un grupo más grande necesita más interacción para conocerse.}
     Con tres agentes, 10 consultas por dominio bastaban para cruzar el 90\% de
     precisión madura en $k \approx 13$ interacciones; con ocho agentes ese mismo volumen
-    se queda en 82.5\%, y hace falta el banco completo ($\approx$50 por dominio) para
-    alcanzar el 93.2\%.
+    se queda en 81.2\%, y hace falta el banco completo ($\approx$50 por dominio) para
+    alcanzar el 93.5\%.
     El costo de formación del directorio crece con el número de especialidades y con el
     solapamiento entre ellas, no solo con el número de miembros.
 

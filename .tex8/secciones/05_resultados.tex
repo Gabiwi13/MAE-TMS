@@ -35,26 +35,28 @@ y la Figura~\ref{fig:heatmap-condicion} el mapa completo condición $\times$ $N$
         \toprule
         Condición & Descripción & Temprana (\%) & Fidelidad (\%) & Madura (\%) \\
         \midrule
-        A (cruda)  & Score de activación sin normalizar             & 88.0 & 87.3 & 80.0 \\
-        B1         & División entre conteo de registros por agente  & 88.0 & 93.5 & \textbf{93.2} \\
-        B2         & División entre raíz cuadrada del conteo        & 88.0 & 95.0 & 89.0 \\
-        C          & Cap de número máximo de registros por agente   & 88.0 & 91.5 & 86.5 \\
-        D          & Consultas balanceadas entre clases             & 88.6 & 89.6 & 82.8 \\
-        E32        & Cuantización en 32 niveles                     & 88.0 & 91.3 & 84.8 \\
-        E64        & Cuantización en 64 niveles                     & 88.0 & 92.0 & 86.5 \\
-        F          & Vocabulario curado ($\equiv$ A en v4)          & 88.0 & 87.3 & 80.0 \\
-        G (D+B1+F) & Combinación                                    & 88.6 & 93.6 & 92.9 \\
+        A (cruda)  & Score de activación sin normalizar             & 90.0 & 92.0 & 87.0 \\
+        B1         & División entre conteo de registros por agente  & 90.0 & 95.2 & \textbf{93.5} \\
+        B2         & División entre raíz cuadrada del conteo        & 90.0 & 95.2 & 93.2 \\
+        C          & Cap de número máximo de registros por agente   & 90.0 & 92.5 & 89.5 \\
+        D          & Consultas balanceadas entre clases             & 90.5 & 92.5 & 89.0 \\
+        E32        & Cuantización en 32 niveles                     & 90.0 & 93.5 & 90.5 \\
+        E64        & Cuantización en 64 niveles                     & 90.0 & 93.2 & 92.2 \\
+        F          & Vocabulario curado ($\equiv$ A en v4)          & 90.0 & 92.0 & 87.0 \\
+        G (D+B1+F) & Combinación                                    & 90.5 & 95.3 & 94.0 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \paragraph{B1 sigue siendo la corrección irreducible.}
 Igual que en el sistema de tres agentes, la lectura cruda del directorio (A) pierde
-13 puntos frente a la lectura normalizada por conteo (80.0\% frente a 93.2\%), y
-ninguna condición que manipula síntomas (B2, C, D, E32, E64) la alcanza.
-La combinación G no supera a B1 sola (92.9\% frente a 93.2\%): una vez corregida la
-causa (evidencia por registro en vez de evidencia total), el balanceo de consultas y la
-curación de vocabulario no aportan nada adicional.
+6.5 puntos frente a la lectura normalizada por conteo (87.0\% frente a 93.5\%; con el
+llenado de 4 variantes la brecha era de 13 puntos: el contenido más denso reduce el
+sesgo de masa pero no lo elimina), y ninguna condición que manipula síntomas (B2, C, D,
+E32, E64) la alcanza, aunque B2 queda a tres décimas.
+La combinación G supera a B1 sola por medio punto (94.0\% frente a 93.5\%), dentro del
+ruido de cinco semillas: una vez corregida la causa (evidencia por registro en vez de
+evidencia total), el balanceo de consultas y la curación de vocabulario aportan poco.
 
 \begin{figure}[H]
     \centering
@@ -93,12 +95,12 @@ Las corridas tempranas de 8 clases mostraban al agente \texttt{apple} capturando
 $\approx$20\% de las victorias maduras (frente al ideal de 12.5\%) y a \texttt{pear}
 colapsando por debajo del 55\%.
 Con el encoder determinista oficial y el vocabulario por masa asociativa, la
-participación de \texttt{apple} bajo la lectura B1 baja a \textbf{13.0\%} y
-\texttt{pear} se recupera a 86\% \emph{sin cambiar el vocabulario}
-(Figura~\ref{fig:winner}).
+participación de \texttt{apple} bajo la lectura B1 baja a \textbf{13.2\%} \emph{sin
+cambiar el vocabulario}; \texttt{pear} queda en 78\% (86\% con el llenado de 4
+variantes: el contenido más denso no la ayuda) (Figura~\ref{fig:winner}).
 La misma figura muestra que bajo la lectura cruda (A) \texttt{apple} todavía captura el
-24\% de las victorias: el residuo que persiste es el sesgo de lectura que B1 corrige,
-y con B1 ningún agente se desvía más de 2.5 puntos del ideal.
+19.5\% de las victorias: el residuo que persiste es el sesgo de lectura que B1 corrige,
+y con B1 ningún agente se desvía más de 2 puntos del ideal.
 El análisis de este hallazgo se desarrolla en la Sección~\ref{sec:disc-dominancia}.
 
 \begin{figure}[H]
@@ -110,11 +112,11 @@ El análisis de este hallazgo se desarrolla en la Sección~\ref{sec:disc-dominan
 \end{figure}
 
 \paragraph{Estado del directorio.}
-La entropía del directorio transactivo alcanza 2.955 bits en la condición A y 2.961
+La entropía del directorio transactivo alcanza 2.974 bits en la condición A y 2.977
 bits en G, sobre un máximo teórico de 3.000 bits ($\log_2 8$): la especialización queda
-balanceada al 98.5\% incluso sin corrección, porque el desequilibrio de masas es un
+balanceada al 99.1\% incluso sin corrección, porque el desequilibrio de masas es un
 sesgo de \emph{lectura}, no de estructura.
-La fidelidad temprana-madura con B1 es del 93.5\%.
+La fidelidad temprana-madura con B1 es del 95.2\%.
 
 % ---------------------------------------------------------------
 \subsection{Protocolo completo}
@@ -124,23 +126,23 @@ El protocolo completo (fase temprana $\to$ formación del directorio $\to$ fase 
 con el TME apagado) se corrió sobre el subconjunto de 80 consultas (10 por clase).
 
 \paragraph{Fase temprana.}
-El sistema alcanzó una \textbf{precisión temprana del 80.0\%} con una tasa de rechazo
+El sistema alcanzó una \textbf{precisión temprana del 81.2\%} con una tasa de rechazo
 del 5.0\%.
 El rechazo no proviene de un filtro de vocabulario: cada token con representación
 fastText entra como pista, y es la propia memoria la que rechaza cuando ningún agente
 obtiene soporte.
 
 \paragraph{Fase madura.}
-Con la lectura B1 la \textbf{precisión madura fue del 82.5\%}; con lectura cruda,
-68.8\%.
-La fidelidad temprana-madura fue del \textbf{90.0\%}.
+Con la lectura B1 la \textbf{precisión madura fue del 81.2\%}; con lectura cruda,
+71.2\%.
+La fidelidad temprana-madura fue del \textbf{92.5\%}.
 Los conteos del directorio al final del experimento fueron
-$[50, 16, 44, 25, 30, 14, 17, 31]$ para
+$[46, 16, 40, 25, 30, 18, 21, 31]$ para
 (\texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup}, \texttt{dog}, \texttt{horse},
-\texttt{pear}, \texttt{tomato}), con una entropía de \textbf{2.866 bits} sobre un máximo
+\texttt{pear}, \texttt{tomato}), con una entropía de \textbf{2.914 bits} sobre un máximo
 de 3.000.
-Nótese que la fase madura sobre este subconjunto (82.5\%) es inferior a la del banco
-completo (93.2\%): con solo 10 consultas por clase, el directorio dispone de menos
+Nótese que la fase madura sobre este subconjunto (81.2\%) es inferior a la del banco
+completo (93.5\%): con solo 10 consultas por clase, el directorio dispone de menos
 evidencia por dominio; la diferencia mide el efecto del volumen de interacciones, no un
 cambio de mecanismo.
 
@@ -178,20 +180,22 @@ Los resultados se muestran en la Tabla~\ref{tab:grid-iota-kappa}.
         \toprule
         $\iota$ & $\kappa$ (cualquier valor) & Precisión (\%) & Rechazo (\%) \\
         \midrule
-        0.00  & 0 -- 1.5 & 80.0 &   5.0 \\
+        0.00  & 0 -- 1.5 & 81.2 &   5.0 \\
         0.25  & 0 -- 1.5 & 82.5 &   5.0 \\
-        0.50  & 0 -- 1.5 & 65.0 &  14.0 \\
-        1.00  & 0 -- 1.5 &  0.0 & 100.0 \\
+        0.50  & 0 -- 1.5 & 75.0 &  11.2 \\
+        1.00  & 0 -- 1.5 &  8.8 &  86.2 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \paragraph{Efecto de $\iota$.}
 Con la cuantización por magnitud, una poda ligera ($\iota = 0.25$) mejora marginalmente
-la fase temprana (82.5\% frente a 80.0\%) al eliminar algo de ruido de baja
+la fase temprana (82.5\% frente a 81.2\%) al eliminar algo de ruido de baja
 frecuencia, pero la mejora no se traslada de forma sustancial a la fase madura
-(B1: 83.8\% frente a 82.5\%) y el patrón destructivo reaparece de inmediato:
-$\iota = 0.5$ pierde 15 puntos con un rechazo del 14\%, y $\iota = 1.0$ rechaza todo.
+(B1: 83.8\% frente a 81.2\%) y el patrón destructivo reaparece: $\iota = 0.5$ pierde 6
+puntos con un rechazo del 11\%, y $\iota = 1.0$ rechaza el 86\% (con el llenado de 4
+variantes perdía 15 puntos y rechazaba todo: la poda muerde menos sobre una relación
+más densa).
 La poda elimina conocimiento escaso pero válido antes de eliminar relaciones espurias.
 
 \paragraph{Efecto de $\kappa$.}
@@ -201,7 +205,7 @@ relativo nunca es vinculante.
 
 \paragraph{Ninguna condición nativa sustituye a B1.}
 En todas las celdas del grid, la lectura madura cruda queda por debajo de la lectura B1
-(68.8\% frente a 82.5\% en la línea base; 77.5\% frente a 83.8\% en la mejor
+(71.2\% frente a 81.2\% en la línea base; 78.8\% frente a 83.8\% en la mejor
 condición nativa).
 La calibración alternativa por división entre la media de la memoria
 ($\div$\texttt{mem.mean}) \emph{empeora} la fase temprana (76.2\%) y distorsiona los
@@ -221,15 +225,15 @@ consultas.
 \paragraph{Hallazgo principal: a ocho agentes, 10 consultas por clase no bastan.}
 A diferencia del sistema de tres agentes (donde el orden intercalado cruzaba el umbral
 del 90\% en $k \approx 13$ interacciones), \textbf{ninguna condición alcanza el
-umbral del 90\%} con este volumen de interacciones: todas convergen al 82.5\% final.
+umbral del 90\%} con este volumen de interacciones: todas convergen al 81.2\% final.
 No es un fallo de convergencia sino de evidencia disponible: con 8 dominios y consultas
 que comparten léxico, 10 interacciones por dominio no acumulan suficiente evidencia
-distintiva (el mismo protocolo con el banco completo alcanza 93.2\%,
+distintiva (el mismo protocolo con el banco completo alcanza 93.5\%,
 Sección~\ref{sec:calibracion}).
 
 \paragraph{El orden afecta la velocidad, no el destino.}
 Todas las condiciones convergen exactamente al mismo estado final: conteos
-$[50, 16, 44, 25, 30, 14, 17, 31]$ y entropía 2.866 bits, independientemente del orden
+$[46, 16, 40, 25, 30, 18, 21, 31]$ y entropía 2.914 bits, independientemente del orden
 de presentación.
 Esta invariancia del destino replica el resultado de tres agentes y confirma que el
 directorio acumula evidencia conmutativa: el orden solo determina cuándo se vuelve
@@ -258,10 +262,10 @@ Los \textit{falsos} son imágenes de otras clases presentadas al agente.
         $N$ & Train propio (\%) & Test propio (\%) & Falsos (\%) & Variedad $L_1$ & Enrutamiento (\%) & $H$ (bits) \\
         \midrule
          25  & 100 &  0 & 0 & 1.91 & 61.3 & 3.648 \\
-         50  & 100 &  0 & 0 & 1.87 & 71.2 & 4.369 \\
-        100  & 100 &  2 & 0 & 1.74 & 78.8 & 4.950 \\
+         50  & 100 &  0 & 0 & 1.89 & 71.2 & 4.369 \\
+        100  & 100 &  2 & 0 & 1.75 & 78.8 & 4.950 \\
         200  & 100 & 20 & 0 & 1.94 & 81.2 & 5.204 \\
-        328  & 100 & 56 & 0 & 2.18 & 81.2 & 5.318 \\
+        328  & 100 & 56 & 0 & 2.17 & 81.2 & 5.318 \\
         \bottomrule
     \end{tabular}
 \end{table}

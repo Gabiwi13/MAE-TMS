@@ -11,9 +11,9 @@ externos de clasificación ni umbrales supervisados.
 
 \paragraph{Logros principales.}
 Sobre el banco de 411 consultas ($N = 400$, 5 semillas), el sistema alcanzó una
-\textbf{precisión temprana del 88.0\%} y una \textbf{precisión madura del 93.2\%}
-con la lectura B1 del directorio, con una fidelidad temprana-madura del 93.5\% y la
-participación de \texttt{apple}, el agente históricamente sesgado, en \textbf{13.0\%}
+\textbf{precisión temprana del 90.0\%} y una \textbf{precisión madura del 93.5\%}
+con la lectura B1 del directorio, con una fidelidad temprana-madura del 95.2\% y la
+participación de \texttt{apple}, el agente históricamente sesgado, en \textbf{13.2\%}
 (ideal 12.5\%).
 En la dirección inversa, el hemisferio visual enrutó el \textbf{96.2\%} de las 656
 imágenes de prueba con \textbf{dos falsos enrutamientos} (99.7\% de precisión sobre
@@ -29,8 +29,8 @@ containment, actualización de directorio y coordinación punto a punto pasan de
 agentes sin cambios de mecanismo.
 Los límites encontrados estaban en las \emph{representaciones}: la binarización por
 signo (resuelta con la cuantización por magnitud, que llevó la precisión temprana del
-50\% al 88\%), la separabilidad del espacio latente del encoder (cuyo
-reentrenamiento resolvió el sesgo hacia \texttt{apple}: 20\% $\to$ 13.0\%), y la
+50\% al 90\%), la separabilidad del espacio latente del encoder (cuyo
+reentrenamiento resolvió el sesgo hacia \texttt{apple}: 20\% $\to$ 13.2\%), y la
 asimetría léxica de la fuente de conocimiento (que fija el techo de las clases con
 vocabulario compartido).
 El costo de la escala aparece donde la teoría de Wegner lo predice: un grupo con más
