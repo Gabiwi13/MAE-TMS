@@ -13,13 +13,13 @@ bovine cattle beast,cow,cow,cow,cow,cow,directory_support
 a mug for liquid,cup,cup,pear,cup,cup,directory_support
 canine mammal with a tail,dog,dog,cow,dog,dog,directory_support
 large powerful mammal,horse,cow,cow,cow,cow,directory_support
-a pome fruit like an apple,pear,apple,tomato,pear,apple,directory_support
+a pome fruit like an apple,pear,apple,tomato,apple,apple,directory_support
 red juicy tomato fruit,tomato,tomato,dog,tomato,apple,directory_support
 red or green round food,apple,apple,cup,apple,apple,directory_support
 automobile with seats,car,car,tomato,car,car,directory_support
 moo animal on the farm,cow,cow,tomato,cow,cow,directory_support
 small drinking container,cup,cup,cow,cup,cup,directory_support
-man's best friend animal,dog,cow,horse,cow,cow,directory_support
+man's best friend animal,dog,horse,horse,horse,horse,directory_support
 has four legs and hooves,horse,REJ,dog,REJ,REJ,directory_no_support
 sweet green fruit with a stem,pear,apple,car,apple,apple,directory_support
 a red herb garden vegetable,tomato,tomato,tomato,tomato,tomato,directory_support
@@ -28,7 +28,7 @@ has wheels and engine,car,car,horse,car,car,directory_support
 large placental mammal on a farm,cow,cow,horse,cow,cow,directory_support
 a cup for holding drink,cup,cup,car,cup,cup,directory_support
 a dog that barks and runs,dog,dog,tomato,dog,dog,directory_support
-riding and racing animal,horse,horse,cup,horse,cow,directory_support
+riding and racing animal,horse,horse,cup,horse,horse,directory_support
 a pear shaped juicy fruit,pear,pear,dog,pear,apple,directory_support
 round red fruit used in salad,tomato,apple,apple,tomato,apple,directory_support
 a delicious pome,apple,apple,cup,apple,apple,directory_support
@@ -53,7 +53,7 @@ animal with udders and milk,cow,cow,pear,cow,cow,directory_support
 a trophy shaped drinking container,cup,cup,horse,cup,cup,directory_support
 a wolf related domestic animal,dog,dog,cow,dog,dog,directory_support
 has a long tail,horse,REJ,cup,dog,dog,directory_support
-sweet juicy pear food,pear,apple,pear,pear,apple,directory_support
+sweet juicy pear food,pear,pear,pear,pear,apple,directory_support
 a herb plant with a red fruit,tomato,tomato,cup,tomato,tomato,directory_support
 juicy round fruit,apple,apple,tomato,apple,apple,directory_support
 a motor vehicle,car,car,apple,car,car,directory_support
@@ -69,7 +69,7 @@ beef cattle on the farm,cow,cow,cup,cow,cow,directory_support
 containerful of liquid to drink,cup,cup,apple,cup,cup,directory_support
 canine friend with a wet nose,dog,dog,cup,dog,dog,directory_support
 mammal with saddle,horse,horse,horse,horse,cow,directory_support
-a green or yellow pear,pear,pear,car,pear,apple,directory_support
+a green or yellow pear,pear,pear,car,pear,pear,directory_support
 red fruit often called a vegetable,tomato,tomato,car,tomato,tomato,directory_support
 a pear or apple fruit,apple,pear,apple,pear,apple,directory_support
 wheeled automobile,car,car,car,car,car,directory_support
