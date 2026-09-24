@@ -26,7 +26,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 
 ## 4. Estado de los modelos
 
-- `models/` tiene desde el 23 de septiembre los 9 pickles (8 agentes + TME) del protocolo **v5 con umbral de energía** (etapa 7 re-corrida; contenido bit a bit v4; TME igual al v5 salvo un registro; directorios perspectivales con otro sorteo de entradas; ruteo 73.6 %, etapa 8 16/16). `models/latent_energy_threshold.json` está versionado.
+- `models/` tiene desde el 23 de septiembre los 9 pickles (8 agentes + TME) del protocolo **v5 con umbral de energía y llenado de 16 variantes** (etapas 5–8 re-corridas en CPU; stats, umbral, escala y directorios de texto idénticos a los anteriores; ruteo 96.2 %, 2 falsos, evocación 97.4 %, etapa 8 16/16). Los `instance_latents_*.json` (versionados) tienen 3200 filas por clase; `models/latent_energy_threshold.json` está versionado. Respaldos locales: `models_v5_umbral/` (4 variantes con umbral), `models_v5_perspectival/`, `models_backup_pre_perspectival/`.
 - `models_backup_pre_perspectival/` tiene los **v4** (directorios idénticos entre agentes): son los que produjeron exp8, exp9 y las fases 1 y 2. `models_v5_perspectival/` conserva la copia de los v5. Ambas carpetas están excluidas de git.
 - `cache/exp11/N{25,50,100,200}.pkl` (1.5 GB cada uno): memorias reconstruidas por corte para exp11 y exp12. Excluidas de git.
 
@@ -47,6 +47,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | exp14 | energía mínima del latente: τ = 16.6 cierra el 94 % de la fuga de entradas degeneradas por 5 imágenes reales de 3280 | `run_experiment14_latent_energy.py`, `results/experimento14/` |
 | umbral | energía mínima del latente instalada en etapa 7 y app; cifras sin cambio | `stage7_bidirectional.py`, `app_tme.py` |
 | exp15 | árbitro por contenido y margen, refutados: el índice compara mejor que el contenido | `run_experiment15_arbiter.py`, `results/experimento15/` |
+| v16 | llenado oficial con 16 variantes: ruteo 73.6 → 96.2 %, evocación 85.3 → 97.4 %, 2 falsos de 656 | `stage5_fill.py`, `stage7_bidirectional.py` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -65,7 +66,7 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 
 **Exp12:** la brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5): no hay dominios disjuntos con esta cuantización (Jaccard 0.57–0.65). Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.
 
-**Exp13:** el rechazo visual son dos compuertas (directorio y recall de la hetero) y cada una cede solo con su augmentación; con 16 variantes en las dos, ruteo 73.6 → 97.1 % y punta a punta 66.5 → 94.5 %, con 1 falso ruteo de 656 y la sonda de color sólido aceptada por 3 especialistas. No adoptado como llenado oficial.
+**Exp13:** el rechazo visual son dos compuertas (directorio y recall de la hetero) y cada una cede solo con su augmentación; con 16 variantes en las dos, ruteo 73.6 → 97.1 % y punta a punta 66.5 → 94.5 %, con 1 falso ruteo de 656 y la sonda de color sólido aceptada por 3 especialistas. Adoptado el 23 de septiembre: el pipeline real da 96.2 % y 2 falsos (`horse7` → dog, que dog contiene; las variantes codificadas en CPU).
 
 **Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. Instalado el 23 de septiembre.
 
@@ -90,6 +91,9 @@ python run_experiment11_probes.py            # por clase, fig5 quimeras, fig6 co
 
 # exp12
 python run_experiment12_overlap.py --seeds 42-46 --reps 3 --workers 8
+
+# pipeline oficial 5-8 en CPU (38 + 1 + 38 + 2 min); la 7 parte de directorios visuales vacíos
+python src\stage5_fill.py; python src\stage6_interaction.py; python src\stage7_bidirectional.py; python src\stage8_mature.py
 
 # exp13 (reanudable; latentes y contenido en caché; ~50 min de llenados + ~4 h de evaluación con 2 procesos)
 python run_experiment13_augmentation.py --seeds 42-46 --workers 2
@@ -121,4 +125,3 @@ Pruebas sin ensuciar resultados: `EXP11_OUT=<carpeta>` y `EXP12_OUT=<carpeta>` r
 ## 9. Pendiente
 
 - Deck externo de Drive (`exp7-10_literatura_corta (2).pptx`): lista viejo/nuevo entregada el 22 de septiembre (envolvente 2.9 a 5.5, descripción 19.3 contra 21.9 y familiaridad, 3.5 saltos); sin aplicar.
-- Decidir si el llenado con 16 variantes (contenido y fase A) pasa a ser el oficial: rehacer etapa 5 y fase A, re-verificar 8/8 y 16/16, re-correr lo que depende de `models/` (exp8, exp9, exp11, app) y actualizar las cifras de 75 % / 0 falsos del reporte.

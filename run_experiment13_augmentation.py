@@ -32,7 +32,7 @@ ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from stage5_fill import (CLASSES, N_FILL, MODELS_DIR, DATA_DIR, IMG_TRANSFORM,  # noqa: E402
-                         build_label_sequence, quantize_latent_global)
+                         FILL_VARIANTS, build_label_sequence, quantize_latent_global)
 from stage6_interaction import (Agent, AGENT_LIST, TME, register_transaction,  # noqa: E402
                                 route_transactive, load_all_vectors,
                                 N as N_LAB, M_LABEL, P_LATENT, Q_LATENT)
@@ -193,8 +193,8 @@ def load_latents():
         for i, p in enumerate(splits[cls]["train"]):
             zs = [q(z) for z in fill[rel(p)]]
             if i < N_FILL:
-                for v in range(4):
-                    off = q(official[4 * i + v])
+                for v in range(min(4, FILL_VARIANTS)):
+                    off = q(official[FILL_VARIANTS * i + v])
                     diff += int(np.count_nonzero(off != zs[v]))
                     cells += off.size
                     zs[v] = off
@@ -241,7 +241,7 @@ def build_content(args):
     meta = {"Vc": vc, "N": n, "registros_por_clase": n * vc,
             "densidad_R": {c: density_R(agents[c].mem_dom_R) for c in CLASSES},
             "control_encoder": control_enc,
-            "control_igual_al_oficial": same_as_official(agents) if (vc, n) == (4, N_FILL) else None,
+            "control_igual_al_oficial": same_as_official(agents) if (vc, n) == (FILL_VARIANTS, N_FILL) else None,
             "segundos": round(time.time() - t0)}
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     with open(path, "wb") as f:

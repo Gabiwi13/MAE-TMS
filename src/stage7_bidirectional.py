@@ -74,8 +74,8 @@ def latent_energy_threshold() -> float:
     """Mínimo de la norma sobre los originales del llenado, con margen."""
     if ENERGY_PATH.exists():
         return float(json.loads(ENERGY_PATH.read_text())["tau"])
-    from stage5_fill import FILL_AUGMENT, FILL_AUG_ANGLES
-    step = 2 + len(FILL_AUG_ANGLES) if FILL_AUGMENT else 1
+    from stage5_fill import FILL_AUGMENT, FILL_VARIANTS
+    step = FILL_VARIANTS if FILL_AUGMENT else 1
     norms = np.concatenate([
         np.linalg.norm(np.asarray(json.loads((MODELS_DIR / f"instance_latents_{c}.json").read_text()),
                                   dtype=np.float32)[::step], axis=1) for c in CLASSES])
@@ -94,6 +94,16 @@ def image_to_latent(img_path: str, encoder) -> np.ndarray:
     t = IMG_TRANSFORM(img).unsqueeze(0).to(DEVICE)
     with torch.no_grad():
         return encoder(t).cpu().numpy()[0]
+
+
+def image_variants_to_latents(img_path: str, encoder) -> np.ndarray:
+    """Latentes de la imagen y sus variantes (la primera fila es la original)."""
+    from stage5_fill import augment_variants, FILL_AUGMENT
+    img = Image.open(img_path).convert("RGB").resize((128, 128))
+    variants = augment_variants(img) if FILL_AUGMENT else [img]
+    t = torch.stack([IMG_TRANSFORM(v) for v in variants]).to(DEVICE)
+    with torch.no_grad():
+        return encoder(t).cpu().numpy()
 
 
 def recognize_gated_right(agent, z_q: np.ndarray) -> float:
@@ -168,11 +178,13 @@ def run():
         for cls in CLASSES:
             if i >= len(pools[cls]):
                 continue
-            z = image_to_latent(pools[cls][i], encoder)
-            if not latent_has_energy(z, tau):
+            # La percepción decide ganador y energía con la imagen original;
+            # sus variantes se registran con el mismo ganador (exp13).
+            zs = image_variants_to_latents(pools[cls][i], encoder)
+            if not latent_has_energy(zs[0], tau):
                 a_deg += 1
                 continue
-            z_q = quantize_latent_global(z, g_min, g_max, Q_IMG)
+            z_q = quantize_latent_global(zs[0], g_min, g_max, Q_IMG)
             scores = {c: recognize_gated_right(agents[c], z_q)
                       for c in CLASSES}
             if sum(scores.values()) == 0:
@@ -183,7 +195,9 @@ def run():
             entry = AGENT_LIST[int(rng.randint(len(AGENT_LIST)))]
             with contextlib.redirect_stdout(io.StringIO()):
                 # Registran quien recibio la percepcion, quien la gano y el TME.
-                register_transaction(entry, widx, agents, tme, z_q, "image")
+                for z_v in zs:
+                    register_transaction(entry, widx, agents, tme,
+                                         quantize_latent_global(z_v, g_min, g_max, Q_IMG), "image")
             a_seen += 1
             a_ok += int(winner == cls)
         if (i + 1) % 32 == 0:
