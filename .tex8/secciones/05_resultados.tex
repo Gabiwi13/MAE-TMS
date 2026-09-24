@@ -293,21 +293,26 @@ El hemisferio visual opera en dos fases: formación (registro de percepciones re
 
 \paragraph{Fase A: formación con 1024 imágenes.}
 Se presentaron 1024 imágenes (128 por clase) en orden intercalado.
-Sobre las imágenes aceptadas, la precisión del agente visual fue del \textbf{100\%},
-con una tasa de rechazo de solo el \textbf{4.2\%} (la augmentación del llenado redujo
-el rechazo de fase A desde el $\approx$50\% de la versión de tres agentes).
-Los conteos del directorio visual al final de la fase A fueron
-$[128, 121, 123, 120, 121, 121, 122, 125]$ con entropía de \textbf{3.000 bits}: el
-máximo teórico, especialización visual perfectamente balanceada.
+Sobre las imágenes aceptadas, la precisión del agente visual fue del \textbf{99.9\%},
+con un rechazo del \textbf{0.8\%} (4.2\% con el llenado de 4 variantes; $\approx$50\%
+en la versión de tres agentes) y una percepción rechazada antes de la memoria por el
+umbral de energía. Cada percepción aceptada registra sus 16 variantes: el registro
+completo del TME quedó en $[2048, 2016, 2016, 2016, 2016, 2032, 2048, 2048]$ con
+entropía de \textbf{3.000 bits}: el máximo teórico, especialización visual
+perfectamente balanceada.
 
 \paragraph{Fase B: enrutamiento de imágenes de test.}
 Las 656 imágenes de test se enrutaron mediante los directorios visuales por agente
-($M^R_{\mathrm{dir}}$) con lectura B1 y tolerancia $\xi = 2$: cada imagen entra por un
-agente aleatorio, que la redirige o la rechaza.
-El resultado fue \textbf{492/656 = 75.0\%} de imágenes correctamente asignadas, con un
-rechazo del 25.0\% y \textbf{cero falsos enrutamientos}: sobre las imágenes aceptadas,
-la precisión es del \textbf{100\%}.
-El directorio visual nunca se equivoca; cuando no sabe, rechaza.
+($M^R_{\mathrm{dir}}$) con lectura B1 estricta ($\xi = 0$, directorios perspectivales):
+cada imagen entra por un agente no especialista, que la redirige o la rechaza.
+El resultado fue \textbf{631/656 = 96.2\%} de imágenes correctamente asignadas, con un
+rechazo del 3.5\% (23 imágenes, cuatro de ellas antes de la memoria por el umbral de
+energía) y \textbf{dos falsos enrutamientos} (0.3\%): sobre las imágenes aceptadas, la
+precisión es del \textbf{99.7\%}. Los dos falsos son dos vistas del mismo objeto
+(\texttt{horse7}, frontal y 035-135) enviadas a \texttt{dog}, que las contiene.
+Con el llenado de 4 variantes de la versión anterior el ruteo era del 73.6\% (75.0\%
+con $\xi = 2$), con un rechazo del 26.4\% y cero falsos: el directorio no se
+equivocaba porque rechazaba una de cada cuatro imágenes.
 
 \paragraph{Justificación de $\xi = 2$.}
 El barrido $\xi \in \{0, \ldots, 3\}$ mostró que $\xi = 2$ es el punto dulce de
@@ -318,15 +323,16 @@ El análisis del residual es informativo: 625 de las 656 imágenes de test tiene
 de huecos por coordenada (que $\xi$ tolera) sino del \emph{containment conjunto}: la
 proyección AND no encuentra celdas que sobrevivan a las 64 coordenadas simultáneamente.
 Por eso $\xi$ satura, y la palanca para ese residual es densificar el llenado, no
-aumentar la tolerancia. El experimento 13 lo confirma: con 16 variantes por imagen en
-el contenido y por percepción en el directorio, el ruteo de test sube del 73.6\,\% del
-protocolo perspectival al 97.1\,\% y la cobertura de punta a punta de 66.5 a
-94.5\,\%, con un falso ruteo de 656 (Sección~\ref{sec:limitaciones}).
+aumentar la tolerancia. El experimento 13 lo midió y esta versión lo adopta: con 16
+variantes por imagen en el contenido y por percepción en el directorio, el ruteo de
+test sube del 73.6\,\% al 96.2\,\% y la evocación del 85.3 al 97.4\,\%, con dos falsos
+de 656 (Sección~\ref{sec:limitaciones}).
 
 \paragraph{Evocación de labels: imagen $\to$ palabras.}
 Sobre las imágenes de evaluación aceptadas, la evocación inversa (recuperación $\beta$
 desde el latente, decodificada por similitud coseno top-3) produjo al menos una etiqueta
-del vocabulario de la clase real en \textbf{81/95 = 85.3\%} de los casos.
+del vocabulario de la clase real en \textbf{113/116 = 97.4\%} de los casos (85.3\% con
+el llenado de 4 variantes).
 
 \paragraph{El rechazo y la salida semántica los decide la memoria.}
 Reconocimiento, rechazo y reconstrucción son operaciones de la propia memoria: el
@@ -371,8 +377,8 @@ la distribución acumulada en la memoria.
     imagen aceptada: entrada (pista), reconstrucción evocada por la memoria (no la
     entrada) y las etiquetas recuperadas, con marca de coincidencia con el vocabulario
     de la clase real.
-    Se muestran tanto aciertos como fallos de evocación, coherentes con el 85.3\%
-    agregado; los fallos se concentran en \texttt{car}, \texttt{dog} y \texttt{pear}.}
+    Se muestran tanto aciertos como fallos de evocación, coherentes con el 97.4\%
+    agregado.}
     \label{fig:imagen-etiquetas}
 \end{figure}
 

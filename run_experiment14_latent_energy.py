@@ -22,7 +22,7 @@ import numpy as np
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from stage5_fill import CLASSES, N_FILL, MODELS_DIR, DATA_DIR, quantize_latent_global  # noqa: E402
+from stage5_fill import CLASSES, N_FILL, FILL_VARIANTS, MODELS_DIR, DATA_DIR, quantize_latent_global  # noqa: E402
 from stage6_interaction import load_tme_and_agents, route_transactive  # noqa: E402
 from stage7_bidirectional import (recognize_gated_right, load_global_stats, load_encoder,  # noqa: E402
                                   IMG_TRANSFORM, XI_VISUAL)
@@ -129,7 +129,7 @@ def main():
     fill_lat = {}
     for cls in CLASSES:
         lat = np.asarray(json.loads((MODELS_DIR / f"instance_latents_{cls}.json").read_text()), dtype=np.float32)
-        fill_lat[cls] = lat[0::4]
+        fill_lat[cls] = lat[0::FILL_VARIANTS]
         for i, p in enumerate(splits[cls]["train"][:N_FILL]):
             fill_rows.append(dict(stats_of(fill_lat[cls][i], load_img(p)), clase=cls, imagen=Path(p).name))
     fase_a_rows = []

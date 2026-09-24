@@ -147,6 +147,8 @@ Resultado de re-correr las etapas 6, 7 y 8 con la regla nueva:
 | evocación imagen→etiquetas (top-3) | 85.3% | 85.3% |
 | fidelidad temprana↔madura (16 consultas) | 100% | 100% |
 
+Con el llenado de 16 variantes y el umbral de energía (23 de septiembre): ruteo 96.2 %, rechazo 3.5 %, 2 errores de 656; evocación 97.4 %; fidelidad 16/16.
+
 Los 1.4 puntos de ruteo visual los cuesta xi=0, no la perspectiva. En texto, con 16 consultas de fase temprana, tres agentes quedan conociéndose solo a sí mismos (apple, car, horse) y aun así la fase madura rutea las 16 consultas igual que la temprana, porque los que sí conocen a otros alcanzan a todos por encadenamiento.
 
 ## 5. Bibliografía comentada

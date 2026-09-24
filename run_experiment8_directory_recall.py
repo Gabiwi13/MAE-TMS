@@ -55,7 +55,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from associative_memory import DirectoryMemory
 from quantizer import quantize_binary
-from stage5_fill import N_FILL, FILL_AUG_ANGLES, quantize_latent_global
+from stage5_fill import N_FILL, FILL_VARIANTS, augment_variants, quantize_latent_global
 from stage6_interaction import (
     CLASSES, AGENT_LIST, MODELS_DIR, DEVICE, M_LABEL, P_LATENT, Q_LATENT,
 )
@@ -135,14 +135,10 @@ def recall_domain(mdir: DirectoryMemory, agent_idx: int):
 
 def instance_image(cls: str, idx: int, splits) -> np.ndarray:
     """La imagen (con su variante de augmentación) detrás del latente idx de
-    instance_latents_{cls}.json: 4 variantes por imagen, en el orden de
-    _augment_variants."""
-    img = Image.open(splits[cls]["train"][idx // 4]).convert("RGB").resize((128, 128))
-    v = idx % 4
-    if v == 1:
-        img = img.transpose(Image.FLIP_LEFT_RIGHT)
-    elif v >= 2:
-        img = img.rotate(FILL_AUG_ANGLES[v - 2], resample=Image.BILINEAR)
+    instance_latents_{cls}.json: FILL_VARIANTS variantes por imagen, en el
+    orden de augment_variants."""
+    img = Image.open(splits[cls]["train"][idx // FILL_VARIANTS]).convert("RGB").resize((128, 128))
+    img = augment_variants(img)[idx % FILL_VARIANTS]
     return np.asarray(img, dtype=np.float32) / 255.0
 
 

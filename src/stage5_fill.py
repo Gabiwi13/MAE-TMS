@@ -7,7 +7,7 @@ Cada agente recibe tres memorias:
   mem_dom_R_{cls}.pkl  HomoAssociativeMemory(64,32)           dominio latente
 
 El llenado es por instancias (image-major): cada una de las N_FILL imagenes
-reales —×4 variantes si FILL_AUGMENT (original + espejo + 2 rotaciones), el
+reales —×FILL_VARIANTS variantes si FILL_AUGMENT (familia de exp13), el
 valor vigente— entra a la memoria hetero, emparejada con el siguiente label
 de la secuencia de labels expandida por frecuencia (800 registros/clase con
 N_FILL=200). La abstraccion de la clase la construye la propia memoria al
@@ -41,8 +41,12 @@ N, M, P, Q = 300, 16, 64, 32
 # stage7. El llenado se enriquece por augmentación (4x por imagen), no
 # consumiendo más imágenes.
 N_FILL = 200
-FILL_AUGMENT = True      # augmentar cada imagen (espejo + rotaciones) al llenar
+FILL_AUGMENT = True      # augmentar cada imagen al llenar
 FILL_AUG_ANGLES = (-12, 12)
+# Variantes por imagen (exp13): 4 era el llenado hasta el 23 de septiembre de
+# 2026; con 16 en contenido y directorio la cobertura de test sube de 66.5 a
+# 94.5 % con un falso ruteo de 656, que la doble compuerta detiene.
+FILL_VARIANTS = 16
 MODELS_DIR = ROOT / "models"
 DATA_DIR = ROOT / "data" / "eth80"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -59,15 +63,41 @@ def load_encoder():
     return encoder
 
 
-def _augment_variants(img):
-    """Variantes por imagen para enriquecer el llenado sin datos nuevos:
-    original + espejo horizontal + dos rotaciones suaves. Amplía la cobertura
-    del espacio latente de la clase (menos rechazo por containment) sin salir
-    del propio dataset. Es solo más percepción registrada en la MAE, no un truco."""
-    variants = [img, img.transpose(Image.FLIP_LEFT_RIGHT)]
+def _scaled(img, s, bg):
+    w = int(round(128 * s))
+    r = img.resize((w, w), Image.BILINEAR)
+    if s < 1:
+        canvas = Image.new("RGB", (128, 128), bg)
+        canvas.paste(r, ((128 - w) // 2, (128 - w) // 2))
+        return canvas
+    o = (w - 128) // 2
+    return r.crop((o, o, o + 128, o + 128))
+
+
+def augment_variants(img, n: int = FILL_VARIANTS):
+    """Familia anidada y determinista de variantes de una imagen (exp13). Las
+    cuatro primeras son el llenado original (esquinas negras en las rotaciones);
+    las nuevas rellenan con el color del fondo de la propia imagen. Es solo más
+    percepción registrada en la MAE, no un truco."""
+    from PIL import ImageEnhance
+    bg = img.getpixel((0, 0))
+    out = [img, img.transpose(Image.FLIP_LEFT_RIGHT)]
     for angle in FILL_AUG_ANGLES:
-        variants.append(img.rotate(angle, resample=Image.BILINEAR))
-    return variants
+        out.append(img.rotate(angle, resample=Image.BILINEAR))
+    if n > 4:
+        out += [img.rotate(-6, resample=Image.BILINEAR, fillcolor=bg),
+                img.rotate(6, resample=Image.BILINEAR, fillcolor=bg),
+                _scaled(img, 0.9, bg), _scaled(img, 1.1, bg)]
+    if n > 8:
+        f = out[1]
+        out += [f.rotate(-12, resample=Image.BILINEAR, fillcolor=bg),
+                f.rotate(12, resample=Image.BILINEAR, fillcolor=bg),
+                ImageEnhance.Brightness(img).enhance(0.85),
+                ImageEnhance.Brightness(img).enhance(1.15)]
+    if n > 12:
+        out += [img.rotate(0, translate=(dx, dy), fillcolor=bg)
+                for dx, dy in ((6, 0), (-6, 0), (0, 6), (0, -6))]
+    return out[:n]
 
 
 def get_instance_latents(encoder, cls: str, n: int = N_FILL) -> list:
@@ -80,7 +110,7 @@ def get_instance_latents(encoder, cls: str, n: int = N_FILL) -> list:
     with torch.no_grad():
         for p in paths:
             img = Image.open(p).convert("RGB").resize((128, 128))
-            variants = _augment_variants(img) if FILL_AUGMENT else [img]
+            variants = augment_variants(img) if FILL_AUGMENT else [img]
             for v in variants:
                 img_t = IMG_TRANSFORM(v).unsqueeze(0).to(DEVICE)
                 zs.append(encoder(img_t).cpu().numpy()[0])
@@ -283,10 +313,21 @@ def _fill_inputs_mtime(cls: str) -> float:
     return ts
 
 
+def _fill_matches_config(cls: str) -> bool:
+    """El llenado guardado tiene tantos latentes como pide la augmentación actual."""
+    p = MODELS_DIR / f"instance_latents_{cls}.json"
+    if not p.exists():
+        return False
+    n = len(json.loads(p.read_text()))
+    return n == N_FILL * (FILL_VARIANTS if FILL_AUGMENT else 1)
+
+
 def _is_stale_cls(path, cls: str) -> bool:
-    """Como _is_stale pero también contra labels/vectores/escala de la clase:
-    refill si cambió el vocabulario o la cuantización, no solo el encoder."""
-    return (not path.exists()) or (path.stat().st_mtime < _fill_inputs_mtime(cls))
+    """Como _is_stale pero también contra labels/vectores/escala de la clase y
+    la augmentación: refill si cambió el vocabulario, la cuantización o las
+    variantes, no solo el encoder."""
+    return ((not path.exists()) or (path.stat().st_mtime < _fill_inputs_mtime(cls))
+            or not _fill_matches_config(cls))
 
 
 def run():

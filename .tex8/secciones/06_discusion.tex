@@ -10,7 +10,8 @@ Al pasar de tres a ocho agentes, \emph{ningún} componente de la maquinaria tran
 requirió cambios de mecanismo: los directorios hetero-asociativos, la lectura B1, el
 rechazo por containment, la actualización de directorio de todos los agentes y la
 coordinación punto a punto operan idénticos, y el directorio visual alcanza el balance
-perfecto (3.000 de 3.000 bits) con cero falsos enrutamientos.
+perfecto (3.000 de 3.000 bits) con dos falsos enrutamientos en 656, ambos del mismo
+objeto.
 Lo que sí golpeó el escalado fue la \emph{representación}: con la binarización por signo
 heredada de la versión anterior, la precisión temprana de 8 clases caía al 50\% y dos
 clases colapsaban a 0\%.
@@ -127,7 +128,7 @@ mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
     \item \textbf{El rechazo colectivo escala.}
     Con ocho especialistas y siete clases contrarias por agente, la especificidad se
     mantiene exacta: 0\% de falsos aceptados en contenido en todo el rango de $N$, y
-    cero falsos enrutamientos visuales.
+    dos falsos enrutamientos visuales de 656, del mismo objeto hacia la clase vecina.
     El grupo sigue sin inventar referentes.
 \end{itemize}
 
@@ -183,10 +184,12 @@ por percepción en el directorio lleva su aceptación de 73.6 a 96.2\,\%; llenar
 contenido con 16 variantes por imagen lleva la respuesta de la hetero de 76 a 96\,\%;
 con las dos, la cobertura de punta a punta (ruteo correcto y respuesta) pasa de 66.5 a
 94.5\,\% de las 656 imágenes de test, con rendimiento decreciente por escalón de
-variantes. El precio no es cero: un ruteo equivocado de 656 (una vista frontal de
-\texttt{horse} a \texttt{dog}, en las cinco semillas) y cinco imágenes aceptadas por un
-especialista ajeno, siempre el par animal que ya confunde al texto. Son vistas nuevas
-de los mismos objetos, porque el split es por imagen.
+variantes. Esta versión adopta las 16 variantes: el ruteo de test queda en 96.2\,\%,
+la evocación en 97.4\,\% y el rechazo en 3.5\,\%. El precio no es cero: dos ruteos
+equivocados de 656 (dos vistas de \texttt{horse7} a \texttt{dog}, que las contiene, así
+que la doble compuerta no las detiene) y, en el experimento, cinco imágenes aceptadas
+por un especialista ajeno, siempre el par animal que ya confunde al texto. Son vistas
+nuevas de los mismos objetos, porque el split es por imagen.
 En sentido inverso, el containment visual también tiene una fuga con \emph{entradas
 degeneradas}: una imagen de color sólido uniforme obtiene soporte y se acepta
 (Figura~\ref{fig:rechazo-imagenes}), presumiblemente porque el fondo liso de ETH-80
@@ -205,7 +208,8 @@ son confusiones de contenido entre clases (un \texttt{dog} desenfocado aceptado 
 \texttt{cow}), no entradas degeneradas. La doble compuerta del punto (a) no la
 cerraría, porque el contenido también la acepta. El umbral está instalado en la
 codificación de la percepción; en la etapa 7 rechaza una percepción de 1024 en la fase
-A y cuatro imágenes de 656 en test, sin cambiar el ruteo (73.6\,\%).
+A y cuatro imágenes de 656 en test, sin cambiar el ruteo (medido con el llenado de 4
+variantes; con el de 16 rechaza las mismas cuatro).
 
 \paragraph{(c) Calidad de la reconstrucción visual.}
 El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
@@ -228,7 +232,7 @@ La partición train/test se realizó a nivel de archivo de imagen, no a nivel de
 físico de ETH-80; verificado sobre la partición persistida, los diez objetos de cada
 clase aportan vistas a ambos lados (solape de instancias del 100\%,
 Sección~\ref{sec:dataset}).
-Las cifras visuales de este reporte (75.0\% de enrutamiento, evocación top-3) miden
+Las cifras visuales de este reporte (96.2\% de enrutamiento, evocación top-3) miden
 por tanto generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos
 nuevos.
 Una validación más estricta deberá usar particiones leave-object-out para medir

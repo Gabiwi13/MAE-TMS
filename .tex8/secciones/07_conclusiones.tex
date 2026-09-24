@@ -15,9 +15,10 @@ Sobre el banco de 411 consultas ($N = 400$, 5 semillas), el sistema alcanzó una
 con la lectura B1 del directorio, con una fidelidad temprana-madura del 93.5\% y la
 participación de \texttt{apple}, el agente históricamente sesgado, en \textbf{13.0\%}
 (ideal 12.5\%).
-En la dirección inversa, el hemisferio visual enrutó el \textbf{75.0\%} de las 656
-imágenes de prueba con \textbf{cero falsos enrutamientos} (100\% de precisión sobre
-las aceptadas) y una evocación de dominio del \textbf{85.3\%}; su directorio alcanzó
+En la dirección inversa, el hemisferio visual enrutó el \textbf{96.2\%} de las 656
+imágenes de prueba con \textbf{dos falsos enrutamientos} (99.7\% de precisión sobre
+las aceptadas; ambos, vistas del mismo objeto hacia la clase vecina) y una evocación
+de dominio del \textbf{97.4\%}; su directorio alcanzó
 el balance perfecto: \textbf{3.000 de 3.000 bits} de entropía.
 La especificidad del contenido fue \textbf{perfecta} en todo el rango de llenado
 probado (0\% de falsos aceptados con siete clases contrarias por agente).
@@ -54,14 +55,6 @@ cuantización, e hizo trazables todos los números reportados.
 \paragraph{Trabajo futuro.}
 Los siguientes pasos más relevantes son:
 \begin{enumerate}
-    \item \textbf{Adoptar en el pipeline lo medido en los experimentos 13 y 14}: el
-    llenado con 16 variantes en contenido y directorio (cobertura de 66.5 a 94.5\,\%,
-    un falso ruteo de 656) y el umbral de energía mínima del latente en la codificación
-    de la percepción (cierra el 94\,\% de la fuga de entradas degeneradas por cinco
-    imágenes reales). El umbral ya está instalado en la codificación de la percepción
-    (etapa 7 y aplicación), sin cambio en las cifras de ruteo; las 16 variantes siguen
-    medidas y no instaladas, porque exigen rehacer la etapa 5, la fase A y las
-    verificaciones.
     \item \textbf{Fuentes de conocimiento complementarias a ConceptNet}: elevar el techo
     de las clases con léxico compartido con conocimiento alineado al lenguaje de las
     consultas, único tipo de enriquecimiento que demostró ayudar.

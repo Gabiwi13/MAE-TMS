@@ -64,7 +64,7 @@ REPS = 3
 N_TEXT_TRAIN_PER_CLASS = 30      # misma partición que exp10: 240 / 171
 N_IMG_TRAIN = 128                # pool visual de la etapa 7 (train[200:328])
 N_IMG_TEST = 10
-VARIANTS = 4                     # variantes por imagen en el pool de llenado
+from stage5_fill import FILL_VARIANTS as VARIANTS   # variantes por imagen en el pool (4 hasta el 23 sep 2026)
 
 
 # ---------- datos ----------
@@ -203,7 +203,7 @@ def build_cache(cut):
     Cada registro cuesta ~80 ms en hetero_lib, así que un corte completo tarda
     unos 17 minutos; cargarlo del caché, segundos."""
     import pickle
-    path = CACHE_DIR / f"N{cut}.pkl"
+    path = CACHE_DIR / f"N{cut}_V{VARIANTS}.pkl"
     if path.exists():
         return str(path)
     t0 = time.time()
@@ -221,7 +221,7 @@ def build_cache(cut):
 
 def load_cache(cut):
     import pickle
-    with open(CACHE_DIR / f"N{cut}.pkl", "rb") as f:
+    with open(CACHE_DIR / f"N{cut}_V{VARIANTS}.pkl", "rb") as f:
         return pickle.load(f)
 
 

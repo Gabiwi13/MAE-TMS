@@ -123,10 +123,10 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Directory winner share, apple | **13.0%** | ideal 12.5% — bias essentially resolved |
 | Per-domain mature (B1) | cup/tomato 100, car 98, cow/dog 96, pear 86, apple 88, horse 82 | |
 | Visual routing (test, mem_dir_R) | 75.0% (v4) · **73.6% (v5, perspectival directories, xi=0)** | 25% / 26.4% rejection, **0 false routes** in both |
-| Visual routing with 16 augmentation variants in content and directory (exp13) | **97.1%** routing · **94.5%** end-to-end (from 73.6 / 66.5) | 1 false route of 656; not adopted as the official fill (`results/experimento13/`) |
+| Visual routing, official fill since 23 Sep (16 variants + energy threshold) | **96.2%** routing · 3.5% rejection | 2 false routes of 656 (0.3%), both views of `horse7` → `dog`; exp13 measured 97.1 / 1 with GPU-encoded variants (`results/experimento13/`) |
 | Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
 | Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
-| Image→labels evocation (top-3 hit) | 85.3% | |
+| Image→labels evocation (top-3 hit) | **97.4%** (85.3% with the 4-variant fill) | |
 | Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
 | Single-EHAM baseline (exp11, N=200) | class 97.4 / d_nn 26.7 | vs T-protocol 97.5 / 22.8 (`results/experimento11/`) |
 
