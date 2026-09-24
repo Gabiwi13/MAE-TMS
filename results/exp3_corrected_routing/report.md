@@ -5,20 +5,20 @@
 - Sin filtro léxico: tokens representables por fastText entran como pista; el rechazo lo decide la EAM (score 0) o la frontera del encoder
 - Aprendizaje: solo los directorios de labels registran (TME + un directorio por agente), token → ganador. mem_dir_R NO se actualiza con recalls (solo percepciones reales de imágenes en stage7)
 - Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1
-- Arquitectura 4-AMR completa con DirectoryMemory (EHAM real)
+- Vía textual completa con DirectoryMemory (EHAM real); el directorio visual no participa
 - ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar
 
 ## Resultados (banco de 80 queries, 10 por clase)
 
 | métrica | exp. 1 (crudo, v3 · 3 clases) | exp. 3 (corregido, 8 clases) |
 |---|---|---|
-| early accuracy | ~34% | **80.0%** |
+| early accuracy | ~34% | **81.2%** |
 | early rechazo | — | 5.0% |
-| mature accuracy B1 | 98.8% (ablation B1, v3) | **82.5%** |
-| mature accuracy RAW | 33.8% | 68.8% |
-| fidelidad | 100% (sobre routing sesgado) | **90.0%** (sobre routing correcto) |
-| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [50, 16, 44, 25, 30, 14, 17, 31] |
-| M_dir entropía | — | 2.866 bits (máx 3.000) |
+| mature accuracy B1 | 98.8% (ablation B1, v3) | **81.2%** |
+| mature accuracy RAW | 33.8% | 71.2% |
+| fidelidad | 100% (sobre routing sesgado) | **92.5%** (sobre routing correcto) |
+| M_dir counts | [81, 52, 31] estilo-crudo (v3) | [46, 16, 40, 25, 30, 18, 21, 31] |
+| M_dir entropía | — | 2.914 bits (máx 3.000) |
 
 ## Réplica de las 16 TEST_QUERIES del pipeline oficial (2 por dominio)
 
