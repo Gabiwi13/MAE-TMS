@@ -116,12 +116,12 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 
 | Metric | Value | Note |
 |--------|-------|------|
-| Early-phase accuracy (ablation) | **88.0%** | gated scoring, honest rejection |
-| Mature accuracy, B1 read | **93.2%** | directory ÷count normalization |
-| Mature accuracy, raw read (A) | 80.0% | density bias of raw directory score |
-| Mature accuracy, best combo (G) | 92.9% | D + B1 + F |
-| Directory winner share, apple | **13.0%** | ideal 12.5% — bias essentially resolved |
-| Per-domain mature (B1) | cup/tomato 100, car 98, cow/dog 96, pear 86, apple 88, horse 82 | |
+| Early-phase accuracy (ablation) | **90.0%** | gated scoring, honest rejection (88.0% with the 4-variant fill) |
+| Mature accuracy, B1 read | **93.5%** | directory ÷count normalization |
+| Mature accuracy, raw read (A) | 87.0% | density bias of raw directory score (80.0% with the 4-variant fill) |
+| Mature accuracy, best combo (G) | 94.0% | D + B1 + F |
+| Directory winner share, apple | **13.2%** | ideal 12.5% — bias essentially resolved |
+| Per-domain mature (B1) | cow/cup/tomato 100, car 98, dog 96, apple 88, horse 88, pear 78 | |
 | Visual routing (test, mem_dir_R) | 75.0% (v4) · **73.6% (v5, perspectival directories, xi=0)** | 25% / 26.4% rejection, **0 false routes** in both |
 | Visual routing, official fill since 23 Sep (16 variants + energy threshold) | **96.2%** routing · 3.5% rejection | 2 false routes of 656 (0.3%), both views of `horse7` → `dog`; exp13 measured 97.1 / 1 with GPU-encoded variants (`results/experimento13/`) |
 | Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
@@ -134,7 +134,7 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 ~20% of mature wins (vs ideal 12.5%) and pear collapsing to ~52%. A fresh
 deterministic encoder retrain revealed that a large part of this was the *latent
 space*, not only ConceptNet's lexical asymmetry: with better visual separation of
-pear/tomato from apple, apple's share drops to 13.0% and pear recovers to 86% —
+pear/tomato from apple, apple's share drops to 13.2% and pear recovers to 86% with the 4-variant fill (78% with 16 variants) —
 **without changing the vocabulary**. So the dominance is a joint effect of encoder
 separability *and* the knowledge source, not ConceptNet alone.
 

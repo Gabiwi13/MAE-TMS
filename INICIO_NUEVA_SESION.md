@@ -70,6 +70,8 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 
 **Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. Instalado el 23 de septiembre.
 
+**Cifras de texto con 16 variantes (ablación re-corrida):** temprana 90.0 (antes 88.0), madura B1 93.5 (93.25), cruda 87.0 (80.0), G 94.0 (92.9); apple 13.2 % con B1, 19.5 % cruda; pear con B1 78 % (antes 86). Protocolo de 80: 81.2 / 81.2 / fidelidad 92.5. exp8–exp15 se hicieron sobre los modelos de 4 variantes.
+
 **Exp15:** un árbitro por contenido entre los tres mejores del directorio empeora el texto (96.1 → 90.6) y el margen quita un acierto por error; en imagen es la doble compuerta. Nada instalado; el índice compara mejor que el contenido.
 
 **Exp9 tras la corrección de la pista:** la descripción (lectura inversa del directorio) supera al especialista en fidelidad (19.3 contra 21.9); la familiaridad vive en el reconocimiento (98% contra 16%), con la contención por coordenada como puerta que la descripción no tiene.
