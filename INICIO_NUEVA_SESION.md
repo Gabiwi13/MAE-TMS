@@ -48,6 +48,7 @@ Repo: `https://github.com/Gabiwi13/MAE-TMS`, rama `exp7-directorio-unificado`. C
 | umbral | energía mínima del latente instalada en etapa 7 y app; cifras sin cambio | `stage7_bidirectional.py`, `app_tme.py` |
 | exp15 | árbitro por contenido y margen, refutados: el índice compara mejor que el contenido | `run_experiment15_arbiter.py`, `results/experimento15/` |
 | v16 | llenado oficial con 16 variantes: ruteo 73.6 → 96.2 %, evocación 85.3 → 97.4 %, 2 falsos de 656 | `stage5_fill.py`, `stage7_bidirectional.py` |
+| exp16 | leave-one-object-out: objeto nuevo 89.2 % de punta a punta contra 95.5 % conocido, 2 falsos de 3280 | `run_experiment16_leave_object_out.py`, `results/experimento16/` |
 
 ## 6. Resultados clave (para no re-derivarlos)
 
@@ -71,6 +72,8 @@ Veredicto: no refutada por el criterio pre-registrado (clase empata, fidelidad d
 **Exp14:** la fuga de «color sólido» es una región cerca del origen del latente que la envolvente de `horse` contiene (no una instancia); τ = 16.6 sobre la norma cierra el 94 % (88 % con 16 variantes) a costa de 5 vacas oscuras que el directorio ya rechazaba. La desviación de píxeles no sirve. Instalado el 23 de septiembre.
 
 **Cifras de texto con 16 variantes (ablación re-corrida):** temprana 90.0 (antes 88.0), madura B1 93.5 (93.25), cruda 87.0 (80.0), G 94.0 (92.9); apple 13.2 % con B1, 19.5 % cruda; pear con B1 78 % (antes 86). Protocolo de 80: 81.2 / 81.2 / fidelidad 92.5. exp8–exp15 se hicieron sobre los modelos de 4 variantes.
+
+**Exp16:** la envolvente generaliza a objetos nunca vistos: 89.2 % de punta a punta (95.5 % en vistas nuevas de objetos conocidos, mismos modelos), brecha 6.3, 0.1 % de falsos; el fallo es rechazo. Seis objetos de 80 concentran la brecha.
 
 **Exp15:** un árbitro por contenido entre los tres mejores del directorio empeora el texto (96.1 → 90.6) y el margen quita un acierto por error; en imagen es la doble compuerta. Nada instalado; el índice compara mejor que el contenido.
 
