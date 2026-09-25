@@ -127,6 +127,7 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
 | Visual directory entropy | 3.000 / 3.0 bits | perfectly balanced (counts ≈125 each) |
 | Image→labels evocation (top-3 hit) | **97.4%** (85.3% with the 4-variant fill) | |
+| Leave-one-object-out (exp16, 10 folds) | **89.2%** end-to-end on unseen objects (95.5% on unseen views of known objects, same models) | 2 false routes of 3280; gap 6.3 pts lives in 6 of 80 objects (`results/experimento16/`) |
 | Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
 | Single-EHAM baseline (exp11, N=200) | class 97.4 / d_nn 26.7 | vs T-protocol 97.5 / 22.8 (`results/experimento11/`) |
 

@@ -15,16 +15,18 @@ Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, con sus
 Cada clase cuenta con 410 imágenes de $128\times128$ píxeles.
 Las imágenes de cada clase se dividieron en 328 imágenes de entrenamiento y 82 de prueba.
 La partición se realizó a nivel de archivo de imagen.
-Por tanto, no hay solapamiento de imágenes entre train y test, pero no se impone una
-separación leave-object-out entre objetos físicos de ETH-80.
-La consecuencia, verificada sobre la partición persistida, es que \textbf{los diez
-objetos físicos de cada clase aportan vistas tanto a train como a test} (solape de
-instancias del 100\%): toda imagen de prueba es una vista nueva de un objeto cuyas
-demás vistas participaron del llenado o de la formación del directorio.
-Las cifras del hemisferio visual de este reporte miden, en consecuencia,
-generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos nuevos;
-la partición leave-one-object-out, protocolo estándar de ETH-80, queda declarada
-como trabajo futuro (Sección~\ref{sec:limitaciones}).
+Por tanto, no hay solapamiento de imágenes entre train y test, pero la partición
+principal no separa los objetos físicos de ETH-80: verificado sobre la partición
+persistida, \textbf{los diez objetos físicos de cada clase aportan vistas tanto a train
+como a test} (solape de instancias del 100\%), y toda imagen de prueba es una vista
+nueva de un objeto cuyas demás vistas participaron del llenado o de la formación del
+directorio.
+Las cifras del hemisferio visual sobre esa partición miden generalización a
+\emph{vistas nuevas de objetos conocidos}.
+La generalización a objetos nuevos se midió aparte con una validación
+leave-one-object-out de diez pliegues (experimento 16, Sección~\ref{sec:limitaciones}):
+en cada pliegue se reserva un objeto por clase y el sistema se construye con los otros
+nueve.
 
 Dentro de la fase de alimentación, se definieron 3 particiones disjuntas con propósitos distintos:
 \begin{itemize}

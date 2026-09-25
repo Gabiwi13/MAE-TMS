@@ -234,10 +234,23 @@ físico de ETH-80; verificado sobre la partición persistida, los diez objetos d
 clase aportan vistas a ambos lados (solape de instancias del 100\%,
 Sección~\ref{sec:dataset}).
 Las cifras visuales de este reporte (96.2\% de enrutamiento, evocación top-3) miden
-por tanto generalización a \emph{vistas nuevas de objetos conocidos}, no a objetos
-nuevos.
-Una validación más estricta deberá usar particiones leave-object-out para medir
-generalización a instancias completamente no vistas.
+por tanto generalización a \emph{vistas nuevas de objetos conocidos}.
+La generalización a objetos nuevos se midió con una validación leave-one-object-out
+de diez pliegues (experimento 16): con el contenido y la fase A construidos con nueve
+objetos por clase, las 41 vistas del objeto reservado obtienen una cobertura de punta
+a punta del 89.2\,\% [85.1, 93.2], frente al 95.5\,\% de vistas nuevas de los objetos
+conocidos evaluadas sobre los mismos modelos; la brecha es de 6.3 puntos [2.5, 10.4]
+y los falsos enrutamientos son 2 de 3280 (\texttt{cow} y \texttt{horse} a
+\texttt{dog}).
+La envolvente por coordenada cubre a un objeto que no contribuyó a ella, y cuando no
+lo cubre lo rechaza: el ruteo correcto sobre las aceptadas es del 99.9\,\% en los dos
+bancos.
+La brecha no vive en clases sino en objetos concretos: 74 de los 80 objetos reservados
+superan el 70\,\% y seis (dos manzanas, dos peras, un perro, una taza) concentran el
+resto.
+Con diez objetos por clase, «objeto nuevo» sigue siendo un objeto de la misma
+colección fotografiado en las mismas condiciones; fotos de otro origen son otra
+pregunta.
 
 \paragraph{(f) Selección de modelo e hiperparámetro sobre el conjunto de prueba.}
 Dos elementos del protocolo se eligieron mirando el conjunto de prueba, por ausencia

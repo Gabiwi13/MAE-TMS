@@ -20,6 +20,9 @@ imágenes de prueba con \textbf{dos falsos enrutamientos} (99.7\% de precisión 
 las aceptadas; ambos, vistas del mismo objeto hacia la clase vecina) y una evocación
 de dominio del \textbf{97.4\%}; su directorio alcanzó
 el balance perfecto: \textbf{3.000 de 3.000 bits} de entropía.
+Sobre objetos físicos nunca vistos (leave-one-object-out, diez pliegues) la cobertura
+de punta a punta es del \textbf{89.2\%}, seis puntos por debajo de la de vistas nuevas
+de objetos conocidos, con 2 falsos enrutamientos de 3280.
 La especificidad del contenido fue \textbf{perfecta} en todo el rango de llenado
 probado (0\% de falsos aceptados con siete clases contrarias por agente).
 
@@ -58,8 +61,6 @@ Los siguientes pasos más relevantes son:
     \item \textbf{Fuentes de conocimiento complementarias a ConceptNet}: elevar el techo
     de las clases con léxico compartido con conocimiento alineado al lenguaje de las
     consultas, único tipo de enriquecimiento que demostró ayudar.
-    \item \textbf{Partición leave-object-out}: validar la generalización visual sobre
-    objetos físicos completamente no vistos.
     \item \textbf{Aprendizaje en fase madura}: extender el sistema para que los agentes
     sigan almacenando labels, imágenes y asociaciones después de formar el directorio,
     cubriendo \emph{transactive encoding} y \emph{transactive retrieval} en sentido
