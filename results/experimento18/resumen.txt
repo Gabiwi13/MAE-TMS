@@ -1,0 +1,78 @@
+Experimento 18: una memoria hetero por eje y clase; agente de la clase verdadera.
+Top-1 sobre vistas reconocidas. base = el valor más registrado del agente.
+
+=== eje patron ===
+  [objetos conocidos, vistas nuevas] vistas 164, reconocidas 164 · soporte  73.8 % (bal.  44.0) · soporte_norm  68.3 % (bal.  62.7) · base  68.9 %
+  [vistas del llenado] vistas 164, reconocidas 164 · soporte  77.4 % (bal.  44.8) · soporte_norm  75.6 % (bal.  70.9) · base  71.3 %
+  [objetos nuevos (leave-object-out)] vistas 1435, reconocidas 1367 · soporte  64.2 % (bal.  29.9) · soporte_norm  58.9 % (bal.  32.9) · base  63.1 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    cow1   spotted     NO  40/41   7   8
+    cow2   spotted     NO  31/41   7  16
+    cow3   spotted     NO  41/41   0   0
+    cow5   spotted     NO  39/41   1   5
+    cow6   plain       NO  41/41   9  38
+    cow7   plain       NO  41/41   0  38
+    cow8   plain       NO  41/41   1  38
+    cow10  plain       NO  40/41   1  37
+    cup1   plain       sí  41/41  38  17
+    cup2   plain       sí  41/41  41  29
+    cup3   plain       sí  41/41  41  38
+    cup4   decorated   NO  41/41   0   0
+    cup5   decorated   NO  32/41   0   3
+    cup6   plain       sí  41/41  41  41
+    cup7   plain       sí  41/41  41  22
+    cup10  plain       sí  27/41  20  17
+    dog2   plain       sí  38/41  38  30
+    dog3   plain       sí  40/41  40  40
+    dog4   plain       sí  41/41  41  21
+    dog5   plain       sí  40/41  40  16
+    dog6   spotted     NO  41/41   0   0   (imposible: el agente no tiene ese valor)
+    dog7   plain       sí  40/41  40  37
+    dog8   plain       sí  41/41  41  35
+    dog9   plain       sí  41/41  41  29
+    dog10  plain       sí  29/41  29  28
+    horse1   plain       sí  39/41  39  38
+    horse2   spotted     NO  39/41   0  17
+    horse3   spotted     NO  38/41   0  14
+    horse4   plain       sí  41/41  41  14
+    horse5   plain       sí  41/41  41  41
+    horse6   plain       sí  37/41  36  10
+    horse7   plain       sí  39/41  39  32
+    horse8   plain       sí  41/41  41  41
+    horse9   plain       sí  41/41  41   3
+    horse10  plain       sí  41/41  41  12
+  objetos nuevos con valor mayoritario: soporte  98.7 % · norm  68.6 % (n=862, sin imposibles)
+  objetos nuevos con valor minoritario: soporte   5.6 % · norm  46.1 % (n=464, sin imposibles)
+
+=== eje pelo ===
+  [objetos conocidos, vistas nuevas] vistas 41, reconocidas 41 · soporte  70.7 % (bal.  50.0) · soporte_norm  78.0 % (bal.  72.3) · base  70.7 %
+  [vistas del llenado] vistas 41, reconocidas 41 · soporte  63.4 % (bal.  50.0) · soporte_norm  78.0 % (bal.  72.8) · base  63.4 %
+  [objetos nuevos (leave-object-out)] vistas 328, reconocidas 315 · soporte  64.8 % (bal.  52.1) · soporte_norm  57.5 % (bal.  48.6) · base  63.8 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    dog1   smooth      sí  41/41  41  35
+    dog2   smooth      sí  40/41  39  35
+    dog3   curly       NO  37/41   1   4
+    dog4   smooth      sí  39/41  37  28
+    dog5   smooth      sí  40/41  40  33
+    dog7   curly       NO  38/41   5   8
+    dog8   smooth      sí  41/41  40  31
+    dog9   curly       NO  39/41   1   7
+  objetos nuevos con valor mayoritario: soporte  98.0 % · norm  80.6 % (n=201, sin imposibles)
+  objetos nuevos con valor minoritario: soporte   6.1 % · norm  16.7 % (n=114, sin imposibles)
+
+=== eje techo ===
+  [objetos conocidos, vistas nuevas] vistas 41, reconocidas 39 · soporte  74.4 % (bal.  50.0) · soporte_norm  56.4 % (bal.  64.1) · base  74.4 %
+  [vistas del llenado] vistas 41, reconocidas 41 · soporte  73.2 % (bal.  50.0) · soporte_norm  63.4 % (bal.  66.4) · base  73.2 %
+  [objetos nuevos (leave-object-out)] vistas 369, reconocidas 353 · soporte  66.6 % (bal.  49.8) · soporte_norm  39.1 % (bal.  42.5) · base  67.1 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    car1   hardtop     sí  37/41  37  20
+    car2   convertible NO  35/41   0  12
+    car3   convertible NO  40/41   0  25
+    car5   hardtop     sí  41/41  41   8
+    car6   hardtop     sí  37/41  37  30
+    car7   hardtop     sí  41/41  41   8
+    car9   hardtop     sí  41/41  41   3
+    car12  hardtop     sí  40/41  37   8
+    car14  convertible NO  41/41   1  24
+  objetos nuevos con valor mayoritario: soporte  98.7 % · norm  32.5 % (n=237, sin imposibles)
+  objetos nuevos con valor minoritario: soporte   0.9 % · norm  52.6 % (n=116, sin imposibles)

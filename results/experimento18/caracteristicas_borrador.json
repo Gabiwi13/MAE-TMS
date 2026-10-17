@@ -1,0 +1,68 @@
+{
+  "_nota": "Borrador para aprobar. Características visibles por objeto, además del color (results/experimento17/colores_borrador.json, ya aprobado). Solo ejes que varían entre objetos de una misma clase. claro=false: dudoso, queda fuera del eje. Una clase sin un eje no lo lleva.",
+  "_ejes": {
+    "patron": ["plain", "spotted", "decorated"],
+    "techo": ["convertible", "hardtop"],
+    "pelo": ["curly", "smooth"]
+  },
+  "cow": {
+    "1": {"patron": ["spotted", true]},
+    "2": {"patron": ["spotted", true, "café con patas y cara blancas"]},
+    "3": {"patron": ["spotted", true]},
+    "4": {"patron": ["spotted", false, "café con cara blanca y una banda"]},
+    "5": {"patron": ["spotted", true]},
+    "6": {"patron": ["plain", true]},
+    "7": {"patron": ["plain", true]},
+    "8": {"patron": ["plain", true]},
+    "9": {"patron": ["spotted", false, "casi todo negro, patas blancas"]},
+    "10": {"patron": ["plain", true]}
+  },
+  "horse": {
+    "1": {"patron": ["plain", true, "mancha blanca en la frente"]},
+    "2": {"patron": ["spotted", true, "pinto"]},
+    "3": {"patron": ["spotted", true, "apalusa"]},
+    "4": {"patron": ["plain", true]},
+    "5": {"patron": ["plain", true]},
+    "6": {"patron": ["plain", true]},
+    "7": {"patron": ["plain", true]},
+    "8": {"patron": ["plain", true]},
+    "9": {"patron": ["plain", true]},
+    "10": {"patron": ["plain", true]}
+  },
+  "dog": {
+    "1": {"patron": ["plain", false, "bicolor de pastor, no manchado"], "pelo": ["smooth", true]},
+    "2": {"patron": ["plain", true], "pelo": ["smooth", true]},
+    "3": {"patron": ["plain", true], "pelo": ["curly", true]},
+    "4": {"patron": ["plain", true], "pelo": ["smooth", true]},
+    "5": {"patron": ["plain", true], "pelo": ["smooth", true]},
+    "6": {"patron": ["spotted", true, "moteado"], "pelo": ["smooth", false, "ondulado"]},
+    "7": {"patron": ["plain", true], "pelo": ["curly", true]},
+    "8": {"patron": ["plain", true], "pelo": ["smooth", true]},
+    "9": {"patron": ["plain", true], "pelo": ["curly", true]},
+    "10": {"patron": ["plain", true], "pelo": ["curly", false, "ondulado"]}
+  },
+  "cup": {
+    "1": {"patron": ["plain", true]},
+    "2": {"patron": ["plain", true]},
+    "3": {"patron": ["plain", true]},
+    "4": {"patron": ["decorated", true, "dibujo de naipe"]},
+    "5": {"patron": ["decorated", true, "banda de color"]},
+    "6": {"patron": ["plain", true]},
+    "7": {"patron": ["plain", true]},
+    "8": {"patron": ["decorated", false, "esmalte en degradado"]},
+    "9": {"patron": ["decorated", false, "esmalte en degradado"]},
+    "10": {"patron": ["plain", true]}
+  },
+  "car": {
+    "1": {"techo": ["hardtop", true]},
+    "2": {"techo": ["convertible", true]},
+    "3": {"techo": ["convertible", true]},
+    "5": {"techo": ["hardtop", true]},
+    "6": {"techo": ["hardtop", true]},
+    "7": {"techo": ["hardtop", true]},
+    "9": {"techo": ["hardtop", true]},
+    "11": {"techo": ["convertible", false, "cabina abierta de carreras"]},
+    "12": {"techo": ["hardtop", true]},
+    "14": {"techo": ["convertible", true]}
+  }
+}
