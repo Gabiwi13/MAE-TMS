@@ -1,0 +1,99 @@
+{
+  "_nota": "Borrador para aprobar. Un color dominante por objeto, mirado a mano en vistas superior y lateral. claro=false: el objeto no tiene un color dominante claro y queda fuera de la sonda (ni consulta ni vecino).",
+  "apple": {
+    "1": {"color": "yellow", "claro": false, "nota": "amarillo verdoso con chapa roja"},
+    "2": {"color": "red", "claro": true, "nota": "rojo sobre amarillo"},
+    "3": {"color": "green", "claro": true},
+    "4": {"color": "green", "claro": true, "nota": "verde pálido"},
+    "5": {"color": "red", "claro": true},
+    "6": {"color": "red", "claro": true},
+    "7": {"color": "yellow", "claro": false, "nota": "amarillo verdoso con rayas rojas"},
+    "8": {"color": "green", "claro": false, "nota": "verde amarillo con chapa roja"},
+    "9": {"color": "yellow", "claro": false, "nota": "amarillo pálido con rayas rojas"},
+    "10": {"color": "red", "claro": false, "nota": "rojo arriba, verde amarillo abajo"}
+  },
+  "car": {
+    "1": {"color": "yellow", "claro": true},
+    "2": {"color": "green", "claro": true},
+    "3": {"color": "orange", "claro": true},
+    "5": {"color": "gray", "claro": true, "nota": "plateado azulado"},
+    "6": {"color": "yellow", "claro": true},
+    "7": {"color": "black", "claro": true},
+    "9": {"color": "orange", "claro": false, "nota": "entre naranja y rojo"},
+    "11": {"color": "red", "claro": true},
+    "12": {"color": "green", "claro": true, "nota": "verde oscuro"},
+    "14": {"color": "black", "claro": true}
+  },
+  "cow": {
+    "1": {"color": "black", "claro": false, "nota": "blanco y negro"},
+    "2": {"color": "brown", "claro": true, "nota": "café con blanco"},
+    "3": {"color": "brown", "claro": false, "nota": "café y blanco a partes iguales"},
+    "4": {"color": "brown", "claro": true},
+    "5": {"color": "black", "claro": false, "nota": "blanco y negro"},
+    "6": {"color": "brown", "claro": true, "nota": "café claro"},
+    "7": {"color": "brown", "claro": true},
+    "8": {"color": "gray", "claro": true},
+    "9": {"color": "black", "claro": true, "nota": "casi todo negro"},
+    "10": {"color": "gray", "claro": false, "nota": "gris crema"}
+  },
+  "cup": {
+    "1": {"color": "white", "claro": true},
+    "2": {"color": "white", "claro": true},
+    "3": {"color": "white", "claro": true},
+    "4": {"color": "white", "claro": true, "nota": "dibujo de naipe"},
+    "5": {"color": "orange", "claro": false, "nota": "exterior naranja café, interior blanco"},
+    "6": {"color": "white", "claro": true},
+    "7": {"color": "white", "claro": true},
+    "8": {"color": "brown", "claro": true},
+    "9": {"color": "brown", "claro": true},
+    "10": {"color": "green", "claro": false, "nota": "verde pálido por fuera, blanco por dentro"}
+  },
+  "dog": {
+    "1": {"color": "brown", "claro": false, "nota": "café claro con negro"},
+    "2": {"color": "white", "claro": true, "nota": "blanco con café"},
+    "3": {"color": "white", "claro": true, "nota": "crema"},
+    "4": {"color": "black", "claro": true, "nota": "negro con café"},
+    "5": {"color": "brown", "claro": true, "nota": "café claro"},
+    "6": {"color": "black", "claro": false, "nota": "negro y blanco"},
+    "7": {"color": "white", "claro": true},
+    "8": {"color": "white", "claro": false, "nota": "crema amarillento"},
+    "9": {"color": "gray", "claro": true},
+    "10": {"color": "brown", "claro": true}
+  },
+  "horse": {
+    "1": {"color": "brown", "claro": true},
+    "2": {"color": "white", "claro": false, "nota": "blanco con manchas café"},
+    "3": {"color": "white", "claro": false, "nota": "crema con manchas"},
+    "4": {"color": "brown", "claro": true},
+    "5": {"color": "black", "claro": true},
+    "6": {"color": "white", "claro": true},
+    "7": {"color": "brown", "claro": true},
+    "8": {"color": "black", "claro": true},
+    "9": {"color": "white", "claro": true},
+    "10": {"color": "brown", "claro": true, "nota": "café claro, crin blanca"}
+  },
+  "pear": {
+    "1": {"color": "brown", "claro": false, "nota": "verde con café y chapa roja"},
+    "2": {"color": "green", "claro": true},
+    "3": {"color": "brown", "claro": true, "nota": "verde oliva tostado"},
+    "4": {"color": "yellow", "claro": false, "nota": "amarillo verdoso"},
+    "5": {"color": "yellow", "claro": true},
+    "6": {"color": "yellow", "claro": false, "nota": "amarillo verdoso"},
+    "7": {"color": "green", "claro": true},
+    "8": {"color": "yellow", "claro": false, "nota": "amarillo verdoso"},
+    "9": {"color": "green", "claro": true},
+    "10": {"color": "green", "claro": true}
+  },
+  "tomato": {
+    "1": {"color": "red", "claro": true},
+    "2": {"color": "red", "claro": true},
+    "3": {"color": "red", "claro": true},
+    "4": {"color": "red", "claro": true},
+    "5": {"color": "red", "claro": true},
+    "6": {"color": "red", "claro": true},
+    "7": {"color": "red", "claro": true},
+    "8": {"color": "red", "claro": true},
+    "9": {"color": "red", "claro": true},
+    "10": {"color": "red", "claro": true}
+  }
+}

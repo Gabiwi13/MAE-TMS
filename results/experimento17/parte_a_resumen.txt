@@ -1,0 +1,59 @@
+Imágenes evaluadas: 118; ruteadas: 116; ruteo correcto: 116
+
+[oficial (muestreo, 3 repeticiones) · diccionario crudo]  lecturas 348, reconocidas 339
+  top-3 en vocabulario de la clase (métrica oficial)  97.4 %
+  top-3 con palabra exclusiva de la clase             95.4 %
+  top-1 en vocabulario de la clase                   96.0 %
+  top-1 exclusiva de la clase                        85.9 %
+  top-1 = nombre de la clase                         48.0 %
+  top-1 dentro del vocab. del destino = nombre       48.0 %
+  rango del nombre de la clase: mediana 2, p90 54 (de 159 palabras)
+  margen coseno top1-top2: mediana 0.025, p10 0.004
+  palabras top-1 más frecuentes: horse 42, dog 40, car 33, fruit 32, cow 27, vegetable 13, drink 13, cups 13, tomato 13, pear 11
+
+[prototipo (argmax) · diccionario crudo]  lecturas 116, reconocidas 113
+  top-3 en vocabulario de la clase (métrica oficial)  97.4 %
+  top-3 con palabra exclusiva de la clase             97.4 %
+  top-1 en vocabulario de la clase                   97.4 %
+  top-1 exclusiva de la clase                        85.3 %
+  top-1 = nombre de la clase                         51.7 %
+  top-1 dentro del vocab. del destino = nombre       51.7 %
+  rango del nombre de la clase: mediana 1, p90 114 (de 159 palabras)
+  margen coseno top1-top2: mediana 0.031, p10 0.008
+  palabras top-1 más frecuentes: drink 15, horse 15, fruit 14, dog 14, car 13, cow 13, vegetable 9, bosc 6, tomato 5, forelle 4
+
+  estabilidad (crudo): top-1 idéntico en las 3 repeticiones en 44/113 imágenes (38.9 %)
+
+[oficial (muestreo, 3 repeticiones) · diccionario cuant]  lecturas 348, reconocidas 339
+  top-3 en vocabulario de la clase (métrica oficial)  97.4 %
+  top-3 con palabra exclusiva de la clase             96.3 %
+  top-1 en vocabulario de la clase                   96.6 %
+  top-1 exclusiva de la clase                        86.2 %
+  top-1 = nombre de la clase                         45.7 %
+  top-1 dentro del vocab. del destino = nombre       45.7 %
+  rango del nombre de la clase: mediana 2, p90 52 (de 159 palabras)
+  margen coseno top1-top2: mediana 0.024, p10 0.003
+  palabras top-1 más frecuentes: dog 40, horse 40, fruit 32, car 27, cow 26, drink 14, tomato 14, vegetable 13, green 10, pear 10
+
+[prototipo (argmax) · diccionario cuant]  lecturas 116, reconocidas 113
+  top-3 en vocabulario de la clase (métrica oficial)  97.4 %
+  top-3 con palabra exclusiva de la clase             97.4 %
+  top-1 en vocabulario de la clase                   97.4 %
+  top-1 exclusiva de la clase                        85.3 %
+  top-1 = nombre de la clase                         52.6 %
+  top-1 dentro del vocab. del destino = nombre       52.6 %
+  rango del nombre de la clase: mediana 1, p90 113 (de 159 palabras)
+  margen coseno top1-top2: mediana 0.027, p10 0.006
+  palabras top-1 más frecuentes: drink 15, horse 15, fruit 14, dog 14, car 13, cow 13, vegetable 8, bosc 6, tomato 6, forelle 4
+
+  estabilidad (cuant): top-1 idéntico en las 3 repeticiones en 40/113 imágenes (35.4 %)
+
+Por clase (oficial, crudo, top-1 = nombre / top-1 en vocab):
+   apple: 0/45 · 41/45
+     car: 33/39 · 39/39
+     cow: 27/39 · 39/39
+     cup: 3/45 · 45/45
+     dog: 40/42 · 42/42
+   horse: 42/45 · 45/45
+    pear: 9/42 · 41/42
+  tomato: 13/42 · 42/42

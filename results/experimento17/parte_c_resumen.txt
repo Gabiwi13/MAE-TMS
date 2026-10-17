@@ -1,0 +1,49 @@
+Parte C: el color del objeto (8 palabras; solo objetos con color claro).
+Evaluado sobre el agente de la clase verdadera.
+Coordenadas distintas entre palabras cuantizadas (de 300): black-white 169, green-yellow 221, white-yellow 231, green-white 234, red-yellow 236 …
+
+[pliegue 0 · test (objetos conocidos)] vistas 328, reconocidas 322; en clases con más de un color 281 (su color está en el agente: 281)
+  soporte_propios  top-1  66.9 %   balanceada  49.3 %
+  soporte_norm     top-1  74.4 %   balanceada  67.1 %
+  soporte_todos    top-1  66.9 %   balanceada  49.3 %
+  prototipo_todos  top-1  66.9 %   balanceada  50.5 %
+  base (el color más registrado del agente)  55.5 %
+  por clase (soporte_propios top-1):  apple 31/41  car 13/39  cow 23/40  cup 41/41  dog 25/39  horse 26/40  pear 29/41  tomato 41/41
+  confusiones (soporte_propios): gray->brown 13, black->brown 13, green->red 10, yellow->green 9, white->brown 7, black->green 6
+  por clase (soporte_norm top-1):  apple 38/41  car 15/39  cow 27/40  cup 41/41  dog 23/39  horse 30/40  pear 35/41  tomato 41/41
+  confusiones (soporte_norm): brown->gray 10, brown->black 8, black->gray 5, brown->white 5, green->brown 5, gray->brown 4
+
+[pliegue 0 · llenado (objetos conocidos)] vistas 328, reconocidas 328; en clases con más de un color 287 (su color está en el agente: 287)
+  soporte_propios  top-1  64.8 %   balanceada  48.5 %
+  soporte_norm     top-1  81.5 %   balanceada  80.7 %
+  soporte_todos    top-1  64.8 %   balanceada  48.5 %
+  prototipo_todos  top-1  64.1 %   balanceada  47.1 %
+  base (el color más registrado del agente)  50.2 %
+  por clase (soporte_propios top-1):  apple 29/41  car 19/41  cow 32/41  cup 41/41  dog 22/41  horse 19/41  pear 24/41  tomato 41/41
+  confusiones (soporte_propios): black->brown 20, green->red 12, brown->green 12, brown->white 10, white->brown 10, yellow->green 9
+  por clase (soporte_norm top-1):  apple 39/41  car 31/41  cow 31/41  cup 41/41  dog 22/41  horse 32/41  pear 38/41  tomato 41/41
+  confusiones (soporte_norm): brown->gray 10, brown->black 6, brown->white 6, white->brown 6, black->gray 4, green->yellow 3
+
+Leave-object-out, pliegues [1, 2, 3]; objetos reservados: apple2=red, car1=yellow, cow2=brown, cup1=white, dog2=white, horse1=brown, pear2=green, tomato1=red, apple3=green, car2=green, cow4=brown, cup2=white, dog3=white, horse4=brown, pear3=brown, tomato2=red, apple4=green, car3=orange, cow6=brown, cup3=white, dog4=black, horse5=black, pear5=yellow, tomato3=red
+
+[objetos nuevos (todos los pliegues)] vistas 984, reconocidas 893; en clases con más de un color 770 (su color está en el agente: 608)
+  soporte_propios  top-1  57.8 %   balanceada  43.3 %
+  soporte_norm     top-1  48.6 %   balanceada  39.7 %
+  soporte_todos    top-1  57.8 %   balanceada  43.3 %
+  prototipo_todos  top-1  56.6 %   balanceada  42.5 %
+  base (el color más registrado del agente)  49.5 %
+  por clase (soporte_propios top-1):  apple 32/82  car 12/106  cow 109/113  cup 116/116  dog 65/113  horse 72/121  pear 39/119  tomato 123/123
+  confusiones (soporte_propios): black->brown 54, yellow->green 46, green->red 41, brown->green 40, orange->green 35, black->white 28
+  por clase (soporte_norm top-1):  apple 34/82  car 18/106  cow 55/113  cup 116/116  dog 54/113  horse 71/121  pear 26/119  tomato 123/123
+  confusiones (soporte_norm): yellow->green 39, brown->gray 39, green->red 39, black->brown 38, black->gray 36, brown->black 35
+
+[vistas del llenado de esos pliegues] vistas 984, reconocidas 984; en clases con más de un color 861 (su color está en el agente: 861)
+  soporte_propios  top-1  69.2 %   balanceada  51.2 %
+  soporte_norm     top-1  82.5 %   balanceada  76.4 %
+  soporte_todos    top-1  69.2 %   balanceada  51.2 %
+  prototipo_todos  top-1  68.6 %   balanceada  51.3 %
+  base (el color más registrado del agente)  54.2 %
+  por clase (soporte_propios top-1):  apple 110/123  car 56/123  cow 87/123  cup 123/123  dog 60/123  horse 76/123  pear 84/123  tomato 123/123
+  confusiones (soporte_propios): black->brown 53, gray->brown 28, white->brown 25, brown->white 23, yellow->green 21, brown->green 18
+  por clase (soporte_norm top-1):  apple 114/123  car 82/123  cow 88/123  cup 123/123  dog 79/123  horse 107/123  pear 117/123  tomato 123/123
+  confusiones (soporte_norm): brown->gray 25, brown->white 17, black->brown 14, red->green 10, black->gray 10, brown->black 9

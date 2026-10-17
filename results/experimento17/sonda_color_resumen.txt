@@ -1,0 +1,50 @@
+Sonda de color, leave-object-out, k=5. Objetos con color claro: 59 (2419 vistas).
+Clases con más de un color (entran a 'intra-clase'): apple, car, cow, cup, dog, horse, pear
+
+[latente continuo]
+  intra-clase                  vistas  53.9 % (base  53.1 %)  balanceada  41.1 % (azar  12.5 %)  objetos 33/49
+  global (todas las clases)    vistas  61.7 % (base  23.7 %)  balanceada  44.6 % (azar  12.5 %)  objetos 43/59
+  global, sin contar tomato    vistas  53.9 % (base   8.2 %)  balanceada  41.1 % (azar  12.5 %)  objetos 33/49
+    intra apple                vistas  69.3 % (base  60.0 %)  balanceada  66.1 % (azar  50.0 %)  objetos 4/5
+    intra car                  vistas  22.8 % (base  22.2 %)  balanceada  17.1 % (azar  16.7 %)  objetos 4/9
+    intra cow                  vistas  49.6 % (base  66.7 %)  balanceada  24.8 % (azar  33.3 %)  objetos 4/6
+    intra cup                  vistas 100.0 % (base  75.0 %)  balanceada 100.0 % (azar  50.0 %)  objetos 8/8
+    intra dog                  vistas  22.6 % (base  42.9 %)  balanceada  13.2 % (azar  25.0 %)  objetos 3/7
+    intra horse                vistas  60.1 % (base  50.0 %)  balanceada  59.1 % (azar  33.3 %)  objetos 6/8
+    intra pear                 vistas  58.5 % (base  66.7 %)  balanceada  29.3 % (azar  33.3 %)  objetos 4/6
+
+[latente cuantizado (memoria)]
+  intra-clase                  vistas  53.8 % (base  53.1 %)  balanceada  41.2 % (azar  12.5 %)  objetos 30/49
+  global (todas las clases)    vistas  61.5 % (base  23.7 %)  balanceada  44.7 % (azar  12.5 %)  objetos 39/59
+  global, sin contar tomato    vistas  53.7 % (base   8.2 %)  balanceada  41.0 % (azar  12.5 %)  objetos 29/49
+    intra apple                vistas  67.3 % (base  60.0 %)  balanceada  64.4 % (azar  50.0 %)  objetos 4/5
+    intra car                  vistas  24.9 % (base  22.2 %)  balanceada  18.7 % (azar  16.7 %)  objetos 3/9
+    intra cow                  vistas  51.6 % (base  66.7 %)  balanceada  25.8 % (azar  33.3 %)  objetos 4/6
+    intra cup                  vistas 100.0 % (base  75.0 %)  balanceada 100.0 % (azar  50.0 %)  objetos 8/8
+    intra dog                  vistas  20.6 % (base  42.9 %)  balanceada  12.0 % (azar  25.0 %)  objetos 2/7
+    intra horse                vistas  58.2 % (base  50.0 %)  balanceada  56.3 % (azar  33.3 %)  objetos 5/8
+    intra pear                 vistas  59.3 % (base  66.7 %)  balanceada  29.7 % (azar  33.3 %)  objetos 4/6
+
+[píxeles 16x16 (referencia)]
+  intra-clase                  vistas  53.2 % (base  53.1 %)  balanceada  40.6 % (azar  12.5 %)  objetos 28/49
+  global (todas las clases)    vistas  64.8 % (base  23.7 %)  balanceada  47.8 % (azar  12.5 %)  objetos 41/59
+  global, sin contar tomato    vistas  57.6 % (base   8.2 %)  balanceada  43.7 % (azar  12.5 %)  objetos 31/49
+    intra apple                vistas  62.4 % (base  60.0 %)  balanceada  61.4 % (azar  50.0 %)  objetos 4/5
+    intra car                  vistas  26.6 % (base  22.2 %)  balanceada  19.9 % (azar  16.7 %)  objetos 2/9
+    intra cow                  vistas  62.2 % (base  66.7 %)  balanceada  31.1 % (azar  33.3 %)  objetos 4/6
+    intra cup                  vistas 100.0 % (base  75.0 %)  balanceada 100.0 % (azar  50.0 %)  objetos 8/8
+    intra dog                  vistas  16.0 % (base  42.9 %)  balanceada   9.3 % (azar  25.0 %)  objetos 1/7
+    intra horse                vistas  50.9 % (base  50.0 %)  balanceada  46.5 % (azar  33.3 %)  objetos 5/8
+    intra pear                 vistas  60.2 % (base  66.7 %)  balanceada  30.1 % (azar  33.3 %)  objetos 4/6
+
+[color medio del objeto (referencia)]
+  intra-clase                  vistas  59.4 % (base  53.1 %)  balanceada  47.0 % (azar  12.5 %)  objetos 29/49
+  global (todas las clases)    vistas  68.5 % (base  23.7 %)  balanceada  52.0 % (azar  12.5 %)  objetos 45/59
+  global, sin contar tomato    vistas  62.1 % (base   8.2 %)  balanceada  47.6 % (azar  12.5 %)  objetos 35/49
+    intra apple                vistas  66.8 % (base  60.0 %)  balanceada  60.8 % (azar  50.0 %)  objetos 4/5
+    intra car                  vistas  34.1 % (base  22.2 %)  balanceada  25.6 % (azar  16.7 %)  objetos 3/9
+    intra cow                  vistas  63.8 % (base  66.7 %)  balanceada  31.9 % (azar  33.3 %)  objetos 4/6
+    intra cup                  vistas 100.0 % (base  75.0 %)  balanceada 100.0 % (azar  50.0 %)  objetos 8/8
+    intra dog                  vistas  19.2 % (base  42.9 %)  balanceada  11.2 % (azar  25.0 %)  objetos 1/7
+    intra horse                vistas  70.7 % (base  50.0 %)  balanceada  73.2 % (azar  33.3 %)  objetos 5/8
+    intra pear                 vistas  64.2 % (base  66.7 %)  balanceada  32.1 % (azar  33.3 %)  objetos 4/6

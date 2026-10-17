@@ -1,0 +1,34 @@
+Parte B: una palabra por objeto (10 por clase; azar = 10 % dentro del agente).
+Evaluado sobre el agente de la clase verdadera (el ruteo se mide aparte).
+
+[test] imágenes 328, reconocidas 316 (96.3 %)
+  soporte            n=316  top-1  40.8 %   top-3  73.7 %
+  prototipo_propias  n=316  top-1  29.7 %   top-3  55.4 %
+  prototipo_global   n=316  top-1  25.6 %   top-3  48.4 %
+  oficial_propias    n=316  top-1  35.4 %   top-3  65.8 %
+  oficial_global     n=316  top-1  31.6 %   top-3  57.9 %
+  margen de soporte top1-top2: mediana 0.0231
+  por clase (soporte, top-1):
+     apple: 24/41
+       car: 8/40
+       cow: 11/41
+       cup: 22/38
+       dog: 17/39
+     horse: 13/39
+      pear: 14/37
+    tomato: 20/41
+
+[vista_llenado] imágenes 328, reconocidas 328 (100.0 %)
+  soporte            n=328  top-1  51.2 %   top-3  84.8 %
+  prototipo_propias  n=328  top-1  37.5 %   top-3  63.1 %
+  prototipo_global   n=328  top-1  31.7 %   top-3  56.4 %
+  margen de soporte top1-top2: mediana 0.0281
+  por clase (soporte, top-1):
+     apple: 24/41
+       car: 13/41
+       cow: 15/41
+       cup: 24/41
+       dog: 26/41
+     horse: 24/41
+      pear: 20/41
+    tomato: 22/41

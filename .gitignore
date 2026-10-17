@@ -78,3 +78,8 @@ models_pre_cost_backup/
 # Log del benchmark de costo
 cost_benchmark.log
 models_v4_official_backup/
+
+# Memorias del experimento 17 (regenerables, ~170 MB cada una)
+results/experimento17/modelos_b/
+results/experimento17/modelos_c/
+results/experimento17/modelos_c_lo*/
