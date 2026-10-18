@@ -1,0 +1,17 @@
+Sonda de rasgos, k=5, leave-object-out dentro de la clase, coseno. Acierto balanceado (%).
+eje · clase       azar            propio       resnet18_in resnet18_in_pca64          dinov2_s    dinov2_s_pca64
+color · apple       50              36.6              82.1              87.6              93.7              94.7
+color · car         17              17.7              25.8              25.0              15.4              15.4
+color · cow         33              26.0              29.5              30.1              33.1              32.5
+color · cup         50             100.0              98.2              98.2              99.4             100.0
+color · dog         25              15.0              15.4              15.4               7.5               8.1
+color · horse       33              60.2              62.8              61.0              68.3              75.6
+color · pear        33              30.9              33.1              33.3              33.3              33.3
+techo · car         50              38.2              44.7              46.3              58.9              56.3
+patron · cow        50              63.7              91.2              91.2              97.9              98.5
+patron · cup        50              40.2              49.6              51.0              53.7              56.5
+patron · dog        50              46.8              48.3              47.9              49.8              49.7
+pelo · dog          50              35.0              82.3              84.1              63.7              62.4
+patron · horse      50              41.2              47.7              47.1              49.4              49.5
+
+Por valor (acierto del valor minoritario entre paréntesis en el detalle JSON).

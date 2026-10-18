@@ -50,18 +50,55 @@ Sonda de vecinos (k = 5, leave-object-out dentro de la clase, latente continuo):
 | patrón · horse | 45.0 | 50 |
 | pelo · dog | 42.9 | 50 |
 
-Los objetos más parecidos en el latente no comparten la característica: todo queda en el azar. Con el color, la misma sonda dio 41 % con azar 12.5 %. El MAE de 64 dimensiones separa los objetos por forma, pose y color, pero no codifica de forma compartida si un animal tiene manchas, si un perro tiene pelo rizado o si un auto es descapotable. Ninguna lectura de la memoria puede sacar lo que el latente no trae.
+Los objetos más parecidos en el latente no comparten la característica: todo queda en el azar. Con el color, la misma sonda dio 41 % con azar 12.5 %. El encoder del proyecto (latente de 64 dimensiones) separa los objetos por forma, pose y color, pero no codifica de forma compartida si un animal tiene manchas, si un perro tiene pelo rizado o si un auto es descapotable. Ninguna lectura de la memoria puede sacar lo que el latente no trae.
 
 ## Lectura
 
 - Que la heteroasociación sea significativa es necesario, pero no basta. Con etiquetas verdaderas la memoria las asocia en los objetos que vio (normalizado: balanceada 63–72 %), pero no las abstrae a objetos nuevos.
-- Pasa lo mismo que con el color minoritario en exp17, y la sonda lo explica: el límite está en el latente, no en la memoria.
+- Pasa lo mismo que con el color minoritario en exp17. Con el encoder propio la sonda lo explica, porque el latente no trae la característica; la sección de diagnóstico muestra que, aun con rasgos que sí la traen, la memoria tampoco la generaliza del todo.
 - En objetos nuevos el fallo es confusión sin rechazo. El contenido reconoce el 93–96 % de las vistas y responde el valor común.
-- Para una palabra específica que generalice (el «nódulo» de un paciente nuevo) hace falta un latente que codifique esa característica de forma compartida entre instancias: un encoder entrenado o ajustado para eso, o rasgos locales en vez de un vector global. Hay que medirlo antes con esta misma sonda.
+- Para una palabra específica que generalice (el «nódulo» de un paciente nuevo) hacen falta dos cosas: un latente que codifique esa característica de forma compartida entre instancias, y una lectura que generalice por similitud en vez de exigir soporte en cada coordenada.
+
+## Diagnóstico con otros rasgos: ¿es el encoder o es la memoria?
+
+El encoder del proyecto parte de ResNet18 de ImageNet y se ajusta con reconstrucción + 0.1 × clasificación de clase. Se comparan con la misma sonda tres rasgos de la vista original: el latente propio (64), ResNet18 de ImageNet **sin** ese ajuste (512, y reducido a 64 con PCA sin etiquetas) y DINOv2-small (384, y a 64). Son solo un diagnóstico; no entran al pipeline oficial. Detalle en `sonda_rasgos_resumen.txt`.
+
+| eje · clase | azar | propio | ResNet18-IN (64) | DINOv2 (64) |
+|---|---|---|---|---|
+| color · apple | 50 | 36.6 | 87.6 | 94.7 |
+| patrón · cow | 50 | 63.7 | 91.2 | 98.5 |
+| pelo · dog | 50 | 35.0 | 84.1 | 62.4 |
+| color · horse | 33 | 60.2 | 61.0 | 75.6 |
+| techo · car | 50 | 38.2 | 46.3 | 56.3 |
+| patrón · dog / horse / cup | 50 | 47 / 41 / 40 | 48 / 47 / 51 | 50 / 50 / 57 |
+
+(Esta sonda usa coseno; la de arriba usaba distancia euclidiana, por eso el propio cambia algo.)
+
+- Con el mismo backbone sin nuestro ajuste, las características aparecen: la pérdida de clase borra lo que varía dentro de la clase.
+- Donde ningún rasgo sale del azar, hay 1–2 objetos minoritarios: el límite son los datos.
+
+Después se repitió la memoria con los latentes de ResNet18-IN reducidos a 64, con las 16 variantes de cada vista y estadísticas min/max de las originales con margen del 10 %. Se usaron los casos donde la sonda pasa, con leave-object-out completo (33 pliegues), y el mismo protocolo con el encoder propio como control (`filas_resnet18_in.json`, `filas_propio_color.json`). Acierto balanceado con soporte normalizado; «reconoce» es la fracción de vistas nuevas que el contenido acepta.
+
+| eje · clase | azar | kNN propio | kNN ResNet18-IN | memoria propio | memoria ResNet18-IN | reconoce propio / ResNet |
+|---|---|---|---|---|---|---|
+| color · apple | 50 | 36.6 | 87.6 | 39.6 | 55.2 | 75 / 63 % |
+| color · horse | 33 | 60.2 | 61.0 | 39.6 | 38.1 | 95 / 80 % |
+| patrón · cow | 50 | 63.7 | 91.2 | 55.9 | 59.0 | 96 / 76 % |
+| pelo · dog | 50 | 35.0 | 84.1 | 48.6 | 65.9 | 96 / 68 % |
+
+En objetos conocidos (vistas nuevas) la memoria con ResNet18-IN sí mejora mucho: cow 64.6 → 85.6, dog 72.3 → 96.3, apple 92.9 → 100; horse 80.3 → 74.2.
+
+Lectura:
+- **Hay dos cuellos de botella, no uno.** El encoder propio borra las características. Pero con rasgos que sí las traen, la memoria las aprovecha para los objetos que vio y **no las generaliza** como un vecino más cercano sobre esos mismos rasgos: cow queda en 59 contra 91 del kNN y dog en 66 contra 84.
+- La causa probable es cómo reconoce la memoria: una conjunción de soportes por coordenada sobre valores cuantizados. Un objeto nuevo cae en celdas que el llenado no cubrió, y entonces la memoria lo rechaza (con ResNet rechaza el 20–37 % de las vistas nuevas) o responde lo que dicta la marginal. Un kNN compara por similitud global y no tiene ese problema.
+- Para la aportación: el cálculo de pesos de la memoria funciona como **reconocimiento con rechazo**, no como generalización por similitud. Con mejores rasgos mejora la parte de memoria (objetos vistos), pero transferir un atributo a un objeto nuevo sigue requiriendo algo que la memoria no hace.
 
 ## Archivos
 
-- `run_experiment18_attributes.py` (en la raíz de la copia; reanuda desde `filas.json`)
+- `run_experiment18_attributes.py` (en la raíz de la copia; reanuda desde `filas.json`; `EXP18_LAT`, `EXP18_STATS`, `EXP18_RAW` y `EXP18_CASES` para otros rasgos)
+- `run_experiment18_feature_probe.py` (sonda de rasgos; `--variantes` genera los latentes de ResNet18-IN)
+- `sonda_rasgos_resumen.txt`, `sonda_rasgos.json`; `filas_resnet18_in.json`, `filas_propio_color.json` y sus `resumen_*.txt`
+- `rasgos/`: rasgos y latentes externos, fuera de git
 - `caracteristicas_borrador.json` (etiquetas aprobadas), `attribute_vectors.json` (fastText crudo)
 - `filas.json` (filas por imagen de los 58 pliegues), `resumen.txt`, `run.log`
 - `modelos/`: memorias del pliegue 0, fuera de git

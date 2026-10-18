@@ -38,7 +38,19 @@ OUT_DIR = ROOT / "results" / "experimento18"
 LABELS = OUT_DIR / "caracteristicas_borrador.json"
 VECS = OUT_DIR / "attribute_vectors.json"
 MODELS = OUT_DIR / "modelos"            # solo pliegue 0, fuera de git
-RAW = OUT_DIR / "filas.json"
+# Otros rasgos (diagnóstico): latentes, estadísticas y casos por variables de entorno.
+LAT = Path(os.environ.get("EXP18_LAT", LAT_PATH))
+STATS = os.environ.get("EXP18_STATS")
+RAW = Path(os.environ.get("EXP18_RAW", OUT_DIR / "filas.json"))
+CASES = {tuple(c.split(":")) for c in os.environ.get("EXP18_CASES", "").split(",") if c}
+COLORS = ROOT / "results" / "experimento17" / "colores_borrador.json"
+
+
+def global_stats():
+    if STATS:
+        st = json.loads(Path(STATS).read_text())
+        return np.array(st["min"], dtype=np.float32), np.array(st["max"], dtype=np.float32)
+    return tuple(x.astype(np.float32) for x in load_global_stats())
 
 
 def labels():
@@ -51,12 +63,16 @@ def axes_of(cls):
 
 
 def value_of(cls, axis, path):
+    if axis == "color":
+        lab = json.loads(COLORS.read_text(encoding="utf-8"))[cls][str(object_id(path))]
+        return lab["color"] if lab["claro"] else None
     v = labels()[cls].get(str(object_id(path)), {}).get(axis)
     return v[0] if v and v[1] else None
 
 
 def word_vectors_q():
     raw = json.loads(VECS.read_text())
+    raw.update(json.loads((ROOT / "results" / "experimento17" / "color_vectors.json").read_text()))
     return {w: quantize_binary(np.asarray(v, dtype=float), M_LABEL) for w, v in raw.items()}
 
 
@@ -77,7 +93,9 @@ def jobs():
     index = json.loads(IDX_PATH.read_text())
     out = []
     for cls in CLASSES:
-        for axis in axes_of(cls):
+        for axis in (["color"] if CASES else []) + axes_of(cls):
+            if CASES and (axis, cls) not in CASES:
+                continue
             objs = sorted({object_id(p) for p in index[cls] if value_of(cls, axis, p)})
             out += [(axis, cls, 0)] + [(axis, cls, o) for o in objs]
     return out
@@ -91,9 +109,9 @@ def run_job(job):
     from stage5_fill import FILL_VARIANTS
     axis, cls, fold = job
     t0 = time.time()
-    arr = np.load(LAT_PATH, mmap_mode="r")
+    arr = np.load(LAT, mmap_mode="r")
     index = json.loads(IDX_PATH.read_text())
-    g = tuple(x.astype(np.float32) for x in load_global_stats())
+    g = global_stats()
     ci = CLASSES.index(cls)
     wq = word_vectors_q()
     sp = split(index, cls, axis, fold)
@@ -107,7 +125,7 @@ def run_job(job):
                 z_q = quantize_latent_global(np.asarray(arr[ci, i, v]), *g, Q_LATENT)
                 mem_H.register(w_q, z_q)
                 mem_R.register(z_q)
-    if fold == 0:
+    if fold == 0 and not CASES:
         MODELS.mkdir(parents=True, exist_ok=True)
         with open(MODELS / f"{axis}_{cls}.pkl", "wb") as f:
             pickle.dump((mem_H, mem_R), f)
@@ -184,7 +202,7 @@ def report():
                     lines.append(f"  objetos nuevos con valor {'mayoritario' if mayor else 'minoritario'}: "
                                  f"soporte {100 * a / max(n, 1):5.1f} % · norm {100 * b / max(n, 1):5.1f} % (n={n}, sin imposibles)")
     text = "\n".join(lines)
-    (OUT_DIR / "resumen.txt").write_text(text, encoding="utf-8")
+    (RAW.parent / RAW.name.replace("filas", "resumen").replace(".json", ".txt")).write_text(text, encoding="utf-8")
     print(text)
 
 

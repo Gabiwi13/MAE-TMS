@@ -1,0 +1,23 @@
+Experimento 18: una memoria hetero por eje y clase; agente de la clase verdadera.
+Top-1 sobre vistas reconocidas. base = el valor más registrado del agente.
+
+=== eje color ===
+  [objetos conocidos, vistas nuevas] vistas 82, reconocidas 81 · soporte  70.4 % (bal.  54.2) · soporte_norm  84.0 % (bal.  85.3) · base  58.0 %
+  [vistas del llenado] vistas 82, reconocidas 82 · soporte  58.5 % (bal.  51.3) · soporte_norm  86.6 % (bal.  84.1) · base  46.3 %
+  [objetos nuevos (leave-object-out)] vistas 533, reconocidas 465 · soporte  54.4 % (bal.  39.8) · soporte_norm  51.6 % (bal.  39.6) · base  33.3 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    apple2   red         NO  41/41  32  32
+    apple3   green       NO   0/41   0   0
+    apple4   green       NO  41/41   0   2
+    apple5   red         NO  37/41  19  19
+    apple6   red         NO  35/41  33  33
+    horse1   brown       sí  39/41  39  26
+    horse4   brown       sí  41/41  41  39
+    horse5   black       NO  41/41   0   6
+    horse6   white       NO  35/41  13  13
+    horse7   brown       sí  39/41  39  35
+    horse8   black       NO  41/41   0   1
+    horse9   white       NO  39/41   9   9
+    horse10  brown       sí  36/41  28  25
+  objetos nuevos con valor mayoritario: soporte  94.8 % · norm  80.6 % (n=155, sin imposibles)
+  objetos nuevos con valor minoritario: soporte  34.2 % · norm  37.1 % (n=310, sin imposibles)
