@@ -1,0 +1,76 @@
+Exp20 parte 1: B1 (÷conteo) contra principio de tamaño, mismas memorias y directorios.
+
+[muestra|nivel1] chequeo B1 = oficial en 200/200
+  B1    : acierto  85.7 · rechazo  13.6 · falso   0.7 · respondido  99.2 · balanceado  86.0
+  tamaño: acierto  84.8 · rechazo  13.6 · falso   1.5 · respondido  98.2 · balanceado  85.1
+  por dominio (B1 → tamaño): rx_torax 258/300 → 252/300 · tc_abdomen 254/300 → 252/300 · dermatoscopia 256/300 → 256/300 · us_mama 137/156 → 136/156
+
+[muestra|nivel2_rx_torax] chequeo B1 = oficial en 196/196
+  B1    : acierto  22.4 · rechazo   1.1 · falso  76.5 · respondido  22.7 · balanceado  23.0
+  tamaño: acierto  22.5 · rechazo   1.1 · falso  76.4 · respondido  22.8 · balanceado  22.6
+  por dominio (B1 → tamaño): sin-hallazgo 3/300 → 58/300 · atelectasis 59/300 → 79/300 · cardiomegaly 149/243 → 143/243 · effusion 96/300 → 78/300 · infiltration 1/300 → 10/300 · mass 69/300 → 56/300 · nodule 3/300 → 44/300 · pneumonia 2/59 → 3/59 · pneumothorax 100/300 → 85/300 · consolidation 62/241 → 26/241 · edema 39/110 → 46/110 · emphysema 82/191 → 64/191 · fibrosis 32/154 → 21/154 · pleural 53/247 → 41/247
+
+[muestra|nivel2_tc_abdomen] chequeo B1 = oficial en 198/198
+  B1    : acierto  87.7 · rechazo  10.0 · falso   2.3 · respondido  97.4 · balanceado  87.7
+  tamaño: acierto  87.6 · rechazo  10.0 · falso   2.4 · respondido  97.3 · balanceado  87.6
+  por dominio (B1 → tamaño): bladder 223/300 → 223/300 · femur-left 256/300 → 256/300 · femur-right 264/300 → 264/300 · heart 246/300 → 246/300 · kidney-left 245/300 → 242/300 · kidney-right 252/300 → 253/300 · liver 293/300 → 293/300 · lung-left 293/300 → 293/300 · lung-right 264/300 → 264/300 · pancreas 279/300 → 279/300 · spleen 278/300 → 278/300
+
+[muestra|nivel2_dermatoscopia] chequeo B1 = oficial en 191/191
+  B1    : acierto  72.7 · rechazo   6.3 · falso  21.0 · respondido  77.6 · balanceado  64.5
+  tamaño: acierto  72.3 · rechazo   6.3 · falso  21.4 · respondido  77.2 · balanceado  64.1
+  por dominio (B1 → tamaño): actinic-keratosis 35/66 → 36/66 · basal-cell-carcinoma 76/103 → 75/103 · benign-keratosis 174/220 → 163/220 · dermatofibroma 10/23 → 10/23 · melanoma 175/223 → 168/223 · melanocytic-nevus 216/300 → 230/300 · vascular-lesion 15/29 → 15/29
+
+[muestra|nivel2_us_mama] chequeo B1 = oficial en 142/142
+  B1    : acierto  88.5 · rechazo   1.9 · falso   9.6 · respondido  90.2 · balanceado  82.3
+  tamaño: acierto  88.5 · rechazo   1.9 · falso   9.6 · respondido  90.2 · balanceado  84.6
+  por dominio (B1 → tamaño): malignant 29/42 → 32/42 · normal-benign 109/114 → 106/114
+
+[completo|nivel1] chequeo B1 = oficial en 200/200
+  B1    : acierto  94.9 · rechazo   0.1 · falso   5.1 · respondido  94.9 · balanceado  58.6
+  tamaño: acierto  98.3 · rechazo   0.1 · falso   1.6 · respondido  98.4 · balanceado  77.8
+  por dominio (B1 → tamaño): rx_torax 22314/22433 → 22156/22433 · tc_abdomen 17142/17778 → 17690/17778 · dermatoscopia 736/2005 → 1785/2005 · us_mama 3/156 → 37/156
+
+[completo|nivel2_rx_torax] chequeo B1 = oficial en 196/196
+  B1    : acierto  65.6 · rechazo   0.0 · falso  34.3 · respondido  65.7 · balanceado   7.1
+  tamaño: acierto  65.6 · rechazo   0.0 · falso  34.3 · respondido  65.7 · balanceado   7.1
+  por dominio (B1 → tamaño): sin-hallazgo 11924/11928 → 11924/11928 · atelectasis 0/826 → 0/826 · cardiomegaly 0/243 → 0/243 · effusion 0/835 → 0/835 · infiltration 0/1893 → 0/1893 · mass 0/413 → 0/413 · nodule 0/587 → 0/587 · pneumonia 0/59 → 0/59 · pneumothorax 0/439 → 0/439 · consolidation 0/241 → 0/241 · edema 0/110 → 0/110 · emphysema 0/191 → 0/191 · fibrosis 0/154 → 0/154 · pleural 0/247 → 0/247
+
+[completo|nivel2_tc_abdomen] chequeo B1 = oficial en 198/198
+  B1    : acierto  95.2 · rechazo   2.2 · falso   2.6 · respondido  97.3 · balanceado  94.0
+  tamaño: acierto  94.8 · rechazo   2.2 · falso   3.0 · respondido  96.9 · balanceado  93.7
+  por dominio (B1 → tamaño): bladder 937/1036 → 939/1036 · femur-left 728/784 → 728/784 · femur-right 742/793 → 742/793 · heart 654/785 → 654/785 · kidney-left 1891/2064 → 1765/2064 · kidney-right 1788/1965 → 1827/1965 · liver 3265/3285 → 3264/3285 · lung-left 1736/1747 → 1736/1747 · lung-right 1776/1813 → 1788/1813 · pancreas 1587/1622 → 1592/1622 · spleen 1820/1884 → 1822/1884
+
+[completo|nivel2_dermatoscopia] chequeo B1 = oficial en 191/191
+  B1    : acierto  76.7 · rechazo   1.1 · falso  22.2 · respondido  77.5 · balanceado  46.3
+  tamaño: acierto  78.3 · rechazo   1.1 · falso  20.6 · respondido  79.1 · balanceado  62.5
+  por dominio (B1 → tamaño): actinic-keratosis 26/66 → 34/66 · basal-cell-carcinoma 48/103 → 67/103 · benign-keratosis 79/220 → 168/220 · dermatofibroma 12/23 → 13/23 · melanoma 37/223 → 147/223 · melanocytic-nevus 1325/1341 → 1129/1341 · vascular-lesion 10/29 → 11/29
+
+[completo|nivel2_us_mama] chequeo B1 = oficial en 142/142
+  B1    : acierto  87.2 · rechazo   1.9 · falso  10.9 · respondido  88.9 · balanceado  79.9
+  tamaño: acierto  87.8 · rechazo   1.9 · falso  10.3 · respondido  89.5 · balanceado  83.4
+  por dominio (B1 → tamaño): malignant 27/42 → 31/42 · normal-benign 109/114 → 106/114
+
+[balanceado|nivel1] chequeo B1 = oficial en 200/200
+  B1    : acierto  92.1 · rechazo   7.5 · falso   0.4 · respondido  99.6 · balanceado  92.3
+  tamaño: acierto  91.7 · rechazo   7.5 · falso   0.8 · respondido  99.2 · balanceado  92.6
+  por dominio (B1 → tamaño): rx_torax 21232/22433 → 21144/22433 · tc_abdomen 15823/17778 → 15702/17778 · dermatoscopia 1830/2005 → 1854/2005 · us_mama 147/156 → 149/156
+
+[balanceado|nivel2_rx_torax] chequeo B1 = oficial en 196/196
+  B1    : acierto   7.2 · rechazo   1.2 · falso  91.7 · respondido   7.2 · balanceado  21.1
+  tamaño: acierto  11.5 · rechazo   1.2 · falso  87.3 · respondido  11.7 · balanceado  19.4
+  por dominio (B1 → tamaño): sin-hallazgo 13/11928 → 634/11928 · atelectasis 164/826 → 177/826 · cardiomegaly 128/243 → 108/243 · effusion 344/835 → 329/835 · infiltration 71/1893 → 474/1893 · mass 95/413 → 63/413 · nodule 153/587 → 73/587 · pneumonia 0/59 → 0/59 · pneumothorax 178/439 → 95/439 · consolidation 23/241 → 19/241 · edema 33/110 → 39/110 · emphysema 40/191 → 36/191 · fibrosis 15/154 → 20/154 · pleural 44/247 → 28/247
+
+[balanceado|nivel2_tc_abdomen] chequeo B1 = oficial en 198/198
+  B1    : acierto  94.1 · rechazo   3.6 · falso   2.4 · respondido  97.5 · balanceado  92.9
+  tamaño: acierto  94.1 · rechazo   3.6 · falso   2.3 · respondido  97.6 · balanceado  93.0
+  por dominio (B1 → tamaño): bladder 921/1036 → 924/1036 · femur-left 732/784 → 731/784 · femur-right 737/793 → 737/793 · heart 642/785 → 642/785 · kidney-left 1830/2064 → 1804/2064 · kidney-right 1759/1965 → 1780/1965 · liver 3240/3285 → 3240/3285 · lung-left 1736/1747 → 1736/1747 · lung-right 1709/1813 → 1709/1813 · pancreas 1584/1622 → 1585/1622 · spleen 1831/1884 → 1836/1884
+
+[balanceado|nivel2_dermatoscopia] chequeo B1 = oficial en 191/191
+  B1    : acierto  73.8 · rechazo   5.5 · falso  20.7 · respondido  78.1 · balanceado  62.6
+  tamaño: acierto  76.3 · rechazo   5.5 · falso  18.2 · respondido  80.8 · balanceado  61.6
+  por dominio (B1 → tamaño): actinic-keratosis 34/66 → 35/66 · basal-cell-carcinoma 68/103 → 70/103 · benign-keratosis 158/220 → 136/220 · dermatofibroma 13/23 → 13/23 · melanoma 175/223 → 160/223 · melanocytic-nevus 1020/1341 → 1105/1341 · vascular-lesion 11/29 → 11/29
+
+[balanceado|nivel2_us_mama] chequeo B1 = oficial en 142/142
+  B1    : acierto  87.8 · rechazo   1.9 · falso  10.3 · respondido  89.5 · balanceado  81.1
+  tamaño: acierto  88.5 · rechazo   1.9 · falso   9.6 · respondido  90.2 · balanceado  84.6
+  por dominio (B1 → tamaño): malignant 28/42 → 32/42 · normal-benign 109/114 → 106/114

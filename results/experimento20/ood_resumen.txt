@@ -1,0 +1,25 @@
+Exp20 parte 3: rechazo de lo ajeno a igual aceptación de lo propio (memorias balanceadas).
+Cada detector se fija para aceptar la misma fracción de lo propio que la memoria; AUROC entre paréntesis.
+
+[nivel 1 · modalidad] la memoria acepta 92.5 % de 42372 propias
+  retina                   n= 1600  rechazo: memoria  24.2 · knn   0.1 (0.563) · maha  49.3 (0.901) · msp 100.0 (0.999)
+  sangre                   n=17092  rechazo: memoria  11.4 · knn   0.8 (0.538) · maha   8.0 (0.670) · msp 100.0 (0.999)
+  oct                      n= 6000  rechazo: memoria   5.9 · knn  11.1 (0.596) · maha  19.0 (0.648) · msp  99.8 (0.994)
+  neumonia_otro_hospital   n= 5856  rechazo: memoria  31.8 · knn  75.0 (0.936) · maha  56.1 (0.889) · msp  57.3 (0.870)
+
+[tórax · hernia (nunca registrada)] la memoria acepta 98.8 % de 18166 propias
+  hernia                   n=  110  rechazo: memoria   0.0 · knn   1.8 (0.578) · maha   0.0 (0.447) · msp   0.0 (0.552)
+
+[órganos · leave-one-organ-out]
+  bladder        acepta propias  96.4 · rechazo: memoria  94.4 · knn  98.5 · maha  94.2 · msp  48.0
+  femur-left     acepta propias  96.3 · rechazo: memoria  95.3 · knn  91.3 · maha  96.4 · msp  58.9
+  femur-right    acepta propias  96.3 · rechazo: memoria  99.4 · knn  98.7 · maha  99.9 · msp  53.6
+  heart          acepta propias  97.1 · rechazo: memoria  98.3 · knn  99.1 · maha  97.8 · msp  70.3
+  kidney-left    acepta propias  95.7 · rechazo: memoria  84.6 · knn  93.0 · maha  86.0 · msp  74.2
+  kidney-right   acepta propias  96.5 · rechazo: memoria  90.6 · knn  95.9 · maha  90.6 · msp  81.0
+  liver          acepta propias  95.9 · rechazo: memoria 100.0 · knn 100.0 · maha 100.0 · msp  92.8
+  lung-left      acepta propias  96.0 · rechazo: memoria 100.0 · knn 100.0 · maha 100.0 · msp  94.4
+  lung-right     acepta propias  96.6 · rechazo: memoria  99.7 · knn  98.7 · maha  99.9 · msp  70.0
+  pancreas       acepta propias  96.0 · rechazo: memoria  98.0 · knn  99.6 · maha  98.8 · msp  93.3
+  spleen         acepta propias  95.3 · rechazo: memoria  99.5 · knn  99.8 · maha  98.7 · msp  88.2
+  media: memoria  96.3 · knn  97.7 · maha  96.6 · msp  75.0

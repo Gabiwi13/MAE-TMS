@@ -97,3 +97,5 @@ results/medico/cache/
 results/medico_prueba/
 results/medico_completo/cache/
 results/medico_balanceado/cache/
+data/medmnist_ood/
+results/experimento20/cache/
