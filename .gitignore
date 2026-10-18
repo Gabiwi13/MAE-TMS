@@ -90,3 +90,10 @@ results/experimento18/rasgos/
 results/experimento19/exp16/latentes.npy
 models/encoder_oficial/
 models/encoder_sin_clase/
+
+# Demo médico: datos MedMNIST y cachés (regenerables)
+data/medmnist/
+results/medico/cache/
+results/medico_prueba/
+results/medico_completo/cache/
+results/medico_balanceado/cache/

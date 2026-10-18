@@ -1,0 +1,88 @@
+Demo médico EAM-TMS sobre MedMNIST+ 128 px. Splits oficiales; todo el train (60 % llenado, 40 % fase A) y todo el test.
+Formación de directorios (fase A): {"nivel1": {"registradas": 48220, "rechazadas": 11, "sin_energia": 0, "acierto": 41309}, "rx_torax": {"registradas": 25540, "rechazadas": 29, "sin_energia": 0, "acierto": 16987}, "tc_abdomen": {"registradas": 13808, "rechazadas": 9, "sin_energia": 2, "acierto": 13794}, "dermatoscopia": {"registradas": 2777, "rechazadas": 23, "sin_energia": 0, "acierto": 2240}, "us_mama": {"registradas": 213, "rechazadas": 4, "sin_energia": 0, "acierto": 202}}
+
+[nivel 1 · modalidad] imágenes de test 42372
+  memoria: acierto  94.9 % · rechazo   0.1 % · falso   5.1 % · acierto de lo respondido  94.9 % · balanceado  58.6 %
+  knn    : acierto 100.0 % (sin abstención) · balanceado 100.0 %
+  por dominio (memoria acierto / rechazo / falso · knn · cabeza):
+    rx_torax               n=22433  22314 /   6 / 113  ·  22429
+    tc_abdomen             n=17778  17142 /  16 / 620  ·  17778
+    dermatoscopia          n=2005  736 /   3 / 1266  ·  2004
+    us_mama                n=156    3 /   1 / 152  ·  156
+  falsos más frecuentes: dermatoscopia->tc_abdomen 810, tc_abdomen->rx_torax 620, dermatoscopia->rx_torax 456, us_mama->tc_abdomen 132, rx_torax->tc_abdomen 113, us_mama->rx_torax 20
+
+[nivel 2 · rx_torax (hallazgo u órgano como dominio)] imágenes de test 18166
+  memoria: acierto  65.6 % · rechazo   0.0 % · falso  34.3 % · acierto de lo respondido  65.7 % · balanceado   7.1 %
+  knn    : acierto  62.0 % (sin abstención) · balanceado  12.4 %
+  cabeza : acierto  30.8 % (sin abstención) · balanceado  20.6 %
+  por dominio (memoria acierto / rechazo / falso · knn · cabeza):
+    sin-hallazgo           n=11928  11924 /   4 /   0  ·  10754 · 3794
+    atelectasis            n=826    0 /   0 / 826  ·  41 · 237
+    cardiomegaly           n=243    0 /   0 / 243  ·  33 · 86
+    effusion               n=835    0 /   0 / 835  ·  212 · 385
+    infiltration           n=1893    0 /   0 / 1893  ·  118 · 732
+    mass                   n=413    0 /   0 / 413  ·  23 · 76
+    nodule                 n=587    0 /   0 / 587  ·  18 · 87
+    pneumonia              n= 59    0 /   0 /  59  ·  0 · 0
+    pneumothorax           n=439    0 /   0 / 439  ·  45 · 122
+    consolidation          n=241    0 /   0 / 241  ·  3 · 10
+    edema                  n=110    0 /   0 / 110  ·  8 · 22
+    emphysema              n=191    0 /   0 / 191  ·  6 · 17
+    fibrosis               n=154    0 /   0 / 154  ·  2 · 9
+    pleural                n=247    0 /   0 / 247  ·  3 · 19
+  falsos más frecuentes: infiltration->sin-hallazgo 1893, effusion->sin-hallazgo 835, atelectasis->sin-hallazgo 826, nodule->sin-hallazgo 587, pneumothorax->sin-hallazgo 439, mass->sin-hallazgo 413, pleural->sin-hallazgo 247, cardiomegaly->sin-hallazgo 243
+  encoder: {"epocas": 8, "pasos_por_epoca": 999, "n_train": 63936, "conteo_por_clase": [42405, 2942, 754, 2730, 6663, 1481, 1883, 210, 1552, 952, 479, 635, 491, 759], "segundos": 443}
+
+[nivel 2 · tc_abdomen (hallazgo u órgano como dominio)] imágenes de test 17778
+  memoria: acierto  95.2 % · rechazo   2.2 % · falso   2.6 % · acierto de lo respondido  97.3 % · balanceado  94.0 %
+  knn    : acierto  97.0 % (sin abstención) · balanceado  96.5 %
+  cabeza : acierto  96.9 % (sin abstención) · balanceado  96.5 %
+  por dominio (memoria acierto / rechazo / falso · knn · cabeza):
+    bladder                n=1036  937 /  45 /  54  ·  982 · 986
+    femur-left             n=784  728 /  19 /  37  ·  719 · 733
+    femur-right            n=793  742 /  40 /  11  ·  772 · 773
+    heart                  n=785  654 / 107 /  24  ·  752 · 740
+    kidney-left            n=2064  1891 /  12 / 161  ·  1849 · 1872
+    kidney-right           n=1965  1788 /  72 / 105  ·  1874 · 1866
+    liver                  n=3285  3265 /  12 /   8  ·  3273 · 3271
+    lung-left              n=1747  1736 /  11 /   0  ·  1747 · 1747
+    lung-right             n=1813  1776 /   9 /  28  ·  1797 · 1795
+    pancreas               n=1622  1587 /  10 /  25  ·  1608 · 1605
+    spleen                 n=1884  1820 /  52 /  12  ·  1865 · 1845
+  falsos más frecuentes: kidney-left->spleen 111, kidney-right->kidney-left 94, bladder->kidney-left 40, kidney-left->kidney-right 32, lung-right->liver 28, femur-left->femur-right 23, pancreas->spleen 20, heart->kidney-left 15
+  encoder: {"epocas": 8, "pasos_por_epoca": 540, "n_train": 34561, "conteo_por_clase": [1956, 1390, 1357, 1474, 3963, 3817, 6164, 3919, 3929, 3031, 3561], "segundos": 238}
+
+[nivel 2 · dermatoscopia (hallazgo u órgano como dominio)] imágenes de test 2005
+  memoria: acierto  76.7 % · rechazo   1.1 % · falso  22.2 % · acierto de lo respondido  77.5 % · balanceado  46.3 %
+  knn    : acierto  83.7 % (sin abstención) · balanceado  71.9 %
+  cabeza : acierto  82.2 % (sin abstención) · balanceado  74.1 %
+  por dominio (memoria acierto / rechazo / falso · knn · cabeza):
+    actinic-keratosis      n= 66   26 /   2 /  38  ·  40 · 39
+    basal-cell-carcinoma   n=103   48 /   5 /  50  ·  76 · 72
+    benign-keratosis       n=220   79 /   1 / 140  ·  144 · 141
+    dermatofibroma         n= 23   12 /   3 /   8  ·  16 · 17
+    melanoma               n=223   37 /   6 / 180  ·  138 · 172
+    melanocytic-nevus      n=1341  1325 /   1 /  15  ·  1242 · 1183
+    vascular-lesion        n= 29   10 /   4 /  15  ·  23 · 25
+  falsos más frecuentes: melanoma->melanocytic-nevus 174, benign-keratosis->melanocytic-nevus 133, basal-cell-carcinoma->melanocytic-nevus 46, actinic-keratosis->melanocytic-nevus 27, vascular-lesion->melanocytic-nevus 15, actinic-keratosis->benign-keratosis 6, dermatofibroma->melanocytic-nevus 6, melanocytic-nevus->benign-keratosis 6
+  encoder: {"epocas": 8, "pasos_por_epoca": 109, "n_train": 7007, "conteo_por_clase": [228, 359, 769, 80, 779, 4693, 99], "segundos": 48}
+
+[nivel 2 · us_mama (hallazgo u órgano como dominio)] imágenes de test 156
+  memoria: acierto  87.2 % · rechazo   1.9 % · falso  10.9 % · acierto de lo respondido  88.9 % · balanceado  79.9 %
+  knn    : acierto  89.1 % (sin abstención) · balanceado  83.5 %
+  cabeza : acierto  87.8 % (sin abstención) · balanceado  84.9 %
+  por dominio (memoria acierto / rechazo / falso · knn · cabeza):
+    malignant              n= 42   27 /   2 /  13  ·  30 · 33
+    normal-benign          n=114  109 /   1 /   4  ·  109 · 104
+  falsos más frecuentes: malignant->normal-benign 13, normal-benign->malignant 4
+  encoder: {"epocas": 8, "pasos_por_epoca": 8, "n_train": 546, "conteo_por_clase": [147, 399], "segundos": 4}
+
+[fuera de distribución · retinamnist, nunca registrada] n=1600: rechazo 0.0 % · destinos {'tc_abdomen': 1446, 'rx_torax': 154} · kNN (siempre responde) {'tc_abdomen': 166, 'dermatoscopia': 1428, 'rx_torax': 2, 'us_mama': 4}
+
+[transferencia · pneumoniamnist, otro hospital] n=5856: nivel 1 {'rx_torax': 5653, None: 31, 'tc_abdomen': 172}
+  normal (n=1583): nivel 2 {'sin-hallazgo': 1558, None: 25} · kNN nivel 2 {'sin-hallazgo': 1342, 'infiltration': 26, 'cardiomegaly': 191, 'atelectasis': 6, 'nodule': 3, 'pleural': 2, 'pneumothorax': 9, 'mass': 3, 'effusion': 1}
+  neumonía (n=4273): nivel 2 {'sin-hallazgo': 4095, None: 178} · kNN nivel 2 {'sin-hallazgo': 3897, 'pleural': 11, 'pneumothorax': 22, 'cardiomegaly': 42, 'nodule': 73, 'infiltration': 115, 'edema': 2, 'fibrosis': 9, 'mass': 60, 'effusion': 38, 'atelectasis': 4}
+
+[jerarquía] fracción que el nivel 1 entrega a la modalidad correcta: rx_torax 22314/22433, tc_abdomen 17142/17778, dermatoscopia 736/2005, us_mama 3/156
+
+Tiempo total: 62 min
