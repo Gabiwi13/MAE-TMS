@@ -74,7 +74,7 @@ El encoder del proyecto parte de ResNet18 de ImageNet y se ajusta con reconstruc
 
 (Esta sonda usa coseno; la de arriba usaba distancia euclidiana, por eso el propio cambia algo.)
 
-- Con el mismo backbone sin nuestro ajuste, las características aparecen: la pérdida de clase borra lo que varía dentro de la clase.
+- Con el mismo backbone sin nuestro ajuste, las características aparecen: el ajuste del encoder borra lo que varía dentro de la clase. No es la pérdida de clase: un encoder reentrenado sin ella (exp19, `results/experimento19`) recupera el color de apple (72.2) pero no las manchas de cow (53.7) ni el pelo de dog (23.3). Lo que las borra es comprimir a 64 dimensiones con reconstrucción MSE.
 - Donde ningún rasgo sale del azar, hay 1–2 objetos minoritarios: el límite son los datos.
 
 Después se repitió la memoria con los latentes de ResNet18-IN reducidos a 64, con las 16 variantes de cada vista y estadísticas min/max de las originales con margen del 10 %. Se usaron los casos donde la sonda pasa, con leave-object-out completo (33 pliegues), y el mismo protocolo con el encoder propio como control (`filas_resnet18_in.json`, `filas_propio_color.json`). Acierto balanceado con soporte normalizado; «reconoce» es la fracción de vistas nuevas que el contenido acepta.
@@ -92,6 +92,23 @@ Lectura:
 - **Hay dos cuellos de botella, no uno.** El encoder propio borra las características. Pero con rasgos que sí las traen, la memoria las aprovecha para los objetos que vio y **no las generaliza** como un vecino más cercano sobre esos mismos rasgos: cow queda en 59 contra 91 del kNN y dog en 66 contra 84.
 - La causa probable es cómo reconoce la memoria: una conjunción de soportes por coordenada sobre valores cuantizados. Un objeto nuevo cae en celdas que el llenado no cubrió, y entonces la memoria lo rechaza (con ResNet rechaza el 20–37 % de las vistas nuevas) o responde lo que dicta la marginal. Un kNN compara por similitud global y no tiene ese problema.
 - Para la aportación: el cálculo de pesos de la memoria funciona como **reconocimiento con rechazo**, no como generalización por similitud. Con mejores rasgos mejora la parte de memoria (objetos vistos), pero transferir un atributo a un objeto nuevo sigue requiriendo algo que la memoria no hace.
+
+## Lectura tolerante: ¿se cierra la brecha con el kNN sin salir de la MAE?
+
+`project()` integra con un AND sobre las 64 coordenadas latentes: si una coordenada del objeto nuevo cae en un nivel que nunca coincidió con cierto valor de etiqueta, esa celda queda en cero. La lectura tolerante usa la misma integración, pero cada coordenada aporta la suma de su nivel y los vecinos a distancia ≤ r. Los pesos de la homo llevan la misma tolerancia y no se rellena nada. Radios fijados antes de correr: r = 1 como lectura principal, r = 2 como sensibilidad. Con r = 0 coincide exactamente con `project()`. Leave-object-out completo, mismos 4 casos, soporte normalizado (`filas_tol_resnet18_in.json`, `filas_tol_propio.json`).
+
+| caso | ResNet18-IN r=0 | **r=1** | r=2 | kNN mismos rasgos | reconoce r=0 → r=1 → r=2 |
+|---|---|---|---|---|---|
+| color · apple | 55.2 | **63.7** | 76.1 | 87.6 | 63 → 90 → 99 % |
+| color · horse | 38.1 | **41.8** | 46.1 | 61.0 | 80 → 95 → 99 % |
+| patrón · cow | 59.0 | **58.2** | 62.6 | 91.2 | 76 → 86 → 90 % |
+| pelo · dog | 65.9 | **70.6** | 71.6 | 84.1 | 68 → 85 → 94 % |
+
+Con el encoder propio la tolerancia no cambia casi nada (r = 1: cow 55.6, dog 46.7, apple 41.9, horse 29.9).
+
+- La tolerancia sobre todo **baja el rechazo**: las vistas nuevas vuelven a caber en la envolvente.
+- La transferencia del atributo mejora poco (apple +8, dog +5 con r = 1) y en cow, la prueba más limpia (4 contra 4 objetos), nada. Sigue lejos del kNN.
+- Que el objeto nuevo quepa no basta: dentro del dominio, el valor del atributo lo sigue decidiendo la masa de lo registrado. La lectura por soporte compara cuánto se registró de cada valor en las celdas del objeto, no a qué objetos vistos se parece.
 
 ## Archivos
 

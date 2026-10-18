@@ -37,6 +37,9 @@ BATCH_SIZE = 32
 EPOCHS = 50
 LR = 1e-3
 SEED = 42
+# Peso de la clasificación sobre el latente. Con 0 la cabeza se entrena sobre
+# el latente desacoplado: mide la separabilidad sin moldearlo (exp19).
+CLS_WEIGHT = float(os.environ.get("CLS_WEIGHT", "0.1"))
 # Criterios de aceptación del encoder. Las etapas 5-8 cuantizan sus latentes,
 # asi que un encoder a medio entrenar contamina el experimento entero sin
 # lanzar ningun error.
@@ -221,11 +224,11 @@ def train(seed: int = SEED):
             optimizer.zero_grad()
             z = encoder(imgs)
             recon = decoder(z)
-            logits = classifier(z)
+            logits = classifier(z if CLS_WEIGHT > 0 else z.detach())
 
             loss_recon = mse_loss(recon, imgs_orig)
             loss_cls = ce_loss(logits, labels)
-            loss = loss_recon + 0.1 * loss_cls
+            loss = loss_recon + (CLS_WEIGHT if CLS_WEIGHT > 0 else 1.0) * loss_cls
             loss.backward()
             optimizer.step()
             total_loss += loss.item() * len(imgs)
@@ -295,6 +298,7 @@ def write_manifest(rmse, acc, seed, source="trained"):
         "source": source,
         "seed": seed,
         "epochs": EPOCHS,
+        "cls_weight": CLS_WEIGHT,
         "rmse": round(float(rmse), 6),
         "acc": round(float(acc), 4),
         "criteria": {"rmse_max": RMSE_MAX, "acc_min": ACC_MIN},

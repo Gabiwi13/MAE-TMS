@@ -1,0 +1,7 @@
+stage5_fill rc=0 36 min
+stage6_interaction rc=0 0 min
+stage7_bidirectional rc=0 25 min
+stage8_mature rc=0 1 min
+exp16 rc=0 102 min
+exp18 rc=0 194 min
+listo

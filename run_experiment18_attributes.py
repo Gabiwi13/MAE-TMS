@@ -42,6 +42,7 @@ MODELS = OUT_DIR / "modelos"            # solo pliegue 0, fuera de git
 LAT = Path(os.environ.get("EXP18_LAT", LAT_PATH))
 STATS = os.environ.get("EXP18_STATS")
 RAW = Path(os.environ.get("EXP18_RAW", OUT_DIR / "filas.json"))
+TOL = os.environ.get("EXP18_TOL") == "1"
 CASES = {tuple(c.split(":")) for c in os.environ.get("EXP18_CASES", "").split(",") if c}
 COLORS = ROOT / "results" / "experimento17" / "colores_borrador.json"
 
@@ -149,8 +150,43 @@ def run_job(job):
             if row["reconoce"]:
                 row["soporte"] = support_ranking(proj, own, wq)
                 row["soporte_norm"] = normalized_support(proj, marg, own, wq)
+            if TOL:
+                for r in TOL_RADII:
+                    pt = tolerant_projection(mem_H, z_q, _norm_weights(tolerant_weights(mem_R, z_q, r), P_LATENT), r)
+                    ok = bool(np.count_nonzero(np.sum(pt, axis=1) == 0) == 0)
+                    row[f"reconoce_tol{r}"] = ok
+                    if ok:
+                        row[f"soporte_tol{r}"] = support_ranking(pt, own, wq)
+                        row[f"soporte_norm_tol{r}"] = normalized_support(pt, marg, own, wq)
             rows.append(row)
     return {"job": job, "segundos": round(time.time() - t0), "filas": rows}
+
+
+TOL_RADII = (1, 2)   # fijados antes de correr; 1 es la lectura principal
+
+
+def tolerant_weights(mem_R, z_q, r):
+    """Pesos de la homo aceptando también los niveles vecinos de cada coordenada."""
+    w = np.zeros(len(z_q), dtype=float)
+    for d in range(-r, r + 1):
+        w += mem_R.recog_weights(np.clip(z_q + d, 0, Q_LATENT - 1))
+    return w
+
+
+def tolerant_projection(mem_H, z_q, w, r):
+    """La misma integración AND de project(), pero cada coordenada latente
+    aporta la suma de su nivel y los vecinos a distancia <= r."""
+    F = mem_H._full_iota_relation
+    w = len(z_q) * w / max(np.sum(w), 1e-12)
+    integ, first = None, True
+    for i, k in enumerate(z_q):
+        ks = sorted({int(np.clip(k + d, 0, Q_LATENT - 1)) for d in range(-r, r + 1)})
+        proj = F[:, i, :M_LABEL, :][:, :, ks].sum(axis=-1).astype(float)
+        if first:
+            integ, first = w[i] * proj, False
+        else:
+            integ = np.where((integ == 0) | (proj == 0), 0, integ + w[i] * proj)
+    return integ
 
 
 def _acc(rs, key):

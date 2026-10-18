@@ -87,3 +87,6 @@ results/experimento17/modelos_c_lo*/
 # Memorias del experimento 18 (regenerables)
 results/experimento18/modelos/
 results/experimento18/rasgos/
+results/experimento19/exp16/latentes.npy
+models/encoder_oficial/
+models/encoder_sin_clase/

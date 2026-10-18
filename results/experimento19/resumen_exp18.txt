@@ -1,0 +1,145 @@
+Experimento 18: una memoria hetero por eje y clase; agente de la clase verdadera.
+Top-1 sobre vistas reconocidas. base = el valor más registrado del agente.
+
+=== eje color ===
+  [objetos conocidos, vistas nuevas] vistas 328, reconocidas 296 · soporte  81.1 % (bal.  67.9) · soporte_norm  88.5 % (bal.  83.8) · base  61.8 %
+  [vistas del llenado] vistas 328, reconocidas 328 · soporte  82.9 % (bal.  74.9) · soporte_norm  97.3 % (bal.  97.0) · base  56.4 %
+  [objetos nuevos (leave-object-out)] vistas 2419, reconocidas 1660 · soporte  65.1 % (bal.  40.1) · soporte_norm  67.5 % (bal.  44.6) · base  56.6 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    apple2   red         NO  35/41  30  30
+    apple3   green       NO   3/41   3   3
+    apple4   green       NO  31/41   0   2
+    apple5   red         NO  37/41  36  36
+    apple6   red         NO  25/41  25  25
+    car1   yellow      NO  20/41   2   5
+    car2   green       NO  16/41   0   0
+    car3   orange      NO  12/41   0   0   (imposible: el agente no tiene ese valor)
+    car5   gray        NO  22/41   0   0   (imposible: el agente no tiene ese valor)
+    car6   yellow      NO  32/41   5  16
+    car7   black       NO  31/41   3  16
+    car11  red         NO  12/41   0   0   (imposible: el agente no tiene ese valor)
+    car12  green       NO  30/41   1   0
+    car14  black       NO  32/41   7  17
+    cow2   brown       sí  37/41  37  37
+    cow4   brown       sí  29/41  29  29
+    cow6   brown       sí  29/41  29  29
+    cow7   brown       sí  30/41  30  30
+    cow8   gray        NO  38/41   0   0   (imposible: el agente no tiene ese valor)
+    cow9   black       NO  25/41   0   0   (imposible: el agente no tiene ese valor)
+    cup1   white       sí  37/41  37  37
+    cup2   white       sí  32/41  32  32
+    cup3   white       sí  41/41  41  41
+    cup4   white       sí  11/41  11  11
+    cup6   white       sí  31/41  31  31
+    cup7   white       sí  33/41  33  33
+    cup8   brown       NO  15/41  15  15
+    cup9   brown       NO  14/41  14  14
+    dog2   white       NO  23/41   4   3
+    dog3   white       sí  39/41  37  33
+    dog4   black       NO  23/41   0   0   (imposible: el agente no tiene ese valor)
+    dog5   brown       NO  25/41   0   0
+    dog7   white       NO  26/41   8   8
+    dog9   gray        NO  20/41   0   0   (imposible: el agente no tiene ese valor)
+    dog10  brown       NO  13/41   0   0
+    horse1   brown       sí  28/41  18  12
+    horse4   brown       sí  33/41  31  31
+    horse5   black       NO  35/41   1   1
+    horse6   white       NO  31/41   5  15
+    horse7   brown       sí  31/41  31  29
+    horse8   black       NO  31/41   0   0
+    horse9   white       NO  40/41   0   5
+    horse10  brown       sí  29/41  25  25
+    pear2   green       sí  10/41  10  10
+    pear3   brown       NO  12/41   0   0   (imposible: el agente no tiene ese valor)
+    pear5   yellow      NO  11/41   0   0   (imposible: el agente no tiene ese valor)
+    pear7   green       sí  32/41  32  32
+    pear9   green       sí  24/41  23  23
+    pear10  green       sí  37/41  37  37
+    tomato1   red         sí  41/41  41  41
+    tomato2   red         sí  32/41  32  32
+    tomato3   red         sí  38/41  38  38
+    tomato4   red         sí  38/41  38  38
+    tomato5   red         sí  37/41  37  37
+    tomato6   red         sí  32/41  32  32
+    tomato7   red         sí  37/41  37  37
+    tomato8   red         sí  38/41  38  38
+    tomato9   red         sí  33/41  33  33
+    tomato10  red         sí  41/41  41  41
+  objetos nuevos con valor mayoritario: soporte  98.0 % · norm  96.7 % (n=940, sin imposibles)
+  objetos nuevos con valor minoritario: soporte  29.2 % · norm  38.7 % (n=545, sin imposibles)
+
+=== eje patron ===
+  [objetos conocidos, vistas nuevas] vistas 164, reconocidas 151 · soporte  85.4 % (bal.  66.6) · soporte_norm  92.1 % (bal.  83.0) · base  71.5 %
+  [vistas del llenado] vistas 164, reconocidas 164 · soporte  88.4 % (bal.  68.3) · soporte_norm  97.0 % (bal.  88.2) · base  71.3 %
+  [objetos nuevos (leave-object-out)] vistas 1435, reconocidas 1140 · soporte  71.3 % (bal.  34.7) · soporte_norm  76.2 % (bal.  39.0) · base  66.8 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    cow1   spotted     NO   9/41   9   9
+    cow2   spotted     NO  37/41   7   8
+    cow3   spotted     NO  39/41   8  12
+    cow5   spotted     NO  23/41  10  16
+    cow6   plain       NO  30/41   1  17
+    cow7   plain       NO  38/41  13  31
+    cow8   plain       NO  40/41   2  24
+    cow10  plain       NO  38/41  11  30
+    cup1   plain       sí  36/41  36  36
+    cup2   plain       sí  31/41  31  28
+    cup3   plain       sí  41/41  40  36
+    cup4   decorated   NO  13/41   0   1
+    cup5   decorated   NO  34/41   0   0
+    cup6   plain       sí  32/41  32  28
+    cup7   plain       sí  33/41  32  31
+    cup10  plain       sí  14/41  11  11
+    dog2   plain       sí  39/41  39  39
+    dog3   plain       sí  38/41  38  38
+    dog4   plain       sí  33/41  33  33
+    dog5   plain       sí  37/41  37  37
+    dog6   spotted     NO  26/41   0   0   (imposible: el agente no tiene ese valor)
+    dog7   plain       sí  32/41  32  32
+    dog8   plain       sí  40/41  40  40
+    dog9   plain       sí  29/41  29  29
+    dog10  plain       sí  30/41  30  30
+    horse1   plain       sí  41/41  41  41
+    horse2   spotted     NO  24/41   0   0
+    horse3   spotted     NO  27/41   0   0
+    horse4   plain       sí  39/41  39  30
+    horse5   plain       sí  34/41  34  33
+    horse6   plain       sí  35/41  35  34
+    horse7   plain       sí  38/41  35  34
+    horse8   plain       sí  33/41  33  33
+    horse9   plain       sí  41/41  41  40
+    horse10  plain       sí  36/41  34  28
+  objetos nuevos con valor mayoritario: soporte  98.7 % · norm  94.6 % (n=762, sin imposibles)
+  objetos nuevos con valor minoritario: soporte  17.3 % · norm  42.0 % (n=352, sin imposibles)
+
+=== eje pelo ===
+  [objetos conocidos, vistas nuevas] vistas 41, reconocidas 36 · soporte  91.7 % (bal.  83.3) · soporte_norm  94.4 % (bal.  96.3) · base  75.0 %
+  [vistas del llenado] vistas 41, reconocidas 41 · soporte  90.2 % (bal.  86.7) · soporte_norm 100.0 % (bal. 100.0) · base  63.4 %
+  [objetos nuevos (leave-object-out)] vistas 328, reconocidas 217 · soporte  76.0 % (bal.  63.5) · soporte_norm  73.7 % (bal.  68.2) · base  70.5 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    dog1   smooth      sí  22/41  22  19
+    dog2   smooth      sí  32/41  28  26
+    dog3   curly       NO  34/41  11  20
+    dog4   smooth      sí  23/41  22  19
+    dog5   smooth      sí  36/41  34  27
+    dog7   curly       NO  18/41   8  13
+    dog8   smooth      sí  40/41  38  34
+    dog9   curly       NO  12/41   2   2
+  objetos nuevos con valor mayoritario: soporte  94.1 % · norm  81.7 % (n=153, sin imposibles)
+  objetos nuevos con valor minoritario: soporte  32.8 % · norm  54.7 % (n=64, sin imposibles)
+
+=== eje techo ===
+  [objetos conocidos, vistas nuevas] vistas 41, reconocidas 37 · soporte  73.0 % (bal.  54.5) · soporte_norm  70.3 % (bal.  68.4) · base  70.3 %
+  [vistas del llenado] vistas 41, reconocidas 41 · soporte  80.5 % (bal.  63.6) · soporte_norm  82.9 % (bal.  88.3) · base  73.2 %
+  [objetos nuevos (leave-object-out)] vistas 369, reconocidas 292 · soporte  61.3 % (bal.  47.4) · soporte_norm  40.4 % (bal.  33.7) · base  66.4 %
+  por objeto nuevo (valor · ¿mayoritario en el agente? · reconocidas · soporte · norm):
+    car1   hardtop     sí  38/41  37  22
+    car2   convertible NO  28/41   4   9
+    car3   convertible NO  32/41   1   2
+    car5   hardtop     sí  28/41  26  21
+    car6   hardtop     sí  40/41  39  23
+    car7   hardtop     sí  34/41  33  11
+    car9   hardtop     sí  18/41   5   3
+    car12  hardtop     sí  36/41  34  25
+    car14  convertible NO  38/41   0   2
+  objetos nuevos con valor mayoritario: soporte  89.7 % · norm  54.1 % (n=194, sin imposibles)
+  objetos nuevos con valor minoritario: soporte   5.1 % · norm  13.3 % (n=98, sin imposibles)
