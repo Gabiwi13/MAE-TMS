@@ -1,0 +1,64 @@
+Olvido exacto y privacidad de la MAE (propuesta_olvido_y_flota.md, parte A).
+
+[verificación] fase A registrada contra Level oficial: {"directorios_distintos_contra_oficial": 0, "contenido_distinto_contra_oficial": 0, "formacion_igual": true}; reconstrucción repetida, celdas de directorio distintas: 0
+
+[A1a · olvidar contenido] 27 imágenes por pieza (5184 registros con variantes)
+  contenido: celdas distintas contra reconstruir sin ellas 0
+  fase A: percepciones con otro destino al reconstruir 1 de 2160; celdas de directorio distintas 15627
+  test: decisiones distintas entre olvidar y reconstruir 0 de 2162; cambian respecto de antes de olvidar 0
+  tiempo: olvidar 0.09 s · reconstruir 30.4 s · construir 29.0 s · reentrenar la cabeza logística 0.3 s
+
+[A1b · olvidar transacciones] 213 de 2133 percepciones de fase A
+  directorios: celdas distintas contra rehacer la fase A sin ellas 0; contenido 0
+  test: decisiones distintas 0 de 2162; cambian respecto de antes de olvidar 13; olvidar 2.67 s
+
+[A2 · ataque de pertenencia] AUROC (0.5 = no distingue miembros) · coordenadas en celdas únicas
+  industrial_nivel1
+    candle                 n=270/180  mae 0.572 · knn 1.000 · ncm 0.529 · gaussiana 0.673 · únicas 0.01 (miembros con alguna 0.7 %)
+    capsules               n=270/180  mae 0.516 · knn 1.000 · ncm 0.511 · gaussiana 0.784 · únicas 0.01 (miembros con alguna 1.5 %)
+    cashew                 n=270/180  mae 0.520 · knn 1.000 · ncm 0.502 · gaussiana 0.671 · únicas 0.02 (miembros con alguna 1.9 %)
+    chewinggum             n=270/180  mae 0.525 · knn 1.000 · ncm 0.499 · gaussiana 0.718 · únicas 0.00 (miembros con alguna 0.4 %)
+    fryum                  n=270/180  mae 0.473 · knn 1.000 · ncm 0.463 · gaussiana 0.644 · únicas 0.00 (miembros con alguna 0.4 %)
+    macaroni1              n=270/180  mae 0.533 · knn 1.000 · ncm 0.512 · gaussiana 0.703 · únicas 0.01 (miembros con alguna 0.7 %)
+    macaroni2              n=270/180  mae 0.513 · knn 1.000 · ncm 0.503 · gaussiana 0.787 · únicas 0.03 (miembros con alguna 2.6 %)
+    pcb1                   n=270/180  mae 0.550 · knn 1.000 · ncm 0.524 · gaussiana 0.702 · únicas 0.00 (miembros con alguna 0.0 %)
+    pcb2                   n=270/180  mae 0.509 · knn 1.000 · ncm 0.504 · gaussiana 0.741 · únicas 0.01 (miembros con alguna 0.7 %)
+    pcb3                   n=270/180  mae 0.532 · knn 1.000 · ncm 0.501 · gaussiana 0.777 · únicas 0.01 (miembros con alguna 1.1 %)
+    pcb4                   n=270/180  mae 0.526 · knn 1.000 · ncm 0.529 · gaussiana 0.751 · únicas 0.00 (miembros con alguna 0.4 %)
+    pipe_fryum             n=270/180  mae 0.537 · knn 1.000 · ncm 0.520 · gaussiana 0.687 · únicas 0.04 (miembros con alguna 3.0 %)
+    media                  mae 0.525 · knn 1.000 · ncm 0.508 · gaussiana 0.720 · únicas 0.01 (1.1 %)
+  industrial_g2
+    candle                 n=270/180  mae 0.558 · knn 1.000 · ncm 0.514 · gaussiana 0.519 · únicas 0.00 (miembros con alguna 0.0 %)
+    capsules               n=270/180  mae 0.401 · knn 1.000 · ncm 0.413 · gaussiana 0.366 · únicas 0.05 (miembros con alguna 5.2 %)
+    cashew                 n=270/180  mae 0.432 · knn 1.000 · ncm 0.432 · gaussiana 0.427 · únicas 0.02 (miembros con alguna 1.9 %)
+    chewinggum             n=270/180  mae 0.444 · knn 1.000 · ncm 0.437 · gaussiana 0.432 · únicas 0.02 (miembros con alguna 1.9 %)
+    fryum                  n=270/180  mae 0.459 · knn 1.000 · ncm 0.429 · gaussiana 0.467 · únicas 0.00 (miembros con alguna 0.4 %)
+    macaroni1              n=270/180  mae 0.466 · knn 1.000 · ncm 0.468 · gaussiana 0.448 · únicas 0.01 (miembros con alguna 1.5 %)
+    macaroni2              n=270/180  mae 0.446 · knn 1.000 · ncm 0.437 · gaussiana 0.418 · únicas 0.07 (miembros con alguna 6.7 %)
+    pcb1                   n=270/180  mae 0.459 · knn 1.000 · ncm 0.489 · gaussiana 0.443 · únicas 0.01 (miembros con alguna 1.5 %)
+    pcb2                   n=270/180  mae 0.461 · knn 1.000 · ncm 0.409 · gaussiana 0.424 · únicas 0.03 (miembros con alguna 3.3 %)
+    pcb3                   n=270/180  mae 0.474 · knn 1.000 · ncm 0.404 · gaussiana 0.466 · únicas 0.03 (miembros con alguna 3.3 %)
+    pcb4                   n=270/180  mae 0.471 · knn 1.000 · ncm 0.460 · gaussiana 0.476 · únicas 0.01 (miembros con alguna 1.1 %)
+    pipe_fryum             n=270/180  mae 0.507 · knn 1.000 · ncm 0.492 · gaussiana 0.498 · únicas 0.06 (miembros con alguna 5.6 %)
+    media                  mae 0.465 · knn 1.000 · ncm 0.449 · gaussiana 0.449 · únicas 0.03 (2.7 %)
+  medico_modalidad
+    rx_torax               n=328/218  mae 0.549 · knn 1.000 · ncm 0.524 · gaussiana 0.709 · únicas 0.03 (miembros con alguna 3.0 %)
+    tc_abdomen             n=328/218  mae 0.501 · knn 1.000 · ncm 0.485 · gaussiana 0.618 · únicas 0.05 (miembros con alguna 5.2 %)
+    dermatoscopia          n=328/218  mae 0.512 · knn 1.000 · ncm 0.490 · gaussiana 0.603 · únicas 0.07 (miembros con alguna 4.6 %)
+    us_mama                n=328/218  mae 0.572 · knn 1.000 · ncm 0.547 · gaussiana 0.678 · únicas 0.05 (miembros con alguna 3.7 %)
+    media                  mae 0.534 · knn 1.000 · ncm 0.512 · gaussiana 0.652 · únicas 0.05 (4.1 %)
+  medico_organos
+    bladder                n=815/542  mae 0.503 · knn 1.000 · ncm 0.503 · gaussiana 0.530 · únicas 0.00 (miembros con alguna 0.2 %)
+    femur-left             n=815/542  mae 0.511 · knn 1.000 · ncm 0.510 · gaussiana 0.528 · únicas 0.00 (miembros con alguna 0.4 %)
+    femur-right            n=815/542  mae 0.498 · knn 1.000 · ncm 0.504 · gaussiana 0.549 · únicas 0.02 (miembros con alguna 0.4 %)
+    heart                  n=815/542  mae 0.502 · knn 1.000 · ncm 0.507 · gaussiana 0.515 · únicas 0.01 (miembros con alguna 0.1 %)
+    kidney-left            n=815/542  mae 0.540 · knn 1.000 · ncm 0.536 · gaussiana 0.554 · únicas 0.02 (miembros con alguna 0.7 %)
+    kidney-right           n=815/542  mae 0.492 · knn 1.000 · ncm 0.492 · gaussiana 0.514 · únicas 0.01 (miembros con alguna 0.4 %)
+    liver                  n=815/542  mae 0.500 · knn 1.000 · ncm 0.497 · gaussiana 0.510 · únicas 0.00 (miembros con alguna 0.0 %)
+    lung-left              n=815/542  mae 0.505 · knn 1.000 · ncm 0.504 · gaussiana 0.528 · únicas 0.00 (miembros con alguna 0.0 %)
+    lung-right             n=815/542  mae 0.502 · knn 1.000 · ncm 0.490 · gaussiana 0.516 · únicas 0.00 (miembros con alguna 0.0 %)
+    pancreas               n=815/542  mae 0.510 · knn 1.000 · ncm 0.515 · gaussiana 0.509 · únicas 0.00 (miembros con alguna 0.1 %)
+    spleen                 n=815/542  mae 0.496 · knn 1.000 · ncm 0.497 · gaussiana 0.539 · únicas 0.00 (miembros con alguna 0.1 %)
+    media                  mae 0.505 · knn 1.000 · ncm 0.505 · gaussiana 0.527 · únicas 0.01 (0.2 %)
+
+Tiempo total: 9 min

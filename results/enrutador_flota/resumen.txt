@@ -1,0 +1,25 @@
+Enrutador de una flota de detectores PatchCore (propuesta_olvido_y_flota.md, parte B).
+Detectores fijados al 95 % de aceptación de su calibración. Tamaño del estado: {"mae_celdas": 1013760, "mae_bytes_uint16": 2027520, "knn_bytes_float32": 829440}
+
+[B1 · piezas conocidas] la MAE acepta  99.0 % de la calibración; kNN con abstención se fija ahí
+  oraculo   a su pieza 100.0 · a otra   0.0 | normales: alarma   7.6 · abstención   0.0 · pasa  92.4 | fallas: alarma  60.8 · abstención   0.0 · pasa  39.2
+  mae       a su pieza  92.4 · a otra   0.0 | normales: alarma   7.4 · abstención   1.6 · pasa  91.1 | fallas: alarma  49.6 · abstención  12.5 · pasa  37.9
+  knn       a su pieza 100.0 · a otra   0.0 | normales: alarma   7.6 · abstención   0.0 · pasa  92.4 | fallas: alarma  60.8 · abstención   0.0 · pasa  39.2
+  knn_abst  a su pieza  97.2 · a otra   0.0 | normales: alarma   7.3 · abstención   1.0 · pasa  91.7 | fallas: alarma  57.5 · abstención   4.2 · pasa  38.3
+
+[B2 · pieza nueva fuera del sistema] destino de sus imágenes de test: abstención / a otro detector y alarma / a otro y pasa (falla silenciosa)
+  candle      n=200 acepta cal  99.0 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  capsules    n=160 acepta cal  99.1 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  cashew      n=150 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  chewinggum  n=150 acepta cal  99.1 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  fryum       n=150 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  macaroni1   n=200 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  macaroni2   n=200 acepta cal  99.2 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  pcb1        n=200 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  pcb2        n=200 acepta cal  99.1 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  pcb3        n=201 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  pcb4        n=201 acepta cal  98.9 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  pipe_fryum  n=150 acepta cal  99.1 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
+  media (de los pliegues): mae: abstención 100.0 · alarma   0.0 · pasa   0.0 | knn: abstención   0.0 · alarma 100.0 · pasa   0.0 | knn_abst: abstención 100.0 · alarma   0.0 · pasa   0.0
+
+Tiempo total: 19 min

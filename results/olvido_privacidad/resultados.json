@@ -1,0 +1,436 @@
+{
+ "A1": {
+  "verificacion": {
+   "directorios_distintos_contra_oficial": 0,
+   "contenido_distinto_contra_oficial": 0,
+   "formacion_igual": true
+  },
+  "A1a": {
+   "olvidadas_por_pieza": 27,
+   "registros_olvidados": 5184,
+   "contenido_celdas_distintas": 0,
+   "fase_a_destino_distinto": 1,
+   "fase_a_total": 2160,
+   "directorios_celdas_distintas": 15627,
+   "test_decisiones_distintas": 0,
+   "test_cambian_por_olvidar": 0,
+   "test_n": 2162,
+   "segundos_olvidar": 0.09412693977355957,
+   "segundos_reconstruir": 30.418575763702393,
+   "segundos_construir": 29.04223871231079
+  },
+  "A1b": {
+   "transacciones_olvidadas": 213,
+   "de": 2133,
+   "directorios_celdas_distintas": 0,
+   "contenido_celdas_distintas": 0,
+   "test_decisiones_distintas": 0,
+   "test_cambian_por_olvidar": 13,
+   "test_n": 2162,
+   "segundos_olvidar": 2.6720709800720215
+  },
+  "cabeza_logistica_segundos_reentrenar": 0.3285050392150879,
+  "dir_base_igual_a_original": 0
+ },
+ "A2": {
+  "industrial_nivel1": {
+   "candle": {
+    "mae": 0.5721399176954732,
+    "knn": 1.0,
+    "ncm": 0.5285802469135803,
+    "gaussiana": 0.6733127572016461,
+    "unicas_media": 0.007407407407407408,
+    "miembros_con_unicas": 0.007407407407407408,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "capsules": {
+    "mae": 0.5161728395061729,
+    "knn": 1.0,
+    "ncm": 0.511358024691358,
+    "gaussiana": 0.7842386831275721,
+    "unicas_media": 0.014814814814814815,
+    "miembros_con_unicas": 0.014814814814814815,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "cashew": {
+    "mae": 0.5195884773662551,
+    "knn": 1.0,
+    "ncm": 0.5015637860082305,
+    "gaussiana": 0.6712345679012346,
+    "unicas_media": 0.022222222222222223,
+    "miembros_con_unicas": 0.018518518518518517,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "chewinggum": {
+    "mae": 0.5252880658436214,
+    "knn": 1.0,
+    "ncm": 0.4993827160493827,
+    "gaussiana": 0.7184362139917696,
+    "unicas_media": 0.003703703703703704,
+    "miembros_con_unicas": 0.003703703703703704,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "fryum": {
+    "mae": 0.4725514403292181,
+    "knn": 1.0,
+    "ncm": 0.46312757201646093,
+    "gaussiana": 0.6439300411522634,
+    "unicas_media": 0.003703703703703704,
+    "miembros_con_unicas": 0.003703703703703704,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "macaroni1": {
+    "mae": 0.532633744855967,
+    "knn": 1.0,
+    "ncm": 0.5124074074074074,
+    "gaussiana": 0.7025514403292181,
+    "unicas_media": 0.007407407407407408,
+    "miembros_con_unicas": 0.007407407407407408,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "macaroni2": {
+    "mae": 0.5132921810699589,
+    "knn": 1.0,
+    "ncm": 0.5031275720164609,
+    "gaussiana": 0.7873868312757202,
+    "unicas_media": 0.02962962962962963,
+    "miembros_con_unicas": 0.025925925925925925,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb1": {
+    "mae": 0.5496296296296296,
+    "knn": 1.0,
+    "ncm": 0.5244855967078189,
+    "gaussiana": 0.7019753086419753,
+    "unicas_media": 0.0,
+    "miembros_con_unicas": 0.0,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb2": {
+    "mae": 0.5093827160493827,
+    "knn": 1.0,
+    "ncm": 0.5043621399176955,
+    "gaussiana": 0.7412962962962963,
+    "unicas_media": 0.007407407407407408,
+    "miembros_con_unicas": 0.007407407407407408,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb3": {
+    "mae": 0.5315020576131687,
+    "knn": 1.0,
+    "ncm": 0.501440329218107,
+    "gaussiana": 0.7770781893004115,
+    "unicas_media": 0.014814814814814815,
+    "miembros_con_unicas": 0.011111111111111112,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb4": {
+    "mae": 0.5261316872427984,
+    "knn": 1.0,
+    "ncm": 0.5286008230452675,
+    "gaussiana": 0.7508641975308642,
+    "unicas_media": 0.003703703703703704,
+    "miembros_con_unicas": 0.003703703703703704,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pipe_fryum": {
+    "mae": 0.5367078189300412,
+    "knn": 1.0,
+    "ncm": 0.5204115226337449,
+    "gaussiana": 0.6866666666666666,
+    "unicas_media": 0.040740740740740744,
+    "miembros_con_unicas": 0.02962962962962963,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   }
+  },
+  "industrial_g2": {
+   "candle": {
+    "mae": 0.5577366255144033,
+    "knn": 1.0,
+    "ncm": 0.5139506172839506,
+    "gaussiana": 0.5189094650205761,
+    "unicas_media": 0.0,
+    "miembros_con_unicas": 0.0,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "capsules": {
+    "mae": 0.400679012345679,
+    "knn": 1.0,
+    "ncm": 0.4125514403292181,
+    "gaussiana": 0.36617283950617285,
+    "unicas_media": 0.05185185185185185,
+    "miembros_con_unicas": 0.05185185185185185,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "cashew": {
+    "mae": 0.4316872427983539,
+    "knn": 1.0,
+    "ncm": 0.4321604938271605,
+    "gaussiana": 0.42713991769547327,
+    "unicas_media": 0.018518518518518517,
+    "miembros_con_unicas": 0.018518518518518517,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "chewinggum": {
+    "mae": 0.4438683127572016,
+    "knn": 1.0,
+    "ncm": 0.43689300411522636,
+    "gaussiana": 0.43176954732510286,
+    "unicas_media": 0.018518518518518517,
+    "miembros_con_unicas": 0.018518518518518517,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "fryum": {
+    "mae": 0.4585185185185185,
+    "knn": 1.0,
+    "ncm": 0.4292798353909465,
+    "gaussiana": 0.4670576131687243,
+    "unicas_media": 0.003703703703703704,
+    "miembros_con_unicas": 0.003703703703703704,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "macaroni1": {
+    "mae": 0.4655761316872428,
+    "knn": 1.0,
+    "ncm": 0.46839506172839507,
+    "gaussiana": 0.4475925925925926,
+    "unicas_media": 0.014814814814814815,
+    "miembros_con_unicas": 0.014814814814814815,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "macaroni2": {
+    "mae": 0.4456172839506173,
+    "knn": 1.0,
+    "ncm": 0.43720164609053497,
+    "gaussiana": 0.4179835390946502,
+    "unicas_media": 0.07407407407407407,
+    "miembros_con_unicas": 0.06666666666666667,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb1": {
+    "mae": 0.4589917695473251,
+    "knn": 1.0,
+    "ncm": 0.4887448559670782,
+    "gaussiana": 0.4434362139917695,
+    "unicas_media": 0.014814814814814815,
+    "miembros_con_unicas": 0.014814814814814815,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb2": {
+    "mae": 0.4613374485596708,
+    "knn": 1.0,
+    "ncm": 0.4094238683127572,
+    "gaussiana": 0.4236831275720165,
+    "unicas_media": 0.03333333333333333,
+    "miembros_con_unicas": 0.03333333333333333,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb3": {
+    "mae": 0.4735185185185185,
+    "knn": 1.0,
+    "ncm": 0.40358024691358024,
+    "gaussiana": 0.466440329218107,
+    "unicas_media": 0.03333333333333333,
+    "miembros_con_unicas": 0.03333333333333333,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pcb4": {
+    "mae": 0.47059670781893004,
+    "knn": 1.0,
+    "ncm": 0.4595061728395062,
+    "gaussiana": 0.4756378600823045,
+    "unicas_media": 0.011111111111111112,
+    "miembros_con_unicas": 0.011111111111111112,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   },
+   "pipe_fryum": {
+    "mae": 0.5065020576131687,
+    "knn": 1.0,
+    "ncm": 0.4915637860082305,
+    "gaussiana": 0.49849794238683126,
+    "unicas_media": 0.05925925925925926,
+    "miembros_con_unicas": 0.05555555555555555,
+    "n_miembros": 270,
+    "n_no_miembros": 180
+   }
+  },
+  "medico_modalidad": {
+   "rx_torax": {
+    "mae": 0.5491161333631684,
+    "knn": 1.0,
+    "ncm": 0.5239427164913851,
+    "gaussiana": 0.7092330498993064,
+    "unicas_media": 0.03048780487804878,
+    "miembros_con_unicas": 0.03048780487804878,
+    "n_miembros": 328,
+    "n_no_miembros": 218
+   },
+   "tc_abdomen": {
+    "mae": 0.5011048332960394,
+    "knn": 1.0,
+    "ncm": 0.4851896397404341,
+    "gaussiana": 0.6178815171179235,
+    "unicas_media": 0.054878048780487805,
+    "miembros_con_unicas": 0.051829268292682924,
+    "n_miembros": 328,
+    "n_no_miembros": 218
+   },
+   "dermatoscopia": {
+    "mae": 0.5124328708883419,
+    "knn": 1.0,
+    "ncm": 0.4899865741776684,
+    "gaussiana": 0.6025537032893264,
+    "unicas_media": 0.0701219512195122,
+    "miembros_con_unicas": 0.04573170731707317,
+    "n_miembros": 328,
+    "n_no_miembros": 218
+   },
+   "us_mama": {
+    "mae": 0.5721358245692548,
+    "knn": 1.0,
+    "ncm": 0.5470043633922578,
+    "gaussiana": 0.6775844707988364,
+    "unicas_media": 0.051829268292682924,
+    "miembros_con_unicas": 0.036585365853658534,
+    "n_miembros": 328,
+    "n_no_miembros": 218
+   }
+  },
+  "medico_organos": {
+   "bladder": {
+    "mae": 0.5025083195617233,
+    "knn": 1.0,
+    "ncm": 0.5031331356258348,
+    "gaussiana": 0.5304665746043964,
+    "unicas_media": 0.00245398773006135,
+    "miembros_con_unicas": 0.00245398773006135,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "femur-left": {
+    "mae": 0.5111923573223462,
+    "knn": 1.0,
+    "ncm": 0.5096212618567904,
+    "gaussiana": 0.5283182034274331,
+    "unicas_media": 0.0049079754601227,
+    "miembros_con_unicas": 0.0036809815950920245,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "femur-right": {
+    "mae": 0.49841984922916716,
+    "knn": 1.0,
+    "ncm": 0.5042876870486497,
+    "gaussiana": 0.5491748353066352,
+    "unicas_media": 0.018404907975460124,
+    "miembros_con_unicas": 0.0036809815950920245,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "heart": {
+    "mae": 0.5015733592918751,
+    "knn": 1.0,
+    "ncm": 0.5070359722002128,
+    "gaussiana": 0.5153102573970525,
+    "unicas_media": 0.007361963190184049,
+    "miembros_con_unicas": 0.001226993865030675,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "kidney-left": {
+    "mae": 0.5400040748873747,
+    "knn": 1.0,
+    "ncm": 0.5355443370384624,
+    "gaussiana": 0.5544812441989451,
+    "unicas_media": 0.01717791411042945,
+    "miembros_con_unicas": 0.007361963190184049,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "kidney-right": {
+    "mae": 0.491861544382315,
+    "knn": 1.0,
+    "ncm": 0.4922916713829715,
+    "gaussiana": 0.5142123016322188,
+    "unicas_media": 0.007361963190184049,
+    "miembros_con_unicas": 0.0036809815950920245,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "liver": {
+    "mae": 0.500434654653295,
+    "knn": 1.0,
+    "ncm": 0.4965589839947479,
+    "gaussiana": 0.5102822991420098,
+    "unicas_media": 0.0,
+    "miembros_con_unicas": 0.0,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "lung-left": {
+    "mae": 0.5048128947547145,
+    "knn": 1.0,
+    "ncm": 0.5036923007266882,
+    "gaussiana": 0.5279175061689267,
+    "unicas_media": 0.0,
+    "miembros_con_unicas": 0.0,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "lung-right": {
+    "mae": 0.5023091028456297,
+    "knn": 1.0,
+    "ncm": 0.48971770085799016,
+    "gaussiana": 0.5164195322934825,
+    "unicas_media": 0.0,
+    "miembros_con_unicas": 0.0,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "pancreas": {
+    "mae": 0.5104701967265072,
+    "knn": 1.0,
+    "ncm": 0.5149933217123582,
+    "gaussiana": 0.5089172118715052,
+    "unicas_media": 0.00245398773006135,
+    "miembros_con_unicas": 0.001226993865030675,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   },
+   "spleen": {
+    "mae": 0.496189980304711,
+    "knn": 1.0,
+    "ncm": 0.49666085617911393,
+    "gaussiana": 0.5393747311706246,
+    "unicas_media": 0.001226993865030675,
+    "miembros_con_unicas": 0.001226993865030675,
+    "n_miembros": 815,
+    "n_no_miembros": 542
+   }
+  }
+ },
+ "segundos": 558
+}
