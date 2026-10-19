@@ -1,0 +1,41 @@
+Exp21: memoria única (M) contra especialistas (sin directorio) y protocolo transactivo, mismo contenido.
+
+[nivel2_us_mama] n=156  términos: {'malignant': 'malignant', 'normal-benign': 'benign normal'}
+  M (única)        : acierto  76.9 · rechazo   3.2 · falso  19.9 · respondido  79.5 · balanceado  63.2
+      falsos: malignant->normal-benign 27, normal-benign->malignant 4
+  T-especialistas  : acierto  78.8 · rechazo   3.2 · falso  17.9 · respondido  81.5 · balanceado  66.7
+      falsos: malignant->normal-benign 24, normal-benign->malignant 4
+  T-protocolo      : acierto  88.5 · rechazo   1.9 · falso   9.6 · respondido  90.2 · balanceado  82.3
+      falsos: malignant->normal-benign 11, normal-benign->malignant 4
+
+[nivel1] n=1056  términos: {'rx_torax': 'chest radiograph', 'tc_abdomen': 'abdominal tomography', 'dermatoscopia': 'skin dermoscopy', 'us_mama': 'breast ultrasound'}
+  M (única)        : acierto  93.0 · rechazo   5.7 · falso   1.3 · respondido  98.6 · balanceado  93.4
+      falsos: tc_abdomen->us_mama 9, rx_torax->us_mama 2, us_mama->tc_abdomen 2, dermatoscopia->us_mama 1
+  T-especialistas  : acierto  93.1 · rechazo   5.7 · falso   1.2 · respondido  98.7 · balanceado  93.5
+      falsos: rx_torax->dermatoscopia 5, tc_abdomen->us_mama 3, us_mama->tc_abdomen 2, rx_torax->us_mama 1, tc_abdomen->dermatoscopia 1
+  T-protocolo      : acierto  85.7 · rechazo  13.6 · falso   0.7 · respondido  99.2 · balanceado  86.0
+      falsos: us_mama->tc_abdomen 3, tc_abdomen->us_mama 2, tc_abdomen->dermatoscopia 1, dermatoscopia->us_mama 1
+
+[nivel2_dermatoscopia] n=964  términos: {'actinic-keratosis': 'actinic keratosis', 'basal-cell-carcinoma': 'basal cell carcinoma', 'benign-keratosis': 'benign keratosis', 'dermatofibroma': 'skin fibroma', 'melanoma': 'melanoma', 'melanocytic-nevus': 'melanocytic nevus', 'vascular-lesion': 'vascular lesion'}
+  M (única)        : acierto  72.9 · rechazo   4.8 · falso  22.3 · respondido  76.6 · balanceado  63.1
+      falsos: melanoma->benign-keratosis 29, melanocytic-nevus->melanoma 29, melanoma->melanocytic-nevus 26, actinic-keratosis->benign-keratosis 22, benign-keratosis->melanoma 20
+  T-especialistas  : acierto  72.3 · rechazo   4.8 · falso  22.9 · respondido  75.9 · balanceado  63.1
+      falsos: melanocytic-nevus->melanoma 37, benign-keratosis->melanoma 27, melanoma->melanocytic-nevus 25, melanoma->benign-keratosis 21, benign-keratosis->melanocytic-nevus 19
+  T-protocolo      : acierto  72.7 · rechazo   6.3 · falso  21.0 · respondido  77.6 · balanceado  64.5
+      falsos: melanocytic-nevus->melanoma 48, melanoma->benign-keratosis 26, benign-keratosis->melanoma 25, melanocytic-nevus->benign-keratosis 22, melanoma->melanocytic-nevus 13
+
+[nivel2_tc_abdomen] n=3300  términos: {'bladder': 'bladder', 'femur-left': 'femur left', 'femur-right': 'femur right', 'heart': 'heart', 'kidney-left': 'kidney left', 'kidney-right': 'kidney right', 'liver': 'liver', 'lung-left': 'lung left', 'lung-right': 'lung right', 'pancreas': 'pancreas', 'spleen': 'spleen'}
+  M (única)        : acierto  90.7 · rechazo   6.0 · falso   3.3 · respondido  96.5 · balanceado  90.7
+      falsos: bladder->kidney-right 16, kidney-left->spleen 13, kidney-left->kidney-right 12, bladder->kidney-left 11, femur-left->femur-right 11
+  T-especialistas  : acierto  90.8 · rechazo   6.0 · falso   3.2 · respondido  96.6 · balanceado  90.8
+      falsos: kidney-left->spleen 14, bladder->kidney-right 13, kidney-right->kidney-left 12, bladder->kidney-left 11, femur-left->femur-right 11
+  T-protocolo      : acierto  87.7 · rechazo  10.0 · falso   2.3 · respondido  97.4 · balanceado  87.7
+      falsos: kidney-left->spleen 11, kidney-right->kidney-left 11, femur-left->femur-right 10, bladder->kidney-right 9, bladder->kidney-left 8
+
+[nivel2_rx_torax] n=3345  términos: {'sin-hallazgo': 'no finding', 'atelectasis': 'atelectasis', 'cardiomegaly': 'cardiomegaly', 'effusion': 'effusion', 'infiltration': 'infiltration', 'mass': 'mass', 'nodule': 'nodule', 'pneumonia': 'pneumonia', 'pneumothorax': 'pneumothorax', 'consolidation': 'consolidation', 'edema': 'edema', 'emphysema': 'emphysema', 'fibrosis': 'fibrosis', 'pleural': 'pleural thickening'}
+  M (única)        : acierto  14.1 · rechazo   0.6 · falso  85.4 · respondido  14.1 · balanceado  13.1
+      falsos: nodule->pleural 240, mass->pleural 227, sin-hallazgo->pleural 218, pneumothorax->pleural 215, infiltration->pleural 201
+  T-especialistas  : acierto  24.8 · rechazo   0.6 · falso  74.6 · respondido  24.9 · balanceado  24.4
+      falsos: pneumothorax->emphysema 48, consolidation->effusion 47, nodule->mass 46, infiltration->consolidation 43, consolidation->edema 39
+  T-protocolo      : acierto  22.4 · rechazo   1.1 · falso  76.5 · respondido  22.7 · balanceado  23.0
+      falsos: infiltration->consolidation 66, pneumothorax->emphysema 61, atelectasis->consolidation 58, sin-hallazgo->pleural 57, nodule->pleural 55
