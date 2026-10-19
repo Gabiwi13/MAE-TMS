@@ -1,0 +1,107 @@
+Exp28: curva de aprendizaje en BreastMNIST (test fijo: 42 malignos, 114 benignos). Media de 5 semillas [mín, máx].
+
+[brazo A · registro completo]
+  acierto balanceado
+    memoria     25 %  53.1 [ 45.0,  58.6]   50 %  70.3 [ 68.6,  71.6]   75 %  74.2 [ 66.8,  78.3]  100 %  76.6 [ 73.9,  79.5]
+    prototipos  25 %  85.5 [ 84.6,  85.9]   50 %  85.9 [ 85.9,  85.9]   75 %  84.9 [ 83.5,  85.9]  100 %  85.4 [ 83.5,  85.9]
+    kNN         25 %  85.3 [ 84.7,  85.9]   50 %  85.2 [ 84.7,  85.9]   75 %  85.0 [ 83.4,  85.9]  100 %  84.8 [ 83.4,  85.9]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  sensibilidad estricta
+    memoria     25 %  28.6 [ 11.9,  45.2]   50 %  51.4 [ 47.6,  54.8]   75 %  56.7 [ 47.6,  61.9]  100 %  59.5 [ 54.8,  64.3]
+    prototipos  25 %  76.2 [ 76.2,  76.2]   50 %  76.2 [ 76.2,  76.2]   75 %  74.3 [ 71.4,  76.2]  100 %  75.2 [ 71.4,  76.2]
+    kNN         25 %  75.7 [ 73.8,  76.2]   50 %  75.7 [ 73.8,  76.2]   75 %  75.2 [ 73.8,  76.2]  100 %  74.8 [ 73.8,  76.2]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  especificidad
+    memoria     25 %  77.7 [ 71.9,  83.3]   50 %  89.1 [ 82.5,  95.6]   75 %  91.8 [ 86.0,  94.7]  100 %  93.7 [ 93.0,  94.7]
+    prototipos  25 %  94.7 [ 93.0,  95.6]   50 %  95.6 [ 95.6,  95.6]   75 %  95.6 [ 95.6,  95.6]  100 %  95.6 [ 95.6,  95.6]
+    kNN         25 %  94.9 [ 93.9,  95.6]   50 %  94.7 [ 93.9,  95.6]   75 %  94.7 [ 93.0,  95.6]  100 %  94.9 [ 93.0,  95.6]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  AUROC prototipos  25 % 0.936 [0.935, 0.937]   50 % 0.937 [0.936, 0.937]   75 % 0.937 [0.936, 0.937]  100 % 0.937 [0.937, 0.937]
+  AUROC kNN         25 % 0.904 [0.885, 0.922]   50 % 0.901 [0.874, 0.920]   75 % 0.906 [0.887, 0.922]  100 % 0.905 [0.896, 0.916]
+  AUROC cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  rechazo memoria  25 %  26.8 [ 24.4,  30.8]   50 %   9.7 [  2.6,  15.4]   75 %   6.0 [  3.8,  10.3]  100 %   4.2 [  2.6,   5.8]
+   25 %: a revisión 33.5 % · malignos que escapan en silencio memoria 8.8 · benignos a revisión memoria 28.4 · estados desconocido 17.2, claro_S 130.6, ambiguo 8.2, claro_con_protocolo_distinto 26.8
+   50 %: a revisión 26.0 % · malignos que escapan en silencio memoria 5.6 · benignos a revisión memoria 18.6 · estados desconocido 6.2, claro_S 127.4, ambiguo 22.4, claro_con_protocolo_distinto 12.0
+   75 %: a revisión 26.5 % · malignos que escapan en silencio memoria 4.6 · benignos a revisión memoria 18.0 · estados desconocido 3.8, claro_S 122.6, ambiguo 29.6, claro_con_protocolo_distinto 8.0
+  100 %: a revisión 28.5 % · malignos que escapan en silencio memoria 4.0 · benignos a revisión memoria 19.6 · estados desconocido 3.0, claro_S 117.0, ambiguo 36.0, claro_con_protocolo_distinto 5.4
+
+[brazo A · registro igualado]
+  acierto balanceado
+    memoria     25 %  30.9 [ 22.6,  41.0]   50 %  62.6 [ 59.1,  67.8]   75 %  72.7 [ 71.5,  74.6]  100 %  76.6 [ 73.8,  81.1]
+    prototipos  25 %  85.1 [ 84.1,  85.9]   50 %  85.6 [ 84.6,  85.9]   75 %  84.7 [ 83.5,  85.9]  100 %  85.3 [ 83.5,  85.9]
+    kNN         25 %  85.1 [ 84.6,  86.2]   50 %  85.4 [ 83.7,  86.5]   75 %  85.2 [ 83.7,  85.9]  100 %  85.4 [ 84.1,  85.9]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  sensibilidad estricta
+    memoria     25 %  20.5 [  9.5,  28.6]   50 %  54.8 [ 42.9,  61.9]   75 %  69.0 [ 64.3,  73.8]  100 %  69.0 [ 64.3,  76.2]
+    prototipos  25 %  75.7 [ 73.8,  76.2]   50 %  76.2 [ 76.2,  76.2]   75 %  74.3 [ 71.4,  76.2]  100 %  75.2 [ 71.4,  76.2]
+    kNN         25 %  76.7 [ 76.2,  78.6]   50 %  77.1 [ 76.2,  81.0]   75 %  76.7 [ 76.2,  78.6]  100 %  76.7 [ 76.2,  78.6]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  especificidad
+    memoria     25 %  41.4 [ 23.7,  53.5]   50 %  70.4 [ 65.8,  75.4]   75 %  76.3 [ 71.9,  80.7]  100 %  84.2 [ 82.5,  86.0]
+    prototipos  25 %  94.6 [ 92.1,  95.6]   50 %  95.1 [ 93.0,  95.6]   75 %  95.1 [ 93.9,  95.6]  100 %  95.4 [ 94.7,  95.6]
+    kNN         25 %  93.5 [ 93.0,  93.9]   50 %  93.7 [ 91.2,  95.6]   75 %  93.7 [ 91.2,  95.6]  100 %  94.0 [ 92.1,  95.6]
+    cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  AUROC prototipos  25 % 0.936 [0.935, 0.938]   50 % 0.936 [0.935, 0.937]   75 % 0.936 [0.935, 0.937]  100 % 0.936 [0.936, 0.937]
+  AUROC kNN         25 % 0.893 [0.884, 0.897]   50 % 0.906 [0.884, 0.922]   75 % 0.918 [0.902, 0.928]  100 % 0.917 [0.903, 0.929]
+  AUROC cabeza      25 %       —   50 %       —   75 %       —  100 %       —
+  rechazo memoria  25 %  60.3 [ 48.1,  74.4]   50 %  24.4 [ 19.2,  30.1]   75 %  16.0 [ 14.7,  16.7]  100 %  10.3 [  8.3,  12.8]
+   25 %: a revisión 63.8 % · malignos que escapan en silencio memoria 4.4 · benignos a revisión memoria 69.8 · estados desconocido 32.6, claro_S 120.0, ambiguo 3.4, claro_con_protocolo_distinto 63.6
+   50 %: a revisión 34.0 % · malignos que escapan en silencio memoria 5.4 · benignos a revisión memoria 35.6 · estados desconocido 12.6, claro_S 131.0, ambiguo 12.4, claro_con_protocolo_distinto 28.0
+   75 %: a revisión 30.8 % · malignos que escapan en silencio memoria 4.2 · benignos a revisión memoria 32.6 · estados desconocido 8.2, claro_S 125.8, ambiguo 22.0, claro_con_protocolo_distinto 17.8
+  100 %: a revisión 28.7 % · malignos que escapan en silencio memoria 3.8 · benignos a revisión memoria 27.0 · estados desconocido 6.8, claro_S 121.6, ambiguo 27.6, claro_con_protocolo_distinto 10.4
+
+[brazo B · registro completo]
+  acierto balanceado
+    memoria     25 %  45.1 [ 38.7,  49.8]   50 %  63.2 [ 57.1,  68.9]   75 %  73.4 [ 70.5,  75.3]  100 %  77.3 [ 74.8,  78.6]
+    prototipos  25 %  72.6 [ 69.2,  77.7]   50 %  77.9 [ 75.1,  79.9]   75 %  83.2 [ 81.1,  85.2]  100 %  86.1 [ 83.4,  88.7]
+    kNN         25 %  72.7 [ 70.0,  77.6]   50 %  78.0 [ 75.5,  79.9]   75 %  84.0 [ 81.0,  87.5]  100 %  86.3 [ 84.0,  88.3]
+    cabeza      25 %  72.6 [ 69.0,  77.1]   50 %  77.5 [ 74.9,  79.6]   75 %  84.8 [ 81.6,  88.6]  100 %  85.1 [ 82.6,  88.3]
+  sensibilidad estricta
+    memoria     25 %  14.3 [  7.1,  28.6]   50 %  39.5 [ 31.0,  50.0]   75 %  56.2 [ 52.4,  61.9]  100 %  61.9 [ 57.1,  64.3]
+    prototipos  25 %  48.6 [ 40.5,  57.1]   50 %  61.0 [ 57.1,  64.3]   75 %  72.4 [ 66.7,  73.8]  100 %  77.6 [ 73.8,  81.0]
+    kNN         25 %  49.5 [ 40.5,  59.5]   50 %  60.5 [ 57.1,  64.3]   75 %  72.9 [ 69.0,  78.6]  100 %  76.7 [ 71.4,  81.0]
+    cabeza      25 %  49.5 [ 38.1,  59.5]   50 %  60.0 [ 52.4,  64.3]   75 %  75.7 [ 71.4,  83.3]  100 %  76.7 [ 71.4,  83.3]
+  especificidad
+    memoria     25 %  76.0 [ 70.2,  86.0]   50 %  86.8 [ 83.3,  93.0]   75 %  90.5 [ 88.6,  93.9]  100 %  92.6 [ 87.7,  94.7]
+    prototipos  25 %  96.7 [ 93.9, 100.0]   50 %  94.9 [ 93.0,  97.4]   75 %  94.0 [ 89.5,  96.5]  100 %  94.6 [ 92.1,  96.5]
+    kNN         25 %  96.0 [ 93.9, 100.0]   50 %  95.6 [ 93.9,  97.4]   75 %  95.1 [ 93.0,  96.5]  100 %  96.0 [ 93.0,  98.2]
+    cabeza      25 %  95.6 [ 93.9, 100.0]   50 %  95.1 [ 93.0,  97.4]   75 %  93.9 [ 89.5,  96.5]  100 %  93.5 [ 88.6,  96.5]
+  AUROC prototipos  25 % 0.854 [0.799, 0.913]   50 % 0.883 [0.843, 0.906]   75 % 0.914 [0.897, 0.938]  100 % 0.923 [0.911, 0.937]
+  AUROC kNN         25 % 0.734 [0.702, 0.781]   50 % 0.797 [0.766, 0.817]   75 % 0.878 [0.844, 0.917]  100 % 0.889 [0.867, 0.908]
+  AUROC cabeza      25 % 0.854 [0.797, 0.911]   50 % 0.884 [0.845, 0.910]   75 % 0.915 [0.897, 0.940]  100 % 0.923 [0.912, 0.939]
+  rechazo memoria  25 %  32.8 [ 24.4,  41.0]   50 %  13.7 [ 10.3,  18.6]   75 %   6.4 [  4.5,  10.3]  100 %   5.0 [  1.3,   7.7]
+   25 %: a revisión 36.0 % · malignos que escapan en silencio memoria 11.2, cabeza 8.4, mondrian 5.6 · benignos a revisión memoria 31.2, cabeza 31.6, mondrian 43.2 · estados desconocido 28.6, claro_S 127.4, ambiguo 0.0, claro_con_protocolo_distinto 27.6
+   50 %: a revisión 19.4 % · malignos que escapan en silencio memoria 12.0, cabeza 9.4, mondrian 5.0 · benignos a revisión memoria 15.6, cabeza 15.0, mondrian 21.4 · estados desconocido 9.0, claro_S 138.8, ambiguo 8.2, claro_con_protocolo_distinto 13.0
+   75 %: a revisión 21.8 % · malignos que escapan en silencio memoria 7.6, cabeza 4.2, mondrian 2.8 · benignos a revisión memoria 19.2, cabeza 17.4, mondrian 27.0 · estados desconocido 3.6, claro_S 131.2, ambiguo 21.2, claro_con_protocolo_distinto 9.2
+  100 %: a revisión 26.5 % · malignos que escapan en silencio memoria 5.0, cabeza 3.6, mondrian 3.2 · benignos a revisión memoria 23.0, cabeza 23.6, mondrian 32.6 · estados desconocido 4.2, claro_S 120.8, ambiguo 31.0, claro_con_protocolo_distinto 6.2
+
+[brazo B · registro igualado]
+  acierto balanceado
+    memoria     25 %  22.1 [ 11.6,  30.6]   50 %  53.0 [ 48.7,  59.0]   75 %  71.4 [ 66.9,  77.3]  100 %  75.8 [ 66.6,  81.1]
+    prototipos  25 %  72.8 [ 70.0,  77.7]   50 %  78.2 [ 75.5,  79.9]   75 %  83.5 [ 81.1,  86.3]  100 %  86.2 [ 83.4,  88.7]
+    kNN         25 %  73.0 [ 70.0,  77.1]   50 %  78.0 [ 76.3,  79.6]   75 %  84.1 [ 82.1,  87.4]  100 %  86.5 [ 83.8,  89.0]
+    cabeza      25 %  72.6 [ 69.0,  77.1]   50 %  77.5 [ 74.9,  79.6]   75 %  84.8 [ 81.6,  88.6]  100 %  85.1 [ 82.6,  88.3]
+  sensibilidad estricta
+    memoria     25 %  11.4 [  2.4,  26.2]   50 %  40.5 [ 31.0,  50.0]   75 %  65.7 [ 61.9,  73.8]  100 %  71.9 [ 59.5,  83.3]
+    prototipos  25 %  49.0 [ 40.5,  57.1]   50 %  61.4 [ 57.1,  64.3]   75 %  72.9 [ 66.7,  76.2]  100 %  78.1 [ 73.8,  81.0]
+    kNN         25 %  50.5 [ 40.5,  59.5]   50 %  61.0 [ 59.5,  64.3]   75 %  74.3 [ 69.0,  81.0]  100 %  79.5 [ 73.8,  83.3]
+    cabeza      25 %  49.5 [ 38.1,  59.5]   50 %  60.0 [ 52.4,  64.3]   75 %  75.7 [ 71.4,  83.3]  100 %  76.7 [ 71.4,  83.3]
+  especificidad
+    memoria     25 %  32.8 [ 18.4,  39.5]   50 %  65.6 [ 57.0,  72.8]   75 %  77.0 [ 71.9,  82.5]  100 %  79.6 [ 73.7,  82.5]
+    prototipos  25 %  96.5 [ 93.9, 100.0]   50 %  94.9 [ 92.1,  97.4]   75 %  94.2 [ 89.5,  96.5]  100 %  94.4 [ 91.2,  96.5]
+    kNN         25 %  95.6 [ 93.9, 100.0]   50 %  95.1 [ 93.0,  97.4]   75 %  93.9 [ 90.4,  95.6]  100 %  93.5 [ 89.5,  96.5]
+    cabeza      25 %  95.6 [ 93.9, 100.0]   50 %  95.1 [ 93.0,  97.4]   75 %  93.9 [ 89.5,  96.5]  100 %  93.5 [ 88.6,  96.5]
+  AUROC prototipos  25 % 0.854 [0.799, 0.913]   50 % 0.883 [0.844, 0.906]   75 % 0.914 [0.897, 0.938]  100 % 0.922 [0.911, 0.938]
+  AUROC kNN         25 % 0.736 [0.702, 0.779]   50 % 0.797 [0.766, 0.819]   75 % 0.889 [0.866, 0.927]  100 % 0.894 [0.877, 0.918]
+  AUROC cabeza      25 % 0.854 [0.797, 0.911]   50 % 0.884 [0.845, 0.910]   75 % 0.915 [0.897, 0.940]  100 % 0.923 [0.912, 0.939]
+  rechazo memoria  25 %  69.4 [ 63.5,  82.1]   50 %  33.6 [ 28.2,  39.1]   75 %  17.3 [ 11.5,  23.1]  100 %  12.4 [  8.3,  18.6]
+   25 %: a revisión 71.0 % · malignos que escapan en silencio memoria 4.8, cabeza 2.2, mondrian 0.4 · benignos a revisión memoria 78.2, cabeza 75.6, mondrian 94.2 · estados desconocido 49.8, claro_S 106.2, ambiguo 0.0, claro_con_protocolo_distinto 61.0
+   50 %: a revisión 35.9 % · malignos que escapan en silencio memoria 7.6, cabeza 5.2, mondrian 3.4 · benignos a revisión memoria 37.6, cabeza 31.4, mondrian 42.6 · estados desconocido 18.6, claro_S 133.8, ambiguo 3.6, claro_con_protocolo_distinto 33.8
+   75 %: a revisión 28.5 % · malignos que escapan en silencio memoria 5.4, cabeza 3.6, mondrian 3.0 · benignos a revisión memoria 31.6, cabeza 25.2, mondrian 35.2 · estados desconocido 11.8, claro_S 131.0, ambiguo 13.2, claro_con_protocolo_distinto 19.4
+  100 %: a revisión 30.1 % · malignos que escapan en silencio memoria 4.2, cabeza 3.4, mondrian 2.8 · benignos a revisión memoria 32.4, cabeza 27.8, mondrian 37.0 · estados desconocido 7.8, claro_S 123.2, ambiguo 25.0, claro_con_protocolo_distinto 14.2
+
+[semilla 42, 100 %: sensibilidad con IC de Wilson al 95 %]
+  brazo A · completo: prot 27/42 [49, 77] · proto 32/42 [61, 87] · knn 31/42 [59, 85]
+  brazo A · igualado: prot 29/42 [54, 81] · proto 32/42 [61, 87] · knn 32/42 [61, 87]
+  brazo B · completo: prot 26/42 [47, 75] · proto 34/42 [67, 90] · knn 32/42 [61, 87] · cabeza 30/42 [56, 83]
+  brazo B · igualado: prot 25/42 [44, 73] · proto 34/42 [67, 90] · knn 34/42 [67, 90] · cabeza 30/42 [56, 83]
