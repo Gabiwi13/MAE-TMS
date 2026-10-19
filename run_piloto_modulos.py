@@ -331,7 +331,7 @@ def evaluate(fleet, Qs, C, eval_set, log, mods, rng):
         z = C[f"q_{p}"][j][0] if known else C[f"u_{p}"][j]
         entry = int(act[rng.randint(len(act))])
         cand = fleet.candidates(z)
-        r = {"pieza": p if known else None, "dominio": p}
+        r = {"pieza": p if known else None, "dominio": p, "j": int(j), "entrada": entry}
         for name in ("r1", "r2"):
             w, c = fleet.route(z, entry, name)
             r[name], r[f"{name}_consultados"] = w, c

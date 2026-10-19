@@ -1,0 +1,20 @@
+Etapa 1: ruteo dirigido (propuesta_etapa1_ruteo_dirigido.md). Misma flota, consultas y aprendizaje que el piloto.
+823 consultas conocidas, 756 desconocidas.
+
+ método        acierto · abst. conocidas · acierto respondido · abst. desconocidas · costo medio (conocidas) · respaldo por contenido · al mejor
+ r2            80.8 ·   8.9 ·  88.7 · 100.0 ·  19.2 ·   0.0 ·  79.0
+ central       88.3 ·   1.2 ·  89.4 · 100.0 ·   nan ·   0.0 ·  71.6
+ compuerta     87.8 ·   2.2 ·  89.8 · 100.0 ·   nan ·   0.0 ·  85.7
+ todos         86.3 ·   4.7 ·  90.6 · 100.0 ·  24.0 · 100.0 ·  76.2
+ r3_0          83.6 ·   3.4 ·  86.5 · 100.0 ·  12.6 ·  17.0 ·  56.3
+ r3_1          83.4 ·   3.0 ·  86.0 · 100.0 ·  11.6 ·  14.2 ·  54.7
+ r3_2          83.4 ·   3.0 ·  86.0 · 100.0 ·  11.5 ·  14.0 ·  54.8
+ r3_3          83.4 ·   3.0 ·  86.0 · 100.0 ·  11.5 ·  14.0 ·  54.8
+  r3_0: directorios leídos en conocidas: mediana 7, p90 18, máx 22
+  r3_1: directorios leídos en conocidas: mediana 7, p90 17, máx 22
+  r3_2: directorios leídos en conocidas: mediana 7, p90 17, máx 22
+  r3_3: directorios leídos en conocidas: mediana 7, p90 17, máx 22
+
+[criterio] {"r3_0": {"diferencia_con_central": 0.047387606318347486, "costo": 12.583232077764277, "al_mejor": 0.5625394699768391, "abst_desconocidas": 1.0, "sostenido": false}, "r3_1": {"diferencia_con_central": 0.049817739975698716, "costo": 11.596597812879708, "al_mejor": 0.5469243298328016, "abst_desconocidas": 1.0, "sostenido": false}, "r3_2": {"diferencia_con_central": 0.049817739975698716, "costo": 11.53584447144593, "al_mejor": 0.5480807924178357, "abst_desconocidas": 1.0, "sostenido": false}, "r3_3": {"diferencia_con_central": 0.049817739975698716, "costo": 11.53584447144593, "al_mejor": 0.5480807924178357, "abst_desconocidas": 1.0, "sostenido": false}}
+
+Tiempo total: 2 min
