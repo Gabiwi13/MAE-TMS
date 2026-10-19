@@ -1,0 +1,101 @@
+Experimento de cierre (propuesta_cierre_mae.md). WideResNet50-2 de ImageNet.
+
+[parte 1 · global] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal  98.9 · memoria   1.0 /   1.0 · memoria_graduada   1.0 /   0.0 (0.505) · knn_euclid  21.0 /   1.0 (0.845) · maha  23.0 /   2.0 (0.836)
+    capsules    acepta cal  96.7 · memoria   1.0 /   0.0 · memoria_graduada   1.0 /   0.0 (0.505) · knn_euclid   6.0 /   0.0 (0.607) · maha   6.0 /   0.0 (0.571)
+    cashew      acepta cal 100.0 · memoria   2.0 /   0.0 · memoria_graduada   2.0 /   0.0 (0.510) · knn_euclid  11.0 /   0.0 (0.910) · maha  34.0 /   0.0 (0.926)
+    chewinggum  acepta cal  98.3 · memoria  14.0 /   0.0 · memoria_graduada  14.0 /   0.0 (0.570) · knn_euclid  53.0 /   2.0 (0.864) · maha  71.0 /   2.0 (0.907)
+    fryum       acepta cal  99.4 · memoria   4.0 /   0.0 · memoria_graduada   4.0 /   0.0 (0.520) · knn_euclid  24.0 /   0.0 (0.860) · maha  28.0 /   0.0 (0.850)
+    macaroni1   acepta cal  98.9 · memoria   0.0 /   0.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn_euclid   6.0 /   5.0 (0.725) · maha  13.0 /   3.0 (0.756)
+    macaroni2   acepta cal  98.9 · memoria   2.0 /   0.0 · memoria_graduada   2.0 /   0.0 (0.510) · knn_euclid   1.0 /   5.0 (0.577) · maha   0.0 /   1.0 (0.614)
+    pcb1        acepta cal  99.4 · memoria   5.0 /   2.0 · memoria_graduada   5.0 /   2.0 (0.515) · knn_euclid  22.0 /   3.0 (0.801) · maha  29.0 /   2.0 (0.849)
+    pcb2        acepta cal  99.4 · memoria  11.0 /   0.0 · memoria_graduada  11.0 /   0.0 (0.555) · knn_euclid  18.0 /   1.0 (0.830) · maha  36.0 /   1.0 (0.888)
+    pcb3        acepta cal  98.3 · memoria   0.0 /   1.0 · memoria_graduada   0.0 /   1.0 (0.495) · knn_euclid  25.0 /   4.0 (0.709) · maha  27.0 /   2.0 (0.759)
+    pcb4        acepta cal  99.4 · memoria   8.0 /   0.0 · memoria_graduada   8.0 /   0.0 (0.540) · knn_euclid  45.0 /   1.0 (0.958) · maha  56.0 /   1.0 (0.959)
+    pipe_fryum  acepta cal  98.3 · memoria  22.0 /   4.0 · memoria_graduada  22.0 /   4.0 (0.591) · knn_euclid  15.0 /   0.0 (0.770) · maha  36.0 /   0.0 (0.818)
+    media       acepta cal  98.8 · memoria   5.8 /   0.7 · memoria_graduada   5.8 /   0.6 (0.526) · knn_euclid  20.6 /   1.8 (0.788) · maha  29.9 /   1.2 (0.811)
+    memoria más de 2 puntos por debajo del mejor detector en 11/12 piezas
+
+[parte 1 · parches] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal  90.6 · memoria  51.0 /  13.0 · memoria_graduada  51.0 /  13.0 (0.694) · knn  85.0 /   7.0 (0.965) · maha  43.0 /  11.0 (0.797) · patchcore_1536  78.0 /   6.0 (0.948)
+    capsules    acepta cal  88.3 · memoria  17.0 /  16.7 · memoria_graduada  17.0 /  16.7 (0.502) · knn  34.0 /  20.0 (0.620) · maha  17.0 /  10.0 (0.603) · patchcore_1536  48.0 /  18.3 (0.709)
+    cashew      acepta cal  93.3 · memoria  33.0 /   6.0 · memoria_graduada  33.0 /   6.0 (0.635) · knn  61.0 /   2.0 (0.898) · maha  12.0 /   2.0 (0.608) · patchcore_1536  83.0 /   2.0 (0.969)
+    chewinggum  acepta cal  88.3 · memoria  40.0 /  10.0 · memoria_graduada  40.0 /  10.0 (0.650) · knn  84.0 /  10.0 (0.926) · maha  23.0 /  10.0 (0.599) · patchcore_1536  94.0 /  10.0 (0.975)
+    fryum       acepta cal  93.3 · memoria  35.0 /   6.0 · memoria_graduada  35.0 /   6.0 (0.645) · knn  56.0 /   4.0 (0.876) · maha  15.0 /   2.0 (0.531) · patchcore_1536  67.0 /   4.0 (0.891)
+    macaroni1   acepta cal  90.0 · memoria  23.0 /  12.0 · memoria_graduada  23.0 /  12.0 (0.554) · knn  39.0 /   7.0 (0.796) · maha   4.0 /  16.0 (0.368) · patchcore_1536  53.0 /   8.0 (0.851)
+    macaroni2   acepta cal  92.2 · memoria  11.0 /  11.0 · memoria_graduada  11.0 /  11.0 (0.501) · knn   9.0 /  16.0 (0.502) · maha   9.0 /  10.0 (0.528) · patchcore_1536  21.0 /  14.0 (0.613)
+    pcb1        acepta cal  92.2 · memoria  19.0 /   7.0 · memoria_graduada  19.0 /   7.0 (0.560) · knn  74.0 /  15.0 (0.883) · maha  13.0 /  18.0 (0.721) · patchcore_1536  80.0 /  15.0 (0.897)
+    pcb2        acepta cal  91.1 · memoria  19.0 /  10.0 · memoria_graduada  19.0 /  10.0 (0.546) · knn  67.0 /  12.0 (0.855) · maha  13.0 /   9.0 (0.504) · patchcore_1536  67.0 /   5.0 (0.914)
+    pcb3        acepta cal  92.2 · memoria  24.0 /   5.9 · memoria_graduada  24.0 /   5.9 (0.591) · knn  59.0 /  11.9 (0.826) · maha  13.0 /  12.9 (0.482) · patchcore_1536  62.0 /   6.9 (0.881)
+    pcb4        acepta cal  92.2 · memoria  22.0 /   8.9 · memoria_graduada  22.0 /   8.9 (0.565) · knn  96.0 /  16.8 (0.981) · maha   3.0 /   7.9 (0.353) · patchcore_1536  98.0 /  12.9 (0.985)
+    pipe_fryum  acepta cal  91.1 · memoria  27.0 /  16.0 · memoria_graduada  27.0 /  16.0 (0.553) · knn  90.0 /   8.0 (0.971) · maha  22.0 /  22.0 (0.512) · patchcore_1536  96.0 /   6.0 (0.993)
+    media       acepta cal  91.3 · memoria  26.8 /  10.2 · memoria_graduada  26.8 /  10.2 (0.583) · knn  62.8 /  10.8 (0.842) · maha  15.6 /  10.9 (0.550) · patchcore_1536  70.6 /   9.0 (0.886)
+    memoria más de 2 puntos por debajo del mejor detector en 12/12 piezas
+
+[parte 2 · red especializada, fallas de tipos conocidos] por esquema: memoria detección / falsa alarma (abstención en fallas / normales) · detectores a la aceptación de calibración del esquema
+  candle      fallas entren/test 48/28 · AUROC cabeza 0.994 · maha 0.985 · memoria graduada 0.909 · kNN 2 clases  85.7 /   2.0 · cabeza argmax  89.3 /   3.0
+      solo_buenas:  82.1 /   1.0 (  0.0/  0.0) [cal 100.0; cabeza  92.9 /   3.0, knn  92.9, maha  89.3]
+      solo_malas:  85.7 /   2.0 (  0.0/  0.0) [cal 100.0; cabeza  92.9 /   3.0, knn  92.9, maha  89.3]
+      ambas:  85.7 /   2.0 (  3.6/  0.0) [cal 100.0; cabeza  92.9 /   3.0, knn  92.9, maha  89.3]
+  capsules    fallas entren/test 60/40 · AUROC cabeza 0.955 · maha 0.803 · memoria graduada 0.613 · kNN 2 clases  65.0 /   5.0 · cabeza argmax  82.5 /   6.7
+      solo_buenas:  22.5 /   0.0 (  0.0/  0.0) [cal  99.4; cabeza  32.5 /   0.0, knn  32.5, maha  32.5]
+      solo_malas:  97.5 /  15.0 (  0.0/  0.0) [cal  75.0; cabeza  97.5 /  16.7, knn  80.0, maha  70.0]
+      ambas:  82.5 /   6.7 (  0.0/  0.0) [cal  89.4; cabeza  82.5 /   6.7, knn  67.5, maha  67.5]
+  cashew      fallas entren/test 50/30 · AUROC cabeza 0.996 · maha 0.989 · memoria graduada 0.750 · kNN 2 clases  90.0 /   2.0 · cabeza argmax  96.7 /   4.0
+      solo_buenas:  50.0 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  73.3 /   0.0, knn  73.3, maha  53.3]
+      solo_malas:  93.3 /   6.0 (  0.0/  0.0) [cal  95.0; cabeza  96.7 /   4.0, knn  96.7, maha  90.0]
+      ambas:  90.0 /   2.0 (  3.3/  0.0) [cal  97.2; cabeza  96.7 /   4.0, knn  96.7, maha  83.3]
+  chewinggum  fallas entren/test 33/20 · AUROC cabeza 1.000 · maha 0.994 · memoria graduada 0.925 · kNN 2 clases  85.0 /   0.0 · cabeza argmax  75.0 /   0.0
+      solo_buenas:  85.0 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  90.0 /   0.0, knn  90.0, maha  90.0]
+      solo_malas:  85.0 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  90.0 /   0.0, knn  90.0, maha  90.0]
+      ambas:  85.0 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  90.0 /   0.0, knn  90.0, maha  90.0]
+  fryum       fallas entren/test 50/29 · AUROC cabeza 1.000 · maha 0.999 · memoria graduada 0.966 · kNN 2 clases  93.1 /   0.0 · cabeza argmax  93.1 /   0.0
+      solo_buenas:  93.1 /   0.0 (  0.0/  0.0) [cal  98.9; cabeza  96.6 /   0.0, knn  96.6, maha 100.0]
+      solo_malas:  89.7 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  93.1 /   0.0, knn  93.1, maha 100.0]
+      ambas:  89.7 /   0.0 (  3.4/  0.0) [cal  98.9; cabeza  96.6 /   0.0, knn  96.6, maha 100.0]
+  macaroni1   fallas entren/test 47/28 · AUROC cabeza 0.997 · maha 0.999 · memoria graduada 0.857 · kNN 2 clases  96.4 /   1.0 · cabeza argmax 100.0 /   2.0
+      solo_buenas:  71.4 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  96.4 /   1.0, knn  96.4, maha  96.4]
+      solo_malas: 100.0 /   2.0 (  0.0/  0.0) [cal  99.4; cabeza 100.0 /   3.0, knn 100.0, maha 100.0]
+      ambas: 100.0 /   2.0 (  0.0/  0.0) [cal  99.4; cabeza 100.0 /   3.0, knn 100.0, maha 100.0]
+  macaroni2   fallas entren/test 47/28 · AUROC cabeza 0.999 · maha 0.990 · memoria graduada 0.946 · kNN 2 clases  96.4 /   0.0 · cabeza argmax  96.4 /   1.0
+      solo_buenas:  89.3 /   0.0 (  0.0/  0.0) [cal  99.4; cabeza  96.4 /   0.0, knn  96.4, maha  96.4]
+      solo_malas:  96.4 /   2.0 (  0.0/  0.0) [cal  97.8; cabeza 100.0 /   3.0, knn 100.0, maha  96.4]
+      ambas:  96.4 /   1.0 (  0.0/  0.0) [cal  98.9; cabeza 100.0 /   3.0, knn 100.0, maha  96.4]
+  pcb1        fallas entren/test 29/18 · AUROC cabeza 0.998 · maha 0.997 · memoria graduada 0.694 · kNN 2 clases  83.3 /   0.0 · cabeza argmax 100.0 /  16.0
+      solo_buenas:  38.9 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  94.4 /   1.0, knn  94.4, maha  94.4]
+      solo_malas:  83.3 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  94.4 /   1.0, knn  94.4, maha  94.4]
+      ambas:  83.3 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  94.4 /   1.0, knn  94.4, maha  94.4]
+  pcb2        fallas entren/test 30/18 · AUROC cabeza 0.992 · maha 0.994 · memoria graduada 0.858 · kNN 2 clases  83.3 /   2.0 · cabeza argmax  94.4 /   3.0
+      solo_buenas:  72.2 /   1.0 (  0.0/  0.0) [cal 100.0; cabeza  94.4 /   3.0, knn  94.4, maha  94.4]
+      solo_malas: 100.0 /   3.0 (  0.0/  0.0) [cal  98.3; cabeza 100.0 /   3.0, knn 100.0, maha 100.0]
+      ambas:  94.4 /   3.0 (  0.0/  0.0) [cal 100.0; cabeza  94.4 /   3.0, knn  94.4, maha  94.4]
+  pcb3        fallas entren/test 36/22 · AUROC cabeza 0.997 · maha 0.997 · memoria graduada 0.909 · kNN 2 clases  81.8 /   0.0 · cabeza argmax 100.0 /   4.0
+      solo_buenas:  81.8 /   0.0 (  0.0/  0.0) [cal  99.4; cabeza  95.5 /   2.0, knn  95.5, maha  95.5]
+      solo_malas:  95.5 /   1.0 (  0.0/  0.0) [cal  99.4; cabeza  95.5 /   2.0, knn  95.5, maha  95.5]
+      ambas:  95.5 /   1.0 (  0.0/  0.0) [cal  99.4; cabeza  95.5 /   2.0, knn  95.5, maha  95.5]
+  pcb4        fallas entren/test 45/26 · AUROC cabeza 0.996 · maha 0.996 · memoria graduada 0.731 · kNN 2 clases  88.5 /   1.0 · cabeza argmax  92.3 /   1.0
+      solo_buenas:  46.2 /   0.0 (  0.0/  0.0) [cal 100.0; cabeza  38.5 /   0.0, knn  38.5, maha  46.2]
+      solo_malas:  96.2 /   4.0 (  0.0/  0.0) [cal  92.2; cabeza  96.2 /   4.0, knn  96.2, maha  96.2]
+      ambas:  96.2 /   4.0 (  0.0/  0.0) [cal  96.1; cabeza  96.2 /   4.0, knn  96.2, maha  96.2]
+  pipe_fryum  fallas entren/test 48/31 · AUROC cabeza 1.000 · maha 1.000 · memoria graduada 1.000 · kNN 2 clases  96.8 /   0.0 · cabeza argmax  96.8 /   0.0
+      solo_buenas: 100.0 /   0.0 (  0.0/  0.0) [cal  95.6; cabeza 100.0 /   0.0, knn 100.0, maha 100.0]
+      solo_malas:  87.1 /   0.0 (  0.0/  0.0) [cal  99.4; cabeza 100.0 /   0.0, knn 100.0, maha  96.8]
+      ambas:  87.1 /   0.0 ( 12.9/  0.0) [cal  95.6; cabeza 100.0 /   0.0, knn 100.0, maha 100.0]
+  media: solo_buenas  69.4 /   0.2 · solo_malas  92.5 /   2.9 · ambas  90.5 /   1.8 · cabeza argmax  93.0 /   3.4 · kNN 2 clases  87.1 /   1.1 · AUROC cabeza 0.994, maha 0.979
+  mejor esquema de memoria más de 2 puntos por debajo del mejor detector (a su aceptación) en 6/12 piezas
+
+[parte 3 · tipo de falla nunca visto] abstención / mala / buena (falla silenciosa); rivales a la abstención de «ambas» en lo conocido
+  candle      «damaged corner of packaging» n= 24 · abst. conocidos   0.8 · memoria   0.0 /  66.7 /  33.3 · msp   4.2 /  83.3 /  12.5 · energía   4.2 /  83.3 /  12.5 · kNN dist   0.0 /  66.7 /  33.3 · cabeza sin abst. buena  12.5 · solo buenas rechaza  54.2 · cabeza a esa aceptación  87.5
+  cashew      «small holes» n= 20 · abst. conocidos   1.2 · memoria   0.0 / 100.0 /   0.0 · msp   0.0 / 100.0 /   0.0 · energía   0.0 / 100.0 /   0.0 · kNN dist   0.0 / 100.0 /   0.0 · cabeza sin abst. buena   0.0 · solo buenas rechaza  90.0 · cabeza a esa aceptación 100.0
+  chewinggum  «chunk of gum missing» n= 47 · abst. conocidos   0.0 · memoria   2.1 /  93.6 /   4.3 · msp   0.0 /  91.5 /   8.5 · energía   0.0 /  91.5 /   8.5 · kNN dist   0.0 /  95.7 /   4.3 · cabeza sin abst. buena   8.5 · solo buenas rechaza  95.7 · cabeza a esa aceptación 100.0
+  fryum       «middle breakage» n= 21 · abst. conocidos   1.3 · memoria   4.8 /  90.5 /   4.8 · msp  14.3 /  81.0 /   4.8 · energía   9.5 /  85.7 /   4.8 · kNN dist  14.3 /  81.0 /   4.8 · cabeza sin abst. buena   9.5 · solo buenas rechaza  95.2 · cabeza a esa aceptación  95.2
+  macaroni1   «chip around edge and corner» n= 25 · abst. conocidos   0.0 · memoria   0.0 /  16.0 /  84.0 · msp   0.0 /  20.0 /  80.0 · energía   0.0 /  20.0 /  80.0 · kNN dist   0.0 /  12.0 /  88.0 · cabeza sin abst. buena  80.0 · solo buenas rechaza   8.0 · cabeza a esa aceptación  12.0
+  macaroni2   «small chip around edge» n= 25 · abst. conocidos   0.0 · memoria   0.0 /  20.0 /  80.0 · msp   0.0 /  20.0 /  80.0 · energía   0.0 /  20.0 /  80.0 · kNN dist   0.0 /  20.0 /  80.0 · cabeza sin abst. buena  80.0 · solo buenas rechaza   8.0 · cabeza a esa aceptación  20.0
+  pcb1        «melt» n= 53 · abst. conocidos   0.0 · memoria   0.0 /   7.5 /  92.5 · msp   0.0 /  84.9 /  15.1 · energía   0.0 /  84.9 /  15.1 · kNN dist   0.0 /   9.4 /  90.6 · cabeza sin abst. buena  15.1 · solo buenas rechaza   3.8 · cabeza a esa aceptación  39.6
+  pcb2        «melt» n= 52 · abst. conocidos   0.0 · memoria   0.0 /  88.5 /  11.5 · msp   0.0 /  88.5 /  11.5 · energía   0.0 /  88.5 /  11.5 · kNN dist   0.0 /  59.6 /  40.4 · cabeza sin abst. buena  11.5 · solo buenas rechaza  44.2 · cabeza a esa aceptación  88.5
+  pcb3        «melt» n= 42 · abst. conocidos   0.0 · memoria   2.4 /  50.0 /  47.6 · msp   0.0 /  64.3 /  35.7 · energía   0.0 /  64.3 /  35.7 · kNN dist   0.0 /  45.2 /  54.8 · cabeza sin abst. buena  35.7 · solo buenas rechaza  47.6 · cabeza a esa aceptación  64.3
+  pcb4        «missing» n= 29 · abst. conocidos   0.0 · memoria   0.0 /  86.2 /  13.8 · msp   0.0 /  82.8 /  17.2 · energía   0.0 /  82.8 /  17.2 · kNN dist   0.0 /  75.9 /  24.1 · cabeza sin abst. buena  17.2 · solo buenas rechaza  24.1 · cabeza a esa aceptación  27.6
+  pipe_fryum  «similar colour spot» n= 21 · abst. conocidos   4.9 · memoria  19.0 /  76.2 /   4.8 · msp  47.6 /  52.4 /   0.0 · energía  52.4 /  47.6 /   0.0 · kNN dist  38.1 /  52.4 /   9.5 · cabeza sin abst. buena  23.8 · solo buenas rechaza  95.2 · cabeza a esa aceptación 100.0
+  media (11 piezas): memoria   2.6 /  63.2 /  34.2 · msp   6.0 /  69.9 /  24.1 · energía   6.0 /  69.9 /  24.1 · kNN dist   4.8 /  56.2 /  39.1 · abst. conocidos   0.7 · solo buenas rechaza  51.5 · cabeza a esa aceptación  66.8
+
+[criterio] {"parte1_global": 11, "parte1_parches": 12, "parte2": 6, "nicho_diferencia_msp": -0.034321175278622086, "nicho_diferencia_energia": -0.034321175278622086}
