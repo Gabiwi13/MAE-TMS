@@ -1,0 +1,27 @@
+Exp25: organización transactiva contra rivales, mismas transacciones. Acierto de ruteo (%).
+
+[organos] agentes 11 · transacciones de fase A 5949
+  cotas: fedproto 96.6 · fedavg 96.6 · oraculo_knn 96.8 · bytes FedProto 28,160 · FedAvg 3,146,000
+  condición                   mae_b1            mae_tamano            prototipos                   knn                gossip
+  f=0             93.3 r 4.4  11.6MB    93.2 r 4.4  11.6MB    96.6 r 0.0  46.5MB    96.3 r 0.0  46.5MB    96.6 r 0.0   0.4MB
+  f=0.0625        93.2 r 4.4  15.1MB    93.0 r 4.4  15.1MB    96.6 r 0.0  60.4MB    96.1 r 0.0  60.4MB    96.6 r 0.0   0.4MB
+  f=0.25          93.2 r 4.4  25.5MB    92.8 r 4.4  25.5MB    96.6 r 0.0 101.9MB    96.3 r 0.0 101.9MB    96.6 r 0.0   0.4MB
+  f=1             93.2 r 4.4  67.0MB    92.4 r 4.4  67.0MB    96.6 r 0.0 268.0MB    96.2 r 0.0 268.0MB    96.6 r 0.0   0.4MB
+  anillo=1        93.2 r 4.4  22.7MB    92.7 r 4.4  22.7MB    96.6 r 0.0  90.9MB    96.2 r 0.0  90.9MB    96.6 r 0.0   0.4MB
+  anillo=2        93.3 r 4.4  33.8MB    92.4 r 4.4  33.8MB    96.6 r 0.0 135.2MB    96.2 r 0.0 135.2MB    96.6 r 0.0   0.4MB
+  pérdida de un miembro (f=0): mae_b1: ubica 93 / rechaza 5 / otro 2 · mae_tamano: ubica 93 / rechaza 5 / otro 2 · prototipos: ubica 97 / rechaza 0 / otro 3 · knn: ubica 96 / rechaza 0 / otro 4
+  ingreso de un miembro (f=0), acierto sobre el nuevo según transacciones nuevas: 0: mae_b1 0, prototipos 0, knn 0 · 8: mae_b1 41, prototipos 98, knn 95 · 32: mae_b1 81, prototipos 98, knn 97 · 128: mae_b1 90, prototipos 97, knn 99
+  lo ajeno (fondo de ojo, a igual aceptación de lo propio): mae_b1 acepta 95 / rechaza ajeno 100 · prototipos acepta 95 / rechaza ajeno 98 · knn acepta 95 / rechaza ajeno 100
+
+[modalidad] agentes 4 · transacciones de fase A 846
+  cotas: fedproto 98.4 · fedavg 99.9 · oraculo_knn 100.0 · bytes FedProto 3,072 · FedAvg 416,000
+  condición                   mae_b1            mae_tamano            prototipos                   knn                gossip
+  f=0             93.0 r 5.8   1.5MB    92.9 r 5.8   1.5MB    98.4 r 0.0   6.1MB    99.9 r 0.0   6.1MB    98.4 r 0.0   0.0MB
+  f=0.0625        93.0 r 5.8   1.6MB    92.8 r 5.8   1.6MB    98.4 r 0.0   6.6MB    99.9 r 0.0   6.6MB    98.4 r 0.0   0.0MB
+  f=0.25          92.8 r 5.8   2.0MB    92.0 r 5.8   2.0MB    98.4 r 0.0   8.0MB    99.9 r 0.0   8.0MB    98.4 r 0.0   0.0MB
+  f=1             93.4 r 5.8   3.5MB    91.8 r 5.8   3.5MB    98.4 r 0.0  13.9MB    99.7 r 0.0  13.9MB    98.4 r 0.0   0.0MB
+  anillo=1        93.4 r 5.8   2.8MB    92.0 r 5.8   2.8MB    98.4 r 0.0  11.3MB    99.7 r 0.0  11.3MB    98.4 r 0.0   0.0MB
+  anillo=2        93.4 r 5.8   3.5MB    91.8 r 5.8   3.5MB    98.4 r 0.0  13.9MB    99.7 r 0.0  13.9MB    98.4 r 0.0   0.0MB
+  pérdida de un miembro (f=0): mae_b1: ubica 93 / rechaza 5 / otro 1 · mae_tamano: ubica 94 / rechaza 5 / otro 1 · prototipos: ubica 98 / rechaza 0 / otro 2 · knn: ubica 100 / rechaza 0 / otro 0
+  ingreso de un miembro (f=0), acierto sobre el nuevo según transacciones nuevas: 0: mae_b1 0, prototipos 0, knn 0 · 8: mae_b1 5, prototipos 100, knn 90 · 32: mae_b1 50, prototipos 100, knn 97 · 128: mae_b1 89, prototipos 100, knn 99
+  lo ajeno (fondo de ojo, a igual aceptación de lo propio): mae_b1 acepta 95 / rechaza ajeno 24 · prototipos acepta 95 / rechaza ajeno 0 · knn acepta 95 / rechaza ajeno 1

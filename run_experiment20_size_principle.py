@@ -45,17 +45,15 @@ def load_pool(cache, tag):
             {n: z[f"test_{n}"] for n in names})
 
 
-_SUPPORT = {}
 
 
 def support(d):
-    """(soporte bool (64, agentes, 32), log|soporte| (64, agentes)) de un directorio."""
-    key = id(d)
-    if key not in _SUPPORT:
+    """(soporte bool (64, agentes, 32), log|soporte| (64, agentes)) de un directorio.
+    Se guarda en el propio directorio: un id() puede reusarse al liberar objetos."""
+    if not hasattr(d, "_soporte_tamano"):
         rel = d._ham.relation[:, :, :d._m, 1] > 0            # (n, agentes, m)
-        size = rel.sum(axis=2)
-        _SUPPORT[key] = (rel, np.log(np.maximum(size, 1)))
-    return _SUPPORT[key]
+        d._soporte_tamano = (rel, np.log(np.maximum(rel.sum(axis=2), 1)))
+    return d._soporte_tamano
 
 
 def size_scores(d, v_q):
@@ -142,7 +140,6 @@ def main():
             if key in res:
                 continue
             names, fill, pa, test = load_pool(cache, tag)
-            _SUPPORT.clear()
             level = demo.Level(tag, names, None, fill, pa)
             bad, tot = check_official(level, test)
             rows = evaluate(level, test)
