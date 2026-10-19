@@ -1,0 +1,12 @@
+Exp24 B: incremental por clases, 11 órganos en 4 tareas, mismos rasgos y registros (328 x 16 por clase).
+método       final   medio  olvido    AURC   cubre   resp.       bytes
+memoria       35.9    38.3    15.5   41.34    98.0    36.6      90,112
+ncm           75.6    72.6     9.5    7.48   100.0    75.6       2,816
+hdc           75.9    73.5     9.7    7.51   100.0    75.9     190,000
+hopfield      78.2    75.6     7.0    5.56   100.0    78.2  14,778,368
+knn           82.4    79.8     4.5    6.58   100.0    82.4  14,778,368
+ranpac        86.4    85.7     5.4    2.67   100.0    86.4  32,688,000
+lineal        23.9    51.7    82.8   64.79   100.0    23.9       2,860
+repaso        29.6    54.2    76.7   57.25   100.0    29.6      59,180
+
+Acierto tras cada tarea (sobre las clases vistas): memoria: 48.1 → 27.9 → 41.4 → 35.9 | ncm: 74.8 → 62.2 → 78.0 → 75.6 | hdc: 76.5 → 63.1 → 78.4 → 75.9 | hopfield: 75.4 → 67.4 → 81.5 → 78.2 | knn: 81.3 → 71.3 → 84.1 → 82.4 | ranpac: 89.3 → 78.6 → 88.3 → 86.4 | lineal: 83.7 → 51.9 → 47.4 → 23.9 | repaso: 83.7 → 51.2 → 52.2 → 29.6

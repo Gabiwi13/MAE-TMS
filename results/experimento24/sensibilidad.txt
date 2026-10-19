@@ -1,0 +1,8 @@
+  [rasgos genéricos] tarea 1: memoria_tamano 48.1 · memoria_oficial 64.9 · ncm 74.8 · knn 81.3 · ranpac 89.3
+  [rasgos genéricos] tarea 2: memoria_tamano 27.9 · memoria_oficial 51.6 · ncm 62.2 · knn 71.3 · ranpac 78.6
+  [rasgos genéricos] tarea 3: memoria_tamano 41.4 · memoria_oficial 69.8 · ncm 78.0 · knn 84.1 · ranpac 88.3
+  [rasgos genéricos] tarea 4: memoria_tamano 35.9 · memoria_oficial 65.4 · ncm 75.6 · knn 82.4 · ranpac 86.4
+  [rasgos ajustados a órganos] tarea 1: memoria_tamano 90.6 · memoria_oficial 90.6 · ncm 97.9 · knn 97.8 · ranpac 97.9
+  [rasgos ajustados a órganos] tarea 2: memoria_tamano 88.2 · memoria_oficial 88.2 · ncm 95.9 · knn 95.7 · ranpac 95.9
+  [rasgos ajustados a órganos] tarea 3: memoria_tamano 92.7 · memoria_oficial 92.7 · ncm 97.5 · knn 97.4 · ranpac 97.5
+  [rasgos ajustados a órganos] tarea 4: memoria_tamano 93.1 · memoria_oficial 93.3 · ncm 97.0 · knn 96.8 · ranpac 97.0

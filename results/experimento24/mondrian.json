@@ -1,0 +1,208 @@
+{
+ "rx_torax": {
+  "memoria": {
+   "cobertura": 0.911978421226467,
+   "tamano": 8.737311460971044,
+   "peor_clase": 0.2711864406779661,
+   "por_clase": {
+    "sin-hallazgo": 0.9392186452045607,
+    "atelectasis": 0.9200968523002422,
+    "cardiomegaly": 0.7860082304526749,
+    "effusion": 0.874251497005988,
+    "infiltration": 0.9408346539883783,
+    "mass": 0.8256658595641646,
+    "nodule": 0.8739352640545145,
+    "pneumonia": 0.2711864406779661,
+    "pneumothorax": 0.8200455580865603,
+    "consolidation": 0.7178423236514523,
+    "edema": 0.6727272727272727,
+    "emphysema": 0.7382198952879581,
+    "fibrosis": 0.6298701298701299,
+    "pleural": 0.757085020242915
+   },
+   "vacias": 0.006991082241550149
+  },
+  "conformal": {
+   "cobertura": 0.9119233733348012,
+   "tamano": 5.306286469228229,
+   "peor_clase": 0.06779661016949153,
+   "por_clase": {
+    "sin-hallazgo": 0.9860831656606305,
+    "atelectasis": 0.8898305084745762,
+    "cardiomegaly": 0.6831275720164609,
+    "effusion": 0.9005988023952096,
+    "infiltration": 0.9857369255150554,
+    "mass": 0.5835351089588378,
+    "nodule": 0.6814310051107325,
+    "pneumonia": 0.06779661016949153,
+    "pneumothorax": 0.6947608200455581,
+    "consolidation": 0.3278008298755187,
+    "edema": 0.509090909090909,
+    "emphysema": 0.38219895287958117,
+    "fibrosis": 0.24675324675324675,
+    "pleural": 0.3603238866396761
+   },
+   "vacias": 0.0
+  },
+  "mondrian": {
+   "cobertura": 0.9118132775514698,
+   "tamano": 10.614499614664759,
+   "peor_clase": 0.8795811518324608,
+   "por_clase": {
+    "sin-hallazgo": 0.9101274312541918,
+    "atelectasis": 0.9176755447941889,
+    "cardiomegaly": 0.9012345679012346,
+    "effusion": 0.9353293413173652,
+    "infiltration": 0.8969889064976229,
+    "mass": 0.9588377723970944,
+    "nodule": 0.919931856899489,
+    "pneumonia": 1.0,
+    "pneumothorax": 0.89749430523918,
+    "consolidation": 0.9294605809128631,
+    "edema": 0.9,
+    "emphysema": 0.8795811518324608,
+    "fibrosis": 0.9025974025974026,
+    "pleural": 0.9433198380566802
+   },
+   "vacias": 0.0
+  }
+ },
+ "tc_abdomen": {
+  "memoria": {
+   "cobertura": 0.9530880863989201,
+   "tamano": 1.0075374057824278,
+   "peor_clase": 0.8292993630573249,
+   "por_clase": {
+    "bladder": 0.9276061776061776,
+    "femur-left": 0.9336734693877551,
+    "femur-right": 0.9394703656998739,
+    "heart": 0.8292993630573249,
+    "kidney-left": 0.9055232558139535,
+    "kidney-right": 0.934351145038168,
+    "liver": 0.9856925418569255,
+    "lung-left": 0.994848311390956,
+    "lung-right": 0.9707666850523994,
+    "pancreas": 0.9845869297163995,
+    "spleen": 0.9644373673036093
+   },
+   "vacias": 0.029755878051524357
+  },
+  "conformal": {
+   "cobertura": 0.9529755878051525,
+   "tamano": 0.9684441444481944,
+   "peor_clase": 0.8638565891472868,
+   "por_clase": {
+    "bladder": 0.9247104247104247,
+    "femur-left": 0.9132653061224489,
+    "femur-right": 0.9709962168978562,
+    "heart": 0.9210191082802548,
+    "kidney-left": 0.8638565891472868,
+    "kidney-right": 0.9180661577608142,
+    "liver": 0.9939117199391172,
+    "lung-left": 1.0,
+    "lung-right": 0.9779371207942636,
+    "pancreas": 0.9765721331689272,
+    "spleen": 0.9654989384288747
+   },
+   "vacias": 0.0315558555518056
+  },
+  "mondrian": {
+   "cobertura": 0.9526380920238497,
+   "tamano": 1.9660254246821915,
+   "peor_clase": 0.8507653061224489,
+   "por_clase": {
+    "bladder": 0.944980694980695,
+    "femur-left": 0.8507653061224489,
+    "femur-right": 1.0,
+    "heart": 0.8929936305732484,
+    "kidney-left": 0.9714147286821705,
+    "kidney-right": 0.8687022900763359,
+    "liver": 0.9558599695585996,
+    "lung-left": 1.0,
+    "lung-right": 0.9988968560397132,
+    "pancreas": 0.9864364981504316,
+    "spleen": 0.9479830148619958
+   },
+   "vacias": 0.0
+  }
+ },
+ "dermatoscopia": {
+  "memoria": {
+   "cobertura": 0.9062344139650873,
+   "tamano": 1.5211970074812968,
+   "peor_clase": 0.3448275862068966,
+   "por_clase": {
+    "actinic-keratosis": 0.7272727272727273,
+    "basal-cell-carcinoma": 0.8349514563106796,
+    "benign-keratosis": 0.9272727272727272,
+    "dermatofibroma": 0.5652173913043478,
+    "melanoma": 0.8834080717488789,
+    "melanocytic-nevus": 0.9388516032811335,
+    "vascular-lesion": 0.3448275862068966
+   },
+   "vacias": 0.03291770573566085
+  },
+  "conformal": {
+   "cobertura": 0.9027431421446384,
+   "tamano": 1.2528678304239402,
+   "peor_clase": 0.6666666666666666,
+   "por_clase": {
+    "actinic-keratosis": 0.6666666666666666,
+    "basal-cell-carcinoma": 0.8155339805825242,
+    "benign-keratosis": 0.7909090909090909,
+    "dermatofibroma": 0.7391304347826086,
+    "melanoma": 0.8834080717488789,
+    "melanocytic-nevus": 0.9448173005219985,
+    "vascular-lesion": 0.9310344827586207
+   },
+   "vacias": 0.0
+  },
+  "mondrian": {
+   "cobertura": 0.9067331670822942,
+   "tamano": 1.802493765586035,
+   "peor_clase": 0.8446601941747572,
+   "por_clase": {
+    "actinic-keratosis": 0.9696969696969697,
+    "basal-cell-carcinoma": 0.8446601941747572,
+    "benign-keratosis": 0.9318181818181818,
+    "dermatofibroma": 0.9565217391304348,
+    "melanoma": 0.9282511210762332,
+    "melanocytic-nevus": 0.8978374347501864,
+    "vascular-lesion": 1.0
+   },
+   "vacias": 0.0
+  }
+ },
+ "us_mama": {
+  "memoria": {
+   "cobertura": 0.9102564102564102,
+   "tamano": 1.205128205128205,
+   "peor_clase": 0.8571428571428571,
+   "por_clase": {
+    "malignant": 0.8571428571428571,
+    "normal-benign": 0.9298245614035088
+   },
+   "vacias": 0.03205128205128205
+  },
+  "conformal": {
+   "cobertura": 0.8910256410256411,
+   "tamano": 1.0256410256410255,
+   "peor_clase": 0.7857142857142857,
+   "por_clase": {
+    "malignant": 0.7857142857142857,
+    "normal-benign": 0.9298245614035088
+   },
+   "vacias": 0.0
+  },
+  "mondrian": {
+   "cobertura": 0.8974358974358975,
+   "tamano": 1.0833333333333333,
+   "peor_clase": 0.8947368421052632,
+   "por_clase": {
+    "malignant": 0.9047619047619048,
+    "normal-benign": 0.8947368421052632
+   },
+   "vacias": 0.0
+  }
+ }
+}

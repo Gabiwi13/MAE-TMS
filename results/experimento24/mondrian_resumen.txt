@@ -1,0 +1,25 @@
+Exp24 A: memoria contra conformal marginal y por clase (Mondrian), a igual cobertura total en test.
+
+[rx_torax] test n=18166 · calibración por clase {'sin-hallazgo': 6079, 'atelectasis': 444, 'cardiomegaly': 97, 'effusion': 394, 'infiltration': 995, 'mass': 244, 'nodule': 236, 'pneumonia': 38, 'pneumothorax': 208, 'consolidation': 121, 'edema': 45, 'emphysema': 69, 'fibrosis': 82, 'pleural': 121}
+  memoria    cobertura  91.2 · tamaño 8.74 · peor clase  27.1 · vacías  0.7 %
+  conformal  cobertura  91.2 · tamaño 5.31 · peor clase   6.8 · vacías  0.0 %
+  mondrian   cobertura  91.2 · tamaño 10.61 · peor clase  88.0 · vacías  0.0 %
+  por clase (memoria / marginal / Mondrian): sin-hallazgo 94/99/91 · atelectasis 92/89/92 · cardiomegaly 79/68/90 · effusion 87/90/94 · infiltration 94/99/90 · mass 83/58/96 · nodule 87/68/92 · pneumonia 27/7/100 · pneumothorax 82/69/90 · consolidation 72/33/93 · edema 67/51/90 · emphysema 74/38/88 · fibrosis 63/25/90 · pleural 76/36/94
+
+[tc_abdomen] test n=17778 · calibración por clase {'bladder': 321, 'femur-left': 233, 'femur-right': 225, 'heart': 392, 'kidney-left': 568, 'kidney-right': 637, 'liver': 1033, 'lung-left': 1033, 'lung-right': 1009, 'pancreas': 529, 'spleen': 511}
+  memoria    cobertura  95.3 · tamaño 1.01 · peor clase  82.9 · vacías  3.0 %
+  conformal  cobertura  95.3 · tamaño 0.97 · peor clase  86.4 · vacías  3.2 %
+  mondrian   cobertura  95.3 · tamaño 1.97 · peor clase  85.1 · vacías  0.0 %
+  por clase (memoria / marginal / Mondrian): bladder 93/92/94 · femur-left 93/91/85 · femur-right 94/97/100 · heart 83/92/89 · kidney-left 91/86/97 · kidney-right 93/92/87 · liver 99/99/96 · lung-left 99/100/100 · lung-right 97/98/100 · pancreas 98/98/99 · spleen 96/97/95
+
+[dermatoscopia] test n=2005 · calibración por clase {'actinic-keratosis': 33, 'basal-cell-carcinoma': 52, 'benign-keratosis': 110, 'dermatofibroma': 12, 'melanoma': 111, 'melanocytic-nevus': 671, 'vascular-lesion': 14}
+  memoria    cobertura  90.6 · tamaño 1.52 · peor clase  34.5 · vacías  3.3 %
+  conformal  cobertura  90.3 · tamaño 1.25 · peor clase  66.7 · vacías  0.0 %
+  mondrian   cobertura  90.7 · tamaño 1.80 · peor clase  84.5 · vacías  0.0 %
+  por clase (memoria / marginal / Mondrian): actinic-keratosis 73/67/97 · basal-cell-carcinoma 83/82/84 · benign-keratosis 93/79/93 · dermatofibroma 57/74/96 · melanoma 88/88/93 · melanocytic-nevus 94/94/90 · vascular-lesion 34/93/100
+
+[us_mama] test n=156 · calibración por clase {'malignant': 21, 'normal-benign': 57}
+  memoria    cobertura  91.0 · tamaño 1.21 · peor clase  85.7 · vacías  3.2 %
+  conformal  cobertura  89.1 · tamaño 1.03 · peor clase  78.6 · vacías  0.0 %
+  mondrian   cobertura  89.7 · tamaño 1.08 · peor clase  89.5 · vacías  0.0 %
+  por clase (memoria / marginal / Mondrian): malignant 86/79/90 · normal-benign 93/93/89
