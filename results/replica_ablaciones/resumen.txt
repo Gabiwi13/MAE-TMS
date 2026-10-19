@@ -1,0 +1,35 @@
+Réplica y ablaciones del diseño congelado (propuesta_replica_ablaciones.md). Media de semillas [IC 95 % por bootstrap].
+
+[flota visa] 10 semillas · transacciones de aprendizaje 786
+  mejor módulo fijo: acierto  92.0
+  lectura    acierto · pérdida vs mejor fijo · abst. conocidas · abst. desconocidas · costo · al_mejor
+  r3        86.3 [ 85.7,  86.8] ·   5.7 ·   3.9 · 100.0 ·   2.4 ·  74.5 [ 71.0,  78.2]
+  tab       87.4 [ 87.0,  87.9] ·   4.6 ·   0.0 ·   0.0 ·   1.0 ·  87.8 [ 83.8,  91.8]
+  propio    86.3 [ 85.8,  86.8] ·   5.7 ·   4.0 · 100.0 ·   2.8 ·  75.6 [ 72.6,  79.0]
+  global    87.4 [ 86.8,  88.0] ·   4.6 ·   4.1 · 100.0 ·    —  ·  89.1 [ 84.8,  94.2]
+  central   89.0 [ 88.3,  89.7] ·   3.0 ·   1.1 · 100.0 ·    —  ·  72.7 [ 69.4,  75.8]
+  azar      83.0 [ 82.3,  83.7] ·   9.0 ·   4.1 · 100.0 ·    —  ·  50.7 [ 49.5,  51.9]
+  tab_cand  87.1 [ 86.7,  87.6] ·   4.8 ·   4.1 · 100.0 ·   2.0 ·  87.8 [ 83.7,  91.9]
+  R3 − tab: ventaja en al_mejor -13.3 [-16.2, -10.1] · ventaja en pérdida  -1.1 [ -1.4,  -0.8]
+  R3 − propio: ventaja en al_mejor  -1.1 [ -1.9,  -0.5] · ventaja en pérdida  -0.0 [ -0.1,   0.1]
+  R3 − global: ventaja en al_mejor -14.7 [-19.1, -11.2] · ventaja en pérdida  -1.1 [ -1.6,  -0.7]
+  central − R3 en acierto:   2.7 [  2.1,   3.2]
+  dominios donde el mejor módulo global pierde por ≥ 5 puntos en alguna clase: 2.2 de 12 (media de semillas)
+
+[flota med] 10 semillas · transacciones de aprendizaje 945
+  mejor módulo fijo: acierto  70.6
+  lectura    acierto · pérdida vs mejor fijo · abst. conocidas · abst. desconocidas · costo · al_peor
+  r3        54.7 [ 54.2,  55.2] ·  15.9 ·   3.0 ·   5.0 ·  12.9 ·  30.0 [ 24.3,  36.6]
+  tab       24.1 [ 22.0,  26.5] ·  46.5 ·   0.0 ·   0.0 ·   1.0 ·   8.1 [  1.5,  17.0]
+  propio    60.0 [ 59.3,  60.6] ·  10.6 ·   3.1 ·   5.0 ·  16.7 ·  17.3 [ 14.5,  20.6]
+  global    55.8 [ 54.7,  57.0] ·  14.8 ·   3.1 ·   5.0 ·    —  ·  10.0 [  0.0,  20.0]
+  central   68.0 [ 67.6,  68.4] ·   2.7 ·   1.7 ·   2.3 ·    —  ·  22.3 [ 20.6,  24.2]
+  azar      55.9 [ 55.3,  56.6] ·  14.7 ·   3.1 ·   5.0 ·    —  ·  33.6 [ 32.4,  34.9]
+  tab_cand  62.3 [ 61.2,  63.3] ·   8.3 ·   3.1 ·   5.0 ·   1.7 ·   5.8 [  1.6,  10.6]
+  R3 − tab: ventaja en al_peor -21.9 [-29.6, -15.0] · ventaja en pérdida  30.6 [ 28.4,  32.6]
+  R3 − propio: ventaja en al_peor -12.8 [-17.7,  -8.7] · ventaja en pérdida  -5.3 [ -6.0,  -4.7]
+  R3 − global: ventaja en al_peor -20.0 [-25.0, -14.6] · ventaja en pérdida  -1.1 [ -2.6,   0.2]
+  central − R3 en acierto:  13.3 [ 12.7,  13.9]
+  dominios donde el mejor módulo global pierde por ≥ 5 puntos en alguna clase: 2.2 de 4 (media de semillas)
+
+[criterio] {"visa_r3_vs_tab": {"pref": [-0.13314631569969726, -0.16240007940539908, -0.10128688167453898], "perdida": [-0.011313868613138711, -0.014236618004866223, -0.008394160583941624]}, "visa_r3_vs_propio": {"pref": [-0.01126216171999972, -0.01880371182042013, -0.0045993731287791014], "perdida": [-0.00012165450121655041, -0.0012165450121654597, 0.0008515815085158085]}, "visa_r3_vs_global": {"pref": [-0.1465247504983552, -0.19065539129705214, -0.11233291610259195], "perdida": [-0.010827250608272531, -0.015574817518248223, -0.0065693430656934785]}, "visa_central_menos_r3": [0.026885644768856454, 0.020799878345498773, 0.032360097323601], "visa_r3_al_mejor": [0.7449435034698987, 0.7108799550721778, 0.780629090325103], "med_r3_vs_tab": {"pref": [-0.21907805861766932, -0.2956439831129604, -0.15005420944057876], "perdida": [0.3061349693251534, 0.28363752556237226, 0.3256646216768916]}, "med_r3_vs_propio": {"pref": [-0.12791201185898055, -0.17682794252561412, -0.08658471525479722], "perdida": [-0.05316973415132925, -0.060020449897750516, -0.046523517382413095]}, "med_r3_vs_global": {"pref": [-0.20046665736198171, -0.25046679128300403, -0.14587327662969884], "perdida": [-0.010940695296523495, -0.025766871165644144, 0.001840490797546035]}, "med_central_menos_r3": [0.13261758691206543, 0.12740286298568507, 0.1387551124744376], "med_r3_al_peor": [0.30046665736198175, 0.24300622655305398, 0.36664310849234405]}

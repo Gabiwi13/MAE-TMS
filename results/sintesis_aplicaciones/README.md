@@ -14,6 +14,8 @@ Reúne los resultados de los demos y experimentos de aplicación, todos con dise
 | [`red_sintetica/`](../red_sintetica/README.md) | red con fallas sintéticas y término anti-colapso |
 | [`medico_balanceado/`](../medico_balanceado/), [`experimento20/`](../experimento20/README.md), [`experimento21/`](../experimento21/README.md), [`experimento23/`](../experimento23/README.md), [`experimento24/`](../experimento24/README.md) | demo médico, MedMNIST+ |
 
+> **Revisión posterior:** el estado actualizado de cada afirmación, con el modelo formal y la réplica con semillas, está en [`revision_cientifica/`](../revision_cientifica/README.md). En particular, la réplica mostró que en la flota de módulos la decisión la toma mejor una tabla de conteos que la memoria de directorio, y que el resultado de la etapa 2 no se replica en una flota nueva.
+
 ## Qué es el sistema, en una línea
 
 Una memoria **de caja blanca, determinista y declarativa**. Aprender es sumar conteos por coordenada en una tabla de 64 × 32 por especialista. Reconocer es comprobar que cada coordenada de la entrada cae dentro de lo registrado. Rutear es consultar directorios de «quién sabe qué», formados por transacciones. No hay entrenamiento por gradiente: la percepción la pone un encoder congelado (ResNet18 o CLIP) y la memoria no la cambia.
