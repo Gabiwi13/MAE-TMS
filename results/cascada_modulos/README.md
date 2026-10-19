@@ -15,7 +15,7 @@ Misma red especializada del cierre (WideResNet50, capas 3 y 4 ajustadas con buen
 | k | conocido: detección / falsa alarma | revisión: normales / fallas | tipo nuevo: revisión / mala / **pasa en silencio** |
 |---|---|---|---|
 | 1, 2, 4 y 8 (idénticos) | 92.5 / 2.9 | 0.0 / 1.9 | 2.6 / 65.6 / **31.8** |
-| *cabeza de la red, sin revisión* | *93.0 / 3.4* | — | *— / 75.9 / 24.1* |
+| *cabeza de la red, sin revisión* | *93.0 / 3.4* | — | *— / 73.3 / 26.7* |
 
 **Rivales a la misma revisión humana en lo conocido (1.9 % de las fallas, 0 % de las normales):**
 

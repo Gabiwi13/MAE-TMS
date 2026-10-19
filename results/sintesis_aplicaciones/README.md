@@ -11,6 +11,7 @@ Reúne los resultados de los demos y experimentos de aplicación, todos con dise
 | [`enrutador_flota/`](../enrutador_flota/README.md) | enrutador de detectores PatchCore |
 | [`cierre_mae/`](../cierre_mae/README.md) | cierre: WideResNet50 congelada y red especializada en buenas contra malas |
 | [`cascada_modulos/`](../cascada_modulos/README.md) | cascada malas → buenas partidas → revisión humana |
+| [`red_sintetica/`](../red_sintetica/README.md) | red con fallas sintéticas y término anti-colapso |
 | [`medico_balanceado/`](../medico_balanceado/), [`experimento20/`](../experimento20/README.md), [`experimento21/`](../experimento21/README.md), [`experimento23/`](../experimento23/README.md), [`experimento24/`](../experimento24/README.md) | demo médico, MedMNIST+ |
 
 ## Qué es el sistema, en una línea
@@ -41,6 +42,7 @@ Cada fila compara la MAE contra la mejor alternativa medida sobre los mismos lat
 | **Detectar fallas sobre una red especializada** (buenas contra malas) | 90.5 % (falsa alarma 1.8) | cabeza de la red 93.0 % (3.4), AUROC 0.994 | **cerca, sin superarla**; la que separa es la red | cierre_mae |
 | **Abstenerse ante un tipo de falla nunca visto** | 2.6 % de abstención, 34.2 % pasa en silencio | MSP 6.0 %, 24.1 % pasa en silencio | **no hay nicho** | cierre_mae |
 | **Cascada malas → buenas → revisión, con el módulo de buenas partido en k** | idéntica para k = 1 a 8: 31.8 % de las fallas nuevas pasan en silencio | MSP a igual revisión: 24.1 % | **no funciona**: la red colapsa las buenas en 1–3 direcciones | cascada_modulos |
+| **Red con fallas sintéticas y anti-colapso** (para que lo nuevo no se esconda) | con anti-colapso, la cascada deja pasar 26.8 % de lo nuevo | MSP de la misma red a igual revisión: 33.7 %; la red base con MSP: 24.1 % | **primera ventaja de la MAE sobre la confianza de la red (+6.9), pero no supera al mejor sistema**; las sintéticas empeoran a la red | red_sintetica |
 | **Usar texto como pista** (con CLIP) | 0 de 1232 oraciones llegan a su pieza | coseno de CLIP: 57.7 % | **no funciona** sin pares registrados | industrial_clip |
 | **Detectar fallas con descripciones** | +0.2 puntos de detección | CLIP sin ejemplos de falla: AUROC 0.667 | **no funciona** | industrial_clip |
 | **Tamaño del estado** (12 piezas) | 2.0 MB de conteos | kNN 0.83 MB; NCM unas 32 veces menos que la MAE (exp24) | **no es ventaja** | enrutador_flota |

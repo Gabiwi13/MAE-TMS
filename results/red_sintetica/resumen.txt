@@ -1,0 +1,30 @@
+Red con fallas sintéticas y anti-colapso (propuesta_red_sintetica.md).
+A base · B + sintéticas · C + sintéticas + anti-colapso · D + anti-colapso
+
+[A] colapso: varianza en 3 direcciones 0.988 · direcciones para el 95 % 1.0
+  red: conocido  93.0 /   3.4 · nuevo pasa en silencio  26.7
+  cascada k=1: conocido  92.5 /   2.9 · revisión normales   0.0 · fallas   1.9 · nuevo: revisión   2.6 / mala  65.6 / silenciosa  31.8 · a igual revisión: msp silenciosa  24.1, energía  24.1
+  cascada k=8: conocido  92.5 /   2.9 · revisión normales   0.0 · fallas   1.9 · nuevo: revisión   2.6 / mala  65.6 / silenciosa  31.8 · a igual revisión: msp silenciosa  24.1, energía  24.1
+  por pieza, nuevo pasa en silencio (red · cascada k=1 · k=8): candle  12.5· 29.2· 29.2 | cashew   0.0·  0.0·  0.0 | chewinggum   8.5·  4.3·  4.3 | fryum   9.5·  4.8·  4.8 | macaroni1  80.0· 80.0· 80.0 | macaroni2  80.0· 76.0· 76.0 | pcb1  15.1· 92.5· 92.5 | pcb2  11.5·  7.7·  7.7 | pcb3  35.7· 47.6· 47.6 | pcb4  17.2·  3.4·  3.4 | pipe_fryum  23.8·  4.8·  4.8
+
+[B] colapso: varianza en 3 direcciones 0.954 · direcciones para el 95 % 4.8
+  red: conocido  87.9 /   7.7 · nuevo pasa en silencio  36.8
+  cascada k=1: conocido  89.4 /   8.2 · revisión normales   0.0 · fallas   2.4 · nuevo: revisión   0.9 / mala  68.0 / silenciosa  31.1 · a igual revisión: msp silenciosa  36.3, energía  36.3
+  cascada k=8: conocido  89.4 /   8.2 · revisión normales   0.2 · fallas   2.4 · nuevo: revisión   0.9 / mala  68.0 / silenciosa  31.1 · a igual revisión: msp silenciosa  36.3, energía  36.3
+  por pieza, nuevo pasa en silencio (red · cascada k=1 · k=8): candle  45.8· 41.7· 41.7 | cashew   0.0·  0.0·  0.0 | chewinggum   0.0·  0.0·  0.0 | fryum   9.5·  4.8·  4.8 | macaroni1  92.0· 68.0· 68.0 | macaroni2  92.0· 80.0· 80.0 | pcb1  39.6· 69.8· 69.8 | pcb2  34.6·  7.7·  7.7 | pcb3  52.4· 28.6· 28.6 | pcb4  10.3·  3.4·  3.4 | pipe_fryum  28.6· 38.1· 38.1
+
+[C] colapso: varianza en 3 direcciones 0.944 · direcciones para el 95 % 3.3
+  red: conocido  91.1 /   5.8 · nuevo pasa en silencio  30.0
+  cascada k=1: conocido  88.8 /   6.7 · revisión normales   0.7 · fallas   4.6 · nuevo: revisión   3.8 / mala  63.1 / silenciosa  33.1 · a igual revisión: msp silenciosa  28.4, energía  29.7
+  cascada k=8: conocido  88.8 /   6.7 · revisión normales   1.5 · fallas   5.6 · nuevo: revisión   5.1 / mala  63.1 / silenciosa  31.8 · a igual revisión: msp silenciosa  27.1, energía  28.5
+  por pieza, nuevo pasa en silencio (red · cascada k=1 · k=8): candle   4.2· 29.2· 29.2 | cashew   0.0·  0.0·  0.0 | chewinggum   0.0·  0.0·  0.0 | fryum   4.8·  4.8·  4.8 | macaroni1  92.0· 48.0· 48.0 | macaroni2  84.0· 76.0· 76.0 | pcb1  39.6· 73.6· 73.6 | pcb2  15.4· 17.3· 11.5 | pcb3  42.9· 78.6· 73.8 | pcb4   0.0·  3.4·  0.0 | pipe_fryum  47.6· 33.3· 33.3
+
+[D] colapso: varianza en 3 direcciones 0.951 · direcciones para el 95 % 3.2
+  red: conocido  81.6 /   0.7 · nuevo pasa en silencio  38.1
+  cascada k=1: conocido  85.0 /   1.8 · revisión normales   0.3 · fallas   3.5 · nuevo: revisión   3.1 / mala  68.0 / silenciosa  28.9 · a igual revisión: msp silenciosa  35.5, energía  36.9
+  cascada k=8: conocido  85.0 /   1.8 · revisión normales   1.0 · fallas   6.2 · nuevo: revisión   5.2 / mala  68.0 / silenciosa  26.8 · a igual revisión: msp silenciosa  33.7, energía  34.0
+  por pieza, nuevo pasa en silencio (red · cascada k=1 · k=8): candle  25.0· 29.2· 29.2 | cashew   0.0·  0.0·  0.0 | chewinggum   2.1·  0.0·  0.0 | fryum   9.5·  4.8·  4.8 | macaroni1  84.0· 44.0· 44.0 | macaroni2  76.0· 64.0· 56.0 | pcb1  60.4· 66.0· 66.0 | pcb2  63.5· 17.3· 17.3 | pcb3  71.4· 66.7· 64.3 | pcb4   3.4·  6.9·  3.4 | pipe_fryum  23.8· 19.0·  9.5
+
+[criterio] {"A": {"red_silenciosa": 0.26721130710630847, "red_falsa_alarma": 0.033847634763476346, "cascada1_silenciosa": 0.318325687910469, "cascada1_msp_silenciosa": 0.24123728113228246, "cascada1_falsa_alarma": 0.029125412541254118, "cascada8_silenciosa": 0.318325687910469, "cascada8_msp_silenciosa": 0.24123728113228246, "cascada8_falsa_alarma": 0.029125412541254118}, "B": {"red_silenciosa": 0.36808397956413574, "red_falsa_alarma": 0.07713971397139714, "cascada1_silenciosa": 0.3109519476403016, "cascada1_msp_silenciosa": 0.3625478490280052, "cascada1_falsa_alarma": 0.08205720572057205, "cascada8_silenciosa": 0.3109519476403016, "cascada8_msp_silenciosa": 0.3625478490280052, "cascada8_falsa_alarma": 0.08205720572057205}, "C": {"red_silenciosa": 0.3003745625443739, "red_falsa_alarma": 0.058006050605060505, "cascada1_silenciosa": 0.3310674610577018, "cascada1_msp_silenciosa": 0.2838407818596498, "cascada1_falsa_alarma": 0.06746699669966998, "cascada8_silenciosa": 0.3183589052456977, "cascada8_msp_silenciosa": 0.27085376887263685, "cascada8_falsa_alarma": 0.06746699669966998}, "D": {"red_silenciosa": 0.3810697610459512, "red_falsa_alarma": 0.007213971397139713, "cascada1_silenciosa": 0.2889862154761309, "cascada1_msp_silenciosa": 0.3552434737242805, "cascada1_falsa_alarma": 0.01776952695269527, "cascada8_silenciosa": 0.26775618114264826, "cascada8_msp_silenciosa": 0.336758625239432, "cascada8_falsa_alarma": 0.01776952695269527}}
+
+Tiempo total: 23 min
