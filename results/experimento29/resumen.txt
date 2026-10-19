@@ -1,0 +1,209 @@
+Exp29: demencia semántica como pérdida de conteos. Semillas [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; niveles [0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.075, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9].
+PDP épocas por semilla: 900, 2000, 950, 950, 1100, 2000, 1200, 950, 1250, 1300
+
+[mae] exactitud sin daño 98.6 %
+  d       corre   omisi   super   seman   entre   n
+  0.0      98.6     1.1     0.4     0.0     0.0   560
+  0.01     74.1    25.1     0.8     0.0     0.0   5600
+  0.02     63.2    35.9     0.8     0.0     0.0   5600
+  0.03     56.6    42.5     0.9     0.0     0.0   5600
+  0.04     53.2    45.7     1.1     0.0     0.0   5600
+  0.05     51.5    47.5     1.0     0.0     0.0   5600
+  0.075    50.8    48.3     1.0     0.0     0.0   5600
+  0.1      50.3    48.6     1.1     0.0     0.0   5600
+  0.15     47.9    51.3     0.8     0.0     0.0   5600
+  0.2      44.2    55.0     0.8     0.0     0.0   5600
+  0.25     36.3    62.9     0.8     0.0     0.0   5600
+  0.3      26.4    73.1     0.6     0.0     0.0   5600
+  0.35     16.6    83.0     0.4     0.0     0.0   5600
+  0.4       5.9    93.8     0.4     0.0     0.0   5600
+  0.45      2.4    97.5     0.2     0.0     0.0   5600
+  0.5       0.2    99.6     0.2     0.0     0.0   5600
+  0.55      0.0    99.9     0.1     0.0     0.0   5600
+  0.6       0.0   100.0     0.0     0.0     0.0   5600
+  0.65      0.0   100.0     0.0     0.0     0.0   5600
+  0.7       0.0   100.0     0.0     0.0     0.0   5600
+  0.75      0.0   100.0     0.0     0.0     0.0   5600
+  0.8       0.0   100.0     0.0     0.0     0.0   5600
+  0.85      0.0   100.0     0.0     0.0     0.0   5600
+  0.9       0.0   100.0     0.0     0.0     0.0   5600
+  a la exactitud de cada cuartil de pacientes (modelo / paciente):
+    Q1 (d ≈ 0.008): correcto 79.6/79.6, omision 19.7/10.4, superordinado 0.7/1.0, semantico 0.0/8.9, entre_dominios 0.0/0.1 · dentro ±10: True
+    Q2 (d ≈ 0.238): correcto 38.1/38.1, omision 61.1/31.2, superordinado 0.8/6.3, semantico 0.0/24.1, entre_dominios 0.0/0.5 · dentro ±10: False
+    Q3 (d ≈ 0.367): correcto 12.9/12.9, omision 86.7/56.0, superordinado 0.4/14.1, semantico 0.0/17.0, entre_dominios 0.0/0.2 · dentro ±10: False
+    Q4 (d ≈ 0.420): correcto 4.5/4.5, omision 95.2/82.2, superordinado 0.3/5.9, semantico 0.0/7.0, entre_dominios 0.0/0.6 · dentro ±10: False
+  P1 omisiones crecientes en cada semilla: True (pendientes [0.8, 0.85, 0.82, 1.01, 0.93, 0.97, 0.89, 0.87, 0.89, 0.94])
+  P2 superordinado < omisión en Q4: True
+  P3 U invertida en semánticos: False (máximo 0.0 % en d = 0.0; extremos 0.0 y 0.0)
+  P4 entre dominios < 5 %: True (máximo 0.0 %)
+  P5 errores más típicos que el blanco y creciente: False (media +nan, pendiente +nan; niveles con >= 20 errores: 0)
+  P6 frecuencia: False (alta − baja media +72.2 pts, pendiente -1.46, intrusos de alta frecuencia nan %; efecto en cuartiles +36.9 pts)
+  P7 dibujo: False (omisión distintivos 73.2 % contra compartidos 74.0 %; pendiente de intrusiones de dominio +0.000)
+  P8 respuestas a nombres frecuentes o más típicos de la categoría crecen con el daño: False (pendiente +0.000)
+  cuartiles dentro de ±10 puntos: 1 de 4
+
+[mae_proy] exactitud sin daño 4.3 %
+  d       corre   omisi   super   seman   entre   n
+  0.0       4.3    95.7     0.0     0.0     0.0   280
+  0.01      2.1    97.9     0.0     0.0     0.0   2800
+  0.02      1.8    98.2     0.0     0.0     0.0   2800
+  0.03      2.0    98.0     0.0     0.0     0.0   2800
+  0.04      1.8    98.2     0.0     0.0     0.0   2800
+  0.05      1.9    98.1     0.0     0.0     0.0   2800
+  0.075     1.9    98.1     0.0     0.0     0.0   2800
+  0.1       2.0    98.0     0.0     0.0     0.0   2800
+  0.15      1.9    98.1     0.0     0.0     0.0   2800
+  0.2       1.7    98.2     0.0     0.0     0.0   2800
+  0.25      1.4    98.6     0.0     0.0     0.0   2800
+  0.3       0.6    99.4     0.0     0.0     0.0   2800
+  0.35      0.3    99.7     0.0     0.0     0.0   2800
+  0.4       0.1    99.9     0.0     0.0     0.0   2800
+  0.45      0.0   100.0     0.0     0.0     0.0   2800
+  0.5       0.0   100.0     0.0     0.0     0.0   2800
+  0.55      0.0   100.0     0.0     0.0     0.0   2800
+  0.6       0.0   100.0     0.0     0.0     0.0   2800
+  0.65      0.0   100.0     0.0     0.0     0.0   2800
+  0.7       0.0   100.0     0.0     0.0     0.0   2800
+  0.75      0.0   100.0     0.0     0.0     0.0   2800
+  0.8       0.0   100.0     0.0     0.0     0.0   2800
+  0.85      0.0   100.0     0.0     0.0     0.0   2800
+  0.9       0.0   100.0     0.0     0.0     0.0   2800
+  a la exactitud de cada cuartil de pacientes (modelo / paciente):
+    Q1: el modelo no cruza esa exactitud
+    Q2: el modelo no cruza esa exactitud
+    Q3: el modelo no cruza esa exactitud
+    Q4: el modelo no cruza esa exactitud
+  P1 omisiones crecientes en cada semilla: True (pendientes [0.05, 0.01, 0.0, 0.01, 0.01, 0.05, 0.05, 0.06, 0.03, 0.06])
+  P2 superordinado < omisión en Q4: False
+  P3 U invertida en semánticos: False (máximo 0.0 % en d = 0.0; extremos 0.0 y 0.0)
+  P4 entre dominios < 5 %: True (máximo 0.0 %)
+  P5 errores más típicos que el blanco y creciente: False (media +nan, pendiente +nan; niveles con >= 20 errores: 0)
+  P6 frecuencia: False (alta − baja media +nan pts, pendiente +nan, intrusos de alta frecuencia nan %; efecto en cuartiles +nan pts)
+  P7 dibujo: False (omisión distintivos nan % contra compartidos nan %; pendiente de intrusiones de dominio +nan)
+  P8 respuestas a nombres frecuentes o más típicos de la categoría crecen con el daño: False (pendiente +0.000)
+  cuartiles dentro de ±10 puntos: 0 de 4
+
+[pdp] exactitud sin daño 94.3 %
+  d       corre   omisi   super   seman   entre   n
+  0.0      94.3     0.7     1.8     3.2     0.0   280
+  0.01     91.9     2.0     2.1     3.8     0.2   2800
+  0.02     89.6     2.5     2.9     4.7     0.3   2800
+  0.03     87.6     3.7     2.6     5.9     0.2   2800
+  0.04     83.9     5.2     3.2     7.4     0.4   2800
+  0.05     81.0     6.4     3.5     8.5     0.6   2800
+  0.075    75.1     9.1     4.1    11.0     0.8   2800
+  0.1      67.5    11.5     4.8    14.8     1.4   2800
+  0.15     50.5    18.7     5.7    23.4     1.8   2800
+  0.2      37.2    24.9     7.6    27.6     2.6   2800
+  0.25     25.4    35.0     8.1    27.4     4.1   2800
+  0.3      18.2    38.0     7.4    31.9     4.5   2800
+  0.35     12.5    44.0     7.1    30.4     6.0   2800
+  0.4       6.7    54.2     6.0    25.0     8.1   2800
+  0.45      4.6    60.2     4.5    24.2     6.5   2800
+  0.5       3.0    63.6     3.9    21.5     8.0   2800
+  0.55      1.5    72.0     2.6    12.8    11.1   2800
+  0.6       1.0    83.6     0.2     6.9     8.3   2800
+  0.65      0.6    88.3     0.0     5.2     5.9   2800
+  0.7       0.1    96.0     0.4     1.5     2.0   2800
+  0.75      0.1    96.5     0.1     1.5     1.8   2800
+  0.8       0.0    99.0     0.0     0.6     0.4   2800
+  0.85      0.0   100.0     0.0     0.0     0.0   2800
+  0.9       0.0   100.0     0.0     0.0     0.0   2800
+  a la exactitud de cada cuartil de pacientes (modelo / paciente):
+    Q1 (d ≈ 0.056): correcto 79.6/79.6, omision 7.1/10.4, superordinado 3.6/1.0, semantico 9.1/8.9, entre_dominios 0.6/0.1 · dentro ±10: True
+    Q2 (d ≈ 0.197): correcto 38.1/38.1, omision 24.5/31.2, superordinado 7.5/6.3, semantico 27.4/24.1, entre_dominios 2.6/0.5 · dentro ±10: True
+    Q3 (d ≈ 0.346): correcto 12.9/12.9, omision 43.5/56.0, superordinado 7.2/14.1, semantico 30.5/17.0, entre_dominios 5.9/0.2 · dentro ±10: False
+    Q4 (d ≈ 0.453): correcto 4.5/4.5, omision 60.5/82.2, superordinado 4.4/5.9, semantico 24.0/7.0, entre_dominios 6.6/0.6 · dentro ±10: False
+  P1 omisiones crecientes en cada semilla: True (pendientes [1.31, 1.22, 1.31, 1.28, 1.27, 1.12, 1.21, 1.29, 1.22, 1.2])
+  P2 superordinado < omisión en Q4: True
+  P3 U invertida en semánticos: True (máximo 31.9 % en d = 0.3; extremos 3.2 y 0.0)
+  P4 entre dominios < 5 %: False (máximo 11.1 %)
+  P5 errores más típicos que el blanco y creciente: False (media -0.003, pendiente -0.006; niveles con >= 20 errores: 21)
+  P6 frecuencia: True (alta − baja media +19.9 pts, pendiente +0.05, intrusos de alta frecuencia 59.0 %; efecto en cuartiles +19.2 pts)
+  P7 dibujo: False (omisión distintivos 63.2 % contra compartidos 48.7 %; pendiente de intrusiones de dominio -0.225)
+  P8 respuestas a nombres frecuentes o más típicos de la categoría crecen con el daño: False (pendiente -0.056)
+  cuartiles dentro de ±10 puntos: 2 de 4
+
+[minerva] exactitud sin daño 49.3 %
+  d       corre   omisi   super   seman   entre   n
+  0.0      49.3     0.0    28.6    20.4     1.8   280
+  0.01     48.6     0.0    29.1    20.7     1.5   2800
+  0.02     48.5     0.0    29.2    20.6     1.7   2800
+  0.03     48.5     0.0    29.2    20.3     1.9   2800
+  0.04     48.0     0.0    29.5    20.6     1.9   2800
+  0.05     48.4     0.0    29.2    20.0     2.4   2800
+  0.075    47.7     0.0    29.0    20.7     2.6   2800
+  0.1      46.5     0.0    29.0    22.2     2.3   2800
+  0.15     45.4     0.0    28.9    21.9     3.8   2800
+  0.2      45.0     0.0    27.6    23.1     4.2   2800
+  0.25     43.4     0.0    27.8    24.6     4.2   2800
+  0.3      42.1     0.0    27.0    25.4     5.4   2800
+  0.35     38.6     0.0    28.7    27.1     5.6   2800
+  0.4      37.2     0.0    26.9    29.8     6.2   2800
+  0.45     36.8     0.0    24.3    29.9     8.9   2800
+  0.5      32.6     0.0    24.8    34.4     8.1   2800
+  0.55     31.0     0.0    24.0    36.3     8.6   2800
+  0.6      29.1     0.0    23.6    36.9    10.4   2800
+  0.65     26.4     0.0    21.8    39.1    12.7   2800
+  0.7      24.0     0.0    18.8    44.6    12.6   2800
+  0.75     20.5     0.0    17.2    48.8    13.5   2800
+  0.8      17.1     0.0    16.8    51.0    15.1   2800
+  0.85     12.7     0.0    12.7    54.6    20.0   2800
+  0.9       8.1     0.0    12.0    52.2    27.7   2800
+  a la exactitud de cada cuartil de pacientes (modelo / paciente):
+    Q1: el modelo no cruza esa exactitud
+    Q2 (d ≈ 0.368): correcto 38.1/38.1, omision 0.0/31.2, superordinado 28.0/6.3, semantico 28.0/24.1, entre_dominios 5.8/0.5 · dentro ±10: False
+    Q3 (d ≈ 0.848): correcto 12.9/12.9, omision 0.0/56.0, superordinado 12.9/14.1, semantico 54.4/17.0, entre_dominios 19.8/0.2 · dentro ±10: False
+    Q4: el modelo no cruza esa exactitud
+  P1 omisiones crecientes en cada semilla: False (pendientes [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+  P2 superordinado < omisión en Q4: False
+  P3 U invertida en semánticos: True (máximo 54.6 % en d = 0.85; extremos 20.4 y 52.2)
+  P4 entre dominios < 5 %: False (máximo 27.7 %)
+  P5 errores más típicos que el blanco y creciente: False (media +0.009, pendiente -0.023; niveles con >= 20 errores: 24)
+  P6 frecuencia: False (alta − baja media +64.8 pts, pendiente -0.96, intrusos de alta frecuencia 93.1 %; efecto en cuartiles +41.7 pts)
+  P7 dibujo: False (omisión distintivos 40.3 % contra compartidos 40.9 %; pendiente de intrusiones de dominio +0.000)
+  P8 respuestas a nombres frecuentes o más típicos de la categoría crecen con el daño: True (pendiente +0.151)
+  cuartiles dentro de ±10 puntos: 0 de 4
+
+[vecino] exactitud sin daño 100.0 %
+  d       corre   omisi   super   seman   entre   n
+  0.0     100.0     0.0     0.0     0.0     0.0   280
+  0.01     98.8     1.2     0.0     0.0     0.0   2800
+  0.02     98.4     1.6     0.0     0.0     0.0   2800
+  0.03     96.9     3.1     0.0     0.0     0.0   2800
+  0.04     95.7     4.3     0.0     0.0     0.0   2800
+  0.05     95.4     4.6     0.0     0.0     0.0   2800
+  0.075    93.2     6.8     0.0     0.0     0.0   2800
+  0.1      89.5    10.5     0.0     0.0     0.0   2800
+  0.15     86.0    14.0     0.0     0.0     0.0   2800
+  0.2      79.6    20.3     0.1     0.0     0.0   2800
+  0.25     74.4    25.1     0.1     0.4     0.0   2800
+  0.3      69.2    30.0     0.1     0.5     0.1   2800
+  0.35     62.9    35.8     0.4     0.9     0.1   2800
+  0.4      57.9    39.4     0.5     1.4     0.8   2800
+  0.45     51.6    44.8     0.5     2.2     0.8   2800
+  0.5      46.6    48.9     0.8     3.1     0.8   2800
+  0.55     37.5    56.1     1.2     4.2     1.0   2800
+  0.6      31.5    59.6     1.5     5.4     2.0   2800
+  0.65     25.0    66.6     1.2     5.5     1.6   2800
+  0.7      18.1    71.2     1.6     6.9     2.2   2800
+  0.75      9.6    82.1     1.1     5.9     1.3   2800
+  0.8       2.0    96.0     0.2     1.2     0.6   2800
+  0.85      0.3    99.7     0.0     0.0     0.0   2800
+  0.9       0.0   100.0     0.0     0.0     0.0   2800
+  a la exactitud de cada cuartil de pacientes (modelo / paciente):
+    Q1 (d ≈ 0.200): correcto 79.6/79.6, omision 20.3/10.4, superordinado 0.1/1.0, semantico 0.0/8.9, entre_dominios 0.0/0.1 · dentro ±10: True
+    Q2 (d ≈ 0.547): correcto 38.1/38.1, omision 55.6/31.2, superordinado 1.2/6.3, semantico 4.1/24.1, entre_dominios 1.0/0.5 · dentro ±10: False
+    Q3 (d ≈ 0.731): correcto 12.9/12.9, omision 77.9/56.0, superordinado 1.3/14.1, semantico 6.3/17.0, entre_dominios 1.7/0.2 · dentro ±10: False
+    Q4 (d ≈ 0.784): correcto 4.5/4.5, omision 91.4/82.2, superordinado 0.5/5.9, semantico 2.8/7.0, entre_dominios 0.8/0.6 · dentro ±10: True
+  P1 omisiones crecientes en cada semilla: True (pendientes [1.09, 1.14, 1.12, 1.1, 1.11, 1.11, 1.11, 1.1, 1.12, 1.12])
+  P2 superordinado < omisión en Q4: True
+  P3 U invertida en semánticos: True (máximo 6.9 % en d = 0.7; extremos 0.0 y 0.0)
+  P4 entre dominios < 5 %: True (máximo 2.2 %)
+  P5 errores más típicos que el blanco y creciente: True (media +0.004, pendiente +0.016; niveles con >= 20 errores: 10)
+  P6 frecuencia: False (alta − baja media +0.3 pts, pendiente +0.05, intrusos de alta frecuencia 49.6 %; efecto en cuartiles +0.3 pts)
+  P7 dibujo: False (omisión distintivos 52.9 % contra compartidos 52.9 %; pendiente de intrusiones de dominio +0.000)
+  P8 respuestas a nombres frecuentes o más típicos de la categoría crecen con el daño: True (pendiente +0.014)
+  cuartiles dentro de ±10 puntos: 2 de 4
+
+CRITERIO · MAE modelo viable de la DS: False · MAE aporta algo que el PDP no: False
