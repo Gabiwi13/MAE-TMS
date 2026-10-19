@@ -1,0 +1,565 @@
+{
+ "A_resnet_ajustado": {
+  "mae": {
+   "acierto": 0.0897280634151712,
+   "rechazo": 0.014973026533083782,
+   "balanceado": 0.2535199824657772
+  },
+  "prototipos": {
+   "acierto": 0.15418914455576352,
+   "rechazo": 0.0,
+   "balanceado": 0.27959621673832225
+  },
+  "prototipos_completo": {
+   "acierto": 0.15418914455576352,
+   "rechazo": 0.0,
+   "balanceado": 0.27959621673832225
+  },
+  "knn": {
+   "acierto": 0.19822745788836288,
+   "rechazo": 0.0,
+   "balanceado": 0.22960097868473545
+  },
+  "logistica": {
+   "acierto": 0.21419134647143015,
+   "rechazo": 0.0,
+   "balanceado": 0.2847361828910491
+  },
+  "lista_mae": {
+   "cobertura": 0.9392821754926787,
+   "tamano": 11.46515468457558,
+   "peor_clase": 0.6949152542372882
+  },
+  "mondrian": {
+   "cobertura": 0.9395023670593416,
+   "tamano": 10.679511174722007,
+   "peor_clase": 0.8724373576309795
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.03135479543930248,
+    "prototipos": 0.1125083836351442,
+    "logistica": 0.1914822266934943
+   },
+   "atelectasis": {
+    "mae": 0.2324455205811138,
+    "prototipos": 0.25786924939467315,
+    "logistica": 0.33777239709443097
+   },
+   "cardiomegaly": {
+    "mae": 0.7777777777777778,
+    "prototipos": 0.7818930041152263,
+    "logistica": 0.7119341563786008
+   },
+   "effusion": {
+    "mae": 0.39281437125748503,
+    "prototipos": 0.49101796407185627,
+    "logistica": 0.4035928143712575
+   },
+   "infiltration": {
+    "mae": 0.07765451664025357,
+    "prototipos": 0.07606973058637084,
+    "logistica": 0.1104067617538299
+   },
+   "mass": {
+    "mae": 0.08958837772397095,
+    "prototipos": 0.21549636803874092,
+    "logistica": 0.2639225181598063
+   },
+   "nodule": {
+    "mae": 0.005110732538330494,
+    "prototipos": 0.054514480408858604,
+    "logistica": 0.17206132879045996
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.0847457627118644,
+    "logistica": 0.06779661016949153
+   },
+   "pneumothorax": {
+    "mae": 0.17084282460136674,
+    "prototipos": 0.275626423690205,
+    "logistica": 0.3439635535307517
+   },
+   "consolidation": {
+    "mae": 0.21991701244813278,
+    "prototipos": 0.18672199170124482,
+    "logistica": 0.24481327800829875
+   },
+   "edema": {
+    "mae": 0.5818181818181818,
+    "prototipos": 0.5727272727272728,
+    "logistica": 0.41818181818181815
+   },
+   "emphysema": {
+    "mae": 0.3507853403141361,
+    "prototipos": 0.39790575916230364,
+    "logistica": 0.3717277486910995
+   },
+   "fibrosis": {
+    "mae": 0.5584415584415584,
+    "prototipos": 0.3181818181818182,
+    "logistica": 0.19480519480519481
+   },
+   "pleural": {
+    "mae": 0.06072874493927125,
+    "prototipos": 0.08906882591093117,
+    "logistica": 0.15384615384615385
+   }
+  },
+  "log": [
+   {
+    "epoca": 1,
+    "balanceado_val": 0.25988637062665126,
+    "segundos": 66
+   },
+   {
+    "epoca": 2,
+    "balanceado_val": 0.2863831607644629,
+    "segundos": 125
+   },
+   {
+    "epoca": 3,
+    "balanceado_val": 0.2762963550565002,
+    "segundos": 184
+   },
+   {
+    "epoca": 4,
+    "balanceado_val": 0.2647276578256973,
+    "segundos": 244
+   },
+   {
+    "epoca": 5,
+    "balanceado_val": 0.2676391069712473,
+    "segundos": 303
+   }
+  ],
+  "auroc_cabeza": {
+   "atelectasis": 0.670910282283458,
+   "cardiomegaly": 0.8187474336104208,
+   "effusion": 0.7978912120507272,
+   "infiltration": 0.4922957572572221,
+   "mass": 0.6596183218759454,
+   "nodule": 0.6213544212970114,
+   "pneumonia": 0.5243565349812354,
+   "pneumothorax": 0.7707451370733367,
+   "consolidation": 0.6661298228364272,
+   "edema": 0.8201653020696571,
+   "emphysema": 0.8632525506043561,
+   "fibrosis": 0.7131535068516948,
+   "pleural": 0.6599902643713538
+  }
+ },
+ "C_raddino_ajustado": {
+  "mae": {
+   "acierto": 0.2815699658703072,
+   "rechazo": 0.04491907959925135,
+   "balanceado": 0.30060307888040627
+  },
+  "prototipos": {
+   "acierto": 0.2530551579874491,
+   "rechazo": 0.0,
+   "balanceado": 0.3483830508258716
+  },
+  "prototipos_completo": {
+   "acierto": 0.2530551579874491,
+   "rechazo": 0.0,
+   "balanceado": 0.3483830508258716
+  },
+  "knn": {
+   "acierto": 0.2075305515798745,
+   "rechazo": 0.0,
+   "balanceado": 0.2683320771920902
+  },
+  "logistica": {
+   "acierto": 0.24920180557084665,
+   "rechazo": 0.0,
+   "balanceado": 0.32974691512765947
+  },
+  "lista_mae": {
+   "cobertura": 0.8836287570186062,
+   "tamano": 9.711879335021468,
+   "peor_clase": 0.5084745762711864
+  },
+  "mondrian": {
+   "cobertura": 0.8837388528019376,
+   "tamano": 8.410877463393152,
+   "peor_clase": 0.8545454545454545
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.3085177733065057,
+    "prototipos": 0.23440643863179075,
+    "logistica": 0.22191482226693493
+   },
+   "atelectasis": {
+    "mae": 0.40799031476997577,
+    "prototipos": 0.3789346246973366,
+    "logistica": 0.3910411622276029
+   },
+   "cardiomegaly": {
+    "mae": 0.7942386831275721,
+    "prototipos": 0.8106995884773662,
+    "logistica": 0.6995884773662552
+   },
+   "effusion": {
+    "mae": 0.3197604790419162,
+    "prototipos": 0.4491017964071856,
+    "logistica": 0.4694610778443114
+   },
+   "infiltration": {
+    "mae": 0.021658742736397254,
+    "prototipos": 0.05335446381405177,
+    "logistica": 0.10882197569994717
+   },
+   "mass": {
+    "mae": 0.3898305084745763,
+    "prototipos": 0.5447941888619855,
+    "logistica": 0.5108958837772397
+   },
+   "nodule": {
+    "mae": 0.06643952299829642,
+    "prototipos": 0.16013628620102216,
+    "logistica": 0.24872231686541738
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.05084745762711865,
+    "logistica": 0.06779661016949153
+   },
+   "pneumothorax": {
+    "mae": 0.33029612756264237,
+    "prototipos": 0.4601366742596811,
+    "logistica": 0.38724373576309795
+   },
+   "consolidation": {
+    "mae": 0.15352697095435686,
+    "prototipos": 0.22821576763485477,
+    "logistica": 0.24066390041493776
+   },
+   "edema": {
+    "mae": 0.5909090909090909,
+    "prototipos": 0.6090909090909091,
+    "logistica": 0.5
+   },
+   "emphysema": {
+    "mae": 0.3036649214659686,
+    "prototipos": 0.43455497382198954,
+    "logistica": 0.3769633507853403
+   },
+   "fibrosis": {
+    "mae": 0.3961038961038961,
+    "prototipos": 0.3051948051948052,
+    "logistica": 0.2597402597402597
+   },
+   "pleural": {
+    "mae": 0.12550607287449392,
+    "prototipos": 0.15789473684210525,
+    "logistica": 0.13360323886639677
+   }
+  },
+  "log": [
+   {
+    "epoca": 1,
+    "balanceado_val": 0.35149638166456937,
+    "segundos": 184
+   },
+   {
+    "epoca": 2,
+    "balanceado_val": 0.32948120929698704,
+    "segundos": 369
+   },
+   {
+    "epoca": 3,
+    "balanceado_val": 0.3253439609710003,
+    "segundos": 553
+   },
+   {
+    "epoca": 4,
+    "balanceado_val": 0.31602178308438617,
+    "segundos": 738
+   },
+   {
+    "epoca": 5,
+    "balanceado_val": 0.3054043004065559,
+    "segundos": 924
+   }
+  ],
+  "auroc_cabeza": {
+   "atelectasis": 0.7058074131979503,
+   "cardiomegaly": 0.8609132831999794,
+   "effusion": 0.822898239326521,
+   "infiltration": 0.5445694078712061,
+   "mass": 0.794283239892429,
+   "nodule": 0.6603735093196259,
+   "pneumonia": 0.5987093271004439,
+   "pneumothorax": 0.8539883381312099,
+   "consolidation": 0.7181828496848952,
+   "edema": 0.8549141436466517,
+   "emphysema": 0.9093016991363987,
+   "fibrosis": 0.7595352117012624,
+   "pleural": 0.7009714783626816
+  }
+ },
+ "D_raddino_probe": {
+  "mae": {
+   "acierto": 0.22679731366288672,
+   "rechazo": 0.05306616756578223,
+   "balanceado": 0.2662620966005848
+  },
+  "prototipos": {
+   "acierto": 0.24567874050423869,
+   "rechazo": 0.0,
+   "balanceado": 0.33599092748855297
+  },
+  "prototipos_completo": {
+   "acierto": 0.24567874050423869,
+   "rechazo": 0.0,
+   "balanceado": 0.33599092748855297
+  },
+  "knn": {
+   "acierto": 0.19778707475503687,
+   "rechazo": 0.0,
+   "balanceado": 0.24958436120716135
+  },
+  "logistica": {
+   "acierto": 0.23499944952108334,
+   "rechazo": 0.0,
+   "balanceado": 0.3142901372411097
+  },
+  "lista_mae": {
+   "cobertura": 0.8728393702521193,
+   "tamano": 9.903115710668281,
+   "peor_clase": 0.6779661016949152
+  },
+  "mondrian": {
+   "cobertura": 0.8729494660354509,
+   "tamano": 8.121765936364637,
+   "peor_clase": 0.8313458262350937
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.2482394366197183,
+    "prototipos": 0.22803487592219987,
+    "logistica": 0.20489604292421193
+   },
+   "atelectasis": {
+    "mae": 0.3305084745762712,
+    "prototipos": 0.3922518159806295,
+    "logistica": 0.3728813559322034
+   },
+   "cardiomegaly": {
+    "mae": 0.7160493827160493,
+    "prototipos": 0.7942386831275721,
+    "logistica": 0.6707818930041153
+   },
+   "effusion": {
+    "mae": 0.2155688622754491,
+    "prototipos": 0.41077844311377243,
+    "logistica": 0.43233532934131735
+   },
+   "infiltration": {
+    "mae": 0.010036978341257264,
+    "prototipos": 0.0612783940834654,
+    "logistica": 0.1278394083465399
+   },
+   "mass": {
+    "mae": 0.34382566585956414,
+    "prototipos": 0.5302663438256658,
+    "logistica": 0.4721549636803874
+   },
+   "nodule": {
+    "mae": 0.03747870528109029,
+    "prototipos": 0.131175468483816,
+    "logistica": 0.23509369676320271
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.05084745762711865,
+    "logistica": 0.03389830508474576
+   },
+   "pneumothorax": {
+    "mae": 0.2528473804100228,
+    "prototipos": 0.4533029612756264,
+    "logistica": 0.37585421412300685
+   },
+   "consolidation": {
+    "mae": 0.12863070539419086,
+    "prototipos": 0.1950207468879668,
+    "logistica": 0.1991701244813278
+   },
+   "edema": {
+    "mae": 0.6727272727272727,
+    "prototipos": 0.5909090909090909,
+    "logistica": 0.4727272727272727
+   },
+   "emphysema": {
+    "mae": 0.2094240837696335,
+    "prototipos": 0.31413612565445026,
+    "logistica": 0.3036649214659686
+   },
+   "fibrosis": {
+    "mae": 0.4935064935064935,
+    "prototipos": 0.42207792207792205,
+    "logistica": 0.3246753246753247
+   },
+   "pleural": {
+    "mae": 0.06882591093117409,
+    "prototipos": 0.12955465587044535,
+    "logistica": 0.17408906882591094
+   }
+  },
+  "log": [
+   {
+    "epoca": 1,
+    "balanceado_val": 0.3321819728904728,
+    "segundos": 83
+   },
+   {
+    "epoca": 2,
+    "balanceado_val": 0.3335954849490486,
+    "segundos": 166
+   },
+   {
+    "epoca": 3,
+    "balanceado_val": 0.33094152512604064,
+    "segundos": 248
+   },
+   {
+    "epoca": 4,
+    "balanceado_val": 0.3274290776093392,
+    "segundos": 331
+   },
+   {
+    "epoca": 5,
+    "balanceado_val": 0.32379698178607264,
+    "segundos": 414
+   }
+  ],
+  "auroc_cabeza": {
+   "atelectasis": 0.6678238174112447,
+   "cardiomegaly": 0.8394067222854695,
+   "effusion": 0.7885499356169794,
+   "infiltration": 0.5057627753015757,
+   "mass": 0.7750192268645708,
+   "nodule": 0.6546244864788291,
+   "pneumonia": 0.6044282713079646,
+   "pneumothorax": 0.8430697271887472,
+   "consolidation": 0.6915081557834333,
+   "edema": 0.8411239067279801,
+   "emphysema": 0.8687071859959874,
+   "fibrosis": 0.7519184069693713,
+   "pleural": 0.6869096919671206
+  }
+ },
+ "B_raddino_congelado": {
+  "mae": {
+   "acierto": 0.06765385885720578,
+   "rechazo": 0.031102058791148298,
+   "balanceado": 0.1241674834933365
+  },
+  "prototipos": {
+   "acierto": 0.2744137399537598,
+   "rechazo": 0.0,
+   "balanceado": 0.3046880007852782
+  },
+  "prototipos_completo": {
+   "acierto": 0.2708356269954861,
+   "rechazo": 0.0,
+   "balanceado": 0.3231802993770808
+  },
+  "knn": {
+   "acierto": 0.17020808103049653,
+   "rechazo": 0.0,
+   "balanceado": 0.20177413047957918
+  },
+  "logistica": {
+   "acierto": 0.24287129802928548,
+   "rechazo": 0.0,
+   "balanceado": 0.3045952919103572
+  },
+  "lista_mae": {
+   "cobertura": 0.8634261807772762,
+   "tamano": 11.446823736650886,
+   "peor_clase": 0.7958115183246073
+  },
+  "mondrian": {
+   "cobertura": 0.8633160849939447,
+   "tamano": 7.860013211494,
+   "peor_clase": 0.6101694915254238
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.05918846411804158,
+    "prototipos": 0.2871395036887995,
+    "logistica": 0.22635814889336017
+   },
+   "atelectasis": {
+    "mae": 0.0847457627118644,
+    "prototipos": 0.3365617433414044,
+    "logistica": 0.36561743341404357
+   },
+   "cardiomegaly": {
+    "mae": 0.7407407407407407,
+    "prototipos": 0.6748971193415638,
+    "logistica": 0.6995884773662552
+   },
+   "effusion": {
+    "mae": 0.019161676646706587,
+    "prototipos": 0.3161676646706587,
+    "logistica": 0.39281437125748503
+   },
+   "infiltration": {
+    "mae": 0.04067617538298996,
+    "prototipos": 0.0676175382989963,
+    "logistica": 0.1162176439513999
+   },
+   "mass": {
+    "mae": 0.05811138014527845,
+    "prototipos": 0.4261501210653753,
+    "logistica": 0.4213075060532688
+   },
+   "nodule": {
+    "mae": 0.04599659284497445,
+    "prototipos": 0.18057921635434412,
+    "logistica": 0.20442930153321975
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.01694915254237288,
+    "logistica": 0.03389830508474576
+   },
+   "pneumothorax": {
+    "mae": 0.1070615034168565,
+    "prototipos": 0.42369020501138954,
+    "logistica": 0.3553530751708428
+   },
+   "consolidation": {
+    "mae": 0.024896265560165973,
+    "prototipos": 0.27800829875518673,
+    "logistica": 0.17012448132780084
+   },
+   "edema": {
+    "mae": 0.34545454545454546,
+    "prototipos": 0.5636363636363636,
+    "logistica": 0.5454545454545454
+   },
+   "emphysema": {
+    "mae": 0.031413612565445025,
+    "prototipos": 0.18324607329842932,
+    "logistica": 0.2879581151832461
+   },
+   "fibrosis": {
+    "mae": 0.13636363636363635,
+    "prototipos": 0.35714285714285715,
+    "logistica": 0.2792207792207792
+   },
+   "pleural": {
+    "mae": 0.044534412955465584,
+    "prototipos": 0.15384615384615385,
+    "logistica": 0.1659919028340081
+   }
+  },
+  "log": null
+ }
+}

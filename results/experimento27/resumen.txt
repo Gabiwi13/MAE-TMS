@@ -1,0 +1,37 @@
+Exp27: tórax (14 dominios) a 224 px con cuatro percepciones; latente de 64. Balanceado en test (%).
+
+[A_resnet_ajustado]
+  mae          acierto   9.0 · rechazo  1.5 · balanceado  25.4
+  prototipos   acierto  15.4 · rechazo  0.0 · balanceado  28.0
+  knn          acierto  19.8 · rechazo  0.0 · balanceado  23.0
+  logistica    acierto  21.4 · rechazo  0.0 · balanceado  28.5
+  lista MAE: cobertura 93.9, tamaño 11.47, peor 69.5 · Mondrian: cobertura 94.0, tamaño 10.68, peor 87.2
+  AUROC por hallazgo de la cabeza (test multi-etiqueta): media 0.698 · atelectasis 0.67, cardiomegaly 0.82, effusion 0.80, infiltration 0.49, mass 0.66, nodule 0.62, pneumonia 0.52, pneumothorax 0.77, consolidation 0.67, edema 0.82, emphysema 0.86, fibrosis 0.71, pleural 0.66
+  validación por época: 26.0, 28.6, 27.6, 26.5, 26.8
+
+[C_raddino_ajustado]
+  mae          acierto  28.2 · rechazo  4.5 · balanceado  30.1
+  prototipos   acierto  25.3 · rechazo  0.0 · balanceado  34.8
+  knn          acierto  20.8 · rechazo  0.0 · balanceado  26.8
+  logistica    acierto  24.9 · rechazo  0.0 · balanceado  33.0
+  lista MAE: cobertura 88.4, tamaño 9.71, peor 50.8 · Mondrian: cobertura 88.4, tamaño 8.41, peor 85.5
+  AUROC por hallazgo de la cabeza (test multi-etiqueta): media 0.753 · atelectasis 0.71, cardiomegaly 0.86, effusion 0.82, infiltration 0.54, mass 0.79, nodule 0.66, pneumonia 0.60, pneumothorax 0.85, consolidation 0.72, edema 0.85, emphysema 0.91, fibrosis 0.76, pleural 0.70
+  validación por época: 35.1, 32.9, 32.5, 31.6, 30.5
+
+[D_raddino_probe]
+  mae          acierto  22.7 · rechazo  5.3 · balanceado  26.6
+  prototipos   acierto  24.6 · rechazo  0.0 · balanceado  33.6
+  knn          acierto  19.8 · rechazo  0.0 · balanceado  25.0
+  logistica    acierto  23.5 · rechazo  0.0 · balanceado  31.4
+  lista MAE: cobertura 87.3, tamaño 9.90, peor 67.8 · Mondrian: cobertura 87.3, tamaño 8.12, peor 83.1
+  AUROC por hallazgo de la cabeza (test multi-etiqueta): media 0.732 · atelectasis 0.67, cardiomegaly 0.84, effusion 0.79, infiltration 0.51, mass 0.78, nodule 0.65, pneumonia 0.60, pneumothorax 0.84, consolidation 0.69, edema 0.84, emphysema 0.87, fibrosis 0.75, pleural 0.69
+  validación por época: 33.2, 33.4, 33.1, 32.7, 32.4
+
+[B_raddino_congelado]
+  mae          acierto   6.8 · rechazo  3.1 · balanceado  12.4
+  prototipos   acierto  27.4 · rechazo  0.0 · balanceado  30.5
+  knn          acierto  17.0 · rechazo  0.0 · balanceado  20.2
+  logistica    acierto  24.3 · rechazo  0.0 · balanceado  30.5
+  lista MAE: cobertura 86.3, tamaño 11.45, peor 79.6 · Mondrian: cobertura 86.3, tamaño 7.86, peor 61.0
+
+Tiempo: 70 min
