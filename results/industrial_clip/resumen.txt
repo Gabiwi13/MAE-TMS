@@ -1,0 +1,109 @@
+Demo industrial con CLIP ViT-B/16 (OpenAI). Registro del demo: 270 normales x 16 variantes + 180 de calibración por pieza.
+
+[T · oración -> pieza] formación de directorios: {"registradas": 2115, "rechazadas": 45, "sin_energia": 0, "acierto": 2115}
+  control, imágenes normales n=962: a su pieza  97.2 · rechazo   2.8
+  control, imágenes fallas n=1200: a su pieza  81.3 · rechazo  18.7
+  oraciones cruda n=1232: a su nombre   0.0 · rechazo 100.0 · de lo respondido   0.0 · coseno CLIP  57.7 · motivos {'rechazo': 1232}
+    candle                 n=154  {'rechazo': 154} · coseno 149
+    capsule                n=154  {'rechazo': 154} · coseno 29
+    cashew                 n=154  {'rechazo': 154} · coseno 154
+    chewing gum            n=154  {'rechazo': 154} · coseno 114
+    fryum                  n=154  {'rechazo': 154} · coseno 0
+    macaroni               n=154  {'rechazo': 154} · coseno 11
+    printed circuit board  n=154  {'rechazo': 154} · coseno 154
+    pipe fryum             n=154  {'rechazo': 154} · coseno 100
+  oraciones corregida n=1232: a su nombre   0.0 · rechazo 100.0 · de lo respondido   0.0 · coseno CLIP  57.7 · motivos {'sin_energia': 1218, 'rechazo': 14}
+    candle                 n=154  {'rechazo': 154} · coseno 149
+    capsule                n=154  {'rechazo': 154} · coseno 29
+    cashew                 n=154  {'rechazo': 154} · coseno 154
+    chewing gum            n=154  {'rechazo': 154} · coseno 114
+    fryum                  n=154  {'rechazo': 154} · coseno 0
+    macaroni               n=154  {'rechazo': 154} · coseno 11
+    printed circuit board  n=154  {'rechazo': 154} · coseno 154
+    pipe fryum             n=154  {'rechazo': 154} · coseno 100
+  post hoc, corregida sin umbral de energía n=1232: a su nombre   0.0 · rechazo 100.0 · de lo respondido   0.0
+    candle                 n=154  {'rechazo': 154}
+    capsule                n=154  {'rechazo': 154}
+    cashew                 n=154  {'rechazo': 154}
+    chewing gum            n=154  {'rechazo': 154}
+    fryum                  n=154  {'rechazo': 154}
+    macaroni               n=154  {'rechazo': 154}
+    printed circuit board  n=154  {'rechazo': 154}
+    pipe fryum             n=154  {'rechazo': 154}
+
+[Z · solo texto, cruda] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 /  99.0 (0.472) · cpe 100.0 / 100.0 (0.887) · ninguno contiene: cal 100.0 test 100.0
+    capsules    acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 /  98.3 (0.482) · cpe  98.0 / 100.0 (0.641) · ninguno contiene: cal 100.0 test 100.0
+    cashew      acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  90.0 / 100.0 (0.283) · cpe 100.0 / 100.0 (0.724) · ninguno contiene: cal 100.0 test 100.0
+    chewinggum  acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 / 100.0 (0.488) · cpe 100.0 / 100.0 (0.951) · ninguno contiene: cal 100.0 test 100.0
+    fryum       acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 / 100.0 (0.615) · cpe 100.0 / 100.0 (0.703) · ninguno contiene: cal 100.0 test 100.0
+    macaroni1   acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 /  99.0 (0.615) · cpe 100.0 /  99.0 (0.570) · ninguno contiene: cal 100.0 test 100.0
+    macaroni2   acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  99.0 (0.557) · cpe 100.0 / 100.0 (0.579) · ninguno contiene: cal 100.0 test 100.0
+    pcb1        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  99.0 (0.437) · cpe  98.0 /  99.0 (0.365) · ninguno contiene: cal 100.0 test 100.0
+    pcb2        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  97.0 /  99.0 (0.456) · cpe 100.0 / 100.0 (0.579) · ninguno contiene: cal 100.0 test 100.0
+    pcb3        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 /  96.0 (0.509) · cpe  93.0 /  98.0 (0.495) · ninguno contiene: cal 100.0 test 100.0
+    pcb4        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  98.0 (0.455) · cpe 100.0 /  99.0 (0.686) · ninguno contiene: cal 100.0 test 100.0
+    pipe_fryum  acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  99.0 / 100.0 (0.533) · cpe 100.0 / 100.0 (0.824) · ninguno contiene: cal 100.0 test 100.0
+    media       acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  97.9 /  98.9 (0.492) · cpe  99.1 /  99.6 (0.667) · ninguno contiene (test) 100.0
+
+[Z · solo texto, corregida] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.557) · cpe 100.0 / 100.0 (0.887) · ninguno contiene: cal 100.0 test 100.0
+    capsules    acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  98.3 (0.504) · cpe  98.0 / 100.0 (0.641) · ninguno contiene: cal 100.0 test 100.0
+    cashew      acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  96.0 /  96.0 (0.569) · cpe 100.0 / 100.0 (0.724) · ninguno contiene: cal 100.0 test 100.0
+    chewinggum  acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  98.0 (0.461) · cpe 100.0 / 100.0 (0.951) · ninguno contiene: cal 100.0 test 100.0
+    fryum       acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.540) · cpe 100.0 / 100.0 (0.703) · ninguno contiene: cal 100.0 test 100.0
+    macaroni1   acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.527) · cpe 100.0 /  99.0 (0.570) · ninguno contiene: cal 100.0 test 100.0
+    macaroni2   acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.443) · cpe 100.0 / 100.0 (0.579) · ninguno contiene: cal 100.0 test 100.0
+    pcb1        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.528) · cpe  98.0 /  99.0 (0.365) · ninguno contiene: cal 100.0 test 100.0
+    pcb2        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.481) · cpe 100.0 / 100.0 (0.579) · ninguno contiene: cal 100.0 test 100.0
+    pcb3        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.0 /  97.0 (0.468) · cpe  93.0 /  98.0 (0.495) · ninguno contiene: cal 100.0 test 100.0
+    pcb4        acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada 100.0 / 100.0 (0.411) · cpe 100.0 /  99.0 (0.686) · ninguno contiene: cal 100.0 test 100.0
+    pipe_fryum  acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  97.0 / 100.0 (0.546) · cpe 100.0 / 100.0 (0.824) · ninguno contiene: cal 100.0 test 100.0
+    media       acepta cal   0.0 · memoria 100.0 / 100.0 · memoria_graduada  98.9 /  99.1 (0.503) · cpe  99.1 /  99.6 (0.667) · ninguno contiene (test) 100.0
+
+[N · especialista de normales + sin_texto] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal  98.9 · memoria   7.0 /   1.0 · memoria_graduada   7.0 /   1.0 (0.530) · knn_euclid  39.0 /   2.0 (0.871) · maha  21.0 /   2.0 (0.798) · cpe  22.0 /   0.0 (0.887) · cpe_knn  22.0 /   0.0 (0.890) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    capsules    acepta cal  98.9 · memoria   3.0 /   1.7 · memoria_graduada   3.0 /   1.7 (0.507) · knn_euclid  15.0 /   0.0 (0.717) · maha  10.0 /   0.0 (0.723) · cpe  12.0 /   0.0 (0.641) · cpe_knn  13.0 /   0.0 (0.647) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    cashew      acepta cal 100.0 · memoria   0.0 /   0.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn_euclid  14.0 /   0.0 (0.932) · maha  14.0 /   0.0 (0.898) · cpe  19.0 /   0.0 (0.724) · cpe_knn  19.0 /   0.0 (0.735) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    chewinggum  acepta cal  97.8 · memoria  34.0 /   4.0 · memoria_graduada  34.0 /   0.0 (0.670) · knn_euclid  76.0 /   0.0 (0.928) · maha  70.0 /   0.0 (0.907) · cpe  84.0 /   4.0 (0.951) · cpe_knn  84.0 /   4.0 (0.953) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    fryum       acepta cal  98.3 · memoria  12.0 /   2.0 · memoria_graduada  12.0 /   2.0 (0.550) · knn_euclid  32.0 /   0.0 (0.839) · maha  32.0 /   0.0 (0.843) · cpe  21.0 /   2.0 (0.703) · cpe_knn  23.0 /   2.0 (0.718) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    macaroni1   acepta cal  99.4 · memoria   3.0 /   0.0 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid   8.0 /   0.0 (0.719) · maha   6.0 /   2.0 (0.653) · cpe   5.0 /   4.0 (0.570) · cpe_knn   6.0 /   5.0 (0.579) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    macaroni2   acepta cal  96.1 · memoria   3.0 /   2.0 · memoria_graduada   3.0 /   1.0 (0.510) · knn_euclid  11.0 /   4.0 (0.575) · maha  12.0 /   4.0 (0.565) · cpe   8.0 /   9.0 (0.579) · cpe_knn   8.0 /   8.0 (0.582) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb1        acepta cal  97.8 · memoria  13.0 /   3.0 · memoria_graduada  13.0 /   3.0 (0.550) · knn_euclid  24.0 /   0.0 (0.861) · maha  19.0 /   3.0 (0.819) · cpe   2.0 /   1.0 (0.365) · cpe_knn   2.0 /   1.0 (0.386) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb2        acepta cal  96.7 · memoria   2.0 /   4.0 · memoria_graduada   2.0 /   4.0 (0.490) · knn_euclid  17.0 /   8.0 (0.593) · maha   7.0 /   9.0 (0.544) · cpe  12.0 /   5.0 (0.579) · cpe_knn  12.0 /   5.0 (0.585) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb3        acepta cal  98.9 · memoria   3.0 /   2.0 · memoria_graduada   3.0 /   2.0 (0.505) · knn_euclid  10.0 /   4.0 (0.629) · maha   8.0 /   3.0 (0.640) · cpe   7.0 /   5.9 (0.495) · cpe_knn   7.0 /   5.9 (0.499) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb4        acepta cal  99.4 · memoria   3.0 /   0.0 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid  10.0 /   0.0 (0.885) · maha  13.0 /   0.0 (0.829) · cpe  15.0 /   3.0 (0.686) · cpe_knn  14.0 /   3.0 (0.696) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pipe_fryum  acepta cal  98.9 · memoria  20.0 /   0.0 · memoria_graduada  20.0 /   0.0 (0.600) · knn_euclid  57.0 /   4.0 (0.914) · maha  26.0 /   4.0 (0.846) · cpe  31.0 /   2.0 (0.824) · cpe_knn  35.0 /   2.0 (0.838) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    media       acepta cal  98.4 · memoria   8.6 /   1.6 · memoria_graduada   8.6 /   1.2 (0.537) · knn_euclid  26.1 /   1.8 (0.789) · maha  19.8 /   2.2 (0.755) · cpe  19.8 /   3.0 (0.667) · cpe_knn  20.4 /   3.0 (0.676) · texto acepta fallas   0.0 normales   0.0
+
+[N · especialista de normales + texto_cpe] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal  98.9 · memoria   7.0 /   1.0 · memoria_graduada   7.0 /   1.0 (0.530) · knn_euclid  39.0 /   2.0 (0.871) · maha  21.0 /   2.0 (0.798) · cpe  22.0 /   0.0 (0.887) · cpe_knn  22.0 /   0.0 (0.890) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    capsules    acepta cal  98.9 · memoria   4.0 /   1.7 · memoria_graduada   3.0 /   1.7 (0.507) · knn_euclid  15.0 /   0.0 (0.717) · maha  10.0 /   0.0 (0.723) · cpe  12.0 /   0.0 (0.641) · cpe_knn  13.0 /   0.0 (0.647) · texto acepta: cal   0.0 normales   0.0 fallas   1.0
+    cashew      acepta cal  99.4 · memoria   0.0 /   0.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn_euclid  36.0 /   0.0 (0.932) · maha  19.0 /   0.0 (0.898) · cpe  21.0 /   0.0 (0.724) · cpe_knn  23.0 /   0.0 (0.735) · texto acepta: cal   0.6 normales   0.0 fallas   0.0
+    chewinggum  acepta cal  97.8 · memoria  34.0 /   4.0 · memoria_graduada  34.0 /   0.0 (0.670) · knn_euclid  76.0 /   0.0 (0.928) · maha  70.0 /   0.0 (0.907) · cpe  84.0 /   4.0 (0.951) · cpe_knn  84.0 /   4.0 (0.953) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    fryum       acepta cal  98.3 · memoria  12.0 /   2.0 · memoria_graduada  12.0 /   2.0 (0.550) · knn_euclid  32.0 /   0.0 (0.839) · maha  32.0 /   0.0 (0.843) · cpe  21.0 /   2.0 (0.703) · cpe_knn  23.0 /   2.0 (0.718) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    macaroni1   acepta cal  98.3 · memoria   3.0 /   0.0 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid  14.0 /   3.0 (0.719) · maha   9.0 /   4.0 (0.653) · cpe  11.0 /   8.0 (0.570) · cpe_knn  11.0 /   8.0 (0.579) · texto acepta: cal   1.1 normales   0.0 fallas   0.0
+    macaroni2   acepta cal  96.1 · memoria   3.0 /   2.0 · memoria_graduada   3.0 /   1.0 (0.510) · knn_euclid  11.0 /   4.0 (0.575) · maha  12.0 /   4.0 (0.565) · cpe   8.0 /   9.0 (0.579) · cpe_knn   8.0 /   8.0 (0.582) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb1        acepta cal  97.2 · memoria  13.0 /   3.0 · memoria_graduada  13.0 /   3.0 (0.550) · knn_euclid  33.0 /   0.0 (0.861) · maha  20.0 /   4.0 (0.819) · cpe   3.0 /   1.0 (0.365) · cpe_knn   4.0 /   1.0 (0.386) · texto acepta: cal   0.6 normales   0.0 fallas   0.0
+    pcb2        acepta cal  96.7 · memoria   2.0 /   4.0 · memoria_graduada   2.0 /   4.0 (0.490) · knn_euclid  17.0 /   8.0 (0.593) · maha   7.0 /   9.0 (0.544) · cpe  12.0 /   5.0 (0.579) · cpe_knn  12.0 /   5.0 (0.585) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pcb3        acepta cal  98.9 · memoria   4.0 /   2.0 · memoria_graduada   3.0 /   2.0 (0.505) · knn_euclid  10.0 /   4.0 (0.629) · maha   8.0 /   3.0 (0.640) · cpe   7.0 /   5.9 (0.495) · cpe_knn   7.0 /   5.9 (0.499) · texto acepta: cal   0.0 normales   0.0 fallas   1.0
+    pcb4        acepta cal  99.4 · memoria   3.0 /   0.0 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid  10.0 /   0.0 (0.885) · maha  13.0 /   0.0 (0.829) · cpe  15.0 /   3.0 (0.686) · cpe_knn  14.0 /   3.0 (0.696) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    pipe_fryum  acepta cal  98.9 · memoria  20.0 /   0.0 · memoria_graduada  20.0 /   0.0 (0.600) · knn_euclid  57.0 /   4.0 (0.914) · maha  26.0 /   4.0 (0.846) · cpe  31.0 /   2.0 (0.824) · cpe_knn  35.0 /   2.0 (0.838) · texto acepta: cal   0.0 normales   0.0 fallas   0.0
+    media       acepta cal  98.2 · memoria   8.8 /   1.6 · memoria_graduada   8.6 /   1.2 (0.537) · knn_euclid  29.2 /   2.1 (0.789) · maha  20.6 /   2.5 (0.755) · cpe  20.6 /   3.3 (0.667) · cpe_knn  21.3 /   3.2 (0.676) · texto acepta fallas   0.2 normales   0.0
+
+[N · especialista de normales + texto_cpe_vocabulario] detección / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC
+    candle      acepta cal  76.1 · memoria  12.0 /  27.0 · memoria_graduada   7.0 /   1.0 (0.530) · knn_euclid  80.0 /  25.0 (0.871) · maha  76.0 /  33.0 (0.798) · cpe  82.0 /  24.0 (0.887) · cpe_knn  82.0 /  22.0 (0.890) · texto acepta: cal  22.8 normales  26.0 fallas   5.0
+    capsules    acepta cal  92.2 · memoria   7.0 /   8.3 · memoria_graduada   3.0 /   1.7 (0.507) · knn_euclid  27.0 /   3.3 (0.717) · maha  30.0 /   5.0 (0.723) · cpe  27.0 /   5.0 (0.641) · cpe_knn  27.0 /   5.0 (0.647) · texto acepta: cal   6.7 normales   6.7 fallas   4.0
+    cashew      acepta cal  86.1 · memoria   2.0 /  20.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn_euclid  81.0 /  12.0 (0.932) · maha  72.0 /   8.0 (0.898) · cpe  50.0 /  12.0 (0.724) · cpe_knn  53.0 /  12.0 (0.735) · texto acepta: cal  13.9 normales  20.0 fallas   2.0
+    chewinggum  acepta cal  92.2 · memoria  36.0 /   6.0 · memoria_graduada  34.0 /   0.0 (0.670) · knn_euclid  85.0 /  10.0 (0.928) · maha  81.0 /  12.0 (0.907) · cpe  89.0 /  14.0 (0.951) · cpe_knn  89.0 /  14.0 (0.953) · texto acepta: cal   6.1 normales   6.0 fallas   2.0
+    fryum       acepta cal  97.8 · memoria  12.0 /   4.0 · memoria_graduada  12.0 /   2.0 (0.550) · knn_euclid  34.0 /   0.0 (0.839) · maha  32.0 /   0.0 (0.843) · cpe  22.0 /   2.0 (0.703) · cpe_knn  24.0 /   2.0 (0.718) · texto acepta: cal   0.6 normales   2.0 fallas   0.0
+    macaroni1   acepta cal  94.4 · memoria   6.0 /   6.0 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid  28.0 /   9.0 (0.719) · maha  22.0 /  11.0 (0.653) · cpe  22.0 /  14.0 (0.570) · cpe_knn  22.0 /  13.0 (0.579) · texto acepta: cal   5.0 normales   6.0 fallas   3.0
+    macaroni2   acepta cal  96.1 · memoria   3.0 /   6.0 · memoria_graduada   3.0 /   1.0 (0.510) · knn_euclid  11.0 /   4.0 (0.575) · maha  12.0 /   4.0 (0.565) · cpe   8.0 /   9.0 (0.579) · cpe_knn   8.0 /   8.0 (0.582) · texto acepta: cal   0.6 normales   4.0 fallas   0.0
+    pcb1        acepta cal  93.3 · memoria  13.0 /   8.0 · memoria_graduada  13.0 /   3.0 (0.550) · knn_euclid  58.0 /  15.0 (0.861) · maha  33.0 /   8.0 (0.819) · cpe   8.0 /   3.0 (0.365) · cpe_knn   8.0 /   3.0 (0.386) · texto acepta: cal   4.4 normales   5.0 fallas   0.0
+    pcb2        acepta cal  94.4 · memoria   3.0 /   6.0 · memoria_graduada   2.0 /   4.0 (0.490) · knn_euclid  20.0 /  12.0 (0.593) · maha  11.0 /  10.0 (0.544) · cpe  17.0 /   7.0 (0.579) · cpe_knn  16.0 /   7.0 (0.585) · texto acepta: cal   2.2 normales   2.0 fallas   1.0
+    pcb3        acepta cal  93.9 · memoria   9.0 /   7.9 · memoria_graduada   3.0 /   2.0 (0.505) · knn_euclid  28.0 /   9.9 (0.629) · maha  23.0 /   7.9 (0.640) · cpe  14.0 /  12.9 (0.495) · cpe_knn  15.0 /  11.9 (0.499) · texto acepta: cal   5.0 normales   5.9 fallas   6.0
+    pcb4        acepta cal  93.3 · memoria   6.0 /   7.9 · memoria_graduada   3.0 /   0.0 (0.515) · knn_euclid  62.0 /   8.9 (0.885) · maha  42.0 /   5.9 (0.829) · cpe  21.0 /   5.0 (0.686) · cpe_knn  22.0 /   5.0 (0.696) · texto acepta: cal   6.1 normales   7.9 fallas   3.0
+    pipe_fryum  acepta cal  98.3 · memoria  20.0 /   2.0 · memoria_graduada  20.0 /   0.0 (0.600) · knn_euclid  62.0 /   4.0 (0.914) · maha  27.0 /   6.0 (0.846) · cpe  41.0 /   6.0 (0.824) · cpe_knn  46.0 /   6.0 (0.838) · texto acepta: cal   0.6 normales   2.0 fallas   0.0
+    media       acepta cal  92.4 · memoria  10.8 /   9.1 · memoria_graduada   8.6 /   1.2 (0.537) · knn_euclid  48.0 /   9.4 (0.789) · maha  38.4 /   9.2 (0.755) · cpe  33.4 /   9.5 (0.667) · cpe_knn  34.3 /   9.1 (0.676) · texto acepta fallas   2.2 normales   7.8
+
+Tiempo total: 1 min
