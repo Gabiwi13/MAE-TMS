@@ -1,0 +1,25 @@
+Cascada de módulos (propuesta_cascada_modulos.md): malas -> buenas partidas en k -> revisión humana.
+cabeza (argmax, sin revisión), conocido: detección  93.0 · falsa alarma   3.4
+
+[media] conocido: detección / falsa alarma / revisión normales / revisión fallas · calibración: revisión · tipo nuevo: revisión / mala / buena (silenciosa) · rivales a igual revisión: tipo nuevo buena (silenciosa)
+  k=1:  92.5 /   2.9 /   0.0 /   1.9 · cal   0.4 · nuevo   2.6 /  65.6 /  31.8 · msp  24.1 (detección  92.2, fa   3.2) · energia  24.1 (detección  92.2, fa   3.1) · knn_distancia  39.1 (detección  85.4, fa   1.1)
+  k=2:  92.5 /   2.9 /   0.0 /   1.9 · cal   0.4 · nuevo   2.6 /  65.6 /  31.8 · msp  24.1 (detección  92.2, fa   3.2) · energia  24.1 (detección  92.2, fa   3.1) · knn_distancia  39.1 (detección  85.4, fa   1.1)
+  k=4:  92.5 /   2.9 /   0.0 /   1.9 · cal   0.4 · nuevo   2.6 /  65.6 /  31.8 · msp  24.1 (detección  92.2, fa   3.2) · energia  24.1 (detección  92.2, fa   3.1) · knn_distancia  39.1 (detección  85.4, fa   1.1)
+  k=8:  92.5 /   2.9 /   0.0 /   1.9 · cal   0.4 · nuevo   2.6 /  65.6 /  31.8 · msp  24.1 (detección  92.2, fa   3.2) · energia  24.1 (detección  92.2, fa   3.1) · knn_distancia  39.1 (detección  85.4, fa   1.1)
+
+[por pieza, tipo nuevo] revisión / mala / buena para k = 1, 2, 4, 8 · MSP a igual revisión
+  candle      «damaged corner of packaging» n= 24 · k=1   0.0/ 70.8/ 29.2 (msp  12.5) | k=2   0.0/ 70.8/ 29.2 (msp  12.5) | k=4   0.0/ 70.8/ 29.2 (msp  12.5) | k=8   0.0/ 70.8/ 29.2 (msp  12.5)
+  cashew      «small holes» n= 20 · k=1   0.0/100.0/  0.0 (msp   0.0) | k=2   0.0/100.0/  0.0 (msp   0.0) | k=4   0.0/100.0/  0.0 (msp   0.0) | k=8   0.0/100.0/  0.0 (msp   0.0)
+  chewinggum  «chunk of gum missing» n= 47 · k=1   2.1/ 93.6/  4.3 (msp   8.5) | k=2   2.1/ 93.6/  4.3 (msp   8.5) | k=4   2.1/ 93.6/  4.3 (msp   8.5) | k=8   2.1/ 93.6/  4.3 (msp   8.5)
+  fryum       «middle breakage» n= 21 · k=1   4.8/ 90.5/  4.8 (msp   4.8) | k=2   4.8/ 90.5/  4.8 (msp   4.8) | k=4   4.8/ 90.5/  4.8 (msp   4.8) | k=8   4.8/ 90.5/  4.8 (msp   4.8)
+  macaroni1   «chip around edge and corner» n= 25 · k=1   0.0/ 20.0/ 80.0 (msp  80.0) | k=2   0.0/ 20.0/ 80.0 (msp  80.0) | k=4   0.0/ 20.0/ 80.0 (msp  80.0) | k=8   0.0/ 20.0/ 80.0 (msp  80.0)
+  macaroni2   «small chip around edge» n= 25 · k=1   0.0/ 24.0/ 76.0 (msp  80.0) | k=2   0.0/ 24.0/ 76.0 (msp  80.0) | k=4   0.0/ 24.0/ 76.0 (msp  80.0) | k=8   0.0/ 24.0/ 76.0 (msp  80.0)
+  pcb1        «melt» n= 53 · k=1   0.0/  7.5/ 92.5 (msp  15.1) | k=2   0.0/  7.5/ 92.5 (msp  15.1) | k=4   0.0/  7.5/ 92.5 (msp  15.1) | k=8   0.0/  7.5/ 92.5 (msp  15.1)
+  pcb2        «melt» n= 52 · k=1   0.0/ 92.3/  7.7 (msp  11.5) | k=2   0.0/ 92.3/  7.7 (msp  11.5) | k=4   0.0/ 92.3/  7.7 (msp  11.5) | k=8   0.0/ 92.3/  7.7 (msp  11.5)
+  pcb3        «melt» n= 42 · k=1   2.4/ 50.0/ 47.6 (msp  35.7) | k=2   2.4/ 50.0/ 47.6 (msp  35.7) | k=4   2.4/ 50.0/ 47.6 (msp  35.7) | k=8   2.4/ 50.0/ 47.6 (msp  35.7)
+  pcb4        «missing» n= 29 · k=1   0.0/ 96.6/  3.4 (msp  17.2) | k=2   0.0/ 96.6/  3.4 (msp  17.2) | k=4   0.0/ 96.6/  3.4 (msp  17.2) | k=8   0.0/ 96.6/  3.4 (msp  17.2)
+  pipe_fryum  «similar colour spot» n= 21 · k=1  19.0/ 76.2/  4.8 (msp   0.0) | k=2  19.0/ 76.2/  4.8 (msp   0.0) | k=4  19.0/ 76.2/  4.8 (msp   0.0) | k=8  19.0/ 76.2/  4.8 (msp   0.0)
+
+[criterio] {"1": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "2": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "4": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "8": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}}
+
+Tiempo total: 6 min
