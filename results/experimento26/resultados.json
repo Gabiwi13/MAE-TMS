@@ -1,0 +1,527 @@
+{
+ "nivel1": {
+  "mae": {
+   "acierto": 0.9312517700368168,
+   "rechazo": 0.06768620787312377,
+   "balanceado": 0.9417382556829182
+  },
+  "prototipos": {
+   "acierto": 0.9996223921457567,
+   "rechazo": 0.0,
+   "balanceado": 0.9997779208403367
+  },
+  "prototipos_completo": {
+   "acierto": 0.9990087793826111,
+   "rechazo": 0.0,
+   "balanceado": 0.999412300410592
+  },
+  "knn": {
+   "acierto": 0.9999527990182195,
+   "rechazo": 0.0,
+   "balanceado": 0.99997479337943
+  },
+  "logistica": {
+   "acierto": 0.9997403946002077,
+   "rechazo": 0.0,
+   "balanceado": 0.9998482324614414
+  },
+  "lista_mae": {
+   "cobertura": 0.9586991409421316,
+   "tamano": 0.9613423959218351,
+   "peor_clase": 0.9520349485133509
+  },
+  "mondrian": {
+   "cobertura": 0.9591003492872652,
+   "tamano": 0.9591003492872652,
+   "peor_clase": 0.9076386545168186
+  },
+  "por_clase": {
+   "rx_torax": {
+    "mae": 0.9367449739223466,
+    "prototipos": 0.9999554228146035,
+    "logistica": 0.9999554228146035
+   },
+   "tc_abdomen": {
+    "mae": 0.9231072111598605,
+    "prototipos": 0.9991562605467431,
+    "logistica": 0.9994375070311621
+   },
+   "dermatoscopia": {
+    "mae": 0.9391521197007481,
+    "prototipos": 1.0,
+    "logistica": 1.0
+   },
+   "us_mama": {
+    "mae": 0.967948717948718,
+    "prototipos": 1.0,
+    "logistica": 1.0
+   }
+  }
+ },
+ "rx_torax|raddino": {
+  "mae": {
+   "acierto": 0.11163712429813938,
+   "rechazo": 0.04315754706594738,
+   "balanceado": 0.12163116532548428
+  },
+  "prototipos": {
+   "acierto": 0.26577122096223715,
+   "rechazo": 0.0,
+   "balanceado": 0.31483854877055123
+  },
+  "prototipos_completo": {
+   "acierto": 0.25657822305405703,
+   "rechazo": 0.0,
+   "balanceado": 0.323382762724298
+  },
+  "knn": {
+   "acierto": 0.1675107343388748,
+   "rechazo": 0.0,
+   "balanceado": 0.19643008880429794
+  },
+  "logistica": {
+   "acierto": 0.23945832874600903,
+   "rechazo": 0.0,
+   "balanceado": 0.3091914913451541
+  },
+  "lista_mae": {
+   "cobertura": 0.8560497632940658,
+   "tamano": 11.154684575580756,
+   "peor_clase": 0.7288135593220338
+  },
+  "mondrian": {
+   "cobertura": 0.8562149069690631,
+   "tamano": 7.700869756688319,
+   "peor_clase": 0.711864406779661
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.11787391012743126,
+    "prototipos": 0.2711267605633803,
+    "logistica": 0.21872904091213952
+   },
+   "atelectasis": {
+    "mae": 0.19491525423728814,
+    "prototipos": 0.3171912832929782,
+    "logistica": 0.3414043583535109
+   },
+   "cardiomegaly": {
+    "mae": 0.7736625514403292,
+    "prototipos": 0.7037037037037037,
+    "logistica": 0.6831275720164609
+   },
+   "effusion": {
+    "mae": 0.045508982035928146,
+    "prototipos": 0.29101796407185626,
+    "logistica": 0.38802395209580837
+   },
+   "infiltration": {
+    "mae": 0.05335446381405177,
+    "prototipos": 0.08135235076597992,
+    "logistica": 0.1278394083465399
+   },
+   "mass": {
+    "mae": 0.04600484261501211,
+    "prototipos": 0.4358353510895884,
+    "logistica": 0.43825665859564167
+   },
+   "nodule": {
+    "mae": 0.07155025553662692,
+    "prototipos": 0.2402044293015332,
+    "logistica": 0.24190800681431004
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.05084745762711865,
+    "logistica": 0.03389830508474576
+   },
+   "pneumothorax": {
+    "mae": 0.04328018223234624,
+    "prototipos": 0.3895216400911162,
+    "logistica": 0.35990888382687924
+   },
+   "consolidation": {
+    "mae": 0.03734439834024896,
+    "prototipos": 0.29045643153526973,
+    "logistica": 0.15352697095435686
+   },
+   "edema": {
+    "mae": 0.17272727272727273,
+    "prototipos": 0.6,
+    "logistica": 0.5636363636363636
+   },
+   "emphysema": {
+    "mae": 0.031413612565445025,
+    "prototipos": 0.18324607329842932,
+    "logistica": 0.2617801047120419
+   },
+   "fibrosis": {
+    "mae": 0.09090909090909091,
+    "prototipos": 0.4155844155844156,
+    "logistica": 0.35064935064935066
+   },
+   "pleural": {
+    "mae": 0.024291497975708502,
+    "prototipos": 0.13765182186234817,
+    "logistica": 0.1659919028340081
+   }
+  }
+ },
+ "rx_torax|biomedclip": {
+  "mae": {
+   "acierto": 0.05510293955741495,
+   "rechazo": 0.010954530441484091,
+   "balanceado": 0.07965274419497657
+  },
+  "prototipos": {
+   "acierto": 0.19261257293845646,
+   "rechazo": 0.0,
+   "balanceado": 0.21251674831737272
+  },
+  "prototipos_completo": {
+   "acierto": 0.18116261147198062,
+   "rechazo": 0.0,
+   "balanceado": 0.20159803535882134
+  },
+  "knn": {
+   "acierto": 0.16228118463062866,
+   "rechazo": 0.0,
+   "balanceado": 0.15558410127356798
+  },
+  "logistica": {
+   "acierto": 0.17896069580535065,
+   "rechazo": 0.0,
+   "balanceado": 0.22772246876082178
+  },
+  "lista_mae": {
+   "cobertura": 0.9393922712760101,
+   "tamano": 13.111141693273147,
+   "peor_clase": 0.8983050847457628
+  },
+  "mondrian": {
+   "cobertura": 0.9393372233843443,
+   "tamano": 10.901739513376638,
+   "peor_clase": 0.9
+  },
+  "por_clase": {
+   "sin-hallazgo": {
+    "mae": 0.06824279007377598,
+    "prototipos": 0.20665660630449362,
+    "logistica": 0.16507377598926895
+   },
+   "atelectasis": {
+    "mae": 0.043583535108958835,
+    "prototipos": 0.18765133171912832,
+    "logistica": 0.2929782082324455
+   },
+   "cardiomegaly": {
+    "mae": 0.012345679012345678,
+    "prototipos": 0.39094650205761317,
+    "logistica": 0.5308641975308642
+   },
+   "effusion": {
+    "mae": 0.004790419161676647,
+    "prototipos": 0.4239520958083832,
+    "logistica": 0.38323353293413176
+   },
+   "infiltration": {
+    "mae": 0.018489170628631802,
+    "prototipos": 0.0005282620179609086,
+    "logistica": 0.06233491811938722
+   },
+   "mass": {
+    "mae": 0.004842615012106538,
+    "prototipos": 0.1549636803874092,
+    "logistica": 0.28087167070217917
+   },
+   "nodule": {
+    "mae": 0.0,
+    "prototipos": 0.1890971039182283,
+    "logistica": 0.11754684838160136
+   },
+   "pneumonia": {
+    "mae": 0.0,
+    "prototipos": 0.0,
+    "logistica": 0.01694915254237288
+   },
+   "pneumothorax": {
+    "mae": 0.0,
+    "prototipos": 0.16173120728929385,
+    "logistica": 0.28018223234624146
+   },
+   "consolidation": {
+    "mae": 0.008298755186721992,
+    "prototipos": 0.16597510373443983,
+    "logistica": 0.0912863070539419
+   },
+   "edema": {
+    "mae": 0.9545454545454546,
+    "prototipos": 0.6636363636363637,
+    "logistica": 0.4636363636363636
+   },
+   "emphysema": {
+    "mae": 0.0,
+    "prototipos": 0.0,
+    "logistica": 0.14136125654450263
+   },
+   "fibrosis": {
+    "mae": 0.0,
+    "prototipos": 0.38961038961038963,
+    "logistica": 0.2727272727272727
+   },
+   "pleural": {
+    "mae": 0.0,
+    "prototipos": 0.04048582995951417,
+    "logistica": 0.08906882591093117
+   }
+  }
+ },
+ "tc_abdomen|biomedclip": {
+  "mae": {
+   "acierto": 0.4306446169422882,
+   "rechazo": 0.005681178985262684,
+   "balanceado": 0.43230453180392947
+  },
+  "prototipos": {
+   "acierto": 0.6542355720553493,
+   "rechazo": 0.0,
+   "balanceado": 0.6185166312460822
+  },
+  "prototipos_completo": {
+   "acierto": 0.6901226234672067,
+   "rechazo": 0.0,
+   "balanceado": 0.6550637900925312
+  },
+  "knn": {
+   "acierto": 0.822758465519181,
+   "rechazo": 0.0,
+   "balanceado": 0.8124200974261554
+  },
+  "logistica": {
+   "acierto": 0.8530768365395432,
+   "rechazo": 0.0,
+   "balanceado": 0.837170563933951
+  },
+  "lista_mae": {
+   "cobertura": 0.9819439757003038,
+   "tamano": 6.174147823152211,
+   "peor_clase": 0.9671232876712329
+  },
+  "mondrian": {
+   "cobertura": 0.9820564742940713,
+   "tamano": 6.193497581280234,
+   "peor_clase": 0.8851744186046512
+  },
+  "por_clase": {
+   "bladder": {
+    "mae": 0.0019305019305019305,
+    "prototipos": 0.46042471042471045,
+    "logistica": 0.7403474903474904
+   },
+   "femur-left": {
+    "mae": 0.8125,
+    "prototipos": 0.8010204081632653,
+    "logistica": 0.7678571428571429
+   },
+   "femur-right": {
+    "mae": 0.3656998738965952,
+    "prototipos": 0.2938209331651955,
+    "logistica": 0.7919293820933165
+   },
+   "heart": {
+    "mae": 0.7426751592356687,
+    "prototipos": 0.6140127388535032,
+    "logistica": 0.8573248407643312
+   },
+   "kidney-left": {
+    "mae": 0.3851744186046512,
+    "prototipos": 0.39728682170542634,
+    "logistica": 0.6187015503875969
+   },
+   "kidney-right": {
+    "mae": 0.11959287531806616,
+    "prototipos": 0.3511450381679389,
+    "logistica": 0.6458015267175573
+   },
+   "liver": {
+    "mae": 0.6535768645357687,
+    "prototipos": 0.974124809741248,
+    "logistica": 0.9863013698630136
+   },
+   "lung-left": {
+    "mae": 0.683457355466514,
+    "prototipos": 0.8254149971379507,
+    "logistica": 0.9874069834001145
+   },
+   "lung-right": {
+    "mae": 0.8604522890237176,
+    "prototipos": 0.918918918918919,
+    "logistica": 0.9773855488141202
+   },
+   "pancreas": {
+    "mae": 0.12392108508014797,
+    "prototipos": 0.7885326757090012,
+    "logistica": 0.937731196054254
+   },
+   "spleen": {
+    "mae": 0.006369426751592357,
+    "prototipos": 0.37898089171974525,
+    "logistica": 0.8980891719745223
+   }
+  }
+ },
+ "dermatoscopia|biomedclip": {
+  "mae": {
+   "acierto": 0.6339152119700748,
+   "rechazo": 0.009476309226932668,
+   "balanceado": 0.17678921869282324
+  },
+  "prototipos": {
+   "acierto": 0.4967581047381546,
+   "rechazo": 0.0,
+   "balanceado": 0.5084319934164389
+  },
+  "prototipos_completo": {
+   "acierto": 0.5546134663341646,
+   "rechazo": 0.0,
+   "balanceado": 0.5408307136625631
+  },
+  "knn": {
+   "acierto": 0.5840399002493766,
+   "rechazo": 0.0,
+   "balanceado": 0.5743478863299156
+  },
+  "logistica": {
+   "acierto": 0.6663341645885287,
+   "rechazo": 0.0,
+   "balanceado": 0.6237189702663889
+  },
+  "lista_mae": {
+   "cobertura": 0.9610972568578554,
+   "tamano": 5.584039900249376,
+   "peor_clase": 0.6896551724137931
+  },
+  "mondrian": {
+   "cobertura": 0.9625935162094763,
+   "tamano": 5.397007481296758,
+   "peor_clase": 0.9237668161434978
+  },
+  "por_clase": {
+   "actinic-keratosis": {
+    "mae": 0.0,
+    "prototipos": 0.4090909090909091,
+    "logistica": 0.42424242424242425
+   },
+   "basal-cell-carcinoma": {
+    "mae": 0.009708737864077669,
+    "prototipos": 0.49514563106796117,
+    "logistica": 0.7961165048543689
+   },
+   "benign-keratosis": {
+    "mae": 0.02727272727272727,
+    "prototipos": 0.24545454545454545,
+    "logistica": 0.5454545454545454
+   },
+   "dermatofibroma": {
+    "mae": 0.0,
+    "prototipos": 0.34782608695652173,
+    "logistica": 0.43478260869565216
+   },
+   "melanoma": {
+    "mae": 0.3094170403587444,
+    "prototipos": 0.5739910313901345,
+    "logistica": 0.6053811659192825
+   },
+   "melanocytic-nevus": {
+    "mae": 0.8911260253542133,
+    "prototipos": 0.5219985085756897,
+    "logistica": 0.697986577181208
+   },
+   "vascular-lesion": {
+    "mae": 0.0,
+    "prototipos": 0.9655172413793104,
+    "logistica": 0.8620689655172413
+   }
+  }
+ },
+ "us_mama|biomedclip": {
+  "mae": {
+   "acierto": 0.6858974358974359,
+   "rechazo": 0.05128205128205128,
+   "balanceado": 0.4692982456140351
+  },
+  "prototipos": {
+   "acierto": 0.7243589743589743,
+   "rechazo": 0.0,
+   "balanceado": 0.7512531328320802
+  },
+  "prototipos_completo": {
+   "acierto": 0.7884615384615384,
+   "rechazo": 0.0,
+   "balanceado": 0.7800751879699248
+  },
+  "knn": {
+   "acierto": 0.8525641025641025,
+   "rechazo": 0.0,
+   "balanceado": 0.7863408521303259
+  },
+  "logistica": {
+   "acierto": 0.8333333333333334,
+   "rechazo": 0.0,
+   "balanceado": 0.7807017543859649
+  },
+  "lista_mae": {
+   "cobertura": 0.9358974358974359,
+   "tamano": 1.7692307692307692,
+   "peor_clase": 0.8333333333333334
+  },
+  "mondrian": {
+   "cobertura": 0.9935897435897436,
+   "tamano": 1.8846153846153846,
+   "peor_clase": 0.9912280701754386
+  },
+  "por_clase": {
+   "malignant": {
+    "mae": 0.0,
+    "prototipos": 0.8095238095238095,
+    "logistica": 0.6666666666666666
+   },
+   "normal-benign": {
+    "mae": 0.9385964912280702,
+    "prototipos": 0.6929824561403509,
+    "logistica": 0.8947368421052632
+   }
+  }
+ },
+ "punta_a_punta": {
+  "rx_torax": {
+   "mae": 0.10503137729824948,
+   "prototipos": 0.26577122096223715,
+   "nivel1_mae": 0.9391170318176814,
+   "nivel1_prototipos": 0.9999449521083342
+  },
+  "tc_abdomen": {
+   "mae": 0.40032624592192595,
+   "prototipos": 0.6533918326020924,
+   "nivel1_mae": 0.9231072111598605,
+   "nivel1_prototipos": 0.9991562605467431
+  },
+  "dermatoscopia": {
+   "mae": 0.6134663341645885,
+   "prototipos": 0.4967581047381546,
+   "nivel1_mae": 0.9391521197007481,
+   "nivel1_prototipos": 1.0
+  },
+  "us_mama": {
+   "mae": 0.6794871794871795,
+   "prototipos": 0.7243589743589743,
+   "nivel1_mae": 0.967948717948718,
+   "nivel1_prototipos": 1.0
+  }
+ },
+ "ajeno": {
+  "acepta_propias_mae": 0.9323137921268763,
+  "rechaza_mae": 0.999375,
+  "rechaza_prototipos": 1.0
+ }
+}

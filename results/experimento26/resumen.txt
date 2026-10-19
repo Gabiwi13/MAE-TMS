@@ -1,0 +1,59 @@
+Exp26: el sistema médico con BiomedCLIP (modalidad, órganos, piel, mama) y RAD-DINO (tórax). PCA 64 por nivel.
+
+[nivel1]
+  mae                  acierto  93.1 · rechazo  6.8 · balanceado  94.2
+  prototipos           acierto 100.0 · rechazo  0.0 · balanceado 100.0
+  prototipos_completo  acierto  99.9 · rechazo  0.0 · balanceado  99.9
+  knn                  acierto 100.0 · rechazo  0.0 · balanceado 100.0
+  logistica            acierto 100.0 · rechazo  0.0 · balanceado 100.0
+  lista MAE: cobertura 95.9, tamaño 0.96, peor clase 95.2 · Mondrian: cobertura 95.9, tamaño 0.96, peor clase 90.8
+
+[rx_torax|raddino]
+  mae                  acierto  11.2 · rechazo  4.3 · balanceado  12.2
+  prototipos           acierto  26.6 · rechazo  0.0 · balanceado  31.5
+  prototipos_completo  acierto  25.7 · rechazo  0.0 · balanceado  32.3
+  knn                  acierto  16.8 · rechazo  0.0 · balanceado  19.6
+  logistica            acierto  23.9 · rechazo  0.0 · balanceado  30.9
+  lista MAE: cobertura 85.6, tamaño 11.15, peor clase 72.9 · Mondrian: cobertura 85.6, tamaño 7.70, peor clase 71.2
+
+[rx_torax|biomedclip]
+  mae                  acierto   5.5 · rechazo  1.1 · balanceado   8.0
+  prototipos           acierto  19.3 · rechazo  0.0 · balanceado  21.3
+  prototipos_completo  acierto  18.1 · rechazo  0.0 · balanceado  20.2
+  knn                  acierto  16.2 · rechazo  0.0 · balanceado  15.6
+  logistica            acierto  17.9 · rechazo  0.0 · balanceado  22.8
+  lista MAE: cobertura 93.9, tamaño 13.11, peor clase 89.8 · Mondrian: cobertura 93.9, tamaño 10.90, peor clase 90.0
+
+[tc_abdomen|biomedclip]
+  mae                  acierto  43.1 · rechazo  0.6 · balanceado  43.2
+  prototipos           acierto  65.4 · rechazo  0.0 · balanceado  61.9
+  prototipos_completo  acierto  69.0 · rechazo  0.0 · balanceado  65.5
+  knn                  acierto  82.3 · rechazo  0.0 · balanceado  81.2
+  logistica            acierto  85.3 · rechazo  0.0 · balanceado  83.7
+  lista MAE: cobertura 98.2, tamaño 6.17, peor clase 96.7 · Mondrian: cobertura 98.2, tamaño 6.19, peor clase 88.5
+
+[dermatoscopia|biomedclip]
+  mae                  acierto  63.4 · rechazo  0.9 · balanceado  17.7
+  prototipos           acierto  49.7 · rechazo  0.0 · balanceado  50.8
+  prototipos_completo  acierto  55.5 · rechazo  0.0 · balanceado  54.1
+  knn                  acierto  58.4 · rechazo  0.0 · balanceado  57.4
+  logistica            acierto  66.6 · rechazo  0.0 · balanceado  62.4
+  lista MAE: cobertura 96.1, tamaño 5.58, peor clase 69.0 · Mondrian: cobertura 96.3, tamaño 5.40, peor clase 92.4
+
+[us_mama|biomedclip]
+  mae                  acierto  68.6 · rechazo  5.1 · balanceado  46.9
+  prototipos           acierto  72.4 · rechazo  0.0 · balanceado  75.1
+  prototipos_completo  acierto  78.8 · rechazo  0.0 · balanceado  78.0
+  knn                  acierto  85.3 · rechazo  0.0 · balanceado  78.6
+  logistica            acierto  83.3 · rechazo  0.0 · balanceado  78.1
+  lista MAE: cobertura 93.6, tamaño 1.77, peor clase 83.3 · Mondrian: cobertura 99.4, tamaño 1.88, peor clase 99.1
+
+[punta a punta: nivel 1 correcto y nivel 2 correcto]
+  rx_torax       MAE  10.5 (nivel 1 93.9) · prototipos  26.6 (nivel 1 100.0)
+  tc_abdomen     MAE  40.0 (nivel 1 92.3) · prototipos  65.3 (nivel 1 99.9)
+  dermatoscopia  MAE  61.3 (nivel 1 93.9) · prototipos  49.7 (nivel 1 100.0)
+  us_mama        MAE  67.9 (nivel 1 96.8) · prototipos  72.4 (nivel 1 100.0)
+
+[fondo de ojo, a igual aceptación de lo propio (93.2 %)] rechazo: MAE 99.9 · prototipos 100.0
+
+Tiempo: 111 min

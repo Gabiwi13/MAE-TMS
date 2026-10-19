@@ -57,17 +57,15 @@ def content_sets(level, z):
     return s, sorted(set(d))
 
 
-_SIZES = {}
-
-
 def _support_sizes(homo):
-    """|soporte_i| de una memoria homo: niveles con peso > 0 en cada coordenada."""
-    if id(homo) not in _SIZES:
+    """|soporte_i| de una memoria homo: niveles con peso > 0 en cada coordenada.
+    Se guarda en la propia memoria: un id() puede reusarse al liberar objetos."""
+    if not hasattr(homo, "_soporte_tamano"):
         cnt = np.zeros(64)
         for k in range(32):
             cnt += homo.recog_weights(np.full(64, k)) > 0
-        _SIZES[id(homo)] = cnt
-    return _SIZES[id(homo)]
+        homo._soporte_tamano = cnt
+    return homo._soporte_tamano
 
 
 def topk(scores_row, names, k):
