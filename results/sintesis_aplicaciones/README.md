@@ -39,6 +39,7 @@ Cada fila compara la MAE contra la mejor alternativa medida sobre los mismos lat
 | **Rechazar lo lejano** (otra modalidad) | rechaza 6–24 % | MSP 99.8–100 % | **no compite** | experimento20 |
 | **Rechazar lo cercano** (órgano nunca registrado) | 96.3 % | kNN 97.7 · Mahalanobis 96.6 | **empata** | experimento20 |
 | **Detectar fallas, vector global** | 5.8 % de detección (falsa alarma 0.2) | Mahalanobis 29.1 % (AUROC 0.817) | **no compite** | industrial |
+| **Detectar fallas, vector global, leyendo los conteos en grado** (log-frecuencias de la relación) | AUROC 0.789; 47.2 % al 95 % de aceptación | Mahalanobis 0.800 (49.2 %); kNN 0.784 (45.2 %) | **iguala** a Mahalanobis y supera a kNN (piezas de confirmación) | parametros_mae |
 | **Detectar fallas, por parches** | 45.6 % (falsa alarma 14.8) | PatchCore 73.9 % (AUROC 0.864) | **no compite** | industrial |
 | **Detectar fallas con la mejor percepción congelada** (WideResNet50) | global 5.8 %; parches 26.8 % | Mahalanobis 29.9 %; PatchCore 1536 70.6 % (AUROC 0.886) | **no compite** (11/12 y 12/12 piezas por debajo) | cierre_mae |
 | **Detectar fallas sobre una red especializada** (buenas contra malas) | 90.5 % (falsa alarma 1.8) | cabeza de la red 93.0 % (3.4), AUROC 0.994 | **cerca, sin superarla**; la que separa es la red | cierre_mae |

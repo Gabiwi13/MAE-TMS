@@ -1,0 +1,66 @@
+Parámetros nativos de la MAE como lectura para detectar fallas (propuesta_parametros_mae.md).
+Verificación contra la API oficial: {"0.0": {"relacion_igual": true, "discrepancias": 0, "n": 80}, "0.25": {"relacion_igual": true, "discrepancias": 0, "n": 80}, "0.5": {"relacion_igual": true, "discrepancias": 0, "n": 80}, "1.0": {"relacion_igual": true, "discrepancias": 0, "n": 80}}
+Piezas de diseño: ['candle', 'cashew', 'macaroni1', 'pcb2', 'pcb3', 'pcb4'] · confirmación: ['capsules', 'chewinggum', 'fryum', 'macaroni2', 'pcb1', 'pipe_fryum']
+Elegido con las de diseño: ι = 0.0 para la contención · lectura graduada H
+
+===== diseno (6 piezas) · detección / falsa alarma (AUROC); C(ι) en su punto de operación, el resto al 95 % de aceptación de calibración
+  [g2_resnet18]
+    C0.0               1.8 /   0.0 (0.509) · acepta cal  99.4
+    C0.25             83.8 /  53.3 (0.722) · acepta cal  38.6
+    C0.5              98.8 /  94.4 (0.756) · acepta cal   4.5
+    C1.0             100.0 / 100.0 (0.751) · acepta cal   0.0
+    K                 35.2 /   5.6 (0.742)
+    H                 38.8 /   5.3 (0.787)
+    maha              48.8 /   7.3 (0.834)
+    kNN euclídeo      41.3 /   6.0 (0.813)
+  [g2_wrn50]
+    C0.0               3.7 /   0.2 (0.518) · acepta cal  99.4
+    C0.25             88.5 /  65.5 (0.743) · acepta cal  34.7
+    C0.5              99.0 /  94.7 (0.770) · acepta cal   4.4
+    C1.0             100.0 / 100.0 (0.783) · acepta cal   0.0
+    K                 35.8 /   5.3 (0.790)
+    H                 41.7 /   5.3 (0.817)
+    maha              52.3 /   5.0 (0.854)
+    kNN euclídeo      42.3 /   4.3 (0.829)
+  [parches_resnet18]
+    C0.0              43.3 /  14.3 (0.654) · acepta cal  84.2
+    C0.25            100.0 / 100.0 (0.664) · acepta cal   0.0
+    C0.5             100.0 / 100.0 (0.660) · acepta cal   0.0
+    C1.0             100.0 / 100.0 (0.659) · acepta cal   0.0
+    K                 20.0 /   5.5 (0.671)
+    H                 24.3 /   5.3 (0.703)
+    maha              22.5 /   5.0 (0.666)
+    kNN / PatchCore   63.0 /   6.1 (0.898)
+
+===== confirmacion (6 piezas) · detección / falsa alarma (AUROC); C(ι) en su punto de operación, el resto al 95 % de aceptación de calibración
+  [g2_resnet18]
+    C0.0               9.7 /   0.3 (0.547) · acepta cal  99.1
+    C0.25             86.7 /  66.6 (0.741) · acepta cal  30.7
+    C0.5              98.8 /  95.4 (0.766) · acepta cal   4.3
+    C1.0             100.0 / 100.0 (0.767) · acepta cal   0.0
+    K                 42.7 /   3.9 (0.772)
+    H                 47.2 /   4.1 (0.789)
+    maha              49.2 /   5.7 (0.800)
+    kNN euclídeo      45.2 /   5.6 (0.784)
+  [g2_wrn50]
+    C0.0               8.0 /   1.0 (0.535) · acepta cal  98.8
+    C0.25             85.8 /  64.9 (0.726) · acepta cal  33.3
+    C0.5              99.0 /  94.8 (0.734) · acepta cal   5.5
+    C1.0             100.0 / 100.0 (0.744) · acepta cal   0.0
+    K                 35.3 /   5.2 (0.744)
+    H                 39.3 /   4.2 (0.756)
+    maha              40.8 /   4.3 (0.768)
+    kNN euclídeo      34.3 /   5.5 (0.746)
+  [parches_resnet18]
+    C0.0              47.8 /  15.2 (0.675) · acepta cal  84.7
+    C0.25            100.0 / 100.0 (0.688) · acepta cal   0.0
+    C0.5             100.0 / 100.0 (0.680) · acepta cal   0.0
+    C1.0             100.0 / 100.0 (0.673) · acepta cal   0.0
+    K                 24.5 /   6.1 (0.684)
+    H                 28.2 /   6.1 (0.695)
+    maha              25.3 /   7.4 (0.637)
+    kNN / PatchCore   58.7 /   7.9 (0.830)
+
+[criterio, confirmación, G2 ResNet18] H: AUROC 0.789 contra Mahalanobis 0.800, detección  47.2 contra  49.2 → sostenido · ι = 0.0: detección   9.7 contra   9.7 con ι = 0, falsa alarma   0.3 contra   0.3 → no sostenido
+
+Tiempo total: 2 min
