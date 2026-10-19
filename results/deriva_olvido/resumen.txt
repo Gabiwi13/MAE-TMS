@@ -1,0 +1,26 @@
+Aprendizaje en línea con deriva (propuesta_deriva_olvido.md). Corriente de 6000 consultas; deriva en t = 3000.
+Dominios con deriva: ['candle', 'capsules', 'chewinggum', 'pcb1', 'pcb2', 'pcb3', 'pipe_fryum']
+
+[acierto en línea por tramo] antes (2000-3000) · justo después (3000-3500) · recuperación (3500-4500) · final (5000-6000)
+  memoria_F0          85.9  62.2  70.9  69.9 · lecturas medias 1.04 · sin candidato 317
+  memoria_W300        83.7  65.4  73.6  70.6 · lecturas medias 1.27 · sin candidato 317
+  memoria_W600        84.1  61.2  74.6  72.3 · lecturas medias 1.11 · sin candidato 317
+  memoria_W1200       85.2  62.8  73.0  74.3 · lecturas medias 1.06 · sin candidato 317
+  bandido_F0          91.8  63.8  72.9  75.4
+  bandido_W300        90.4  70.2  78.9  78.9
+  bandido_W600        90.7  66.4  79.9  79.4
+  bandido_W1200       91.5  65.8  80.1  80.5
+  oraculo             92.1  78.6  83.1  81.2
+
+[fracción al mejor vigente, dominios con deriva] tramos de 250 desde t = 2000
+  memoria_F0          82.4  80.3  80.7  81.8  27.6  25.3  32.2  39.7  35.5  51.5  41.2  50.4  52.9  47.8  49.3  54.3 · recupera (≥ 70 %) a los nunca pasos
+  memoria_W300        57.4  59.9  66.4  56.2  42.8  61.0  57.4  60.3  61.7  62.5  61.0  62.6  63.8  64.2  56.8  53.0 · recupera (≥ 70 %) a los nunca pasos
+  memoria_W600        73.0  67.8  69.3  75.2  31.0  50.0  67.0  57.4  66.7  68.4  64.7  73.4  63.8  63.4  58.9  66.9 · recupera (≥ 70 %) a los 1750 pasos
+  memoria_W1200       71.6  73.7  73.6  74.5  29.7  39.0  40.9  52.2  51.8  72.1  70.6  71.9  78.3  77.6  71.2  75.5 · recupera (≥ 70 %) a los 1250 pasos
+  bandido_F0          98.1  97.5  98.7  98.6   5.2  10.0  13.3  17.5  28.3  42.7  45.1  50.0  50.7  63.3  47.7  51.8 · recupera (≥ 70 %) a los nunca pasos
+  bandido_W300        75.9  73.1  75.8  77.1  32.7  82.5  75.6  74.8  80.0  83.2  93.8  78.1  83.8  81.3  87.1  85.1 · recupera (≥ 70 %) a los 250 pasos
+  bandido_W600        72.8  76.2  86.6  88.2  22.9  45.0  65.2  81.8  87.6  87.4  97.9  93.8  92.6  88.0  87.7  86.3 · recupera (≥ 70 %) a los 750 pasos
+  bandido_W1200       96.2  98.8  94.6  86.1  17.0  33.1  43.7  65.7  86.2  95.1  97.9  94.5  94.6  88.7  85.8  86.3 · recupera (≥ 70 %) a los 1000 pasos
+  oraculo            100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 · recupera (≥ 70 %) a los 0 pasos
+
+[criterio] {"memoria_F0": {"final": 0.699, "recupera": null, "al_mejor_antes": 0.8175182481751825}, "memoria_W300": {"final": 0.706, "recupera": null, "al_mejor_antes": 0.5620437956204379}, "memoria_W600": {"final": 0.723, "recupera": 1750, "al_mejor_antes": 0.7518248175182481}, "memoria_W1200": {"final": 0.743, "recupera": 1250, "al_mejor_antes": 0.7445255474452555}, "bandido_F0": {"final": 0.754, "recupera": null, "al_mejor_antes": 0.9861111111111112}, "bandido_W300": {"final": 0.789, "recupera": 250, "al_mejor_antes": 0.7708333333333334}, "bandido_W600": {"final": 0.794, "recupera": 750, "al_mejor_antes": 0.8819444444444444}, "bandido_W1200": {"final": 0.805, "recupera": 1000, "al_mejor_antes": 0.8611111111111112}, "oraculo": {"final": 0.812, "recupera": 0, "al_mejor_antes": 1.0}}
