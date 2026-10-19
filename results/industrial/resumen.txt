@@ -1,0 +1,87 @@
+Demo industrial EAM-TMS sobre VisA (1cls). Registro por pieza: 270 normales de llenado (16 variantes) y 180 de fase A = calibración.
+Formación de directorios (fase A): {"registradas": 2133, "rechazadas": 27, "sin_energia": 0, "acierto": 2133}
+
+[nivel 1 · ruteo por pieza]
+  normales n=962: memoria acierto  98.4 · rechazo   1.6 · falso   0.0 · de lo respondido 100.0 · kNN 100.0
+  fallas n=1200: memoria acierto  87.5 · rechazo  12.5 · falso   0.0 · de lo respondido 100.0 · kNN  99.9
+    candle      n=200  194 /   6 /   0 · kNN 200
+    capsules    n=160  154 /   6 /   0 · kNN 160
+    cashew      n=150  138 /  12 /   0 · kNN 150
+    chewinggum  n=150  118 /  32 /   0 · kNN 150
+    fryum       n=150  138 /  12 /   0 · kNN 150
+    macaroni1   n=200  197 /   3 /   0 · kNN 200
+    macaroni2   n=200  195 /   5 /   0 · kNN 200
+    pcb1        n=200  188 /  12 /   0 · kNN 199
+    pcb2        n=200  186 /  14 /   0 · kNN 200
+    pcb3        n=201  194 /   7 /   0 · kNN 201
+    pcb4        n=201  190 /  11 /   0 · kNN 201
+    pipe_fryum  n=150  105 /  45 /   0 · kNN 150
+  falsos más frecuentes: 
+
+[nivel 2 · G1 · latentes del nivel 1] detección de fallas / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC entre paréntesis
+    candle      acepta cal  98.9 · memoria   4.0 /   0.0 · memoria_graduada   4.0 /   0.0 (0.520) · knn  28.0 /   0.0 (0.860) · maha  30.0 /   1.0 (0.877) · knn_euclid  26.0 /   0.0 (0.853)
+    capsules    acepta cal  99.4 · memoria   3.0 /   1.7 · memoria_graduada   3.0 /   1.7 (0.507) · knn   4.0 /   0.0 (0.680) · maha   1.0 /   1.7 (0.660) · knn_euclid   3.0 /   0.0 (0.680)
+    cashew      acepta cal  99.4 · memoria   7.0 /   2.0 · memoria_graduada   7.0 /   2.0 (0.525) · knn  30.0 /   4.0 (0.854) · maha  34.0 /   0.0 (0.871) · knn_euclid  34.0 /   2.0 (0.854)
+    chewinggum  acepta cal  98.9 · memoria  28.0 /   0.0 · memoria_graduada  28.0 /   0.0 (0.640) · knn  62.0 /   2.0 (0.919) · maha  72.0 /   0.0 (0.961) · knn_euclid  63.0 /   0.0 (0.916)
+    fryum       acepta cal 100.0 · memoria   7.0 /   0.0 · memoria_graduada   7.0 /   0.0 (0.535) · knn  37.0 /   2.0 (0.834) · maha  48.0 /   2.0 (0.882) · knn_euclid  27.0 /   0.0 (0.854)
+    macaroni1   acepta cal  99.4 · memoria   1.0 /   0.0 · memoria_graduada   1.0 /   0.0 (0.505) · knn   1.0 /   1.0 (0.676) · maha   1.0 /   1.0 (0.718) · knn_euclid   6.0 /   4.0 (0.617)
+    macaroni2   acepta cal  97.2 · memoria   3.0 /   1.0 · memoria_graduada   3.0 /   1.0 (0.510) · knn   0.0 /   4.0 (0.516) · maha   1.0 /   3.0 (0.573) · knn_euclid   1.0 /   1.0 (0.483)
+    pcb1        acepta cal  99.4 · memoria   7.0 /   1.0 · memoria_graduada   7.0 /   1.0 (0.530) · knn  16.0 /   2.0 (0.632) · maha  37.0 /   1.0 (0.878) · knn_euclid  35.0 /   3.0 (0.859)
+    pcb2        acepta cal  97.2 · memoria  11.0 /   1.0 · memoria_graduada  11.0 /   1.0 (0.550) · knn  28.0 /   4.0 (0.785) · maha  33.0 /   1.0 (0.817) · knn_euclid  20.0 /   1.0 (0.787)
+    pcb3        acepta cal  98.9 · memoria   3.0 /   1.0 · memoria_graduada   3.0 /   1.0 (0.510) · knn  28.0 /   4.0 (0.774) · maha  36.0 /   1.0 (0.779) · knn_euclid  21.0 /   4.0 (0.763)
+    pcb4        acepta cal  99.4 · memoria   8.0 /   2.0 · memoria_graduada   8.0 /   2.0 (0.530) · knn  21.0 /   0.0 (0.942) · maha  26.0 /   0.0 (0.939) · knn_euclid  15.0 /   0.0 (0.927)
+    pipe_fryum  acepta cal  96.7 · memoria  37.0 /   2.0 · memoria_graduada  37.0 /   2.0 (0.675) · knn  60.0 /   2.0 (0.888) · maha  70.0 /   6.0 (0.893) · knn_euclid  59.0 /   2.0 (0.879)
+    media       acepta cal  98.8 · memoria   9.9 /   1.0 · memoria_graduada   9.9 /   1.0 (0.545) · knn  26.2 /   2.1 (0.780) · maha  32.4 /   1.5 (0.821) · knn_euclid  25.8 /   1.4 (0.789)
+    criterio: memoria >= mejor detector - 2 puntos en 3/12 piezas, por debajo en 9/12; detección - falsa alarma de la memoria (media) 8.9 puntos
+
+[nivel 2 · G2 · PCA por pieza] detección de fallas / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC entre paréntesis
+    candle      acepta cal  98.3 · memoria   0.0 /   0.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn   2.0 /   2.0 (0.589) · maha  41.0 /   2.0 (0.875) · knn_euclid  37.0 /   1.0 (0.861)
+    capsules    acepta cal  98.3 · memoria   4.0 /   0.0 · memoria_graduada   4.0 /   0.0 (0.520) · knn   1.0 /   0.0 (0.526) · maha   7.0 /   1.7 (0.641) · knn_euclid   3.0 /   0.0 (0.648)
+    cashew      acepta cal 100.0 · memoria   6.0 /   0.0 · memoria_graduada   6.0 /   0.0 (0.530) · knn   2.0 /   2.0 (0.576) · maha  43.0 /   2.0 (0.857) · knn_euclid  36.0 /   2.0 (0.863)
+    chewinggum  acepta cal 100.0 · memoria  16.0 /   2.0 · memoria_graduada  16.0 /   2.0 (0.570) · knn   3.0 /   0.0 (0.621) · maha  65.0 /   0.0 (0.969) · knn_euclid  46.0 /   0.0 (0.927)
+    fryum       acepta cal  99.4 · memoria   2.0 /   0.0 · memoria_graduada   2.0 /   0.0 (0.510) · knn   6.0 /   2.0 (0.621) · maha  43.0 /   4.0 (0.850) · knn_euclid  42.0 /   2.0 (0.885)
+    macaroni1   acepta cal  99.4 · memoria   0.0 /   0.0 · memoria_graduada   0.0 /   0.0 (0.500) · knn   2.0 /   0.0 (0.609) · maha   4.0 /   1.0 (0.725) · knn_euclid   6.0 /   6.0 (0.665)
+    macaroni2   acepta cal  97.2 · memoria   1.0 /   0.0 · memoria_graduada   1.0 /   0.0 (0.505) · knn  10.0 /   2.0 (0.594) · maha   1.0 /   2.0 (0.550) · knn_euclid   1.0 /   2.0 (0.488)
+    pcb1        acepta cal  99.4 · memoria   5.0 /   0.0 · memoria_graduada   5.0 /   0.0 (0.525) · knn   2.0 /   1.0 (0.330) · maha  30.0 /   2.0 (0.891) · knn_euclid  33.0 /   3.0 (0.880)
+    pcb2        acepta cal  99.4 · memoria   1.0 /   0.0 · memoria_graduada   1.0 /   0.0 (0.505) · knn   0.0 /   0.0 (0.549) · maha  22.0 /   1.0 (0.821) · knn_euclid  15.0 /   1.0 (0.780)
+    pcb3        acepta cal  99.4 · memoria   2.0 /   0.0 · memoria_graduada   2.0 /   0.0 (0.510) · knn   0.0 /   0.0 (0.549) · maha  34.0 /   5.0 (0.790) · knn_euclid  22.0 /   4.0 (0.768)
+    pcb4        acepta cal  99.4 · memoria   2.0 /   0.0 · memoria_graduada   2.0 /   0.0 (0.510) · knn  15.0 /   2.0 (0.625) · maha  16.0 /   0.0 (0.939) · knn_euclid  18.0 /   0.0 (0.939)
+    pipe_fryum  acepta cal  99.4 · memoria  30.0 /   0.0 · memoria_graduada  30.0 /   0.0 (0.650) · knn   4.0 /   2.0 (0.641) · maha  43.0 /   2.0 (0.899) · knn_euclid  49.0 /   2.0 (0.879)
+    media       acepta cal  99.2 · memoria   5.8 /   0.2 · memoria_graduada   5.8 /   0.2 (0.528) · knn   3.9 /   1.1 (0.569) · maha  29.1 /   1.9 (0.817) · knn_euclid  25.7 /   1.9 (0.799)
+    criterio: memoria >= mejor detector - 2 puntos en 0/12 piezas, por debajo en 12/12; detección - falsa alarma de la memoria (media) 5.6 puntos
+
+[nivel 2 · P · parches, estilo PatchCore] detección de fallas / falsa alarma en test; detectores a la aceptación de calibración de la memoria; AUROC entre paréntesis
+    candle      acepta cal  88.9 · memoria  55.0 /  13.0 · memoria_graduada  55.0 /  13.0 (0.720) · knn  76.0 /  13.0 (0.914) · maha  43.0 /  13.0 (0.714) · soporte medio 27.8/32
+    capsules    acepta cal  81.7 · memoria  28.0 /  18.3 · memoria_graduada  28.0 /  18.3 (0.548) · knn  46.0 /  15.0 (0.642) · maha  28.0 /  25.0 (0.497) · soporte medio 27.9/32
+    cashew      acepta cal  85.0 · memoria  58.0 /  18.0 · memoria_graduada  58.0 /  18.0 (0.729) · knn  72.0 /   8.0 (0.927) · maha  67.0 /  18.0 (0.795) · soporte medio 27.8/32
+    chewinggum  acepta cal  78.9 · memoria  79.0 /  18.0 · memoria_graduada  79.0 /  18.0 (0.843) · knn  95.0 /  16.0 (0.966) · maha  65.0 /  18.0 (0.768) · soporte medio 27.9/32
+    fryum       acepta cal  90.0 · memoria  51.0 /  20.0 · memoria_graduada  51.0 /  20.0 (0.666) · knn  70.0 /  18.0 (0.867) · maha  32.0 /  24.0 (0.576) · soporte medio 27.9/32
+    macaroni1   acepta cal  80.6 · memoria  31.0 /  11.0 · memoria_graduada  31.0 /  11.0 (0.603) · knn  78.0 /  22.0 (0.855) · maha  23.0 /  15.0 (0.571) · soporte medio 27.8/32
+    macaroni2   acepta cal  87.8 · memoria  16.0 /  15.0 · memoria_graduada  16.0 /  15.0 (0.505) · knn  28.0 /  23.0 (0.660) · maha  11.0 /  12.0 (0.530) · soporte medio 27.9/32
+    pcb1        acepta cal  86.1 · memoria  50.0 /   6.0 · memoria_graduada  50.0 /   6.0 (0.722) · knn  74.0 /  21.0 (0.863) · maha  57.0 /  24.0 (0.791) · soporte medio 27.9/32
+    pcb2        acepta cal  81.1 · memoria  35.0 /  14.0 · memoria_graduada  35.0 /  14.0 (0.609) · knn  83.0 /  17.0 (0.881) · maha  37.0 /  19.0 (0.623) · soporte medio 27.9/32
+    pcb3        acepta cal  86.7 · memoria  35.0 /  14.9 · memoria_graduada  35.0 /  14.9 (0.604) · knn  68.0 /  15.8 (0.832) · maha  22.0 /  14.9 (0.580) · soporte medio 27.8/32
+    pcb4        acepta cal  82.8 · memoria  46.0 /  14.9 · memoria_graduada  46.0 /  14.9 (0.660) · knn  98.0 /  20.8 (0.981) · maha  38.0 /  14.9 (0.712) · soporte medio 27.8/32
+    pipe_fryum  acepta cal  83.9 · memoria  63.0 /  14.0 · memoria_graduada  63.0 /  14.0 (0.765) · knn  99.0 /  16.0 (0.980) · maha  51.0 /  24.0 (0.659) · soporte medio 27.9/32
+    media       acepta cal  84.4 · memoria  45.6 /  14.8 · memoria_graduada  45.6 /  14.8 (0.665) · knn  73.9 /  17.1 (0.864) · maha  39.5 /  18.5 (0.651)
+    criterio: memoria >= mejor detector - 2 puntos en 0/12 piezas, por debajo en 12/12; detección - falsa alarma de la memoria (media) 30.8 puntos
+
+[punta a punta · nivel 1 y especialista G2 del destino]
+  normal n=962: alarma en nivel 1   1.6 · alarma en nivel 2   0.1 · pasa como normal  98.3
+  falla n=1200: alarma en nivel 1  12.5 · alarma en nivel 2   2.2 · pasa como normal  85.2
+
+[tipos de falla como dominios · G2, 60 % llenado / 40 % test]
+  candle      tipos 5 (azar  20.0), test 25: memoria acierto   4.0 · rechazo  60.0 · de lo respondido  10.0 · balanceado   2.9 · kNN  36.0 · balanceado  36.4  {"chunk of wax missing": [8, 4], "damaged corner of packaging": [11, 7], "different colour spot": [9, 6], "foreign particals on candle": [8, 4], "wax melded out of the candle": [8, 4]}
+  capsules    menos de dos tipos con >= 10 imágenes de etiqueta única
+  cashew      tipos 5 (azar  20.0), test 27: memoria acierto   7.4 · rechazo  74.1 · de lo respondido  28.6 · balanceado   5.0 · kNN  51.9 · balanceado  44.3  {"burnt": [6, 4], "corner or edge breakage": [9, 5], "same colour spot": [6, 4], "small holes": [12, 8], "small scratches": [9, 6]}
+  chewinggum  tipos 3 (azar  33.3), test 18: memoria acierto  27.8 · rechazo  50.0 · de lo respondido  55.6 · balanceado  27.6 · kNN  72.2 · balanceado  70.8  {"chunk of gum missing": [10, 6], "corner missing": [8, 5], "similar colour spot": [12, 7]}
+  fryum       tipos 4 (azar  25.0), test 24: memoria acierto  12.5 · rechazo  41.7 · de lo respondido  21.4 · balanceado   9.4 · kNN  45.8 · balanceado  38.6  {"different colour spot": [9, 5], "fryum stuck together": [12, 8], "middle breakage": [11, 7], "similar colour spot": [8, 4]}
+  macaroni1   tipos 5 (azar  20.0), test 30: memoria acierto  16.7 · rechazo  56.7 · de lo respondido  38.5 · balanceado  14.2 · kNN  43.3 · balanceado  40.0  {"chip around edge and corner": [11, 6], "different colour spot": [9, 6], "similar colour spot": [13, 8], "small cracks": [7, 4], "small scratches": [10, 6]}
+  macaroni2   tipos 4 (azar  25.0), test 26: memoria acierto  11.5 · rechazo  53.8 · de lo respondido  25.0 · balanceado   9.1 · kNN  42.3 · balanceado  43.5  {"color spot similar to the object": [14, 9], "different color spot": [8, 4], "small chip around edge": [12, 7], "small scratches": [10, 6]}
+  pcb1        tipos 4 (azar  25.0), test 34: memoria acierto  50.0 · rechazo  26.5 · de lo respondido  68.0 · balanceado  31.9 · kNN  73.5 · balanceado  57.5  {"bent": [9, 5], "melt": [28, 18], "missing": [11, 6], "scratch": [9, 5]}
+  pcb2        tipos 4 (azar  25.0), test 34: memoria acierto  55.9 · rechazo  26.5 · de lo respondido  76.0 · balanceado  27.9 · kNN  61.8 · balanceado  40.4  {"bent": [8, 4], "melt": [29, 19], "missing": [11, 6], "scratch": [9, 5]}
+  pcb3        tipos 4 (azar  25.0), test 36: memoria acierto  38.9 · rechazo  11.1 · de lo respondido  43.8 · balanceado  30.7 · kNN  41.7 · balanceado  36.1  {"bent": [12, 7], "melt": [23, 15], "missing": [10, 6], "scratch": [12, 8]}
+  pcb4        tipos 2 (azar  50.0), test 11: memoria acierto  18.2 · rechazo  63.6 · de lo respondido  50.0 · balanceado  14.3 · kNN  90.9 · balanceado  87.5  {"extra": [8, 4], "missing": [12, 7]}
+  pipe_fryum  tipos 6 (azar  16.7), test 35: memoria acierto  11.4 · rechazo  65.7 · de lo respondido  33.3 · balanceado   9.7 · kNN  42.9 · balanceado  46.7  {"burnt": [9, 6], "corner and edge breakage": [9, 6], "different colour spot": [6, 4], "similar colour spot": [12, 8], "small scratches": [11, 7], "stuck together": [6, 4]}
+
+Tiempo total: 7 min

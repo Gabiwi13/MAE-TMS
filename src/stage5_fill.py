@@ -64,14 +64,15 @@ def load_encoder():
 
 
 def _scaled(img, s, bg):
-    w = int(round(128 * s))
+    n = img.size[0]
+    w = int(round(n * s))
     r = img.resize((w, w), Image.BILINEAR)
     if s < 1:
-        canvas = Image.new("RGB", (128, 128), bg)
-        canvas.paste(r, ((128 - w) // 2, (128 - w) // 2))
+        canvas = Image.new("RGB", (n, n), bg)
+        canvas.paste(r, ((n - w) // 2, (n - w) // 2))
         return canvas
-    o = (w - 128) // 2
-    return r.crop((o, o, o + 128, o + 128))
+    o = (w - n) // 2
+    return r.crop((o, o, o + n, o + n))
 
 
 def augment_variants(img, n: int = FILL_VARIANTS):

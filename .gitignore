@@ -100,3 +100,8 @@ results/medico_balanceado/cache/
 data/medmnist_ood/
 results/experimento20/cache/
 results/experimento24/cache/
+
+# Demo industrial: cachés (regenerables; los datos VisA viven fuera del repo)
+results/industrial/cache/
+results/industrial_prueba/
+results/industrial_monolitica/cache/

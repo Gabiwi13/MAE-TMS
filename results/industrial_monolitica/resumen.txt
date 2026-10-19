@@ -1,0 +1,115 @@
+Memoria única (M) contra partición, demo industrial VisA. Mismo contenido: 270 x 16 de llenado por pieza.
+Composición de M = register oficial: True · etiquetas distintas 12/12 · términos {"candle": "candle", "capsules": "capsules", "cashew": "cashew", "chewinggum": "chewing gum", "fryum": "snack wheel", "macaroni1": "macaroni one", "macaroni2": "macaroni two", "pcb1": "pcb one", "pcb2": "pcb two", "pcb3": "pcb three", "pcb4": "pcb four", "pipe_fryum": "snack pipe"}
+
+[ruteo por pieza · test completo]
+  normales n=962 M única        : acierto  99.1 · rechazo   0.9 · falso   0.0 · de lo respondido 100.0
+  normales n=962 T-protocolo    : acierto  98.4 · rechazo   1.6 · falso   0.0 · de lo respondido 100.0
+  normales n=962 T-especialistas: acierto  99.1 · rechazo   0.9 · falso   0.0 · de lo respondido 100.0
+  normales n=962 kNN            : acierto 100.0 · rechazo   0.0 · falso   0.0 · de lo respondido 100.0
+  fallas   n=1200 M única        : acierto  90.1 · rechazo   9.9 · falso   0.0 · de lo respondido 100.0
+  fallas   n=1200 T-protocolo    : acierto  87.5 · rechazo  12.5 · falso   0.0 · de lo respondido 100.0
+  fallas   n=1200 T-especialistas: acierto  90.1 · rechazo   9.9 · falso   0.0 · de lo respondido 100.0
+  fallas   n=1200 kNN            : acierto  99.9 · rechazo   0.0 · falso   0.1 · de lo respondido  99.9
+  falsos M: ninguno
+  falsos prot: ninguno
+  por pieza (M acierto/rechazo/falso · protocolo acierto/rechazo/falso), todo el test:
+    candle      n=200  M 196/  4/  0 · prot 194/  6/  0
+    capsules    n=160  M 156/  4/  0 · prot 154/  6/  0
+    cashew      n=150  M 142/  8/  0 · prot 138/ 12/  0
+    chewinggum  n=150  M 122/ 28/  0 · prot 118/ 32/  0
+    fryum       n=150  M 143/  7/  0 · prot 138/ 12/  0
+    macaroni1   n=200  M 199/  1/  0 · prot 197/  3/  0
+    macaroni2   n=200  M 196/  4/  0 · prot 195/  5/  0
+    pcb1        n=200  M 192/  8/  0 · prot 188/ 12/  0
+    pcb2        n=200  M 188/ 12/  0 · prot 186/ 14/  0
+    pcb3        n=201  M 197/  4/  0 · prot 194/  7/  0
+    pcb4        n=201  M 191/ 10/  0 · prot 190/ 11/  0
+    pipe_fryum  n=150  M 112/ 38/  0 · prot 105/ 45/  0
+
+[detección · percepción global del nivel 1] detección / falsa alarma en test (%), AUROC entre paréntesis
+  inclusión: imágenes rechazadas por M y aceptadas por el especialista G1 de su pieza = 0
+  a la aceptación de calibración de M:
+    candle      acepta cal  98.9 · M   4.0 /   0.0 · knn  28.0 /   0.0 (0.860) · knn_euclid  26.0 /   0.0 (0.853) · maha  30.0 /   1.0 (0.877) · knn_unico  28.0 /   0.0 (0.860) · knn_euclid_unico  26.0 /   0.0 (0.853) · maha_unica   5.0 /   0.0 (0.746)
+    capsules    acepta cal  99.4 · M   3.0 /   1.7 · knn   4.0 /   0.0 (0.680) · knn_euclid   3.0 /   0.0 (0.680) · maha   1.0 /   1.7 (0.660) · knn_unico   4.0 /   0.0 (0.680) · knn_euclid_unico   3.0 /   0.0 (0.680) · maha_unica   1.0 /   0.0 (0.657)
+    cashew      acepta cal  99.4 · M   7.0 /   2.0 · knn  30.0 /   4.0 (0.854) · knn_euclid  34.0 /   2.0 (0.854) · maha  34.0 /   0.0 (0.871) · knn_unico  30.0 /   4.0 (0.854) · knn_euclid_unico  34.0 /   2.0 (0.854) · maha_unica  12.0 /   4.0 (0.752)
+    chewinggum  acepta cal  98.9 · M  28.0 /   0.0 · knn  62.0 /   2.0 (0.919) · knn_euclid  63.0 /   0.0 (0.916) · maha  72.0 /   0.0 (0.961) · knn_unico  62.0 /   2.0 (0.919) · knn_euclid_unico  63.0 /   0.0 (0.916) · maha_unica  28.0 /   0.0 (0.896)
+    fryum       acepta cal 100.0 · M   7.0 /   0.0 · knn  37.0 /   2.0 (0.834) · knn_euclid  27.0 /   0.0 (0.854) · maha  48.0 /   2.0 (0.882) · knn_unico  37.0 /   2.0 (0.834) · knn_euclid_unico  27.0 /   0.0 (0.854) · maha_unica  14.0 /   0.0 (0.797)
+    macaroni1   acepta cal  99.4 · M   1.0 /   0.0 · knn   1.0 /   1.0 (0.676) · knn_euclid   6.0 /   4.0 (0.617) · maha   1.0 /   1.0 (0.718) · knn_unico   1.0 /   1.0 (0.676) · knn_euclid_unico   6.0 /   4.0 (0.617) · maha_unica   0.0 /   2.0 (0.461)
+    macaroni2   acepta cal  97.2 · M   3.0 /   1.0 · knn   0.0 /   4.0 (0.516) · knn_euclid   1.0 /   1.0 (0.483) · maha   1.0 /   3.0 (0.573) · knn_unico   0.0 /   4.0 (0.516) · knn_euclid_unico   1.0 /   1.0 (0.483) · maha_unica   0.0 /   1.0 (0.447)
+    pcb1        acepta cal  99.4 · M   7.0 /   1.0 · knn  16.0 /   2.0 (0.632) · knn_euclid  35.0 /   3.0 (0.859) · maha  37.0 /   1.0 (0.878) · knn_unico  16.0 /   2.0 (0.632) · knn_euclid_unico  35.0 /   3.0 (0.859) · maha_unica  19.0 /   2.0 (0.813)
+    pcb2        acepta cal  97.2 · M  11.0 /   1.0 · knn  28.0 /   4.0 (0.785) · knn_euclid  20.0 /   1.0 (0.787) · maha  33.0 /   1.0 (0.817) · knn_unico  28.0 /   4.0 (0.785) · knn_euclid_unico  20.0 /   1.0 (0.787) · maha_unica  21.0 /   2.0 (0.729)
+    pcb3        acepta cal  98.9 · M   3.0 /   1.0 · knn  28.0 /   4.0 (0.774) · knn_euclid  21.0 /   4.0 (0.763) · maha  36.0 /   1.0 (0.779) · knn_unico  28.0 /   4.0 (0.774) · knn_euclid_unico  21.0 /   4.0 (0.763) · maha_unica  18.0 /   6.9 (0.685)
+    pcb4        acepta cal  99.4 · M   8.0 /   2.0 · knn  21.0 /   0.0 (0.942) · knn_euclid  15.0 /   0.0 (0.927) · maha  26.0 /   0.0 (0.939) · knn_unico  21.0 /   0.0 (0.942) · knn_euclid_unico  15.0 /   0.0 (0.927) · maha_unica   5.0 /   1.0 (0.846)
+    pipe_fryum  acepta cal  96.7 · M  37.0 /   2.0 · knn  60.0 /   2.0 (0.888) · knn_euclid  59.0 /   2.0 (0.879) · maha  70.0 /   6.0 (0.893) · knn_unico  60.0 /   2.0 (0.888) · knn_euclid_unico  59.0 /   2.0 (0.879) · maha_unica  46.0 /   4.0 (0.823)
+    media       acepta cal  98.8 · M   9.9 /   1.0 · knn  26.2 /   2.1 (0.780) · knn_euclid  25.8 /   1.4 (0.789) · maha  32.4 /   1.5 (0.821) · knn_unico  26.2 /   2.1 (0.780) · knn_euclid_unico  25.8 /   1.4 (0.789) · maha_unica  14.1 /   1.9 (0.721)
+  a la aceptación de calibración de G1:
+    candle      acepta cal  98.9 · G1   4.0 /   0.0 · knn  28.0 /   0.0 (0.860) · knn_euclid  26.0 /   0.0 (0.853) · maha  30.0 /   1.0 (0.877) · knn_unico  28.0 /   0.0 (0.860) · knn_euclid_unico  26.0 /   0.0 (0.853) · maha_unica   5.0 /   0.0 (0.746)
+    capsules    acepta cal  99.4 · G1   3.0 /   1.7 · knn   4.0 /   0.0 (0.680) · knn_euclid   3.0 /   0.0 (0.680) · maha   1.0 /   1.7 (0.660) · knn_unico   4.0 /   0.0 (0.680) · knn_euclid_unico   3.0 /   0.0 (0.680) · maha_unica   1.0 /   0.0 (0.657)
+    cashew      acepta cal  99.4 · G1   7.0 /   2.0 · knn  30.0 /   4.0 (0.854) · knn_euclid  34.0 /   2.0 (0.854) · maha  34.0 /   0.0 (0.871) · knn_unico  30.0 /   4.0 (0.854) · knn_euclid_unico  34.0 /   2.0 (0.854) · maha_unica  12.0 /   4.0 (0.752)
+    chewinggum  acepta cal  98.9 · G1  28.0 /   0.0 · knn  62.0 /   2.0 (0.919) · knn_euclid  63.0 /   0.0 (0.916) · maha  72.0 /   0.0 (0.961) · knn_unico  62.0 /   2.0 (0.919) · knn_euclid_unico  63.0 /   0.0 (0.916) · maha_unica  28.0 /   0.0 (0.896)
+    fryum       acepta cal 100.0 · G1   7.0 /   0.0 · knn  37.0 /   2.0 (0.834) · knn_euclid  27.0 /   0.0 (0.854) · maha  48.0 /   2.0 (0.882) · knn_unico  37.0 /   2.0 (0.834) · knn_euclid_unico  27.0 /   0.0 (0.854) · maha_unica  14.0 /   0.0 (0.797)
+    macaroni1   acepta cal  99.4 · G1   1.0 /   0.0 · knn   1.0 /   1.0 (0.676) · knn_euclid   6.0 /   4.0 (0.617) · maha   1.0 /   1.0 (0.718) · knn_unico   1.0 /   1.0 (0.676) · knn_euclid_unico   6.0 /   4.0 (0.617) · maha_unica   0.0 /   2.0 (0.461)
+    macaroni2   acepta cal  97.2 · G1   3.0 /   1.0 · knn   0.0 /   4.0 (0.516) · knn_euclid   1.0 /   1.0 (0.483) · maha   1.0 /   3.0 (0.573) · knn_unico   0.0 /   4.0 (0.516) · knn_euclid_unico   1.0 /   1.0 (0.483) · maha_unica   0.0 /   1.0 (0.447)
+    pcb1        acepta cal  99.4 · G1   7.0 /   1.0 · knn  16.0 /   2.0 (0.632) · knn_euclid  35.0 /   3.0 (0.859) · maha  37.0 /   1.0 (0.878) · knn_unico  16.0 /   2.0 (0.632) · knn_euclid_unico  35.0 /   3.0 (0.859) · maha_unica  19.0 /   2.0 (0.813)
+    pcb2        acepta cal  97.2 · G1  11.0 /   1.0 · knn  28.0 /   4.0 (0.785) · knn_euclid  20.0 /   1.0 (0.787) · maha  33.0 /   1.0 (0.817) · knn_unico  28.0 /   4.0 (0.785) · knn_euclid_unico  20.0 /   1.0 (0.787) · maha_unica  21.0 /   2.0 (0.729)
+    pcb3        acepta cal  98.9 · G1   3.0 /   1.0 · knn  28.0 /   4.0 (0.774) · knn_euclid  21.0 /   4.0 (0.763) · maha  36.0 /   1.0 (0.779) · knn_unico  28.0 /   4.0 (0.774) · knn_euclid_unico  21.0 /   4.0 (0.763) · maha_unica  18.0 /   6.9 (0.685)
+    pcb4        acepta cal  99.4 · G1   8.0 /   2.0 · knn  21.0 /   0.0 (0.942) · knn_euclid  15.0 /   0.0 (0.927) · maha  26.0 /   0.0 (0.939) · knn_unico  21.0 /   0.0 (0.942) · knn_euclid_unico  15.0 /   0.0 (0.927) · maha_unica   5.0 /   1.0 (0.846)
+    pipe_fryum  acepta cal  96.7 · G1  37.0 /   2.0 · knn  60.0 /   2.0 (0.888) · knn_euclid  59.0 /   2.0 (0.879) · maha  70.0 /   6.0 (0.893) · knn_unico  60.0 /   2.0 (0.888) · knn_euclid_unico  59.0 /   2.0 (0.879) · maha_unica  46.0 /   4.0 (0.823)
+    media       acepta cal  98.8 · G1   9.9 /   1.0 · knn  26.2 /   2.1 (0.780) · knn_euclid  25.8 /   1.4 (0.789) · maha  32.4 /   1.5 (0.821) · knn_unico  26.2 /   2.1 (0.780) · knn_euclid_unico  25.8 /   1.4 (0.789) · maha_unica  14.1 /   1.9 (0.721)
+  AUROC graduada: M 0.545 · G1 0.545
+
+[punta a punta] alarma = rechazo; la partición rutea y decide el especialista del destino
+  normal M     n=962: alarma   0.9 · pasa  99.1 · otra pieza   0.0
+  normal T+G1  n=962: alarma   1.8 · pasa  98.2 · otra pieza   0.0
+  normal T+G2  n=962: alarma   1.7 · pasa  98.3 · otra pieza   0.0
+  falla  M     n=1200: alarma   9.9 · pasa  90.1 · otra pieza   0.0
+  falla  T+G1  n=1200: alarma  13.9 · pasa  86.1 · otra pieza   0.0
+  falla  T+G2  n=1200: alarma  14.8 · pasa  85.2 · otra pieza   0.0
+
+[detección · parches con PCA y cuantización comunes] verificación {"parches": 2400, "M_filas_vacias_iguales": true, "M_rechaza_en_muestra": 317, "U_iguales": true, "U_rechaza_en_muestra": 54}
+  soporte medio por coordenada: U 28.0/32 · S 19.5/32 (media de piezas)
+  inclusión: {"M_rechaza_S_acepta": 0, "U_rechaza_M_acepta": 0}
+  S:
+    candle      acepta cal  90.0 · S  36.0 /  12.0 · graduada  36.0 /  12.0 (0.624) · knn  72.0 /  12.0 (0.902) · maha  50.0 /  15.0 (0.783)
+    capsules    acepta cal  87.8 · S  16.0 /   6.7 · graduada  16.0 /   6.7 (0.547) · knn  58.0 /  10.0 (0.727) · maha  19.0 /  13.3 (0.556)
+    cashew      acepta cal  90.0 · S  51.0 /   4.0 · graduada  51.0 /   4.0 (0.738) · knn  71.0 /   2.0 (0.921) · maha  62.0 /  16.0 (0.809)
+    chewinggum  acepta cal  90.6 · S  67.0 /  12.0 · graduada  67.0 /  12.0 (0.792) · knn  94.0 /   4.0 (0.974) · maha  87.0 /  18.0 (0.929)
+    fryum       acepta cal  88.9 · S  46.0 /  14.0 · graduada  46.0 /  14.0 (0.661) · knn  72.0 /  16.0 (0.863) · maha  51.0 /  14.0 (0.770)
+    macaroni1   acepta cal  91.1 · S  35.0 /  15.0 · graduada  35.0 /  15.0 (0.602) · knn  66.0 /  12.0 (0.857) · maha  35.0 /   9.0 (0.702)
+    macaroni2   acepta cal  81.7 · S  19.0 /  14.0 · graduada  19.0 /  14.0 (0.526) · knn  48.0 /  24.0 (0.725) · maha  36.0 /  22.0 (0.659)
+    pcb1        acepta cal  92.8 · S  42.0 /  12.0 · graduada  42.0 /  12.0 (0.654) · knn  70.0 /  14.0 (0.870) · maha  63.0 /  15.0 (0.884)
+    pcb2        acepta cal  91.1 · S  28.0 /  11.0 · graduada  28.0 /  11.0 (0.585) · knn  66.0 /   9.0 (0.858) · maha  25.0 /  12.0 (0.656)
+    pcb3        acepta cal  85.6 · S  33.0 /   8.9 · graduada  33.0 /   8.9 (0.623) · knn  70.0 /  16.8 (0.833) · maha  32.0 /  17.8 (0.623)
+    pcb4        acepta cal  86.1 · S  40.0 /  12.9 · graduada  40.0 /  12.9 (0.639) · knn  97.0 /  16.8 (0.976) · maha  55.0 /   9.9 (0.842)
+    pipe_fryum  acepta cal  86.7 · S  58.0 /  12.0 · graduada  58.0 /  12.0 (0.747) · knn  99.0 /  18.0 (0.993) · maha  73.0 /  12.0 (0.856)
+    media       acepta cal  88.5 · S  39.3 /  11.2 · graduada  39.3 /  11.2 (0.645) · knn  73.6 /  12.9 (0.875) · maha  49.0 /  14.5 (0.756)
+  M:
+    candle      acepta cal  99.4 · M  14.0 /   2.0 · graduada  14.0 /   2.0 (0.560) · knn  25.0 /   1.0 (0.902) · maha   8.0 /   1.0 (0.783)
+    capsules    acepta cal  91.7 · M   8.0 /   3.3 · graduada   8.0 /   3.3 (0.523) · knn  53.0 /   8.3 (0.727) · maha  12.0 /   8.3 (0.556)
+    cashew      acepta cal  92.2 · M  36.0 /   2.0 · graduada  36.0 /   2.0 (0.673) · knn  65.0 /   2.0 (0.921) · maha  62.0 /  16.0 (0.809)
+    chewinggum  acepta cal  95.6 · M  16.0 /   4.0 · graduada  16.0 /   4.0 (0.558) · knn  93.0 /   0.0 (0.974) · maha  84.0 /   6.0 (0.929)
+    fryum       acepta cal  93.9 · M  24.0 /   8.0 · graduada  24.0 /   8.0 (0.580) · knn  66.0 /   4.0 (0.863) · maha  47.0 /  10.0 (0.770)
+    macaroni1   acepta cal  98.3 · M  15.0 /   2.0 · graduada  15.0 /   2.0 (0.565) · knn  42.0 /   3.0 (0.857) · maha  21.0 /   0.0 (0.702)
+    macaroni2   acepta cal  93.3 · M   6.0 /   5.0 · graduada   6.0 /   5.0 (0.504) · knn  34.0 /  15.0 (0.725) · maha  24.0 /   7.0 (0.659)
+    pcb1        acepta cal  95.6 · M  29.0 /   6.0 · graduada  29.0 /   6.0 (0.612) · knn  63.0 /  11.0 (0.870) · maha  51.0 /   5.0 (0.884)
+    pcb2        acepta cal  99.4 · M   6.0 /   4.0 · graduada   5.0 /   4.0 (0.511) · knn  24.0 /   2.0 (0.858) · maha  12.0 /   2.0 (0.656)
+    pcb3        acepta cal  96.1 · M   8.0 /   2.0 · graduada   8.0 /   2.0 (0.531) · knn  46.0 /   5.9 (0.833) · maha  23.0 /   5.0 (0.623)
+    pcb4        acepta cal  96.7 · M   8.0 /   3.0 · graduada   8.0 /   3.0 (0.526) · knn  93.0 /   8.9 (0.976) · maha  25.0 /   1.0 (0.842)
+    pipe_fryum  acepta cal  98.3 · M   5.0 /   0.0 · graduada   5.0 /   0.0 (0.525) · knn  80.0 /   0.0 (0.993) · maha  50.0 /   4.0 (0.856)
+    media       acepta cal  95.9 · M  14.6 /   3.4 · graduada  14.5 /   3.4 (0.556) · knn  57.0 /   5.1 (0.875) · maha  34.9 /   5.4 (0.756)
+  U:
+    candle      acepta cal 100.0 · U   0.0 /   0.0 · graduada   0.0 /   0.0 (0.500) · knn  12.0 /   0.0 (0.902) · maha   2.0 /   0.0 (0.783)
+    capsules    acepta cal  99.4 · U   3.0 /   0.0 · graduada   3.0 /   0.0 (0.515) · knn  16.0 /   1.7 (0.727) · maha   6.0 /   1.7 (0.556)
+    cashew      acepta cal  99.4 · U   0.0 /   0.0 · graduada   0.0 /   0.0 (0.500) · knn  56.0 /   0.0 (0.921) · maha  55.0 /   2.0 (0.809)
+    chewinggum  acepta cal 100.0 · U   1.0 /   0.0 · graduada   1.0 /   0.0 (0.505) · knn  80.0 /   0.0 (0.974) · maha  79.0 /   2.0 (0.929)
+    fryum       acepta cal 100.0 · U   1.0 /   0.0 · graduada   1.0 /   0.0 (0.505) · knn  53.0 /   0.0 (0.863) · maha   2.0 /   0.0 (0.770)
+    macaroni1   acepta cal 100.0 · U   0.0 /   0.0 · graduada   0.0 /   0.0 (0.500) · knn  20.0 /   1.0 (0.857) · maha  14.0 /   0.0 (0.702)
+    macaroni2   acepta cal 100.0 · U   1.0 /   1.0 · graduada   1.0 /   1.0 (0.500) · knn  15.0 /   1.0 (0.725) · maha  16.0 /   1.0 (0.659)
+    pcb1        acepta cal 100.0 · U  12.0 /   4.0 · graduada  12.0 /   4.0 (0.540) · knn  13.0 /   0.0 (0.870) · maha  10.0 /   0.0 (0.884)
+    pcb2        acepta cal  99.4 · U   0.0 /   0.0 · graduada   0.0 /   0.0 (0.500) · knn  24.0 /   2.0 (0.858) · maha  12.0 /   2.0 (0.656)
+    pcb3        acepta cal 100.0 · U   2.0 /   0.0 · graduada   2.0 /   0.0 (0.510) · knn  25.0 /   1.0 (0.833) · maha  15.0 /   0.0 (0.623)
+    pcb4        acepta cal 100.0 · U   4.0 /   0.0 · graduada   4.0 /   0.0 (0.520) · knn  54.0 /   0.0 (0.976) · maha  13.0 /   0.0 (0.842)
+    pipe_fryum  acepta cal 100.0 · U   1.0 /   0.0 · graduada   1.0 /   0.0 (0.505) · knn  44.0 /   0.0 (0.993) · maha  42.0 /   0.0 (0.856)
+    media       acepta cal  99.9 · U   2.1 /   0.4 · graduada   2.1 /   0.4 (0.508) · knn  34.3 /   0.6 (0.875) · maha  22.2 /   0.7 (0.756)
+
+Tiempo total: 4 min
