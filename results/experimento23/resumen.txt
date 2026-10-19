@@ -1,0 +1,32 @@
+Exp23: la ambigüedad como respuesta (memorias balanceadas). S = especialistas cuya memoria de contenido reconoce la imagen.
+
+[rx_torax] n=18166 · |S| medio 8.74 (de 14) · desconocido 0.7 % · claro 1.4 % · ambiguo 97.9 %
+  cobertura (verdad dentro de la lista), imágenes con |S|>=1: memoria 91.8 · kNN top-|S| 92.0 · clasificador top-|S| 94.4
+  desconocido n=  127  acierto del protocolo   2.4 · verdad en S   0.0 · |S| medio 0.00
+  claro       n=  261  acierto del protocolo   9.6 · verdad en S  16.1 · |S| medio 1.00
+  ambiguo     n=17778  acierto del protocolo   7.2 · verdad en S  93.0 · |S| medio 8.91
+  conjunto del directorio: tamaño medio 8.18 · verdad dentro 59.2 %
+  placas con >= 2 hallazgos: n=4233 · |S| medio 8.20
+    contiene >= 1 presentes: memoria  94.7 · azar mismo tamaño  81.6 · clasificador top-|S|  95.7
+    contiene >= 2 presentes: memoria  72.1 · azar mismo tamaño  46.3 · clasificador top-|S|  74.3
+
+[tc_abdomen] n=17778 · |S| medio 1.01 (de 11) · desconocido 3.0 % · claro 93.6 % · ambiguo 3.4 %
+  cobertura (verdad dentro de la lista), imágenes con |S|>=1: memoria 98.2 · kNN top-|S| 98.1 · clasificador top-|S| 98.3
+  desconocido n=  529  acierto del protocolo  19.3 · verdad en S   0.0 · |S| medio 0.00
+  claro       n=16638  acierto del protocolo  97.3 · verdad en S  98.3 · |S| medio 1.00
+  ambiguo     n=  611  acierto del protocolo  69.9 · verdad en S  95.4 · |S| medio 2.09
+  conjunto del directorio: tamaño medio 0.99 · verdad dentro 94.8 %
+
+[dermatoscopia] n=2005 · |S| medio 1.52 (de 7) · desconocido 3.3 % · claro 57.6 % · ambiguo 39.2 %
+  cobertura (verdad dentro de la lista), imágenes con |S|>=1: memoria 93.7 · kNN top-|S| 92.7 · clasificador top-|S| 94.0
+  desconocido n=   66  acierto del protocolo   9.1 · verdad en S   0.0 · |S| medio 0.00
+  claro       n= 1154  acierto del protocolo  88.0 · verdad en S  92.4 · |S| medio 1.00
+  ambiguo     n=  785  acierto del protocolo  58.2 · verdad en S  95.7 · |S| medio 2.42
+  conjunto del directorio: tamaño medio 1.37 · verdad dentro 84.5 %
+
+[us_mama] n=156 · |S| medio 1.21 (de 2) · desconocido 3.2 % · claro 73.1 % · ambiguo 23.7 %
+  cobertura (verdad dentro de la lista), imágenes con |S|>=1: memoria 94.0 · kNN top-|S| 94.7 · clasificador top-|S| 94.7
+  desconocido n=    5  acierto del protocolo  60.0 · verdad en S   0.0 · |S| medio 0.00
+  claro       n=  114  acierto del protocolo  92.1 · verdad en S  92.1 · |S| medio 1.00
+  ambiguo     n=   37  acierto del protocolo  78.4 · verdad en S 100.0 · |S| medio 2.00
+  conjunto del directorio: tamaño medio 1.14 · verdad dentro 92.3 %

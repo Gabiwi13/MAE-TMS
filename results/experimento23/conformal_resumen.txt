@@ -1,0 +1,25 @@
+Exp23 b: lista de la memoria contra predicción conformal (LAC, calibrada en val) a igual cobertura.
+
+[rx_torax] calibración n=9173 · test n=18166
+  cobertura: memoria  91.2 con |S| medio 8.74 · conformal  91.3 con |C| medio 5.34
+  memoria  : lista de uno n=261 acierto   9.6 · varios n=17778 acierto   7.2 · vacía n=127 acierto   2.4
+  conformal: lista de uno n=263 acierto  38.8 · varios n=17903 acierto  30.7 · vacía n=0 acierto   nan
+  cobertura por clase (memoria / conformal): sin-hallazgo 94/99 · atelectasis 92/89 · cardiomegaly 79/68 · effusion 87/90 · infiltration 94/99 · mass 83/58 · nodule 87/68 · pneumonia 27/7 · pneumothorax 82/70 · consolidation 72/33 · edema 67/51 · emphysema 74/39 · fibrosis 63/25 · pleural 76/36
+
+[tc_abdomen] calibración n=6491 · test n=17778
+  cobertura: memoria  95.3 con |S| medio 1.01 · conformal  86.2 con |C| medio 0.87
+  memoria  : lista de uno n=16638 acierto  97.3 · varios n=611 acierto  69.9 · vacía n=529 acierto  19.3
+  conformal: lista de uno n=15390 acierto  99.6 · varios n=0 acierto   nan · vacía n=2388 acierto  79.8
+  cobertura por clase (memoria / conformal): bladder 93/80 · femur-left 93/80 · femur-right 94/87 · heart 83/79 · kidney-left 91/66 · kidney-right 93/76 · liver 99/98 · lung-left 99/100 · lung-right 97/89 · pancreas 98/92 · spleen 96/87
+
+[dermatoscopia] calibración n=1003 · test n=2005
+  cobertura: memoria  90.6 con |S| medio 1.52 · conformal  91.9 con |C| medio 1.33
+  memoria  : lista de uno n=1154 acierto  88.0 · varios n=785 acierto  58.2 · vacía n=66 acierto   9.1
+  conformal: lista de uno n=1425 acierto  91.8 · varios n=580 acierto  58.8 · vacía n=0 acierto   nan
+  cobertura por clase (memoria / conformal): actinic-keratosis 73/67 · basal-cell-carcinoma 83/83 · benign-keratosis 93/83 · dermatofibroma 57/78 · melanoma 88/89 · melanocytic-nevus 94/96 · vascular-lesion 34/97
+
+[us_mama] calibración n=78 · test n=156
+  cobertura: memoria  91.0 con |S| medio 1.21 · conformal  89.1 con |C| medio 1.03
+  memoria  : lista de uno n=114 acierto  92.1 · varios n=37 acierto  78.4 · vacía n=5 acierto  60.0
+  conformal: lista de uno n=152 acierto  88.8 · varios n=4 acierto  50.0 · vacía n=0 acierto   nan
+  cobertura por clase (memoria / conformal): malignant 86/79 · normal-benign 93/93
