@@ -1,0 +1,43 @@
+Piloto: el sistema transactivo como organizador de una flota de 24 módulos (propuesta_piloto_modulos.md).
+Aprendizaje: {"transacciones": 790, "exitos": 684, "consultas": 816}
+Acierto de cada módulo en su evaluación: candle/A  96.1, candle/C  85.5, capsules/A  90.0, capsules/D  74.0, cashew/A  94.0, cashew/C  94.0, chewinggum/A  91.5, chewinggum/B  98.3, fryum/A  98.0, fryum/D  96.0, macaroni1/A  81.8, macaroni1/B  80.5, macaroni2/A  84.4, macaroni2/B  81.8, pcb1/A  89.5, pcb1/B  55.8, pcb2/A  92.9, pcb2/D  77.6, pcb3/A  86.7, pcb3/D  77.1, pcb4/A  96.2, pcb4/B  93.7, pipe_fryum/A  92.2, pipe_fryum/C  74.5
+
+[evaluación] 823 consultas conocidas, 756 desconocidas (fondo de ojo, piel, mama)
+  método       acierto · abstención en conocidas · acierto de lo respondido · abstención en desconocidas · módulos consultados (media)
+  r1           77.5 ·   8.9 ·  85.1 · 100.0 · 21.5
+  r2           80.8 ·   8.9 ·  88.7 · 100.0 · 21.5
+  central      88.3 ·   1.2 ·  89.4 · 100.0 · nan
+  compuerta    87.8 ·   2.2 ·  89.8 · 100.0 · nan
+  todos        86.3 ·   4.7 ·  90.6 · 100.0 · 1.0
+  azar         80.6 ·   4.7 ·  84.6 · 100.0 · nan
+  oráculo      93.7
+
+[mejor módulo] fracción de las consultas ruteadas a un módulo de su dominio que va al mejor de los dos
+  candle      candle/A  96.1 · candle/C  85.5 (diferencia  10.5) · r1  52.7 · r2  77.0 · central  89.5 · compuerta 100.0 · todos  82.4
+  capsules    capsules/A  90.0 · capsules/D  74.0 (diferencia  16.0) · r1  72.1 · r2  55.8 · central  35.4 · compuerta   0.0 · todos  86.0
+  cashew      cashew/A  94.0 · cashew/C  94.0 (diferencia   0.0) · r1  52.1 · r2  72.9 · central  68.0 · compuerta 100.0 · todos  95.8  (fuera del criterio)
+  chewinggum  chewinggum/A  91.5 · chewinggum/B  98.3 (diferencia   6.8) · r1  46.3 · r2  82.9 · central  34.5 · compuerta 100.0 · todos  17.4
+  fryum       fryum/A  98.0 · fryum/D  96.0 (diferencia   2.0) · r1  17.0 · r2  85.1 · central  86.0 · compuerta 100.0 · todos 100.0  (fuera del criterio)
+  macaroni1   macaroni1/A  81.8 · macaroni1/B  80.5 (diferencia   1.3) · r1  64.5 · r2  75.0 · central  74.0 · compuerta 100.0 · todos  93.4  (fuera del criterio)
+  macaroni2   macaroni2/A  84.4 · macaroni2/B  81.8 (diferencia   2.6) · r1  70.4 · r2  80.3 · central  72.0 · compuerta 100.0 · todos  93.4  (fuera del criterio)
+  pcb1        pcb1/A  89.5 · pcb1/B  55.8 (diferencia  33.7) · r1  50.6 · r2  91.1 · central  91.8 · compuerta 100.0 · todos  76.5
+  pcb2        pcb2/A  92.9 · pcb2/D  77.6 (diferencia  15.3) · r1  46.8 · r2  87.3 · central  85.9 · compuerta 100.0 · todos  91.4
+  pcb3        pcb3/A  86.7 · pcb3/D  77.1 (diferencia   9.6) · r1  35.4 · r2  78.0 · central  74.7 · compuerta 100.0 · todos  84.1
+  pcb4        pcb4/A  96.2 · pcb4/B  93.7 (diferencia   2.5) · r1  35.1 · r2  13.5 · central  29.1 · compuerta   0.0 · todos  77.3  (fuera del criterio)
+  pipe_fryum  pipe_fryum/A  92.2 · pipe_fryum/C  74.5 (diferencia  17.6) · r1  63.9 · r2  80.6 · central  89.4 · compuerta 100.0 · todos  95.3
+  media en dominios con diferencia >= 5 puntos: r1  52.6 · r2  79.0 · central  71.6 · compuerta  85.7 · todos  76.2
+
+[E2 · baja de pcb1/A] consultas de pcb1: acierto  48.8 · destinos {"null": 10, "pcb1/B": 76}
+  acierto de R2 en pcb1 antes de la baja:  79.1
+
+[E1 · alta de candle] tras n transacciones de candle: a un módulo de candle / abstención / acierto
+  antes:   0.0 / 100.0 /   0.0
+      5:  22.4 /  77.6 /  22.4
+     10:  52.6 /  47.4 /  48.7
+     20:  89.5 /  10.5 /  81.6
+     40:  92.1 /   7.9 /  85.5
+  acierto de R2 en las otras piezas (sin candle en el aprendizaje):  72.7
+
+[criterio] {"r1": {"acierto": 0.7752126366950183, "abstencion_desconocidas": 1.0, "consultados": 21.495883470550982}, "r2": {"acierto": 0.8080194410692588, "abstencion_desconocidas": 1.0, "consultados": 21.495883470550982}, "central": {"acierto": 0.8833535844471446, "abstencion_desconocidas": 1.0, "consultados": null}, "compuerta": {"acierto": 0.8784933171324423, "abstencion_desconocidas": 1.0, "consultados": null}, "todos": {"acierto": 0.8626974483596598, "abstencion_desconocidas": 1.0, "consultados": 0.9930335655478151}, "azar": {"acierto": 0.8055893074119077, "abstencion_desconocidas": 1.0, "consultados": null}, "al_mejor": {"r1": 0.52551469478708, "r2": 0.7897902264075428, "central": 0.7158295223282778, "compuerta": 0.8571428571428571, "todos": 0.7616393262566109}}
+
+Tiempo total: 3 min
