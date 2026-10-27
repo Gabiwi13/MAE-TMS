@@ -4,8 +4,9 @@ VisA x 2 redes de distinta calidad). Diseño en propuesta_piloto_modulos.md.
 
 Directorios de intentos y de éxitos por módulo (perspectivales); lecturas R1 oficial
 (pertenencia, B1) y R2 calidad (éxitos / intentos). Rivales: router central kNN,
-compuerta aprendida, preguntarle a todos, azar y oráculo. Eventos: alta de candle y baja
-del mejor módulo de pcb1.
+compuerta aprendida y azar. Cotas: oráculo y «todos», que conoce la pieza verdadera
+(no hay redes ni predicciones de los módulos sobre piezas ajenas). Eventos: alta de
+candle y baja del mejor módulo de pcb1.
 
 Uso: python run_piloto_modulos.py [--report-only]
 """
@@ -336,6 +337,7 @@ def evaluate(fleet, Qs, C, eval_set, log, mods, rng):
             w, c = fleet.route(z, entry, name)
             r[name], r[f"{name}_consultados"] = w, c
         r["central"], r["compuerta"] = central(z), gate_route(z)
+        # Cota, no rival: usa la pieza verdadera p para descartar módulos ajenos.
         if cand and known:
             conf = [float(np.exp(Qs[p]["logits"][mods[i][1]][j]).max() / np.exp(Qs[p]["logits"][mods[i][1]][j]).sum())
                     if mods[i][0] == p else 0.0 for i in cand]

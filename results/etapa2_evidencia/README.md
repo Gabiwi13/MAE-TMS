@@ -34,7 +34,9 @@ Con entrada al azar, la flota se reconstruyó igual que en el piloto (790 transa
 | R4, z = 1.96 | 85.5 | 4.5 | 89.6 | 100 | 3.1 (2) | 5.8 % | 73.4 |
 | router central | 88.2 | 1.2 | 89.3 | 100 | central | — | 63.6 |
 | compuerta aprendida | 88.7 | 2.2 | 90.7 | 100 | central | — | 100 |
-| preguntarle a todos | 86.3 | 4.7 | 90.6 | 100 | 24 | — | 76.2 |
+| cota «todos» con la pieza verdadera (no es rival) | 86.3 | 4.7 | 90.6 | 100 | 24 | — | 76.2 |
+
+«Todos» conoce la pieza verdadera: entre los módulos que contienen la consulta, solo considera los de esa pieza (ver las notas del piloto). Es una cota, no un rival, y es la misma con ambos modos de entrada.
 
 ## Predicciones y criterio
 
