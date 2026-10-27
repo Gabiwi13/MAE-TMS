@@ -2,7 +2,7 @@
 
 Prueba piloto para decidir si el sistema transactivo, construido con memorias asociativas entrópicas, merece una línea de investigación propia como **organizador de una flota de módulos especializados**. Diseño, predicciones y criterio fijados antes de correr en [`propuesta_piloto_modulos.md`](../../propuesta_piloto_modulos.md). Script: [`run_piloto_modulos.py`](../../run_piloto_modulos.py). Detalle en `resumen.txt` y `resultados.json`.
 
-**Resultado en una línea:** el sistema **aprende cuál módulo lo hace mejor** solo a partir de sus transacciones y sin índice central: con la lectura de calidad (éxitos / intentos), 79.0 % de las consultas va al mejor de los dos módulos de su dominio, contra 52.6 % de la lectura oficial (azar). Supera al router central kNN (71.6 %) y a preguntarle a todos (76.2 %). También incorpora un módulo nuevo en unas 20 transacciones, tolera la salida de uno y se abstiene ante el 100 % de lo desconocido. Pero **no cumple el criterio de costo y acierto**: consulta 19 de 24 módulos (el criterio pedía ≤ 6) y queda 7.5 puntos por debajo del router central, porque se abstiene en el 8.9 % de las consultas conocidas. Según lo fijado, el resultado es intermedio.
+**Resultado en una línea:** el sistema **aprende cuál módulo lo hace mejor** solo a partir de sus transacciones y sin índice central: con la lectura de calidad (éxitos / intentos), 79.0 % de las consultas va al mejor de los dos módulos de su dominio, contra 52.6 % de la lectura oficial (azar). Supera al router central kNN (71.6 %) y queda por encima de la cota «todos», que conoce la pieza verdadera (76.2 %). También incorpora un módulo nuevo en unas 20 transacciones, tolera la salida de uno y se abstiene ante el 100 % de lo desconocido. Pero **no cumple el criterio de costo y acierto**: consulta 19 de 24 módulos (el criterio pedía ≤ 6) y queda 7.5 puntos por debajo del router central, porque se abstiene en el 8.9 % de las consultas conocidas. Según lo fijado, el resultado es intermedio.
 
 ## Montaje
 
@@ -19,13 +19,13 @@ Prueba piloto para decidir si el sistema transactivo, construido con memorias as
 | **R2 calidad (éxitos / intentos)** | **80.8** | 8.9 | **88.7** | 100.0 | 19.2 |
 | router central kNN | **88.3** | 1.2 | 89.4 | 100.0 | (índice central) |
 | compuerta aprendida | 87.8 | 2.2 | 89.8 | 100.0 | (índice central) |
-| preguntarle a todos (el más confiado) | 86.3 | 4.7 | 90.6 | 100.0 | 24 consultas de contenido; contienen 1.9 |
+| cota «todos» con la pieza verdadera (el más confiado de su pieza; no es rival) | 86.3 | 4.7 | 90.6 | 100.0 | 24 consultas de contenido; contienen 1.9 |
 | al azar entre los que contienen | 80.6 | 4.7 | 84.6 | 100.0 | 24 consultas de contenido |
 | oráculo | 93.7 | — | — | — | — |
 
 **Preferencia por el mejor módulo** (dominios con diferencia de ≥ 5 puntos; fracción de lo ruteado a su dominio que va al mejor):
 
-| dominio (mejor contra peor) | R1 | **R2** | central | compuerta | todos |
+| dominio (mejor contra peor) | R1 | **R2** | central | compuerta | todos (cota) |
 |---|---|---|---|---|---|
 | candle (96.1 contra 85.5) | 52.7 | 77.0 | 89.5 | 100 | 82.4 |
 | capsules (90.0 contra 74.0) | 72.1 | 55.8 | 35.4 | 0 | 86.0 |
@@ -79,7 +79,7 @@ Un piloto no basta para afirmar que el sistema es mejor que un router central. B
 
 - Una sola semilla. Las 7 piezas con diferencia de ≥ 5 puntos tienen de 50 a 85 consultas de evaluación cada una.
 - La lectura R2 (éxitos / intentos) se definió para este piloto; no está en el código oficial. Usa solo las proyecciones de las memorias de directorio.
-- «Preguntarle a todos» consulta el contenido de los 24 módulos y la confianza de la red de los que contienen (1.9 en promedio). El router central y la compuerta guardan todas las transacciones en un solo lugar.
-- Un módulo de otro dominio cuenta como respuesta incorrecta, porque no se tienen sus predicciones sobre imágenes ajenas.
+- **«Todos» es una cota asistida por un oráculo de pieza, no un rival** (corregido el 26 oct 2026). Consulta el contenido de los 24 módulos. Entre los que contienen (1.9 en promedio), solo considera los de la **pieza verdadera** y elige el de mayor confianza de su red. Los de otra pieza quedan con confianza 0, porque sus redes no se guardaron y no hay predicciones suyas sobre imágenes ajenas. Saber la pieza es justo lo que los demás métodos tienen que averiguar, así que su 86.3 % no se compara con R1/R2, el central o la compuerta como un método más.
+- El router central y la compuerta guardan todas las transacciones en un solo lugar.
 - En `resumen.txt`, la columna de módulos consultados (21.5) promedia también las desconocidas, que recorren los 24. La tabla de arriba da la media de las conocidas (19.2; mediana 19, mínimo 9), calculada después desde `resultados.json`.
 - En E1, el acierto de R2 en las demás piezas (72.7 %) es menor que en la corrida principal (80.8 %). Es otra corriente de aprendizaje, sin las transacciones de candle y con otro orden aleatorio. No se investigó más.

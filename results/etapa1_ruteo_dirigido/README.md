@@ -18,7 +18,9 @@ El piloto se reconstruyó con la misma semilla y dio exactamente las mismas cifr
 | R3, ξ = 2 y 3 | 83.4 | 3.0 | 86.0 | 100.0 | 11.5 | 14.0 % | 54.8 |
 | router central kNN | **88.3** | 1.2 | 89.4 | 100.0 | (central) | — | 71.6 |
 | compuerta aprendida | 87.8 | 2.2 | 89.8 | 100.0 | (central) | — | 85.7 |
-| preguntarle a todos | 86.3 | 4.7 | 90.6 | 100.0 | 24 | — | 76.2 |
+| cota «todos» con la pieza verdadera (no es rival) | 86.3 | 4.7 | 90.6 | 100.0 | 24 | — | 76.2 |
+
+«Todos» conoce la pieza verdadera: entre los módulos que contienen la consulta, solo considera los de esa pieza (ver las notas del piloto). Es una cota, no un rival.
 
 Directorios leídos por R3 en consultas conocidas: mediana 7, percentil 90 de 17–18 y máximo 22. El costo medio sube por el respaldo por contenido, que pregunta a los 24 módulos en el 14–17 % de las consultas. Pasar de ξ = 1 a ξ = 3 no cambia casi nada.
 
