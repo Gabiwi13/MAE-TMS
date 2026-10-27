@@ -16,6 +16,8 @@ El piloto se reconstruyó con la misma semilla y dio exactamente las mismas cifr
 | **R3, ξ = 0** | 83.6 | 3.4 | 86.5 | 100.0 | 12.6 | 17.0 % | 56.3 |
 | **R3, ξ = 1** | 83.4 | **3.0** | 86.0 | 100.0 | **11.6** | 14.2 % | 54.7 |
 | R3, ξ = 2 y 3 | 83.4 | 3.0 | 86.0 | 100.0 | 11.5 | 14.0 % | 54.8 |
+| R3, ξ = 0, sin respaldo (análisis posterior) | 71.7 | 17.0 | 86.4 | 100.0 | 8.5 | — | 51.9 |
+| R3, ξ = 1, sin respaldo (análisis posterior) | 73.1 | 14.2 | 85.3 | 100.0 | 8.2 | — | 50.5 |
 | router central kNN | **88.3** | 1.2 | 89.4 | 100.0 | (central) | — | 71.6 |
 | compuerta aprendida | 87.8 | 2.2 | 89.8 | 100.0 | (central) | — | 85.7 |
 | cota «todos» con la pieza verdadera (no es rival) | 86.3 | 4.7 | 90.6 | 100.0 | 24 | — | 76.2 |
@@ -45,6 +47,7 @@ Directorios leídos por R3 en consultas conocidas: mediana 7, percentil 90 de 17
 
 ## Notas
 
-- R3 y sus reglas de recorrido (orden por conteos, respaldo por contenido, desempate por peso de reconocimiento) se definieron para esta etapa. No están en el código oficial y solo leen proyecciones, soportes y conteos de las memorias.
+- R3 y sus reglas de recorrido (orden por conteos, respaldo por contenido, desempate por peso de reconocimiento) se definieron para esta etapa. No están en el código oficial. Leen proyecciones y soportes de las memorias, salvo el respaldo por contenido.
+- **El respaldo por contenido no decide con la memoria** (nota del 26 oct 2026). Toma los candidatos del contenido de la MAE, pero elige con `éxitos / intentos` sumados de `DirectoryMemory._counts`, un arreglo de Python que no se lee de la relación. Si nadie tiene intentos, elige por el peso de reconocimiento del contenido, y las filas no guardan cuál de las dos reglas decidió. Las filas «sin respaldo» de la tabla cuentan esas respuestas como abstención; se calcularon desde `resultados.json` sin volver a correr, y las cifras publicadas se reproducen exactamente con el mismo cálculo. El respaldo responde en el 13.6 % (ξ = 0) y el 11.2 % (ξ = 1) de las consultas conocidas, y acierta el 87.5 y el 91.3 % de ellas.
 - Para guardar la entrada de cada consulta se agregó un campo al registro de `run_piloto_modulos.evaluate`. No cambia ningún resultado del piloto.
 - Una sola semilla.

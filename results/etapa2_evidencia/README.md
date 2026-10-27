@@ -6,7 +6,7 @@ Después de la etapa 1 quedaban dos alternativas para conciliar costo y calidad,
 
 Diseño, predicciones y criterio fijados antes de correr en [`propuesta_etapa2_evidencia.md`](../../propuesta_etapa2_evidencia.md). Script: [`run_etapa2_evidencia.py`](../../run_etapa2_evidencia.py).
 
-**Resultado en una línea:** con **entrada por receptor**, el ruteo dirigido (R3) **cumple por primera vez el criterio completo**: 85.7 % de acierto (2.5 puntos del router central), 2.5 lecturas por consulta (mediana 1), 73.4 % al mejor módulo y 100 % de abstención ante lo desconocido. **R4 no aporta nada**: para siempre en el mismo punto que R3, porque la memoria toma la ausencia de evidencia sobre el otro módulo como si la decisión fuera clara.
+**Resultado en una línea:** con **entrada por receptor**, el ruteo dirigido (R3) **cumple por primera vez el criterio completo**: 85.7 % de acierto (2.5 puntos del router central), 2.5 lecturas por consulta (mediana 1), 73.4 % al mejor módulo y 100 % de abstención ante lo desconocido. Ese resultado depende del respaldo por contenido, que decide con una tabla de éxitos / intentos leída de contadores fuera de la memoria: sin él, R3 queda a 3.9 puntos del central y no cumple (ver «Sin el respaldo por contenido»). **R4 no aporta nada**: para siempre en el mismo punto que R3, porque la memoria toma la ausencia de evidencia sobre el otro módulo como si la decisión fuera clara.
 
 ## Verificación
 
@@ -54,6 +54,22 @@ Con entrada al azar, la flota se reconstruyó igual que en el piloto (790 transa
 | receptor · R2 | 7.3 | 2.0 | 80.4 | no (acierto) |
 | **receptor · R3** | **2.5** | **2.5** | **73.4** | **sí** |
 | receptor · R4 (z = 1.0 y 1.96) | 2.7 | 3.1 | 73.4 | sí (igual que R3) |
+| receptor · R3 sin respaldo (análisis posterior) | 3.9 | 1.1 | 72.8 | no (acierto) |
+
+### Sin el respaldo por contenido (análisis posterior, 26 oct 2026)
+
+Cuando ningún directorio leído tiene soporte, R3 pasa al respaldo por contenido. Este toma los candidatos que da el contenido de la MAE, pero elige con `éxitos / intentos` sumados de `DirectoryMemory._counts`, un arreglo de Python que se lleva junto a la memoria y no se lee de la relación. Si nadie tiene intentos, elige por el peso de reconocimiento del contenido. Las filas no guardan cuál de las dos reglas decidió. Es además el mismo mecanismo que la ablación TAB de la réplica, así que el contraste R3 contra TAB queda en parte confundido.
+
+Contando como abstención lo que responde el respaldo (desde `resultados.json`, sin volver a correr):
+
+| lectura | acierto | abst. conocidas | acierto de lo respondido | lecturas medias | al mejor |
+|---|---|---|---|---|---|
+| azar · R3 publicado | 83.4 | 3.0 | 86.0 | 11.6 (con 24 por respaldo) | 54.7 |
+| azar · R3 sin respaldo | 73.1 | 14.2 | 85.3 | 8.2 | 50.5 |
+| receptor · R3 publicado | 85.7 | 4.5 | 89.7 | 2.5 (con 24 por respaldo) | 73.4 |
+| receptor · R3 sin respaldo | 84.3 | 5.8 | 89.5 | 1.1 | 72.8 |
+
+Con entrada por receptor el respaldo actúa en el 5.8 % de las consultas conocidas y responde en el 1.3 % (acierta todas). Con eso alcanza para pasar de 3.9 a 2.5 puntos del central, justo del otro lado del límite de 3. R4 da lo mismo que R3.
 
 ## Lectura
 
@@ -65,7 +81,7 @@ Con entrada al azar, la flota se reconstruyó igual que en el piloto (790 transa
 
 ## Estado de la línea
 
-Con esta etapa, el sistema transactivo de memorias asociativas cumple el criterio que se fijó para considerarlo un organizador viable de una flota de módulos:
+Con esta etapa, el sistema transactivo de memorias asociativas cumple el criterio que se fijó para considerarlo un organizador viable de una flota de módulos, siempre que se cuente el respaldo por contenido (sin él queda a 3.9 puntos del central):
 - rutea con un costo de 2–3 consultas;
 - aprende qué módulo lo hace mejor, mejor que un router central con las mismas transacciones;
 - se abstiene ante el 100 % de lo desconocido;
@@ -76,5 +92,5 @@ Queda por delante lo que lo haría un aporte completo: aprender en línea con de
 ## Notas
 
 - Una sola semilla. Las cifras de preferencia salen de 7 dominios con diferencia de ≥ 5 puntos.
-- R3 y R4 usan solo proyecciones, soportes y conteos de las memorias. El intervalo de Wilson se aplica sobre las cuentas efectivas leídas de las proyecciones; z se fijó antes (1.0 y 1.96).
+- R3 y R4 leen proyecciones y soportes de las memorias, salvo el respaldo por contenido, que elige con los contadores `_counts` (ver arriba). El intervalo de Wilson se aplica sobre las cuentas efectivas leídas de las proyecciones; z se fijó antes (1.0 y 1.96).
 - La compuerta aprendida llega a 100 % al mejor con entrada por receptor porque sus tasas globales por dominio ordenan bien a los módulos en esta corrida. Es central y no tiene abstención por zona.
