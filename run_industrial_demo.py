@@ -35,6 +35,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import run_medico_demo as demo  # noqa: E402
 from associative_memory import HomoAssociativeMemory  # noqa: E402
+import associative_memory  # noqa: E402
 from stage5_fill import augment_variants  # noqa: E402
 
 SMOKE = os.environ.get("IND_SMOKE") == "1"
@@ -302,6 +303,8 @@ def defect_types(p, P2, net):
 # ---------- corrida ----------
 
 def main():
+    # Resultados de CIFIN 2026: se conservan con pesos uniformes.
+    associative_memory.use_uniform_weights()
     ap = argparse.ArgumentParser()
     ap.add_argument("--visa", default="C:/Users/aq99l/Datasets/VisA")
     ap.add_argument("--report-only", action="store_true")

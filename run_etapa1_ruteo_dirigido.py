@@ -35,7 +35,7 @@ def tol_proj(d, v, gaps):
     vv = ham.validate(np.asarray(v, dtype=float), 0).astype(int)
     vv[gaps] = ham.undefined(0)
     with contextlib.redirect_stdout(io.StringIO()):
-        proj = ham.project(vv, np.ones(len(vv), dtype=float), dim=0)
+        proj = ham.project(vv, d.weights(vv, 0), dim=0)
     return proj[:, 1].copy()
 
 

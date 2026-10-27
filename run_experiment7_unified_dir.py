@@ -117,7 +117,7 @@ def uni_scores(mdir, cue_f, xi=0, counts=None):
                 return np.zeros(mdir._n_agents)
             v = v.copy()
             v[gaps] = und
-        proj = ham.project(v, np.ones(v.size, dtype=float), 0)
+        proj = ham.project(v, mdir.weights(v, 0), 0)
     denom = mdir._counts if counts is None else counts
     return proj[:, 1] / (denom + 1.0)
 

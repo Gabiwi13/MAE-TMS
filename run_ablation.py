@@ -123,6 +123,7 @@ def load_base_mdoms() -> dict:
     for cls in CLASSES:
         with open(MODELS_DIR / f"mem_dom_{cls}.pkl", "rb") as f:
             mdoms[cls] = pickle.load(f)
+        mdoms[cls].attach_homo(*_load_LR(cls))
     return mdoms
 
 
@@ -165,6 +166,7 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
     for i, z in enumerate(latents):
         z_q = quantize_latent_global(np.array(z), g_min, g_max, Q_F)
         mem.register(label_seq[i % L], z_q)
+    mem.attach_homo(*_load_LR("apple"))  # L/R sin curar, como en make_agents
     return mem
 
 

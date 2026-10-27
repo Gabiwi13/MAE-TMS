@@ -31,6 +31,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import run_industrial_demo as ind  # noqa: E402
 import run_medico_demo as demo  # noqa: E402
 from associative_memory import HomoAssociativeMemory  # noqa: E402
+import associative_memory  # noqa: E402
 import commons  # noqa: E402
 from associative import AssociativeMemory  # noqa: E402
 from hetero_memory import HeteroAssociativeMemory, _norm_weights  # noqa: E402
@@ -451,6 +452,8 @@ def report(res):
 
 
 def main():
+    # Resultados de CIFIN 2026: se conservan con pesos uniformes.
+    associative_memory.use_uniform_weights()
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache-demo", default=str(ROOT.parent / "industrial-demo-4132e4" / "results" / "industrial" / "cache"))
     ap.add_argument("--sin-parches", action="store_true")

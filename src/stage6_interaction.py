@@ -131,6 +131,10 @@ class Agent:
             else HomoAssociativeMemory(N, M_LABEL)
         self.mem_dom_R = mem_dom_R if mem_dom_R is not None \
             else HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        # Solo se asocian las homo que se recibieron: una vacía rechazaría
+        # todo recall en silencio.
+        self._homo_given = (mem_dom_L is not None, mem_dom_R is not None)
+        self._attach_homo()
         # Un directorio por modalidad de pista:
         #   mem_dir   : pista de texto  (label 300x16) -> agente
         #   mem_dir_R : pista de imagen (latente 64x32) -> agente
@@ -138,6 +142,17 @@ class Agent:
         # izquierdo de una HAM es fijo, asi que hacen falta dos memorias.
         self.mem_dir = DirectoryMemory(N, M_LABEL, len(AGENT_LIST))
         self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(AGENT_LIST))
+
+    def _attach_homo(self):
+        if hasattr(self.mem_dom_H, "attach_homo"):
+            given_L, given_R = getattr(self, "_homo_given", (True, True))
+            self.mem_dom_H.attach_homo(self.mem_dom_L if given_L else None,
+                                       self.mem_dom_R if given_R else None)
+
+    def __setstate__(self, state):
+        # Los agentes guardados con pickle no pasan por __init__.
+        self.__dict__.update(state)
+        self._attach_homo()
 
     def recognize(self, v_label_q: np.ndarray) -> float:
         """Score crudo: activacion media sin gate ni calibracion.

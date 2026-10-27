@@ -25,6 +25,7 @@ if str(_HETERO_DIR) not in sys.path:
 
 import commons
 from hetero_associative_4d import HeteroAssociativeMemory4D
+from associative_memory import fill_undefined, homo_weights_enabled
 
 # Métodos de recuperación del paper de la pista faltante (morales2025missing):
 #   "random"        Random Samples (RS): una muestra del plano proyectado,
@@ -54,6 +55,40 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         with contextlib.redirect_stdout(io.StringIO()):
             return super().update()
 
+    def attach_homo(self, left=None, right=None) -> None:
+        """Memorias homo de cada dominio. Si un recall o una proyección no
+        recibe pesos, los toma de ellas, como pide la proyección
+        AND-ponderada."""
+        self._homo_left, self._homo_right = left, right
+
+    def _default_weights(self, cue: np.ndarray, weights, dim: int):
+        if weights is not None or not homo_weights_enabled():
+            return weights
+        return self.homo_weights(cue, dim)
+
+    def homo_weights(self, cue: np.ndarray, dim: int) -> np.ndarray:
+        """Pesos de la memoria homo del dominio de la pista (unos si se
+        pidieron pesos uniformes)."""
+        if not homo_weights_enabled():
+            return np.ones(len(cue), dtype=float)
+        # Las memorias guardadas con pickle no traen el atributo. Se lanza en
+        # vez de caer a pesos uniformes, para que ninguna lectura sin homo
+        # pase por una con pesos.
+        homo = getattr(self, "_homo_left" if dim == 0 else "_homo_right", None)
+        if homo is None:
+            raise RuntimeError(
+                "Memoria hetero sin memoria homo del dominio "
+                f"{'izquierdo' if dim == 0 else 'derecho'}: pasa los pesos o "
+                "llama a attach_homo().")
+        c = np.asarray(cue, dtype=float)
+        defined = ~np.isnan(c) & (c != self.undefined(dim))
+        if not defined.any():
+            # Sin coordenadas definidas no hay nada que ponderar.
+            return np.ones(len(cue), dtype=float)
+        w = np.zeros(len(cue), dtype=float)
+        w[defined] = homo.recog_weights(cue)[defined]
+        return fill_undefined(w, defined)
+
     def recognize_from_left(self, cue_a: np.ndarray,
                             left_weights: np.ndarray = None) -> float:
         """Activacion media de la proyeccion del cue izquierdo, modulada
@@ -61,7 +96,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         no aplica gate de containment ni calibracion (eso es decision
         del protocolo que compara agentes)."""
         ca = self.validate(cue_a, 0)
-        weights = _norm_weights(left_weights, len(ca))
+        weights = _norm_weights(self._default_weights(cue_a, left_weights, 0), len(ca))
         projection = self.project(ca, weights, 0)
         total = np.sum(projection)
         count = np.count_nonzero(projection)
@@ -72,7 +107,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         """label -> latente. Devuelve (r_q, recognized, weight, projection,
         stats) con r_q entero y el sentinel q para dimensiones indefinidas.
         `method` selecciona la variante de recuperación (MISSING_CUE_METHODS)."""
-        w = _norm_weights(weights, len(cue_a))
+        w = _norm_weights(self._default_weights(cue_a, weights, 0), len(cue_a))
         if method == "sample_search":
             r_io, recognized, weight, proj, stats = super().recall_from_left(
                 cue_a, weights=w)
@@ -85,7 +120,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
     def recall_from_right(self, cue_b: np.ndarray, weights=None,
                           method: str = "sample_search"):
         """latente -> label. Mismo contrato que recall_from_left."""
-        w = _norm_weights(weights, len(cue_b))
+        w = _norm_weights(self._default_weights(cue_b, weights, 1), len(cue_b))
         if method == "sample_search":
             r_io, recognized, weight, proj, stats = super().recall_from_right(
                 cue_b, weights=w)
@@ -128,7 +163,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         indeterminada — no pasa por muestreo ni por prueba de aceptación.
         Devuelve (proto_q, projection); proto_q es None si la pista no está
         contenida (alguna columna sin soporte)."""
-        w = _norm_weights(weights, len(cue_a))
+        w = _norm_weights(self._default_weights(cue_a, weights, 0), len(cue_a))
         ca = self.validate(cue_a, 0)
         projection = self.project(ca, w, 0)
         if np.count_nonzero(np.sum(projection, axis=1) == 0) > 0:
@@ -142,7 +177,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         retro-proyectarlo al dominio de la pista y medir la distancia
         ponderada contra la pista original. Métrica común para comparar
         los tres métodos y el prototipo."""
-        w = _norm_weights(weights, len(cue_a))
+        w = _norm_weights(self._default_weights(cue_a, weights, 0), len(cue_a))
         ca = self.validate(cue_a, 0)
         projection = self.project(ca, w, 0)
 

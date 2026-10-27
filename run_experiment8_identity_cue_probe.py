@@ -24,6 +24,7 @@ import numpy as np
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 from stage6_interaction import CLASSES, AGENT_LIST, MODELS_DIR, M_LABEL, Q_LATENT
+from associative_memory import relation_weights
 
 K = len(AGENT_LIST)
 OUT = ROOT / "results" / "experimento8" / "sonda_pista_identidad.json"
@@ -31,8 +32,8 @@ OUT = ROOT / "results" / "experimento8" / "sonda_pista_identidad.json"
 
 def column(ham, cue):
     with contextlib.redirect_stdout(io.StringIO()):
-        proj = ham.project(ham.validate(np.asarray(cue, dtype=float), 1),
-                           np.ones(K, dtype=float), 1)
+        v = ham.validate(np.asarray(cue, dtype=float), 1)
+        proj = ham.project(v, relation_weights(ham, v, 1), 1)
     return np.asarray(proj, dtype=float)
 
 

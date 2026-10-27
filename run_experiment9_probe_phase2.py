@@ -28,6 +28,7 @@ import numpy as np
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 from quantizer import quantize_binary
+from hetero_memory import _norm_weights
 from stage6_interaction import (CLASSES, AGENT_LIST, MODELS_DIR, M_LABEL, Q_LATENT,
                                 get_nlp, load_all_vectors, tokenize_query,
                                 get_fasttext_vector, prevectorize)
@@ -57,7 +58,8 @@ def live_levels(P):
 
 def label_projection(mem_H, v_q):
     with contextlib.redirect_stdout(io.StringIO()):
-        proj = mem_H.project(mem_H.validate(v_q, 0), np.ones(len(v_q)), 0)
+        proj = mem_H.project(mem_H.validate(v_q, 0),
+                             _norm_weights(mem_H.homo_weights(v_q, 0), len(v_q)), 0)
     return np.asarray(proj, dtype=float)[:, :Q_LATENT]
 
 

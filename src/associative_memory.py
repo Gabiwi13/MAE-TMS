@@ -28,6 +28,51 @@ from associative import AssociativeMemory
 from hetero_associative_4d import HeteroAssociativeMemory4D
 
 
+# Pesos por rasgo de las proyecciones. "homo" es el modelo (proyección
+# AND-ponderada con los pesos de la memoria homo del dominio de la pista).
+# "uniforme" (w'_i = 1) es como se corrieron los resultados industriales de
+# CIFIN 2026; sus scripts lo piden con use_uniform_weights().
+_WEIGHTS = "homo"
+
+
+def use_uniform_weights() -> None:
+    global _WEIGHTS
+    _WEIGHTS = "uniforme"
+
+
+def homo_weights_enabled() -> bool:
+    return _WEIGHTS == "homo"
+
+
+def fill_undefined(weights: np.ndarray, defined: np.ndarray) -> np.ndarray:
+    """project() salta las coordenadas indefinidas pero las cuenta al
+    normalizar los pesos. Con la media de las definidas, los pesos definidos
+    quedan con media 1, como en la ecuación."""
+    w = np.asarray(weights, dtype=float).copy()
+    if defined.any() and not defined.all():
+        w[~defined] = w[defined].mean()
+    return w
+
+
+def relation_weights(ham, v: np.ndarray, dim: int) -> np.ndarray:
+    """Pesos homo de una pista validada, leídos de la relación de una hetero
+    4D: cuántas veces se registró el valor v_i en la coordenada i, sumado
+    sobre el otro dominio. Es lo que daría una memoria homo llenada con las
+    mismas pistas. Unos si se pidieron pesos uniformes."""
+    v = np.asarray(v).astype(int)
+    if not homo_weights_enabled():
+        return np.ones(v.size, dtype=float)
+    defined = v != ham.undefined(dim)
+    idx = np.where(defined)[0]
+    w = np.zeros(v.size, dtype=float)
+    rel = ham._full_iota_relation
+    if dim == 0:
+        w[idx] = rel[idx, :, v[idx], :ham.q].sum(axis=(1, 2))
+    else:
+        w[idx] = rel[:, idx, :ham.m, v[idx]].sum(axis=(1, 2))
+    return fill_undefined(w, defined)
+
+
 class HomoAssociativeMemory:
     """AssociativeMemory de Pineda con salida silenciosa y API estable.
 
@@ -136,10 +181,14 @@ class DirectoryMemory:
         self._ham.register(v_q, agent_id)
         self._counts[k] += 1
 
+    def weights(self, v: np.ndarray, dim: int = 0) -> np.ndarray:
+        """Pesos homo de una pista ya validada (ver relation_weights)."""
+        return relation_weights(self._ham, v, dim)
+
     def predict(self, v_q: np.ndarray) -> np.ndarray:
         """Score crudo por agente: probabilidad proyectada del bit 'conoce'."""
-        weights = np.ones(len(v_q), dtype=float)
-        proj = self._ham.project(v_q, weights, dim=0)
+        v = self._ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
+        proj = self._ham.project(v, self.weights(v, 0), dim=0)
         return proj[:, 1].copy()
 
     def _calibrated(self, scores: np.ndarray, mode: str,
@@ -186,9 +235,8 @@ class DirectoryMemory:
         if gaps:
             v = self._ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
             v[gaps] = self._ham.undefined(0)
-            weights = np.ones(len(v), dtype=float)
             with contextlib.redirect_stdout(io.StringIO()):
-                proj = self._ham.project(v, weights, dim=0)
+                proj = self._ham.project(v, self.weights(v, 0), dim=0)
             scores = proj[:, 1].copy()
         else:
             scores = self.predict(v_q)
@@ -239,10 +287,9 @@ class DirectoryMemory:
         del agente: que valores de cada rasgo registro ese agente como ganador.
         Lectura determinista; la fila de un rasgo queda en cero si el agente
         nunca gano nada con soporte en el."""
-        cue = self._identity_cue(agent_idx)
+        cue = self._ham.validate(self._identity_cue(agent_idx), 1)
         with contextlib.redirect_stdout(io.StringIO()):
-            proj = self._ham.project(self._ham.validate(cue, 1),
-                                     np.ones(self._n_agents, dtype=float), 1)
+            proj = self._ham.project(cue, self.weights(cue, 1), 1)
         return proj[:, :self._m].copy()
 
     def recall_domain(self, agent_idx: int):
@@ -253,9 +300,10 @@ class DirectoryMemory:
         agente no tiene soporte en alguna coordenada (nunca gano nada, o la
         pista de identidad no pudo ocurrir)."""
         cue = self._identity_cue(agent_idx)
+        w = self.weights(self._ham.validate(cue, 1), 1)
         with contextlib.redirect_stdout(io.StringIO()):
             cue_q, recognized, _w, _p, _s = self._ham.recall_from_right(
-                cue, weights=np.ones(self._n_agents, dtype=float))
+                cue, weights=w)
         return cue_q, bool(recognized)
 
     @property

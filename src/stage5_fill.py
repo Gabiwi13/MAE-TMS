@@ -258,6 +258,7 @@ def load_agent_memories(cls: str):
     if path_R.exists():
         with open(path_R, "rb") as f:
             mem_R = pickle.load(f)
+    mem_H.attach_homo(mem_L, mem_R)
     return mem_H, mem_L, mem_R
 
 

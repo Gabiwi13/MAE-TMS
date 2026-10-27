@@ -53,7 +53,7 @@ from PIL import Image
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from associative_memory import DirectoryMemory
+from associative_memory import DirectoryMemory, relation_weights
 from quantizer import quantize_binary
 from stage5_fill import N_FILL, FILL_VARIANTS, augment_variants, quantize_latent_global
 from stage6_interaction import (
@@ -326,6 +326,12 @@ def cue_face(agent_idx: int, bit: int) -> np.ndarray:
     return v
 
 
+def right_weights(ham, cue) -> np.ndarray:
+    """Pesos homo de una pista de identidad, leídos de la relación del
+    directorio."""
+    return relation_weights(ham, ham.validate(np.asarray(cue, dtype=float), 1), 1)
+
+
 def figure_negative_face(n_draws: int = 2, reps: int = 20):
     """Qué hay guardado en la cara del "no ganó" de cada agente. Es la única
     lectura que usa esa cara sola: el one-hot la mete en un AND donde no
@@ -347,7 +353,7 @@ def figure_negative_face(n_draws: int = 2, reps: int = 20):
     def read(ham, cue):
         with contextlib.redirect_stdout(io.StringIO()):
             z_q, recognized, *_ = ham.recall_from_right(
-                cue, weights=np.ones(K, dtype=float))
+                cue, weights=right_weights(ham, cue))
         if not recognized:
             return None, None, float("nan")
         z = dequantize_latent(z_q, g_min, g_max)
@@ -722,7 +728,8 @@ def probes():
             for _ in range(REPS * 2):
                 with contextlib.redirect_stdout(io.StringIO()):
                     z_q, ok, *_ = ham_r.recall_from_right(
-                        cue_face(bi_, bit), weights=np.ones(K, dtype=float))
+                        cue_face(bi_, bit),
+                        weights=right_weights(ham_r, cue_face(bi_, bit)))
                 if not ok:
                     continue
                 zi = np.asarray(z_q, dtype=int)
@@ -762,7 +769,7 @@ def probes():
         for _ in range(REPS):
             with contextlib.redirect_stdout(io.StringIO()):
                 _z, recognized, *_ = ham_r.recall_from_right(
-                    cue, weights=np.ones(K, dtype=float))
+                    cue, weights=right_weights(ham_r, cue))
             ok += int(recognized)
         imposibles[tag] = {"niveles_vivos_por_coordenada": n,
                            "coordenadas_vacias": vac,

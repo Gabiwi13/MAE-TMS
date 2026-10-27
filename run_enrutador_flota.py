@@ -24,6 +24,7 @@ ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
 import run_industrial_demo as ind  # noqa: E402
+import associative_memory  # noqa: E402
 import run_medico_demo as demo  # noqa: E402
 from run_olvido_privacidad import industrial_level1  # noqa: E402
 
@@ -126,6 +127,8 @@ def state_bytes(L, kr):
 
 
 def main():
+    # Resultados de CIFIN 2026: se conservan con pesos uniformes.
+    associative_memory.use_uniform_weights()
     ap = argparse.ArgumentParser()
     ap.add_argument("--report-only", action="store_true")
     args = ap.parse_args()

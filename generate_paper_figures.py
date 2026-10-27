@@ -983,11 +983,9 @@ def fig_recall_grid():
     g_min = np.array(stats["global_min"])
     g_max = np.array(stats["global_max"])
 
-    # Load M_dom
-    mdoms = {}
-    for cls in CLASSES:
-        with open(ROOT / "models" / f"mem_dom_{cls}.pkl", "rb") as f:
-            mdoms[cls] = pickle.load(f)
+    # Load M_dom (con sus homo, que dan los pesos del recall)
+    from stage5_fill import load_agent_memories
+    mdoms = {cls: load_agent_memories(cls)[0] for cls in CLASSES}
 
     # Load vectors cache
     vc = load_all_vectors()
