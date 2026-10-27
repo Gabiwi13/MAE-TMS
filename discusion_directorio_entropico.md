@@ -52,9 +52,9 @@ Se probó fundir `mem_dir_L` (texto, 300×16) y `mem_dir_R` (latentes, 64×32) e
 - El +1.2 en texto viene de recuantizar a 32 niveles, no de la unificación.
 - El colapso pareado es el veto conjuntivo: corre sobre todos los rasgos definidos, así que una mitad de imagen sin soporte mata una pista cuya mitad de texto rutea al 96%.
 - **La interacción intermodal es imposible, analítica y empíricamente.** La relación es por (rasgo, agente), sin término rasgo-rasgo; mitades disjuntas no pueden tocarse. Las sondas cruzadas rechazan al 100% y los scores de texto bajo llenado pareado son bit-idénticos al llenado solo-texto (dif. máx. 0.0).
-- El único canal de acoplamiento es el denominador B1 compartido, y es dañino: 1024 registros de imagen balanceados bajan el ruteo de texto de 96.2% a 90.0%, y 32 registros solo-manzana lo bajan a 87.5% *sin cambiar la relación en absoluto*.
+- El único canal de acoplamiento es el denominador B1 cuando se toma de `_counts`, que cuenta registros de cualquier modalidad: 1024 registros de imagen balanceados bajan el ruteo de texto de 96.2% a 90.0%, y 32 registros solo-manzana lo bajan a 87.5% *sin cambiar la relación en absoluto*. Es un efecto de dónde se lee el conteo, no de la memoria: el conteo de texto leído de la relación no cambia con los registros de imagen (nota del 26 oct 2026).
 
-**Conclusión:** el directorio unificado no transfiere nada entre modalidades y paga dos costos reales. Dos directorios separados es la arquitectura correcta — ahora con números.
+**Conclusión:** el directorio unificado no transfiere nada entre modalidades y paga el veto conjuntivo en las pistas plenas. El costo del denominador aparece solo si B1 cuenta registros de cualquier modalidad. Por el veto, dos directorios separados siguen siendo preferibles.
 
 Este resultado además alimenta la crítica de los doctores: ninguna representación compartida puede formarse precisamente porque el directorio es una tabla de cuentas por rasgo, sin ligadura relacional entre rasgos. Una heteroasociativa genuina tendría dónde vivir esa estructura; esta demostrablemente no.
 

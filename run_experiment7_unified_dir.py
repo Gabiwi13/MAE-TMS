@@ -90,9 +90,20 @@ def cue_pair(vq32, zq):
     return np.concatenate([vq32.astype(float), zq.astype(float)])
 
 
-def uni_scores(mdir, cue_f, xi=0):
+def text_relation_counts(mdir):
+    """Registros de texto por agente, leídos de la relación (no de _counts):
+    media sobre las coordenadas de texto de lo registrado en el bit 'conoce'.
+    Los registros de solo imagen dejan indefinida la mitad de texto y no
+    suman aquí."""
+    rel = mdir._ham.relation
+    return np.array([rel[:N, k, :M_UNI, 1].sum(axis=1).mean()
+                     for k in range(mdir._n_agents)])
+
+
+def uni_scores(mdir, cue_f, xi=0, counts=None):
     """Lectura B1 tolerante sobre cues con nan (predict_tolerant valida con
-    enteros y rompería la mitad indefinida)."""
+    enteros y rompería la mitad indefinida). counts reemplaza a _counts en
+    el denominador."""
     ham = mdir._ham
     with contextlib.redirect_stdout(io.StringIO()):
         v = ham.validate(np.asarray(cue_f, dtype=float), 0)
@@ -107,7 +118,8 @@ def uni_scores(mdir, cue_f, xi=0):
             v = v.copy()
             v[gaps] = und
         proj = ham.project(v, np.ones(v.size, dtype=float), 0)
-    return proj[:, 1] / (mdir._counts + 1.0)
+    denom = mdir._counts if counts is None else counts
+    return proj[:, 1] / (denom + 1.0)
 
 
 # ---------- datos ----------
@@ -332,6 +344,11 @@ def main():
     def ev_text_uni(d):
         return eval_text(bank, lambda vq: uni_scores(d, cue_text(vq), xi=0))
 
+    def ev_text_uni_rel(d):
+        rc = text_relation_counts(d)
+        return eval_text(bank, lambda vq: uni_scores(d, cue_text(vq), xi=0,
+                                                     counts=rc))
+
     def ev_img_uni(d):
         return eval_img(img_eval,
                         lambda zq: uni_scores(d, cue_img(zq), xi=XI_VISUAL))
@@ -455,8 +472,11 @@ def main():
           f"{max_diff:.2e}")
 
     # ---------- acople por counts (único canal entre mitades) ----------
+    # B1 con _counts (cuenta registros de cualquier modalidad) y con el conteo
+    # de texto leído de la relación, que los registros de imagen no tocan.
     print("\n--- Acople por el denominador B1 (counts compartidos) ---")
     acc0 = ev_text_uni(dirs["A"])
+    acc0_rel = ev_text_uni_rel(dirs["A"])
     counts_A = dirs["A"].agent_counts.tolist()
     # sandbox desechable: la prueba muta el directorio y A debe quedar intacto
     dir_coupling = copy.deepcopy(dirs["A"])
@@ -469,21 +489,27 @@ def main():
         with contextlib.redirect_stdout(io.StringIO()):
             dir_coupling.register(cue, ti)
     acc1 = ev_text_uni(dir_coupling)
+    acc1_rel = ev_text_uni_rel(dir_coupling)
     # desbalance: re-registrar imágenes de apple (solo infla sus counts)
     for zq in train_by_cls["apple"][:N_EXTRA_UNBAL]:
         with contextlib.redirect_stdout(io.StringIO()):
             dir_coupling.register(cue_img(zq), AGENT_LIST.index("apple"))
     acc2 = ev_text_uni(dir_coupling)
+    acc2_rel = ev_text_uni_rel(dir_coupling)
     coupling = {
         "text_only": acc0,
         "plus_balanced_imgs": acc1,
         "plus_unbalanced_apple": acc2,
+        "text_only_rel": acc0_rel,
+        "plus_balanced_imgs_rel": acc1_rel,
+        "plus_unbalanced_apple_rel": acc2_rel,
         "counts_final": dir_coupling.agent_counts.tolist(),
+        "text_counts_final_rel": text_relation_counts(dir_coupling).tolist(),
     }
     assert dirs["A"].agent_counts.tolist() == counts_A
-    print(f"  texto solo:              acc={acc0[0]:.1%}")
-    print(f"  + {len(img_stream)} imgs balanceadas:  acc={acc1[0]:.1%}")
-    print(f"  + {N_EXTRA_UNBAL} re-reg. apple:     acc={acc2[0]:.1%}  "
+    print(f"  texto solo:              acc={acc0[0]:.1%}  (conteo de la relación {acc0_rel[0]:.1%})")
+    print(f"  + {len(img_stream)} imgs balanceadas:  acc={acc1[0]:.1%}  (conteo de la relación {acc1_rel[0]:.1%})")
+    print(f"  + {N_EXTRA_UNBAL} re-reg. apple:     acc={acc2[0]:.1%}  (conteo de la relación {acc2_rel[0]:.1%})  "
           f"counts={coupling['counts_final']}")
 
     # ---------- transiciones y tabla final ----------
@@ -586,7 +612,10 @@ def main():
         "por tiempo de corrida). "
         "Maestro de registro = ground truth (exp4 usa el scoring de fase "
         "temprana, ~97.5% correcto; aquí el objeto de estudio es el "
-        "directorio, no la selección del ganador).",
+        "directorio, no la selección del ganador). El texto se evalúa sobre "
+        "las mismas 80 queries cuyos tokens se registraron: mide memorización "
+        "de tokens etiquetados con la verdad, no generalización. La imagen sí "
+        "se evalúa en test.",
         "- Lectura: B1 (÷count) + argmax; texto xi=0, imagen xi=2 (como "
         "stage7). k cuenta registros individuales (un token o una imagen).",
         "",
@@ -634,19 +663,27 @@ def main():
         "la proyección de la otra. Empíricamente: los scores de texto de A y "
         "C son idénticos y la modalidad no registrada se rechaza al 100%.",
         "",
-        "El ÚNICO canal de acople es el denominador de B1: los counts por "
-        "agente son compartidos entre modalidades. Medido sobre A:",
+        "El ÚNICO canal de acople es el denominador de B1 cuando se toma de "
+        "`_counts`, un arreglo de Python que cuenta registros de cualquier "
+        "modalidad. El conteo de texto leído de la relación no cambia con los "
+        "registros de imagen. Medido sobre A:",
         "",
-        "| estado del directorio | acc texto |",
-        "|---|---|",
+        "| estado del directorio | acc texto, B1 con `_counts` | "
+        "acc texto, B1 con el conteo de la relación |",
+        "|---|---|---|",
         f"| solo texto ({len(text_stream32)} registros) | "
-        f"{coupling['text_only'][0]:.1%} |",
+        f"{coupling['text_only'][0]:.1%} | "
+        f"{coupling['text_only_rel'][0]:.1%} |",
         f"| + {len(img_stream)} imgs balanceadas | "
-        f"{coupling['plus_balanced_imgs'][0]:.1%} |",
+        f"{coupling['plus_balanced_imgs'][0]:.1%} | "
+        f"{coupling['plus_balanced_imgs_rel'][0]:.1%} |",
         f"| + {N_EXTRA_UNBAL} re-registros de imgs de apple | "
-        f"{coupling['plus_unbalanced_apple'][0]:.1%} |",
+        f"{coupling['plus_unbalanced_apple'][0]:.1%} | "
+        f"{coupling['plus_unbalanced_apple_rel'][0]:.1%} |",
         "",
-        f"Counts finales tras el desbalance: {coupling['counts_final']}.",
+        f"Counts finales tras el desbalance: `_counts` "
+        f"{coupling['counts_final']}; conteo de texto de la relación "
+        f"{[round(c, 1) for c in coupling['text_counts_final_rel']]}.",
         "",
         "## Hallazgos",
         f"1. Por modalidad, el unificado replica a los dos directorios: la "
@@ -668,17 +705,22 @@ def main():
         "unificación: el llenado emparejado solo aporta tantas imágenes "
         "distintas como tokens (21-37 por clase) contra las 128 de B; "
         "consistente con la curva de capacidad de exp6.",
-        f"4. Compartir el espacio sí cobra un costo real vía B1: sumar "
-        "registros de imagen al directorio de texto baja su ruteo de "
+        f"4. El costo vía B1 es de la normalización, no de compartir el "
+        "espacio: con el denominador tomado de `_counts`, sumar registros de "
+        "imagen baja el ruteo de texto de "
         f"{coupling['text_only'][0]:.1%} a "
         f"{coupling['plus_balanced_imgs'][0]:.1%} (balanceado) y "
         f"{coupling['plus_unbalanced_apple'][0]:.1%} (desbalanceado) sin "
-        "tocar la relación: solo cambió el denominador compartido.",
+        "tocar la relación. Con el conteo de texto leído de la relación queda "
+        f"en {coupling['text_only_rel'][0]:.1%}, "
+        f"{coupling['plus_balanced_imgs_rel'][0]:.1%} y "
+        f"{coupling['plus_unbalanced_apple_rel'][0]:.1%}.",
         "",
         "En suma: bajo esta proyección el directorio unificado no puede "
         "transferir nada entre modalidades y sí paga el veto conjuntivo en "
-        "queries plenas y el denominador compartido. Los dos directorios "
-        "separados son la arquitectura correcta.",
+        "queries plenas. El costo del denominador compartido aparece solo si "
+        "B1 cuenta registros de cualquier modalidad. Por el veto, los dos "
+        "directorios separados siguen siendo preferibles.",
         "",
         "## Archivos",
         "- `results_formation.csv` — series de formación (k, acc, rechazo, "
