@@ -20,7 +20,7 @@ Grid iota × kappa sobre el routing de fase temprana (banco de 80 queries del
 ablation, ground truth conocido):
   score(agente) = activación media de project(v_q, pesos_L, dim=0)
                   gateada por:  (a) containment-iota: ninguna fila vacía
-                                (b) kappa-gate: act_media ≥ kappa·mem.mean
+                                (b) kappa-gate: act_media por celda ≥ kappa·mem.mean
 Brazos por condición: GATED (solo defensas nativas) y GATED+NORM (÷mem.mean
 encima, para medir complementariedad).
 
@@ -94,8 +94,9 @@ def agent_score(mem_L, mem_H, v_q, kappa, normalize=False):
     - containment unilateral: si la proyección tiene alguna fila vacía,
       el cue no está contenido → score 0 (mismo criterio que recall()).
     - kappa-gate: adaptación unilateral del criterio original
-      `recognized and (kappa·mean <= peso)` (hetero_associative_4d.py:240);
-      con un solo cue usamos la activación media vs kappa·mem.mean.
+      `recognized and (kappa·mean <= peso)` (hetero_associative_4d.py:240),
+      que compara valores por celda; con un solo cue usamos la activación
+      media por celda vs kappa·mem.mean.
 
     normalize=True añade ÷mem.mean encima (brazo GATED+NORM).
     """
@@ -118,8 +119,12 @@ def agent_score(mem_L, mem_H, v_q, kappa, normalize=False):
         return 0.0
     mean_act = total / count
 
-    # (b) kappa-gate relativo a la media de la propia memoria
-    if mem_mean > 0 and mean_act < kappa * mem_mean:
+    # (b) kappa-gate relativo a la media de la propia memoria. Cada celda de
+    # la proyección suma sobre las coordenadas de la pista (pesos que suman
+    # cue.size); mem.mean es por celda, así que se compara por celda.
+    defined = np.array([not mem_H.is_undefined(k, 0) for k in ca])
+    w_used = ca.size * weights[defined].sum() / weights.sum()
+    if mem_mean > 0 and mean_act / w_used < kappa * mem_mean:
         return 0.0
 
     if normalize and mem_mean > 0:

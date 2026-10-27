@@ -1,5 +1,7 @@
 # Experimento 2 — iota y kappa como defensas contra el sesgo de densidad
 
+> **Nota (26 oct 2026): estas cifras son de antes de corregir la escala de κ y no prueban κ.** La compuerta comparaba una celda de la proyección, que suma sobre las 300 coordenadas de la pista, contra κ·mem.mean, que es por celda (razón ≈ 364–388). No se disparó con ningún κ ≤ 1.5: el grid es idéntico en las cuatro columnas de κ, y «mejor nativa κ=0.0» es un empate. El script ya compara por celda; falta volver a correrlo.
+
 ## Hipótesis
 Las defensas nativas del framework (ι: poda de la relación; κ: umbral
 relativo a la media de cada memoria) eliminan el sesgo de masa que en el
