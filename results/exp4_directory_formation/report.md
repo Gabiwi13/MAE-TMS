@@ -5,6 +5,8 @@
 punto sea confiable (el TME pueda apagarse)? ¿Importa el orden de las
 experiencias? ¿El sesgo de densidad impide la convergencia?
 
+**Dentro de muestra:** tras cada interacción, la accuracy madura se mide sobre las 80 queries del banco, incluidas las que ya registraron sus tokens. La curva mide cuánto del banco cubren los tokens registrados, no la generalización a consultas nuevas.
+
 ## Transiciones (accuracy madura ≥ 90%)
 
 | condición | primer k | k sostenido | acc final | entropía final | counts |

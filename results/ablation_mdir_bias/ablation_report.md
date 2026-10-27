@@ -8,6 +8,10 @@
 > polisemia de Apple Inc.); la cuantización actual es por MAGNITUD y el
 > análisis vigente vive en el paper (.tex) y en generate_paper_figures.py.
 
+> **Dentro de muestra:** en cada condición la fase madura se evalúa sobre las
+> mismas queries cuyos tokens llenaron M_dir en la fase temprana. Mide si el
+> directorio reproduce lo que registró, no si generaliza a consultas nuevas.
+
 ---
 
 ## Resumen ejecutivo

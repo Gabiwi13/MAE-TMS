@@ -379,6 +379,10 @@ def main():
         "directorio por agente), token → ganador. mem_dir_R NO se actualiza "
         "con recalls (solo percepciones reales de imágenes en stage7)",
         "- Fase madura: TME apagado, entrada aleatoria (seed 42), M_dir con B1",
+        "- **Dentro de muestra:** la fase madura se evalúa sobre las mismas 80 "
+        "queries cuyos tokens llenaron el directorio en la fase temprana. Mide "
+        "si el directorio reproduce lo que registró, no si generaliza a "
+        "consultas nuevas.",
         "- Vía textual completa con DirectoryMemory (EHAM real); el "
         "directorio visual no participa",
         "- ι=κ=ξ=0, σ=0.1 · M_dom de stage5 sin modificar",

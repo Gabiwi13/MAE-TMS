@@ -10,6 +10,7 @@ experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.
 ## Setup
 - Grid: ι ∈ [0.0, 0.25, 0.5, 1.0] × κ ∈ [0.0, 0.5, 1.0, 1.5] (mutación en-memoria, setters originales)
 - Banco: primeras 80 queries del banco de 8 clases con ground truth (10 por clase)
+- **Dentro de muestra:** el downstream llena M_dir con los tokens de esas 80 queries y evalúa la fase madura sobre las mismas. Mide si el directorio reproduce lo que registró, no si generaliza.
 - Score: activación media de project() con pesos de M_dom_L,
   gateada por containment-ι y por κ·mem.mean (adaptación unilateral
   del criterio original de recognize()).
