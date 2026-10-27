@@ -13,6 +13,7 @@ Uso:
 """
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -30,7 +31,8 @@ import run_piloto_modulos as pm  # noqa: E402
 
 OUT = ROOT / "results" / "replica_ablaciones"
 CACHE = OUT / "cache"            # fuera de git
-MED = Path("C:/Users/aq99l/Projects/MAE-TMS-medico")
+# La copia del demo médico de la que se leen filas y pozos (MAE_MEDICO la cambia).
+MED = Path(os.environ.get("MAE_MEDICO", "C:/Users/aq99l/Projects/MAE-TMS-medico"))
 MED_POOL = MED / "results/medico_balanceado/cache"
 MODALITIES = ("rx_torax", "tc_abdomen", "dermatoscopia", "us_mama")
 MED_MODULES = ("cabeza", "knn", "memoria")
