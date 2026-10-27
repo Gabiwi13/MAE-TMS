@@ -223,7 +223,9 @@ def probe_recall(mem_H, cls: str, encoder, n_probes: int = 5):
         if word not in raw_vecs:
             continue
         v_q = quantize_binary(np.array(raw_vecs[word], dtype=np.float32), M)
-        recalled_q, recognized, weight, *_ = mem_H.recall_from_left(v_q)
+        # Pesos de la homo de labels, como en el recall del agente.
+        recalled_q, recognized, weight, *_ = mem_H.recall_from_left(
+            v_q, weights=mem_L.recog_weights(v_q))
         if recognized:
             v_norm = recalled_q.astype(float) / (Q - 1)
             v_latent = (v_norm * (g_max - g_min) + g_min).astype(np.float32)
