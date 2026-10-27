@@ -65,7 +65,7 @@ def accumulate(fleet, z, entry, zval):
             continue
         scale = (64 - len(gaps)) * 16
         den = e1.tol_proj(fleet.d_int[m], v, gaps) / scale
-        num = e1.tol_proj(fleet.d_exi[m], v, gaps) / scale
+        num = e1.tol_proj(fleet.d_exi[m], v, gaps, weights_from=fleet.d_int[m]) / scale
         den[~fleet.active] = 0
         num[~fleet.active] = 0
         N += den

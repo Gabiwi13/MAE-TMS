@@ -86,7 +86,7 @@ def evidence(fleet, z, entry):
             continue
         scale = (64 - len(gaps)) * 16
         N = e1.tol_proj(fleet.d_int[m], v, gaps) / scale
-        S = e1.tol_proj(fleet.d_exi[m], v, gaps) / scale
+        S = e1.tol_proj(fleet.d_exi[m], v, gaps, weights_from=fleet.d_int[m]) / scale
         if (N[fleet.active] > 0).any():
             return S, N, read
     return np.zeros(fleet.n), np.zeros(fleet.n), read

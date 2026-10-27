@@ -141,7 +141,8 @@ class Fleet:
                     if reading == "r1":
                         num += self.d_int[m].predict_tolerant(v, xi=0, mode="linear")
                     elif not self.d_int[m].support_gaps(v):
-                        num += self.d_exi[m].predict(v)
+                        # Éxitos con los pesos de intentos: el cociente es una tasa.
+                        num += self.d_exi[m].predict(v, weights_from=self.d_int[m])
                         den += self.d_int[m].predict(v)
             num[~self.active] = 0
             score = num if reading == "r1" else np.where(den > 0, num / np.maximum(den, 1e-12), 0)

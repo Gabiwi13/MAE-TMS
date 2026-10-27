@@ -155,7 +155,7 @@ def run_seed(F, flota, seed):
             gaps = fleet.d_int[entry].support_gaps(v)
         if len(gaps) <= XI:
             den = e1.tol_proj(fleet.d_int[entry], v, gaps)
-            num = e1.tol_proj(fleet.d_exi[entry], v, gaps)
+            num = e1.tol_proj(fleet.d_exi[entry], v, gaps, weights_from=fleet.d_int[entry])
             okk = (den > 0) & fleet.active
             if okk.any():
                 return int(np.argmax(np.where(okk, num / np.maximum(den, 1e-12), -1))), 1, False

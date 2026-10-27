@@ -185,10 +185,14 @@ class DirectoryMemory:
         """Pesos homo de una pista ya validada (ver relation_weights)."""
         return relation_weights(self._ham, v, dim)
 
-    def predict(self, v_q: np.ndarray) -> np.ndarray:
-        """Score crudo por agente: probabilidad proyectada del bit 'conoce'."""
+    def predict(self, v_q: np.ndarray, weights_from=None) -> np.ndarray:
+        """Score crudo por agente: probabilidad proyectada del bit 'conoce'.
+        weights_from toma los pesos de otro directorio, para que un cociente
+        entre dos directorios (éxitos / intentos) pondere igual arriba y
+        abajo."""
         v = self._ham.validate(np.asarray(v_q, dtype=float), 0).astype(int)
-        proj = self._ham.project(v, self.weights(v, 0), dim=0)
+        w = (weights_from or self).weights(v, 0)
+        proj = self._ham.project(v, w, dim=0)
         return proj[:, 1].copy()
 
     def _calibrated(self, scores: np.ndarray, mode: str,

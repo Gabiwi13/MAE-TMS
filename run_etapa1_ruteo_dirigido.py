@@ -27,15 +27,17 @@ OUT = ROOT / "results" / "etapa1_ruteo_dirigido"
 XIS = (0, 1, 2, 3)
 
 
-def tol_proj(d, v, gaps):
-    """Proyección del bit «conoce» con las coordenadas sin soporte marcadas como indefinidas."""
+def tol_proj(d, v, gaps, weights_from=None):
+    """Proyección del bit «conoce» con las coordenadas sin soporte marcadas como
+    indefinidas. weights_from: directorio del que salen los pesos (el de intentos,
+    para que éxitos / intentos sea una tasa)."""
     if not gaps:
-        return d.predict(v)
+        return d.predict(v, weights_from=weights_from)
     ham = d._ham
     vv = ham.validate(np.asarray(v, dtype=float), 0).astype(int)
     vv[gaps] = ham.undefined(0)
     with contextlib.redirect_stdout(io.StringIO()):
-        proj = ham.project(vv, d.weights(vv, 0), dim=0)
+        proj = ham.project(vv, (weights_from or d).weights(vv, 0), dim=0)
     return proj[:, 1].copy()
 
 
@@ -50,7 +52,7 @@ def directed(fleet, z, entry, xi):
         if len(gaps) > xi:
             continue
         den = tol_proj(fleet.d_int[m], v, gaps)
-        num = tol_proj(fleet.d_exi[m], v, gaps)
+        num = tol_proj(fleet.d_exi[m], v, gaps, weights_from=fleet.d_int[m])
         ok = (den > 0) & fleet.active
         if ok.any():
             score = np.where(ok, num / np.maximum(den, 1e-12), -1)
