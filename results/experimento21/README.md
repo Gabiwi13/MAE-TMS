@@ -16,12 +16,13 @@ Script `run_experiment21_monolitica.py`, 75 min (5 niveles en paralelo; lo que t
 | mama (2) | 76.9 / 3.2 / 63.2 | 78.8 / 3.2 / 66.7 | **88.5 / 1.9 / 82.3** |
 | **tórax (14)** | **14.1** / 0.6 / **13.1** | **24.8** / 0.6 / **24.4** | 22.4 / 1.1 / 23.0 |
 
-Predicción fijada antes de correr: *M confunde más entre dominios cuyos términos comparten palabras*. **No se cumple:** fémur izquierdo → derecho, 11 en M y 11 en especialistas. Donde M sí falla es en tórax, y de otra forma: casi todo cae en «pleural thickening» (nódulo 240, masa 227, sin hallazgo 218, neumotórax 215). Una etiqueta actúa como atractor de la mezcla.
+Predicción fijada antes de correr: *M confunde más entre dominios cuyos términos comparten palabras*. **No se cumple:** fémur izquierdo → derecho, 11 en M y 11 en especialistas. Donde M sí falla es en tórax, y de otra forma: casi todo cae en «pleural thickening» (nódulo 240, masa 227, sin hallazgo 218, neumotórax 215). Una etiqueta se lleva el soporte de la mezcla.
 
 ## Lectura
 
 - **Con dominios visualmente separables, una memoria única con etiquetas distribuidas iguala a la partición** (diferencias ≤ 0.6 puntos en modalidad, órganos y piel). Es lo mismo que exp11 en ETH-80: en clase, empatan.
-- **Con 14 dominios muy superpuestos (radiografía de tórax), la partición casi duplica a la memoria única** (24.4 contra 13.1 balanceado; azar 7.1). La memoria única mezcla al recordar y converge a un atractor. Es exp12 a escala: la ventaja de partir crece con el solapamiento de las pistas.
+- **Con 14 dominios muy superpuestos (radiografía de tórax), la partición casi duplica a la memoria única** (24.4 contra 13.1 balanceado; azar 7.1). En la memoria única, una etiqueta («pleural thickening») se lleva el soporte de casi todo. Es exp12 a escala: la ventaja de partir crece con el solapamiento de las pistas.
 - **«Varias guardan más que una» se sostiene donde importa: cuando los contenidos se pisan.** No se sostiene como regla general de exactitud. Lo que la partición compra es no mezclar.
 - **Los directorios** no suman exactitud sobre los especialistas en modalidad y órganos (rechazan más y aciertan un poco más de lo que responden). Sí suman en mama (88.5 contra 78.8): la fase A registra a quién ganó cada percepción, y eso corrige el sesgo de reconocimiento hacia benigno.
 - M y los especialistas rechazan exactamente la misma fracción en todos los niveles.
+- **Ninguno de los dos brazos recuerda** (nota del 26 oct 2026). M decide con `support_ranking`: normaliza la proyección por fila y elige, entre la lista cerrada de etiquetas de los dominios, la de mayor probabilidad media. Los especialistas eligen al de mayor reconocimiento entre los dominios. Las dos son lecturas de conjunto cerrado y en ningún caso se ejecuta `recall_from_right`. Por eso las cifras hablan de cuánto separa cada memoria los dominios, no de qué palabra devolvería un recuerdo (exp17 muestra que el recuerdo es menos estable que el soporte).

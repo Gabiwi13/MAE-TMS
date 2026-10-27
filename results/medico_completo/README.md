@@ -52,3 +52,5 @@ Cobertura de celdas (coordenada, nivel) con soporte: sin-hallazgo pasa de 66 % (
 ## Archivos
 
 - `resumen.txt`, `filas.json`; `run.log` y `cache/` fuera de git
+
+**Umbral de energía (nota del 26 oct 2026).** El umbral de norma del latente rechaza antes de consultar la memoria. En la corrida completa, de los 444 rechazos 12 son del umbral (11 en tc_abdomen y 1 en dermatoscopia) y 432 de la memoria; en el fondo de ojo, ninguno. Contado desde `filas.json` (campo `motivo`).

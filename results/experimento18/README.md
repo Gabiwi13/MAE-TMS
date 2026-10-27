@@ -11,6 +11,8 @@ Diseño: una memoria hetero por eje y clase. Etiquetas a mano por objeto (`carac
 
 El color se midió en exp17 con el mismo procedimiento. Las palabras de cada eje se separan bien en fastText (coseno 0.39–0.65, contra 0.93 de white–black). Se usan los latentes de exp16, 200 vistas × 16 variantes por memoria, y la evaluación es en el agente de la clase verdadera. Pliegue 0: 41 vistas nuevas de objetos conocidos. Leave-object-out **completo**: un pliegue por objeto claro, 52 pliegues. Lecturas: soporte y soporte normalizado por la marginal (exp17), reportadas las dos.
 
+**Cómo responde la memoria** (nota del 26 oct 2026): las columnas «soporte» y «normalizado» no ejecutan un recuerdo (`recall_from_right`). Son lecturas de conjunto cerrado: entre las palabras del eje, la de mayor probabilidad media en la proyección (`support_ranking` de exp17), sin o con división por la marginal de cada etiqueta. Responden cuál de las palabras registradas tiene más soporte, no qué palabra devuelve un recuerdo.
+
 ## Objetos conocidos (vistas nuevas)
 
 | eje | soporte (bal.) | normalizado (bal.) | base |

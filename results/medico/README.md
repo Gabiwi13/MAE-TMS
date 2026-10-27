@@ -46,3 +46,5 @@ Balanceado (memoria / kNN / cabeza): órganos 87.7 / 95.0 / 95.0; dermatoscopia 
 - `run_medico_demo.py` (en la raíz de la copia; `DEMO_SMOKE=1` para la prueba corta)
 - `resumen.txt`, `filas.json`, `run.log` (fuera de git el `.log`)
 - `cache/`: encoders y latentes, fuera de git
+
+**Umbral de energía (nota del 26 oct 2026).** El umbral de norma del latente rechaza antes de consultar la memoria. Aquí casi no actúa: de los 663 rechazos, 8 son del umbral (7 en tc_abdomen y 1 en dermatoscopia, en el nivel 2) y 655 de la memoria; en el fondo de ojo, ninguno. Contado desde `filas.json` (campo `motivo`).
