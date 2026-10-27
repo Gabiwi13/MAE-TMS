@@ -203,7 +203,7 @@ def fill_agent(cls: str, encoder, g_min: np.ndarray, g_max: np.ndarray,
     return mem_H, mem_L, mem_R
 
 
-def probe_recall(mem_H, cls: str, encoder, n_probes: int = 5):
+def probe_recall(mem_H, mem_L, cls: str, encoder, n_probes: int = 5):
     """Recall de prueba con los primeros labels de la clase."""
     from stage2_encoder import load_models
     _, decoder, _ = load_models()
@@ -366,7 +366,7 @@ def run():
             save_agent_memories(mem_H, mem_L, mem_R, cls)
 
         agents_H[cls] = mem_H
-        results = probe_recall(mem_H, cls, encoder)
+        results = probe_recall(mem_H, mem_L, cls, encoder)
         for word, ok, wt, _ in results:
             print(f"    '{word}': recognized={ok}, weight={wt:.2f}")
         visualize_probes(results, cls)
