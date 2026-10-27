@@ -62,3 +62,5 @@ Así que en VisA la abstención **no hace falta para la seguridad**: un detector
 - El umbral de kNN con abstención se fijó con las normales de calibración (fase A), como se declaró. La MAE las tiene registradas en los directorios, así que su aceptación ahí (99.0 %) es mayor que en test (98.4 %).
 - El tamaño de la MAE cuenta las celdas de todos sus arreglos de conteo (incluido el margen para valores indefinidos); el de kNN, solo los latentes del llenado.
 - Una sola semilla. Cada punto porcentual por pieza son 1 o 2 imágenes.
+
+- **Umbral de energía (nota del 26 oct 2026).** La MAE rutea con `run_medico_demo.Level.route`, que rechaza antes de consultar la memoria si la norma del latente queda bajo el umbral. El script guarda el destino pero no el motivo, así que no se sabe qué parte de la abstención de la MAE es del umbral y no de la memoria. Falta medirlo.

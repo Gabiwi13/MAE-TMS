@@ -94,3 +94,6 @@ La PCA común le cuesta poco a la partición: S detecta 39.3 / 11.2 contra 45.6 
 - Los detectores de parches usan el espacio común (PCA común), así que no son exactamente los del demo. PatchCore por pieza queda casi igual (AUROC 0.875 contra 0.864 en el demo).
 - Una sola semilla (42) y un solo corte. El test tiene de 150 a 201 imágenes por pieza, así que cada punto porcentual por pieza son 1 o 2 imágenes.
 - Las cachés del demo se leyeron del worktree `industrial-demo-4132e4` sin escribir en él. Las cachés propias (PCA de parches común y parches proyectados, 1.5 GB) están en `results/industrial_monolitica/cache/`, fuera de git. Se regeneran en unos 4 minutos con GPU.
+
+- **Umbral de energía (nota del 26 oct 2026).** El umbral de norma del latente se aplica antes de las memorias, pero aquí no actúa: las 4322 consultas lo pasan (campo `energia` de `resultados.json`).
+- **M no recuerda** (nota del 26 oct 2026). M rutea con `support_ranking` (de exp17): entre las 12 etiquetas de pieza, elige la de mayor probabilidad media en la proyección. Es una lectura de conjunto cerrado; no se ejecuta `recall_from_right`. Los especialistas también eligen entre las 12 piezas, así que la comparación es entre dos lecturas cerradas.

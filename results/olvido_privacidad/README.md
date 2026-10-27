@@ -61,3 +61,5 @@ Fuera de alcance, como se declaró: quien vea la memoria antes y después de un 
 - Para que la reconstrucción sea un contrafactual limpio, la cuantización y el umbral de energía se mantienen fijos (son parte de la percepción), y cada transacción conserva su entrada. Las percepciones que solo se registran en la reconstrucción sortean su entrada con otra semilla.
 - Los latentes médicos se leyeron de `MAE-TMS-medico/results/medico_balanceado/cache`, sin escribir en esa carpeta.
 - Una sola semilla.
+
+- **Umbral de energía (nota del 26 oct 2026).** Las transacciones bajo el umbral de norma no se registran. `resultados.json` no guarda cuántas fueron, así que ese conteo falta.
