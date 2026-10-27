@@ -107,6 +107,7 @@ class Arm:
         return [int(j) for j in np.argsort(-c) if c[j] > 0 and j != a]
 
     def route(self, z, entry):
+        # Un agente ausente no se lee ni reenvía, pero puede ser la respuesta.
         summed, visited, queue = set(), set(), [entry]
         acc = self.empty()
         while queue:
@@ -115,13 +116,13 @@ class Arm:
                 continue
             visited.add(a)
             for n in [a] + self.known_by(a):
-                if n not in summed:
+                if n not in summed and n in self.alive:
                     summed.add(n)
                     acc = self.combine(acc, n, z)
             d = self.decide(acc)
             if d is not None:
                 return d
-            queue = [n for n in self.known_by(a) if n not in visited] + queue
+            queue = [n for n in self.known_by(a) if n not in visited and n in self.alive] + queue
         return None
 
 
@@ -341,12 +342,16 @@ def member_loss(world, wit, arms):
     for an, arm in arms.items():
         loc = rej = other = 0
         for k, n in enumerate(world.names):
-            for z in world.test[n][:60]:
-                entry = (k + 1) % world.K
-                d = arm.route(z, entry)
-                loc += d == k
-                rej += d is None
-                other += d is not None and d != k
+            arm.alive = set(range(world.K)) - {k}
+            try:
+                for z in world.test[n][:60]:
+                    entry = (k + 1) % world.K
+                    d = arm.route(z, entry)
+                    loc += d == k
+                    rej += d is None
+                    other += d is not None and d != k
+            finally:
+                arm.alive = set(range(world.K))
         tot = loc + rej + other
         out[an] = {"ubica_en_el_ausente": loc / tot, "rechaza": rej / tot, "manda_a_otro": other / tot}
     return out

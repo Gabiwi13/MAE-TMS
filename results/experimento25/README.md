@@ -20,6 +20,8 @@ Comunicación durante la formación, órganos f = 0: MAE 11.6 MB de pistas cuant
 
 ## Pérdida, ingreso y lo ajeno (visibilidad f = 0)
 
+> **Nota (26 oct 2026): la fila de pérdida no mide la pérdida de un miembro, y P4 queda sin probar.** El script marcaba al especialista como ausente pero nunca lo leía, así que su propia memoria seguía respondiendo. El script ya no lee al ausente ni reenvía por él; falta volver a correrlo.
+
 | prueba | MAE B1 | prototipos | kNN |
 |---|---|---|---|
 | pérdida del especialista k: ubica sus consultas en k (órganos / modalidad) | 93 / 93 % | 97 / 98 % | 96 / 100 % |
@@ -34,14 +36,14 @@ Comunicación durante la formación, órganos f = 0: MAE 11.6 MB de pistas cuant
 - **P1 (los directorios por distancia rutean igual o mejor): se cumple.** Con las mismas transacciones los prototipos transactivos rutean 3.3 puntos más en órganos y 5.4 más en modalidad, sin rechazo.
 - **P2 (FedProto, mejor acierto con poquísima comunicación, pero con una ronda explícita): se cumple, y el gossip de prototipos logra lo mismo sin ningún centro** (96.6 %, 0.4 MB, solo con mensajes entre vecinos de un anillo).
 - **P3 (con visibilidad mínima el encadenado mantiene el alcance; la diferencia es de comparación): se cumple.** Ningún brazo cambia más de 1.6 puntos entre f = 0 y f = 1.
-- **P4 (MAE y prototipos conservan la ubicación al perder un miembro): se cumple para todos los brazos descentralizados** (93–100 %). Los prototipos y el kNN la conservan algo mejor que la MAE.
+- **P4 (MAE y prototipos conservan la ubicación al perder un miembro): sin probar** (ver la nota de arriba). La corrida anterior daba 93–100 % con el ausente todavía respondiendo.
 - **P5 (la MAE rechaza más lo ajeno a igual aceptación de lo propio): se cumple solo en el nivel de modalidad** (24 % contra 0–1 %). En órganos empatan, porque todos rechazan casi todo el fondo de ojo. Y ese 24 % sigue por debajo de los detectores centrales de exp20 (Mahalanobis 49 %, MSP 100 %).
 
 ## Veredicto según el criterio fijado
 
 El criterio pedía que la MAE ganara claramente, en al menos una de las propiedades 2 a 5, al mejor rival descentralizado a igual información:
 - **Comunicación:** pierde contra el gossip de prototipos.
-- **Pérdida de un miembro:** empata o pierde.
+- **Pérdida de un miembro:** sin probar (ver la nota de la tabla).
 - **Ingreso de un miembro:** pierde claramente; necesita 30–100 transacciones donde a los prototipos les bastan 8.
 - **Lo ajeno:** gana solo en modalidad y solo contra puntajes de similitud simples.
 
