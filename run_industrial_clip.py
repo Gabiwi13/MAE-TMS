@@ -31,7 +31,6 @@ import run_industrial_demo as ind  # noqa: E402
 import run_medico_demo as demo  # noqa: E402
 import stage6_interaction as s6  # noqa: E402
 from associative_memory import HomoAssociativeMemory  # noqa: E402
-import associative_memory  # noqa: E402
 from stage5_fill import augment_variants  # noqa: E402
 
 OUT = ROOT / "results" / "industrial_clip"
@@ -272,8 +271,6 @@ def part_N(F):
 
 
 def main():
-    # Resultados de CIFIN 2026: se conservan con pesos uniformes.
-    associative_memory.use_uniform_weights()
     ap = argparse.ArgumentParser()
     ap.add_argument("--clip", default="C:/Users/aq99l/Datasets/CLIP_ViT-B-16_openai/open_clip_model.safetensors")
     ap.add_argument("--report-only", action="store_true")

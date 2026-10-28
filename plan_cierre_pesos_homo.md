@@ -127,3 +127,19 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
 ## Nota aparte
 
 `realtime_lab/salvaged_voice_camera.py` no se puede importar y nunca se corre; no se tocó.
+
+## Bitácora
+
+- **28 oct.**
+  - **Hecho:**
+    - Fase 0 (d0df16c, af52f80; inventario 2d191f8).
+    - 1.1 κ por cuantiles (abf1735): con ι=0, κ solo rechaza; con ι ≥ 0.25 no actúa.
+    - 1.6 control de missing_cue (aa283f6): el cambio viene de las 16 variantes.
+    - 1.10 textos generados (224f7cd).
+    - Propuesta de prosa de la prioridad 1: `revision_pesos_homo_principal_prosa.md`.
+  - **1.4, curva de exp9:** con el ruteo transactivo, 90 → 368 de 411 a 240 interacciones, contra 393 del pizarrón. La mitad texto completa con 240 interacciones está corriendo.
+  - **Prioridad 2:**
+    - Se quitaron los pesos uniformes de los 5 scripts de CIFIN.
+    - Cola `rerun/ind.json` lista; se lanza cuando termine exp9.
+    - «28 % → 59 %» no aparece en ninguna rama, commit ni resumen: sale del resumen corregido salvo que se encuentre su fuente.
+  - **Corriendo:** control de exp12 con pesos uniformes (~7 h).

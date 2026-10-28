@@ -23,7 +23,6 @@ sys.path.insert(0, str(ROOT / "src"))
 import run_industrial_demo as ind  # noqa: E402
 import run_medico_demo as demo  # noqa: E402
 from associative_memory import HomoAssociativeMemory  # noqa: E402
-import associative_memory  # noqa: E402
 
 OUT = ROOT / "results" / "parametros_mae"
 CACHE = OUT / "cache"            # fuera de git
@@ -228,8 +227,6 @@ def report(res):
 
 
 def main():
-    # Resultados de CIFIN 2026: se conservan con pesos uniformes.
-    associative_memory.use_uniform_weights()
     ap = argparse.ArgumentParser()
     ap.add_argument("--report-only", action="store_true")
     args = ap.parse_args()
