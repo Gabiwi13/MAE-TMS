@@ -53,8 +53,10 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from quantizer import quantize_binary
 from stage5_fill import N_FILL, quantize_latent_global
+from associative_memory import DirectoryMemory
 from stage6_interaction import (
-    CLASSES, AGENT_LIST, MODELS_DIR, DEVICE, M_LABEL, P_LATENT, Q_LATENT,
+    CLASSES, AGENT_LIST, MODELS_DIR, DEVICE, M_LABEL, P_LATENT, Q_LATENT, N,
+    TME, register_transaction, route_transactive,
     get_nlp, tokenize_query, get_fasttext_vector, prevectorize,
     load_all_vectors,
 )
@@ -70,6 +72,7 @@ REPS = 3                 # repeticiones por consulta (el recall muestrea)
 REPS_IMG = 1             # la evocacion de etiquetas tarda ~20 s por llamada
 N_IMG_TEST = 10          # imágenes de test por clase (las del caché de exp7)
 POLICIES = ("vivido", "sustitucion", "descripcion")
+N_FORM_PER_CLASS = 30    # consultas de formación por clase, las mismas de exp10
 
 DOMAIN_COLOR = {"apple": "#e74c3c", "horse": "#2980b9", "car": "#27ae60",
                 "cow": "#8e44ad", "cup": "#c9760a", "dog": "#16a085",
@@ -140,6 +143,70 @@ def load_bank(nlp, vectors, per_class=None):
         bank.append({"query": q, "truth": t, "tidx": AGENT_LIST.index(t),
                      "cues": vqs})
     return bank
+
+
+def form_text_directories(agents, bank, n, seed=SEED):
+    """Rehace los directorios de texto con n consultas de formación (las
+    primeras N_FORM_PER_CLASS con pistas de cada clase, como exp10), registradas
+    con el protocolo oficial: el agente de entrada, al azar, y el ganador. El
+    ganador es la verdad, como en exp10: se estudia el directorio, no la
+    selección. Devuelve las consultas usadas y el TME, que las vio todas."""
+    seen = {c: 0 for c in CLASSES}
+    form = []
+    for it in bank:
+        if it["cues"] and seen[it["truth"]] < N_FORM_PER_CLASS:
+            form.append(it)
+            seen[it["truth"]] += 1
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(len(form))[:n]
+    tme = TME()
+    for agent in agents.values():
+        agent.mem_dir = DirectoryMemory(N, M_LABEL, K)
+    used = set()
+    for j in order:
+        it = form[j]
+        entry = AGENT_LIST[int(rng.integers(K))]
+        for _, v in it["cues"]:
+            register_transaction(entry, it["tidx"], agents, tme, v, "text")
+        used.add(it["query"])
+    return used, tme
+
+
+def transactive_without(agents, k, cues):
+    """Ruteo oficial (route_transactive: agregado y encadenado) con el
+    miembro k fuera: su directorio queda vacío, así que consultarlo no aporta."""
+    from types import SimpleNamespace
+    group = dict(agents)
+    group[CLASSES[k]] = SimpleNamespace(name=CLASSES[k], mem_dir=DirectoryMemory(N, M_LABEL, K))
+    entry = CLASSES[(k + 1) % K]
+    widx, _, _, _ = route_transactive(entry, group, cues, modality="text")
+    return widx
+
+
+def text_routing_counts(agents, bank, used, board=None, transactive=False):
+    """Las consultas de cada dominio perdido entran por el sobreviviente, como
+    en run_text. Cuenta [al perdido, a otro, rechazadas] sobre todas y sobre
+    las que no se usaron para formar. Con board, se lee el pizarrón (el
+    directorio del TME) en vez del directorio del sobreviviente: el techo.
+    Con transactive, rutea el protocolo oficial sin el miembro perdido."""
+    out = {"todas": [0, 0, 0], "reservadas": [0, 0, 0]}
+    for k, lost in enumerate(CLASSES):
+        survivor = agents[CLASSES[(k + 1) % K]]
+        for it in bank:
+            if it["tidx"] != k or not it["cues"]:
+                continue
+            cues = [v for _, v in it["cues"]]
+            with contextlib.redirect_stdout(io.StringIO()):
+                if transactive:
+                    dest = transactive_without(agents, k, cues)
+                else:
+                    d = board.mem_dir_L if board is not None else survivor.mem_dir
+                    dest, _ = d.route_multi(cues, mode="linear")
+            j = 2 if dest < 0 else (0 if dest == k else 1)
+            out["todas"][j] += 1
+            if it["query"] not in used:
+                out["reservadas"][j] += 1
+    return out
 
 
 def load_test_latents(g_min, g_max, per_class=N_IMG_TEST):
@@ -570,7 +637,13 @@ def main():
     ap.add_argument("--image", action="store_true", help="hemisferio imagen -> texto")
     ap.add_argument("--report", action="store_true",
                     help="resumen y figuras a partir de los CSV ya escritos")
+    ap.add_argument("--formacion", default=None,
+                    help="interacciones de texto separadas por coma (p. ej. 16,60,120,240): "
+                         "rehace los directorios de texto y mide el ruteo al miembro perdido")
+    ap.add_argument("--solo-ruteo", action="store_true",
+                    help="con --formacion, solo la curva de ruteo, sin las respuestas")
     args = ap.parse_args()
+    global OUT_DIR
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     np.random.seed(SEED)
     random.seed(SEED)
@@ -599,6 +672,37 @@ def main():
         all_vecs.update(vectors[c])
     vocab_by_cls = {c: set(vectors[c]) for c in CLASSES}
     tag = "_quick" if args.quick else ""
+
+    if args.formacion:
+        sizes = [int(x) for x in args.formacion.split(",")]
+        bank = load_bank(nlp, vectors, per_class=5 if args.quick else None)
+        base = OUT_DIR / "formacion_texto"
+        base.mkdir(parents=True, exist_ok=True)
+        curve = {"0 (directorios oficiales)": text_routing_counts(agents, bank, set()),
+                 "0 transactivo": text_routing_counts(agents, bank, set(), transactive=True)}
+        for n in sizes:
+            used, tme = form_text_directories(agents, bank, n)
+            curve[str(n)] = text_routing_counts(agents, bank, used)
+            curve[f"{n} pizarrón"] = text_routing_counts(agents, bank, used, board=tme)
+            curve[f"{n} transactivo"] = text_routing_counts(agents, bank, used, transactive=True)
+            print(f"  {n:>4} interacciones: {curve[str(n)]} · transactivo {curve[f'{n} transactivo']}"
+                  f" · pizarrón {curve[f'{n} pizarrón']}", flush=True)
+        (base / "curva.json").write_text(json.dumps(
+            {"columnas": ["al_perdido", "a_otro", "rechazadas"], "semilla": SEED,
+             "curva": curve}, indent=2, ensure_ascii=False), encoding="utf-8")
+        if not args.solo_ruteo:
+            n = max(sizes)
+            form_text_directories(agents, bank, n)
+            OUT_DIR = base / f"N{n}"
+            OUT_DIR.mkdir(parents=True, exist_ok=True)
+            rows, samples = run_text(agents, bank, judge, decoder, quick=args.quick)
+            write_csv(rows, OUT_DIR / f"results_text{tag}.csv")
+            figure_answers(samples, judge, decoder)
+            summary = summarize_text(rows)
+            (OUT_DIR / "resumen.json").write_text(
+                json.dumps(summary, indent=2, ensure_ascii=False, default=float), encoding="utf-8")
+            print(json.dumps(summary, indent=2, ensure_ascii=False, default=float))
+        return
 
     if args.text or not args.image:
         bank = load_bank(nlp, vectors, per_class=5 if args.quick else None)

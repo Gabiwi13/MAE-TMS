@@ -1,0 +1,47 @@
+{
+  "vivido": {
+    "responde": 0.992,
+    "clase_clf": 1.0,
+    "clase_nn": 1.0,
+    "d_nn_perdido": 27.55592102773728,
+    "d_nn_cualquiera": 27.55592102773728,
+    "n": 750,
+    "disp_entre_consultas": 41.469019412994385,
+    "disp_dentro_consulta": 40.2233715936019,
+    "dependencia_de_la_pista": 1.0309682597465457,
+    "F_dependencia": 1.0981177502922408,
+    "niveles_vivos_por_coordenada": 10.35905997983871
+  },
+  "sustitucion": {
+    "responde": 0.352,
+    "clase_clf": 0.0,
+    "clase_nn": 0.0,
+    "d_nn_perdido": 48.465654662161164,
+    "d_nn_cualquiera": 26.234767509229254,
+    "n": 750,
+    "disp_entre_consultas": 44.59181181589762,
+    "disp_dentro_consulta": 38.75779897189776,
+    "dependencia_de_la_pista": 1.1505248749607775,
+    "F_dependencia": 2.3758391385599857,
+    "niveles_vivos_por_coordenada": 10.178622159090908
+  },
+  "descripcion": {
+    "responde": 1.0,
+    "clase_clf": 1.0,
+    "clase_nn": 1.0,
+    "d_nn_perdido": 18.825084674835207,
+    "d_nn_cualquiera": 18.825084674835207,
+    "n": 750,
+    "disp_entre_consultas": 27.582123517990112,
+    "disp_dentro_consulta": 27.402378931285718,
+    "dependencia_de_la_pista": 1.0065594519058043,
+    "F_dependencia": 0.9933810869185316,
+    "niveles_vivos_por_coordenada": 9.9875625
+  },
+  "ruteo": {
+    "consultas": 411,
+    "a_perdido": 250,
+    "a_otro": 97,
+    "rechazadas": 64
+  }
+}

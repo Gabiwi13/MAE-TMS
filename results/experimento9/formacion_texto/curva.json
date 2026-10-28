@@ -1,0 +1,178 @@
+{
+  "columnas": [
+    "al_perdido",
+    "a_otro",
+    "rechazadas"
+  ],
+  "semilla": 42,
+  "curva": {
+    "0 (directorios oficiales)": {
+      "todas": [
+        40,
+        37,
+        334
+      ],
+      "reservadas": [
+        40,
+        37,
+        334
+      ]
+    },
+    "0 transactivo": {
+      "todas": [
+        90,
+        39,
+        282
+      ],
+      "reservadas": [
+        90,
+        39,
+        282
+      ]
+    },
+    "16": {
+      "todas": [
+        70,
+        33,
+        308
+      ],
+      "reservadas": [
+        63,
+        32,
+        300
+      ]
+    },
+    "16 pizarrón": {
+      "todas": [
+        202,
+        37,
+        172
+      ],
+      "reservadas": [
+        186,
+        37,
+        172
+      ]
+    },
+    "16 transactivo": {
+      "todas": [
+        100,
+        34,
+        277
+      ],
+      "reservadas": [
+        90,
+        33,
+        272
+      ]
+    },
+    "60": {
+      "todas": [
+        176,
+        59,
+        176
+      ],
+      "reservadas": [
+        145,
+        48,
+        158
+      ]
+    },
+    "60 pizarrón": {
+      "todas": [
+        354,
+        35,
+        22
+      ],
+      "reservadas": [
+        294,
+        35,
+        22
+      ]
+    },
+    "60 transactivo": {
+      "todas": [
+        302,
+        76,
+        33
+      ],
+      "reservadas": [
+        252,
+        67,
+        32
+      ]
+    },
+    "120": {
+      "todas": [
+        185,
+        109,
+        117
+      ],
+      "reservadas": [
+        123,
+        74,
+        94
+      ]
+    },
+    "120 pizarrón": {
+      "todas": [
+        380,
+        26,
+        5
+      ],
+      "reservadas": [
+        262,
+        24,
+        5
+      ]
+    },
+    "120 transactivo": {
+      "todas": [
+        332,
+        74,
+        5
+      ],
+      "reservadas": [
+        233,
+        53,
+        5
+      ]
+    },
+    "240": {
+      "todas": [
+        250,
+        97,
+        64
+      ],
+      "reservadas": [
+        96,
+        43,
+        32
+      ]
+    },
+    "240 pizarrón": {
+      "todas": [
+        393,
+        18,
+        0
+      ],
+      "reservadas": [
+        161,
+        10,
+        0
+      ]
+    },
+    "240 transactivo": {
+      "todas": [
+        368,
+        43,
+        0
+      ],
+      "reservadas": [
+        149,
+        22,
+        0
+      ]
+    }
+  }
+}
