@@ -13,6 +13,7 @@ DirectoryMemory        directorio de Wegner: registra que agente conoce
 
 import io
 import math
+import os
 import contextlib
 from pathlib import Path
 import sys
@@ -30,9 +31,11 @@ from hetero_associative_4d import HeteroAssociativeMemory4D
 
 # Pesos por rasgo de las proyecciones. "homo" es el modelo (proyección
 # AND-ponderada con los pesos de la memoria homo del dominio de la pista).
-# "uniforme" (w'_i = 1) es como se corrieron los resultados industriales de
-# CIFIN 2026; sus scripts lo piden con use_uniform_weights().
-_WEIGHTS = "homo"
+# "uniforme" (w'_i = 1) es el control. Se pide con use_uniform_weights() o con
+# MAE_PESOS=uniforme, que también llega a los procesos hijos.
+_WEIGHTS = os.environ.get("MAE_PESOS", "homo")
+if _WEIGHTS not in ("homo", "uniforme"):
+    raise ValueError(f"MAE_PESOS={_WEIGHTS!r}: usa 'homo' o 'uniforme'")
 
 
 def use_uniform_weights() -> None:

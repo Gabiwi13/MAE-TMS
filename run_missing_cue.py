@@ -8,6 +8,7 @@ El prototipo es determinista: un solo valor por pista.
 Salida: results/missing_cue/characterization.json + report.md
 """
 import json
+import os
 import random
 import sys
 import time
@@ -28,7 +29,7 @@ BASE_SEED = 1000
 CUES = [("pear", "pear"), ("car", "car"),
         ("green", "apple"), ("animal", "horse")]
 METHODS = ["random", "sample_test", "sample_search"]
-OUT_DIR = ROOT / "results" / "missing_cue"
+OUT_DIR = Path(os.environ.get("MISSING_CUE_OUT", ROOT / "results" / "missing_cue"))
 
 
 def main():
