@@ -83,15 +83,17 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
 
 ### Tareas
 
+**Decisión del 28 oct:** como el resumen aceptado se puede corregir, la parte industrial también pasa a pesos homo. Se quita la excepción de los 5 scripts de CIFIN y las cifras corregidas salen de la corrida con pesos homo. `use_uniform_weights()` se conserva solo para los controles.
+
 | # | Qué | Costo |
 |---|---|---|
-| 2.1 | **Rastrear «28 % → 59 %»** hasta un archivo de resultados. Si no aparece, no va en la revista | 30 min |
-| 2.2 | **Correr los 5 scripts de CIFIN, más cierre, cascada y red_sintetica, con pesos homo como verificación**, en una carpeta de salida aparte, sin tocar los oficiales | por medir (estimo 1–3 h) |
-| 2.3 | Según 2.2, decidir qué pesos usa la revista (decisión D2) | — |
+| 2.1 | **Rastrear «28 % → 59 %»** hasta un archivo de resultados. Si no aparece, sale del resumen corregido | 30 min |
+| 2.2 | **Quitar `use_uniform_weights()` de los 5 scripts de CIFIN y volver a correrlos, más cierre, cascada y red_sintetica**, como resultados oficiales | por medir (estimo 1–3 h) |
+| 2.3 | Comparar cada cifra del resumen, vieja contra nueva, y escribir el resumen corregido | 1 h |
 | 2.4 | Commit de la línea de flota ya corrida y su prosa | solo prosa |
 | 2.5 | Los experimentos pendientes de `plan_articulo.md` (nombrar la falla, mapa de la falla, calibración, edición sin efectos colaterales): ¿entran en la revista? (decisión D3) | según D3 |
 
-**2.2, criterio declarado:** si las cifras con pesos homo salen idénticas, la revista usa pesos homo y queda con el mismo modelo que la tesis. Si alguna cambia, se reportan las dos y la revista usa pesos homo con la diferencia declarada. No se elige la que salga mejor.
+**2.2, criterio declarado:** las cifras del resumen corregido son las de la corrida con pesos homo. Cada una se compara con la del resumen enviado; si alguna cambia, se dice cuánto y por qué. No se elige la que salga mejor.
 
 ---
 
@@ -106,7 +108,7 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
 ## Decisiones que necesito
 
 - **D1.** Para la presentación: ¿entran 1.4 a 1.9 (lo que no está en la tesis), o solo 1.1 a 1.3? Mi recomendación: 1.1 a 1.4 sí, porque el metaconocimiento es parte de la historia transactiva; 1.5 y 1.6 sí, porque son baratos o corren de noche; 1.7 a 1.9, solo si se presentan.
-- **D2.** Pesos de la revista, según 2.2.
+- **D2. Pesos de la parte industrial (resuelta, 28 oct):** homo, como el resto; el resumen se corrige con las cifras nuevas.
 - **D3.** ¿Entran en la revista los experimentos pendientes de `plan_articulo.md`?
 - **D4. Fechas (resuelta).** Correo de CIFIN del 27 de octubre: trabajo aceptado con folio **P176**. Se pueden hacer correcciones; el trabajo se vuelve a enviar ajustado a la plantilla oficial («resumen o extenso, según corresponda») por el formulario del correo. El **10 de noviembre** es el límite para avisar errores en la carta de aceptación. La parte visible del correo no dice la fecha para reenviar el trabajo; se toma el 10 de noviembre como límite hasta confirmarlo. El título se mantiene.
 
