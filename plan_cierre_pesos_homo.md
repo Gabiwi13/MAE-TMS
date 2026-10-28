@@ -1,0 +1,127 @@
+# Plan de cierre: pesos homo, por prioridad
+
+**Estado:** propuesta, pendiente de aprobación. No se corre nada hasta aprobarla.
+**Fecha:** 28 oct 2026.
+
+## Prioridades
+
+1. **Sistema principal (ETH-80).** Es lo que se presenta: tiene que quedar pulido.
+2. **Industrial (VisA).** Sostiene el resumen de CIFIN 2026, que se adaptará para la revista de la UACJ.
+3. **Médico.** Diferido.
+
+Una prioridad empieza cuando la anterior está cerrada, salvo las corridas largas, que se lanzan de noche mientras se trabaja en la prosa.
+
+## Reglas para no dejar cosas atrás
+
+1. **Inventario.** `inventario_experimentos.md`: una fila por script, con rama, qué memorias lee, pesos, versión del sistema (llenado, directorio, pesos) y commit de la última corrida. Si la versión no es la actual, el resultado está **desactualizado**.
+2. **Criterio antes de correr.** Qué mide y cómo se lee, escrito aquí antes de lanzarlo. Nada se ajusta después de ver el número.
+3. **Commit al terminar** cada corrida, con el commit del código en el mensaje.
+4. **Búsqueda de dependientes.** Si se cambia una lectura, se buscan todos los scripts que la usan, también por imports indirectos.
+5. **Prosa solo con aprobación**, con la propuesta viejo/nuevo.
+
+## Fase 0. Congelar lo que hay (15 min, sin decisiones)
+
+- Commit de los resultados de las colas en `pesos-homo` y `pesos-homo-md`, más el cambio de exp28. Nada se sube.
+- Crear `inventario_experimentos.md` con todos los `run_*.py` y las etapas.
+- Listo cuando: `git status` limpio en las dos carpetas y el inventario tiene todos los scripts.
+
+---
+
+## Prioridad 1. Sistema principal (ETH-80)
+
+### Dónde estamos
+
+El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 % con 2 errores; evocación 97.4 %; fidelidad 16/16. Lo pendiente está en lo que rodea al núcleo.
+
+### Lo que la tesis cita y hay que arreglar
+
+| # | Qué | Problema | Costo |
+|---|---|---|---|
+| 1.1 | **κ (exp2, tabla `tab:grid-iota-kappa`)** | la tesis muestra columnas de κ idénticas; con la compuerta corregida siguen idénticas porque κ ≤ 1.5 nunca rechaza. La tabla no prueba κ | 15 min de cómputo + texto |
+| 1.2 | **Cifras de la fase madura de texto** | exp2/exp3: sin normalizar 71.2 → 72.5 %. Ablación: base 87.0 → 85.3; G 94.0 → 93.5 (mejora +7.0 → +8.3) | solo prosa |
+| 1.3 | **Figuras de la tesis** | se regeneraron fig02, 03, 04, 09 y 16; fig11 (espacio semántico) y fig15 (rechazo de imagen) no leen pesos | revisión visual, 15 min |
+
+**1.1, criterio declarado:** primero se mide, para cada consulta del banco, la razón (activación media por celda) / mem.mean. La rejilla de κ va de su mínimo a su máximo por cuantiles (0, 10, 25, 50, 75, 90 y 100 %). No se elige κ mirando la exactitud. Se reporta la tabla completa, rechace o no.
+
+### Lo que está en el repo y no en la tesis (decidir qué entra en la presentación)
+
+| # | Qué | Estado | Costo |
+|---|---|---|---|
+| 1.4 | **Metaconocimiento perspectival en texto (exp9 y exp8, mitad texto)** | medidos con el directorio global; el oficial es perspectival con solo 16 interacciones de texto | ~1 h |
+| 1.5 | **exp12** (brecha contra solapamiento) | la correlación desaparece (r 0.45 → 0.00); mezcla pesos y 4 → 16 variantes | ~7 h, de noche |
+| 1.6 | **missing_cue** | menos recuperaciones perfectas; misma mezcla | ~10 min |
+| 1.7 | **exp17 B y C, exp18** | no se volvieron a correr | por medir (horas) |
+| 1.8 | **exp19** (checkout `MAE-TMS-exp18`) y **exp22** (solo en `origin/exp7-directorio-unificado`) | no se volvieron a correr | por medir |
+| 1.9 | **rejection_probe** | de agosto, memorias viejas | ~minutos, o declararlo obsoleto |
+| 1.10 | **Textos generados** | exp7: «96.2 % vs 96.2 % difiere»; exp2 no dice si κ rechazó; exp11: «DISTINTOS 4/8» sin explicar; exp14 dice «agentes v5» | 30 min |
+
+**1.4, criterio declarado:** se forman los directorios de texto con el registro oficial (entrada + ganador) sobre las 240 consultas de formación de exp10, con entrada al azar, y se vuelve a correr la mitad texto con 16, 60, 120 y 240 interacciones. Se reporta la curva de «ruteado al miembro perdido» contra interacciones, entre el piso actual (40/411) y el techo global (229/411). Sin umbral de éxito.
+
+**1.5 y 1.6, criterio declarado:** se corren con pesos uniformes sobre las memorias actuales, en una carpeta de salida aparte. Si el resultado con uniformes se parece al viejo, el cambio es de los pesos; si se parece al nuevo, es de las 16 variantes. Se reportan las dos cifras.
+
+### Cierre de la prioridad 1
+
+- Propuesta `revision_pesos_homo_principal_prosa.md` viejo/nuevo para `.tex8` (secciones 4 a 7), README, CONTEXTO, INICIO, `modelo_formal.md` (línea 38, «con pesos uniformes», y Prop. 3) y `discusion_marco_teorico_directorio.md`.
+- Listo cuando: la apruebas, se aplica y cada script de ETH-80 está al día en el inventario.
+
+---
+
+## Prioridad 2. Industrial (CIFIN → revista de la UACJ)
+
+### Las cifras del resumen y de dónde salen
+
+| Cifra del resumen | Script | ¿La mueven los pesos? |
+|---|---|---|
+| AUROC 0.789 (MAE) · 0.800 (Mahalanobis) · 0.784 (kNN) | `run_parametros_mae` / `run_industrial_demo` | no (se verificó: la lectura en grado no pasa por el ruteo) |
+| 0.695 contra 0.830 de PatchCore en fallas pequeñas | ídem | no |
+| Identifica la pieza 98.4 %, sin confusiones | `run_enrutador_flota` / `run_industrial_clip` | pasa por el ruteo, pero sin confusiones entre agentes que contienen la pista: no debería |
+| Fallas pequeñas de 28 % a 59 % | **sin rastrear** | — |
+| Escapan 37.9 % contra 39.2 % del detector que conoce la pieza | `run_enrutador_flota` / cierre | ídem que 98.4 % |
+| 100 % de piezas nunca registradas como desconocidas (kNN 0 %) | `run_industrial_demo` | no (es contención) |
+| Agregar o retirar sin reentrenar; olvido exacto; sin imágenes | `run_olvido_privacidad` | no (ya se volvió a correr con pesos homo: 0 de 2162 decisiones distintas) |
+| La elección del módulo se explica con conteos y aciertos | piloto, etapas 1 y 2 | ya se volvió a correr con pesos homo; R2 > R1 sale más fuerte |
+
+### Tareas
+
+| # | Qué | Costo |
+|---|---|---|
+| 2.1 | **Rastrear «28 % → 59 %»** hasta un archivo de resultados. Si no aparece, no va en la revista | 30 min |
+| 2.2 | **Correr los 5 scripts de CIFIN, más cierre, cascada y red_sintetica, con pesos homo como verificación**, en una carpeta de salida aparte, sin tocar los oficiales | por medir (estimo 1–3 h) |
+| 2.3 | Según 2.2, decidir qué pesos usa la revista (decisión D2) | — |
+| 2.4 | Commit de la línea de flota ya corrida y su prosa | solo prosa |
+| 2.5 | Los experimentos pendientes de `plan_articulo.md` (nombrar la falla, mapa de la falla, calibración, edición sin efectos colaterales): ¿entran en la revista? (decisión D3) | según D3 |
+
+**2.2, criterio declarado:** si las cifras con pesos homo salen idénticas, la revista usa pesos homo y queda con el mismo modelo que la tesis. Si alguna cambia, se reportan las dos y la revista usa pesos homo con la diferencia declarada. No se elige la que salga mejor.
+
+---
+
+## Prioridad 3. Médico (diferido)
+
+- Mama pierde sensibilidad a malignos con pesos homo (28 → 25 de 42; exp28 59.5 → 51.9 %): medir si viene de la mayoría benigna en los pesos.
+- exp20_ood, exp24 incremental y Mondrian no se volvieron a correr.
+- Sincronizar las copias médicas en industrial-clip; exp20 y exp23 de esa rama tienen el bug del caché por `id()`.
+
+---
+
+## Decisiones que necesito
+
+- **D1.** Para la presentación: ¿entran 1.4 a 1.9 (lo que no está en la tesis), o solo 1.1 a 1.3? Mi recomendación: 1.1 a 1.4 sí, porque el metaconocimiento es parte de la historia transactiva; 1.5 y 1.6 sí, porque son baratos o corren de noche; 1.7 a 1.9, solo si se presentan.
+- **D2.** Pesos de la revista, según 2.2.
+- **D3.** ¿Entran en la revista los experimentos pendientes de `plan_articulo.md`?
+- **D4. Fechas (resuelta).** Correo de CIFIN del 27 de octubre: trabajo aceptado con folio **P176**. Se pueden hacer correcciones; el trabajo se vuelve a enviar ajustado a la plantilla oficial («resumen o extenso, según corresponda») por el formulario del correo. El **10 de noviembre** es el límite para avisar errores en la carta de aceptación. La parte visible del correo no dice la fecha para reenviar el trabajo; se toma el 10 de noviembre como límite hasta confirmarlo. El título se mantiene.
+
+## Calendario (límite de trabajo: 10 de noviembre)
+
+| Cuándo | Qué |
+|---|---|
+| 28 oct | Fase 0; 1.1, 1.6 y 1.10; lanzar 1.5 de noche |
+| 29–30 oct | 1.4; 1.7 a 1.9 según D1 |
+| 31 oct – 2 nov | propuesta de prosa de la prioridad 1 y su revisión |
+| 3–6 nov | prioridad 2: 2.1, 2.2 (corre mientras se revisa la prosa), resumen corregido en la plantilla |
+| 7–9 nov | revisión con la doctora; margen |
+| 10 nov | límite; el envío por el formulario y el pago los haces tú |
+| Al final | push como fast-forward con tu aprobación; borrar carpetas temporales |
+
+## Nota aparte
+
+`realtime_lab/salvaged_voice_camera.py` no se puede importar y nunca se corre; no se tocó.
