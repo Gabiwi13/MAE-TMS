@@ -67,9 +67,11 @@ from stage6_interaction import (
     get_fasttext_vector, token_in_vocabulary,
 )
 
-# Grid del barrido
+# Grid del barrido. KAPPAS se fija en main(): 0 más los cuantiles de la
+# razón que compara la compuerta, medida con iota=0 sobre el banco.
 IOTAS  = [0.0, 0.25, 0.5, 1.0]
-KAPPAS = [0.0, 0.5, 1.0, 1.5]
+KAPPA_QUANTILES = (0.10, 0.25, 0.50, 0.75, 0.90, 1.0)
+KAPPAS = []
 
 # Cues diagnósticos (token, dominio esperado). Solo cubren car, apple y
 # horse, asi que diag_acc mide 3 de los 8 dominios, no el sistema completo.
@@ -124,12 +126,42 @@ def agent_score(mem_L, mem_H, v_q, kappa, normalize=False):
     # cue.size); mem.mean es por celda, así que se compara por celda.
     defined = np.array([not mem_H.is_undefined(k, 0) for k in ca])
     w_used = ca.size * weights[defined].sum() / weights.sum()
-    if mem_mean > 0 and mean_act / w_used < kappa * mem_mean:
+    if mem_mean > 0 and gate_ratio(mean_act, w_used, mem_mean) < kappa:
         return 0.0
 
     if normalize and mem_mean > 0:
         return mean_act / mem_mean
     return mean_act
+
+
+def gate_ratio(mean_act, w_used, mem_mean):
+    """Lo que la compuerta compara con kappa: activación por celda / mem.mean."""
+    return mean_act / w_used / mem_mean
+
+
+def bank_gate_ratios(agents_mem, queries, nlp, vectors, tok_cache):
+    """Razón de la compuerta para cada (token del banco, agente) contenido."""
+    ratios = []
+    for query in queries:
+        for tok in _represented_tokens(tokenize_query(query, nlp), vectors, tok_cache):
+            v_q = tok_cache[tok]
+            for cls in CLASSES:
+                mem_L, mem_H = agents_mem[cls]
+                l_w = mem_L.recog_weights(v_q)
+                weights = l_w / l_w.max() if l_w.max() > 0 else np.ones(len(v_q))
+                ca = mem_H.validate(v_q, 0)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    proj = mem_H.project(ca, weights, 0)
+                    mem_mean = float(mem_H.mean)
+                if np.count_nonzero(np.sum(proj, axis=1) == 0) > 0 or mem_mean <= 0:
+                    continue
+                count = int(np.count_nonzero(proj))
+                if count == 0:
+                    continue
+                defined = np.array([not mem_H.is_undefined(k, 0) for k in ca])
+                w_used = ca.size * weights[defined].sum() / weights.sum()
+                ratios.append(gate_ratio(float(np.sum(proj)) / count, w_used, mem_mean))
+    return np.array(ratios)
 
 
 def set_params(agents_mem, iota, kappa):
@@ -260,6 +292,24 @@ def main():
         bank_tokens.update(tokenize_query(q, nlp))
     prevectorize(vectors, bank_tokens, allow_fallback=False)
     tok_cache = {}
+
+    set_params(agents_mem, 0.0, 0.0)
+    ratios = bank_gate_ratios(agents_mem, queries, nlp, vectors, tok_cache)
+    qs = np.quantile(ratios, KAPPA_QUANTILES)
+    KAPPAS[:] = [0.0] + [round(float(q), 3) for q in qs]
+    print(f"\nRazón de la compuerta (ι=0, {ratios.size} pares token-agente contenidos): "
+          f"mín {ratios.min():.3f} · mediana {np.median(ratios):.3f} · máx {ratios.max():.3f}")
+    print("κ = 0 y cuantiles " + ", ".join(f"{q:.0%}" for q in KAPPA_QUANTILES)
+          + f" → {KAPPAS}")
+    # La rejilla sale de ι=0; con poda la razón cambia, y se reporta por ι.
+    ratio_range = {}
+    for iota in IOTAS:
+        set_params(agents_mem, iota, 0.0)
+        r = ratios if iota == 0.0 else bank_gate_ratios(agents_mem, queries, nlp, vectors, tok_cache)
+        ratio_range[iota] = ((r.size, float(r.min()), float(np.median(r)), float(r.max()))
+                             if r.size else (0, float("nan"), float("nan"), float("nan")))
+        print(f"  ι={iota}: razón en {ratio_range[iota][0]} pares · mín {ratio_range[iota][1]:.3f} · "
+              f"mediana {ratio_range[iota][2]:.3f} · máx {ratio_range[iota][3]:.3f}")
 
     rows = []
     n_cond = len(IOTAS) * len(KAPPAS)
@@ -392,7 +442,13 @@ def main():
         "experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.",
         "",
         "## Setup",
-        f"- Grid: ι ∈ {IOTAS} × κ ∈ {KAPPAS} (mutación en-memoria, setters originales)",
+        f"- Grid: ι ∈ {IOTAS} × κ ∈ {KAPPAS} (mutación en-memoria, setters originales). "
+        "κ no se elige a mano: es 0 más los cuantiles "
+        + ", ".join(f"{q:.0%}" for q in KAPPA_QUANTILES)
+        + " de la razón que compara la compuerta (activación por celda / mem.mean), "
+        f"medida con ι=0 sobre los {ratios.size} pares token-agente contenidos del banco "
+        f"(mín {ratios.min():.3f}, mediana {np.median(ratios):.3f}, máx {ratios.max():.3f}). "
+        "Con el cuantil q, κ deja pasar como mucho la fracción 1−q de esos pares.",
         "- Banco: primeras 80 queries del banco de 8 clases con ground truth "
         "(10 por clase)",
         "- **Dentro de muestra:** el downstream llena M_dir con los tokens de "
@@ -411,6 +467,11 @@ def main():
         f"early {best['early_acc_gated']:.1%} "
         f"(rechazo {best['early_rej_gated']:.1%}), "
         f"diag {best['diag_acc_gated']:.1%}",
+        "- κ con ι=0: la mejor columna con κ>0 da early "
+        f"{max(r['early_acc_gated'] for r in rows if r['iota'] == 0 and r['kappa'] > 0):.1%} "
+        f"contra {base['early_acc_gated']:.1%} sin κ; el rechazo va de "
+        f"{min(r['early_rej_gated'] for r in rows if r['iota'] == 0 and r['kappa'] > 0):.1%} a "
+        f"{max(r['early_rej_gated'] for r in rows if r['iota'] == 0 and r['kappa'] > 0):.1%}.",
         "",
         "## Tabla del grid (brazo GATED, sin normalizar)",
         "",
@@ -423,6 +484,23 @@ def main():
             r = next(x for x in rows if x["iota"] == iota and x["kappa"] == kappa)
             cells.append(f"{r['early_acc_gated']:.0%} (rej {r['early_rej_gated']:.0%})")
         lines.append(f"| **{iota}** | " + " | ".join(cells) + " |")
+    kmax = max(KAPPAS)
+    lines += [
+        "",
+        "### ¿Qué compara κ en cada ι?",
+        "",
+        "La razón (activación por celda / mem.mean) de los pares token-agente contenidos. "
+        "La rejilla de κ sale de la fila ι=0. Con poda, la activación se concentra en las "
+        "celdas que sobreviven y mem.mean no cambia, así que la razón sube; si su mínimo "
+        f"supera el κ máximo ({kmax}), κ no rechaza nada en esa fila.",
+        "",
+        "| ι | pares | mín | mediana | máx | ¿κ máx rechaza algo? |",
+        "|---|---|---|---|---|---|",
+    ]
+    for iota in IOTAS:
+        n_p, lo, med, hi = ratio_range[iota]
+        lines.append(f"| {iota} | {n_p} | {lo:.3f} | {med:.3f} | {hi:.3f} | "
+                     f"{'sí' if n_p and lo < kmax else 'no'} |")
     lines += [
         "",
         "## Downstream (¿sigue haciendo falta B1?)",
