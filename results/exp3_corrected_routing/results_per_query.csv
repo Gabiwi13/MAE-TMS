@@ -4,7 +4,7 @@ fast vehicle with wheels,car,car,cup,car,car,directory_support
 a farm animal that gives milk,cow,cow,dog,cow,cow,directory_support
 a container to drink from,cup,cup,pear,cup,cup,directory_support
 a barking domestic pet,dog,dog,cow,dog,dog,directory_support
-animal with a mane,horse,horse,tomato,horse,cow,directory_support
+animal with a mane,horse,horse,tomato,horse,horse,directory_support
 a green sweet pear fruit,pear,pear,dog,pear,apple,directory_support
 a round red salad vegetable,tomato,tomato,dog,tomato,tomato,directory_support
 green food from trees,apple,apple,pear,apple,apple,directory_support
@@ -61,7 +61,7 @@ bovine farm mammal that moos,cow,cow,cow,cow,cow,directory_support
 punch cup for a drink,cup,cup,dog,cup,cup,directory_support
 four legged barking pet,dog,dog,cow,dog,dog,directory_support
 a pony or donkey,horse,horse,pear,horse,horse,directory_support
-fruit shaped like a teardrop,pear,tomato,dog,tomato,apple,directory_support
+fruit shaped like a teardrop,pear,tomato,dog,tomato,tomato,directory_support
 round juicy red produce,tomato,apple,apple,apple,apple,directory_support
 sweet core fruit,apple,apple,pear,apple,apple,directory_support
 used for driving,car,car,car,car,car,directory_support

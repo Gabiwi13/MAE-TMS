@@ -1,23 +1,10 @@
 {
  "colapso_primera_pista": {
   "apple": {
-   "ruteadas": 35,
-   "responden": 35,
-   "primeras_pistas_distintas_ruteadas": 12,
-   "consultas_por_pista_ruteadas": {
-    "apple": 8,
-    "green": 6,
-    "fruit": 5,
-    "red": 4,
-    "core": 3,
-    "round": 2,
-    "orchard": 2,
-    "stem": 1,
-    "delicious": 1,
-    "orange": 1,
-    "tree": 1,
-    "pome": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 52,
    "primeras_pistas_distintas_banco": 13,
    "consultas_por_pista_banco": {
@@ -55,22 +42,10 @@
    }
   },
   "cow": {
-   "ruteadas": 31,
-   "responden": 31,
-   "primeras_pistas_distintas_ruteadas": 11,
-   "consultas_por_pista_ruteadas": {
-    "farm": 8,
-    "cow": 6,
-    "bovine": 4,
-    "cattle": 4,
-    "milk": 2,
-    "animal": 2,
-    "moo": 1,
-    "mammal": 1,
-    "beef": 1,
-    "bull": 1,
-    "udder": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 51,
    "primeras_pistas_distintas_banco": 13,
    "consultas_por_pista_banco": {
@@ -83,19 +58,10 @@
    }
   },
   "cup": {
-   "ruteadas": 35,
-   "responden": 35,
-   "primeras_pistas_distintas_ruteadas": 8,
-   "consultas_por_pista_ruteadas": {
-    "mug": 12,
-    "cup": 9,
-    "drink": 5,
-    "drinking": 3,
-    "liquid": 2,
-    "vessel": 2,
-    "hole": 1,
-    "trophy": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 51,
    "primeras_pistas_distintas_banco": 9,
    "consultas_por_pista_banco": {
@@ -108,19 +74,10 @@
    }
   },
   "dog": {
-   "ruteadas": 23,
-   "responden": 23,
-   "primeras_pistas_distintas_ruteadas": 8,
-   "consultas_por_pista_ruteadas": {
-    "canine": 6,
-    "dog": 6,
-    "pet": 4,
-    "house": 3,
-    "bark": 1,
-    "mammal": 1,
-    "puppy": 1,
-    "wolf": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 49,
    "primeras_pistas_distintas_banco": 9,
    "consultas_por_pista_banco": {
@@ -133,20 +90,10 @@
    }
   },
   "horse": {
-   "ruteadas": 22,
-   "responden": 21,
-   "primeras_pistas_distintas_ruteadas": 9,
-   "consultas_por_pista_ruteadas": {
-    "animal": 6,
-    "riding": 4,
-    "horse": 3,
-    "equine": 2,
-    "mammal": 2,
-    "racing": 1,
-    "saddle": 1,
-    "jockey": 1,
-    "stallion": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 51,
    "primeras_pistas_distintas_banco": 12,
    "consultas_por_pista_banco": {
@@ -159,14 +106,10 @@
    }
   },
   "pear": {
-   "ruteadas": 19,
-   "responden": 19,
-   "primeras_pistas_distintas_ruteadas": 3,
-   "consultas_por_pista_ruteadas": {
-    "pear": 17,
-    "fruit": 1,
-    "bosc": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 53,
    "primeras_pistas_distintas_banco": 4,
    "consultas_por_pista_banco": {
@@ -177,15 +120,10 @@
    }
   },
   "tomato": {
-   "ruteadas": 41,
-   "responden": 41,
-   "primeras_pistas_distintas_ruteadas": 4,
-   "consultas_por_pista_ruteadas": {
-    "tomato": 23,
-    "red": 16,
-    "vegetable": 1,
-    "herb": 1
-   },
+   "ruteadas": 0,
+   "responden": 0,
+   "primeras_pistas_distintas_ruteadas": 0,
+   "consultas_por_pista_ruteadas": {},
    "banco": 53,
    "primeras_pistas_distintas_banco": 4,
    "consultas_por_pista_banco": {
@@ -196,544 +134,317 @@
    }
   },
   "total": {
-   "ruteadas": 229,
-   "consultas_que_comparten_primera_pista_con_otra": 198,
-   "fraccion_ruteadas": 0.8646288209606987,
-   "primeras_pistas_distintas_ruteadas": 63
+   "ruteadas": 23,
+   "consultas_que_comparten_primera_pista_con_otra": 17,
+   "fraccion_ruteadas": 0.7391304347826086,
+   "primeras_pistas_distintas_ruteadas": 8
   }
  },
  "niveles_y_entropia": {
   "apple": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 9.90625,
-    "entropia_bits": 2.855637938366156,
-    "registros": 128
+    "niveles_vivos": 13.4375,
+    "entropia_bits": 2.9849444523555855,
+    "registros": 2048
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 7.618489583333333,
-    "entropia_bits": 2.6309723309355917,
-    "pistas": 12
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "round": {
-     "niveles_vivos": 7.234375,
-     "entropia_bits": 2.6110234597509097
-    },
-    "green": {
-     "niveles_vivos": 8.859375,
-     "entropia_bits": 2.803086168207672
-    },
-    "red": {
-     "niveles_vivos": 8.96875,
-     "entropia_bits": 2.787325813416829
-    },
-    "core": {
-     "niveles_vivos": 8.578125,
-     "entropia_bits": 2.788259580750451
-    },
-    "fruit": {
-     "niveles_vivos": 9.46875,
-     "entropia_bits": 2.8492048294563794
-    },
-    "apple": {
-     "niveles_vivos": 8.203125,
-     "entropia_bits": 2.705440346999598
-    },
-    "stem": {
-     "niveles_vivos": 7.046875,
-     "entropia_bits": 2.598737598153808
-    },
-    "delicious": {
-     "niveles_vivos": 6.21875,
-     "entropia_bits": 2.4227257137115714
-    },
-    "orange": {
-     "niveles_vivos": 6.65625,
-     "entropia_bits": 2.5037161903930834
-    },
-    "tree": {
-     "niveles_vivos": 8.140625,
-     "entropia_bits": 2.718672268045391
-    },
-    "pome": {
-     "niveles_vivos": 6.453125,
-     "entropia_bits": 2.4568609906942283
-    },
-    "orchard": {
-     "niveles_vivos": 5.59375,
-     "entropia_bits": 2.326615011647179
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 11.140625,
-    "entropia_bits": 2.8871454445947253
+    "niveles_vivos": 13.609375,
+    "entropia_bits": 2.999139799155358
    }
   },
   "car": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 10.703125,
-    "entropia_bits": 3.017909879791703,
-    "registros": 121
+    "niveles_vivos": 14.203125,
+    "entropia_bits": 3.1197283663915085,
+    "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 9.546875,
-    "entropia_bits": 2.9606585917273556,
+    "niveles_vivos": 11.86328125,
+    "entropia_bits": 3.1034317386716763,
     "pistas": 8
    },
    "mem_dom_H_condicionada_por_pista": {
     "vehicle": {
-     "niveles_vivos": 10.265625,
-     "entropia_bits": 3.01678295151262
+     "niveles_vivos": 12.234375,
+     "entropia_bits": 3.1336189555065075
     },
     "wheel": {
-     "niveles_vivos": 8.3125,
-     "entropia_bits": 2.8160639795537836
+     "niveles_vivos": 11.015625,
+     "entropia_bits": 3.050338269273161
     },
     "motor": {
-     "niveles_vivos": 9.921875,
-     "entropia_bits": 2.992621163736785
+     "niveles_vivos": 11.625,
+     "entropia_bits": 3.087414847309151
     },
     "drive": {
-     "niveles_vivos": 9.53125,
-     "entropia_bits": 2.971067600265541
+     "niveles_vivos": 11.890625,
+     "entropia_bits": 3.1110255330336045
     },
     "crash": {
-     "niveles_vivos": 8.8125,
-     "entropia_bits": 2.905633007414223
+     "niveles_vivos": 11.46875,
+     "entropia_bits": 3.08572870443077
     },
     "seat": {
-     "niveles_vivos": 9.28125,
-     "entropia_bits": 2.9434655172175694
+     "niveles_vivos": 12.5625,
+     "entropia_bits": 3.1344308951430504
     },
     "auto": {
-     "niveles_vivos": 10.359375,
-     "entropia_bits": 3.049867381735479
+     "niveles_vivos": 12.140625,
+     "entropia_bits": 3.107592884677011
     },
     "car": {
-     "niveles_vivos": 9.890625,
-     "entropia_bits": 2.989767132382844
+     "niveles_vivos": 11.96875,
+     "entropia_bits": 3.1173038200001546
     }
    },
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 14.09375,
-    "entropia_bits": 3.176943924716227
+    "niveles_vivos": 15.390625,
+    "entropia_bits": 3.164640567513902
    }
   },
   "cow": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 8.671875,
-    "entropia_bits": 2.5936896939129737,
-    "registros": 123
+    "niveles_vivos": 11.734375,
+    "entropia_bits": 2.694099187451771,
+    "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 7.731534090909091,
-    "entropia_bits": 2.5411300525821874,
-    "pistas": 11
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "farm": {
-     "niveles_vivos": 7.6875,
-     "entropia_bits": 2.534014417155106
-    },
-    "bovine": {
-     "niveles_vivos": 7.875,
-     "entropia_bits": 2.526230967892375
-    },
-    "moo": {
-     "niveles_vivos": 7.375,
-     "entropia_bits": 2.5067592952273916
-    },
-    "mammal": {
-     "niveles_vivos": 6.640625,
-     "entropia_bits": 2.3824352826803548
-    },
-    "milk": {
-     "niveles_vivos": 8.1875,
-     "entropia_bits": 2.5978037602391275
-    },
-    "animal": {
-     "niveles_vivos": 7.390625,
-     "entropia_bits": 2.5230480114706038
-    },
-    "beef": {
-     "niveles_vivos": 8.25,
-     "entropia_bits": 2.609387395363683
-    },
-    "cattle": {
-     "niveles_vivos": 8.234375,
-     "entropia_bits": 2.589507672963631
-    },
-    "bull": {
-     "niveles_vivos": 7.28125,
-     "entropia_bits": 2.4938834042353824
-    },
-    "udder": {
-     "niveles_vivos": 7.578125,
-     "entropia_bits": 2.5537131555743695
-    },
-    "cow": {
-     "niveles_vivos": 8.546875,
-     "entropia_bits": 2.6356472156020363
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 10.609375,
-    "entropia_bits": 2.6758648145901187
+    "niveles_vivos": 12.171875,
+    "entropia_bits": 2.70885599082344
    }
   },
   "cup": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 10.578125,
-    "entropia_bits": 2.9656401396449183,
-    "registros": 120
+    "niveles_vivos": 12.90625,
+    "entropia_bits": 3.0009527486786745,
+    "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 8.7109375,
-    "entropia_bits": 2.782308780422745,
-    "pistas": 8
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "drink": {
-     "niveles_vivos": 9.640625,
-     "entropia_bits": 2.8715644299911784
-    },
-    "mug": {
-     "niveles_vivos": 8.171875,
-     "entropia_bits": 2.7342881913329693
-    },
-    "drinking": {
-     "niveles_vivos": 7.859375,
-     "entropia_bits": 2.707899575966007
-    },
-    "cup": {
-     "niveles_vivos": 9.921875,
-     "entropia_bits": 2.918139032778603
-    },
-    "hole": {
-     "niveles_vivos": 8.203125,
-     "entropia_bits": 2.72162346121919
-    },
-    "trophy": {
-     "niveles_vivos": 9.328125,
-     "entropia_bits": 2.834833470966141
-    },
-    "liquid": {
-     "niveles_vivos": 8.8125,
-     "entropia_bits": 2.8008617798492716
-    },
-    "vessel": {
-     "niveles_vivos": 7.75,
-     "entropia_bits": 2.6692603012786
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 11.84375,
-    "entropia_bits": 2.9617349796489574
+    "niveles_vivos": 13.296875,
+    "entropia_bits": 3.0089170616780283
    }
   },
   "dog": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 9.8125,
-    "entropia_bits": 2.880566674820648,
-    "registros": 121
+    "niveles_vivos": 14.546875,
+    "entropia_bits": 3.0673492236014033,
+    "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 9.314453125,
-    "entropia_bits": 2.9142205212038004,
-    "pistas": 8
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "bark": {
-     "niveles_vivos": 9.0625,
-     "entropia_bits": 2.8719787879148213
-    },
-    "canine": {
-     "niveles_vivos": 9.453125,
-     "entropia_bits": 2.9103325754710516
-    },
-    "dog": {
-     "niveles_vivos": 9.890625,
-     "entropia_bits": 2.970066822430333
-    },
-    "pet": {
-     "niveles_vivos": 9.75,
-     "entropia_bits": 2.9708618656946157
-    },
-    "house": {
-     "niveles_vivos": 9.015625,
-     "entropia_bits": 2.8802430202336957
-    },
-    "mammal": {
-     "niveles_vivos": 9.28125,
-     "entropia_bits": 2.908032501047237
-    },
-    "puppy": {
-     "niveles_vivos": 9.25,
-     "entropia_bits": 2.930324113039581
-    },
-    "wolf": {
-     "niveles_vivos": 8.8125,
-     "entropia_bits": 2.8719244837990665
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 13.0,
-    "entropia_bits": 3.0762914858558568
+    "niveles_vivos": 14.453125,
+    "entropia_bits": 3.065474862453675
    }
   },
   "horse": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 8.78125,
-    "entropia_bits": 2.6767670027009367,
-    "registros": 121
+    "niveles_vivos": 11.734375,
+    "entropia_bits": 2.798651341220806,
+    "registros": 2032
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 7.614583333333333,
-    "entropia_bits": 2.62186630298555,
-    "pistas": 9
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "animal": {
-     "niveles_vivos": 8.140625,
-     "entropia_bits": 2.697525432254417
-    },
-    "riding": {
-     "niveles_vivos": 8.1875,
-     "entropia_bits": 2.682516370184893
-    },
-    "equine": {
-     "niveles_vivos": 7.765625,
-     "entropia_bits": 2.659929344146694
-    },
-    "racing": {
-     "niveles_vivos": 7.09375,
-     "entropia_bits": 2.5304532484704514
-    },
-    "mammal": {
-     "niveles_vivos": 7.90625,
-     "entropia_bits": 2.664833270178759
-    },
-    "saddle": {
-     "niveles_vivos": 8.15625,
-     "entropia_bits": 2.6747248779280866
-    },
-    "horse": {
-     "niveles_vivos": 7.890625,
-     "entropia_bits": 2.667141169699056
-    },
-    "jockey": {
-     "niveles_vivos": 6.609375,
-     "entropia_bits": 2.4787741632258538
-    },
-    "stallion": {
-     "niveles_vivos": 6.78125,
-     "entropia_bits": 2.5408988507817387
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 10.640625,
-    "entropia_bits": 2.787326604011162
+    "niveles_vivos": 11.59375,
+    "entropia_bits": 2.782512919600855
    }
   },
   "pear": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 8.5,
-    "entropia_bits": 2.6655834144493973,
-    "registros": 122
+    "niveles_vivos": 11.6875,
+    "entropia_bits": 2.8482400154093983,
+    "registros": 2048
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 8.557291666666666,
-    "entropia_bits": 2.7577515410174165,
-    "pistas": 3
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "fruit": {
-     "niveles_vivos": 8.78125,
-     "entropia_bits": 2.778950442137075
-    },
-    "pear": {
-     "niveles_vivos": 8.640625,
-     "entropia_bits": 2.7641871927616495
-    },
-    "bosc": {
-     "niveles_vivos": 8.25,
-     "entropia_bits": 2.7301169881535245
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 10.703125,
-    "entropia_bits": 2.849239801892121
+    "niveles_vivos": 12.15625,
+    "entropia_bits": 2.8474187770998736
    }
   },
   "tomato": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 7.78125,
-    "entropia_bits": 2.596076448916362,
-    "registros": 125
+    "niveles_vivos": 9.625,
+    "entropia_bits": 2.6485211607436763,
+    "registros": 2048
    },
    "mem_dom_H_condicionada_media": {
-    "niveles_vivos": 7.14453125,
-    "entropia_bits": 2.4588248107860604,
-    "pistas": 4
+    "niveles_vivos": NaN,
+    "entropia_bits": NaN,
+    "pistas": 0
    },
-   "mem_dom_H_condicionada_por_pista": {
-    "red": {
-     "niveles_vivos": 6.828125,
-     "entropia_bits": 2.433243099533057
-    },
-    "vegetable": {
-     "niveles_vivos": 6.734375,
-     "entropia_bits": 2.401379364845712
-    },
-    "herb": {
-     "niveles_vivos": 6.984375,
-     "entropia_bits": 2.4457236345672957
-    },
-    "tomato": {
-     "niveles_vivos": 8.03125,
-     "entropia_bits": 2.554953144198177
-    }
-   },
+   "mem_dom_H_condicionada_por_pista": {},
    "mem_dom_R_dominio_800": {
-    "niveles_vivos": 8.703125,
-    "entropia_bits": 2.538846718318857
+    "niveles_vivos": 9.765625,
+    "entropia_bits": 2.599307996685944
    }
   }
  },
  "emparejamiento_llenado": {
   "apple": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 99,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 16,
-    "media": 38.095238095238095,
-    "max": 72
+    "min": 64,
+    "media": 152.38095238095238,
+    "max": 264
    },
    "ejemplos": {
-    "red": 72,
-    "fruit": 64,
-    "green": 64,
-    "core": 64
+    "red": 264,
+    "fruit": 264,
+    "green": 264,
+    "core": 264
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "car": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 145,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 25,
-    "media": 38.095238095238095,
-    "max": 48
+    "min": 110,
+    "media": 152.38095238095238,
+    "max": 184
    },
    "ejemplos": {
-    "drive": 48,
-    "automobile": 48,
-    "vehicle": 48,
-    "engine": 48
+    "drive": 184,
+    "automobile": 178,
+    "vehicle": 176,
+    "engine": 176
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "cow": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 104,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 14,
-    "media": 38.095238095238095,
-    "max": 64
+    "min": 60,
+    "media": 152.38095238095238,
+    "max": 248
    },
    "ejemplos": {
-    "milk": 64,
-    "animal": 64,
-    "bovine": 64,
-    "cattle": 64
+    "milk": 248,
+    "animal": 248,
+    "bovine": 248,
+    "cattle": 248
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "cup": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 85,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 18,
-    "media": 38.095238095238095,
-    "max": 80
+    "min": 74,
+    "media": 152.38095238095238,
+    "max": 304
    },
    "ejemplos": {
-    "drink": 80,
-    "cup": 72,
-    "trophy": 60,
-    "glass": 60
+    "drink": 304,
+    "cup": 296,
+    "trophy": 228,
+    "glass": 228
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "dog": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 146,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 25,
-    "media": 38.095238095238095,
-    "max": 48
+    "min": 106,
+    "media": 152.38095238095238,
+    "max": 176
    },
    "ejemplos": {
-    "pet": 48,
-    "bark": 48,
-    "canine": 48,
-    "puppy": 48
+    "pet": 176,
+    "bark": 176,
+    "canine": 176,
+    "puppy": 176
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "horse": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 142,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 20,
-    "media": 38.095238095238095,
-    "max": 48
+    "min": 88,
+    "media": 152.38095238095238,
+    "max": 184
    },
    "ejemplos": {
-    "animal": 48,
-    "pony": 48,
-    "riding": 48,
-    "mare": 48
+    "animal": 184,
+    "pony": 184,
+    "riding": 184,
+    "mare": 184
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "pear": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 34,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 23,
-    "media": 38.095238095238095,
-    "max": 72
+    "min": 94,
+    "media": 152.38095238095238,
+    "max": 285
    },
    "ejemplos": {
-    "bosc": 72,
-    "seckel": 72,
-    "anjou": 72,
-    "bartlett": 72
+    "bosc": 285,
+    "seckel": 283,
+    "anjou": 282,
+    "bartlett": 282
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   },
   "tomato": {
-   "instancias": 800,
+   "instancias": 3200,
    "registros_de_etiqueta_L": 39,
    "etiquetas_distintas": 21,
    "instancias_distintas_por_etiqueta": {
-    "min": 20,
-    "media": 38.095238095238095,
-    "max": 105
+    "min": 82,
+    "media": 152.38095238095238,
+    "max": 412
    },
    "ejemplos": {
-    "fruit": 105,
-    "tomato": 100,
-    "red": 63,
-    "vegetable": 63
+    "fruit": 412,
+    "tomato": 410,
+    "red": 246,
+    "vegetable": 246
    },
    "regla": "mem_H.register(label_seq[i % L], z_q[i]): la etiqueta i%L se empareja con la instancia i, sin correspondencia semántica"
   }
@@ -950,155 +661,8 @@
    "detalle": []
   },
   "horse": {
-   "consultas_sin_respuesta": 1,
-   "detalle": [
-    {
-     "query": "has four legs and hooves",
-     "tokens": [
-      {
-       "token": "leg",
-       "coordenadas_etiqueta_sin_soporte": [
-        0,
-        8,
-        12,
-        18,
-        20,
-        33,
-        34,
-        47,
-        56,
-        70,
-        71,
-        72,
-        73,
-        80,
-        82,
-        88,
-        90,
-        93,
-        98,
-        99,
-        100,
-        102,
-        103,
-        104,
-        112,
-        114,
-        118,
-        121,
-        125,
-        131,
-        134,
-        145,
-        150,
-        153,
-        154,
-        156,
-        157,
-        159,
-        165,
-        169,
-        171,
-        172,
-        177,
-        184,
-        185,
-        186,
-        188,
-        189,
-        196,
-        205,
-        211,
-        224,
-        225,
-        226,
-        228,
-        231,
-        242,
-        249,
-        250,
-        252,
-        253,
-        255,
-        262,
-        263,
-        266,
-        269,
-        270,
-        272,
-        274,
-        278,
-        287,
-        288,
-        290,
-        292,
-        298,
-        299
-       ],
-       "n_sin_soporte": 76,
-       "filas_latentes_vacias": 64,
-       "homo_L_coords_en_cero": 76
-      },
-      {
-       "token": "hoof",
-       "coordenadas_etiqueta_sin_soporte": [
-        8,
-        9,
-        10,
-        12,
-        22,
-        36,
-        52,
-        53,
-        67,
-        70,
-        75,
-        76,
-        78,
-        80,
-        83,
-        88,
-        96,
-        99,
-        101,
-        102,
-        103,
-        106,
-        108,
-        109,
-        114,
-        125,
-        130,
-        134,
-        135,
-        141,
-        147,
-        153,
-        157,
-        163,
-        165,
-        170,
-        173,
-        178,
-        182,
-        196,
-        202,
-        218,
-        224,
-        237,
-        257,
-        261,
-        263,
-        278,
-        286
-       ],
-       "n_sin_soporte": 49,
-       "filas_latentes_vacias": 64,
-       "homo_L_coords_en_cero": 49
-      }
-     ]
-    }
-   ]
+   "consultas_sin_respuesta": 0,
+   "detalle": []
   },
   "pear": {
    "consultas_sin_respuesta": 0,

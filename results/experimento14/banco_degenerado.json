@@ -227,17 +227,21 @@
 "niveles": 14,
 "familia": "gris",
 "nombre": "gris 104",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.510265350341797
 },
 {
 "norma": 12.84583854675293,
@@ -247,21 +251,22 @@
 "familia": "gris",
 "nombre": "gris 112",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.732755661010742
+"vecino_clase": "dog",
+"d_vecino": 29.58444595336914
 },
 {
 "norma": 11.20757007598877,
@@ -271,6 +276,8 @@
 "familia": "gris",
 "nombre": "gris 120",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -278,15 +285,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.454240798950195
+"vecino_clase": "cow",
+"d_vecino": 13.909869194030762
 },
 {
 "norma": 10.689976692199707,
@@ -296,6 +303,89 @@
 "familia": "gris",
 "nombre": "gris 128",
 "contenido": [
+"cow",
+"dog",
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": "horse",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 14.231199264526367
+},
+{
+"norma": 10.734718322753906,
+"desv_latente": 1.3312214612960815,
+"desv_pixeles": 0.0,
+"niveles": 12,
+"familia": "gris",
+"nombre": "gris 136",
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": "dog",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 14.616392135620117
+},
+{
+"norma": 11.22956657409668,
+"desv_latente": 1.3932393789291382,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 144",
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
+"contenido_v16": [
+"cow",
+"dog",
+"horse"
+],
+"directorio": "dog",
+"acepta": true,
+"acepta_v16": true,
+"pasa_norma": false,
+"pasa_desv_latente": false,
+"pasa_desv_pixeles": false,
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.032087326049805
+},
+{
+"norma": 11.947075843811035,
+"desv_latente": 1.4821627140045166,
+"desv_pixeles": 0.0,
+"niveles": 14,
+"familia": "gris",
+"nombre": "gris 152",
+"contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -310,71 +400,8 @@
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.244869232177734
-},
-{
-"norma": 10.734718322753906,
-"desv_latente": 1.3312214612960815,
-"desv_pixeles": 0.0,
-"niveles": 12,
-"familia": "gris",
-"nombre": "gris 136",
-"contenido": [],
-"contenido_v16": [
-"cow",
-"dog",
-"horse"
-],
-"directorio": null,
-"acepta": false,
-"acepta_v16": true,
-"pasa_norma": false,
-"pasa_desv_latente": false,
-"pasa_desv_pixeles": false,
-"pasa_niveles": true
-},
-{
-"norma": 11.22956657409668,
-"desv_latente": 1.3932393789291382,
-"desv_pixeles": 0.0,
-"niveles": 14,
-"familia": "gris",
-"nombre": "gris 144",
-"contenido": [],
-"contenido_v16": [
-"cow",
-"dog",
-"horse"
-],
-"directorio": null,
-"acepta": false,
-"acepta_v16": true,
-"pasa_norma": false,
-"pasa_desv_latente": false,
-"pasa_desv_pixeles": false,
-"pasa_niveles": true
-},
-{
-"norma": 11.947075843811035,
-"desv_latente": 1.4821627140045166,
-"desv_pixeles": 0.0,
-"niveles": 14,
-"familia": "gris",
-"nombre": "gris 152",
-"contenido": [],
-"contenido_v16": [
-"cow",
-"dog",
-"horse"
-],
-"directorio": null,
-"acepta": false,
-"acepta_v16": true,
-"pasa_norma": false,
-"pasa_desv_latente": false,
-"pasa_desv_pixeles": false,
-"pasa_niveles": true
+"vecino_clase": "cow",
+"d_vecino": 15.582658767700195
 },
 {
 "norma": 13.038826942443848,
@@ -383,19 +410,25 @@
 "niveles": 13,
 "familia": "gris",
 "nombre": "gris 160",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.498794555664062
 },
 {
 "norma": 14.781571388244629,
@@ -404,18 +437,23 @@
 "niveles": 13,
 "familia": "gris",
 "nombre": "gris 168",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 17.890525817871094
 },
 {
 "norma": 17.339481353759766,
@@ -424,17 +462,21 @@
 "niveles": 14,
 "familia": "gris",
 "nombre": "gris 176",
-"contenido": [],
+"contenido": [
+"cow"
+],
 "contenido_v16": [
 "cow"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 19.94129180908203
 },
 {
 "norma": 20.451801300048828,
@@ -704,7 +746,7 @@
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
+"directorio": "apple",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -806,17 +848,21 @@
 "niveles": 14,
 "familia": "color",
 "nombre": "color (63, 77, 150)",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 27.70622444152832
 },
 {
 "norma": 14.552597045898438,
@@ -825,17 +871,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=2",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 19.726884841918945
 },
 {
 "norma": 10.907942771911621,
@@ -844,17 +894,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=4",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 18.620840072631836
 },
 {
 "norma": 7.213979721069336,
@@ -863,17 +917,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=6",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 23.13956642150879
 },
 {
 "norma": 8.113472938537598,
@@ -882,18 +940,23 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=8",
-"contenido": [],
+"contenido": [
+"dog",
+"horse"
+],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 28.50945472717285
 },
 {
 "norma": 9.886739730834961,
@@ -903,21 +966,22 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=10",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.18585205078125
+"vecino_clase": "dog",
+"d_vecino": 28.245338439941406
 },
 {
 "norma": 10.762109756469727,
@@ -927,21 +991,22 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=12",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.42449951171875
+"vecino_clase": "dog",
+"d_vecino": 28.130767822265625
 },
 {
 "norma": 11.13219165802002,
@@ -951,21 +1016,22 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=14",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.150890350341797
+"vecino_clase": "dog",
+"d_vecino": 28.073843002319336
 },
 {
 "norma": 11.296248435974121,
@@ -975,21 +1041,22 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=16",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.06694793701172
+"vecino_clase": "dog",
+"d_vecino": 28.076004028320312
 },
 {
 "norma": 11.356234550476074,
@@ -999,6 +1066,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=18",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1006,15 +1075,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.05995750427246
+"vecino_clase": "cow",
+"d_vecino": 15.577414512634277
 },
 {
 "norma": 11.35056209564209,
@@ -1024,6 +1093,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=20",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1031,15 +1102,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.102128982543945
+"vecino_clase": "cow",
+"d_vecino": 15.551816940307617
 },
 {
 "norma": 11.342320442199707,
@@ -1049,6 +1120,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=22",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1056,15 +1129,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.144344329833984
+"vecino_clase": "cow",
+"d_vecino": 15.542923927307129
 },
 {
 "norma": 11.304807662963867,
@@ -1074,6 +1147,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=24",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1081,15 +1156,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.197032928466797
+"vecino_clase": "cow",
+"d_vecino": 15.526182174682617
 },
 {
 "norma": 11.268311500549316,
@@ -1099,6 +1174,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=26",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1106,15 +1183,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.25382423400879
+"vecino_clase": "cow",
+"d_vecino": 15.502883911132812
 },
 {
 "norma": 11.237974166870117,
@@ -1124,6 +1201,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=28",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1131,15 +1210,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.300748825073242
+"vecino_clase": "cow",
+"d_vecino": 15.497000694274902
 },
 {
 "norma": 11.201851844787598,
@@ -1149,6 +1228,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=30",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1156,15 +1237,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.36751937866211
+"vecino_clase": "cow",
+"d_vecino": 15.50615406036377
 },
 {
 "norma": 11.179203033447266,
@@ -1174,6 +1255,8 @@
 "familia": "desenfoque",
 "nombre": "apple desenfoque r=32",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1181,15 +1264,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.424341201782227
+"vecino_clase": "cow",
+"d_vecino": 15.511648178100586
 },
 {
 "norma": 24.7196044921875,
@@ -1198,17 +1281,21 @@
 "niveles": 15,
 "familia": "contraste",
 "nombre": "apple contraste 0.5",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 7.875736236572266
 },
 {
 "norma": 20.175369262695312,
@@ -1217,17 +1304,21 @@
 "niveles": 14,
 "familia": "contraste",
 "nombre": "apple contraste 0.4",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 10.740714073181152
 },
 {
 "norma": 14.323929786682129,
@@ -1236,21 +1327,25 @@
 "niveles": 14,
 "familia": "contraste",
 "nombre": "apple contraste 0.3",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 16.952556610107422
 },
 {
 "norma": 9.91468334197998,
-"desv_latente": 1.2381668090820312,
+"desv_latente": 1.2381669282913208,
 "desv_pixeles": 6.71712371306071,
 "niveles": 14,
 "familia": "contraste",
@@ -1273,6 +1368,8 @@
 "familia": "contraste",
 "nombre": "apple contraste 0.1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1280,15 +1377,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.243471145629883
+"vecino_clase": "cow",
+"d_vecino": 14.165641784667969
 },
 {
 "norma": 10.73198413848877,
@@ -1298,6 +1395,8 @@
 "familia": "contraste",
 "nombre": "apple contraste 0.05",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1305,15 +1404,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.023983001708984
+"vecino_clase": "cow",
+"d_vecino": 14.051413536071777
 },
 {
 "norma": 33.34351348876953,
@@ -1322,17 +1421,21 @@
 "niveles": 16,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=2",
-"contenido": [],
+"contenido": [
+"car"
+],
 "contenido_v16": [
 "car"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "car",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "car",
+"d_vecino": 15.74211311340332
 },
 {
 "norma": 24.188459396362305,
@@ -1358,17 +1461,21 @@
 "niveles": 16,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=6",
-"contenido": [],
+"contenido": [
+"horse"
+],
 "contenido_v16": [
 "horse"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 9.941363334655762
 },
 {
 "norma": 18.50498390197754,
@@ -1377,19 +1484,25 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=8",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 18.28909683227539
 },
 {
 "norma": 16.965917587280273,
@@ -1398,19 +1511,25 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=10",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.746732711791992
 },
 {
 "norma": 16.30767822265625,
@@ -1419,19 +1538,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=12",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.125625610351562
 },
 {
 "norma": 15.951549530029297,
@@ -1440,19 +1565,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=14",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.845988273620605
 },
 {
 "norma": 15.653596878051758,
@@ -1461,19 +1592,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=16",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.683760643005371
 },
 {
 "norma": 15.438522338867188,
@@ -1482,19 +1619,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=18",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.586981773376465
 },
 {
 "norma": 15.262115478515625,
@@ -1503,19 +1646,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=20",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.530426979064941
 },
 {
 "norma": 15.071837425231934,
@@ -1524,19 +1673,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=22",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.459065437316895
 },
 {
 "norma": 14.89910888671875,
@@ -1545,19 +1700,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=24",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.406375885009766
 },
 {
 "norma": 14.732227325439453,
@@ -1566,19 +1727,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=26",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.355118751525879
 },
 {
 "norma": 14.583709716796875,
@@ -1587,19 +1754,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=28",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.331167221069336
 },
 {
 "norma": 14.483378410339355,
@@ -1608,19 +1781,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=30",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.314241409301758
 },
 {
 "norma": 14.376784324645996,
@@ -1629,19 +1808,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "car desenfoque r=32",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.30549430847168
 },
 {
 "norma": 37.63711929321289,
@@ -1702,7 +1887,7 @@
 "contenido_v16": [
 "car"
 ],
-"directorio": null,
+"directorio": "car",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -1719,17 +1904,21 @@
 "niveles": 12,
 "familia": "contraste",
 "nombre": "car contraste 0.2",
-"contenido": [],
+"contenido": [
+"car"
+],
 "contenido_v16": [
 "car"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "car",
+"d_vecino": 30.630617141723633
 },
 {
 "norma": 12.323257446289062,
@@ -1755,18 +1944,23 @@
 "niveles": 12,
 "familia": "contraste",
 "nombre": "car contraste 0.05",
-"contenido": [],
+"contenido": [
+"dog",
+"horse"
+],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 31.249439239501953
 },
 {
 "norma": 28.249671936035156,
@@ -1781,7 +1975,7 @@
 "contenido_v16": [
 "cow"
 ],
-"directorio": null,
+"directorio": "cow",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -1798,17 +1992,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=4",
-"contenido": [],
+"contenido": [
+"cow"
+],
 "contenido_v16": [
 "cow"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.654952049255371
 },
 {
 "norma": 10.919384002685547,
@@ -1817,18 +2015,23 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=6",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 12.131229400634766
 },
 {
 "norma": 10.99362564086914,
@@ -1838,6 +2041,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=8",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1845,15 +2050,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.983890533447266
+"vecino_clase": "cow",
+"d_vecino": 11.962474822998047
 },
 {
 "norma": 11.366570472717285,
@@ -1863,6 +2068,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=10",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1870,15 +2077,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.308069229125977
+"vecino_clase": "cow",
+"d_vecino": 12.04272747039795
 },
 {
 "norma": 11.517387390136719,
@@ -1888,6 +2095,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=12",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1895,15 +2104,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.09004783630371
+"vecino_clase": "cow",
+"d_vecino": 12.174575805664062
 },
 {
 "norma": 11.571412086486816,
@@ -1913,6 +2122,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=14",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1920,15 +2131,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.029558181762695
+"vecino_clase": "cow",
+"d_vecino": 12.29734992980957
 },
 {
 "norma": 11.579872131347656,
@@ -1938,6 +2149,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=16",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1945,15 +2158,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.989238739013672
+"vecino_clase": "cow",
+"d_vecino": 12.429280281066895
 },
 {
 "norma": 11.61868953704834,
@@ -1963,6 +2176,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=18",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1970,15 +2185,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.902299880981445
+"vecino_clase": "cow",
+"d_vecino": 12.546825408935547
 },
 {
 "norma": 11.680727005004883,
@@ -1988,6 +2203,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=20",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -1995,15 +2212,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.805339813232422
+"vecino_clase": "cow",
+"d_vecino": 12.645139694213867
 },
 {
 "norma": 11.737220764160156,
@@ -2013,6 +2230,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=22",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2020,15 +2239,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.70353889465332
+"vecino_clase": "cow",
+"d_vecino": 12.738534927368164
 },
 {
 "norma": 11.814559936523438,
@@ -2038,6 +2257,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=24",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2045,15 +2266,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.59870147705078
+"vecino_clase": "cow",
+"d_vecino": 12.811169624328613
 },
 {
 "norma": 11.893035888671875,
@@ -2063,6 +2284,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=26",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2070,15 +2293,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.498571395874023
+"vecino_clase": "cow",
+"d_vecino": 12.85927677154541
 },
 {
 "norma": 11.99323558807373,
@@ -2088,6 +2311,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=28",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2095,15 +2320,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.394107818603516
+"vecino_clase": "cow",
+"d_vecino": 12.890800476074219
 },
 {
 "norma": 12.076679229736328,
@@ -2113,6 +2338,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=30",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2120,15 +2347,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.30483627319336
+"vecino_clase": "cow",
+"d_vecino": 12.913246154785156
 },
 {
 "norma": 12.165534019470215,
@@ -2138,6 +2365,8 @@
 "familia": "desenfoque",
 "nombre": "cow desenfoque r=32",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2145,15 +2374,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.215909957885742
+"vecino_clase": "cow",
+"d_vecino": 12.943167686462402
 },
 {
 "norma": 38.15931701660156,
@@ -2214,7 +2443,7 @@
 "contenido_v16": [
 "cow"
 ],
-"directorio": null,
+"directorio": "cow",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -2237,7 +2466,7 @@
 "contenido_v16": [
 "cow"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
@@ -2255,6 +2484,8 @@
 "familia": "contraste",
 "nombre": "cow contraste 0.1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2262,15 +2493,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.581544876098633
+"vecino_clase": "cow",
+"d_vecino": 13.699260711669922
 },
 {
 "norma": 12.276824951171875,
@@ -2280,21 +2511,22 @@
 "familia": "contraste",
 "nombre": "cow contraste 0.05",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.98179817199707
+"vecino_clase": "dog",
+"d_vecino": 29.82280158996582
 },
 {
 "norma": 23.565204620361328,
@@ -2337,17 +2569,21 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=6",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 22.34559440612793
 },
 {
 "norma": 17.365665435791016,
@@ -2356,17 +2592,21 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=8",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 23.79818344116211
 },
 {
 "norma": 15.122838020324707,
@@ -2375,17 +2615,21 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=10",
-"contenido": [],
+"contenido": [
+"horse"
+],
 "contenido_v16": [
 "horse"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 17.301681518554688
 },
 {
 "norma": 13.48370361328125,
@@ -2394,18 +2638,23 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=12",
-"contenido": [],
+"contenido": [
+"dog",
+"horse"
+],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 30.447542190551758
 },
 {
 "norma": 12.236371040344238,
@@ -2415,21 +2664,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=14",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.573227882385254
+"vecino_clase": "dog",
+"d_vecino": 29.7377986907959
 },
 {
 "norma": 11.450211524963379,
@@ -2439,21 +2689,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=16",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.362249374389648
+"vecino_clase": "dog",
+"d_vecino": 29.308273315429688
 },
 {
 "norma": 10.962288856506348,
@@ -2463,21 +2714,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=18",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.32210922241211
+"vecino_clase": "dog",
+"d_vecino": 29.032636642456055
 },
 {
 "norma": 10.820517539978027,
@@ -2487,21 +2739,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=20",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.284947395324707
+"vecino_clase": "dog",
+"d_vecino": 28.912202835083008
 },
 {
 "norma": 10.808334350585938,
@@ -2511,21 +2764,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=22",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.312202453613281
+"vecino_clase": "dog",
+"d_vecino": 28.857555389404297
 },
 {
 "norma": 10.884685516357422,
@@ -2535,21 +2789,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=24",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.330811500549316
+"vecino_clase": "dog",
+"d_vecino": 28.840625762939453
 },
 {
 "norma": 10.999823570251465,
@@ -2559,21 +2814,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=26",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.336264610290527
+"vecino_clase": "dog",
+"d_vecino": 28.822120666503906
 },
 {
 "norma": 11.13050651550293,
@@ -2583,21 +2839,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=28",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.321648597717285
+"vecino_clase": "dog",
+"d_vecino": 28.792949676513672
 },
 {
 "norma": 11.262929916381836,
@@ -2607,21 +2864,22 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=30",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.304132461547852
+"vecino_clase": "dog",
+"d_vecino": 28.76891326904297
 },
 {
 "norma": 11.40195083618164,
@@ -2631,6 +2889,8 @@
 "familia": "desenfoque",
 "nombre": "cup desenfoque r=32",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2638,15 +2898,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 15.263875007629395
+"vecino_clase": "cow",
+"d_vecino": 14.078635215759277
 },
 {
 "norma": 21.601640701293945,
@@ -2661,7 +2921,7 @@
 "contenido_v16": [
 "cup"
 ],
-"directorio": null,
+"directorio": "cup",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -2684,7 +2944,7 @@
 "contenido_v16": [
 "cup"
 ],
-"directorio": null,
+"directorio": "cup",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
@@ -2695,8 +2955,8 @@
 "d_vecino": 14.850324630737305
 },
 {
-"norma": 9.513762474060059,
-"desv_latente": 1.1775411367416382,
+"norma": 9.513866424560547,
+"desv_latente": 1.177553653717041,
 "desv_pixeles": 19.6231915800922,
 "niveles": 12,
 "familia": "contraste",
@@ -2712,16 +2972,16 @@
 "pasa_niveles": true
 },
 {
-"norma": 8.85117244720459,
-"desv_latente": 1.106328010559082,
+"norma": 8.851190567016602,
+"desv_latente": 1.1063302755355835,
 "desv_pixeles": 13.13917559691176,
 "niveles": 14,
 "familia": "contraste",
 "nombre": "cup contraste 0.2",
 "contenido": [],
 "contenido_v16": [],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": false,
 "pasa_norma": false,
 "pasa_desv_latente": false,
@@ -2736,21 +2996,22 @@
 "familia": "contraste",
 "nombre": "cup contraste 0.1",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.306137084960938
+"vecino_clase": "dog",
+"d_vecino": 31.221363067626953
 },
 {
 "norma": 12.315352439880371,
@@ -2760,21 +3021,22 @@
 "familia": "contraste",
 "nombre": "cup contraste 0.05",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.11286735534668
+"vecino_clase": "dog",
+"d_vecino": 29.901384353637695
 },
 {
 "norma": 19.819557189941406,
@@ -2789,7 +3051,7 @@
 "contenido_v16": [
 "cow"
 ],
-"directorio": null,
+"directorio": "cow",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -2806,19 +3068,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=4",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.460416793823242
 },
 {
 "norma": 16.797548294067383,
@@ -2828,6 +3096,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=6",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2835,15 +3105,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 12.165985107421875
+"vecino_clase": "cow",
+"d_vecino": 16.63491439819336
 },
 {
 "norma": 16.483978271484375,
@@ -2853,6 +3123,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=8",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2860,15 +3132,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 12.184082984924316
+"vecino_clase": "cow",
+"d_vecino": 16.683195114135742
 },
 {
 "norma": 16.105491638183594,
@@ -2878,6 +3150,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=10",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2885,15 +3159,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 12.518905639648438
+"vecino_clase": "cow",
+"d_vecino": 16.40740203857422
 },
 {
 "norma": 15.75887680053711,
@@ -2903,6 +3177,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=12",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2910,15 +3186,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 12.861048698425293
+"vecino_clase": "cow",
+"d_vecino": 16.092021942138672
 },
 {
 "norma": 15.4858980178833,
@@ -2928,6 +3204,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=14",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2935,15 +3213,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 13.165139198303223
+"vecino_clase": "cow",
+"d_vecino": 15.800386428833008
 },
 {
 "norma": 15.202011108398438,
@@ -2953,6 +3231,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=16",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2960,15 +3240,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 13.432539939880371
+"vecino_clase": "cow",
+"d_vecino": 15.562702178955078
 },
 {
 "norma": 14.933780670166016,
@@ -2978,6 +3258,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=18",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -2985,15 +3267,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 13.670978546142578
+"vecino_clase": "cow",
+"d_vecino": 15.34465503692627
 },
 {
 "norma": 14.684661865234375,
@@ -3003,6 +3285,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=20",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3010,15 +3294,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 13.872727394104004
+"vecino_clase": "cow",
+"d_vecino": 15.176238059997559
 },
 {
 "norma": 14.429179191589355,
@@ -3028,6 +3312,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=22",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3035,15 +3321,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.088762283325195
+"vecino_clase": "cow",
+"d_vecino": 15.014518737792969
 },
 {
 "norma": 14.18420124053955,
@@ -3053,6 +3339,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=24",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3060,15 +3348,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.276291847229004
+"vecino_clase": "cow",
+"d_vecino": 14.885588645935059
 },
 {
 "norma": 13.989545822143555,
@@ -3078,6 +3366,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=26",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3085,15 +3375,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.423870086669922
+"vecino_clase": "cow",
+"d_vecino": 14.797250747680664
 },
 {
 "norma": 13.828081130981445,
@@ -3103,6 +3393,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=28",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3110,15 +3402,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.545877456665039
+"vecino_clase": "cow",
+"d_vecino": 14.730242729187012
 },
 {
 "norma": 13.676512718200684,
@@ -3128,6 +3420,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=30",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3135,15 +3429,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.662796020507812
+"vecino_clase": "cow",
+"d_vecino": 14.683871269226074
 },
 {
 "norma": 13.54061508178711,
@@ -3153,6 +3447,8 @@
 "familia": "desenfoque",
 "nombre": "dog desenfoque r=32",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3160,15 +3456,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 14.756163597106934
+"vecino_clase": "cow",
+"d_vecino": 14.653489112854004
 },
 {
 "norma": 13.55531120300293,
@@ -3183,7 +3479,7 @@
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
+"directorio": "dog",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
@@ -3200,18 +3496,23 @@
 "niveles": 12,
 "familia": "contraste",
 "nombre": "dog contraste 0.4",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.829452514648438
 },
 {
 "norma": 11.913182258605957,
@@ -3220,18 +3521,23 @@
 "niveles": 12,
 "familia": "contraste",
 "nombre": "dog contraste 0.3",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.359086990356445
 },
 {
 "norma": 11.68856143951416,
@@ -3241,21 +3547,22 @@
 "familia": "contraste",
 "nombre": "dog contraste 0.2",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.349050521850586
+"vecino_clase": "dog",
+"d_vecino": 29.370832443237305
 },
 {
 "norma": 11.172158241271973,
@@ -3265,6 +3572,8 @@
 "familia": "contraste",
 "nombre": "dog contraste 0.1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3272,15 +3581,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.471227645874023
+"vecino_clase": "cow",
+"d_vecino": 14.461634635925293
 },
 {
 "norma": 11.273886680603027,
@@ -3290,6 +3599,8 @@
 "familia": "contraste",
 "nombre": "dog contraste 0.05",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3297,15 +3608,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.202131271362305
+"vecino_clase": "cow",
+"d_vecino": 13.935934066772461
 },
 {
 "norma": 32.48229217529297,
@@ -3331,8 +3642,8 @@
 "d_vecino": 7.155173301696777
 },
 {
-"norma": 26.77716064453125,
-"desv_latente": 3.293985366821289,
+"norma": 26.777019500732422,
+"desv_latente": 3.2939679622650146,
 "desv_pixeles": 22.516126464878937,
 "niveles": 16,
 "familia": "desenfoque",
@@ -3343,7 +3654,7 @@
 "contenido_v16": [
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -3351,7 +3662,7 @@
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
 "vecino_clase": "horse",
-"d_vecino": 5.829619407653809
+"d_vecino": 5.829543113708496
 },
 {
 "norma": 21.222158432006836,
@@ -3360,17 +3671,21 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=6",
-"contenido": [],
+"contenido": [
+"horse"
+],
 "contenido_v16": [
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "horse",
+"d_vecino": 6.389284610748291
 },
 {
 "norma": 16.885086059570312,
@@ -3379,19 +3694,25 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=8",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 18.4129695892334
 },
 {
 "norma": 15.49057388305664,
@@ -3400,19 +3721,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=10",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.994173049926758
 },
 {
 "norma": 14.981736183166504,
@@ -3421,19 +3748,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=12",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.568513870239258
 },
 {
 "norma": 14.665536880493164,
@@ -3442,19 +3775,25 @@
 "niveles": 12,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=14",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.328771591186523
 },
 {
 "norma": 14.39785099029541,
@@ -3463,19 +3802,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=16",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.153759002685547
 },
 {
 "norma": 14.179556846618652,
@@ -3484,19 +3829,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=18",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.012022018432617
 },
 {
 "norma": 14.004874229431152,
@@ -3505,40 +3856,52 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=20",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.892899513244629
 },
 {
-"norma": 13.816422462463379,
-"desv_latente": 1.6999597549438477,
+"norma": 13.816434860229492,
+"desv_latente": 1.6999613046646118,
 "desv_pixeles": 8.941799144978722,
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=22",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.778416633605957
 },
 {
 "norma": 13.670127868652344,
@@ -3547,40 +3910,52 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=24",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.678380966186523
 },
 {
-"norma": 13.535052299499512,
-"desv_latente": 1.665874719619751,
+"norma": 13.535062789916992,
+"desv_latente": 1.6658759117126465,
 "desv_pixeles": 7.2391897044212845,
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=26",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.596891403198242
 },
 {
 "norma": 13.428935050964355,
@@ -3589,19 +3964,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=28",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.533341407775879
 },
 {
 "norma": 13.358368873596191,
@@ -3610,19 +3991,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=30",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.510208129882812
 },
 {
 "norma": 13.282693862915039,
@@ -3631,19 +4018,25 @@
 "niveles": 13,
 "familia": "desenfoque",
 "nombre": "horse desenfoque r=32",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 15.479606628417969
 },
 {
 "norma": 25.206296920776367,
@@ -3658,7 +4051,7 @@
 "contenido_v16": [
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -3669,8 +4062,8 @@
 "d_vecino": 7.160953044891357
 },
 {
-"norma": 20.761516571044922,
-"desv_latente": 2.5503556728363037,
+"norma": 20.76152229309082,
+"desv_latente": 2.55035662651062,
 "desv_pixeles": 11.590943677398219,
 "niveles": 17,
 "familia": "contraste",
@@ -3681,7 +4074,7 @@
 "contenido_v16": [
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
@@ -3689,7 +4082,7 @@
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
 "vecino_clase": "horse",
-"d_vecino": 7.898197650909424
+"d_vecino": 7.898210048675537
 },
 {
 "norma": 15.658101081848145,
@@ -3699,6 +4092,8 @@
 "familia": "contraste",
 "nombre": "horse contraste 0.3",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3706,15 +4101,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 12.070059776306152
+"vecino_clase": "cow",
+"d_vecino": 16.97425079345703
 },
 {
 "norma": 12.561935424804688,
@@ -3724,21 +4119,22 @@
 "familia": "contraste",
 "nombre": "horse contraste 0.2",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.563594818115234
+"vecino_clase": "dog",
+"d_vecino": 31.397109985351562
 },
 {
 "norma": 11.293904304504395,
@@ -3748,21 +4144,22 @@
 "familia": "contraste",
 "nombre": "horse contraste 0.1",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.456161499023438
+"vecino_clase": "dog",
+"d_vecino": 30.95005226135254
 },
 {
 "norma": 10.776476860046387,
@@ -3772,6 +4169,8 @@
 "familia": "contraste",
 "nombre": "horse contraste 0.05",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3779,15 +4178,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.181270599365234
+"vecino_clase": "cow",
+"d_vecino": 14.625207901000977
 },
 {
 "norma": 25.50780487060547,
@@ -3796,17 +4195,21 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=2",
-"contenido": [],
+"contenido": [
+"pear"
+],
 "contenido_v16": [
 "pear"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "pear",
+"d_vecino": 13.868447303771973
 },
 {
 "norma": 15.000370979309082,
@@ -3815,17 +4218,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=4",
-"contenido": [],
+"contenido": [
+"cow"
+],
 "contenido_v16": [
 "cow"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 16.92685890197754
 },
 {
 "norma": 12.655521392822266,
@@ -3869,21 +4276,22 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=10",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 19.054786682128906
+"vecino_clase": "dog",
+"d_vecino": 30.253990173339844
 },
 {
 "norma": 10.371726036071777,
@@ -3893,6 +4301,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=12",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3900,15 +4310,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.06364631652832
+"vecino_clase": "cow",
+"d_vecino": 15.07939624786377
 },
 {
 "norma": 10.353240966796875,
@@ -3918,6 +4328,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=14",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3925,15 +4337,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.56586265563965
+"vecino_clase": "cow",
+"d_vecino": 14.895252227783203
 },
 {
 "norma": 10.379674911499023,
@@ -3943,6 +4355,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=16",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3950,15 +4364,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.291160583496094
+"vecino_clase": "cow",
+"d_vecino": 14.719611167907715
 },
 {
 "norma": 10.443907737731934,
@@ -3968,6 +4382,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=18",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -3975,15 +4391,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.170984268188477
+"vecino_clase": "cow",
+"d_vecino": 14.503583908081055
 },
 {
 "norma": 10.506922721862793,
@@ -3993,6 +4409,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=20",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4000,15 +4418,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.156452178955078
+"vecino_clase": "cow",
+"d_vecino": 14.320350646972656
 },
 {
 "norma": 10.592041969299316,
@@ -4018,6 +4436,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=22",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4025,15 +4445,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.10130500793457
+"vecino_clase": "cow",
+"d_vecino": 14.176876068115234
 },
 {
 "norma": 10.671213150024414,
@@ -4043,6 +4463,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=24",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4050,15 +4472,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.05337142944336
+"vecino_clase": "cow",
+"d_vecino": 14.092251777648926
 },
 {
 "norma": 10.754068374633789,
@@ -4068,6 +4490,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=26",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4075,15 +4499,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.00067901611328
+"vecino_clase": "cow",
+"d_vecino": 14.032896995544434
 },
 {
 "norma": 10.845197677612305,
@@ -4093,6 +4517,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=28",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4100,15 +4526,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.939672470092773
+"vecino_clase": "cow",
+"d_vecino": 13.99040412902832
 },
 {
 "norma": 10.947789192199707,
@@ -4118,6 +4544,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=30",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4125,15 +4553,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.87385368347168
+"vecino_clase": "cow",
+"d_vecino": 13.950469970703125
 },
 {
 "norma": 11.058050155639648,
@@ -4143,6 +4571,8 @@
 "familia": "desenfoque",
 "nombre": "pear desenfoque r=32",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4150,15 +4580,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 16.763919830322266
+"vecino_clase": "cow",
+"d_vecino": 13.944576263427734
 },
 {
 "norma": 23.4979248046875,
@@ -4230,17 +4660,21 @@
 "niveles": 14,
 "familia": "contraste",
 "nombre": "pear contraste 0.2",
-"contenido": [],
+"contenido": [
+"cow"
+],
 "contenido_v16": [
 "cow"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 12.052495956420898
 },
 {
 "norma": 11.11884880065918,
@@ -4250,6 +4684,8 @@
 "familia": "contraste",
 "nombre": "pear contraste 0.1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4257,15 +4693,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.978139877319336
+"vecino_clase": "cow",
+"d_vecino": 13.993926048278809
 },
 {
 "norma": 11.28807544708252,
@@ -4275,6 +4711,8 @@
 "familia": "contraste",
 "nombre": "pear contraste 0.05",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4282,15 +4720,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.33919906616211
+"vecino_clase": "cow",
+"d_vecino": 13.866369247436523
 },
 {
 "norma": 28.84363555908203,
@@ -4356,17 +4794,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=8",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.114511489868164
 },
 {
 "norma": 11.720233917236328,
@@ -4375,17 +4817,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=10",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.132949829101562
 },
 {
 "norma": 13.141728401184082,
@@ -4394,17 +4840,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=12",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.174673080444336
 },
 {
 "norma": 13.872803688049316,
@@ -4413,17 +4863,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=14",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.19071388244629
 },
 {
 "norma": 14.323868751525879,
@@ -4432,17 +4886,21 @@
 "niveles": 14,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=16",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.188074111938477
 },
 {
 "norma": 14.656129837036133,
@@ -4451,17 +4909,21 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=18",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.15993881225586
 },
 {
 "norma": 14.900055885314941,
@@ -4470,17 +4932,21 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=20",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 29.11660385131836
 },
 {
 "norma": 15.022330284118652,
@@ -4489,18 +4955,23 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=22",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.763734817504883
 },
 {
 "norma": 15.11063003540039,
@@ -4509,18 +4980,23 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=24",
-"contenido": [],
+"contenido": [
+"cow",
+"dog"
+],
 "contenido_v16": [
 "cow",
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.730681419372559
 },
 {
 "norma": 15.181650161743164,
@@ -4529,19 +5005,25 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=26",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.70576000213623
 },
 {
 "norma": 15.162019729614258,
@@ -4550,19 +5032,25 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=28",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.658761024475098
 },
 {
 "norma": 15.134920120239258,
@@ -4571,19 +5059,25 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=30",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.639307975769043
 },
 {
 "norma": 15.089874267578125,
@@ -4592,19 +5086,25 @@
 "niveles": 15,
 "familia": "desenfoque",
 "nombre": "tomato desenfoque r=32",
-"contenido": [],
+"contenido": [
+"cow",
+"dog",
+"horse"
+],
 "contenido_v16": [
 "cow",
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "horse",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "cow",
+"d_vecino": 13.62775707244873
 },
 {
 "norma": 18.0665340423584,
@@ -4664,17 +5164,21 @@
 "niveles": 13,
 "familia": "contraste",
 "nombre": "tomato contraste 0.2",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 30.230758666992188
 },
 {
 "norma": 10.886168479919434,
@@ -4684,6 +5188,8 @@
 "familia": "contraste",
 "nombre": "tomato contraste 0.1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4691,15 +5197,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.770769119262695
+"vecino_clase": "cow",
+"d_vecino": 13.931827545166016
 },
 {
 "norma": 10.885115623474121,
@@ -4709,6 +5215,8 @@
 "familia": "contraste",
 "nombre": "tomato contraste 0.05",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4716,15 +5224,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 17.89630699157715
+"vecino_clase": "cow",
+"d_vecino": 13.881816864013672
 },
 {
 "norma": 10.703865051269531,
@@ -4734,6 +5242,8 @@
 "familia": "gris con ruido",
 "nombre": "gris 127 + ruido sigma=1",
 "contenido": [
+"cow",
+"dog",
 "horse"
 ],
 "contenido_v16": [
@@ -4741,15 +5251,15 @@
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.441722869873047
+"vecino_clase": "cow",
+"d_vecino": 14.288883209228516
 },
 {
 "norma": 10.758977890014648,
@@ -4759,21 +5269,22 @@
 "familia": "gris con ruido",
 "nombre": "gris 127 + ruido sigma=2",
 "contenido": [
+"dog",
 "horse"
 ],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
+"directorio": "horse",
 "acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
-"vecino_clase": "horse",
-"d_vecino": 18.761009216308594
+"vecino_clase": "dog",
+"d_vecino": 31.079313278198242
 },
 {
 "norma": 11.203499794006348,
@@ -4782,18 +5293,23 @@
 "niveles": 12,
 "familia": "gris con ruido",
 "nombre": "gris 127 + ruido sigma=4",
-"contenido": [],
+"contenido": [
+"dog",
+"horse"
+],
 "contenido_v16": [
 "dog",
 "horse"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 31.35309600830078
 },
 {
 "norma": 22.636737823486328,
@@ -4802,17 +5318,21 @@
 "niveles": 13,
 "familia": "gris con ruido",
 "nombre": "gris 127 + ruido sigma=8",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "apple",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": true,
 "pasa_desv_latente": true,
 "pasa_desv_pixeles": false,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 16.40373992919922
 },
 {
 "norma": 109.17903137207031,
@@ -4855,17 +5375,21 @@
 "niveles": 13,
 "familia": "estructura",
 "nombre": "gradiente horizontal",
-"contenido": [],
+"contenido": [
+"dog"
+],
 "contenido_v16": [
 "dog"
 ],
-"directorio": null,
-"acepta": false,
+"directorio": "dog",
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "dog",
+"d_vecino": 30.79317855834961
 },
 {
 "norma": 15.40672779083252,
@@ -4874,17 +5398,21 @@
 "niveles": 13,
 "familia": "estructura",
 "nombre": "gradiente radial",
-"contenido": [],
+"contenido": [
+"apple"
+],
 "contenido_v16": [
 "apple"
 ],
 "directorio": null,
-"acepta": false,
+"acepta": true,
 "acepta_v16": true,
 "pasa_norma": false,
 "pasa_desv_latente": false,
 "pasa_desv_pixeles": true,
-"pasa_niveles": true
+"pasa_niveles": true,
+"vecino_clase": "apple",
+"d_vecino": 23.647396087646484
 },
 {
 "norma": 117.37611389160156,

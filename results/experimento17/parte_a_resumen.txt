@@ -27,13 +27,13 @@ Imágenes evaluadas: 118; ruteadas: 116; ruteo correcto: 116
 [oficial (muestreo, 3 repeticiones) · diccionario cuant]  lecturas 348, reconocidas 339
   top-3 en vocabulario de la clase (métrica oficial)  97.4 %
   top-3 con palabra exclusiva de la clase             96.3 %
-  top-1 en vocabulario de la clase                   96.6 %
-  top-1 exclusiva de la clase                        86.2 %
+  top-1 en vocabulario de la clase                   96.3 %
+  top-1 exclusiva de la clase                        85.9 %
   top-1 = nombre de la clase                         45.7 %
   top-1 dentro del vocab. del destino = nombre       45.7 %
   rango del nombre de la clase: mediana 2, p90 52 (de 159 palabras)
   margen coseno top1-top2: mediana 0.024, p10 0.003
-  palabras top-1 más frecuentes: dog 40, horse 40, fruit 32, car 27, cow 26, drink 14, tomato 14, vegetable 13, green 10, pear 10
+  palabras top-1 más frecuentes: dog 40, horse 40, fruit 32, car 27, cow 26, drink 14, tomato 14, vegetable 12, green 10, pear 10
 
 [prototipo (argmax) · diccionario cuant]  lecturas 116, reconocidas 113
   top-3 en vocabulario de la clase (métrica oficial)  97.4 %

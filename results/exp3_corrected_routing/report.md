@@ -16,7 +16,7 @@
 | early accuracy | ~34% | **81.2%** |
 | early rechazo | — | 5.0% |
 | mature accuracy B1 | 98.8% (ablation B1, v3) | **81.2%** |
-| mature accuracy RAW | 33.8% | 71.2% |
+| mature accuracy RAW | 33.8% | 72.5% |
 | fidelidad | 100% (sobre routing sesgado) | **92.5%** (sobre routing correcto) |
 | M_dir counts | [81, 52, 31] estilo-crudo (v3) | [46, 16, 40, 25, 30, 18, 21, 31] |
 | M_dir entropía | — | 2.914 bits (máx 3.000) |

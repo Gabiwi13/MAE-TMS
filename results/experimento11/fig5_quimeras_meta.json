@@ -4,17 +4,17 @@
   "truth": "tomato",
   "pista": "red",
   "M_nn_cls": "apple",
-  "M_compat": 0.6875,
-  "M_d_nn": 45.98529815673828,
-  "oraculo_d_nn": 17.91598892211914
+  "M_compat": 0.78125,
+  "M_d_nn": 51.29609298706055,
+  "oraculo_d_nn": 28.54219627380371
  },
  {
   "query": "a bruised red apple",
   "truth": "apple",
   "pista": "red",
-  "M_nn_cls": "horse",
-  "M_compat": 0.71875,
-  "M_d_nn": 45.140655517578125,
-  "oraculo_d_nn": 20.537424087524414
+  "M_nn_cls": "dog",
+  "M_compat": 0.765625,
+  "M_d_nn": 47.78463363647461,
+  "oraculo_d_nn": 26.103443145751953
  }
 ]

@@ -6,11 +6,11 @@ Olvido exacto y privacidad de la MAE (propuesta_olvido_y_flota.md, parte A).
   contenido: celdas distintas contra reconstruir sin ellas 0
   fase A: percepciones con otro destino al reconstruir 1 de 2160; celdas de directorio distintas 15627
   test: decisiones distintas entre olvidar y reconstruir 0 de 2162; cambian respecto de antes de olvidar 0
-  tiempo: olvidar 0.09 s · reconstruir 30.4 s · construir 29.0 s · reentrenar la cabeza logística 0.3 s
+  tiempo: olvidar 0.09 s · reconstruir 28.0 s · construir 28.6 s · reentrenar la cabeza logística 0.2 s
 
 [A1b · olvidar transacciones] 213 de 2133 percepciones de fase A
   directorios: celdas distintas contra rehacer la fase A sin ellas 0; contenido 0
-  test: decisiones distintas 0 de 2162; cambian respecto de antes de olvidar 13; olvidar 2.67 s
+  test: decisiones distintas 0 de 2162; cambian respecto de antes de olvidar 13; olvidar 2.21 s
 
 [A2 · ataque de pertenencia] AUROC (0.5 = no distingue miembros) · coordenadas en celdas únicas
   industrial_nivel1
@@ -61,4 +61,4 @@ Olvido exacto y privacidad de la MAE (propuesta_olvido_y_flota.md, parte A).
     spleen                 n=815/542  mae 0.496 · knn 1.000 · ncm 0.497 · gaussiana 0.539 · únicas 0.00 (miembros con alguna 0.1 %)
     media                  mae 0.505 · knn 1.000 · ncm 0.505 · gaussiana 0.527 · únicas 0.01 (0.2 %)
 
-Tiempo total: 9 min
+Tiempo total: 8 min

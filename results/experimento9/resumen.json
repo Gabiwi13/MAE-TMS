@@ -1,75 +1,75 @@
 {
   "texto_a_imagen": {
     "vivido": {
-      "responde": 0.982532751091703,
+      "responde": 1.0,
       "clase_clf": 1.0,
       "clase_nn": 1.0,
-      "d_nn_perdido": 21.867741957770452,
-      "d_nn_cualquiera": 21.867741957770452,
-      "n": 687,
-      "disp_entre_consultas": 32.33802604675293,
-      "disp_dentro_consulta": 31.280230156629756,
-      "dependencia_de_la_pista": 1.033816755338003,
-      "F_dependencia": 1.142482683789428,
-      "niveles_vivos_por_coordenada": 8.409513888888888
+      "d_nn_perdido": 25.12938771247864,
+      "d_nn_cualquiera": 25.12938771247864,
+      "n": 120,
+      "disp_entre_consultas": 37.34443283081055,
+      "disp_dentro_consulta": 37.200266218185426,
+      "dependencia_de_la_pista": 1.0038754188418857,
+      "F_dependencia": 0.9758562524387754,
+      "niveles_vivos_por_coordenada": 10.350390625
     },
     "sustitucion": {
-      "responde": 0.2445414847161572,
-      "clase_clf": 0.0,
-      "clase_nn": 0.0,
-      "d_nn_perdido": 47.99385561261858,
-      "d_nn_cualquiera": 21.02358931586856,
-      "n": 687,
-      "disp_entre_consultas": 33.487904739379886,
-      "disp_dentro_consulta": 30.090679401577027,
-      "dependencia_de_la_pista": 1.1128995890210711,
-      "F_dependencia": 2.079667743039722,
-      "niveles_vivos_por_coordenada": 7.984654017857143
+      "responde": 0.0,
+      "clase_clf": NaN,
+      "clase_nn": NaN,
+      "d_nn_perdido": NaN,
+      "d_nn_cualquiera": NaN,
+      "n": 120,
+      "disp_entre_consultas": NaN,
+      "disp_dentro_consulta": NaN,
+      "dependencia_de_la_pista": NaN,
+      "F_dependencia": NaN,
+      "niveles_vivos_por_coordenada": NaN
     },
     "descripcion": {
       "responde": 1.0,
       "clase_clf": 1.0,
       "clase_nn": 1.0,
-      "d_nn_perdido": 19.294214168143238,
-      "d_nn_cualquiera": 19.294214168143238,
-      "n": 687,
-      "disp_entre_consultas": 27.74188494682312,
-      "disp_dentro_consulta": 27.43133073311651,
-      "dependencia_de_la_pista": 1.0113211501377033,
-      "F_dependencia": 0.9967244436919775,
-      "niveles_vivos_por_coordenada": 9.307246179039302
+      "d_nn_perdido": 19.5623406012853,
+      "d_nn_cualquiera": 19.5623406012853,
+      "n": 120,
+      "disp_entre_consultas": 28.408416748046875,
+      "disp_dentro_consulta": 28.582846450805665,
+      "dependencia_de_la_pista": 0.993897399160052,
+      "F_dependencia": 1.0093466543943472,
+      "niveles_vivos_por_coordenada": 10.078125
     },
     "ruteo": {
       "consultas": 411.0,
-      "a_perdido": 229.0,
-      "a_otro": 65.0,
-      "rechazadas": 117.0
+      "a_perdido": 40.0,
+      "a_otro": 37.0,
+      "rechazadas": 334.0
     }
   },
   "imagen_a_texto": {
     "vivido": {
-      "responde": 0.8923076923076924,
+      "responde": 1.0,
       "hit_perdido": 1.0,
       "hit_sustituto": 0.0,
-      "n": 65
+      "n": 60
     },
     "sustitucion": {
       "responde": 0.0,
       "hit_perdido": NaN,
       "hit_sustituto": NaN,
-      "n": 65
+      "n": 60
     },
     "descripcion": {
-      "responde": 1.0,
+      "responde": 0.16666666666666666,
       "hit_perdido": 1.0,
       "hit_sustituto": 0.0,
-      "n": 65
+      "n": 60
     },
     "ruteo": {
       "consultas": 80.0,
-      "a_perdido": 65.0,
+      "a_perdido": 60.0,
       "a_otro": 0.0,
-      "rechazadas": 15.0
+      "rechazadas": 20.0
     }
   }
 }

@@ -1,7 +1,5 @@
 # Experimento 2 — iota y kappa como defensas contra el sesgo de densidad
 
-> **Nota (26 oct 2026): estas cifras son de antes de corregir la escala de κ y no prueban κ.** La compuerta comparaba una celda de la proyección, que suma sobre las 300 coordenadas de la pista, contra κ·mem.mean, que es por celda (razón ≈ 364–388). No se disparó con ningún κ ≤ 1.5: el grid es idéntico en las cuatro columnas de κ, y «mejor nativa κ=0.0» es un empate. El script ya compara por celda; falta volver a correrlo.
-
 ## Hipótesis
 Las defensas nativas del framework (ι: poda de la relación; κ: umbral
 relativo a la media de cada memoria) eliminan el sesgo de masa que en el
@@ -33,8 +31,8 @@ experimento 1 obligó a introducir la normalización B1 / ÷mem.mean.
 
 | condición | early | mature RAW | mature B1 | counts M_dir |
 |---|---|---|---|---|
-| baseline ι=0 κ=0 (exp. 1) | 81.2% | 71.2% | 81.2% | [46, 16, 40, 25, 30, 18, 21, 31] |
-| mejor nativa ι=0.25 κ=0.0 | 82.5% | 78.8% | 83.8% | [38, 16, 40, 25, 30, 18, 29, 31] |
+| baseline ι=0 κ=0 (exp. 1) | 81.2% | 72.5% | 81.2% | [46, 16, 40, 25, 30, 18, 21, 31] |
+| mejor nativa ι=0.25 κ=0.0 | 82.5% | 80.0% | 83.8% | [38, 16, 40, 25, 30, 18, 29, 31] |
 | ÷mem.mean con ι=0 κ=0 | 76.2% | 63.7% | 77.5% | [74, 16, 40, 25, 34, 14, 3, 21] |
 
 ## Archivos

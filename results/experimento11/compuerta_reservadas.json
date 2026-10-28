@@ -3,239 +3,39 @@
   "25": {
    "consultas": 1710,
    "directorio_acepta": 1710,
-   "compuerta_acepta": 1349,
-   "compuerta_rechaza": 361,
-   "sin_respuesta_de_todos_modos": 361
+   "compuerta_acepta": 1675,
+   "compuerta_rechaza": 35,
+   "sin_respuesta_de_todos_modos": 35
   },
   "50": {
+   "consultas": 1710,
+   "directorio_acepta": 1710,
+   "compuerta_acepta": 1690,
+   "compuerta_rechaza": 20,
+   "sin_respuesta_de_todos_modos": 20
+  },
+  "100": {
+   "consultas": 1710,
+   "directorio_acepta": 1710,
+   "compuerta_acepta": 1688,
+   "compuerta_rechaza": 22,
+   "sin_respuesta_de_todos_modos": 22
+  },
+  "200": {
    "consultas": 1710,
    "directorio_acepta": 1710,
    "compuerta_acepta": 1684,
    "compuerta_rechaza": 26,
    "sin_respuesta_de_todos_modos": 26
-  },
-  "100": {
-   "consultas": 1710,
-   "directorio_acepta": 1710,
-   "compuerta_acepta": 1686,
-   "compuerta_rechaza": 24,
-   "sin_respuesta_de_todos_modos": 24
-  },
-  "200": {
-   "consultas": 1710,
-   "directorio_acepta": 1710,
-   "compuerta_acepta": 1686,
-   "compuerta_rechaza": 24,
-   "sin_respuesta_de_todos_modos": 24
   }
  },
  "detalle": [
   {
    "corte": 25,
    "semilla": 42,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a spotted cow in a green field",
-   "truth": "cow",
-   "destino": "pear",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
-   "destino": "apple",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -253,280 +53,10 @@
   {
    "corte": 25,
    "semilla": 42,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 42,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -543,350 +73,10 @@
   {
    "corte": 25,
    "semilla": 43,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
-   "destino": "apple",
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
+   "destino": "dog",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 43,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse being ridden by a rider",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -896,56 +86,6 @@
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
-   "destino": "apple",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -957,36 +97,6 @@
    "truth": "cow",
    "destino": "pear",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -1002,266 +112,6 @@
   },
   {
    "corte": 25,
-   "semilla": 44,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 44,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
    "semilla": 45,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -1273,49 +123,9 @@
   {
    "corte": 25,
    "semilla": 45,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
-   "destino": "apple",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -1323,110 +133,10 @@
   {
    "corte": 25,
    "semilla": 45,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -1435,178 +145,8 @@
    "semilla": 45,
    "query": "a horse with strong hooves",
    "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 45,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -1615,56 +155,6 @@
    "semilla": 46,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
    "destino": "apple",
    "ruteo_ok": false,
    "responde": false,
@@ -1673,49 +163,9 @@
   {
    "corte": 25,
    "semilla": 46,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -1723,60 +173,10 @@
   {
    "corte": 25,
    "semilla": 46,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
+   "ruteo_ok": false,
    "responde": false,
    "pista": null
   },
@@ -1785,178 +185,8 @@
    "semilla": 46,
    "query": "a horse with strong hooves",
    "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 46,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -1965,56 +195,6 @@
    "semilla": 47,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog sleeping on a soft bed",
-   "truth": "dog",
    "destino": "apple",
    "ruteo_ok": false,
    "responde": false,
@@ -2033,36 +213,6 @@
   {
    "corte": 25,
    "semilla": 47,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
@@ -2072,311 +222,11 @@
   },
   {
    "corte": 25,
-   "semilla": 47,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 47,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
    "semilla": 48,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
-   "destino": "cow",
+   "destino": "apple",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -2393,30 +243,10 @@
   {
    "corte": 25,
    "semilla": 48,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
    "responde": false,
    "pista": null
   },
@@ -2432,311 +262,11 @@
   },
   {
    "corte": 25,
-   "semilla": 48,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 48,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
    "semilla": 49,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -2763,300 +293,10 @@
   {
    "corte": 25,
    "semilla": 49,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 49,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -3067,46 +307,6 @@
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -3133,36 +333,6 @@
   {
    "corte": 25,
    "semilla": 50,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
@@ -3172,311 +342,11 @@
   },
   {
    "corte": 25,
-   "semilla": 50,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a stable full of horses",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a horse in a stable eating hay",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 50,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog resting its paws on the floor",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with tinted windows",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse pulling a cart",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse grazing in a paddock",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a sedan car on the street",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse trotting down a trail",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with a dashboard and steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog guarding the front door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog with a collar and tag",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog licking its paws",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a shiny new car",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a family car with seats for five",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
    "semilla": 51,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
-   "destino": "cow",
+   "destino": "apple",
    "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car parked at the curb",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse with shiny hooves",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car refueling at a station",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
    "responde": false,
    "pista": null
   },
@@ -3503,149 +373,9 @@
   {
    "corte": 25,
    "semilla": 51,
-   "query": "a dog with floppy ears",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog panting after a walk",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog jumping to catch a frisbee",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog wagging its tail at the door",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog digging in the garden",
-   "truth": "dog",
-   "destino": "tomato",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a dog howling at the moon",
-   "truth": "dog",
-   "destino": "dog",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with a steering wheel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car parked in a garage",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse trained for a race",
-   "truth": "horse",
-   "destino": "horse",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with a full tank of fuel",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with alloy wheels",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 25,
-   "semilla": 51,
-   "query": "a car with headlights on",
-   "truth": "car",
-   "destino": "car",
-   "ruteo_ok": true,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
-   "semilla": 42,
-   "query": "a spotted cow in a green field",
-   "truth": "cow",
-   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -3683,16 +413,6 @@
   {
    "corte": 50,
    "semilla": 44,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
-   "semilla": 44,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
@@ -3742,16 +462,6 @@
   },
   {
    "corte": 50,
-   "semilla": 45,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
    "semilla": 46,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -3762,18 +472,8 @@
   },
   {
    "corte": 50,
-   "semilla": 46,
-   "query": "a cow swishing its tail at flies",
-   "truth": "cow",
-   "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
    "semilla": 47,
-   "query": "a horse cantering across a field",
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -3783,7 +483,7 @@
   {
    "corte": 50,
    "semilla": 47,
-   "query": "a spotted cow in a green field",
+   "query": "a cow with a bell around its neck",
    "truth": "cow",
    "destino": "pear",
    "ruteo_ok": false,
@@ -3793,29 +493,9 @@
   {
    "corte": 50,
    "semilla": 47,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
-   "semilla": 47,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
-   "semilla": 47,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -3832,6 +512,16 @@
   },
   {
    "corte": 50,
+   "semilla": 48,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 50,
    "semilla": 49,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -3852,16 +542,6 @@
   },
   {
    "corte": 50,
-   "semilla": 49,
-   "query": "a cow swishing its tail at flies",
-   "truth": "cow",
-   "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 50,
    "semilla": 50,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -3872,10 +552,10 @@
   },
   {
    "corte": 50,
-   "semilla": 51,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "cow",
+   "semilla": 50,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -3893,17 +573,7 @@
   {
    "corte": 50,
    "semilla": 51,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 100,
-   "semilla": 42,
-   "query": "a spotted cow in a green field",
+   "query": "a cow with a bell around its neck",
    "truth": "cow",
    "destino": "pear",
    "ruteo_ok": false,
@@ -3943,16 +613,6 @@
   {
    "corte": 100,
    "semilla": 44,
-   "query": "a horse cantering across a field",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 100,
-   "semilla": 44,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
@@ -4002,8 +662,8 @@
   },
   {
    "corte": 100,
-   "semilla": 45,
-   "query": "a horse with strong hooves",
+   "semilla": 46,
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -4013,9 +673,9 @@
   {
    "corte": 100,
    "semilla": 46,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "cow",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4033,7 +693,7 @@
   {
    "corte": 100,
    "semilla": 47,
-   "query": "a horse cantering across a field",
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -4043,7 +703,7 @@
   {
    "corte": 100,
    "semilla": 47,
-   "query": "a spotted cow in a green field",
+   "query": "a cow with a bell around its neck",
    "truth": "cow",
    "destino": "pear",
    "ruteo_ok": false,
@@ -4053,29 +713,9 @@
   {
    "corte": 100,
    "semilla": 47,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "cow",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 100,
-   "semilla": 47,
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 100,
-   "semilla": 47,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4092,6 +732,16 @@
   },
   {
    "corte": 100,
+   "semilla": 48,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 100,
    "semilla": 49,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -4112,16 +762,6 @@
   },
   {
    "corte": 100,
-   "semilla": 49,
-   "query": "a cow swishing its tail at flies",
-   "truth": "cow",
-   "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 100,
    "semilla": 50,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -4132,10 +772,30 @@
   },
   {
    "corte": 100,
+   "semilla": 50,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 100,
    "semilla": 51,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 100,
+   "semilla": 51,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4173,7 +833,7 @@
   {
    "corte": 200,
    "semilla": 44,
-   "query": "a horse cantering across a field",
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -4183,9 +843,9 @@
   {
    "corte": 200,
    "semilla": 44,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "cow",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4232,8 +892,8 @@
   },
   {
    "corte": 200,
-   "semilla": 45,
-   "query": "a horse with strong hooves",
+   "semilla": 46,
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -4243,9 +903,9 @@
   {
    "corte": 200,
    "semilla": 46,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "cow",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4263,7 +923,7 @@
   {
    "corte": 200,
    "semilla": 47,
-   "query": "a horse cantering across a field",
+   "query": "a mare and foal in a pasture",
    "truth": "horse",
    "destino": "cow",
    "ruteo_ok": false,
@@ -4273,9 +933,9 @@
   {
    "corte": 200,
    "semilla": 47,
-   "query": "a mare and foal in a pasture",
-   "truth": "horse",
-   "destino": "apple",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4286,16 +946,6 @@
    "query": "a cow swishing its tail at flies",
    "truth": "cow",
    "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 200,
-   "semilla": 47,
-   "query": "a horse with strong hooves",
-   "truth": "horse",
-   "destino": "cow",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4312,6 +962,26 @@
   },
   {
    "corte": 200,
+   "semilla": 48,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 200,
+   "semilla": 48,
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
+   "destino": "dog",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 200,
    "semilla": 49,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -4332,16 +1002,6 @@
   },
   {
    "corte": 200,
-   "semilla": 49,
-   "query": "a cow swishing its tail at flies",
-   "truth": "cow",
-   "destino": "dog",
-   "ruteo_ok": false,
-   "responde": false,
-   "pista": null
-  },
-  {
-   "corte": 200,
    "semilla": 50,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
@@ -4352,10 +1012,20 @@
   },
   {
    "corte": 200,
-   "semilla": 51,
-   "query": "a wild horse galloping free",
-   "truth": "horse",
-   "destino": "cow",
+   "semilla": 50,
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 200,
+   "semilla": 50,
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
+   "destino": "dog",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4365,7 +1035,7 @@
    "semilla": 51,
    "query": "a mare and foal in a pasture",
    "truth": "horse",
-   "destino": "apple",
+   "destino": "cow",
    "ruteo_ok": false,
    "responde": false,
    "pista": null
@@ -4373,9 +1043,19 @@
   {
    "corte": 200,
    "semilla": 51,
-   "query": "a horse with a bridle and reins",
-   "truth": "horse",
-   "destino": "cow",
+   "query": "a cow with a bell around its neck",
+   "truth": "cow",
+   "destino": "pear",
+   "ruteo_ok": false,
+   "responde": false,
+   "pista": null
+  },
+  {
+   "corte": 200,
+   "semilla": 51,
+   "query": "a cow swishing its tail at flies",
+   "truth": "cow",
+   "destino": "dog",
    "ruteo_ok": false,
    "responde": false,
    "pista": null

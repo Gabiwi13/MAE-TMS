@@ -15,9 +15,9 @@
    "test_decisiones_distintas": 0,
    "test_cambian_por_olvidar": 0,
    "test_n": 2162,
-   "segundos_olvidar": 0.09412693977355957,
-   "segundos_reconstruir": 30.418575763702393,
-   "segundos_construir": 29.04223871231079
+   "segundos_olvidar": 0.08711409568786621,
+   "segundos_reconstruir": 28.047738552093506,
+   "segundos_construir": 28.646852254867554
   },
   "A1b": {
    "transacciones_olvidadas": 213,
@@ -27,9 +27,9 @@
    "test_decisiones_distintas": 0,
    "test_cambian_por_olvidar": 13,
    "test_n": 2162,
-   "segundos_olvidar": 2.6720709800720215
+   "segundos_olvidar": 2.2099664211273193
   },
-  "cabeza_logistica_segundos_reentrenar": 0.3285050392150879,
+  "cabeza_logistica_segundos_reentrenar": 0.1942143440246582,
   "dir_base_igual_a_original": 0
  },
  "A2": {
@@ -432,5 +432,5 @@
    }
   }
  },
- "segundos": 558
+ "segundos": 461
 }

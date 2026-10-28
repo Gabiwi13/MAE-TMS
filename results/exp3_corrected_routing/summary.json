@@ -2,7 +2,7 @@
   "early_acc": 0.8125,
   "early_rej": 0.05,
   "mature_acc_b1": 0.8125,
-  "mature_acc_raw": 0.7125,
+  "mature_acc_raw": 0.725,
   "fidelity": 0.925,
   "mdir_counts_tme": [
     46,

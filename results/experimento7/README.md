@@ -11,10 +11,10 @@
 
 | corrida | métrica | primer k>=90% | sostenido | acc final | rechazo | entropía | counts |
 |---|---|---|---|---|---|---|---|
-| A · unificado, solo texto | text | 160 | 160 | 96.2% | 0.0% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
+| A · unificado, solo texto | text | 136 | 160 | 96.2% | 0.0% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
 | B · unificado, solo imagen | img | None | None | 81.9% | 18.1% | 3.000 | [128, 128, 128, 128, 128, 128, 128, 128] |
-| C · unificado, emparejado | pair | None | None | 25.0% | 75.0% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
-| Base · mem_dir_L (texto) | text | 160 | 160 | 95.0% | 0.0% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
+| C · unificado, emparejado | pair | None | None | 23.8% | 76.2% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
+| Base · mem_dir_L (texto) | text | 160 | 160 | 96.2% | 0.0% | 2.975 | [28, 21, 34, 25, 34, 24, 33, 37] |
 | Base · mem_dir_R (imagen) | img | None | None | 81.9% | 18.1% | 3.000 | [128, 128, 128, 128, 128, 128, 128, 128] |
 
 Sobre el directorio C (llenado emparejado), consultas por modalidad:
@@ -22,9 +22,9 @@ Sobre el directorio C (llenado emparejado), consultas por modalidad:
 | consulta | acc | rechazo |
 |---|---|---|
 | solo texto | 96.2% | 0.0% |
-| solo imagen | 26.9% | 73.1% |
-| emparejada | 25.0% | 75.0% |
-| emparejada (base: media texto dir_L + imagen dir_R) | 97.5% | 0.0% |
+| solo imagen | 26.2% | 73.8% |
+| emparejada | 23.8% | 76.2% |
+| emparejada (base: media texto dir_L + imagen dir_R) | 100.0% | 0.0% |
 
 ## Sondas cruzadas
 - Imagen sobre el directorio solo-texto (A): rechazo 100% (acc 0%).
@@ -36,23 +36,21 @@ En la relación, no. `project()` (hetero_associative_4d) acumula evidencia por f
 
 El ÚNICO canal de acople es el denominador de B1 cuando se toma de `_counts`, un arreglo de Python que cuenta registros de cualquier modalidad. El conteo de texto leído de la relación no cambia con los registros de imagen. Medido sobre A:
 
-| estado del directorio | acc texto |
-|---|---|
-| solo texto (236 registros) | 96.2% |
-| + 1024 imgs balanceadas | 90.0% |
-| + 32 re-registros de imgs de apple | 87.5% |
+| estado del directorio | acc texto, B1 con `_counts` | acc texto, B1 con el conteo de la relación |
+|---|---|---|
+| solo texto (236 registros) | 96.2% | 96.2% |
+| + 1024 imgs balanceadas | 91.2% | 96.2% |
+| + 32 re-registros de imgs de apple | 88.8% | 96.2% |
 
-Counts finales tras el desbalance: [188, 149, 162, 153, 162, 152, 161, 165].
+Counts finales tras el desbalance: `_counts` [188, 149, 162, 153, 162, 152, 161, 165]; conteo de texto de la relación [28.0, 21.0, 34.0, 25.0, 34.0, 24.0, 33.0, 37.0].
 
 ## Hallazgos
-1. Por modalidad, el unificado replica a los dos directorios: la curva de imagen es idéntica snapshot a snapshot (final 81.9% en ambos) y la de texto difiere solo por la recuantización 32 vs 16 niveles (96.2% vs 95.0%). No se forma ninguna representación compartida: las mitades son independientes por construcción.
-2. La query emparejada es el punto débil del unificado, y el 25.0% no es una cifra del veto sino de la cobertura de la mitad de imagen: en el mismo directorio C, la consulta solo-imagen acierta 26.9% y rechaza 73.1%, y la emparejada acierta 25.0% y rechaza 75.0%. El veto conjuntivo corre sobre todas las features definidas del cue, así que la consulta plena hereda el rechazo de su mitad de imagen aunque la mitad de texto rutee sola al 96.2%. La fusión de dos directorios, donde cada modalidad se rechaza por separado, da 97.5%.
+1. Por modalidad, el unificado replica a los dos directorios: la curva de imagen es idéntica snapshot a snapshot (final 81.9% en ambos) y la de texto difiere solo por la recuantización 32 vs 16 niveles (96.2% vs 96.2%). No se forma ninguna representación compartida: las mitades son independientes por construcción.
+2. La query emparejada es el punto débil del unificado: el veto conjuntivo corre sobre TODAS las features definidas del cue, así que una mitad imagen sin soporte suficiente tumba la pista entera aunque la mitad texto rutee sola al 96.2% — emparejada 23.8% contra 100.0% de la fusión de dos directorios, donde cada modalidad se rechaza por separado.
 3. La imagen en C queda corta por cobertura, no por la unificación: el llenado emparejado solo aporta tantas imágenes distintas como tokens (21-37 por clase) contra las 128 de B; consistente con la curva de capacidad de exp6.
-4. El costo vía B1 es de la normalización, no de compartir el espacio: con el denominador tomado de `_counts`, sumar registros de imagen baja el ruteo de texto de 96.2% a 90.0% (balanceado) y 87.5% (desbalanceado) sin tocar la relación. Si B1 lee el conteo de texto de la relación, los registros de imagen no lo cambian y la proyección de texto tampoco, así que no hay caída por construcción. Falta medirlo sobre exp7: el script ya tiene esa columna, pero no se volvió a correr.
+4. El costo vía B1 es de la normalización, no de compartir el espacio: con el denominador tomado de `_counts`, sumar registros de imagen baja el ruteo de texto de 96.2% a 91.2% (balanceado) y 88.8% (desbalanceado) sin tocar la relación. Con el conteo de texto leído de la relación queda en 96.2%, 96.2% y 96.2%.
 
-En suma: bajo esta proyección el directorio unificado no puede transferir nada entre modalidades y sí paga el veto conjuntivo en queries plenas, que hereda el rechazo de la modalidad menos cubierta. El costo del denominador compartido aparece solo si B1 cuenta registros de cualquier modalidad. Por el veto, los dos directorios separados siguen siendo preferibles.
-
-> **Nota (26 oct 2026):** el hallazgo 4 decía antes «compartir el espacio sí cobra un costo real» y el resumen contaba el denominador como un segundo costo de la unificación. Se corrigió porque el acople viene de dónde se lee el conteo, no de la memoria. En una memoria sintética, 30 registros de solo imagen para un agente bajan su score B1 de texto de 250 a 41.7 con `_counts` (y cambian el ganador), mientras que con el conteo de la relación el score no cambia.
+En suma: bajo esta proyección el directorio unificado no puede transferir nada entre modalidades y sí paga el veto conjuntivo en queries plenas. El costo del denominador compartido aparece solo si B1 cuenta registros de cualquier modalidad. Por el veto, los dos directorios separados siguen siendo preferibles.
 
 ## Archivos
 - `results_formation.csv` — series de formación (k, acc, rechazo, entropía, counts por corrida)
