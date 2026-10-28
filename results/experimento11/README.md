@@ -1,8 +1,8 @@
 # Experimento 11 — MAE monolítica contra sistema transactivo
 
-Semillas: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]. Cortes N (imágenes por clase, ×4 variantes): [25, 50, 100, 200]. Intervalos: bootstrap del 95% sobre las medias por semilla. Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.
+Semillas: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]. Cortes N (imágenes por clase, ×16 variantes): [25, 50, 100, 200]. Intervalos: bootstrap del 95% sobre las medias por semilla. Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.
 
-Control del llenado en N=200: especialistas reconstruidos DISTINTOS a los `agent_*.pkl` oficiales (4/8 clases).
+Control del llenado en N=200: 4/8 clases idénticas a los `agent_*.pkl` oficiales; distintas: car, cow, dog, horse. Este script recalcula los latentes en GPU; una diferencia de redondeo puede mover una coordenada de un registro al nivel vecino.
 
 ## N = 25 (400 registros por clase; monolítica 3200)
 

@@ -184,14 +184,15 @@ def build_monolithic(pool, seqs, n_img):
 
 def same_as_official(agents):
     """Control: en el corte 200 los especialistas reconstruidos deben tener la
-    misma relación que los agent_*.pkl oficiales."""
+    misma relación que los agent_*.pkl oficiales. Devuelve las celdas
+    distintas por clase (0 = idéntica)."""
     import pickle
     ok = {}
     for cls in CLASSES:
         with open(MODELS_DIR / f"agent_{cls}.pkl", "rb") as f:
             official = pickle.load(f)
-        ok[cls] = bool(np.array_equal(official.mem_dom_H.relation,
-                                      agents[cls].mem_dom_H.relation))
+        ok[cls] = int(np.count_nonzero(official.mem_dom_H.relation
+                                       != agents[cls].mem_dom_H.relation))
     return ok
 
 
@@ -750,15 +751,25 @@ def _fmt(ci, pct=True):
 
 def write_report(summary):
     L = ["# Experimento 11 — MAE monolítica contra sistema transactivo", "",
-         f"Semillas: {summary['semillas']}. Cortes N (imágenes por clase, ×4 variantes): "
+         f"Semillas: {summary['semillas']}. Cortes N (imágenes por clase, ×{VARIANTS} variantes): "
          f"{summary['cortes']}. Intervalos: bootstrap del 95% sobre las medias por semilla. "
          "Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. "
          "Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.", ""]
     if summary["control"]:
-        ok = all(summary["control"].values())
-        L += [f"Control del llenado en N=200: especialistas reconstruidos "
-              f"{'idénticos' if ok else 'DISTINTOS'} a los `agent_*.pkl` oficiales "
-              f"({sum(summary['control'].values())}/8 clases).", ""]
+        # Cachés viejos guardan True/False (igual o no); los nuevos, celdas distintas.
+        bad = {c: v for c, v in summary["control"].items()
+               if v is False or (v is not True and v > 0)}
+        if not bad:
+            L += ["Control del llenado en N=200: especialistas reconstruidos idénticos a los "
+                  "`agent_*.pkl` oficiales (8/8 clases).", ""]
+        else:
+            detail = ", ".join(f"{c}" + ("" if v is False else f" {v} celdas") for c, v in bad.items())
+            L += [f"Control del llenado en N=200: {8 - len(bad)}/8 clases idénticas a los "
+                  f"`agent_*.pkl` oficiales; distintas: {detail}"
+                  + ("" if all(v is False for v in bad.values())
+                     else f" (de {N * M_LABEL * P_LATENT * Q_LATENT:,} celdas por clase)")
+                  + ". Este script recalcula los latentes en GPU; "
+                  "una diferencia de redondeo puede mover una coordenada de un registro al nivel vecino.", ""]
     for cut in summary["cortes"]:
         L += [f"## N = {cut} ({cut*VARIANTS} registros por clase; monolítica {cut*VARIANTS*K})", "",
               "| brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |",

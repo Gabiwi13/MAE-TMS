@@ -1,6 +1,6 @@
 # Experimento 14 — criterio de energía mínima del latente
 
-Calibración: mínimo sobre los 1600 originales del llenado con margen 10% (niveles: mínimo menos uno). Banco degenerado generado como declara `propuesta_exp14_energia_latente.md` §4. Memoria oficial: agentes v5 (contenido y directorio, entrada `apple`); V16: contenido de exp13 con 16 variantes. Diseño y criterio en la propuesta.
+Calibración: mínimo sobre los 1600 originales del llenado con margen 10% (niveles: mínimo menos uno). Banco degenerado generado como declara `propuesta_exp14_energia_latente.md` §4. Memoria oficial: los agentes de `models/` (contenido y directorio, entrada `apple`), que desde el 23 de septiembre tienen el llenado de 16 variantes; V16: contenido de exp13 con 16 variantes, construido aparte. Diseño y criterio en la propuesta.
 
 ## Umbrales y costo sobre imágenes reales
 
@@ -9,7 +9,7 @@ Calibración: mínimo sobre los 1600 originales del llenado con margen 10% (nive
 | norma | 16.607 | 18.453 | 0 | 1 | 4 |
 | desv_latente | 2.076 | 2.306 | 0 | 1 | 5 |
 | desv_pixeles | 13.864 | 15.404 | 0 | 0 | 0 |
-| niveles | 12.000 | 13.000 | 0 | 3 | 1 |
+| niveles | 12.000 | 13.000 | 0 | 0 | 1 |
 
 Imágenes de test rechazadas por la norma:
 

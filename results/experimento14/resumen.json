@@ -102,7 +102,7 @@
   },
   "niveles": {
    "llenado": 0,
-   "fase_a": 3,
+   "fase_a": 0,
    "test": 1,
    "test_detalle": [
     {

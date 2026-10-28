@@ -689,8 +689,10 @@ def main():
         f"1. Por modalidad, el unificado replica a los dos directorios: la "
         f"curva de imagen es idéntica snapshot a snapshot (final "
         f"{trans['B_uni_img']['final_acc']:.1%} en ambos) y la de texto "
-        f"difiere solo por la recuantización 32 vs 16 niveles "
-        f"({trans['A_uni_text']['final_acc']:.1%} vs "
+        + ("termina igual pese a la recuantización 32 vs 16 niveles "
+           if trans['A_uni_text']['final_acc'] == trans['base_text']['final_acc']
+           else "difiere solo por la recuantización 32 vs 16 niveles ")
+        + f"({trans['A_uni_text']['final_acc']:.1%} vs "
         f"{trans['base_text']['final_acc']:.1%}). No se forma ninguna "
         "representación compartida: las mitades son independientes por "
         "construcción.",

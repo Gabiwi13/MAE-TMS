@@ -1345,7 +1345,7 @@
 },
 {
 "norma": 9.91468334197998,
-"desv_latente": 1.2381669282913208,
+"desv_latente": 1.2381668090820312,
 "desv_pixeles": 6.71712371306071,
 "niveles": 14,
 "familia": "contraste",
@@ -2955,8 +2955,8 @@
 "d_vecino": 14.850324630737305
 },
 {
-"norma": 9.513866424560547,
-"desv_latente": 1.177553653717041,
+"norma": 9.513762474060059,
+"desv_latente": 1.1775411367416382,
 "desv_pixeles": 19.6231915800922,
 "niveles": 12,
 "familia": "contraste",
@@ -2972,8 +2972,8 @@
 "pasa_niveles": true
 },
 {
-"norma": 8.851190567016602,
-"desv_latente": 1.1063302755355835,
+"norma": 8.85117244720459,
+"desv_latente": 1.106328010559082,
 "desv_pixeles": 13.13917559691176,
 "niveles": 14,
 "familia": "contraste",
@@ -3642,8 +3642,8 @@
 "d_vecino": 7.155173301696777
 },
 {
-"norma": 26.777019500732422,
-"desv_latente": 3.2939679622650146,
+"norma": 26.77716064453125,
+"desv_latente": 3.293985366821289,
 "desv_pixeles": 22.516126464878937,
 "niveles": 16,
 "familia": "desenfoque",
@@ -3662,7 +3662,7 @@
 "pasa_desv_pixeles": true,
 "pasa_niveles": true,
 "vecino_clase": "horse",
-"d_vecino": 5.829543113708496
+"d_vecino": 5.829619407653809
 },
 {
 "norma": 21.222158432006836,
@@ -3877,8 +3877,8 @@
 "d_vecino": 15.892899513244629
 },
 {
-"norma": 13.816434860229492,
-"desv_latente": 1.6999613046646118,
+"norma": 13.816422462463379,
+"desv_latente": 1.6999597549438477,
 "desv_pixeles": 8.941799144978722,
 "niveles": 13,
 "familia": "desenfoque",
@@ -3901,7 +3901,7 @@
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
 "vecino_clase": "cow",
-"d_vecino": 15.778416633605957
+"d_vecino": 15.77843189239502
 },
 {
 "norma": 13.670127868652344,
@@ -3931,8 +3931,8 @@
 "d_vecino": 15.678380966186523
 },
 {
-"norma": 13.535062789916992,
-"desv_latente": 1.6658759117126465,
+"norma": 13.535052299499512,
+"desv_latente": 1.665874719619751,
 "desv_pixeles": 7.2391897044212845,
 "niveles": 13,
 "familia": "desenfoque",
@@ -3955,7 +3955,7 @@
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
 "vecino_clase": "cow",
-"d_vecino": 15.596891403198242
+"d_vecino": 15.596898078918457
 },
 {
 "norma": 13.428935050964355,
@@ -4062,8 +4062,8 @@
 "d_vecino": 7.160953044891357
 },
 {
-"norma": 20.76152229309082,
-"desv_latente": 2.55035662651062,
+"norma": 20.761516571044922,
+"desv_latente": 2.5503556728363037,
 "desv_pixeles": 11.590943677398219,
 "niveles": 17,
 "familia": "contraste",
@@ -4082,7 +4082,7 @@
 "pasa_desv_pixeles": false,
 "pasa_niveles": true,
 "vecino_clase": "horse",
-"d_vecino": 7.898210048675537
+"d_vecino": 7.898197650909424
 },
 {
 "norma": 15.658101081848145,

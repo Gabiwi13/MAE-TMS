@@ -239,8 +239,9 @@ def write_report(summary, deg_rows, fill_rows, fase_a_rows, test_rows):
     L = ["# Experimento 14 — criterio de energía mínima del latente", "",
          f"Calibración: mínimo sobre los 1600 originales del llenado con margen {summary['margen']:.0%} "
          "(niveles: mínimo menos uno). Banco degenerado generado como declara "
-         "`propuesta_exp14_energia_latente.md` §4. Memoria oficial: agentes v5 (contenido y directorio, "
-         "entrada `apple`); V16: contenido de exp13 con 16 variantes. Diseño y criterio en la propuesta.", "",
+         "`propuesta_exp14_energia_latente.md` §4. Memoria oficial: los agentes de `models/` (contenido y "
+         "directorio, entrada `apple`), que desde el 23 de septiembre tienen el llenado de 16 variantes; "
+         "V16: contenido de exp13 con 16 variantes, construido aparte. Diseño y criterio en la propuesta.", "",
          "## Umbrales y costo sobre imágenes reales", "",
          "| estadístico | τ | mínimo llenado | rechaza llenado (1600) | rechaza fase A (1024) | rechaza test (656) |",
          "|---|---|---|---|---|---|"]
