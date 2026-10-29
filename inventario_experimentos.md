@@ -46,7 +46,7 @@ Columnas:
 | `run_experiment18_attributes.py` | `experimento18` | directo | 18 oct | **desactualizado** (pesos) |
 | `run_experiment18_feature_probe.py` | `experimento18` | no (latentes) | 18 oct | al día |
 | `run_missing_cue.py` | `missing_cue` | directo | 28 oct (d0df16c; control aa283f6) | al día; el control dice que el cambio viene de las 16 variantes |
-| `run_rejection_probe.py` | `rejection_probe` | directo | 23 sep | **desactualizado** (pesos) |
+| `run_rejection_probe.py` | `rejection_probe` | directo | 23 sep | al día: re-corrido el 28 oct con pesos homo, idéntico byte a byte (10 rechazadas, 2 ruteos falsos de 12) |
 | exp19 (checkout `MAE-TMS-exp18`) | `experimento19` | directo | 18 oct | **desactualizado** (pesos) |
 | exp22 (`origin/exp7-directorio-unificado`) | `experimento22` | directo | 26 oct | **desactualizado** (pesos) |
 | `run_cost_benchmark.py` | `computational_cost` | no (tiempos) | 22 sep | no depende de los pesos |
