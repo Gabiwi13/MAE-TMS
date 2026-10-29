@@ -75,7 +75,7 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
 | AUROC 0.789 (MAE) · 0.800 (Mahalanobis) · 0.784 (kNN) | `run_parametros_mae` / `run_industrial_demo` | no (se verificó: la lectura en grado no pasa por el ruteo) |
 | 0.695 contra 0.830 de PatchCore en fallas pequeñas | ídem | no |
 | Identifica la pieza 98.4 %, sin confusiones | `run_enrutador_flota` / `run_industrial_clip` | pasa por el ruteo, pero sin confusiones entre agentes que contienen la pista: no debería |
-| Fallas pequeñas de 28 % a 59 % | **sin rastrear** | — |
+| Fallas pequeñas de 28 % a 59 % | `run_parametros_mae`, parches: H 28.2 contra PatchCore 58.7 (todas las fallas, no solo pequeñas) | no |
 | Escapan 37.9 % contra 39.2 % del detector que conoce la pieza | `run_enrutador_flota` / cierre | ídem que 98.4 % |
 | 100 % de piezas nunca registradas como desconocidas (kNN 0 %) | `run_industrial_demo` | no (es contención) |
 | Agregar o retirar sin reentrenar; olvido exacto; sin imágenes | `run_olvido_privacidad` | no (ya se volvió a correr con pesos homo: 0 de 2162 decisiones distintas) |
@@ -143,3 +143,7 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
     - Cola `rerun/ind.json` lista; se lanza cuando termine exp9.
     - «28 % → 59 %» no aparece en ninguna rama, commit ni resumen: sale del resumen corregido salvo que se encuentre su fuente.
   - **Corriendo:** control de exp12 con pesos uniformes (~7 h).
+  - **Industrial (tarde):**
+    - Las 9 corridas con pesos homo salen idénticas a las uniformes (a2898e2): ninguna cifra del resumen cambia.
+    - «28 % → 59 %» sí tiene fuente: la tabla de parches de `parametros_mae`.
+    - Propuesta del resumen corregido en `revision_resumen_cifin.md`, pendiente de aprobación: quita «fallas pequeñas» (no hay corte por tamaño), dice el 12.5 % a revisión humana y que kNN con umbral también da 100 %.
