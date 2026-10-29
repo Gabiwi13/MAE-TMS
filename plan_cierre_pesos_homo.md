@@ -147,3 +147,9 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
     - Las 9 corridas con pesos homo salen idénticas a las uniformes (a2898e2): ninguna cifra del resumen cambia.
     - «28 % → 59 %» sí tiene fuente: la tabla de parches de `parametros_mae`.
     - Propuesta del resumen corregido en `revision_resumen_cifin.md`, pendiente de aprobación: quita «fallas pequeñas» (no hay corte por tamaño), dice el 12.5 % a revisión humana y que kNN con umbral también da 100 %.
+  - **Noche:**
+    - exp8 queda al día sin correr: sus sondas de texto describen el directorio oficial; la curva de formación está en exp9.
+    - rejection_probe y exp22 re-corridos con pesos homo: idénticos byte a byte.
+    - exp17 b y c y exp18 no se re-corren: pasan los pesos homo explícitos (`recog_weights`), ya eran homo.
+    - **exp19, decisión tuya:** es el único que falta. Costo: ~2.2 h de cómputo (etapas 6–8 y exp16; el llenado no usa pesos y su exp18 ya pasa pesos explícitos) más portar el código de pesos homo al checkout `MAE-TMS-exp18`, que diverge. Ahí los pesos sí pueden mover decisiones: con el encoder congelado hay 83 ruteos falsos entre animales, donde varios agentes contienen la pista.
+
