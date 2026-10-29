@@ -22,4 +22,4 @@ Detectores fijados al 95 % de aceptación de su calibración. Tamaño del estado
   pipe_fryum  n=150 acepta cal  99.1 | mae: 100.0 /   0.0 /   0.0 {} | knn:   0.0 / 100.0 /   0.0 | knn_abst: 100.0 /   0.0 /   0.0
   media (de los pliegues): mae: abstención 100.0 · alarma   0.0 · pasa   0.0 | knn: abstención   0.0 · alarma 100.0 · pasa   0.0 | knn_abst: abstención 100.0 · alarma   0.0 · pasa   0.0
 
-Tiempo total: 19 min
+Tiempo total: 9 min

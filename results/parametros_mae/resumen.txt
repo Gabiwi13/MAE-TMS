@@ -63,4 +63,4 @@ Elegido con las de diseño: ι = 0.0 para la contención · lectura graduada H
 
 [criterio, confirmación, G2 ResNet18] H: AUROC 0.789 contra Mahalanobis 0.800, detección  47.2 contra  49.2 → sostenido · ι = 0.0: detección   9.7 contra   9.7 con ι = 0, falsa alarma   0.3 contra   0.3 → no sostenido
 
-Tiempo total: 2 min
+Tiempo total: 4 min

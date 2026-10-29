@@ -56,20 +56,22 @@ Columnas:
 
 | Script | Resultados | Lee memorias | Último commit | Estado |
 |---|---|---|---|---|
-| `run_industrial_demo.py` | `industrial` | directo | 26 oct | **desactualizado**: el código ya no pide pesos uniformes; falta la corrida |
-| `run_enrutador_flota.py` | `enrutador_flota` | directo | 26 oct | **desactualizado**: el código ya no pide pesos uniformes; falta la corrida |
-| `run_parametros_mae.py` | `parametros_mae` | directo | 19 oct | **desactualizado**: el código ya no pide pesos uniformes; falta la corrida |
-| `run_industrial_clip.py` | `industrial_clip` | directo | 26 oct | **desactualizado**: el código ya no pide pesos uniformes; falta la corrida |
-| `run_industrial_monolitica.py` | `industrial_monolitica` | directo | 26 oct | **desactualizado**: el código ya no pide pesos uniformes; falta la corrida |
-| `run_cierre_mae.py` | `cierre_mae` | vía demo industrial | 19 oct | **desactualizado** (pesos) |
-| `run_cascada_modulos.py` | `cascada_modulos` | vía cierre | 19 oct | **desactualizado** (pesos) |
-| `run_red_sintetica.py` | `red_sintetica` | vía cierre | 19 oct | **desactualizado** (pesos) |
+| `run_industrial_demo.py` | `industrial` | directo | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_enrutador_flota.py` | `enrutador_flota` | directo | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_parametros_mae.py` | `parametros_mae` | directo | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_industrial_clip.py` | `industrial_clip` | directo | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_industrial_monolitica.py` | `industrial_monolitica` | directo | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_cierre_mae.py` | `cierre_mae` | vía demo industrial | 19 oct | al día: re-corrido el 28 oct con pesos homo, idéntico byte a byte |
+| `run_cascada_modulos.py` | `cascada_modulos` | vía cierre | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
+| `run_red_sintetica.py` | `red_sintetica` | vía cierre | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
 | `run_piloto_modulos.py` | `piloto_modulos` | directo | 28 oct (d0df16c) | al día |
 | `run_etapa1_ruteo_dirigido.py` | `etapa1_ruteo_dirigido` | directo | 28 oct (d0df16c) | al día |
 | `run_etapa2_evidencia.py` | `etapa2_evidencia` | directo | 28 oct (d0df16c) | al día |
 | `run_replica_ablaciones.py` | `replica_ablaciones` | directo | 28 oct (d0df16c) | al día (usa la copia médica de medico-demo) |
 | `run_deriva_olvido.py` | `deriva_olvido` | directo | 28 oct (d0df16c) | al día |
 | `run_olvido_privacidad.py` | `olvido_privacidad` | directo | 28 oct (d0df16c) | al día |
+
+Las lecturas industriales usan el reconocimiento de la memoria homo de Pineda (o pesos explícitos de `recog_weights`), que no pasa por el selector de pesos; por eso pedir pesos uniformes no cambiaba nada.
 
 ## Médico (fuente: rama medico-demo)
 

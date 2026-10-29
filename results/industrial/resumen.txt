@@ -84,4 +84,4 @@ Formación de directorios (fase A): {"registradas": 2133, "rechazadas": 27, "sin
   pcb4        tipos 2 (azar  50.0), test 11: memoria acierto  18.2 · rechazo  63.6 · de lo respondido  50.0 · balanceado  14.3 · kNN  90.9 · balanceado  87.5  {"extra": [8, 4], "missing": [12, 7]}
   pipe_fryum  tipos 6 (azar  16.7), test 35: memoria acierto  11.4 · rechazo  65.7 · de lo respondido  33.3 · balanceado   9.7 · kNN  42.9 · balanceado  46.7  {"burnt": [9, 6], "corner and edge breakage": [9, 6], "different colour spot": [6, 4], "similar colour spot": [12, 8], "small scratches": [11, 7], "stuck together": [6, 4]}
 
-Tiempo total: 7 min
+Tiempo total: 8 min

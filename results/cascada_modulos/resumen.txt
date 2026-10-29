@@ -22,4 +22,4 @@ cabeza (argmax, sin revisión), conocido: detección  93.0 · falsa alarma   3.4
 
 [criterio] {"1": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "2": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "4": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}, "8": {"silenciosa_cascada": 0.318325687910469, "silenciosa_msp": 0.24123728113228246, "silenciosa_energia": 0.24123728113228246, "falsa_alarma_cascada": 0.029125412541254118, "falsa_alarma_cabeza": 0.033847634763476346}}
 
-Tiempo total: 6 min
+Tiempo total: 0 min
