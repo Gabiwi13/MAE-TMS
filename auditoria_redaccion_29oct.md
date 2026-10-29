@@ -9,7 +9,7 @@ Cuatro auditorías de solo lectura compararon cada cifra y cada descripción de 
 | # | Dónde | Dice | Ahora | Fuente |
 |---|---|---|---|---|
 | T1 ✔ | `main.tex:74–79` (resumen) | temprana 88.0, madura 93.2, apple 13.0, visual 75.0 % «con cero falsos» | 90.0 / 93.0 / 13.8; visual 96.2 % con 2 falsos | ablación; etapa 7 |
-| T2 ✔ | `05:390–418`, `06:139–151`, `07:42–46` (EHAM única, exp11) | la clase empata (97.4 contra 97.5); «no clasifica mejor»; la brecha de fidelidad crece 2.0 → 4.5; precio del directorio 2.5; fuera de dominio M 3/40; dominio ajeno 7–9× | el protocolo gana en clase desde N=50 (98.5 contra 96.8, intervalos separados; en N=25 gana M); brecha 4.6 / 6.1 / 6.1 / 5.7, sin tendencia; precio 1.5 desde N=50 (4.4 en N=25); M acepta 2 / 2 / 5 / 8 de 40; dominio ajeno ≈3×; «bit a bit 8/8» pasa a 4/8 | `experimento11/README.md` |
+| T2 ✔ | `05:390–418`, `06:139–151`, `07:42–46` (EHAM única, exp11) | la clase empata (97.4 contra 97.5); «no clasifica mejor»; la brecha de fidelidad crece 2.0 → 4.5; precio del directorio 2.5; fuera de dominio M 3/40; dominio ajeno 7–9× | el protocolo gana en clase desde N=50 con intervalos separados (98.5 contra 97.6, 97.3 y 96.8: 0.9, 1.2 y 1.7 puntos; en N=25 gana M, 97.7 contra 95.6); brecha 4.6 / 6.1 / 6.1 / 5.7, sin tendencia; precio 1.5 desde N=50 (4.4 en N=25); M acepta 2 / 2 / 5 / 8 de 40; dominio ajeno ≈3×; «bit a bit 8/8» pasa a 4/8 | `experimento11/README.md` |
 | T3 ✔ | `03:73–76, 264–279` | «todos los agentes, incluidos los perdedores, registran» | registran el de entrada y el ganador; el TME, todas. El registro en los nueve queda solo en la ablación y en exp2–4 | `stage6_interaction.register_transaction` |
 | T4 | `03:310–364, 500–503` | el agente de entrada consulta su directorio y reenvía | `route_transactive`: suma su B1 y el de sus conocidos, encadena si nadie tiene soporte; en texto, doble compuerta; en imagen la entrada es el agente de la clase siguiente | `stage6:282–327`, `stage8:88–96`, `stage7:231` |
 | T5 ✔ | `03:313, 360, 441–452`; `04:165–182`; `05:321–329`; `06:177–180, 258–260` | ξ = 2 en el directorio visual, elegido sobre test; rechazo del 25 % («625 de 656») | `XI_VISUAL = 0` desde a423950; rechazo actual 3.5 %. Las limitaciones (b) y (f) parten de un estado que ya no existe | `stage7_bidirectional.py:46` |
@@ -88,7 +88,9 @@ Cuatro auditorías de solo lectura compararon cada cifra y cada descripción de 
 
 ## 5. Lo que cambia en la teoría
 
-1. **exp11 pasa a la forma fuerte.** Con 16 variantes y pesos homo, la partición también clasifica mejor desde N=50, y la memoria única acepta más fuera de dominio (P3 se ve). La lectura «partir compra fidelidad, no exactitud» queda corta: compra las dos, salvo con poco contenido.
+1. **exp11 pasa a la forma fuerte.** Con 16 variantes y pesos homo, la partición también clasifica mejor desde N=50 (de 0.9 a 1.7 puntos), y la memoria única acepta más fuera de dominio (P3 se ve). La lectura «partir compra fidelidad, no exactitud» queda corta: compra las dos, salvo con poco contenido.
 2. La brecha de fidelidad existe en todos los cortes, pero no crece con el contenido.
 3. τ no es gratis: cuesta 4 aciertos de test.
 4. Con los directorios perspectivales oficiales, perder un miembro pierde también la ubicación, salvo que haya muchas interacciones (exp9, sección 5 de la propuesta).
+
+La redacción viejo/nuevo de todo esto está en `revision_tesis_auditoria_prosa.md`.

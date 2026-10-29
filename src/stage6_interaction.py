@@ -4,8 +4,8 @@ Etapa 6 — Fase temprana del sistema transactivo.
 Implementa los tres procesos de la memoria transactiva de Wegner:
   asignacion de informacion   cada consulta se asigna al especialista
                               que mejor la reconoce (broadcast + argmax),
-  actualizacion de directorio el TME y TODOS los agentes registran
-                              (cue -> ganador) en sus directorios,
+  actualizacion de directorio registran (cue -> ganador) el agente de
+                              entrada, el ganador y el TME,
   coordinacion de recuperacion el ganador evoca el contenido asociado
                               (recall hetero -> decoder -> imagen).
 

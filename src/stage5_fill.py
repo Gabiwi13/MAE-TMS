@@ -9,8 +9,8 @@ Cada agente recibe tres memorias:
 El llenado es por instancias (image-major): cada una de las N_FILL imagenes
 reales —×FILL_VARIANTS variantes si FILL_AUGMENT (familia de exp13), el
 valor vigente— entra a la memoria hetero, emparejada con el siguiente label
-de la secuencia de labels expandida por frecuencia (800 registros/clase con
-N_FILL=200). La abstraccion de la clase la construye la propia memoria al
+de la secuencia de labels expandida por frecuencia (3200 registros/clase con
+N_FILL=200 y 16 variantes). La abstraccion de la clase la construye la propia memoria al
 acumular; ningun prototipo se calcula fuera de ella.
 
 Las stats globales de cuantizacion del latente se calculan sobre el mismo
@@ -38,8 +38,8 @@ from quantizer import quantize_binary
 CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
 N, M, P, Q = 300, 16, 64, 32
 # N_FILL=200 deja train[200:328] libre para las interacciones visuales de
-# stage7. El llenado se enriquece por augmentación (4x por imagen), no
-# consumiendo más imágenes.
+# stage7. El llenado se enriquece por augmentación, no consumiendo más
+# imágenes.
 N_FILL = 200
 FILL_AUGMENT = True      # augmentar cada imagen al llenar
 FILL_AUG_ANGLES = (-12, 12)

@@ -2,8 +2,9 @@
 Etapa 8 — Fase madura: coordinacion de recuperacion punto a punto.
 
 El TME queda fuera del circuito. Cada consulta entra por un agente
-aleatorio, que consulta su propio directorio para decidir quien debe
-atenderla. La lectura del directorio usa B1 (÷count): el score crudo de
+aleatorio, que suma su directorio y el de los agentes que conoce
+(route_transactive) para decidir quien debe atenderla, y el destino
+debe contener la pista. La lectura del directorio usa B1 (÷count): el score crudo de
 una HAM crece con la masa de registros del agente y, sin calibrar, el
 mas registrado gana aunque no sepa.
 
@@ -160,7 +161,7 @@ def run():
                            vectors_cache, decoder, g_min, g_max, verbose=False)
         mature_results[query] = None if res.get("rejected") else res["winner"]
         early_winner = early_results.get(query)
-        match = res["winner"] == early_winner
+        match = not res.get("rejected") and res["winner"] == early_winner
         fidelity_count += int(match)
         print(f"  Q{i+1}: temprana={early_winner}  madura={res['winner']}  "
               f"match={'OK' if match else 'X'}  entrada={entry_cls}")
