@@ -168,6 +168,6 @@ Propuesta de texto, si se incluye (después del párrafo de formación del direc
 
 ## 6. Fuera de la tesis (README y documentos de trabajo)
 
-- **exp12:** la correlación brecha–solapamiento desaparece (r 0.45, p 0.017 → r −0.00, p 0.996). El control con pesos uniformes, que dirá si viene de los pesos o de las 16 variantes, corre aparte.
+- **exp12:** la correlación brecha–solapamiento desaparece (r 0.45, p 0.017 → r −0.00, p 0.996). Viene de las 16 variantes: el control con pesos uniformes sobre las memorias actuales da r 0.06 (p 0.75). Los pesos homo alejan a M2 del vecino más cercano en 1.0 en promedio, parejo en los 28 pares (`results/controles_uniformes/experimento12/control.md`).
 - **missing_cue:** la baja de recuperaciones perfectas viene de las 16 variantes, no de los pesos. El control con pesos uniformes sobre las memorias actuales da lo mismo: sample-and-search 24/9/6/7 contra 25/7/3/8 con homo. El orden SS < ST < RS se mantiene.
 - **exp14:** con el mismo código, los rechazos de fase A por «niveles» varían entre corridas (0 o 3 de 1024), porque la GPU redondea distinto (diferencias de 1e-4 en los latentes).

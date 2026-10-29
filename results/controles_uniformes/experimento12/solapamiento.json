@@ -1,0 +1,161 @@
+{
+ "apple-car": {
+  "izquierda": 0.6174985107485107,
+  "latente": 0.4418018515951928,
+  "etiquetas_compartidas": []
+ },
+ "apple-cow": {
+  "izquierda": 0.6115934713434713,
+  "latente": 0.43685017255930236,
+  "etiquetas_compartidas": []
+ },
+ "apple-cup": {
+  "izquierda": 0.6310286565286565,
+  "latente": 0.4458766987637455,
+  "etiquetas_compartidas": []
+ },
+ "apple-dog": {
+  "izquierda": 0.6319882478632479,
+  "latente": 0.4537501932012471,
+  "etiquetas_compartidas": []
+ },
+ "apple-horse": {
+  "izquierda": 0.6251240333740333,
+  "latente": 0.4311020276715272,
+  "etiquetas_compartidas": []
+ },
+ "apple-pear": {
+  "izquierda": 0.6474155381655381,
+  "latente": 0.49676384746782043,
+  "etiquetas_compartidas": [
+   "fruit",
+   "pome"
+  ]
+ },
+ "apple-tomato": {
+  "izquierda": 0.6398311688311686,
+  "latente": 0.34844834681229114,
+  "etiquetas_compartidas": [
+   "fruit",
+   "red"
+  ]
+ },
+ "car-cow": {
+  "izquierda": 0.600913678913679,
+  "latente": 0.3970042334313312,
+  "etiquetas_compartidas": []
+ },
+ "car-cup": {
+  "izquierda": 0.6030618918118918,
+  "latente": 0.47102845917138036,
+  "etiquetas_compartidas": []
+ },
+ "car-dog": {
+  "izquierda": 0.6134058441558442,
+  "latente": 0.4408417496918313,
+  "etiquetas_compartidas": []
+ },
+ "car-horse": {
+  "izquierda": 0.6151691456691457,
+  "latente": 0.4779015045284748,
+  "etiquetas_compartidas": []
+ },
+ "car-pear": {
+  "izquierda": 0.5742228789728789,
+  "latente": 0.4063907576153234,
+  "etiquetas_compartidas": []
+ },
+ "car-tomato": {
+  "izquierda": 0.5883373848373848,
+  "latente": 0.35617529230590667,
+  "etiquetas_compartidas": []
+ },
+ "cow-cup": {
+  "izquierda": 0.5976141543641544,
+  "latente": 0.4237502282076596,
+  "etiquetas_compartidas": []
+ },
+ "cow-dog": {
+  "izquierda": 0.6279067229067228,
+  "latente": 0.4669984268509213,
+  "etiquetas_compartidas": [
+   "animal",
+   "mammal"
+  ]
+ },
+ "cow-horse": {
+  "izquierda": 0.6387366244866245,
+  "latente": 0.4578418601772832,
+  "etiquetas_compartidas": [
+   "animal",
+   "mammal"
+  ]
+ },
+ "cow-pear": {
+  "izquierda": 0.5827826340326341,
+  "latente": 0.43933790798975625,
+  "etiquetas_compartidas": []
+ },
+ "cow-tomato": {
+  "izquierda": 0.594774531024531,
+  "latente": 0.42182666881353514,
+  "etiquetas_compartidas": []
+ },
+ "cup-dog": {
+  "izquierda": 0.6207940161690162,
+  "latente": 0.45838563657835985,
+  "etiquetas_compartidas": [
+   "table"
+  ]
+ },
+ "cup-horse": {
+  "izquierda": 0.6088038443038444,
+  "latente": 0.46544928114820494,
+  "etiquetas_compartidas": []
+ },
+ "cup-pear": {
+  "izquierda": 0.5953787046287047,
+  "latente": 0.47153704876304864,
+  "etiquetas_compartidas": []
+ },
+ "cup-tomato": {
+  "izquierda": 0.6013272098272099,
+  "latente": 0.3624910309524927,
+  "etiquetas_compartidas": []
+ },
+ "dog-horse": {
+  "izquierda": 0.6377372904872904,
+  "latente": 0.45816607125156183,
+  "etiquetas_compartidas": [
+   "animal",
+   "mammal"
+  ]
+ },
+ "dog-pear": {
+  "izquierda": 0.5983877603877604,
+  "latente": 0.5000382872860639,
+  "etiquetas_compartidas": []
+ },
+ "dog-tomato": {
+  "izquierda": 0.5855148000148,
+  "latente": 0.45186015869016793,
+  "etiquetas_compartidas": []
+ },
+ "horse-pear": {
+  "izquierda": 0.5984811207311208,
+  "latente": 0.44909450393279604,
+  "etiquetas_compartidas": []
+ },
+ "horse-tomato": {
+  "izquierda": 0.6018773356273357,
+  "latente": 0.4527717039913489,
+  "etiquetas_compartidas": []
+ },
+ "pear-tomato": {
+  "izquierda": 0.6516642709142709,
+  "latente": 0.3858901166083586,
+  "etiquetas_compartidas": [
+   "fruit"
+  ]
+ }
+}

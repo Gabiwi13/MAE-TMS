@@ -35,7 +35,7 @@ Columnas:
 | `run_experiment9_probe_recognition.py` | `experimento9` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment10_perspectival_routing.py` | `experimento10` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment11_monolithic.py`, `_gate_cost.py`, `_probes.py` | `experimento11` | directo | 28 oct (d0df16c; reporte 224f7cd) | al día |
-| `run_experiment12_overlap.py` | `experimento12` | directo | 28 oct (d0df16c) | **control con pesos uniformes corriendo** (`results/controles_uniformes/experimento12`) |
+| `run_experiment12_overlap.py` | `experimento12` | directo | 28 oct (d0df16c; control 29 oct) | al día; el control con pesos uniformes dice que la correlación se pierde por las 16 variantes |
 | `run_experiment13_augmentation.py` | `experimento13` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment14_latent_energy.py` | `experimento14` | directo | 28 oct (224f7cd) | al día; los rechazos de fase A por «niveles» varían 0–3 de 1024 entre corridas por redondeo de la GPU |
 | `run_experiment15_arbiter.py` | `experimento15` | directo | 28 oct (d0df16c) | al día |
