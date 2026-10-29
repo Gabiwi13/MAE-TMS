@@ -4,7 +4,7 @@ Memorias actuales (16 variantes), `MAE_PESOS=uniforme`. El oráculo y M8 se leen
 
 | corrida | brecha M2 media | ρ brecha–solap. etiquetas | p | ρ d M2–solap. | ρ d oráculo–solap. |
 |---|---|---|---|---|---|
-| vieja (2 variantes, uniformes) | 1.55 | 0.45 | 0.017 | 0.16 | 0.01 |
+| vieja (4 variantes, uniformes) | 1.55 | 0.45 | 0.017 | 0.16 | 0.01 |
 | actual, pesos uniformes (este control) | 1.82 | 0.06 | 0.750 | 0.22 | 0.20 |
 | actual, pesos homo | 2.82 | −0.00 | 0.996 | 0.20 | 0.20 |
 

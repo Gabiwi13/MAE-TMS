@@ -64,12 +64,12 @@ Columnas:
 | `run_cierre_mae.py` | `cierre_mae` | vía demo industrial | 19 oct | al día: re-corrido el 28 oct con pesos homo, idéntico byte a byte |
 | `run_cascada_modulos.py` | `cascada_modulos` | vía cierre | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
 | `run_red_sintetica.py` | `red_sintetica` | vía cierre | 28 oct (este commit) | al día: con pesos homo sale idéntico a la corrida uniforme |
-| `run_piloto_modulos.py` | `piloto_modulos` | directo | 28 oct (d0df16c) | al día |
-| `run_etapa1_ruteo_dirigido.py` | `etapa1_ruteo_dirigido` | directo | 28 oct (d0df16c) | al día |
-| `run_etapa2_evidencia.py` | `etapa2_evidencia` | directo | 28 oct (d0df16c) | al día |
-| `run_replica_ablaciones.py` | `replica_ablaciones` | directo | 28 oct (d0df16c) | al día (usa la copia médica de medico-demo) |
-| `run_deriva_olvido.py` | `deriva_olvido` | directo | 28 oct (d0df16c) | al día |
-| `run_olvido_privacidad.py` | `olvido_privacidad` | directo | 28 oct (d0df16c) | al día |
+| `run_piloto_modulos.py` | `piloto_modulos` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4) |
+| `run_etapa1_ruteo_dirigido.py` | `etapa1_ruteo_dirigido` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4) |
+| `run_etapa2_evidencia.py` | `etapa2_evidencia` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4) |
+| `run_replica_ablaciones.py` | `replica_ablaciones` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4); usa la copia médica de medico-demo |
+| `run_deriva_olvido.py` | `deriva_olvido` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4) |
+| `run_olvido_privacidad.py` | `olvido_privacidad` | directo | 28 oct (d0df16c) | datos al día; el README escrito a mano sigue con las cifras anteriores (auditoria_redaccion_29oct.md §4) |
 
 Las lecturas industriales ya son homo. El ruteo lee los directorios con pesos homo: en el nivel 1, los 1239 puntajes con soporte cambian con el modo de pesos, pero en cada pista una sola pieza tiene soporte, así que el ganador no puede cambiar (0 de 2162 decisiones distintas). Los especialistas leen contención (no depende de pesos) o el puntaje medio de `recog_weights`, que son los pesos homo R[i, a_i]; la monolítica pasa esos mismos pesos de forma explícita.
 
