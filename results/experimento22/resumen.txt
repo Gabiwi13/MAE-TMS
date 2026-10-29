@@ -1,0 +1,15 @@
+Exp22: principio de tamaño contra B1 sobre los modelos oficiales de ETH-80 (solo lectura).
+
+[imagen] n=656 · reimplementación B1 = oficial en 656/656
+  b1     : acierto  96.2 · rechazo   3.5 · falso   0.3
+    por clase: apple 81/82 · car 76/82 · cow 77/82 · cup 80/82 · dog 79/82 · horse 79/82 · pear 78/82 · tomato 81/82
+  tamano : acierto  96.3 · rechazo   3.5 · falso   0.2
+    por clase: apple 81/82 · car 76/82 · cow 77/82 · cup 80/82 · dog 79/82 · horse 80/82 · pear 78/82 · tomato 81/82
+  decisiones distintas entre lecturas: 1 (tamaño acierta 1, B1 acierta 0)
+
+[texto] n=411 · reimplementación B1 = oficial en 411/411
+  b1     : acierto  28.7 · rechazo  59.4 · falso  11.9
+    por clase: apple 23/52 · car 18/51 · cow 8/51 · cup 23/51 · dog 7/49 · horse 11/51 · pear 7/53 · tomato 21/53
+  tamano : acierto  28.5 · rechazo  59.4 · falso  12.2
+    por clase: apple 23/52 · car 18/51 · cow 6/51 · cup 23/51 · dog 7/49 · horse 10/51 · pear 9/53 · tomato 21/53
+  decisiones distintas entre lecturas: 8 (tamaño acierta 3, B1 acierta 4)
