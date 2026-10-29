@@ -27,7 +27,7 @@ Columnas:
 | `run_experiment5.py` | `exp5_entropic_prototype` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment6.py` | `exp6_capacity` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment7_unified_dir.py` | `experimento7` | directo | 28 oct (224f7cd) | al día |
-| `run_experiment8_directory_recall.py` | `experimento8` | directo | 28 oct (d0df16c) | **pendiente 1.4**: la mitad texto mide un directorio con 16 interacciones |
+| `run_experiment8_directory_recall.py` | `experimento8` | directo | 28 oct (d0df16c) | al día: sus sondas de texto describen el directorio oficial tal como está (52 registros en car); la tabla de ruteo directo viene de exp10, y la curva de formación de texto está en exp9 |
 | `run_experiment8_identity_cue_probe.py` | `experimento8` | directo | 28 oct (d0df16c) | al día |
 | `run_sampling_distributions.py` | `experimento8`, `experimento9` | directo | 28 oct (d0df16c) | al día |
 | `run_experiment9_member_loss.py` | `experimento9`, `experimento9/formacion_texto` | directo | 28 oct (este commit) | al día; la curva de formación (16 a 240 interacciones de texto) y la mitad texto con 240 están en `formacion_texto` |
