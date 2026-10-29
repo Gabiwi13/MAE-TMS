@@ -171,3 +171,42 @@ Propuesta de texto, si se incluye (después del párrafo de formación del direc
 - **exp12:** la correlación brecha–solapamiento desaparece (r 0.45, p 0.017 → r −0.00, p 0.996). Viene de las 16 variantes: el control con pesos uniformes sobre las memorias actuales da r 0.06 (p 0.75). Los pesos homo alejan a M2 del vecino más cercano en 1.0 en promedio, parejo en los 28 pares (`results/controles_uniformes/experimento12/control.md`).
 - **missing_cue:** la baja de recuperaciones perfectas viene de las 16 variantes, no de los pesos. El control con pesos uniformes sobre las memorias actuales da lo mismo: sample-and-search 24/9/6/7 contra 25/7/3/8 con homo. El orden SS < ST < RS se mantiene.
 - **exp14:** con el mismo código, los rechazos de fase A por «niveles» varían entre corridas (0 o 3 de 1024), porque la GPU redondea distinto (diferencias de 1e-4 en los latentes).
+
+## 7. La afirmación «la ventaja de partir crece con el solapamiento» (exp12)
+
+**Por qué.** Con el llenado de 16 variantes la correlación brecha–solapamiento desaparece (ρ 0.45 → −0.00 con pesos homo; 0.06 con pesos uniformes, sección 6). Se mantiene:
+- la brecha de la memoria de dos clases es positiva en los 28 pares (mínimo +0.3);
+- la de ocho clases es mayor: 5.8 contra 2.8 en promedio, mayor en 25 de 28 pares.
+
+La tesis (`.tex8`) no cita exp12: la línea 111 de `06_discusion.tex` habla del costo de formar el directorio y no se toca. La afirmación vive en estos documentos.
+
+### 7a. `results/experimento21/README.md`, línea 24 (medico-demo y su copia en industrial-clip)
+
+**Viejo:** «…se lleva el soporte de casi todo. Es exp12 a escala: la ventaja de partir crece con el solapamiento de las pistas.»
+
+**Nuevo:** «…se lleva el soporte de casi todo. Partir vale más donde los contenidos se pisan mucho. En ETH-80 (exp12, llenado de 16 variantes) la brecha no crece con el solapamiento entre pares de clases, pero sí con cuántas clases se mezclan (5.8 con ocho contra 2.8 con dos).»
+
+### 7b. `CONTEXTO_SEP2026.md`, línea 141, e `INICIO_NUEVA_SESION.md`, línea 68
+
+**Viejo:** «La brecha crece con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017) y el error de clase también (ρ 0.49, p 0.008); no con el solapamiento del latente (ρ −0.07). Las 28 brechas son positivas (mínimo +0.5)…» (INICIO agrega: «Formulación: la ventaja de partir existe para cualquier par y crece con el solapamiento de las pistas.»)
+
+**Nuevo:** «Con el llenado de 4 variantes la brecha crecía con el solapamiento de soportes en etiquetas (ρ 0.45, p 0.017). Con el de 16 variantes y pesos homo no crece (ρ −0.00, p 0.996), y el control con pesos uniformes muestra que el cambio viene del llenado (ρ 0.06). El error de clase sí crece con el solapamiento (ρ 0.49, p 0.008). Las 28 brechas son positivas (mínimo +0.3) y la memoria de ocho clases se aleja más que la de dos (5.8 contra 2.8). Formulación: la ventaja de partir existe para cualquier par; crece con cuántos dominios se mezclan, no con cuánto se parecen dos de ellos.»
+
+### 7c. `sintesis_exp7_a_exp16.md`, línea 19
+
+**Viejo:** «Exp12 fijó cuándo: la ventaja existe para cualquier par y crece con el solapamiento de las pistas.»
+
+**Nuevo:** «Exp12 fijó cuándo: la ventaja existe para cualquier par. Que crezca con el solapamiento solo se vio con el llenado de 4 variantes; con el de 16 desaparece, y lo que la hace crecer es el número de dominios mezclados.»
+
+### 7d. Documentos de la rama exp7-directorio-unificado y sin versionar (carpeta principal)
+
+- `sintesis_exp17_a_exp22.md`, línea 41. Viejo: «Es exp12 a escala: la ventaja de partir crece con el solapamiento.» → Nuevo: «Partir vale más donde los contenidos se pisan mucho (en ETH-80, exp12 ya no muestra un gradiente con el solapamiento entre pares).»
+- `sintesis_medico_exp20_a_exp27.md`, línea 38 (sin versionar). Viejo: «…y esa ventaja crece con el solapamiento (exp12 a escala).» → Nuevo: «…y esa ventaja aparece donde los contenidos se pisan mucho, como en tórax.»
+- **Propuestas pendientes que meterían la afirmación en la tesis.**
+  - Dónde:
+    - `revision_exp17_22_prosa.md`, línea 37;
+    - `revision_medico_prosa.md`, línea 108.
+  - Viejo: «…aparece cuando los contenidos se pisan, y crece con el solapamiento, como predijo el experimento 12.» → Nuevo: «…aparece cuando los contenidos se pisan.»
+  - Hay que corregirlas antes de aprobarlas.
+
+`run_experiment12_overlap.py` conserva la predicción pre-registrada en su docstring y en el título de la figura. Es lo que se predijo, no lo que salió, así que no se toca.
