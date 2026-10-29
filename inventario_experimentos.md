@@ -71,7 +71,7 @@ Columnas:
 | `run_deriva_olvido.py` | `deriva_olvido` | directo | 28 oct (d0df16c) | al día |
 | `run_olvido_privacidad.py` | `olvido_privacidad` | directo | 28 oct (d0df16c) | al día |
 
-Las lecturas industriales usan el reconocimiento de la memoria homo de Pineda (o pesos explícitos de `recog_weights`), que no pasa por el selector de pesos; por eso pedir pesos uniformes no cambiaba nada.
+Las lecturas industriales ya son homo. El ruteo lee los directorios con pesos homo: en el nivel 1, los 1239 puntajes con soporte cambian con el modo de pesos, pero en cada pista una sola pieza tiene soporte, así que el ganador no puede cambiar (0 de 2162 decisiones distintas). Los especialistas leen contención (no depende de pesos) o el puntaje medio de `recog_weights`, que son los pesos homo R[i, a_i]; la monolítica pasa esos mismos pesos de forma explícita.
 
 ## Médico (fuente: rama medico-demo)
 

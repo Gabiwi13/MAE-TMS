@@ -4,7 +4,7 @@ Pendiente de aprobación; no se ha tocado el `.docx`. Fuente: `Downloads/Resumen
 
 ## Los pesos homo no cambian ninguna cifra
 
-Las 9 corridas industriales con pesos homo salen idénticas a las uniformes; solo cambian los tiempos (commit a2898e2). Sus lecturas usan el reconocimiento homo de Pineda o pesos explícitos de `recog_weights`, que no pasan por el selector de pesos.
+Las 9 corridas industriales con pesos homo salen idénticas a las uniformes; solo cambian los tiempos (commit a2898e2). Las lecturas industriales ya son homo. El ruteo lee los directorios con pesos homo: en el nivel 1, los 1239 puntajes con soporte cambian con el modo de pesos, pero en cada pista una sola pieza tiene soporte, así que el ganador no puede cambiar (0 de 2162 decisiones distintas). Los especialistas leen contención (no depende de pesos) o el puntaje medio de `recog_weights`, que son los pesos homo R[i, a_i]; la monolítica pasa esos mismos pesos de forma explícita.
 
 | Cifra del resumen | Fuente | Con pesos homo |
 |---|---|---|
