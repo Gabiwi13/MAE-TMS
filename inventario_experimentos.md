@@ -47,7 +47,7 @@ Columnas:
 | `run_experiment18_feature_probe.py` | `experimento18` | no (latentes) | 18 oct | al día |
 | `run_missing_cue.py` | `missing_cue` | directo | 28 oct (d0df16c; control aa283f6) | al día; el control dice que el cambio viene de las 16 variantes |
 | `run_rejection_probe.py` | `rejection_probe` | directo | 23 sep | al día: re-corrido el 28 oct con pesos homo, idéntico byte a byte (10 rechazadas, 2 ruteos falsos de 12) |
-| exp19 (checkout `MAE-TMS-exp18`) | `experimento19` | directo | 18 oct | **desactualizado** (pesos): falta decidir si se porta el código (~2.2 h de cómputo) |
+| exp19 (checkout `MAE-TMS-exp18`) | `experimento19/pesos_homo` | directo | 29 oct (7d83bac en exp18-heteroasociacion-significativa) | al día: código de pesos homo portado; ruteo de test 80.5 → 79.6 %, exp16 e2e nuevo 60.8 → 60.6; conclusiones iguales |
 | `run_experiment22_size_eth80.py` (traído de exp7-directorio-unificado, 4c9cf01) | `experimento22` | directo | 28 oct (este commit) | al día: con pesos homo, filas idénticas byte a byte |
 | `run_cost_benchmark.py` | `computational_cost` | no (tiempos) | 22 sep | no depende de los pesos |
 | `run_experiment.py` | — | no | 26 ago | lanzador viejo |
