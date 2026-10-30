@@ -1,0 +1,50 @@
+{
+  "uniforme_semilla_0": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.1159112004950495,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  },
+  "uniforme_semilla_100000": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.118695853960396,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  },
+  "homo_semilla_0": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.150409962871287,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  },
+  "homo_semilla_100000": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.17786974009901,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  },
+  "marginal_semilla_0": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.1504486386138613,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  },
+  "marginal_semilla_100000": {
+    "consultas": 404,
+    "recordados": 404,
+    "acierto_clase_verdadera_pct": 91.83168316831683,
+    "vecino_en_clase_del_agente_pct": 100.0,
+    "distancia_l1_media": 2.1767481435643563,
+    "ganador_temprano_acierto_pct": 91.83168316831683
+  }
+}

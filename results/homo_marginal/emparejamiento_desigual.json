@@ -1,0 +1,112 @@
+{
+  "C1": {
+    "homo": {
+      "pares_pista_agente": 9592,
+      "la_homo_de_etiquetas_contiene": 1025,
+      "la_compuerta_de_la_hetero_pasa": 1025,
+      "ganador_temprano_acierto_pct": 89.53771289537713,
+      "rechazadas_temprano": 7
+    },
+    "marginal": {
+      "pares_pista_agente": 9592,
+      "la_homo_de_etiquetas_contiene": 1025,
+      "la_compuerta_de_la_hetero_pasa": 1025,
+      "ganador_temprano_acierto_pct": 90.99756690997567,
+      "rechazadas_temprano": 7
+    },
+    "homo_contra_marginal": {
+      "contencion_de_la_homo_distinta": 0,
+      "compuerta_hetero_distinta": 0,
+      "ganador_temprano_distinto": 8,
+      "destino_maduro_distinto": 0,
+      "compuerta_madura_distinta": 0
+    },
+    "recuerdo_homo_semilla_0": {
+      "consultas": 404,
+      "recordados": 404,
+      "acierto_clase_verdadera_pct": 91.08910891089108,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 1.7589340965346534,
+      "ganador_temprano_acierto_pct": 91.0891089108911
+    },
+    "recuerdo_homo_semilla_100000": {
+      "consultas": 404,
+      "recordados": 404,
+      "acierto_clase_verdadera_pct": 91.08910891089108,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 1.756613551980198,
+      "ganador_temprano_acierto_pct": 91.0891089108911
+    },
+    "recuerdo_marginal_semilla_0": {
+      "consultas": 404,
+      "recordados": 404,
+      "acierto_clase_verdadera_pct": 91.08910891089108,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 1.7457069925742574,
+      "ganador_temprano_acierto_pct": 91.0891089108911
+    },
+    "recuerdo_marginal_semilla_100000": {
+      "consultas": 404,
+      "recordados": 404,
+      "acierto_clase_verdadera_pct": 91.08910891089108,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 1.760674504950495,
+      "ganador_temprano_acierto_pct": 91.0891089108911
+    }
+  },
+  "C2": {
+    "homo": {
+      "pares_pista_agente": 9592,
+      "la_homo_de_etiquetas_contiene": 1025,
+      "la_compuerta_de_la_hetero_pasa": 703,
+      "ganador_temprano_acierto_pct": 55.47445255474452,
+      "rechazadas_temprano": 128
+    },
+    "marginal": {
+      "pares_pista_agente": 9592,
+      "la_homo_de_etiquetas_contiene": 703,
+      "la_compuerta_de_la_hetero_pasa": 703,
+      "ganador_temprano_acierto_pct": 55.23114355231144,
+      "rechazadas_temprano": 128
+    },
+    "homo_contra_marginal": {
+      "contencion_de_la_homo_distinta": 322,
+      "compuerta_hetero_distinta": 0,
+      "ganador_temprano_distinto": 5,
+      "destino_maduro_distinto": 0,
+      "compuerta_madura_distinta": 0
+    },
+    "recuerdo_homo_semilla_0": {
+      "consultas": 283,
+      "recordados": 283,
+      "acierto_clase_verdadera_pct": 80.56537102473499,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 2.0624447879858656,
+      "ganador_temprano_acierto_pct": 80.56537102473497
+    },
+    "recuerdo_homo_semilla_100000": {
+      "consultas": 283,
+      "recordados": 283,
+      "acierto_clase_verdadera_pct": 80.56537102473499,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 2.0325198763250882,
+      "ganador_temprano_acierto_pct": 80.56537102473497
+    },
+    "recuerdo_marginal_semilla_0": {
+      "consultas": 283,
+      "recordados": 283,
+      "acierto_clase_verdadera_pct": 80.56537102473499,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 2.052672261484099,
+      "ganador_temprano_acierto_pct": 80.56537102473497
+    },
+    "recuerdo_marginal_semilla_100000": {
+      "consultas": 283,
+      "recordados": 283,
+      "acierto_clase_verdadera_pct": 80.56537102473499,
+      "vecino_en_clase_del_agente_pct": 100.0,
+      "distancia_l1_media": 2.0512367491166077,
+      "ganador_temprano_acierto_pct": 80.56537102473497
+    }
+  }
+}

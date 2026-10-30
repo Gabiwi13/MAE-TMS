@@ -1,0 +1,27 @@
+{
+  "homo_oficial_200": {
+    "imagenes": 652,
+    "acepta_propia_clase_pct": 98.61963190184049,
+    "aceptaciones_de_otra_clase": 3,
+    "top1_correcto_pct": 98.61963190184049,
+    "rechazadas_por_todos": 8
+  },
+  "marginal_50_de_200": {
+    "imagenes": 652,
+    "acepta_propia_clase_pct": 92.79141104294479,
+    "aceptaciones_de_otra_clase": 2,
+    "top1_correcto_pct": 92.79141104294479,
+    "rechazadas_por_todos": 46,
+    "vistas_extra_de_la_homo": 38,
+    "de_ellas_sin_recuerdo_imagen_a_texto": 38
+  },
+  "marginal_100_de_200": {
+    "imagenes": 652,
+    "acepta_propia_clase_pct": 97.08588957055214,
+    "aceptaciones_de_otra_clase": 2,
+    "top1_correcto_pct": 97.08588957055214,
+    "rechazadas_por_todos": 18,
+    "vistas_extra_de_la_homo": 10,
+    "de_ellas_sin_recuerdo_imagen_a_texto": 10
+  }
+}

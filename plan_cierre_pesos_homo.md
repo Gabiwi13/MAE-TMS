@@ -155,3 +155,29 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
 - **29 oct.**
   - 1.5 control de exp12: la correlación se pierde por las 16 variantes (uniformes 0.06, p 0.75; homo −0.00; vieja 0.45). Los pesos homo alejan a M2 1.0 en promedio, parejo en los pares. El oráculo del control es el homo de exp11: un oráculo uniforme costaría unas 2–3 h (estimado, sin medir).
   - exp19 con pesos homo (7d83bac en `MAE-TMS-exp18`, sin subir): etapas 6–8 y exp16 re-corridos sobre el mismo llenado (3.8 h). Ruteo de test 528 → 522 de 656 (rechazo 6.9 % igual), fase A 90.2 % igual, evocación 83.5 → 84.4 %; exp16 e2e conocido 76.3 → 75.7, nuevo 60.8 → 60.6, falso ruteo 14.4 → 14.6. Los pesos solo mueven el ganador entre animales; las conclusiones de exp19 se mantienen. Respaldo de los modelos viejos en `rerun/exp19_previo`.
+  - **Criterio declarado antes de correr (homo como marginal):** se reemplaza cada memoria homo por la marginal de la hetero de su agente: la latente suma la relación sobre los niveles de etiqueta, la de etiquetas suma sobre los niveles latentes. Después se repiten, decisión por decisión, las lecturas oficiales: puntajes y ganador temprano de texto en las 411 consultas del banco y las 16 de la etapa 6; destino y compuerta del ruteo transactivo de texto; recuerdo texto→latente con la misma semilla; contención y puntaje de imagen, ruteo y evocación top-3 en las 656 imágenes de test. Predicción:
+    - (1) la contención no cambia en ninguna pista;
+    - (2) en imagen, puntajes, ruteo y evocación son idénticos, porque la marginal latente es igual celda por celda;
+    - (3) en texto los puntajes cambian por el factor de 32 a 33, y las decisiones solo pueden cambiar en empates cercanos.
+
+    Se reporta el número de decisiones distintas, sin umbral de éxito. Control: la corrida oficial repetida, para separar el azar del recuerdo.
+  - **Criterio declarado antes de correr (¿cuándo agregan algo las homo?).** Con el llenado oficial las homo son la marginal de la hetero. Se prueban tres casos; los llenados nuevos viven en memoria y no tocan `models/`.
+    - **A. Pesos y calidad del recuerdo** (`run_pesos_recuerdo.py`, modelos oficiales). En las 411 consultas del banco, el agente y la pista son los del ganador temprano oficial. Se recuerda texto→latente con pesos uniformes, homo y marginal, con dos semillas cada uno. El latente recordado se clasifica por vecino más cercano (L1 sobre niveles) entre los latentes de llenado de los ocho agentes. Se reporta el acierto contra la clase verdadera y la distancia al latente más cercano. Predicción: los tres pesos difieren en menos de 2 puntos, sin dirección clara, y la diferencia entre pesos no supera la que hay entre semillas.
+    - **B. Datos sin pareja** (`run_homo_sin_pareja.py`). La hetero de cada agente se llena solo con las primeras 50 o 100 imágenes de llenado (25 o 50 %, con sus 16 variantes y el emparejamiento oficial). La homo latente se queda con las 200. En las 652 imágenes de test con energía se compara el reconocimiento con la homo oficial y con la marginal de la hetero reducida: aceptación de la propia clase, aceptaciones de otras clases y clase top-1 por puntaje. También se mide cuántas imágenes reconoce la homo pero la hetero reducida no puede evocar (recuerdo imagen→texto no reconocido). Predicción: la homo acepta más vistas de su clase que la marginal, y también más de otras clases. Esas vistas extra son las que la hetero no puede nombrar.
+    - **C. Emparejamiento desigual** (`run_emparejamiento_desigual.py`). La homo de etiquetas se queda como la oficial. Se prueban dos llenados de la hetero sobre los mismos latentes:
+      - C1: todas las palabras distintas emparejadas, con frecuencia proporcional a 1/rango;
+      - C2: solo la primera mitad de las palabras distintas emparejadas.
+
+      En las 411 consultas se cuenta la contención por pista y agente según la homo y según la marginal, y se cuentan las decisiones distintas del sistema tal como está (ganador temprano y compuerta) con pesos homo contra marginal. También se mide la calidad del recuerdo como en A. Predicción:
+      - C1: el soporte de la homo y el de la marginal son iguales, los pesos cambian de forma y el ganador temprano cambia en menos de 3 % de las consultas.
+      - C2: la homo contiene pistas que la marginal no, y la compuerta de la hetero las rechaza: la homo sabe la palabra pero el agente no puede recordar una imagen.
+
+    Se reportan conteos sin umbral de éxito.
+
+  - **Resultados (homo como marginal y ¿cuándo agregan algo?), en `results/homo_marginal/`:**
+    - Marginal: ninguna decisión distinta de texto ni de imagen. Cambian 66 de 420 recuerdos texto→latente, por la escala de los pesos; cambiar solo la semilla cambia los 420, con un efecto unas 47 veces mayor.
+    - A: el acierto del recuerdo es igual con los tres pesos (91.8 %), porque el vecino siempre cae en la clase del agente. Homo y marginal quedan a la misma distancia del llenado. Con pesos, el recuerdo queda 0.03–0.06 niveles más lejos que con uniformes en las dos semillas. «Sin dirección clara» no se cumple, y la diferencia no favorece a los pesos.
+    - B: con la hetero reducida a 100 o 50 imágenes, la homo reconoce 10 o 38 vistas más de su clase. Ninguna se puede nombrar. Se cumple.
+    - C1: mismo soporte; 8 de 411 ganadores tempranos distintos y ningún ruteo distinto. Se cumple.
+    - C2: la homo contiene 322 pares que la hetero rechaza. Se cumple.
+    - Lectura: con todo emparejado, las homo son redundantes; agregan algo solo con datos sin pareja.

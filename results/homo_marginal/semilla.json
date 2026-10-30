@@ -1,0 +1,12 @@
+{
+  "oficial_semilla_k_contra_k+100000": {
+    "recuerdos_comparados": 420,
+    "recuerdos_identicos": 0,
+    "recuerdo_dif_media_por_coordenada": 3.0942708333333333
+  },
+  "oficial_contra_marginal_misma_semilla": {
+    "recuerdos_comparados": 420,
+    "recuerdos_identicos": 354,
+    "recuerdo_dif_media_por_coordenada": 0.06610863095238095
+  }
+}

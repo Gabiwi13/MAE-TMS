@@ -1,0 +1,94 @@
+{
+  "marginales": {
+    "apple": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 32.0,
+      "etiquetas_factor_max": 33.0
+    },
+    "car": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 22.0,
+      "etiquetas_factor_max": 23.0
+    },
+    "cow": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 30.0,
+      "etiquetas_factor_max": 31.0
+    },
+    "cup": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 37.0,
+      "etiquetas_factor_max": 38.0
+    },
+    "dog": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 21.0,
+      "etiquetas_factor_max": 22.0
+    },
+    "horse": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 22.0,
+      "etiquetas_factor_max": 23.0
+    },
+    "pear": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 94.0,
+      "etiquetas_factor_max": 95.0
+    },
+    "tomato": {
+      "latente_identica": true,
+      "etiquetas_mismo_soporte": true,
+      "etiquetas_factor_min": 82.0,
+      "etiquetas_factor_max": 82.4
+    }
+  },
+  "control_oficial_repetido": {
+    "texto": {
+      "consultas": 427,
+      "pares_pista_agente": 10008,
+      "contencion_distinta": 0,
+      "puntaje_dif_relativa_max": 0.0,
+      "ganador_temprano_distinto": 0,
+      "destino_maduro_distinto": 0,
+      "compuerta_distinta": 0,
+      "recuerdos_comparados": 420,
+      "recuerdos_identicos": 420,
+      "recuerdo_dif_media_por_coordenada": 0.0
+    },
+    "imagen": {
+      "imagenes_con_energia": 652,
+      "contencion_distinta": 0,
+      "puntaje_dif_relativa_max": 0.0,
+      "destino_distinto": 0,
+      "evocacion_top3_distinta": 0
+    }
+  },
+  "oficial_contra_marginal": {
+    "texto": {
+      "consultas": 427,
+      "pares_pista_agente": 10008,
+      "contencion_distinta": 0,
+      "puntaje_dif_relativa_max": 0.0028538522730037754,
+      "ganador_temprano_distinto": 0,
+      "destino_maduro_distinto": 0,
+      "compuerta_distinta": 0,
+      "recuerdos_comparados": 420,
+      "recuerdos_identicos": 354,
+      "recuerdo_dif_media_por_coordenada": 0.06610863095238095
+    },
+    "imagen": {
+      "imagenes_con_energia": 652,
+      "contencion_distinta": 0,
+      "puntaje_dif_relativa_max": 0.0,
+      "destino_distinto": 0,
+      "evocacion_top3_distinta": 0
+    }
+  }
+}
