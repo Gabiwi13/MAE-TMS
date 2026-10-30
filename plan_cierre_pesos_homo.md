@@ -181,3 +181,15 @@ El núcleo quedó idéntico con pesos homo: fase A 99.9 %; ruteo 631/656 = 96.2 
     - C1: mismo soporte; 8 de 411 ganadores tempranos distintos y ningún ruteo distinto. Se cumple.
     - C2: la homo contiene 322 pares que la hetero rechaza. Se cumple.
     - Lectura: con todo emparejado, las homo son redundantes; agregan algo solo con datos sin pareja.
+  - **Criterio declarado antes de correr (D. ¿la hetero guarda lo que llega sin pareja?)** (`run_homo_borde.py`). La hetero reserva un valor indefinido por dominio (`m+1`, `q+1`, «funciones parciales»), con su borde fijado en 1. Leyendo el código, todas sus lecturas (proyección, entropías, medias, relación ι) usan solo `[:m, :q]`. Se repite B: la hetero recibe las primeras 100 o 50 imágenes con su palabra, y el resto de las 200 se registra con la palabra indefinida (NaN). Se compara con la hetero de B, que solo recibe las emparejadas. Predicción:
+    - (1) el interior de la relación, la relación ι, las medias y las entropías son iguales a los de B; la proyección desde las 652 imágenes de test es idéntica, y las vistas extra de B siguen sin recuerdo imagen→texto;
+    - (2) el borde guarda la misma tabla latente en cada coordenada de palabra, y el borde más la marginal del interior es igual, celda por celda, a la homo latente oficial;
+    - (3) el reconocimiento con esa tabla es el de la homo oficial, y con la marginal del interior es el de B.
+
+    Se reportan conteos sin umbral de éxito.
+- **30 oct.** D (`results/homo_marginal/borde.json`): se cumplen las tres predicciones. Con 100 o 50 imágenes emparejadas y el resto registrado con la palabra indefinida:
+  - el interior, la relación ι, las medias, las entropías y la proyección quedan iguales a B (8 de 8 agentes, 652 de 652 imágenes);
+  - las vistas extra siguen sin nombre (10 de 10, 38 de 38);
+  - el borde más la marginal es la homo latente oficial, celda por celda, en los 8 agentes, con 0 decisiones de reconocimiento distintas.
+
+  La hetero sí guarda lo sin pareja; solo falta una lectura que use el borde. La primera corrida falló por un error de nombre en `homo_from` y se repitió completa.

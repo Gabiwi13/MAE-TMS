@@ -33,11 +33,16 @@ CLASSES = s6.CLASSES
 def marginal_homo(mem_H, like: HomoAssociativeMemory, dim: int):
     rel = np.asarray(mem_H.relation, dtype=np.int64)        # (n, p, m, q)
     marg = rel[:, 0].sum(axis=2) if dim == 0 else rel[0].sum(axis=1)
+    return homo_from(marg, like)
+
+
+def homo_from(table, like: HomoAssociativeMemory):
+    """Homo con los parámetros de `like` y la relación `table`."""
     am = like._am
     es = commons.ExperimentSettings(iota=am.iota, kappa=am.kappa, xi=am.xi, sigma=am.sigma)
     h = HomoAssociativeMemory(like.n, like.m, iota=am.iota, kappa=am.kappa, xi=am.xi, sigma=am.sigma)
     with contextlib.redirect_stdout(io.StringIO()):
-        h._am = AssociativeMemory.from_relation(marg, es)
+        h._am = AssociativeMemory.from_relation(table, es)
     return h
 
 

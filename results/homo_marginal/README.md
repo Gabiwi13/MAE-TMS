@@ -74,7 +74,7 @@ La hetero de cada agente se llena solo con las primeras 50 o 100 de sus 200 imá
 - **Ninguna de esas vistas extra se puede nombrar:** el recuerdo imagen→texto de la hetero reducida no reconoce ninguna (10 de 10 y 38 de 38). Esto es por construcción, no un hallazgo empírico. La proyección es un AND entre coordenadas: si un valor latente nunca se registró en la hetero, su rebanada es cero y anula toda la proyección.
 - Predicción: se cumple. La homo acepta más vistas de su clase y algo más de otras, y las vistas extra son justo las que la hetero no puede nombrar.
 
-Con datos sin pareja, la homo sí agrega algo: reconoce **«esto ya lo vi»** en vistas que el agente no puede nombrar. Es un estado que la hetero sola no puede representar, porque para ella lo que no se puede recordar no está contenido.
+Con datos sin pareja, la homo sí agrega algo: reconoce **«esto ya lo vi»** en vistas que el agente no puede nombrar. Las lecturas actuales de la hetero no pueden representar ese estado, porque para ellas lo que no se puede recordar no está contenido. La hetero sí podría guardarlo (D).
 
 ### C. Emparejamiento desigual (`run_emparejamiento_desigual.py`, `emparejamiento_desigual.json`)
 
@@ -108,6 +108,27 @@ Homo contra marginal, decisión por decisión:
   - C2: homo 2.062 y 2.033, marginal 2.053 y 2.051.
 - Predicción: se cumple en los dos casos.
 
+### D. Lo sin pareja dentro de la hetero (`run_homo_borde.py`, `borde.json`)
+
+La hetero reserva un valor indefinido por dominio, con su borde fijado en 1 («funciones parciales»). Todas sus lecturas usan solo el interior `[:m, :q]`. Se repite B, pero las imágenes de llenado que quedan sin pareja se registran con la palabra indefinida (NaN) en vez de omitirse. Se compara con la hetero de B, que solo recibe las emparejadas.
+
+| | 100 de 200 emparejadas | 50 de 200 emparejadas |
+|---|---|---|
+| Registros en el borde, por agente | 1 600 | 2 400 |
+| Agentes con interior, relación ι, medias y entropías iguales a B | 8 de 8 | 8 de 8 |
+| Proyección desde las imágenes de test idéntica a B | 652 de 652 | 652 de 652 |
+| Vistas extra de la homo sin recuerdo imagen→texto | 10 de 10 | 38 de 38 |
+| Recuerdo idéntico a B en esas vistas | 10 de 10 | 38 de 38 |
+| Agentes donde el borde es la misma tabla en cada coordenada de palabra | 8 de 8 | 8 de 8 |
+| Agentes donde borde + marginal del interior = homo latente oficial, celda por celda | 8 de 8 | 8 de 8 |
+| Reconocimiento con la marginal del interior | 97.1 %, 2 de otra clase, 18 rechazadas | 92.8 %, 2, 46 |
+| Reconocimiento con borde + marginal | 98.6 %, 3, 8 | 98.6 %, 3, 8 |
+| Decisiones distintas de borde + marginal contra la homo oficial | 0 de 652 × 8 | 0 de 652 × 8 |
+
+- **La hetero sí guarda lo que llega sin pareja,** en su borde de valor indefinido. Ninguna lectura del sistema lo ve: todo lo que lee la hetero queda igual que en B.
+- **El borde es una homo latente dentro de la hetero.** Sumado a la marginal de lo emparejado, reproduce exacta la homo oficial, y reconocer con esa tabla da las mismas decisiones que la homo oficial.
+- Predicción: se cumple en los tres puntos.
+
 ## Lectura
 
 Con el llenado oficial, las dos homo de cada agente se pueden calcular de su hetero sin cambiar ninguna decisión del sistema. Solo cambian los recuerdos muestreados, por la escala de los pesos. Los pesos tampoco mejoran el recuerdo: con pesos uniformes queda un poco más cerca del llenado (A).
@@ -118,4 +139,6 @@ Las homo agregan algo solo si reciben registros que la hetero no recibe:
 
 Si solo cambia la proporción del emparejamiento (C1), el soporte es el mismo. Los pesos mueven 2 % de los ganadores tempranos y ninguna decisión del ruteo.
 
-Interpretación, no medida: si todo lo que entra al agente llega emparejado, basta una sola memoria conjunta, y lo que guardan las homo ya está en ella. Esto coincide con la idea de que todo puede vivir en el mismo espacio latente. Las homo solo dejan de ser redundantes para lo que llega sin pareja.
+Ni siquiera eso exige una memoria aparte (D). La hetero guarda lo que llega sin pareja en su borde de valor indefinido, y ese borde más la marginal de lo emparejado es exactamente la homo oficial. Lo que falta en el sistema actual no es información, sino una lectura de reconocimiento que use el borde. Con esa lectura, una sola hetero por agente daría las mismas decisiones que la hetero más sus dos homo. Esto se midió del lado latente; el lado de etiquetas (C2) es simétrico por construcción, pero no se midió.
+
+Interpretación, no medida: todo lo del agente puede vivir en una sola memoria conjunta, incluido lo que llega sin pareja, como sugiere la idea de un mismo espacio latente. Las homo son una forma de leer esa memoria, no un contenido que ella no pueda guardar.

@@ -1,0 +1,199 @@
+{
+  "homo_oficial_200": {
+    "imagenes": 652,
+    "acepta_propia_clase_pct": 98.61963190184049,
+    "aceptaciones_de_otra_clase": 3,
+    "top1_correcto_pct": 98.61963190184049,
+    "rechazadas_por_todos": 8
+  },
+  "50_de_200": {
+    "estado_por_agente": {
+      "apple": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "car": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "cow": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "cup": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "dog": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "horse": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "pear": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "tomato": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 2400,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      }
+    },
+    "proyeccion_identica_a_B": "652 de 652",
+    "reconocimiento_marginal_del_interior": {
+      "imagenes": 652,
+      "acepta_propia_clase_pct": 92.79141104294479,
+      "aceptaciones_de_otra_clase": 2,
+      "top1_correcto_pct": 92.79141104294479,
+      "rechazadas_por_todos": 46
+    },
+    "reconocimiento_borde_mas_marginal": {
+      "imagenes": 652,
+      "acepta_propia_clase_pct": 98.61963190184049,
+      "aceptaciones_de_otra_clase": 3,
+      "top1_correcto_pct": 98.61963190184049,
+      "rechazadas_por_todos": 8
+    },
+    "decisiones_distintas_borde_contra_homo_oficial": 0,
+    "vistas_extra_de_la_homo": 38,
+    "de_ellas_sin_recuerdo_imagen_a_texto": 38,
+    "recuerdo_identico_a_B": "38 de 38"
+  },
+  "100_de_200": {
+    "estado_por_agente": {
+      "apple": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "car": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "cow": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "cup": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "dog": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "horse": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "pear": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      },
+      "tomato": {
+        "interior": true,
+        "relacion_iota": true,
+        "medias": true,
+        "entropias": true,
+        "borde_igual_en_cada_coordenada_de_palabra": true,
+        "registros_en_el_borde": 1600,
+        "borde_mas_marginal_igual_a_la_homo_oficial": true
+      }
+    },
+    "proyeccion_identica_a_B": "652 de 652",
+    "reconocimiento_marginal_del_interior": {
+      "imagenes": 652,
+      "acepta_propia_clase_pct": 97.08588957055214,
+      "aceptaciones_de_otra_clase": 2,
+      "top1_correcto_pct": 97.08588957055214,
+      "rechazadas_por_todos": 18
+    },
+    "reconocimiento_borde_mas_marginal": {
+      "imagenes": 652,
+      "acepta_propia_clase_pct": 98.61963190184049,
+      "aceptaciones_de_otra_clase": 3,
+      "top1_correcto_pct": 98.61963190184049,
+      "rechazadas_por_todos": 8
+    },
+    "decisiones_distintas_borde_contra_homo_oficial": 0,
+    "vistas_extra_de_la_homo": 10,
+    "de_ellas_sin_recuerdo_imagen_a_texto": 10,
+    "recuerdo_identico_a_B": "10 de 10"
+  }
+}
