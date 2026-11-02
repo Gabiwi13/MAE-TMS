@@ -1,0 +1,77 @@
+{
+  "consultas": 411,
+  "la_regla_solo_agrega_tokens": 411,
+  "afectadas": 46,
+  "aciertos_afectadas_con": 43,
+  "aciertos_afectadas_sin": 33,
+  "rechazos_afectadas_con": 0,
+  "rechazos_afectadas_sin": 4,
+  "aciertos_banco_con": 371,
+  "aciertos_banco_sin": 361,
+  "cambios_de_ganador": 10,
+  "direccion_de_los_cambios": {
+    "hacia la verdad": 10
+  },
+  "tokens_rescatados_mas_frecuentes": [
+    [
+      "bark",
+      6
+    ],
+    [
+      "riding",
+      6
+    ],
+    [
+      "drink",
+      5
+    ],
+    [
+      "canine",
+      5
+    ],
+    [
+      "drive",
+      5
+    ],
+    [
+      "run",
+      3
+    ],
+    [
+      "moo",
+      2
+    ],
+    [
+      "racing",
+      2
+    ],
+    [
+      "drinking",
+      2
+    ],
+    [
+      "ride",
+      2
+    ],
+    [
+      "wheel",
+      1
+    ],
+    [
+      "taper",
+      1
+    ],
+    [
+      "race",
+      1
+    ],
+    [
+      "pear",
+      1
+    ],
+    [
+      "eve",
+      1
+    ]
+  ]
+}

@@ -12,8 +12,9 @@ de la secuencia de labels expandida por frecuencia (3200 registros/clase con
 N_FILL=200 y 16 variantes). La abstraccion de la clase la construye la propia memoria al
 acumular; ningun prototipo se calcula fuera de ella.
 
-Las stats globales de cuantizacion del latente se calculan sobre el mismo
-pool de imagenes que llena las memorias. Los latentes continuos del pool
+Las stats globales de cuantizacion del latente se calculan sobre las variantes
+0-3 (original, espejo, ±12°) del pool que llena las memorias, las mismas del
+llenado original con que se midio todo. Los latentes continuos del pool
 se guardan en instance_latents_{cls}.json para reuso (p. ej. el ablation
 reconstruye memorias curadas con el mismo protocolo).
 """
@@ -45,6 +46,8 @@ FILL_AUG_ANGLES = (-12, 12)
 # 2026; con 16 en contenido y directorio la cobertura de test sube de 66.5 a
 # 94.5 % con un falso ruteo de 656, que la doble compuerta detiene.
 FILL_VARIANTS = 16
+# La escala min-max del latente se fija con las variantes 0-3 (6400 latentes).
+STATS_VARIANTS = 4
 MODELS_DIR = ROOT / "models"
 DATA_DIR = ROOT / "data" / "eth80"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -117,21 +120,22 @@ def get_instance_latents(encoder, cls: str, n: int = N_FILL) -> list:
 
 
 def compute_global_latent_stats(encoder, latents_by_cls: dict = None) -> tuple:
-    """Min/max global por dimension sobre el pool de llenado, con margen
-    del 10% contra efectos de borde."""
+    """Min/max global por dimension sobre las variantes 0-3 del pool de
+    llenado, con margen del 10% contra efectos de borde."""
     stats_path = MODELS_DIR / "latent_global_stats.json"
     if stats_path.exists():
         s = json.loads(stats_path.read_text())
         return np.array(s["global_min"]), np.array(s["global_max"])
 
-    print(f"  Calculando stats globales sobre {N_FILL} imagenes/clase...")
+    per_img = FILL_VARIANTS if FILL_AUGMENT else 1
+    keep = min(STATS_VARIANTS, per_img)
+    print(f"  Calculando stats globales sobre {N_FILL} imagenes/clase "
+          f"x {keep} variantes...")
     all_zs = []
-    if latents_by_cls is not None:
-        for cls in CLASSES:
-            all_zs.extend(latents_by_cls[cls])
-    else:
-        for cls in CLASSES:
-            all_zs.extend(get_instance_latents(encoder, cls, N_FILL))
+    for cls in CLASSES:
+        zs = (latents_by_cls[cls] if latents_by_cls is not None
+              else get_instance_latents(encoder, cls, N_FILL))
+        all_zs.extend(z for k, z in enumerate(zs) if k % per_img < keep)
     all_zs = np.stack(all_zs)
     g_min = all_zs.min(axis=0)
     g_max = all_zs.max(axis=0)

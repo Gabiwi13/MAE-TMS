@@ -1,6 +1,6 @@
 # Propuesta viejo/nuevo: la tesis contra los resultados actuales (auditoría del 29 oct)
 
-**Estado:** pendiente de aprobación. Nada aplicado a `.tex8`.
+**Estado:** pendiente de aprobación. Nada aplicado a `.tex8`. Las cifras de exp11 se actualizaron el 1 nov con los resultados de una sola hetero (`revision_una_hetero_prosa.md` §7).
 
 Corrige los hallazgos de `auditoria_redaccion_29oct.md`. Complementa `revision_pesos_homo_principal_prosa.md` y no repite lo que ella ya cubre. La redactaron tres agentes por archivo, cada cambio con su fuente. Las cifras que cambian el significado las verifiqué contra los archivos de resultados.
 
@@ -15,15 +15,17 @@ Corrige los hallazgos de `auditoria_redaccion_29oct.md`. Complementa `revision_p
 
 ## Decisiones que necesito de ti
 
-1. **98.75 % (introducción):** quitarlo o citarlo con su commit (`0ff1619`, `exp3_corrected_routing/summary.json`).
+**Regla (1 nov).** En el `.tex8` va solo el estado actual: la historia de versiones sale («la versión anterior», «la de julio», «con 4 variantes»), salvo el cambio de arquitectura de `revision_una_hetero_prosa.md`. Las comparaciones que son el resultado de un experimento descrito en la tesis (ablación, exp11, exp13) se quedan. Los textos nuevos de esta propuesta ya siguen la regla, salvo 1f y 2i, que dependen de las decisiones 5 y 9.
+
+1. **98.75 % (introducción):** es de una versión anterior; con la regla, se quita.
 2. **93.0 % del resumen:** sale de la ablación, que usa un directorio compartido, no el protocolo perspectival. ¿Se dice?
 3. **El puente descartado:** la introducción habla del TME y la arquitectura del `M^H_dom` del agente de entrada. Hay que elegir uno.
-4. **Las cinco memorias son redundantes en parte.** La marginal derecha de la hetero es idéntica a la homo latente, celda por celda; la izquierda tiene el mismo soporte que la homo de labels, con conteos proporcionales. Lo verifiqué en `models/` (apple y horse). ¿Se discute en el capítulo 6?
-5. **Rescate léxico (+23.8, 41/42 contra 31/42):** dejarlo fechado (agosto, 4 variantes) o volver a medirlo.
+4. **(Reemplazada por `revision_una_hetero_prosa.md`: una sola memoria de contenido por módulo.)** **Las cinco memorias son redundantes en parte.** La marginal derecha de la hetero es idéntica a la homo latente, celda por celda; la izquierda tiene el mismo soporte que la homo de labels, con conteos proporcionales. Lo verifiqué en `models/` (apple y horse). ¿Se discute en el capítulo 6?
+5. **Rescate léxico:** resuelta el 1 nov. Se volvió a medir con el sistema actual: +21.7 puntos sobre 46 consultas afectadas (43/46 contra 33/46). Ver 1f y A12.
 6. **Candidatos de pear y tomato:** el caché da 11 → 68 y 12 → 86; la tesis dice 70 y 93, que solo están en un mensaje de commit.
 7. **τ cierra 90 u 88 %** según se cuente: alguna clase ajena la acepta (137/152) o la clase propia no la acepta (88/100).
 8. **Figura 15:** regenerarla aplicando τ. La actual muestra aceptada la fuga que τ cierra.
-9. **Costo computacional:** volver a medirlo con 16 variantes, o dejar declarados los tiempos de 4.
+9. **Costo computacional:** con la regla no se dejan los tiempos de 4 variantes. Volver a medir el pipeline (etapas 1–8) con el sistema actual en una carpeta aparte, o quitar la tabla. La fila de la batería sale en cualquier caso.
 10. **Recorte del min–max:** 6 de 1 638 400 componentes. Lo calculó un agente sobre `models/` y no está en `results/`. ¿Se incluye?
 11. **El 50 % de la binarización por signo** no tiene fuente: se quita.
 12. **exp11, imagen→texto:** el protocolo responde 81.2 % porque ese script forma el directorio visual sin variantes. ¿Se dice?
@@ -183,8 +185,8 @@ de registro y de coordinación cambió en esta versión (contribución~3).
 
 **Nuevo:**
 ```latex
-Con este cambio de representación, sin tocar la maquinaria asociativa, la precisión
-temprana de 8 clases llegó al 88.0\% con el llenado de 4 variantes (90.0\% con el de 16).
+Con esta representación, sin tocar la maquinaria asociativa, la precisión temprana de
+8 clases es del 90.0\%.
 ```
 **Fuente:**
 - 90.0: `results/ablation_mdir_bias/ablation_report.md:40`;
@@ -262,6 +264,8 @@ homo-asociativa no interviene, porque el sistema usa sus pesos y no su decisión
 
 ### F2. Pesos y cinco memorias (líneas 200–203)
 
+**Reemplazada por `revision_una_hetero_prosa.md` §1c.** Se deja como registro.
+
 **Viejo:**
 > Los pesos $w'_i$ ponderan la suma por la frecuencia con que cada característica de la pista ha sido observada en la memoria homo-asociativa: características muy frecuentes en la pista pesan más, lo cual permite que la memoria homo-asociativa module la hetero-asociativa de forma nativa y justifica la arquitectura de cinco memorias por agente.
 
@@ -277,6 +281,8 @@ de forma nativa.
 **Por qué:** la justificación de las cinco memorias se reformula en F3.
 
 ### F3. «La hetero no genera pesos» (T9, líneas 218–227)
+
+**Reemplazada por `revision_una_hetero_prosa.md` §1e.** Se deja como registro.
 
 **Viejo:**
 > \subsubsection*{Asimetría entre dominios}
@@ -590,15 +596,10 @@ primer círculo ya reúne los ocho directorios visuales.
 
 El directorio visual $M^R_{\mathrm{dir}}$ usa la misma lectura B1, con $\xi = 0$ como el
 de texto.
-La versión anterior, con directorios idénticos y el llenado de 4 variantes, usaba
-$\xi = 2$: hasta dos coordenadas del latente sin soporte se marcaban como
-\emph{indefinidas} (los centinelas de funciones parciales de la EHAM,
-Sección~\ref{sec:hetero4d}) y la proyección las omitía; el valor se había elegido con un
-barrido sobre el conjunto de prueba.
-En directorios perspectivales la tolerancia deja de ser una propiedad del agente: una
-coordenada cuenta como hueco si su valor nunca se registró en ese directorio, para
-ningún agente, y eso depende de lo que el dueño del directorio presenció de los demás.
-Por eso la lectura visual volvió a ser estricta.
+No tolera huecos porque, en directorios perspectivales, una coordenada sería hueco si
+su valor nunca se registró en ese directorio, para ningún módulo, y eso depende de lo
+que el dueño del directorio presenció de los demás: la tolerancia no sería una
+propiedad del módulo.
 
 Antes de cualquier memoria visual, el latente continuo pasa un umbral de energía: si su
 norma es menor que $\tau$, la imagen se rechaza.
@@ -703,7 +704,7 @@ Son 28 bloques: 2 en el resumen, 7 en la introducción, 5 en el marco teórico y
 2. **Wegner y «todos los miembros»** (I1, F4). Si Wegner (1987) dice explícitamente que actualizan todos, conviene conservar la teoría tal cual y solo decir que el sistema implementa la versión perspectival. No lo pude verificar contra el texto.
 3. **El 93.0 % del resumen** sale de la ablación, que registra en los nueve directorios (directorio compartido), no del protocolo perspectival oficial. ¿Se declara en el resumen o basta con metodología?
 4. **¿Qué puente se descartó?** 01:90 dice «un puente por el TME» y 03:81 «un puente por el $M^H_{\mathrm{dom}}$ del agente de entrada». Hay que elegir uno.
-5. **Cinco memorias** (F3). Con la verificación sobre `models/`, las homo no aportan información que no esté en la hetero de contenido: la marginal derecha es idéntica y la izquierda proporcional. ¿Se conserva la arquitectura como decisión de diseño (lo que propongo) o se discute en 06?
+5. **(Reemplazada por `revision_una_hetero_prosa.md`.)** **Cinco memorias** (F3). Con la verificación sobre `models/`, las homo no aportan información que no esté en la hetero de contenido: la marginal derecha es idéntica y la izquierda proporcional. ¿Se conserva la arquitectura como decisión de diseño (lo que propongo) o se discute en 06?
 6. **Fidelidad con la doble compuerta.** `stage8_mature.py:163` compara `res["winner"]`. Cuando la compuerta de contenido rechaza, `winner` es el destino que señaló el directorio, así que una consulta rechazada por contenido cuenta como coincidencia si el destino coincide. No sé si afecta al 16/16 sin correr la etapa 8. ¿Debe contar como no coincidencia?
 7. **Acierto de la evocación.** Una palabra que comparten dos vocabularios cuenta como acierto para las dos clases (`stage7_bidirectional.py:245`). ¿Se declara?
 8. **Docstrings viejos en `src/`** (fuera de la tesis, no los toqué):
@@ -832,11 +833,9 @@ actual, $S = 0.1881$).
 
 **Fuente:** `cbe57d8:models/label_quant_scale.json` y `models/label_quant_scale.json`. El 0.2276 no lo verifiqué: no queda ningún archivo con esa escala.
 
-### 1f. Rescate léxico (líneas 91–96): sin fuente actual
+### 1f. Rescate léxico (líneas 91–96): medido de nuevo con el sistema actual
 
-La única fuente es `results/auditoria_integral/report.md`, hallazgo M1. Se midió el 2 de agosto con el llenado de 4 variantes y pesos uniformes. Las 42 consultas afectadas dependen solo de spaCy y del vocabulario de etiquetas, que no cambió desde el 4 de julio. En cambio, los aciertos (41/42 contra 31/42) dependen de las memorias, y esas sí cambiaron.
-
-**Propuesta:** dejar las cifras y fecharlas. Es la opción más barata y no afirma nada que no se haya medido. La otra opción es volver a medir (ver dudas).
+Se midió el 1 nov con `run_rescate_lexico.py` (`results/rescate_lexico/`): el ganador temprano de las 411 consultas del banco, con la regla y con `tokenize_query` sin sus dos vías de rescate. La regla solo agrega tokens en las 411.
 
 **Viejo:**
 ```latex
@@ -850,19 +849,17 @@ rescatados son precisamente los más discriminativos: \texttt{bark}, \texttt{moo
 
 **Nuevo:**
 ```latex
-El efecto de esta regla está medido y se declara como parte del protocolo: en la
-auditoría del 2 de agosto de 2026, con el llenado de 4 variantes y pesos uniformes,
-afectaba a 42 consultas del banco, que con el rescate acertaban 41/42 (97.6\%) y sin
-él 31/42 (73.8\%) --- \textbf{+23.8 puntos sobre las consultas afectadas}, con los
-diez cambios de ganador moviéndose todos hacia la clase correcta (los tokens
-rescatados son precisamente los más discriminativos: \texttt{bark}, \texttt{moo},
-\texttt{saddle}, \texttt{wheel}, \texttt{brake}\ldots). No se volvió a medir con
-el llenado actual.
+El efecto de esta regla está medido y se declara como parte del protocolo: sobre el
+banco completo afecta a 46 consultas, que con el rescate aciertan 43/46 (93.5\%) y
+sin él 33/46 (71.7\%) --- \textbf{+21.7 puntos sobre las consultas afectadas}; sin
+él, cuatro de ellas se rechazan. Los diez cambios de ganador van todos hacia la clase
+correcta, y los tokens rescatados son de los más discriminativos (\texttt{bark},
+\texttt{moo}, \texttt{canine}, \texttt{riding}, \texttt{wheel}\ldots).
 ```
 
-**Fuente:** `results/auditoria_integral/report.md`, M1 (archivo de `ba725e7`). La regla sigue en `src/stage6_interaction.py:107–113`.
+**Fuente:** `results/rescate_lexico/resumen.json`. En todo el banco: 371 aciertos con la regla y 361 sin ella. La regla sigue en `src/stage6_interaction.py:107–113`.
 
-`06_discusion.tex:268` cita la misma cifra. Esa sección no es parte de este encargo, pero hay que tratarla igual.
+`06_discusion.tex:268` cita la misma cifra: ver A12.
 
 ### 1g. Rango min–max del latente (líneas 137–139)
 
@@ -877,11 +874,8 @@ min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenad
 ```latex
 Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
 min-max con un margen del 10\%, calculada exclusivamente sobre el pool de llenado
-(\texttt{train[0:200]} por clase) con las 4 variantes que tenía entonces (original,
-espejo y rotaciones de $\pm 12^{\circ}$).
-El rango no se recalculó al pasar a 16 variantes: las nuevas se cuantizan con el mismo
-rango y lo que cae fuera se recorta al nivel extremo (6 de 1\,638\,400 componentes del
-llenado actual).
+(\texttt{train[0:200]} por clase) con cuatro de sus variantes (original, espejo y
+rotaciones de $\pm 12^{\circ}$); lo que cae fuera del rango se recorta al nivel extremo.
 ```
 
 **Fuente:**
@@ -962,9 +956,7 @@ relaciones espurias; $\kappa$ solo rechaza: en todo el rango en que actúa baja 
 precisión y nunca la mejora; y $\xi > 0$ no se usa en el directorio visual porque,
 con directorios perspectivales, la tolerancia de un agente dependería de lo que
 presenciaron los demás.
-Una versión anterior, con directorios visuales idénticos, usaba $\xi = 2$, elegido
-con un barrido sobre el enrutamiento del conjunto de prueba; las cifras visuales de
-la Sección~\ref{sec:hemisferio-visual} se obtienen con $\xi = 0$.
+Las cifras visuales de la Sección~\ref{sec:hemisferio-visual} se obtienen con $\xi = 0$.
 ```
 
 **Fuente:**
@@ -994,7 +986,7 @@ la Sección~\ref{sec:hemisferio-visual} se obtienen con $\xi = 0$.
 \subsection{Línea base: una sola EHAM con las ocho clases}
 
 Para medir qué aporta la partición en especialistas, se construyó una
-EHAM única (hetero y dos homo) con los mismos pares etiqueta--latente
+EHAM única (una memoria hetero-asociativa) con los mismos pares etiqueta--latente
 que reciben los ocho especialistas (25\,600 con 200 imágenes por clase y 16
 variantes) y se evaluó con las mismas operaciones
 (\texttt{recognize\_gated}, \texttt{recall\_from\_left}), sin ruteo. Se
@@ -1006,20 +998,21 @@ ocho especialistas reconstruidos son bit a bit los modelos oficiales; los
 otros cuatro difieren porque el experimento recalcula los latentes en GPU,
 y el redondeo puede mover un registro al nivel vecino.
 
-Con 25 imágenes por clase la EHAM única acierta la clase más que el
-protocolo (97.7\,\% frente a 95.6\,\%; juez: vecino real más cercano). Desde
-50 el orden se invierte y los intervalos se separan: el protocolo queda en
-98.5\,\% en los tres cortes y la EHAM única baja de 97.6\,\% a 96.8\,\%
-(con 200, intervalos de 95\,\% $[98.2, 98.9]$ y $[96.6, 97.0]$); el oráculo
+Con 25 imágenes por clase la EHAM única acierta la clase algo más que el
+protocolo (97.6\,\% frente a 96.9\,\%; juez: vecino real más cercano), con
+intervalos de 95\,\% que casi se tocan ($[97.4, 97.8]$ y $[96.3, 97.6]$). Desde
+50 el orden se invierte y los intervalos se separan: el protocolo queda entre
+98.3 y 98.8\,\% y la EHAM única entre 96.9 y 97.6\,\%
+(con 200, intervalos de 95\,\% $[97.9, 98.6]$ y $[96.7, 97.1]$); el oráculo
 acierta el 100\,\%. La respuesta de la EHAM única queda más lejos de la
-instancia real más cercana en los cuatro cortes (32.4, frente a 27.1 del
+instancia real más cercana en los cuatro cortes (32.5, frente a 27.0 del
 protocolo y 26.8 del oráculo, con 200), pero la brecha con el oráculo no
-crece con el contenido: 4.6, 6.1, 6.1 y 5.7 con 25, 50, 100 y 200 imágenes
+crece con el contenido: 4.6, 6.2, 6.1 y 5.7 con 25, 50, 100 y 200 imágenes
 por clase. Cuando la primera pista reconocida es una etiqueta compartida
 entre clases (\emph{fruit}, \emph{animal}, \emph{red}; el 3.5\,\% de las
-respuestas), la EHAM única acierta la clase entre el 44 y el 52\,\% y su
-patrón tiene soporte en una sola clase en el 74--76\,\% de las coordenadas;
-el protocolo, entre el 80 y el 86\,\%, y el oráculo, el 100\,\%.
+respuestas), la EHAM única acierta la clase entre el 48 y el 52\,\% y su
+patrón tiene soporte en una sola clase en el 74--77\,\% de las coordenadas;
+el protocolo, entre el 79 y el 84\,\%, y el oráculo, el 100\,\%.
 
 En imagen\,$\to$\,texto la EHAM única responde más y se equivoca más de
 dominio. El especialista responde el 43.8, 75.0, 92.5 y 97.5\,\% de las
@@ -1031,28 +1024,28 @@ y el 3.0\,\% del protocolo. Fuera de dominio, sobre 40 consultas, la EHAM
 acepta 2 en todos los cortes y el protocolo 4, que bajan a 2, como el
 oráculo, con la doble compuerta de contenido (el agente destino debe
 contener la pista). El precio del directorio, la distancia del protocolo al
-oráculo en clase, es de 4.4 puntos con 25 imágenes por clase y de 1.5 desde
+oráculo en clase, es de 3.1 puntos con 25 imágenes por clase y de 1.2 a 1.7 desde
 50. Tablas completas en \texttt{results/experimento11/}.
 ```
 
-**Fuente:** `results/experimento11/README.md` y `resumen.json` (`d0df16c`, pesos homo, 16 variantes). La primera cifra de cada lista de `resumen.json` es la media; las otras dos, el intervalo.
+**Fuente:** `results/experimento11/README.md` y `resumen.json` (`0c70824`, una sola hetero, 16 variantes). La primera cifra de cada lista de `resumen.json` es la media; las otras dos, el intervalo.
 
 | cifra | campo |
 |---|---|
 | 25 600 registros | encabezado del README («N = 200 (3200 registros por clase; monolítica 25600)») |
 | 4/8 bit a bit | `control` en `resumen.json`: apple, cup, pear y tomato `true`; car, cow, dog y horse `false`. El README explica el redondeo en GPU. `experimento13/README.md` midió esa diferencia: 148 niveles de 409 600 (0.036 %). |
-| clase 97.7 / 95.6 (N=25) | `texto["M|N=25"].nn_ok`, `texto["T-protocolo|N=25"].nn_ok` |
-| 98.5 (N=50, 100, 200) | `T-protocolo|N=…`: 0.9846, 0.9846, 0.9851 |
-| M 97.6 → 96.8 | `M|N=50`: 0.9762; `M|N=100`: 0.9725; `M|N=200`: 0.9678 |
-| intervalos con N=200 | README: protocolo [98.2, 98.9], M [96.6, 97.0] |
-| d_nn 32.4 / 27.1 / 26.8 | `d_nn_truth` con N=200: 32.43, 27.08, 26.75 |
-| brecha 4.6 / 6.1 / 6.1 / 5.7 | M − oráculo en `d_nn_truth`: 4.645, 6.100, 6.051, 5.671 |
-| pista compartida: 3.5 %, 44–52 %, 74–76 %, 80–86 % | `fraccion_pista_compartida` 0.0351; `nn_ok_pista_compartida` de M 50.0 / 52.2 / 44.4 / 48.9 y del protocolo 79.5 / 85.7 / 85.7 / 85.7; `compat_max_pista_compartida` de M 0.76 / 0.74 / 0.76 / 0.76 |
+| clase 97.6 / 96.9 (N=25) | `texto["M|N=25"].nn_ok`, `texto["T-protocolo|N=25"].nn_ok` |
+| 98.8 / 98.8 / 98.3 (N=50, 100, 200) | `T-protocolo|N=…`: 0.9875, 0.9875, 0.9828 |
+| M 97.5 / 97.6 / 96.9 | `M|N=50`: 0.9750; `M|N=100`: 0.9758; `M|N=200`: 0.9692 |
+| intervalos con N=200 | README: protocolo [97.9, 98.6], M [96.7, 97.1] |
+| d_nn 32.5 / 27.0 / 26.8 | `d_nn_truth` con N=200: 32.53, 26.98, 26.78 |
+| brecha 4.6 / 6.2 / 6.1 / 5.7 | M − oráculo en `d_nn_truth`: 4.642, 6.185, 6.059, 5.747 |
+| pista compartida: 3.5 %, 48–52 %, 74–77 %, 79–84 % | `fraccion_pista_compartida` 0.0351; `nn_ok_pista_compartida` de M 48.3 / 47.8 / 52.2 / 51.1 y del protocolo 80.3 / 82.9 / 84.3 / 78.6; `compat_max_pista_compartida` de M 0.76 / 0.74 / 0.77 / 0.75 |
 | imagen→texto | `imagen[…].responde`: oráculo 0.4375 / 0.75 / 0.925 / 0.975; M 0.7875 / 0.95 / 0.988 / 1.0. `otro_dominio` con N=200: M 10.9, oráculo 4.1, protocolo 3.0 |
 | fuera de dominio | `ood` × 40: M 2 / 2 / 5 / 8; oráculo 2; protocolo 4. `ood_compuerta`: protocolo 2 |
-| precio del directorio | oráculo − protocolo en `nn_ok`: 4.42 / 1.54 / 1.54 / 1.49 |
+| precio del directorio | oráculo − protocolo en `nn_ok`: 3.15 / 1.25 / 1.25 / 1.72 |
 
-**Por qué:** cambia la conclusión. Con 16 variantes y pesos homo, la partición también clasifica mejor desde N=50, con intervalos separados. La brecha de fidelidad existe en todos los cortes, pero no crece. La memoria única acepta más fuera de dominio a medida que crece el contenido: P3 se ve, y antes no. «Bit a bit» pasa a 4/8.
+**Por qué:** cambia la conclusión. Con 16 variantes, la partición también clasifica mejor desde N=50, con intervalos separados. La brecha de fidelidad existe en todos los cortes, pero no crece. La memoria única acepta más fuera de dominio a medida que crece el contenido: P3 se ve, y antes no. «Bit a bit» pasa a 4/8.
 
 **Nota sobre el encargo:** se pidió la brecha como 4.6 / 6.1 / **6.0** / 5.7. `resumen.json` da 6.051 en N=100, que redondea a 6.1. La auditoría (T2) tiene razón con 6.1. Solo restando los valores ya redondeados del README (29.49 − 23.44 = 6.05) cabe la duda.
 
@@ -1155,9 +1148,7 @@ de 656 (Sección~\ref{sec:limitaciones}).
 **Nuevo:**
 ```latex
 \paragraph{Por qué $\xi = 0$.}
-En la versión de julio, con directorios visuales idénticos, un barrido
-$\xi \in \{0, \ldots, 3\}$ sobre el enrutamiento de test fijó $\xi = 2$.
-Con directorios perspectivales la tolerancia deja de ser del agente: los huecos que
+Con directorios perspectivales la tolerancia no es del módulo: los huecos que
 $\xi$ admite se definen sobre el soporte de todos los agentes del directorio, y con
 $\xi = 2$ el ruteo del dominio propio baja a medida que el agente presencia más
 dominios ajenos (experimento 10). El sistema usa $\xi = 0$, y la palanca para la
@@ -1400,7 +1391,7 @@ En `fig16` el título de la figura se monta sobre los rótulos de la primera fil
 **Viejo** (21–23): «La cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico}) recuperó el rango de 85--88\% de precisión temprana \emph{sin tocar una línea de la maquinaria asociativa}.»
 
 **Nuevo:**
-> La cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico}) llevó la precisión temprana al 88.0\% con el llenado de 4 variantes (90.0\% con el de 16) \emph{sin tocar una línea de la maquinaria asociativa}.
+> Con la cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico}), la precisión temprana es del 90.0\% \emph{sin tocar una línea de la maquinaria asociativa}.
 
 **Fuente:**
 - 88.0: `git show 57e61f3~1:results/ablation_mdir_bias/ablation_metrics.csv` (B1, N=400, 5 semillas). También `CONTEXTO_SEP2026.md:139`, «88.0 → 90.0».
@@ -1464,16 +1455,16 @@ En `fig16` el título de la figura se monta sobre los rótulos de la primera fil
 > La comparación con la EHAM única acota lo que la maquinaria transactiva aporta. No es exactitud: sobre el banco completo ambas clasifican igual. Es fidelidad, coherencia y precisión: la relación de una EHAM acumula por coordenada y valor, y dos conceptos distintos comparten valores cuantizados en muchas coordenadas, así que una memoria con varios dominios mezcla al recordar aunque las palabras difieran. Partir el contenido evita la mezcla porque la decisión de dominio ocurre antes del recall, en el directorio, y no dentro del sorteo. El precio es cobertura: el containment de un especialista es estricto en las 64 coordenadas del latente y deja fuera al 21\,\% de las imágenes de prueba, que la unión de soportes contiene; es el rechazo residual del hemisferio visual (limitación (b)), ahora identificado como costo de la partición. A eso se suman 2.5 puntos del directorio y ocho veces las celdas.
 
 **Nuevo:**
-> La comparación con la EHAM única acota lo que la maquinaria transactiva aporta. Ante todo es fidelidad, coherencia y precisión: la relación de una EHAM acumula por coordenada y valor, y dos conceptos distintos comparten valores cuantizados en muchas coordenadas, así que una memoria con varios dominios mezcla al recordar aunque las palabras difieran. Partir el contenido evita la mezcla porque la decisión de dominio ocurre antes del recall, en el directorio, y no dentro del sorteo. La respuesta de la EHAM única queda más lejos de la instancia real más cercana en todos los cortes (de 4.6 a 6.1 más que el oráculo), sin tendencia con el contenido. Fuera de dominio, la EHAM única acepta más cuanto más contiene (de 2 a 8 de 40 consultas); el protocolo con doble compuerta acepta 2 en todos los cortes. La exactitud de clase también mejora, pero poco: desde 50 imágenes por clase el protocolo acierta el 98.5\,\% frente a 97.6--96.8\,\% de la EHAM única, con intervalos separados; con 25 gana la EHAM única (97.7 frente a 95.6\,\%), porque el directorio todavía rutea mal (93.6\,\% de ruteo correcto). El precio es cobertura: el containment de un especialista es estricto en las 64 coordenadas del latente y deja sin respuesta al 2.5\,\% de las imágenes de prueba con 200 por clase, que la EHAM única responde; es parte del rechazo residual del hemisferio visual (limitación (b)). A eso se suman 1.5 puntos del directorio desde 50 imágenes por clase (4.4 con 25) y ocho veces las celdas.
+> La comparación con la EHAM única acota lo que la maquinaria transactiva aporta. Ante todo es fidelidad, coherencia y precisión: la relación de una EHAM acumula por coordenada y valor, y dos conceptos distintos comparten valores cuantizados en muchas coordenadas, así que una memoria con varios dominios mezcla al recordar aunque las palabras difieran. Partir el contenido evita la mezcla porque la decisión de dominio ocurre antes del recall, en el directorio, y no dentro del sorteo. La respuesta de la EHAM única queda más lejos de la instancia real más cercana en todos los cortes (de 4.6 a 6.2 más que el oráculo), sin tendencia con el contenido. Fuera de dominio, la EHAM única acepta más cuanto más contiene (de 2 a 8 de 40 consultas); el protocolo con doble compuerta acepta 2 en todos los cortes. La exactitud de clase también mejora, pero poco: desde 50 imágenes por clase el protocolo acierta entre 98.3 y 98.8\,\% frente a 96.9--97.6\,\% de la EHAM única, con intervalos separados; con 25 la EHAM única queda arriba (97.6 frente a 96.9\,\%, con intervalos que casi se tocan), porque el directorio todavía rutea peor (95.3\,\% de ruteo correcto). El precio es cobertura: el containment de un especialista es estricto en las 64 coordenadas del latente y deja sin respuesta al 2.5\,\% de las imágenes de prueba con 200 por clase, que la EHAM única responde; es parte del rechazo residual del hemisferio visual (limitación (b)). A eso se suman de 1.2 a 1.7 puntos del directorio desde 50 imágenes por clase (3.1 con 25) y ocho veces las celdas.
 
 **Fuente:** `results/experimento11/README.md` y `resumen.json`. Columnas de texto: clase 1-NN, `d_nn`, ruteo ok. Imagen→texto: responde. Fuera de dominio: aceptación sobre 40 consultas.
 
 | N | clase 1-NN: M / oráculo / protocolo | `d_nn`: M − oráculo | precio del directorio (oráculo − protocolo) | ruteo ok del protocolo | fuera de dominio: M / protocolo con compuerta (de 40) |
 |---|---|---|---|---|---|
-| 25 | 97.7 [97.5, 97.8] / 100 / 95.6 [95.0, 96.1] | 4.6 | 4.4 | 93.6 | 2 / 2 |
-| 50 | 97.6 [97.3, 98.0] / 100 / 98.5 [98.2, 98.8] | 6.1 | 1.5 | 97.3 | 2 / 2 |
-| 100 | 97.3 [97.1, 97.5] / 100 / 98.5 [98.2, 98.8] | 6.1 | 1.5 | 97.2 | 5 / 2 |
-| 200 | 96.8 [96.6, 97.0] / 100 / 98.5 [98.2, 98.9] | 5.7 | 1.5 | 97.0 | 8 / 2 |
+| 25 | 97.6 [97.4, 97.8] / 100 / 96.9 [96.3, 97.6] | 4.6 | 3.1 | 95.3 | 2 / 2 |
+| 50 | 97.5 [97.3, 97.7] / 100 / 98.8 [98.6, 98.9] | 6.2 | 1.2 | 97.4 | 2 / 2 |
+| 100 | 97.6 [97.4, 97.8] / 100 / 98.8 [98.4, 99.1] | 6.1 | 1.2 | 97.4 | 5 / 2 |
+| 200 | 96.9 [96.7, 97.1] / 100 / 98.3 [97.9, 98.6] | 5.7 | 1.7 | 97.0 | 8 / 2 |
 
 - Cobertura del especialista en imagen→texto con N=200: el oráculo responde 97.5 %; la EHAM única, 100 %.
 - «Parte del rechazo residual»:
@@ -1482,9 +1473,9 @@ En `fig16` el título de la figura se monta sobre los rótulos de la primera fil
 
 **Por qué:**
 - La partición ya no compra solo fidelidad. Compra fidelidad, también exactitud de clase salvo con poco contenido, y especificidad fuera de dominio.
-- La ventaja de clase es chica: 0.9 puntos con N=50, 1.2 con N=100 y 1.7 con N=200.
+- La ventaja de clase es chica: 1.3 puntos con N=50, 1.2 con N=100 y 1.4 con N=200.
 - Con N=25 pierde por el directorio, no por la partición: el oráculo sigue en 100.
-- La brecha de fidelidad no crece con el contenido: se mantiene entre 4.6 y 6.1.
+- La brecha de fidelidad no crece con el contenido: se mantiene entre 4.6 y 6.2.
 - El costo de cobertura del especialista baja de 21 % a 2.5 %.
 
 ### A6. Doble compuerta sobre las reservadas (líneas 167–169)
@@ -1521,7 +1512,7 @@ En `fig16` el título de la figura se monta sobre los rótulos de la primera fil
 > El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por coordenada (625 de 656 imágenes tienen soporte marginal completo) sino de la conjunción AND sobre las 64 coordenadas simultáneas, por lo que aumentar $\xi$ no lo reduce ($\xi$ satura en 2--3).
 
 **Nuevo:**
-> Con el llenado de 4 variantes, el enrutamiento visual rechazaba el 26.4\% de las imágenes de test, y el rechazo no provenía de huecos por coordenada (625 de 656 imágenes tenían soporte marginal completo) sino de la conjunción AND sobre las 64 coordenadas simultáneas, por lo que tolerar huecos no lo reducía. Hoy la lectura del directorio visual es estricta ($\xi = 0$): con directorios perspectivales, los huecos tolerados dependerían de lo que presenció cada agente.
+> La lectura del directorio visual es estricta ($\xi = 0$): con directorios perspectivales, los huecos tolerados dependerían de lo que presenció cada módulo.
 
 El resto del párrafo («La palanca es densificar…» hasta «…el rechazo en 3.5\,\%») queda igual. Ese resto ya da el estado actual.
 
@@ -1611,13 +1602,11 @@ El resto del párrafo («La palanca es densificar…» hasta «…el rechazo en 
 
 **Viejo:** «…su efecto medido es de +23.8 puntos sobre las 42 consultas afectadas del banco.»
 
-**Nuevo (opción a, con fecha):** «…su efecto, medido en agosto con el llenado de 4 variantes, fue de +23.8 puntos sobre las 42 consultas afectadas del banco (41 de 42 correctas con rescate, 31 sin él); no se ha vuelto a medir con el sistema actual.»
+**Nuevo:** «…su efecto medido es de +21.7 puntos sobre las 46 consultas afectadas del banco (43 de 46 correctas con rescate, 33 sin él).»
 
-**Nuevo (opción b, sin cifra):** «…su efecto se midió con una versión anterior del sistema y no se ha vuelto a medir con la actual.» En la línea 272, «al costo medido» pasa a «a un costo por medir».
+**Fuente:** `results/rescate_lexico/resumen.json` (1 nov, sistema actual).
 
-**Fuente:** `results/auditoria_integral/report.md:27–28` (commit ba725e7, 27 de agosto). No hay medición con 16 variantes ni pesos homo.
-
-**Por qué:** la cifra no tiene fuente con el sistema actual. Hay que decir de cuándo es, o quitarla.
+**Por qué:** la cifra vieja era de una versión anterior; se volvió a medir.
 
 ### A13. Fuera de la lista: registro del directorio (líneas 10–11)
 
@@ -1660,7 +1649,7 @@ El resto del párrafo («La palanca es densificar…» hasta «…el rechazo en 
 > Con el mismo contenido, el sistema transactivo no clasifica mejor; recuerda con más fidelidad, no mezcla dominios cuando la pista es compartida y se equivoca de dominio siete veces menos, a cambio de cubrir menos y de pagar un índice.
 
 **Nuevo:**
-> Con el mismo contenido, el sistema transactivo recuerda con más fidelidad, no mezcla dominios cuando la pista es compartida, acepta menos consultas fuera de dominio cuando el contenido crece y en imagen se equivoca de dominio unas tres veces menos. Desde 50 imágenes por clase también clasifica algo mejor (1.7 puntos con 200); con 25, no. A cambio cubre menos y paga un índice.
+> Con el mismo contenido, el sistema transactivo recuerda con más fidelidad, no mezcla dominios cuando la pista es compartida, acepta menos consultas fuera de dominio cuando el contenido crece y en imagen se equivoca de dominio unas tres veces menos. Desde 50 imágenes por clase también clasifica algo mejor (1.4 puntos con 200); con 25, no. A cambio cubre menos y paga un índice.
 
 **Fuente:** `results/experimento11/README.md` (tabla de A5).
 - Dominio ajeno en imagen→texto con N=200, «otro dominio», sobre el total de imágenes:
@@ -1686,13 +1675,13 @@ El resto del párrafo («La palanca es densificar…» hasta «…el rechazo en 
    - La causa probable es que exp11 forma los directorios visuales con un latente por imagen (`run_experiment11_monolithic.py:130–136, 309–330`), y la fase A oficial registra 16 variantes. En exp13 sin variantes en el directorio, este acepta 77.0 (A2, V=16).
    - Si se quiere, en A5 cabe media frase: «(el protocolo de este experimento forma su directorio visual sin variantes y responde al 81\,\%)».
 4. **Selección sobre test.** Las 16 variantes se adoptaron después de ver exp13, que mide sobre las 656 de test. Son el máximo de la rejilla y no un óptimo ajustado, pero la limitación (f) podría decirlo.
-5. **Imprecisión de la auditoría (T2).** Dice «gana en clase desde N=50 (98.5 contra 96.8)», pero 96.8 es la EHAM única con N=200. Con N=50 es 97.6, así que la ventaja va de 0.9 puntos (N=50) a 1.7 (N=200). Por eso A5 da el rango 97.6–96.8 y B3 dice «1.7 con 200». Lo demás de la auditoría que revisé cuadra con los archivos:
+5. **Imprecisión de la auditoría (T2).** Dice «gana en clase desde N=50 (98.5 contra 96.8)», pero 96.8 es la EHAM única con N=200. Con N=50 es 97.6, así que con las homo la ventaja iba de 0.9 puntos (N=50) a 1.7 (N=200). Con una sola hetero la EHAM única queda en 97.5 con N=50 y la ventaja va de 1.2 a 1.4 puntos; por eso A5 da el rango 96.9–97.6 y B3 dice «1.4 con 200». Lo demás de la auditoría que revisé cuadra con los archivos:
    - la compuerta (2.05 %);
    - el árbitro (96.8 → 93.6);
    - los 71 objetos;
    - los 5 de 656;
    - fuera de dominio 2/2/5/8;
-   - el precio 1.5 / 4.4.
+   - el precio 1.5 / 4.4 (con una sola hetero, 1.2–1.7 / 3.1).
 6. **Desglose por clase.** apple queda en 88.2 %, igual que horse; cow, otro animal, en 100 %. Si se considera que las consultas de apple usan léxico compartido de fruta, A3 podría decir «(\texttt{pear}, \texttt{horse}, \texttt{apple}) quedan en 76--88\%». Lo dejé fuera porque es interpretación.
 7. **«625 de 656 con soporte marginal completo»** (A8) solo tiene fuente en la propia tesis (`05:325`) y en el primer reporte de ocho agentes. No lo pude rastrear a un archivo de `results/`. Si `05:321–329` se reescribe en otra parte, conviene decidir si el número se conserva.
 8. **A13** no estaba en la lista. Lo incluyo porque contradice `register_transaction` en este mismo archivo.

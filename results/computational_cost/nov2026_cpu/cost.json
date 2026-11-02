@@ -1,0 +1,77 @@
+{
+  "hardware": {
+    "platform": "Windows-11-10.0.26100-SP0",
+    "machine": "AMD64",
+    "processor": "Intel(R) Core(TM) Ultra 7 265HX",
+    "cpu_count_logical": 20,
+    "ram_total_gb": 16.6,
+    "python": "3.13.15",
+    "torch_version": "2.12.0+cu130",
+    "torch_cuda_available": false,
+    "torch_num_threads": 20,
+    "gpu": "no usada (torch sin CUDA o CUDA_VISIBLE_DEVICES vacío)"
+  },
+  "date": "2026-11-01T20:36:51",
+  "pipeline_seconds": 6174.9,
+  "pipeline_minutes": 102.92,
+  "total_seconds": 6174.9,
+  "total_minutes": 102.92,
+  "steps": [
+    {
+      "step": "stage1_dataset",
+      "seconds": 0.02,
+      "minutes": 0.0,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage2_train_encoder",
+      "seconds": 1288.61,
+      "minutes": 21.477,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage3_conceptnet",
+      "seconds": 17.77,
+      "minutes": 0.296,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage4_fasttext",
+      "seconds": 16.61,
+      "minutes": 0.277,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage5_fill",
+      "seconds": 2244.96,
+      "minutes": 37.416,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage6_interaction",
+      "seconds": 56.2,
+      "minutes": 0.937,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage7_bidirectional",
+      "seconds": 2401.65,
+      "minutes": 40.027,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage8_mature",
+      "seconds": 144.92,
+      "minutes": 2.415,
+      "ok": true,
+      "note": ""
+    }
+  ]
+}

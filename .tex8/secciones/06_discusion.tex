@@ -2,279 +2,335 @@
 \label{sec:discusion}
 
 % ---------------------------------------------------------------
-\subsection{La maquinaria transactiva escala; la representación era el límite}
+\subsection{La maquinaria transactiva funciona con ocho dominios; la representación es el límite}
 \label{sec:disc-escala}
 
-El resultado central de esta versión es una separación limpia de responsabilidades.
-Al pasar de tres a ocho agentes, \emph{ningún} componente de la maquinaria transactiva
-requirió cambios de mecanismo: los directorios hetero-asociativos, la lectura B1, el
-rechazo por containment, la actualización de directorio de todos los agentes y la
-coordinación punto a punto operan idénticos, y el directorio visual alcanza el balance
-perfecto (3.000 de 3.000 bits) con dos falsos enrutamientos en 656, ambos del mismo
-objeto.
-Lo que sí golpeó el escalado fue la \emph{representación}: con la binarización por signo
-heredada de la versión anterior, la precisión temprana de 8 clases caía al 50\% y dos
-clases colapsaban a 0\%.
-La causa no estaba en las memorias sino en el alfabeto: $\mathrm{sign}(v)$ usaba 2 de
-los 16 niveles disponibles, y ocho categorías con léxico solapado (tres frutas, tres
-animales) no caben en ese margen.
-La cuantización por magnitud sobre una escala global (Sección~\ref{sec:pipeline-semantico})
-recuperó el rango de 85--88\% de precisión temprana \emph{sin tocar una línea de la
-maquinaria asociativa}.
-La Figura~\ref{fig:espacio-semantico} muestra el espacio semántico resultante: los
-solapamientos entre dominios persisten (son propiedades del léxico), pero la
-representación ya no los agrava.
+El resultado central separa dos responsabilidades: la maquinaria transactiva funciona
+con ocho dominios, y los límites aparecen en la \emph{representación}.
+Los componentes de la maquinaria (los directorios heteroasociativos, la lectura B1, el
+rechazo por contención, la actualización perspectival del directorio (en imagen) y la
+coordinación punto a punto) funcionan sin ajustes por dominio.
+En imagen, el registro completo de percepciones de la fase A queda balanceado
+(3.000 bits, el máximo con ocho módulos), y los directorios visuales de los módulos
+enrutan las imágenes de prueba con dos falsos enrutamientos en 656
+(Sección~\ref{sec:hemisferio-visual}).
+En texto, las pistas se cuantizan por magnitud sobre una escala global
+(Sección~\ref{sec:pipeline-semantico}), que puebla los 16 niveles del alfabeto (una
+binarización por signo usaría 2), y con esa representación la precisión temprana sobre
+el banco de 411 consultas es del 90.0\%.
+Lo que la representación no quita es el solapamiento entre dominios: la
+Figura~\ref{fig:espacio-semantico} muestra que persiste, porque es propiedad del léxico
+(tres frutas, tres animales), y en él cae la mayoría de los errores que quedan
+(Sección~\ref{sec:disc-dominancia}).
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig11_semantic_space.png}
-    \caption{Análisis del espacio semántico de los labels de las ocho clases:
-    proyección PCA 2D con centroides de dominio y tokens ambiguos, similitud coseno de
-    tokens problemáticos y ocupación de los 16 niveles de la cuantización por magnitud.}
+    \caption{Espacio semántico de las etiquetas de llenado de las ocho clases (vectores
+    fastText del vocabulario de la Sección~\ref{sec:pipeline-semantico}).
+    Izquierda: proyección PCA 2D, con la envolvente y el centroide (estrella) de cada
+    clase; se rotulan solo las etiquetas que comparten dos o tres clases (\textit{fruit},
+    \textit{pome}, \textit{red}, \textit{animal}, \textit{mammal} y \textit{table}).
+    Derecha: proporción de las 300 componentes que cae en cada uno de los 16 niveles de
+    la cuantización por magnitud, para la etiqueta con el nombre de cada clase.}
     \label{fig:espacio-semantico}
 \end{figure}
 
 % ---------------------------------------------------------------
-\subsection{La normalización necesaria sigue siendo B1, también a ocho agentes}
+\subsection{La normalización necesaria es B1}
 \label{sec:disc-b1}
 
 La lectura B1 del directorio transactivo no corrige un defecto: refleja cómo está
 construido el sistema.
-Cuando los agentes especialistas acumulan números desiguales de interacciones, la
-puntuación cruda del directorio favorece de forma constante al agente más activo con
+Cuando los módulos especialistas acumulan números desiguales de interacciones, la
+puntuación cruda del directorio favorece de forma constante al módulo más activo con
 independencia del contenido semántico de la consulta.
-Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacción}, que
-es una medida justa para comparar agentes con historiales de exposición distintos.
+Dividir entre el conteo normaliza la evidencia a \textit{evidencia por interacción},
+comparable entre módulos con historiales de exposición distintos.
 
-El escalado refuerza esta lectura en dos direcciones.
-Primero, la brecha cruda-B1 persiste con $K = 8$ (87.0\% frente a 93.5\%): el sesgo
-de masa no era un artefacto del caso de tres agentes.
-Segundo, la entropía del directorio es alta incluso en la condición cruda (2.974 de
-3.000 bits): la \emph{estructura} del directorio está bien formada y balanceada; el
-sesgo vive en la \emph{lectura}, exactamente donde B1 actúa.
-Las condiciones que manipulan síntomas (B2, C, D, E) vuelven a quedar por debajo, y la
-combinación G supera a B1 sola por medio punto (94.0\% frente a 93.5\%), dentro del
-ruido: una vez corregida la causa, las correcciones auxiliares aportan poco.
+La brecha cruda-B1 es de 7.8 puntos con ocho módulos (85.2\% frente a 93.0\%), y la
+entropía del directorio es alta incluso con la lectura cruda (2.974 de 3.000 bits): la
+\emph{estructura} del directorio está casi balanceada, y el sesgo está en la
+\emph{lectura}, donde B1 actúa.
+Las condiciones que actúan sobre los síntomas (B2, C, D, E) quedan por debajo de B1, y
+la combinación G, que suma correcciones a B1, gana solo medio punto, dentro del ruido
+(Tabla~\ref{tab:calibracion}).
 
 % ---------------------------------------------------------------
-\subsection{El sesgo hacia un agente era un efecto conjunto: encoder y fuente de conocimiento}
+\subsection{El sesgo hacia un módulo: masa del directorio y léxico compartido}
 \label{sec:disc-dominancia}
 
-Las corridas iniciales de 8 clases mostraban al agente \texttt{apple} capturando
-$\approx$20\% de las victorias maduras y a \texttt{pear} colapsando, y la explicación
-disponible era léxica: \texttt{apple} posee en ConceptNet el vocabulario genérico de
-fruta (\textit{fruit}, \textit{red}, \textit{green}, \textit{round}, \textit{tree}).
-Dos intervenciones sobre el vocabulario (extracción bidireccional con masa asociativa y
-desempate por centroide) movieron poco ese reparto.
-El hallazgo llegó por una vía inesperada: un reentrenamiento determinista del encoder
-(motivado por el benchmark de costo) produjo un espacio latente con mejor separación de
-\texttt{pear} y \texttt{tomato} respecto a \texttt{apple}, y con él la participación de
-\texttt{apple} bajo la lectura B1 cayó de 20.0\% a 13.2\% (ideal 12.5\%) y \texttt{pear}
-subió de $\approx$52\% a 86\% \emph{sin cambiar el vocabulario} (78\% con el llenado de
-16 variantes).
-
-La conclusión corregida es que el sesgo era un efecto \emph{conjunto} de la
-separabilidad del espacio latente y de la asimetría léxica de la fuente de
-conocimiento, no de la segunda por sí sola.
-El hallazgo tiene una lectura metodológica: en un sistema bidireccional, un sesgo
-observado en el hemisferio semántico puede tener su causa parcial en el hemisferio
-visual, porque el llenado imagen-etiqueta acopla ambos espacios.
-
-Del trabajo sobre el vocabulario queda un resultado con valor propio: enriquecer el
-vocabulario de una clase ayuda \emph{solo si el conocimiento nuevo coincide con el
-lenguaje de las consultas}.
-\texttt{tomato} mejoró al adquirir los labels que sus consultas usan
-(\textit{sauce}, \textit{salad}, \textit{vegetable}); \texttt{pear} empeoró al adquirir
-variedades botánicas (\textit{bosc}, \textit{anjou}) que el banco apenas menciona,
-porque el vocabulario extra solo diluye su activación media en los tokens compartidos.
-El conocimiento del especialista debe estar en el idioma en que el grupo pregunta;
-acumular experticia que nadie consulta no mejora al grupo.
-Un intento relacionado que \emph{no} funcionó y conviene registrar: podar el vocabulario
-por similitud coseno al nombre de la clase falla porque el nombre es polisémico en el
-espacio de embeddings (\texttt{cup} $\approx$ \textit{World Cup} podaba \textit{drink} y
-\textit{mug}).
+Con la lectura cruda, \texttt{apple} gana el 20.5\% de las victorias maduras y
+\texttt{cow} el 17.0\%: son los dos módulos con más registros en el directorio (186 y
+181, frente a 112 de \texttt{horse}).
+La puntuación cruda favorece al que más registró (Sección~\ref{sec:disc-b1}); la
+lectura B1, que divide entre los registros, deja a \texttt{apple} en 13.8\% (ideal
+12.5\%).
+Lo que B1 no corrige es léxico.
+De los 28 errores que quedan, 9 son \texttt{pear} $\to$ \texttt{apple} y 6
+\texttt{horse} $\to$ \texttt{cow}, pares que comparten etiquetas genéricas
+(\textit{fruit} y \textit{pome}; \textit{animal} y \textit{mammal}), y \texttt{pear}
+se queda en 76\%.
+Si el espacio latente del codificador contribuye también al sesgo no se midió en este
+trabajo.
 
 % ---------------------------------------------------------------
 \subsection{Lectura desde la teoría de memoria transactiva de Wegner}
 \label{sec:disc-wegner}
 
-Los resultados de las Secciones~\ref{sec:calibracion} y~\ref{sec:formacion} releen los
-mecanismos de Wegner~\cite{wegner1987transactive} a una escala de grupo mayor:
+Los resultados de las Secciones~\ref{sec:calibracion}, \ref{sec:formacion},
+\ref{sec:capacidad} y~\ref{sec:hemisferio-visual} releen los mecanismos de
+Wegner~\cite{wegner1987transactive} con un grupo de ocho miembros:
 
 \begin{itemize}
-    \item \textbf{Un grupo más grande necesita más interacción para conocerse.}
-    Con tres agentes, 10 consultas por dominio bastaban para cruzar el 90\% de
-    precisión madura en $k \approx 13$ interacciones; con ocho agentes ese mismo volumen
-    se queda en 81.2\%, y hace falta el banco completo ($\approx$50 por dominio) para
-    alcanzar el 93.5\%.
-    El costo de formación del directorio crece con el número de especialidades y con el
-    solapamiento entre ellas, no solo con el número de miembros.
+    \item \textbf{Conocerse cuesta interacción.}
+    Con ocho módulos, 10 consultas por dominio dejan la precisión madura en 81.2\%, y
+    hace falta el banco completo ($\approx$50 por dominio) para alcanzar el 93.0\%.
+    Los errores que quedan caen dentro de pares de módulos que comparten léxico, como
+    muestra el punto sobre la comunicación distintiva.
 
     \item \textbf{El orden de las experiencias afecta la velocidad, no el destino.}
-    Todas las condiciones de presentación convergen exactamente al mismo directorio
-    (mismos conteos, misma entropía).
-    La estructura final del sistema transactivo depende de \emph{qué} se presenció, no
-    de \emph{en qué orden}; el orden determina cuándo el directorio se vuelve utilizable.
+    Todas las condiciones de presentación convergen al mismo directorio: mismos
+    conteos, misma entropía.
+    En el modelo de Wegner, el directorio se forma anotando quién respondió en cada
+    interacción presenciada; aquí cada anotación se suma a las anteriores, así que el
+    directorio final depende de \emph{qué} se presenció, y el orden solo decide cuándo
+    se vuelve utilizable.
 
     \item \textbf{La comunicación distintiva forma mejor directorio.}
-    Las clases cuyas consultas usan léxico exclusivo (\texttt{cup}, \texttt{tomato},
-    \texttt{car}) alcanzan 98--100\%; las que preguntan con léxico compartido
-    (\texttt{pear}, \texttt{horse}) quedan en 82--86\%.
-    En términos de Wegner: la asignación de información funciona en la medida en que
-    quien pregunta aporta las señas del dominio.
-    La palanca no es más vocabulario del especialista sino mejores señas del que
-    consulta, como muestra el resultado de enriquecimiento
-    (Sección~\ref{sec:disc-dominancia}).
+    Con la lectura B1, \texttt{car}, \texttt{cow}, \texttt{cup} y \texttt{tomato}
+    quedan en 98--100\% y \texttt{dog} en 93.9\%; \texttt{pear} (76\%), \texttt{horse}
+    (88\%) y \texttt{apple} (88.2\%) pierden hacia la vecina con la que comparten
+    etiquetas (Sección~\ref{sec:disc-dominancia}).
+    En términos de Wegner, la coordinación de la recuperación funciona en la medida en
+    que quien pregunta aporta las señas del dominio: la regla de rescate léxico, que
+    solo admite tokens de la consulta como \textit{bark}, \textit{moo} o
+    \textit{riding}, sube 21.7 puntos en las 46 consultas que toca
+    (Sección~\ref{sec:pipeline-semantico}).
 
-    \item \textbf{El rechazo colectivo escala.}
-    Con ocho especialistas y siete clases contrarias por agente, la especificidad se
-    mantiene exacta: 0\% de falsos aceptados en contenido en todo el rango de $N$, y
-    dos falsos enrutamientos visuales de 656, del mismo objeto hacia la clase vecina.
-    El grupo sigue sin inventar referentes.
+    \item \textbf{El rechazo colectivo se sostiene con ocho dominios.}
+    Con siete clases contrarias por módulo, el contenido no acepta ningún falso con un
+    latente por imagen, en ninguno de los tamaños de llenado probados, y con las 16
+    variantes del experimento 13 acepta 5 de 656 imágenes de prueba, todas entre
+    animales (vacas y caballos aceptados por \texttt{dog}, un caballo por
+    \texttt{cow}).
+    El directorio visual comete dos falsos enrutamientos de 656.
+    Es el rechazo de la Sección~\ref{sec:tmt}: lo que ningún módulo reconoce no se
+    responde, y los falsos del contenido caen entre animales.
 \end{itemize}
+
+% ---------------------------------------------------------------
+\subsection{Una memoria por módulo: familiaridad, nombre y daño}
+\label{sec:disc-una-memoria}
+
+Con una sola memoria de contenido, el sistema queda hecho solo de asociaciones: la de
+contenido (etiqueta con imagen) dentro de cada módulo y la de directorio (pista con
+módulo) entre ellos.
+Reconocer una pista no consulta un almacén aparte: es leer la asociación.
+Es lo que proponen los modelos de emparejamiento global de la psicología, que leen la
+familiaridad de un único almacén de huellas~\cite{clark1996global}: preguntarle a la
+memoria conjunta si una imagen es familiar es emparejarla con todas las huellas,
+cualquiera que sea su etiqueta, y eso es la suma de la ecuación~\eqref{eq:marginal}.
+
+La lesión de la Sección~\ref{sec:una-memoria} separa las dos lecturas: con daño al
+azar en la única memoria, el módulo deja de nombrar mucho antes de dejar de reconocer
+(Tabla~\ref{tab:lesion}).
+El patrón se parece a disociaciones conocidas.
+La paciente YR, con una lesión selectiva del hipocampo, reconoce ítems pero falla en
+asociaciones entre tipos distintos de información, como caras con nombres
+hablados~\cite{mayes2004associative}.
+En ratas, la lesión del hipocampo suprime el recuerdo y deja la
+familiaridad~\cite{fortin2004recollection}; con la edad, la memoria de asociaciones se
+deteriora más que la de ítems~\cite{old2008differential}.
+En el cerebro, estas disociaciones suelen atribuirse a estructuras distintas, la corteza
+perirrinal para la familiaridad y el hipocampo para unir ítem y
+contexto~\cite{eichenbaum2007medial,diana2007imaging}, aunque esa asignación está en
+disputa~\cite{squire2007recognition}.
+En este sistema la disociación sale de una sola memoria: nombrar exige que cada
+coordenada de la imagen deje apoyo en cada coordenada de la etiqueta, mientras que
+reconocer suma la evidencia de todas las etiquetas.
+Esto no resuelve el debate, pero muestra que la disociación no exige dos almacenes, como
+Plaut mostró para la afasia óptica con un solo sistema semántico de especialización
+gradual~\cite{plaut2002graded}.
+
+El estado intermedio, reconocer sin poder nombrar, también tiene análogos.
+En la afasia óptica, el paciente identifica un objeto por la vista pero no puede
+nombrarlo desde ella~\cite{beauvois1982optic}.
+En la experiencia de la punta de la lengua, la persona sabe que conoce la palabra y
+recupera partes de ella, como la primera letra o el número de sílabas, sin
+alcanzarla~\cite{brown1966tip}; y la sensación de saber anticipa con bastante acierto qué
+se reconocerá aunque no se haya podido recordar~\cite{hart1965memory}.
+En este sistema el estado aparece en cuanto hay datos sin pareja: de 800 imágenes
+registradas sin palabra, 78 quedan reconocidas sin nombre (Sección~\ref{sec:una-memoria}).
+La lectura de familiaridad las distingue de un rechazo; el protocolo de respuesta
+todavía no las usa.
+En términos de Wegner~\cite{wegner1987transactive}, es justo el momento en que un miembro
+del grupo debería consultar el directorio: sabe que conoce el objeto y necesita a quien
+sepa el nombre.
+Estas analogías son estructurales, no causales: en los pacientes la asociación existía y
+se dañó; en el sistema, con datos sin pareja, nunca se registró.
 
 % ---------------------------------------------------------------
 \subsection{Qué aporta la partición frente a una EHAM única}
 
-La comparación con la EHAM única acota lo que la maquinaria transactiva
-aporta. No es exactitud: sobre el banco completo ambas clasifican igual. Es
-fidelidad, coherencia y precisión: la relación de una EHAM acumula por
-coordenada y valor, y dos conceptos distintos comparten valores cuantizados
-en muchas coordenadas, así que una memoria con varios dominios mezcla al
-recordar aunque las palabras difieran. Partir el contenido evita la mezcla
-porque la decisión de dominio ocurre antes del recall, en el directorio, y
-no dentro del sorteo. El precio es cobertura: el containment de un
-especialista es estricto en las 64 coordenadas del latente y deja fuera al
-21\,\% de las imágenes de prueba, que la unión de soportes contiene; es el
-rechazo residual del hemisferio visual (limitación (b)), ahora identificado
-como costo de la partición. A eso se suman 2.5 puntos del directorio y ocho
-veces las celdas.
+La comparación de la Sección~\ref{sec:eham-unica} acota lo que aporta la maquinaria
+transactiva.
+Lo primero es no mezclar: la relación de una EHAM acumula por coordenada y valor, y dos
+conceptos distintos comparten valores cuantizados en muchas coordenadas, así que una
+memoria con varios dominios mezcla al recordar aunque las palabras difieran.
+Partir el contenido evita la mezcla porque el dominio se decide antes de la
+recuperación, en el directorio, y no al muestrear la memoria.
+Se ve en la fidelidad: la respuesta de la EHAM única queda más lejos de la instancia
+real más cercana en todos los cortes (de 4.6 a 6.2 más que el oráculo), sin tendencia
+con el contenido.
+Y se ve fuera de dominio: la EHAM única acepta más cuanto más contiene (de 2 a 8 de 40
+consultas), y el protocolo con doble compuerta acepta 2 en todos los cortes.
+
+La exactitud de clase también mejora, pero poco.
+Desde 50 imágenes por clase el protocolo acierta entre 98.3 y 98.8\,\% frente a
+96.9--97.6\,\% de la EHAM única, con intervalos separados; con 25 la EHAM única queda
+arriba (97.6 frente a 96.9\,\%, con intervalos que se solapan), porque el directorio
+todavía enruta peor (95.3\,\% de enrutamiento correcto).
+
+El precio es cobertura y un índice.
+El especialista deja sin respuesta al 2.5\,\% de las imágenes de prueba con 200 por
+clase, que la EHAM única responde: una de las 80 imágenes porque la contención es
+estricta en las 64 coordenadas del latente y otra porque el recuerdo no devuelve palabras.
+Es parte del rechazo residual del hemisferio visual (limitación (b)); el protocolo de
+esta comparación, que forma su directorio visual sin variantes, responde al 81\,\%.
+A eso se suman el error del directorio, de 1.2 a 1.7 puntos de clase desde 50 imágenes
+por clase (3.1 con 25), y ocho veces las celdas de memoria: una heteroasociativa por
+módulo en lugar de una.
 
 \subsection{Limitaciones}
 \label{sec:limitaciones}
 
 \paragraph{(a) Fuga de consultas fuera de dominio en el hemisferio textual.}
-La sonda de rechazo (Sección~\ref{sec:proto-completo}) muestra que 2 de 12 consultas
-fuera de dominio rutean hacia algún agente porque comparten tokens con labels legítimos;
-con el banco de 40 consultas de la comparación con la EHAM única, el directorio del
-protocolo acepta 4, y en 2 de ellas (\emph{piano}, \emph{thunderstorm}) el agente
-destino no contiene la consulta.
-Con la cuantización por magnitud y directorios densos, el containment textual pasa con
-más facilidad que en la versión binaria, y la frontera semántica queda expuesta.
-Una doble compuerta de contenido (verificar que el agente destino contenga la consulta,
-no solo que el directorio la señale) cierra esa fuga: el protocolo acepta 2 de 40 en los
-cuatro cortes, las mismas que el oráculo, sin rechazar ninguna de las 16 consultas de
-referencia de la fase madura. Sobre las 171 consultas reservadas no quita ninguna
-respuesta: las filas que rechaza (1.4\,\% con 200 imágenes por clase, 21\,\% con 25) ya
-no producían recall en el destino, y en los cortes grandes son todas ruteos equivocados.
-Un árbitro más amplio (que el contenido decida entre los tres mejores candidatos del
-directorio) empeora el ruteo de texto (96.1 $\to$ 90.6\,\% de acierto, experimento 15):
-el índice calibrado compara mejor que la activación del contenido, y la abstención por
-margen de score quita un acierto por cada error a cualquier umbral. La doble compuerta
-se queda como está.
+Una consulta fuera de dominio que comparte tokens con etiquetas legítimas pasa la
+contención textual y llega a algún módulo: la sonda de rechazo deja pasar 2 de 12
+(Sección~\ref{sec:proto-completo}), y en el banco de 40 de la comparación con la EHAM
+única el directorio acepta 4, dos de ellas (\emph{piano}, \emph{thunderstorm}) hacia un
+módulo que no las contiene.
+La doble compuerta de contenido (el destino debe contener la consulta, no solo figurar
+en el directorio) detiene esas dos y deja al protocolo en 2 de 40 en los cuatro cortes,
+tantas como el oráculo; sobre las 171 consultas reservadas no quita ninguna respuesta,
+porque las que rechaza (1.5\,\% con 200 imágenes por clase, 2.1\,\% con 25) eran
+enrutamientos equivocados que el destino tampoco respondía.
+Las dos que quedan las contiene el destino, y ninguna compuerta de contención las
+separa de una consulta legítima.
+Las alternativas medidas rinden menos (experimento 15, sobre las 171 reservadas): que el
+contenido decida entre los tres mejores candidatos del directorio baja el acierto de
+96.8 a 93.6\,\%, porque el índice calibrado compara mejor que la activación del
+contenido, y abstenerse cuando la diferencia relativa entre las dos mejores
+puntuaciones es menor que un umbral $\delta$ quita más de un acierto por cada error
+evitado (1.2 con $\delta = 0.05$; 8 con $\delta = 0.5$).
 
-\paragraph{(b) Cobertura visual residual limitada por el containment conjunto.}
-El 25\% de rechazo del enrutamiento visual de test no proviene de huecos por
-coordenada (625 de 656 imágenes tienen soporte marginal completo) sino de la conjunción
-AND sobre las 64 coordenadas simultáneas, por lo que aumentar $\xi$ no lo reduce
-($\xi$ satura en 2--3).
-La palanca es densificar, y el experimento 13 midió cuánto rinde. Son dos compuertas,
-el directorio visual (formado en la fase A con una percepción por imagen) y el recall
-de la hetero, y cada una cede solo con su propia augmentación: registrar 16 variantes
-por percepción en el directorio lleva su aceptación de 73.6 a 96.2\,\%; llenar el
-contenido con 16 variantes por imagen lleva la respuesta de la hetero de 76 a 96\,\%;
-con las dos, la cobertura de punta a punta (ruteo correcto y respuesta) pasa de 66.5 a
-94.5\,\% de las 656 imágenes de test, con rendimiento decreciente por escalón de
-variantes. Esta versión adopta las 16 variantes: el ruteo de test queda en 96.2\,\%,
-la evocación en 97.4\,\% y el rechazo en 3.5\,\%. El precio no es cero: dos ruteos
-equivocados de 656 (dos vistas de \texttt{horse7} a \texttt{dog}, que las contiene, así
-que la doble compuerta no las detiene) y, en el experimento, cinco imágenes aceptadas
-por un especialista ajeno, siempre el par animal que ya confunde al texto. Son vistas
-nuevas de los mismos objetos, porque el split es por imagen.
-En sentido inverso, el containment visual también tiene una fuga con \emph{entradas
-degeneradas}: una imagen de color sólido uniforme obtiene soporte y se acepta
-(Figura~\ref{fig:rechazo-imagenes}), presumiblemente porque el fondo liso de ETH-80
-puebla esa región del espacio latente; las sondas estructuradas (ruido, píxeles
-barajados) sí se rechazan. Densificar agranda esa fuga: con 16 variantes la aceptan
-tres especialistas en vez de uno y el directorio la rutea.
-El experimento 14 midió la mitigación: un umbral sobre la norma del latente continuo,
-fijado con el mínimo de las imágenes de llenado y un margen del 10\,\% ($\tau = 16.6$),
-cierra el 94\,\% de esa fuga (79 de las 83 entradas degeneradas aceptadas por una clase
-ajena caen bajo $\tau$: grises medios, desenfoques de radio $\geq 8$, contrastes
-$\leq 0.2$) y el 88\,\% con el llenado de 16 variantes, a costa de cinco imágenes reales
-de 3280, todas vistas oscuras de \texttt{cow} que el directorio ya rechazaba. La norma
-y la varianza del latente son equivalentes; la varianza de píxeles no sirve, porque un
-objeto desenfocado conserva contraste y pierde estructura. Lo que sobrevive al umbral
-son confusiones de contenido entre clases (un \texttt{dog} desenfocado aceptado por
-\texttt{cow}), no entradas degeneradas. La doble compuerta del punto (a) no la
-cerraría, porque el contenido también la acepta. El umbral está instalado en la
-codificación de la percepción; en la etapa 7 rechaza una percepción de 1024 en la fase
-A y cuatro imágenes de 656 en test, sin cambiar el ruteo (medido con el llenado de 4
-variantes; con el de 16 rechaza las mismas cuatro).
+\paragraph{(b) Cobertura visual limitada por la lectura estricta.}
+La lectura del directorio visual es estricta ($\xi = 0$): con directorios
+perspectivales, los huecos tolerados dependerían de lo que presenció cada módulo.
+Para cubrir más, el sistema densifica.
+El directorio visual y la recuperación de la heteroasociativa son dos compuertas, y
+cada una cede solo con sus propias variantes (experimento 13, sobre las 656 imágenes de
+prueba): registrar en el directorio 16 variantes por percepción, en lugar de una, lleva
+su aceptación de 73.6 a 96.2\,\%; llenar el contenido con 16 variantes por imagen, en
+lugar de 4, lleva la respuesta de la heteroasociativa de 76 a 96\,\%; con las dos, la
+cobertura de punta a punta (enrutamiento correcto y respuesta) pasa de 66.5 a
+94.5\,\%, con rendimiento decreciente por escalón de variantes.
+El sistema usa 16 variantes en las dos y aun así rechaza el 3.5\,\% de las imágenes de
+prueba (Sección~\ref{sec:hemisferio-visual}).
+Densificar tiene un costo: dos enrutamientos equivocados de 656 y, en el experimento,
+cinco imágenes aceptadas por un especialista ajeno, todas entre animales y cuatro de
+ellas por \texttt{dog}.
+Son vistas nuevas de los mismos objetos, porque la partición es por imagen
+(limitación (f)).
 
-\paragraph{(c) Calidad de la reconstrucción visual.}
-El decoder, entrenado con un término de reconstrucción MSE dentro de una pérdida que
-incluye una cabeza auxiliar de clasificación, produce reconstrucciones suaves sin
-detalle de alta frecuencia (cf.\ la reconstrucción e imaginación en EAM de Pineda y
-Morales~\cite{pineda2023imagery}, y la memoria EAM sobre imágenes naturales de
-CIFAR-10~\cite{hernandez2026cifar}, que enfrenta el mismo compromiso con
-autoencoders más profundos).
-Es un efecto de la función de pérdida del autoencoder, no del sistema de memorias, y
-puede abordarse de forma independiente.
+\paragraph{(c) Fuga con entradas degeneradas.}
+El contenido visual da soporte también a entradas sin estructura, como un lienzo gris
+uniforme, porque el codificador las lleva a latentes de norma baja que caen dentro de la
+envolvente de los animales (Sección~\ref{sec:hemisferio-visual}); las sondas
+estructuradas (ruido, píxeles barajados) sí se rechazan.
+Densificar agranda esa fuga: en el experimento 13, con 16 variantes, a la sonda de color
+sólido la aceptan tres especialistas en vez de uno y el directorio la enruta.
+El umbral de energía (Sección~\ref{sec:percepcion}) cierra el 90\,\% de la fuga
+(experimento 14): 137 de las 152 entradas degeneradas aceptadas por una clase ajena caen
+bajo $\tau$ (grises de 104 a 168, contrastes $\leq 0.2$ y desenfoques fuertes: todos
+los de radio $\geq 12$ y buena parte de los menores).
+Como criterio, la norma y la varianza del latente son equivalentes; la varianza de
+píxeles no sirve, porque un objeto desenfocado conserva contraste y pierde estructura.
+De las 15 entradas que sobreviven, 11 son objetos desenfocados o de bajo contraste que
+acepta otra clase (como un \texttt{dog} desenfocado aceptado por \texttt{cow}) y cuatro
+son superficies casi uniformes de norma alta (un gris claro, dos colores sólidos y un
+gris con ruido); la doble compuerta del punto (a) no las cerraría, porque el contenido
+también las acepta.
+El umbral cuesta cinco imágenes reales de 3280, todas vistas oscuras de \texttt{cow}:
+una percepción de la fase A y cuatro imágenes de prueba que el directorio enrutaba bien
+y su contenido aceptaba.
 
-\paragraph{(d) Aprendizaje limitado después de formar el directorio.}
-Una vez llenas las memorias de dominio y formado el directorio, los agentes dejan de
+\paragraph{(d) Calidad de la reconstrucción visual.}
+Las reconstrucciones son suaves y sin detalle de alta frecuencia
+(Figura~\ref{fig:imagen-etiquetas}).
+Es un efecto de cómo se entrenó el autocodificador, con un término de reconstrucción MSE y
+una cabeza auxiliar de clasificación que solo interviene en el entrenamiento, no en las
+decisiones; no es un efecto del sistema de memorias y puede abordarse por separado.
+Sobre la reconstrucción en la EAM, véanse la imaginería de Pineda y
+Morales~\cite{pineda2023imagery} y la memoria de imágenes naturales de
+CIFAR-10~\cite{hernandez2026cifar}, donde entrenar el autocodificador junto con el
+clasificador degrada la reconstrucción y por eso se entrenan por separado.
+
+\paragraph{(e) Aprendizaje limitado después de formar el directorio.}
+Una vez llena la memoria de contenido y formado el directorio, los módulos dejan de
 registrar contenido nuevo: la fase madura enruta y recupera con lo aprendido.
-El sistema aún no modela \emph{transactive encoding} ni la reorganización de memorias
-de contenido durante la operación madura.
+El sistema aún no modela la asignación de información de Wegner (encaminar información
+nueva al especialista que corresponde) ni la reorganización de las memorias de contenido
+durante la operación madura.
 
-\paragraph{(e) Partición a nivel de imagen.}
-La partición train/test se realizó a nivel de archivo de imagen, no a nivel de objeto
-físico de ETH-80; verificado sobre la partición persistida, los diez objetos de cada
-clase aportan vistas a ambos lados (solape de instancias del 100\%,
-Sección~\ref{sec:dataset}).
-Las cifras visuales de este reporte (96.2\% de enrutamiento, evocación top-3) miden
-por tanto generalización a \emph{vistas nuevas de objetos conocidos}.
-La generalización a objetos nuevos se midió con una validación leave-one-object-out
-de diez pliegues (experimento 16): con el contenido y la fase A construidos con nueve
-objetos por clase, las 41 vistas del objeto reservado obtienen una cobertura de punta
-a punta del 89.2\,\% [85.1, 93.2], frente al 95.5\,\% de vistas nuevas de los objetos
-conocidos evaluadas sobre los mismos modelos; la brecha es de 6.3 puntos [2.5, 10.4]
-y los falsos enrutamientos son 2 de 3280 (\texttt{cow} y \texttt{horse} a
-\texttt{dog}).
-La envolvente por coordenada cubre a un objeto que no contribuyó a ella, y cuando no
-lo cubre lo rechaza: el ruteo correcto sobre las aceptadas es del 99.9\,\% en los dos
-bancos.
-La brecha no vive en clases sino en objetos concretos: 74 de los 80 objetos reservados
-superan el 70\,\% y seis (dos manzanas, dos peras, un perro, una taza) concentran el
-resto.
-Con diez objetos por clase, «objeto nuevo» sigue siendo un objeto de la misma
+\paragraph{(f) Partición por imagen.}
+La partición entre entrenamiento y prueba separa archivos de imagen, no objetos
+físicos: los diez objetos de cada clase aportan vistas a ambos lados
+(Sección~\ref{sec:dataset}).
+Las cifras visuales principales (96.2\% de enrutamiento, evocación de dominio) miden por
+tanto generalización a \emph{vistas nuevas de objetos conocidos}.
+Con objetos nuevos, la cobertura de punta a punta baja del 95.5 al 89.2\,\%
+(Sección~\ref{sec:objetos-nuevos}), y lo que se pierde es respuesta, no acierto: la
+envolvente por coordenada cubre a la mayoría de los objetos que no contribuyeron a ella,
+rechaza las vistas que no cubre en lugar de enviarlas a otra clase, y la brecha se
+concentra en unos pocos objetos, no en clases.
+Con diez objetos por clase, ``objeto nuevo'' sigue siendo un objeto de la misma
 colección fotografiado en las mismas condiciones; fotos de otro origen son otra
 pregunta.
 
-\paragraph{(f) Selección de modelo e hiperparámetro sobre el conjunto de prueba.}
+\paragraph{(g) Selección de modelo e hiperparámetro sobre el conjunto de prueba.}
 Dos elementos del protocolo se eligieron mirando el conjunto de prueba, por ausencia
-de una partición de validación separada: el punto de control del encoder (RMSE mínimo
-sobre test entre $\approx$5 candidatos, Sección~\ref{sec:percepcion}) y la tolerancia
-$\xi = 2$ del directorio visual (barrido medido sobre el enrutamiento de test,
-Sección~\ref{sec:parametros}).
+de una partición de validación separada: el punto de control del codificador (RMSE
+mínimo sobre el conjunto de prueba entre cinco candidatos, Sección~\ref{sec:percepcion})
+y las 16 variantes del llenado, adoptadas después de ver el barrido de variantes
+(experimento 13), que mide sobre las 656 imágenes de prueba (16 es el mayor valor
+probado, no un óptimo ajustado).
+La lectura del directorio visual no tiene tolerancia que ajustar ($\xi = 0$,
+limitación (b)).
 Ambas selecciones son de alcance acotado y ninguna introduce un mecanismo ajeno a las
-memorias, pero inflan potencialmente las cifras visuales reportadas; la corrección de
-protocolo (partición train/val/test) es directa y queda pendiente.
+memorias, pero pueden inflar las cifras visuales reportadas; la corrección (una
+partición de validación aparte) es directa y queda pendiente.
 
-\paragraph{(g) Regla de admisión de pistas alineada con el vocabulario propio.}
+\paragraph{(h) Regla de admisión de pistas alineada con el vocabulario propio.}
 El rescate de atención léxica (Sección~\ref{sec:pipeline-semantico}) admite tokens
-mal etiquetados por el POS si figuran en el vocabulario que llenó las memorias; su
-efecto medido es de +23.8 puntos sobre las 42 consultas afectadas del banco.
+que el filtro gramatical (POS) descarta si figuran en el vocabulario que llenó las
+memorias; su efecto medido es de +21.7 puntos sobre las 46 consultas afectadas del
+banco (43 de 46 correctas con rescate, 33 sin él).
 La regla nunca censura y no decide el ganador, pero decide \emph{quién vota} con un
 criterio derivado del conocimiento del propio sistema; un criterio de rescate
-independiente del vocabulario (p.ej.\ solo la etiqueta POS de diccionario) eliminaría
+independiente del vocabulario (p.\ ej.\ solo la etiqueta POS de diccionario) eliminaría
 la alineación al costo medido.
 
-\paragraph{(h) Dependencia de la calidad de la fuente de conocimiento.}
-El vocabulario de ConceptNet es asimétrico entre clases, y el resultado de
-enriquecimiento muestra que no puede corregirse mecánicamente: el techo de las clases
-de léxico compartido depende de la distintividad de las consultas del banco tanto como
-del vocabulario del agente.
-Fuentes de conocimiento adicionales (definiciones, corpora específicos de dominio) son
-la extensión natural.
+\paragraph{(i) Dependencia de la calidad de la fuente de conocimiento.}
+El vocabulario de ConceptNet es asimétrico entre clases, y el techo de las clases de
+léxico compartido (\texttt{pear} 76\%, \texttt{horse} 88\%) depende de la
+distintividad de las consultas del banco tanto como del vocabulario del módulo.
+Este trabajo no midió si enriquecer el vocabulario de una clase lo corrige.
+
+\paragraph{(j) Fragilidad del nombre ante daño.}
+La proyección exige que cada coordenada de la imagen deje apoyo en cada coordenada de la
+etiqueta, y no tolera ninguna columna vacía.
+Destruir al azar el 1\,\% de las celdas de la memoria de contenido deja sin nombre al
+92\,\% de las imágenes emparejadas, y el 5\,\% a todas
+(Tabla~\ref{tab:lesion}); el reconocimiento, en cambio, sobrevive.

@@ -6,6 +6,7 @@ Also generates papers_images/architectural_changes.md.
 
 Usage:
     python generate_paper_figures.py
+    python generate_paper_figures.py --solo=fig02,fig16   # solo esas, en español
 """
 import sys
 import json
@@ -19,8 +20,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import matplotlib.gridspec as gridspec
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.ticker import PercentFormatter
 from sklearn.decomposition import PCA
 from scipy.spatial import ConvexHull
 
@@ -160,10 +160,14 @@ TEXTS = {
                             "Weight = M_dom recognition score (higher = stronger match).",
     },
     "es": {
-        "n_queries":        "Número de queries (N)",
+        "cond": {"A Baseline": "A (cruda)", "B1 Norm/count": "B1", "B2 Norm/sqrt": "B2",
+                 "C Balanced M_dir": "C", "D Balanced queries": "D",
+                 "E32 m=32 binary": "E32", "E64 m=64 binary": "E64",
+                 "F Curated ConceptNet": "F", "G Best (D+B1+F)": "G (D+B1+F)"},
+        "n_queries":        "Consultas de formación ($N$)",
         "early_acc_y":      "Precisión fase temprana",
         "early_acc_title":  "Precisión en fase temprana (M_dom) vs N",
-        "mature_acc_y":     "Precisión fase madura",
+        "mature_acc_y":     "Precisión madura",
         "mature_acc_title": "Precisión en fase madura (M_dir) vs N — comparación de condiciones",
         "heatmap_title":    "Precisión madura — condición × N queries",
         "domain_acc_y":     "Precisión madura por dominio",
@@ -177,7 +181,7 @@ TEXTS = {
                             "(mayor entropía = routing más equilibrado)",
         "max_entropy":      "Entropía máxima",
         "reg_y":            "Registros acumulados en M_dir",
-        "reg_title":        "Registros en M_dir por agente × condición (N=400)",
+        "reg_title":        "Registros en M_dir por módulo × condición (N=400)",
         "ideal":            "Ideal balanceado",
         "scatter_x":        "Precisión fase temprana (M_dom)",
         "scatter_y":        "Precisión fase madura (M_dir)",
@@ -191,15 +195,15 @@ TEXTS = {
         "cross_domain":     "Cross-domain",
         "cosine_y":         "Similitud coseno con centroide",
         "cosine_title":     "Similitud coseno (espacio continuo)\nde tokens problemáticos",
-        "bins_x":           "Bin de cuantización",
-        "bins_y":           "Proporción de features",
+        "bins_x":           "Nivel de cuantización",
+        "bins_y":           "Proporción de componentes",
         "bins_title":       "Cuantización por magnitud\nquantize_binary(v, m=16)\n"
                             "Los 16 niveles se utilizan",
         "bins_note":        "Los 16 bins\nse pueblan",
         "sem_suptitle":     "Análisis del espacio semántico — la cuantización por magnitud preserva la separación",
         "winner_y":         "Fracción de victorias en fase madura",
         "winner_title":     "Distribución de ganador en M_dir por condición (N=400)",
-        "winner_agent":     "Agente ganador",
+        "winner_agent":     "Módulo ganador",
         "ideal_balanced":   "Ideal balanceado (12.5%)",
         "table_title":      "Tabla resumen de resultados (N=400, media 5 seeds)",
         "col_cond":         "Condición",
@@ -211,30 +215,36 @@ TEXTS = {
         "recog_title":      "Heatmap de reconocimiento en M_dom (diagnóstico)\n"
                             "(activación cruda, normalizada por fila — NO es el "
                             "routing oficial gateado)",
-        "imgrej_title":     "Rechazo de imágenes por la MAE (containment, sin filtro léxico)",
+        "imgrej_title":     "Rechazo de imágenes (umbral τ y contención, sin filtro léxico)",
         "imgrej_accepted":  "Aceptadas\n(con soporte)",
-        "imgrej_rejected":  "Rechazadas\n(reales, ξ=0)",
+        "imgrej_rejected":  "Rechazadas\n(reales)",
         "imgrej_ood":       "Fuera de dominio\n(sintéticas)",
-        "img2lbl_title":    "Salida semántica: imagen → recall MAE → etiquetas (top-3, dominio real)",
-        "img2lbl_input":    "Entrada (pista)",
-        "img2lbl_recon":    "Reconstrucción evocada (MAE)",
+        "imgrej_ood_names": {"noise": "ruido", "solid": "gris uniforme",
+                             "scrambled": "píxeles barajados"},
+        "imgrej_acc":       "aceptada",
+        "imgrej_rej":       "rechazada",
+        "img2lbl_input":    "Entrada",
+        "img2lbl_recon":    "Reconstrucción evocada",
+        "img2lbl_module":   "módulo",
+        "img2lbl_hit":      "del vocabulario de la clase",
+        "img2lbl_yes":      "sí",
         "recog_y":          "Labels (agrupadas por dominio)",
-        "recog_x":          "Agente M_dom",
+        "recog_x":          "Módulo M_dom",
         "recog_cbar":       "Peso de reconocimiento normalizado",
         "recog_tp":         "TP",
         "recog_fp":         "FP",
         "recog_fn":         "FN",
         "recog_tn":         "TN",
-        "prf_title":        "Precisión, Recall y F1 por agente\n"
+        "prf_title":        "Precisión, Recall y F1 por módulo\n"
                             "M_dom Baseline  vs  M_dom Curado (Condición G)",
         "prf_baseline":     "Baseline",
         "prf_curated":      "Curado (G)",
         "prf_precision":    "Precisión",
         "prf_recall":       "Recall",
         "prf_f1":           "F1-score",
-        "prf_agent":        "Agente",
+        "prf_agent":        "Módulo",
         "prf_note_tp":      "TP: label propia correctamente enrutada",
-        "prf_note_fp":      "FP: label ajena incorrectamente enrutada a este agente",
+        "prf_note_fp":      "FP: label ajena incorrectamente enrutada a este módulo",
         "prf_note_fn":      "FN: label propia no reconocida por este agente",
         # Recall figure
         "recall_title":     "Recall Label-a-Imagen — Prototipos M_dom por Dominio",
@@ -264,6 +274,10 @@ def savefig(name, fig=None):
 
 def pct_fmt(y, _):
     return f"{y:.0%}"
+
+
+def cname(c):
+    return T.get("cond", {}).get(c, c)
 
 
 def _add_convex_hull(ax, pts, color, alpha=0.12):
@@ -313,28 +327,29 @@ def fig_early_accuracy(agg):
 
 
 def fig_mature_accuracy(agg):
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, ax = plt.subplots(figsize=(5.5, 3.6))
     KEY = {"A Baseline", "G Best (D+B1+F)", "B1 Norm/count"}
     for cond, sub in agg.groupby("condition"):
+        if cond == "F Curated ConceptNet":   # idéntica a A; lo dice el pie
+            continue
         sub = sub.sort_values("N")
         lw = 2.8 if cond in KEY else 1.3
         ls = "-"  if cond in KEY else "--"
         mk = "o"  if cond in KEY else "s"
         ax.plot(sub["N"], sub["mature_accuracy_mean"],
                 marker=mk, linewidth=lw, linestyle=ls,
-                label=cond, color=PALETTE.get(cond, "#bdc3c7"))
-        if cond in KEY:
+                label=cname(cond), color=PALETTE.get(cond, "#bdc3c7"))
+        if cond == "G Best (D+B1+F)":
             ax.fill_between(sub["N"],
                             sub["mature_accuracy_mean"] - sub["mature_accuracy_std"],
                             sub["mature_accuracy_mean"] + sub["mature_accuracy_std"],
-                            alpha=0.10, color=PALETTE.get(cond, "#bdc3c7"))
+                            alpha=0.15, color=PALETTE[cond])
     ax.set_xlabel(T["n_queries"])
     ax.set_ylabel(T["mature_acc_y"])
-    ax.set_title(T["mature_acc_title"])
     ax.set_xticks(N_VALUES)
-    ax.set_ylim(-0.02, 1.10)
+    ax.set_ylim(0.6, 1.0)
     ax.yaxis.set_major_formatter(pct_fmt)
-    ax.legend(loc="upper left", framealpha=0.85, fontsize=8, ncol=2)
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1.0), fontsize=8, frameon=False)
     savefig("fig02_mature_accuracy_vs_N.png", fig)
 
 
@@ -342,21 +357,20 @@ def fig_heatmap(agg):
     cond_order = list(CONDITION_LABELS.values())
     pivot = agg.pivot_table(index="condition", columns="N",
                             values="mature_accuracy_mean").reindex(cond_order)
-    cmap = LinearSegmentedColormap.from_list("rg", ["#e74c3c", "#f1c40f", "#2ecc71"])
-    fig, ax = plt.subplots(figsize=(6, 5))
-    im = ax.imshow(pivot.values, aspect="auto", cmap=cmap, vmin=0, vmax=1)
+    fig, ax = plt.subplots(figsize=(5.2, 4.2))
+    im = ax.imshow(pivot.values, aspect="auto", cmap="viridis", vmin=0.6, vmax=1.0)
     ax.set_xticks(range(len(N_VALUES)))
-    ax.set_xticklabels([f"N={n}" for n in N_VALUES])
+    ax.set_xticklabels([f"$N={n}$" for n in N_VALUES])
     ax.set_yticks(range(len(cond_order)))
-    ax.set_yticklabels(cond_order, fontsize=8)
-    ax.set_title(T["heatmap_title"])
+    ax.set_yticklabels([cname(c) for c in cond_order], fontsize=8)
     for i in range(len(cond_order)):
         for j in range(len(N_VALUES)):
             val = pivot.values[i, j]
             if not np.isnan(val):
-                ax.text(j, i, f"{val:.0%}", ha="center", va="center",
-                        fontsize=8, color="white" if val < 0.5 else "black")
-    plt.colorbar(im, ax=ax, label=T["mature_acc_y"], fraction=0.035)
+                ax.text(j, i, f"{val * 100:.1f}", ha="center", va="center",
+                        fontsize=8, color="white" if val < 0.85 else "black")
+    cb = plt.colorbar(im, ax=ax, fraction=0.035, format=PercentFormatter(1.0, decimals=0))
+    cb.set_label(T["mature_acc_y"])
     ax.grid(False)
     savefig("fig03_heatmap_condition_N.png", fig)
 
@@ -364,12 +378,10 @@ def fig_heatmap(agg):
 def fig_domain_accuracy(agg):
     n80 = agg[agg["N"] == N_SHOW].set_index("condition").reindex(
         list(CONDITION_LABELS.values())).reset_index()
-    # run_ablation.py emite columnas para las 8 clases (itera CLASSES); el
-    # filtrado defensivo cubre el caso de re-procesar un CSV antiguo
-    # de 3 clases.
+    # Filtrado defensivo para CSV viejos de 3 clases.
     doms_present = [d for d in SYS_CLASSES if f"mature_acc_{d}_mean" in n80.columns]
     x, w = np.arange(len(n80)), 0.8 / max(len(doms_present), 1)
-    fig, ax = plt.subplots(figsize=(2 + 1.1 * len(doms_present), 4.5))
+    fig, ax = plt.subplots(figsize=(8, 3.6))
     mid = (len(doms_present) - 1) / 2
     for i, dom in enumerate(doms_present):
         color = DOMAIN_COLOR[dom]
@@ -377,14 +389,14 @@ def fig_domain_accuracy(agg):
         ax.bar(x + (i - mid) * w, vals, w, label=dom, color=color,
                alpha=0.85, edgecolor="white", linewidth=0.8)
     ax.set_xticks(x)
-    ax.set_xticklabels(n80["condition"], rotation=22, ha="right", fontsize=8)
+    ax.set_xticklabels([cname(c) for c in n80["condition"]], fontsize=8)
     ax.set_ylabel(T["domain_acc_y"])
-    ax.set_title(T["domain_acc_title"])
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(0, 1.05)
     ax.yaxis.set_major_formatter(pct_fmt)
-    ax.legend(title=T["domain"], loc="upper left", ncol=3)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=8,
+              fontsize=8, frameon=False)
     ax.axhline(1.0, color="#636e72", lw=0.8, linestyle="--", alpha=0.5)
-    savefig("fig04_domain_accuracy_N80.png", fig)
+    savefig("fig04_domain_accuracy_N400.png", fig)
 
 
 def fig_fidelity(agg):
@@ -484,7 +496,7 @@ def fig_winner_distribution(agg):
     # (ver fig_domain_accuracy).
     doms_present = [d for d in SYS_CLASSES if f"winner_pct_{d}_mean" in n80.columns]
     x = np.arange(len(n80))
-    fig, ax = plt.subplots(figsize=(10, 4))
+    fig, ax = plt.subplots(figsize=(8, 3.8))
     bottom = np.zeros(len(n80))
     for dom in doms_present:
         color = DOMAIN_COLOR[dom]
@@ -493,20 +505,20 @@ def fig_winner_distribution(agg):
                alpha=0.85, edgecolor="white", linewidth=0.8)
         for xi, (v, b) in enumerate(zip(vals, bottom)):
             if v > 0.06:
-                ax.text(xi, b + v / 2, f"{v:.0%}",
-                        ha="center", va="center", fontsize=8,
+                ax.text(xi, b + v / 2, f"{v * 100:.1f}",
+                        ha="center", va="center", fontsize=7,
                         color="white", fontweight="bold")
         bottom += vals
     ax.axhline(1 / max(len(doms_present), 1), color="#2d3436", lw=0.9, linestyle="--",
                label=T["ideal_balanced"])
     ax.set_xticks(x)
-    ax.set_xticklabels(n80["condition"], rotation=22, ha="right", fontsize=8)
+    ax.set_xticklabels([cname(c) for c in n80["condition"]], fontsize=8)
     ax.set_ylabel(T["winner_y"])
-    ax.set_title(T["winner_title"])
-    ax.set_ylim(0, 1.08)
+    ax.set_ylim(0, 1.0)
     ax.yaxis.set_major_formatter(pct_fmt)
-    ax.legend(title=T["winner_agent"], loc="upper right", ncol=4, fontsize=8)
-    savefig("fig09_winner_distribution_N80.png", fig)
+    ax.legend(title=T["winner_agent"], loc="lower center", bbox_to_anchor=(0.5, 1.01),
+              ncol=9, fontsize=8, frameon=False)
+    savefig("fig09_winner_distribution_N400.png", fig)
 
 
 def fig_summary_table(agg):
@@ -812,137 +824,57 @@ def fig_semantic_space():
     words, vecs, domains = _load_all_label_vectors()
     vc = load_all_vectors()
 
-    EXTRA_WORDS = ["engine", "motor", "machine"]
-    extra_vecs  = [np.array(get_fasttext_vector(w, vc), dtype=np.float32)
-                   for w in EXTRA_WORDS]
-
-    all_words   = words + EXTRA_WORDS
-    all_vecs    = np.vstack([vecs, np.array(extra_vecs)])
-    all_domains = domains + ["extra"] * len(EXTRA_WORDS)
-
-    # PCA 2D
     pca   = PCA(n_components=2, random_state=42)
-    pts2d = pca.fit_transform(all_vecs)
+    pts2d = pca.fit_transform(vecs)
     var   = pca.explained_variance_ratio_
-
-    idx = {d: [i for i, dom in enumerate(all_domains) if dom == d]
-           for d in list(SYS_CLASSES) + ["extra"]}
+    idx = {d: [i for i, dom in enumerate(domains) if dom == d] for d in SYS_CLASSES}
     centroids = {d: pts2d[idx[d]].mean(axis=0) for d in SYS_CLASSES}
+    # Solo se rotulan las etiquetas que están en más de una clase
+    compartidas = sorted({w for w in words
+                          if sum(w in vc[c] for c in SYS_CLASSES) > 1})
 
-    DOM_COLORS  = {**DOMAIN_COLOR, "extra": "#555555"}
     DOM_MARKERS = {"apple": "o", "car": "^", "cow": "P", "cup": "X",
-                   "dog": "*", "horse": "s", "pear": "v", "tomato": "d",
-                   "extra": "D"}
+                   "dog": "*", "horse": "s", "pear": "v", "tomato": "d"}
 
-    fig = plt.figure(figsize=(15, 5.5))
-    gs  = gridspec.GridSpec(1, 3, width_ratios=[2.2, 1.4, 1.4], wspace=0.38)
-    ax_pca    = fig.add_subplot(gs[0])
-    ax_cosine = fig.add_subplot(gs[1])
-    ax_bins   = fig.add_subplot(gs[2])
+    fig = plt.figure(figsize=(9, 4.2))
+    gs  = fig.add_gridspec(1, 2, width_ratios=[1.35, 1])
+    ax_pca, ax_bins = fig.add_subplot(gs[0]), fig.add_subplot(gs[1])
 
-    # Panel A: PCA space
     for dom in SYS_CLASSES:
         pts = pts2d[idx[dom]]
-        _add_convex_hull(ax_pca, pts, DOM_COLORS[dom])
-        lbl = f"{dom} ({T['domain'].lower()})" if dom != "extra" else T["cross_domain"]
-        ax_pca.scatter(pts[:, 0], pts[:, 1],
-                       c=DOM_COLORS[dom], marker=DOM_MARKERS[dom],
-                       s=55, alpha=0.82, zorder=3, label=dom,
-                       edgecolors="white", linewidth=0.5)
-        for i in idx[dom]:
-            ax_pca.annotate(all_words[i], pts2d[i], fontsize=6.5,
-                            color=DOM_COLORS[dom], alpha=0.85,
-                            xytext=(3, 3), textcoords="offset points")
-
-    for dom, c in centroids.items():
-        ax_pca.scatter(*c, marker="*", s=320, color=DOM_COLORS[dom],
-                       edgecolors="white", linewidth=1.5, zorder=5)
-        ax_pca.annotate(f"{T['centroid']}\n{dom}", c, fontsize=7.5,
-                        color=DOM_COLORS[dom], fontweight="bold",
-                        xytext=(-8, 10), textcoords="offset points")
-
-    for w, ei in zip(EXTRA_WORDS, idx["extra"]):
-        pt = pts2d[ei]
-        ax_pca.scatter(*pt, marker="D", s=120, color=DOM_COLORS["extra"],
-                       edgecolors="black", linewidth=1.5, zorder=6)
-        ax_pca.annotate(f'"{w}"', pt, fontsize=8,
-                        color=DOM_COLORS["extra"], fontweight="bold",
-                        xytext=(5, 5), textcoords="offset points")
-        if w == "engine":
-            ax_pca.annotate("", xy=centroids["car"], xytext=pt,
-                            arrowprops=dict(arrowstyle="->", color="#27ae60",
-                                           lw=1.8, connectionstyle="arc3,rad=0.2"),
-                            zorder=4)
-            mid = (pt + centroids["car"]) / 2
-            ax_pca.text(mid[0], mid[1] - 0.25, T["correct_sem"],
-                        fontsize=6.5, color="#27ae60",
-                        style="italic", ha="center")
-
-    ax_pca.scatter([], [], marker="D", color=DOM_COLORS["extra"],
-                   edgecolors="black", linewidth=1.5, label=T["cross_domain"])
+        _add_convex_hull(ax_pca, pts, DOMAIN_COLOR[dom])
+        ax_pca.scatter(pts[:, 0], pts[:, 1], c=DOMAIN_COLOR[dom],
+                       marker=DOM_MARKERS[dom], s=30, alpha=0.8, zorder=3,
+                       label=dom, edgecolors="white", linewidth=0.4)
+        ax_pca.scatter(*centroids[dom], marker="*", s=220, color=DOMAIN_COLOR[dom],
+                       edgecolors="black", linewidth=0.8, zorder=5)
+    # De dos etiquetas juntas, la de la izquierda se rotula hacia la izquierda
+    pos = {w: pts2d[words.index(w)] for w in compartidas}
+    for w in compartidas:
+        x, y = pos[w]
+        izq = any(0 < pos[o][0] - x < 0.25 and abs(pos[o][1] - y) < 0.06
+                  for o in compartidas)
+        ax_pca.annotate(w, (x, y), fontsize=8, xytext=(-3 if izq else 3, 3),
+                        textcoords="offset points", ha="right" if izq else "left",
+                        zorder=6, bbox=dict(boxstyle="round,pad=0.1", fc="white",
+                                            ec="none", alpha=0.75))
     ax_pca.set_xlabel(f"PC1 ({var[0]:.1%} var.)")
     ax_pca.set_ylabel(f"PC2 ({var[1]:.1%} var.)")
-    ax_pca.set_title(T["sem_pca_title"])
-    ax_pca.legend(loc="upper right", fontsize=8, framealpha=0.85)
     ax_pca.grid(True, alpha=0.2)
 
-    # Panel B: cosine similarity
-    probe_words = ["engine", "motor", "machine", "computer", "mac"]
-    cont_centroids = {}
-    for dom in SYS_CLASSES:
-        idxs = [i for i, d in enumerate(all_domains) if d == dom]
-        c = all_vecs[idxs].mean(axis=0)
-        n = np.linalg.norm(c)
-        cont_centroids[dom] = c / n if n > 0 else c
-
-    x_pos, width = np.arange(len(probe_words)), 0.26
-    for di, (dom, color) in enumerate(DOMAIN_COLOR.items()):
-        sims = []
-        for w in probe_words:
-            v  = np.array(get_fasttext_vector(w, vc), dtype=np.float32)
-            n  = np.linalg.norm(v)
-            vn = v / n if n > 0 else v
-            sims.append(float(np.dot(vn, cont_centroids[dom])))
-        ax_cosine.bar(x_pos + di * width, sims, width,
-                      label=dom, color=color, alpha=0.85,
-                      edgecolor="white", linewidth=0.8)
-
-    ax_cosine.set_xticks(x_pos + width)
-    ax_cosine.set_xticklabels(probe_words, rotation=30, ha="right", fontsize=8)
-    ax_cosine.set_ylabel(T["cosine_y"])
-    ax_cosine.set_title(T["cosine_title"])
-    ax_cosine.axhline(0, color="black", lw=0.5)
-    ax_cosine.legend(fontsize=8, loc="upper right")
-    ax_cosine.set_ylim(-0.05, 0.85)
-
-    # Panel C: binary bin collapse
     M = 16
-    rep = {"apple": "apple", "car": "engine", "cow": "cow", "cup": "cup",
-           "dog": "dog", "horse": "horse", "pear": "pear", "tomato": "tomato"}
-    x_bins, bar_w = np.arange(M), 0.26
-    for di, (dom, color) in enumerate(DOMAIN_COLOR.items()):
-        v   = np.array(get_fasttext_vector(rep[dom], vc))
-        v_q = quantize_binary(v, M)
-        cnt = np.bincount(v_q.astype(int), minlength=M).astype(float)
-        cnt /= cnt.sum()
-        ax_bins.bar(x_bins + di * bar_w, cnt, bar_w,
-                    label=f'"{rep[dom]}" ({dom})', color=color,
-                    alpha=0.85, edgecolor="white", linewidth=0.5)
-
-    for b in [0, M - 1]:
-        ax_bins.axvline(b + bar_w, color="#e74c3c", lw=1.5,
-                        linestyle="--", alpha=0.5)
-    ylim_top = ax_bins.get_ylim()[1]
-    ax_bins.text(M / 2, ylim_top * 0.82, T["bins_note"],
-                 ha="center", fontsize=8, color="#e74c3c", style="italic",
-                 bbox=dict(boxstyle="round,pad=0.3", facecolor="#ffeaa7",
-                           edgecolor="#e74c3c", alpha=0.8))
+    for dom in SYS_CLASSES:
+        v_q = quantize_binary(np.array(get_fasttext_vector(dom, vc)), M)
+        cnt = np.bincount(v_q.astype(int), minlength=M) / v_q.size
+        ax_bins.plot(np.arange(M), cnt, marker="o", ms=3, lw=1.2,
+                     color=DOMAIN_COLOR[dom])
+    ax_bins.set_xticks(range(0, M, 3))
     ax_bins.set_xlabel(T["bins_x"])
     ax_bins.set_ylabel(T["bins_y"])
-    ax_bins.set_title(T["bins_title"])
-    ax_bins.legend(fontsize=7.5, loc="upper center")
 
-    fig.suptitle(T["sem_suptitle"], fontsize=12, fontweight="bold", y=1.01)
+    handles, labels = ax_pca.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, 1.0),
+               ncol=8, fontsize=8, frameon=False)
     savefig("fig11_semantic_space.png", fig)
 
 
@@ -1118,9 +1050,8 @@ def _visual_scores(agents, z_q, classes):
 
 
 def _mae_reconstruction(agent, z_q, g_min, g_max, decoder):
-    """Reconstrucción interna de la MAE: la memoria homo del latente completa
-    la percepción (mem_dom_R.recall) y el decoder la renderiza. NO es la
-    imagen de entrada."""
+    """La lectura latente de la hetero (`mem_dom_R`) completa la percepción y
+    el decoder la dibuja; no es la imagen de entrada."""
     import io as _io, contextlib as _ctx, torch
     with _ctx.redirect_stdout(_io.StringIO()):
         r_io, recognized, _w = agent.mem_dom_R.recall(z_q)
@@ -1149,29 +1080,39 @@ def _synthetic_ood():
 
 
 def fig_image_rejection():
-    """Rechazo visual: la MAE acepta o rechaza una percepción por containment
-    (recognize_gated_right). Fila 1 aceptadas reales, fila 2 rechazadas reales
-    (ξ=0), fila 3 sintéticas fuera de dominio (todas score 0)."""
+    """Rechazo visual como en la etapa 7: umbral de energía τ sobre el latente
+    y luego containment (recognize_gated_right). Fila 1 aceptadas reales,
+    fila 2 rechazadas reales, fila 3 sintéticas fuera de dominio."""
     from PIL import Image
     from stage5_fill import quantize_latent_global
+    from stage7_bidirectional import latent_energy_threshold, latent_has_energy
     classes = list(SYS_CLASSES)
     enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
+    tau = latent_energy_threshold()
+    acc, rej = T.get("imgrej_acc", "accepted"), T.get("imgrej_rej", "rejected")
+    nombre = T.get("imgrej_ood_names", {})
+
+    def scores(img):
+        z = _encode_img(img, enc)
+        if not latent_has_energy(z, tau):
+            return None
+        return _visual_scores(agents, quantize_latent_global(z, g_min, g_max, 32), classes)
 
     accepted, rejected_real = [], []
     accepted_domains = set()
     for cls in classes:
         for p in splits[cls]["test"]:
-            z_q = quantize_latent_global(_encode_img(Image.open(p), enc),
-                                         g_min, g_max, 32)
-            sc = _visual_scores(agents, z_q, classes)
-            if max(sc.values()) > 0 and len(accepted) < 3 and cls not in accepted_domains:
+            sc = scores(Image.open(p))
+            ok = sc is not None and max(sc.values()) > 0
+            if ok and len(accepted) < 3 and cls not in accepted_domains:
                 w = max(sc, key=sc.get)
                 accepted.append((Image.open(p).convert("RGB").resize((128, 128)),
                                  f"→ {w} ({sc[w]:.0f})", True))
                 accepted_domains.add(cls)
-            elif max(sc.values()) == 0 and len(rejected_real) < 3:
+            elif not ok and len(rejected_real) < 3:
+                motivo = f"{rej} (ξ=0)" if sc is not None else f"{rej} (‖z‖<τ)"
                 rejected_real.append((Image.open(p).convert("RGB").resize((128, 128)),
-                                      "rechazada (ξ=0)", False))
+                                      motivo, False))
             if len(accepted) >= 3 and len(rejected_real) >= 3:
                 break
         if len(accepted) >= 3 and len(rejected_real) >= 3:
@@ -1179,14 +1120,17 @@ def fig_image_rejection():
 
     synth = []
     for name, img in _synthetic_ood():
-        z_q = quantize_latent_global(_encode_img(img, enc), g_min, g_max, 32)
-        sc = _visual_scores(agents, z_q, classes)
+        sc = scores(img)
+        name = nombre.get(name, name)
+        if sc is None:
+            synth.append((img, f"{name}: {rej} (‖z‖<τ)", False))
+            continue
         ok = max(sc.values()) > 0
-        synth.append((img, f"{name}: {'aceptada' if ok else 'rechazada'}", ok))
+        synth.append((img, f"{name}: {acc if ok else rej}", ok))
 
     rows = [
         (T.get("imgrej_accepted", "Accepted\n(has support)"), accepted),
-        (T.get("imgrej_rejected", "Rejected\n(real, ξ=0)"), rejected_real),
+        (T.get("imgrej_rejected", "Rejected\n(real)"), rejected_real),
         (T.get("imgrej_ood", "Out-of-domain\n(synthetic)"), synth),
     ]
     fig, axes = plt.subplots(3, 3, figsize=(7.2, 7.8))
@@ -1207,31 +1151,34 @@ def fig_image_rejection():
                 ax.text(-0.08, 0.5, row_title, transform=ax.transAxes,
                         rotation=90, va="center", ha="right", fontsize=8.5,
                         fontweight="bold")
-    fig.suptitle(T.get("imgrej_title",
-                       "Image rejection by the MAE (containment, no lexical filter)"),
-                 fontsize=11)
     fig.tight_layout()
     savefig("fig15_image_rejection.png", fig)
 
 
 def fig_image_to_labels():
-    """Salida semántica: imagen → reconstrucción evocada por la MAE → labels.
-    Demuestra image→labels (evocación) y que la reconstrucción es lo que la
-    memoria completa, no la entrada."""
+    """Salida semántica: imagen → reconstrucción evocada → etiquetas."""
+    import random
     from PIL import Image
     from stage5_fill import quantize_latent_global
-    from stage7_bidirectional import evoke_labels
+    from stage7_bidirectional import (evoke_labels, latent_energy_threshold,
+                                      latent_has_energy)
     classes = list(SYS_CLASSES)
     enc, dec, agents, g_min, g_max, all_vecs, vocab, splits = _load_visual_assets()
+    tau = latent_energy_threshold()
+    random.seed(0)   # recuerdo muestreado reproducible; la semilla no se ajusta
 
     samples = []
     for cls in classes:
-        taken = 0
+        taken = sin_tau = sin_soporte = 0
         for p in splits[cls]["test"]:
-            z_q = quantize_latent_global(_encode_img(Image.open(p), enc),
-                                         g_min, g_max, 32)
+            z = _encode_img(Image.open(p), enc)
+            if not latent_has_energy(z, tau):
+                sin_tau += 1
+                continue
+            z_q = quantize_latent_global(z, g_min, g_max, 32)
             sc = _visual_scores(agents, z_q, classes)
             if max(sc.values()) == 0:
+                sin_soporte += 1
                 continue
             w = max(sc, key=sc.get)
             labels = evoke_labels(agents[w], z_q, all_vecs)
@@ -1239,44 +1186,35 @@ def fig_image_to_labels():
             recon = _mae_reconstruction(agents[w], z_q, g_min, g_max, dec)
             samples.append((Image.open(p).convert("RGB").resize((128, 128)),
                             recon, w, labels, hit))
+            print(f"      {cls}: {Path(p).name} -> {w} {labels} "
+                  f"{'acierto' if hit else 'fallo'}")
             taken += 1
             if taken >= 2:
                 break
+        print(f"      {cls}: saltadas antes {sin_tau} por τ y {sin_soporte} sin soporte")
+    print(f"      fig16: {sum(s[4] for s in samples)} de {len(samples)} con alguna "
+          f"etiqueta del vocabulario de la clase")
 
-    n = len(samples)
-    if n == 0:
-        # Ninguna imagen aceptada (p.ej. un encoder cuyo latente no se contiene):
-        # se emite una figura con la nota en vez de fallar.
-        fig, ax = plt.subplots(figsize=(7.6, 2.0))
+    filas = max((len(samples) + 1) // 2, 1)
+    fig, axes = plt.subplots(filas, 6, figsize=(9, 1.25 * filas), squeeze=False,
+                             gridspec_kw={"width_ratios": [1, 1, 2] * 2})
+    for ax in axes.flat:
         ax.axis("off")
-        ax.text(0.5, 0.5, T.get("img2lbl_none",
-                "No accepted test images for this encoder (visual containment ξ=0)."),
-                ha="center", va="center", fontsize=11)
-        fig.suptitle(T.get("img2lbl_title",
-                     "Semantic output: image → MAE recall → labels"), fontsize=11)
-        savefig("fig16_image_to_labels.png", fig)
-        return
-    fig, axes = plt.subplots(n, 3, figsize=(7.6, 2.5 * n))
-    if n == 1:
-        axes = [axes]
     for r, (inp, recon, w, labels, hit) in enumerate(samples):
-        ax0, ax1, ax2 = axes[r]
-        ax0.imshow(np.asarray(inp)); ax0.axis("off")
-        ax0.set_title(T.get("img2lbl_input", "Input (cue)"), fontsize=9)
-        ax1.axis("off")
+        ax0, ax1, ax2 = axes[r // 2][3 * (r % 2): 3 * (r % 2) + 3]
+        ax0.imshow(np.asarray(inp))
         if recon is not None:
             ax1.imshow(np.clip(recon, 0, 1))
-        ax1.set_title(T.get("img2lbl_recon", "MAE evoked recon."), fontsize=9)
-        ax2.axis("off")
-        mark = "✓" if hit else "✗"
-        col = "#27ae60" if hit else "#c0392b"
-        ax2.text(0.5, 0.62, f"→ {w}", ha="center", fontsize=11, fontweight="bold")
-        ax2.text(0.5, 0.40, "\n".join(labels), ha="center", fontsize=10)
-        ax2.text(0.5, 0.10, f"domain-hit {mark}", ha="center", fontsize=9, color=col)
-    fig.suptitle(T.get("img2lbl_title",
-                       "Semantic output: image → MAE recall → labels (94.1% top-3 hit)"),
-                 fontsize=11)
-    fig.tight_layout()
+        if r < 2:
+            ax0.set_title(T.get("img2lbl_input", "Input"), fontsize=9)
+            ax1.set_title(T.get("img2lbl_recon", "Evoked reconstruction"), fontsize=9)
+        ax2.text(0.0, 0.92, f"{T.get('img2lbl_module', 'module')}: {w}",
+                 fontsize=9, fontweight="bold", va="top")
+        ax2.text(0.0, 0.70, "\n".join(labels) if labels else "—",
+                 fontsize=8.5, va="top")
+        ax2.text(0.0, 0.02, f"{T.get('img2lbl_hit', 'in class vocabulary')}: "
+                            f"{T.get('img2lbl_yes', 'yes') if hit else 'no'}",
+                 fontsize=8, color="#27ae60" if hit else "#c0392b")
     savefig("fig16_image_to_labels.png", fig)
 
 
@@ -1310,28 +1248,36 @@ def main():
     print(f"      Done: {len(df_raw)} rows")
 
     # Generate figures per language
-    for lang in ["en", "es"]:
+    solo = next((a.split("=", 1)[1].split(",") for a in sys.argv
+                 if a.startswith("--solo=")), None)
+    figuras = [
+        ("fig01", lambda: fig_early_accuracy(agg)),
+        ("fig02", lambda: fig_mature_accuracy(agg)),
+        ("fig03", lambda: fig_heatmap(agg)),
+        ("fig04", lambda: fig_domain_accuracy(agg)),
+        ("fig05", lambda: fig_fidelity(agg)),
+        ("fig06", lambda: fig_entropy(agg)),
+        ("fig07", lambda: fig_registrations(agg)),
+        ("fig08", lambda: fig_early_vs_mature(agg)),
+        ("fig09", lambda: fig_winner_distribution(agg)),
+        ("fig10", lambda: fig_summary_table(agg)),
+        ("fig11", fig_semantic_space),
+        ("fig12", fig_recognition_heatmap),
+        ("fig13", fig_precision_recall),
+        ("fig14", fig_recall_grid),
+        ("fig15", fig_image_rejection),
+        ("fig16", fig_image_to_labels),
+    ]
+    # Con --solo se generan solo esas figuras y solo en español (las de la tesis)
+    for lang in (["es"] if solo else ["en", "es"]):
         T           = TEXTS[lang]
         OUT_CURRENT = out_root / lang
         OUT_CURRENT.mkdir(exist_ok=True)
 
-        print(f"\n[{'2' if lang=='en' else '3'}/3] Generating figures [{lang.upper()}] -> papers_images/{lang}/")
-        fig_early_accuracy(agg)
-        fig_mature_accuracy(agg)
-        fig_heatmap(agg)
-        fig_domain_accuracy(agg)
-        fig_fidelity(agg)
-        fig_entropy(agg)
-        fig_registrations(agg)
-        fig_early_vs_mature(agg)
-        fig_winner_distribution(agg)
-        fig_summary_table(agg)
-        fig_semantic_space()
-        fig_recognition_heatmap()
-        fig_precision_recall()
-        fig_recall_grid()
-        fig_image_rejection()
-        fig_image_to_labels()
+        print(f"\nGenerating figures [{lang.upper()}] -> papers_images/{lang}/")
+        for nombre, f in figuras:
+            if solo is None or nombre in solo:
+                f()
 
     # Summary
     total = sum(1 for p in out_root.rglob("*") if p.is_file())

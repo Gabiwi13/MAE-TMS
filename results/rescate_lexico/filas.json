@@ -1,0 +1,7379 @@
+[
+ {
+  "consulta": "a round red fruit",
+  "con": [
+   "round",
+   "red",
+   "fruit"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "fast vehicle with wheels",
+  "con": [
+   "fast",
+   "vehicle",
+   "wheel"
+  ],
+  "sin": [
+   "fast",
+   "vehicle",
+   "wheel"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a farm animal that gives milk",
+  "con": [
+   "farm",
+   "animal",
+   "milk"
+  ],
+  "sin": [
+   "farm",
+   "animal",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a container to drink from",
+  "con": [
+   "container",
+   "drink"
+  ],
+  "sin": [
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drink"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": null
+ },
+ {
+  "consulta": "a barking domestic pet",
+  "con": [
+   "bark",
+   "domestic",
+   "pet"
+  ],
+  "sin": [
+   "domestic",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "animal with a mane",
+  "con": [
+   "animal",
+   "mane"
+  ],
+  "sin": [
+   "animal",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a green sweet pear fruit",
+  "con": [
+   "green",
+   "sweet",
+   "pear",
+   "fruit"
+  ],
+  "sin": [
+   "green",
+   "sweet",
+   "pear",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a round red salad vegetable",
+  "con": [
+   "round",
+   "red",
+   "salad",
+   "vegetable"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "salad",
+   "vegetable"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "green food from trees",
+  "con": [
+   "green",
+   "food",
+   "tree"
+  ],
+  "sin": [
+   "green",
+   "food",
+   "tree"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "machine for transportation",
+  "con": [
+   "machine",
+   "transportation"
+  ],
+  "sin": [
+   "machine",
+   "transportation"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "bovine cattle beast",
+  "con": [
+   "bovine",
+   "cattle",
+   "beast"
+  ],
+  "sin": [
+   "bovine",
+   "cattle",
+   "beast"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug for liquid",
+  "con": [
+   "mug",
+   "liquid"
+  ],
+  "sin": [
+   "mug",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "canine mammal with a tail",
+  "con": [
+   "canine",
+   "mammal",
+   "tail"
+  ],
+  "sin": [
+   "mammal",
+   "tail"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "canine"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "large powerful mammal",
+  "con": [
+   "large",
+   "powerful",
+   "mammal"
+  ],
+  "sin": [
+   "large",
+   "powerful",
+   "mammal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a pome fruit like an apple",
+  "con": [
+   "pome",
+   "fruit",
+   "apple"
+  ],
+  "sin": [
+   "pome",
+   "fruit",
+   "apple"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "red juicy tomato fruit",
+  "con": [
+   "red",
+   "juicy",
+   "tomato",
+   "fruit"
+  ],
+  "sin": [
+   "red",
+   "juicy",
+   "tomato",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "red or green round food",
+  "con": [
+   "red",
+   "green",
+   "round",
+   "food"
+  ],
+  "sin": [
+   "red",
+   "green",
+   "round",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "automobile with seats",
+  "con": [
+   "automobile",
+   "seat"
+  ],
+  "sin": [
+   "automobile",
+   "seat"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "moo animal on the farm",
+  "con": [
+   "moo",
+   "animal",
+   "farm"
+  ],
+  "sin": [
+   "moo",
+   "animal",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "small drinking container",
+  "con": [
+   "small",
+   "drinking",
+   "container"
+  ],
+  "sin": [
+   "small",
+   "drinking",
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "man's best friend animal",
+  "con": [
+   "man",
+   "good",
+   "friend",
+   "animal"
+  ],
+  "sin": [
+   "man",
+   "good",
+   "friend",
+   "animal"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "has four legs and hooves",
+  "con": [
+   "leg",
+   "hoof"
+  ],
+  "sin": [
+   "leg",
+   "hoof"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "sweet green fruit with a stem",
+  "con": [
+   "sweet",
+   "green",
+   "fruit",
+   "stem"
+  ],
+  "sin": [
+   "sweet",
+   "green",
+   "fruit",
+   "stem"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a red herb garden vegetable",
+  "con": [
+   "red",
+   "herb",
+   "garden",
+   "vegetable"
+  ],
+  "sin": [
+   "red",
+   "herb",
+   "garden",
+   "vegetable"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "has core and seeds",
+  "con": [
+   "core",
+   "seed"
+  ],
+  "sin": [
+   "core",
+   "seed"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "has wheels and engine",
+  "con": [
+   "wheel",
+   "engine"
+  ],
+  "sin": [
+   "wheel",
+   "engine"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "large placental mammal on a farm",
+  "con": [
+   "large",
+   "placental",
+   "mammal",
+   "farm"
+  ],
+  "sin": [
+   "large",
+   "placental",
+   "mammal",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup for holding drink",
+  "con": [
+   "cup",
+   "drink"
+  ],
+  "sin": [
+   "cup",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog that barks and runs",
+  "con": [
+   "dog",
+   "bark",
+   "run"
+  ],
+  "sin": [
+   "dog"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark",
+   "run"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "riding and racing animal",
+  "con": [
+   "riding",
+   "racing",
+   "animal"
+  ],
+  "sin": [
+   "racing",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear shaped juicy fruit",
+  "con": [
+   "pear",
+   "juicy",
+   "fruit"
+  ],
+  "sin": [
+   "pear",
+   "juicy",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "round red fruit used in salad",
+  "con": [
+   "round",
+   "red",
+   "fruit",
+   "salad"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "fruit",
+   "salad"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a delicious pome",
+  "con": [
+   "delicious",
+   "pome"
+  ],
+  "sin": [
+   "delicious",
+   "pome"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a heavy vehicle",
+  "con": [
+   "heavy",
+   "vehicle"
+  ],
+  "sin": [
+   "heavy",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a milk producing cattle beast",
+  "con": [
+   "milk",
+   "cattle",
+   "beast"
+  ],
+  "sin": [
+   "milk",
+   "cattle",
+   "beast"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "crockery to drink liquid from",
+  "con": [
+   "crockery",
+   "drink",
+   "liquid"
+  ],
+  "sin": [
+   "crockery",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drink"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "domestic canine house pet",
+  "con": [
+   "domestic",
+   "canine",
+   "house",
+   "pet"
+  ],
+  "sin": [
+   "domestic",
+   "canine",
+   "house",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "an equine animal",
+  "con": [
+   "equine",
+   "animal"
+  ],
+  "sin": [
+   "equine",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "green fruit with a narrow top",
+  "con": [
+   "green",
+   "fruit",
+   "narrow"
+  ],
+  "sin": [
+   "green",
+   "fruit",
+   "narrow"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "juicy red fruit from a vine",
+  "con": [
+   "juicy",
+   "red",
+   "fruit",
+   "vine"
+  ],
+  "sin": [
+   "juicy",
+   "red",
+   "fruit",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "red fruit with a stem",
+  "con": [
+   "red",
+   "fruit",
+   "stem"
+  ],
+  "sin": [
+   "red",
+   "fruit",
+   "stem"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "passenger transportation machine",
+  "con": [
+   "passenger",
+   "transportation",
+   "machine"
+  ],
+  "sin": [
+   "passenger",
+   "transportation",
+   "machine"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "farm bull or cattle animal",
+  "con": [
+   "farm",
+   "bull",
+   "cattle",
+   "animal"
+  ],
+  "sin": [
+   "farm",
+   "bull",
+   "cattle",
+   "animal"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a hollow container with a hole",
+  "con": [
+   "hollow",
+   "container",
+   "hole"
+  ],
+  "sin": [
+   "hollow",
+   "container",
+   "hole"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy with paws and fleas",
+  "con": [
+   "puppy",
+   "paw",
+   "flea"
+  ],
+  "sin": [
+   "puppy",
+   "paw",
+   "flea"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "big farm animal",
+  "con": [
+   "big",
+   "farm",
+   "animal"
+  ],
+  "sin": [
+   "big",
+   "farm",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a pome fruit from a tree",
+  "con": [
+   "pome",
+   "fruit",
+   "tree"
+  ],
+  "sin": [
+   "pome",
+   "fruit",
+   "tree"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a red vegetable used for sauce",
+  "con": [
+   "red",
+   "vegetable",
+   "sauce"
+  ],
+  "sin": [
+   "red",
+   "vegetable",
+   "sauce"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "grows on fruit trees",
+  "con": [
+   "fruit",
+   "tree"
+  ],
+  "sin": [
+   "fruit",
+   "tree"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "seats and windows inside",
+  "con": [
+   "seat",
+   "window"
+  ],
+  "sin": [
+   "seat",
+   "window"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "animal with udders and milk",
+  "con": [
+   "animal",
+   "udder",
+   "milk"
+  ],
+  "sin": [
+   "animal",
+   "udder",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a trophy shaped drinking container",
+  "con": [
+   "trophy",
+   "drinking",
+   "container"
+  ],
+  "sin": [
+   "trophy",
+   "drinking",
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a wolf related domestic animal",
+  "con": [
+   "wolf",
+   "domestic",
+   "animal"
+  ],
+  "sin": [
+   "wolf",
+   "domestic",
+   "animal"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "has a long tail",
+  "con": [
+   "long",
+   "tail"
+  ],
+  "sin": [
+   "long",
+   "tail"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "sweet juicy pear food",
+  "con": [
+   "sweet",
+   "juicy",
+   "pear",
+   "food"
+  ],
+  "sin": [
+   "sweet",
+   "juicy",
+   "pear",
+   "food"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a herb plant with a red fruit",
+  "con": [
+   "herb",
+   "plant",
+   "red",
+   "fruit"
+  ],
+  "sin": [
+   "herb",
+   "plant",
+   "red",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "juicy round fruit",
+  "con": [
+   "juicy",
+   "round",
+   "fruit"
+  ],
+  "sin": [
+   "juicy",
+   "round",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a motor vehicle",
+  "con": [
+   "motor",
+   "vehicle"
+  ],
+  "sin": [
+   "motor",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "bovine farm mammal that moos",
+  "con": [
+   "bovine",
+   "farm",
+   "mammal",
+   "moo"
+  ],
+  "sin": [
+   "bovine",
+   "farm",
+   "mammal"
+  ],
+  "verdad": "cow",
+  "rescatados": [
+   "moo"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "punch cup for a drink",
+  "con": [
+   "cup",
+   "drink"
+  ],
+  "sin": [
+   "cup",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "four legged barking pet",
+  "con": [
+   "legged",
+   "barking",
+   "pet"
+  ],
+  "sin": [
+   "legged",
+   "barking",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a pony or donkey",
+  "con": [
+   "pony",
+   "donkey"
+  ],
+  "sin": [
+   "pony",
+   "donkey"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "fruit shaped like a teardrop",
+  "con": [
+   "fruit",
+   "teardrop"
+  ],
+  "sin": [
+   "fruit",
+   "teardrop"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "round juicy red produce",
+  "con": [
+   "round",
+   "juicy",
+   "red",
+   "produce"
+  ],
+  "sin": [
+   "round",
+   "juicy",
+   "red",
+   "produce"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "sweet core fruit",
+  "con": [
+   "sweet",
+   "core",
+   "fruit"
+  ],
+  "sin": [
+   "sweet",
+   "core",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "used for driving",
+  "con": [
+   "drive"
+  ],
+  "sin": [],
+  "verdad": "car",
+  "rescatados": [
+   "drive"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": null
+ },
+ {
+  "consulta": "beef cattle on the farm",
+  "con": [
+   "beef",
+   "cattle",
+   "farm"
+  ],
+  "sin": [
+   "beef",
+   "cattle",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "containerful of liquid to drink",
+  "con": [
+   "containerful",
+   "liquid",
+   "drink"
+  ],
+  "sin": [
+   "containerful",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drink"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "canine friend with a wet nose",
+  "con": [
+   "canine",
+   "friend",
+   "wet",
+   "nose"
+  ],
+  "sin": [
+   "friend",
+   "wet",
+   "nose"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "canine"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": null
+ },
+ {
+  "consulta": "mammal with saddle",
+  "con": [
+   "mammal",
+   "saddle"
+  ],
+  "sin": [
+   "mammal",
+   "saddle"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a green or yellow pear",
+  "con": [
+   "green",
+   "yellow",
+   "pear"
+  ],
+  "sin": [
+   "green",
+   "yellow",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "red fruit often called a vegetable",
+  "con": [
+   "red",
+   "fruit",
+   "vegetable"
+  ],
+  "sin": [
+   "red",
+   "fruit",
+   "vegetable"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a pear or apple fruit",
+  "con": [
+   "pear",
+   "apple",
+   "fruit"
+  ],
+  "sin": [
+   "pear",
+   "apple",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "wheeled automobile",
+  "con": [
+   "wheel",
+   "automobile"
+  ],
+  "sin": [
+   "automobile"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "wheel"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "big farm animal that says moo",
+  "con": [
+   "big",
+   "farm",
+   "animal",
+   "moo"
+  ],
+  "sin": [
+   "big",
+   "farm",
+   "animal",
+   "moo"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug or cup crockery",
+  "con": [
+   "mug",
+   "cup",
+   "crockery"
+  ],
+  "sin": [
+   "mug",
+   "cup",
+   "crockery"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a black dog with teeth and paws",
+  "con": [
+   "black",
+   "dog",
+   "tooth",
+   "paw"
+  ],
+  "sin": [
+   "black",
+   "dog",
+   "tooth",
+   "paw"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "racing animal with mane",
+  "con": [
+   "racing",
+   "animal",
+   "mane"
+  ],
+  "sin": [
+   "animal",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "racing"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "pome fruit with sweet flesh",
+  "con": [
+   "pome",
+   "fruit",
+   "sweet",
+   "flesh"
+  ],
+  "sin": [
+   "pome",
+   "fruit",
+   "sweet",
+   "flesh"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a salad vegetable that is red",
+  "con": [
+   "salad",
+   "vegetable",
+   "red"
+  ],
+  "sin": [
+   "salad",
+   "vegetable",
+   "red"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "fruit with skin and seeds",
+  "con": [
+   "fruit",
+   "skin",
+   "seed"
+  ],
+  "sin": [
+   "fruit",
+   "skin",
+   "seed"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "driving machine",
+  "con": [
+   "drive",
+   "machine"
+  ],
+  "sin": [
+   "machine"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "drive"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": null
+ },
+ {
+  "consulta": "a cattle beast with udder",
+  "con": [
+   "cattle",
+   "beast",
+   "udder"
+  ],
+  "sin": [
+   "cattle",
+   "beast",
+   "udder"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "small vessel for drinking liquid",
+  "con": [
+   "small",
+   "vessel",
+   "drinking",
+   "liquid"
+  ],
+  "sin": [
+   "small",
+   "vessel",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drinking"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a stray dog on the street",
+  "con": [
+   "stray",
+   "dog",
+   "street"
+  ],
+  "sin": [
+   "stray",
+   "dog",
+   "street"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "big four legged animal",
+  "con": [
+   "big",
+   "legged",
+   "animal"
+  ],
+  "sin": [
+   "big",
+   "legged",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "tree fruit shaped like a pear",
+  "con": [
+   "tree",
+   "fruit",
+   "pear"
+  ],
+  "sin": [
+   "tree",
+   "fruit",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "tomato fruit grown on a herb",
+  "con": [
+   "tomato",
+   "fruit",
+   "herb"
+  ],
+  "sin": [
+   "tomato",
+   "fruit",
+   "herb"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "orange cousin red food",
+  "con": [
+   "orange",
+   "cousin",
+   "red",
+   "food"
+  ],
+  "sin": [
+   "orange",
+   "cousin",
+   "red",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "automobile with heavy seats",
+  "con": [
+   "automobile",
+   "heavy",
+   "seat"
+  ],
+  "sin": [
+   "automobile",
+   "heavy",
+   "seat"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "domestic bovine farm animal",
+  "con": [
+   "domestic",
+   "bovine",
+   "farm",
+   "animal"
+  ],
+  "sin": [
+   "domestic",
+   "bovine",
+   "farm",
+   "animal"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a drink holding container",
+  "con": [
+   "drink",
+   "container"
+  ],
+  "sin": [
+   "drink",
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a house pet that barks",
+  "con": [
+   "house",
+   "pet",
+   "bark"
+  ],
+  "sin": [
+   "house",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "riding farm animal",
+  "con": [
+   "riding",
+   "farm",
+   "animal"
+  ],
+  "sin": [
+   "farm",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a juicy sweet pome fruit",
+  "con": [
+   "juicy",
+   "sweet",
+   "pome",
+   "fruit"
+  ],
+  "sin": [
+   "juicy",
+   "sweet",
+   "pome",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a red round fruit for cooking",
+  "con": [
+   "red",
+   "round",
+   "fruit"
+  ],
+  "sin": [
+   "red",
+   "round",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "green and red food",
+  "con": [
+   "green",
+   "red",
+   "food"
+  ],
+  "sin": [
+   "green",
+   "red",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "crash and accident vehicle",
+  "con": [
+   "crash",
+   "accident",
+   "vehicle"
+  ],
+  "sin": [
+   "crash",
+   "accident",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "farm mammal raised for beef",
+  "con": [
+   "farm",
+   "mammal",
+   "beef"
+  ],
+  "sin": [
+   "farm",
+   "mammal",
+   "beef"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup shaped like a trophy",
+  "con": [
+   "cup",
+   "trophy"
+  ],
+  "sin": [
+   "cup",
+   "trophy"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "domestic mammal that goes woof",
+  "con": [
+   "domestic",
+   "mammal",
+   "woof"
+  ],
+  "sin": [
+   "domestic",
+   "mammal",
+   "woof"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "farm mammal with mane",
+  "con": [
+   "farm",
+   "mammal",
+   "mane"
+  ],
+  "sin": [
+   "farm",
+   "mammal",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "green fruit that tapers at the top",
+  "con": [
+   "green",
+   "fruit",
+   "taper"
+  ],
+  "sin": [
+   "green",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [
+   "taper"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "juicy red produce from the garden",
+  "con": [
+   "juicy",
+   "red",
+   "produce",
+   "garden"
+  ],
+  "sin": [
+   "juicy",
+   "red",
+   "produce",
+   "garden"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a macintosh variety",
+  "con": [
+   "macintosh",
+   "variety"
+  ],
+  "sin": [
+   "macintosh",
+   "variety"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "passenger seats inside",
+  "con": [
+   "passenger",
+   "seat"
+  ],
+  "sin": [
+   "passenger",
+   "seat"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "cattle grazing on the farm",
+  "con": [
+   "cattle",
+   "farm"
+  ],
+  "sin": [
+   "cattle",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "hollow crockery for drink",
+  "con": [
+   "hollow",
+   "crockery",
+   "drink"
+  ],
+  "sin": [
+   "hollow",
+   "crockery",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a canine with fleas and a tail",
+  "con": [
+   "canine",
+   "flea",
+   "tail"
+  ],
+  "sin": [
+   "canine",
+   "flea",
+   "tail"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "equine riding beast",
+  "con": [
+   "equine",
+   "riding",
+   "beast"
+  ],
+  "sin": [
+   "equine",
+   "beast"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a stem and core",
+  "con": [
+   "pear",
+   "stem",
+   "core"
+  ],
+  "sin": [
+   "pear",
+   "stem",
+   "core"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a vine grown red fruit",
+  "con": [
+   "vine",
+   "red",
+   "fruit"
+  ],
+  "sin": [
+   "vine",
+   "red",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "made into pie",
+  "con": [
+   "pie"
+  ],
+  "sin": [
+   "pie"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "vehicle with driver",
+  "con": [
+   "vehicle",
+   "driver"
+  ],
+  "sin": [
+   "vehicle",
+   "driver"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a bull or cow bovine",
+  "con": [
+   "bull",
+   "cow",
+   "bovine"
+  ],
+  "sin": [
+   "bull",
+   "cow",
+   "bovine"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a coffee mug container",
+  "con": [
+   "coffee",
+   "mug",
+   "container"
+  ],
+  "sin": [
+   "coffee",
+   "mug",
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "pet dog with four legs",
+  "con": [
+   "pet",
+   "dog",
+   "leg"
+  ],
+  "sin": [
+   "pet",
+   "dog",
+   "leg"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "has hooves and tail",
+  "con": [
+   "hoof",
+   "tail"
+  ],
+  "sin": [
+   "hoof",
+   "tail"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "sweet fruit grown on a tree",
+  "con": [
+   "sweet",
+   "fruit",
+   "tree"
+  ],
+  "sin": [
+   "sweet",
+   "fruit",
+   "tree"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "red fruit used in ketchup",
+  "con": [
+   "red",
+   "fruit",
+   "ketchup"
+  ],
+  "sin": [
+   "red",
+   "fruit",
+   "ketchup"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "round red food",
+  "con": [
+   "round",
+   "red",
+   "food"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "red automobile",
+  "con": [
+   "red",
+   "automobile"
+  ],
+  "sin": [
+   "red",
+   "automobile"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "milk giving farm mammal",
+  "con": [
+   "milk",
+   "farm",
+   "mammal"
+  ],
+  "sin": [
+   "milk",
+   "farm",
+   "mammal"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "vessel used to hold liquid",
+  "con": [
+   "vessel",
+   "liquid"
+  ],
+  "sin": [
+   "vessel",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy or stray canine",
+  "con": [
+   "puppy",
+   "canine"
+  ],
+  "sin": [
+   "puppy",
+   "canine"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "donkey and zebra relative",
+  "con": [
+   "donkey",
+   "zebra",
+   "relative"
+  ],
+  "sin": [
+   "donkey",
+   "zebra",
+   "relative"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pome fruit with soft flesh",
+  "con": [
+   "pome",
+   "fruit",
+   "soft",
+   "flesh"
+  ],
+  "sin": [
+   "pome",
+   "fruit",
+   "soft",
+   "flesh"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a round red herb fruit",
+  "con": [
+   "round",
+   "red",
+   "herb",
+   "fruit"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "herb",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "stem leaf core inside",
+  "con": [
+   "stem",
+   "leaf",
+   "core"
+  ],
+  "sin": [
+   "stem",
+   "leaf",
+   "core"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "transportation vehicle",
+  "con": [
+   "transportation",
+   "vehicle"
+  ],
+  "sin": [
+   "transportation",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "placental mammal with udders",
+  "con": [
+   "placental",
+   "mammal",
+   "udder"
+  ],
+  "sin": [
+   "placental",
+   "mammal",
+   "udder"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup with a hole for handle",
+  "con": [
+   "cup",
+   "hole",
+   "handle"
+  ],
+  "sin": [
+   "cup",
+   "hole",
+   "handle"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "an animal that barks and bites",
+  "con": [
+   "animal",
+   "bark",
+   "bite"
+  ],
+  "sin": [
+   "animal",
+   "bite"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "big strong animal",
+  "con": [
+   "big",
+   "strong",
+   "animal"
+  ],
+  "sin": [
+   "big",
+   "strong",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "fruit with a rounded bottom and narrow top",
+  "con": [
+   "fruit",
+   "rounded",
+   "narrow"
+  ],
+  "sin": [
+   "fruit",
+   "rounded",
+   "narrow"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "garden herb with a red round fruit",
+  "con": [
+   "garden",
+   "herb",
+   "red",
+   "round",
+   "fruit"
+  ],
+  "sin": [
+   "garden",
+   "herb",
+   "red",
+   "round",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a green fruit",
+  "con": [
+   "green",
+   "fruit"
+  ],
+  "sin": [
+   "green",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "automobile for transport",
+  "con": [
+   "automobile",
+   "transport"
+  ],
+  "sin": [
+   "automobile",
+   "transport"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "farm beast that produces milk",
+  "con": [
+   "farm",
+   "beast",
+   "milk"
+  ],
+  "sin": [
+   "farm",
+   "beast",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "small container for a drink",
+  "con": [
+   "small",
+   "container",
+   "drink"
+  ],
+  "sin": [
+   "small",
+   "container",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "wolf like canine pet",
+  "con": [
+   "wolf",
+   "canine",
+   "pet"
+  ],
+  "sin": [
+   "wolf",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "canine"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "saddle riding animal",
+  "con": [
+   "saddle",
+   "riding",
+   "animal"
+  ],
+  "sin": [
+   "saddle",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a yellow green pear fruit",
+  "con": [
+   "yellow",
+   "green",
+   "pear",
+   "fruit"
+  ],
+  "sin": [
+   "yellow",
+   "green",
+   "pear",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "red vegetable used in sauces",
+  "con": [
+   "red",
+   "vegetable",
+   "sauce"
+  ],
+  "sin": [
+   "red",
+   "vegetable",
+   "sauce"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "fruit with seeds inside",
+  "con": [
+   "fruit",
+   "seed"
+  ],
+  "sin": [
+   "fruit",
+   "seed"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "seats and windows vehicle",
+  "con": [
+   "seat",
+   "window",
+   "vehicle"
+  ],
+  "sin": [
+   "seat",
+   "window",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "bovine animal on a farm",
+  "con": [
+   "bovine",
+   "animal",
+   "farm"
+  ],
+  "sin": [
+   "bovine",
+   "animal",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "crockery cup for punch",
+  "con": [
+   "crockery",
+   "cup",
+   "punch"
+  ],
+  "sin": [
+   "crockery",
+   "cup",
+   "punch"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog with paws and teeth",
+  "con": [
+   "dog",
+   "paw",
+   "tooth"
+  ],
+  "sin": [
+   "dog",
+   "paw",
+   "tooth"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "cow and horse farm animals",
+  "con": [
+   "cow",
+   "horse",
+   "farm",
+   "animal"
+  ],
+  "sin": [
+   "cow",
+   "horse",
+   "farm",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "sweet tree fruit similar to apple",
+  "con": [
+   "sweet",
+   "tree",
+   "fruit",
+   "similar",
+   "apple"
+  ],
+  "sin": [
+   "sweet",
+   "tree",
+   "fruit",
+   "similar",
+   "apple"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a juicy red salad fruit",
+  "con": [
+   "juicy",
+   "red",
+   "salad",
+   "fruit"
+  ],
+  "sin": [
+   "juicy",
+   "red",
+   "salad",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "delicious red round fruit",
+  "con": [
+   "delicious",
+   "red",
+   "round",
+   "fruit"
+  ],
+  "sin": [
+   "delicious",
+   "red",
+   "round",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "heavy automobile",
+  "con": [
+   "heavy",
+   "automobile"
+  ],
+  "sin": [
+   "heavy",
+   "automobile"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "large cattle farm mammal",
+  "con": [
+   "large",
+   "cattle",
+   "farm",
+   "mammal"
+  ],
+  "sin": [
+   "large",
+   "cattle",
+   "farm",
+   "mammal"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a drinking vessel with a handle",
+  "con": [
+   "drinking",
+   "vessel",
+   "handle"
+  ],
+  "sin": [
+   "drinking",
+   "vessel",
+   "handle"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "best friend canine mammal",
+  "con": [
+   "good",
+   "friend",
+   "canine",
+   "mammal"
+  ],
+  "sin": [
+   "good",
+   "friend",
+   "mammal"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "canine"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "animal that races",
+  "con": [
+   "animal",
+   "race"
+  ],
+  "sin": [
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "race"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "pear fruit with juicy flesh",
+  "con": [
+   "pear",
+   "fruit",
+   "juicy",
+   "flesh"
+  ],
+  "sin": [
+   "fruit",
+   "juicy",
+   "flesh"
+  ],
+  "verdad": "pear",
+  "rescatados": [
+   "pear"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "round red fruit on a vine",
+  "con": [
+   "round",
+   "red",
+   "fruit",
+   "vine"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "fruit",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "adam and eve fruit",
+  "con": [
+   "adam",
+   "eve",
+   "fruit"
+  ],
+  "sin": [
+   "adam",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [
+   "eve"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "motor vehicle transport",
+  "con": [
+   "motor",
+   "vehicle",
+   "transport"
+  ],
+  "sin": [
+   "motor",
+   "vehicle",
+   "transport"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "an animal that says moo",
+  "con": [
+   "animal",
+   "moo"
+  ],
+  "sin": [
+   "animal",
+   "moo"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "cup used to drink liquid",
+  "con": [
+   "cup",
+   "drink",
+   "liquid"
+  ],
+  "sin": [
+   "cup",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drink"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a barking pet with a tail",
+  "con": [
+   "barking",
+   "pet",
+   "tail"
+  ],
+  "sin": [
+   "barking",
+   "pet",
+   "tail"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a ridden animal",
+  "con": [
+   "ridden",
+   "animal"
+  ],
+  "sin": [
+   "ridden",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pome variety of orchard fruit",
+  "con": [
+   "pome",
+   "variety",
+   "orchard",
+   "fruit"
+  ],
+  "sin": [
+   "pome",
+   "variety",
+   "orchard",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a red fruit often eaten in salads",
+  "con": [
+   "red",
+   "fruit",
+   "salad"
+  ],
+  "sin": [
+   "red",
+   "fruit",
+   "salad"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "orange red green food",
+  "con": [
+   "orange",
+   "red",
+   "green",
+   "food"
+  ],
+  "sin": [
+   "orange",
+   "red",
+   "green",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "driver automobile",
+  "con": [
+   "driver",
+   "automobile"
+  ],
+  "sin": [
+   "driver",
+   "automobile"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "farm bovine with beef and milk",
+  "con": [
+   "farm",
+   "bovine",
+   "beef",
+   "milk"
+  ],
+  "sin": [
+   "farm",
+   "bovine",
+   "beef",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a tea cup container",
+  "con": [
+   "tea",
+   "cup",
+   "container"
+  ],
+  "sin": [
+   "tea",
+   "cup",
+   "container"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "domestic dog chasing a cat",
+  "con": [
+   "domestic",
+   "dog",
+   "cat"
+  ],
+  "sin": [
+   "domestic",
+   "dog",
+   "cat"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "four legged riding mammal",
+  "con": [
+   "legged",
+   "riding",
+   "mammal"
+  ],
+  "sin": [
+   "legged",
+   "mammal"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a fruit with a bulbous base",
+  "con": [
+   "fruit",
+   "bulbous",
+   "base"
+  ],
+  "sin": [
+   "fruit",
+   "bulbous",
+   "base"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "herb garden red round produce",
+  "con": [
+   "herb",
+   "garden",
+   "red",
+   "round"
+  ],
+  "sin": [
+   "herb",
+   "garden",
+   "red",
+   "round"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "core inside skin fruit",
+  "con": [
+   "core",
+   "skin",
+   "fruit"
+  ],
+  "sin": [
+   "core",
+   "skin",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "wheeled transportation",
+  "con": [
+   "wheeled",
+   "transportation"
+  ],
+  "sin": [
+   "wheeled",
+   "transportation"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": null,
+  "ganador_sin": null
+ },
+ {
+  "consulta": "a grazing farm cattle beast",
+  "con": [
+   "farm",
+   "cattle",
+   "beast"
+  ],
+  "sin": [
+   "farm",
+   "cattle",
+   "beast"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "hollow vessel to drink from",
+  "con": [
+   "hollow",
+   "vessel",
+   "drink"
+  ],
+  "sin": [
+   "hollow",
+   "vessel"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drink"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a fun loving house pet",
+  "con": [
+   "fun",
+   "house",
+   "pet"
+  ],
+  "sin": [
+   "fun",
+   "house",
+   "pet"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "mammal with hooves and mane",
+  "con": [
+   "mammal",
+   "hoof",
+   "mane"
+  ],
+  "sin": [
+   "mammal",
+   "hoof",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "green pear grown in an orchard",
+  "con": [
+   "green",
+   "pear",
+   "orchard"
+  ],
+  "sin": [
+   "green",
+   "pear",
+   "orchard"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a soft juicy red fruit",
+  "con": [
+   "soft",
+   "juicy",
+   "red",
+   "fruit"
+  ],
+  "sin": [
+   "soft",
+   "juicy",
+   "red",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "tree fruit food",
+  "con": [
+   "tree",
+   "fruit",
+   "food"
+  ],
+  "sin": [
+   "tree",
+   "fruit",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "crash vehicle",
+  "con": [
+   "crash",
+   "vehicle"
+  ],
+  "sin": [
+   "crash",
+   "vehicle"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "udder bearing farm mammal",
+  "con": [
+   "udder",
+   "farm",
+   "mammal"
+  ],
+  "sin": [
+   "udder",
+   "farm",
+   "mammal"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug of liquid drink",
+  "con": [
+   "mug",
+   "liquid",
+   "drink"
+  ],
+  "sin": [
+   "mug",
+   "liquid",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "canine animal with fleas",
+  "con": [
+   "canine",
+   "animal",
+   "flea"
+  ],
+  "sin": [
+   "animal",
+   "flea"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "canine"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "equine with saddle",
+  "con": [
+   "equine",
+   "saddle"
+  ],
+  "sin": [
+   "equine",
+   "saddle"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a soft sweet pome fruit",
+  "con": [
+   "soft",
+   "sweet",
+   "pome",
+   "fruit"
+  ],
+  "sin": [
+   "soft",
+   "sweet",
+   "pome",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "red fruit used for pasta sauce",
+  "con": [
+   "red",
+   "fruit",
+   "pasta",
+   "sauce"
+  ],
+  "sin": [
+   "red",
+   "fruit",
+   "pasta",
+   "sauce"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "pome variety fruit",
+  "con": [
+   "pome",
+   "variety",
+   "fruit"
+  ],
+  "sin": [
+   "pome",
+   "variety",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "automobile commuting",
+  "con": [
+   "automobile"
+  ],
+  "sin": [
+   "automobile"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "cattle bull bovine beast",
+  "con": [
+   "cattle",
+   "bull",
+   "bovine",
+   "beast"
+  ],
+  "sin": [
+   "cattle",
+   "bull",
+   "bovine",
+   "beast"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "small round drinking cup",
+  "con": [
+   "small",
+   "round",
+   "drinking",
+   "cup"
+  ],
+  "sin": [
+   "small",
+   "round",
+   "drinking",
+   "cup"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy that likes to run",
+  "con": [
+   "puppy",
+   "run"
+  ],
+  "sin": [
+   "puppy"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "run"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "big farm riding animal",
+  "con": [
+   "big",
+   "farm",
+   "riding",
+   "animal"
+  ],
+  "sin": [
+   "big",
+   "farm",
+   "riding",
+   "animal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "orchard fruit shaped like a pear",
+  "con": [
+   "orchard",
+   "fruit",
+   "pear"
+  ],
+  "sin": [
+   "orchard",
+   "fruit",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "round red fruit from a herb plant",
+  "con": [
+   "round",
+   "red",
+   "fruit",
+   "herb",
+   "plant"
+  ],
+  "sin": [
+   "round",
+   "red",
+   "fruit",
+   "herb",
+   "plant"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "green round food",
+  "con": [
+   "green",
+   "round",
+   "food"
+  ],
+  "sin": [
+   "green",
+   "round",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "auto transportation machine",
+  "con": [
+   "auto",
+   "transportation",
+   "machine"
+  ],
+  "sin": [
+   "auto",
+   "transportation",
+   "machine"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "big domestic farm bovine",
+  "con": [
+   "big",
+   "domestic",
+   "farm",
+   "bovine"
+  ],
+  "sin": [
+   "big",
+   "domestic",
+   "farm",
+   "bovine"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "container to hold liquid drink",
+  "con": [
+   "container",
+   "liquid",
+   "drink"
+  ],
+  "sin": [
+   "container",
+   "liquid",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a house dog with a wagging tail",
+  "con": [
+   "house",
+   "dog",
+   "tail"
+  ],
+  "sin": [
+   "house",
+   "dog",
+   "tail"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "domesticated equine mammal",
+  "con": [
+   "equine",
+   "mammal"
+  ],
+  "sin": [
+   "equine",
+   "mammal"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a ripe juicy green pear",
+  "con": [
+   "ripe",
+   "juicy",
+   "green",
+   "pear"
+  ],
+  "sin": [
+   "ripe",
+   "juicy",
+   "green",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a ripe red tomato fruit",
+  "con": [
+   "ripe",
+   "red",
+   "tomato",
+   "fruit"
+  ],
+  "sin": [
+   "ripe",
+   "red",
+   "tomato",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "red sweet fruit food",
+  "con": [
+   "red",
+   "sweet",
+   "fruit",
+   "food"
+  ],
+  "sin": [
+   "red",
+   "sweet",
+   "fruit",
+   "food"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with a powerful engine",
+  "con": [
+   "car",
+   "powerful",
+   "engine"
+  ],
+  "sin": [
+   "car",
+   "powerful",
+   "engine"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow grazing in a green pasture",
+  "con": [
+   "cow",
+   "green",
+   "pasture"
+  ],
+  "sin": [
+   "cow",
+   "green",
+   "pasture"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup with a curved handle",
+  "con": [
+   "cup",
+   "curved",
+   "handle"
+  ],
+  "sin": [
+   "cup",
+   "curved",
+   "handle"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog fetching a ball",
+  "con": [
+   "dog",
+   "ball"
+  ],
+  "sin": [
+   "dog",
+   "ball"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "animal with mane and tail",
+  "con": [
+   "animal",
+   "mane",
+   "tail"
+  ],
+  "sin": [
+   "animal",
+   "mane",
+   "tail"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a bell shaped pear",
+  "con": [
+   "bell",
+   "pear"
+  ],
+  "sin": [
+   "bell",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a ripe red tomato",
+  "con": [
+   "ripe",
+   "red",
+   "tomato"
+  ],
+  "sin": [
+   "ripe",
+   "red",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a crunchy apple",
+  "con": [
+   "crunchy",
+   "apple"
+  ],
+  "sin": [
+   "crunchy",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car parked in a driveway",
+  "con": [
+   "car",
+   "driveway"
+  ],
+  "sin": [
+   "car",
+   "driveway"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a dairy cow being milked",
+  "con": [
+   "dairy",
+   "cow",
+   "milk"
+  ],
+  "sin": [
+   "dairy",
+   "cow"
+  ],
+  "verdad": "cow",
+  "rescatados": [
+   "milk"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a ceramic mug on a table",
+  "con": [
+   "ceramic",
+   "mug",
+   "table"
+  ],
+  "sin": [
+   "ceramic",
+   "mug",
+   "table"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy playing in the yard",
+  "con": [
+   "puppy",
+   "playing",
+   "yard"
+  ],
+  "sin": [
+   "puppy",
+   "playing",
+   "yard"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse galloping in a field",
+  "con": [
+   "horse",
+   "field"
+  ],
+  "sin": [
+   "horse",
+   "field"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a narrow neck",
+  "con": [
+   "pear",
+   "narrow",
+   "neck"
+  ],
+  "sin": [
+   "pear",
+   "narrow",
+   "neck"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato on the vine",
+  "con": [
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple from the orchard",
+  "con": [
+   "apple",
+   "orchard"
+  ],
+  "sin": [
+   "apple",
+   "orchard"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with four wheels and doors",
+  "con": [
+   "car",
+   "wheel",
+   "door"
+  ],
+  "sin": [
+   "car",
+   "wheel",
+   "door"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow chewing its cud in a field",
+  "con": [
+   "cow",
+   "cud",
+   "field"
+  ],
+  "sin": [
+   "cow",
+   "cud",
+   "field"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup filled with hot coffee",
+  "con": [
+   "cup",
+   "hot",
+   "coffee"
+  ],
+  "sin": [
+   "cup",
+   "hot",
+   "coffee"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog wagging its tail happily",
+  "con": [
+   "dog",
+   "tail"
+  ],
+  "sin": [
+   "dog",
+   "tail"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse with a flowing mane",
+  "con": [
+   "horse",
+   "mane"
+  ],
+  "sin": [
+   "horse",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a teardrop shaped pear",
+  "con": [
+   "teardrop",
+   "pear"
+  ],
+  "sin": [
+   "teardrop",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a plump salad tomato",
+  "con": [
+   "plump",
+   "salad",
+   "tomato"
+  ],
+  "sin": [
+   "plump",
+   "salad",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a granny smith apple",
+  "con": [
+   "granny",
+   "smith",
+   "apple"
+  ],
+  "sin": [
+   "granny",
+   "smith",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "driving a car on the highway",
+  "con": [
+   "drive",
+   "car",
+   "highway"
+  ],
+  "sin": [
+   "car",
+   "highway"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "drive"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a herd of cattle in a pasture",
+  "con": [
+   "herd",
+   "cattle",
+   "pasture"
+  ],
+  "sin": [
+   "herd",
+   "cattle",
+   "pasture"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug with a handle for drinking",
+  "con": [
+   "mug",
+   "handle",
+   "drinking"
+  ],
+  "sin": [
+   "mug",
+   "handle"
+  ],
+  "verdad": "cup",
+  "rescatados": [
+   "drinking"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog on a leash for a walk",
+  "con": [
+   "dog",
+   "leash",
+   "walk"
+  ],
+  "sin": [
+   "dog",
+   "leash",
+   "walk"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a pony trotting in a paddock",
+  "con": [
+   "pony",
+   "trotting",
+   "paddock"
+  ],
+  "sin": [
+   "pony",
+   "trotting",
+   "paddock"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a grainy sweet pear",
+  "con": [
+   "grainy",
+   "sweet",
+   "pear"
+  ],
+  "sin": [
+   "grainy",
+   "sweet",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato vegetable",
+  "con": [
+   "tomato",
+   "vegetable"
+  ],
+  "sin": [
+   "tomato",
+   "vegetable"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a crunchy red apple",
+  "con": [
+   "crunchy",
+   "red",
+   "apple"
+  ],
+  "sin": [
+   "crunchy",
+   "red",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car engine under the hood",
+  "con": [
+   "car",
+   "engine",
+   "hood"
+  ],
+  "sin": [
+   "car",
+   "engine",
+   "hood"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a black and white dairy cow",
+  "con": [
+   "black",
+   "white",
+   "dairy",
+   "cow"
+  ],
+  "sin": [
+   "black",
+   "white",
+   "dairy",
+   "cow"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup of tea on a saucer",
+  "con": [
+   "cup",
+   "tea",
+   "saucer"
+  ],
+  "sin": [
+   "cup",
+   "tea",
+   "saucer"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog sleeping on a soft bed",
+  "con": [
+   "dog",
+   "soft",
+   "bed"
+  ],
+  "sin": [
+   "dog",
+   "soft",
+   "bed"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse wearing a saddle and bridle",
+  "con": [
+   "horse",
+   "saddle",
+   "bridle"
+  ],
+  "sin": [
+   "horse",
+   "saddle",
+   "bridle"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a ripe juicy pear",
+  "con": [
+   "ripe",
+   "juicy",
+   "pear"
+  ],
+  "sin": [
+   "ripe",
+   "juicy",
+   "pear"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a juicy tomato",
+  "con": [
+   "juicy",
+   "tomato"
+  ],
+  "sin": [
+   "juicy",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple with a stem and leaf",
+  "con": [
+   "apple",
+   "stem",
+   "leaf"
+  ],
+  "sin": [
+   "apple",
+   "stem",
+   "leaf"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a shiny new car",
+  "con": [
+   "shiny",
+   "new",
+   "car"
+  ],
+  "sin": [
+   "shiny",
+   "new",
+   "car"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow with a bell around its neck",
+  "con": [
+   "cow",
+   "bell",
+   "neck"
+  ],
+  "sin": [
+   "cow",
+   "bell",
+   "neck"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a plastic cup for water",
+  "con": [
+   "plastic",
+   "cup",
+   "water"
+  ],
+  "sin": [
+   "plastic",
+   "cup",
+   "water"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog barking at the mailman",
+  "con": [
+   "dog",
+   "bark",
+   "mailman"
+  ],
+  "sin": [
+   "dog",
+   "mailman"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "an equine galloping at a gallop",
+  "con": [
+   "equine",
+   "gallop"
+  ],
+  "sin": [
+   "equine",
+   "gallop"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear fruit",
+  "con": [
+   "pear",
+   "fruit"
+  ],
+  "sin": [
+   "pear",
+   "fruit"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a garden tomato",
+  "con": [
+   "garden",
+   "tomato"
+  ],
+  "sin": [
+   "garden",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a shiny red apple",
+  "con": [
+   "shiny",
+   "red",
+   "apple"
+  ],
+  "sin": [
+   "shiny",
+   "red",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with a steering wheel",
+  "con": [
+   "car",
+   "steering",
+   "wheel"
+  ],
+  "sin": [
+   "car",
+   "steering",
+   "wheel"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a calf standing next to its mother cow",
+  "con": [
+   "calf",
+   "mother",
+   "cow"
+  ],
+  "sin": [
+   "calf",
+   "mother",
+   "cow"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup sitting on a shelf",
+  "con": [
+   "cup",
+   "shelf"
+  ],
+  "sin": [
+   "cup",
+   "shelf"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy chewing on a bone",
+  "con": [
+   "puppy",
+   "bone"
+  ],
+  "sin": [
+   "puppy",
+   "bone"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a horse being ridden by a rider",
+  "con": [
+   "horse",
+   "ride",
+   "rider"
+  ],
+  "sin": [
+   "horse",
+   "rider"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "ride"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a tapered neck",
+  "con": [
+   "pear",
+   "tapered",
+   "neck"
+  ],
+  "sin": [
+   "pear",
+   "tapered",
+   "neck"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato growing on the vine",
+  "con": [
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple picked from a tree",
+  "con": [
+   "apple",
+   "tree"
+  ],
+  "sin": [
+   "apple",
+   "tree"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car speeding down the road",
+  "con": [
+   "car",
+   "road"
+  ],
+  "sin": [
+   "car",
+   "road"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow mooing in the barn",
+  "con": [
+   "cow",
+   "moo",
+   "barn"
+  ],
+  "sin": [
+   "cow",
+   "barn"
+  ],
+  "verdad": "cow",
+  "rescatados": [
+   "moo"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug of steaming coffee",
+  "con": [
+   "mug",
+   "coffee"
+  ],
+  "sin": [
+   "mug",
+   "coffee"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog with floppy ears",
+  "con": [
+   "dog",
+   "floppy",
+   "ear"
+  ],
+  "sin": [
+   "dog",
+   "floppy",
+   "ear"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a stable full of horses",
+  "con": [
+   "stable",
+   "horse"
+  ],
+  "sin": [
+   "stable",
+   "horse"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear hanging on a branch",
+  "con": [
+   "pear",
+   "branch"
+  ],
+  "sin": [
+   "pear",
+   "branch"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato plant in the garden",
+  "con": [
+   "tomato",
+   "plant",
+   "garden"
+  ],
+  "sin": [
+   "tomato",
+   "plant",
+   "garden"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a bushel of apples",
+  "con": [
+   "bushel",
+   "apple"
+  ],
+  "sin": [
+   "bushel",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a family car with seats for five",
+  "con": [
+   "family",
+   "car",
+   "seat"
+  ],
+  "sin": [
+   "family",
+   "car",
+   "seat"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow with large udders full of milk",
+  "con": [
+   "cow",
+   "large",
+   "udder",
+   "milk"
+  ],
+  "sin": [
+   "cow",
+   "large",
+   "udder",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup with a printed design",
+  "con": [
+   "cup",
+   "design"
+  ],
+  "sin": [
+   "cup",
+   "design"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog running across the yard",
+  "con": [
+   "dog",
+   "run",
+   "yard"
+  ],
+  "sin": [
+   "dog",
+   "yard"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "run"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse with a long mane and tail",
+  "con": [
+   "horse",
+   "long",
+   "mane",
+   "tail"
+  ],
+  "sin": [
+   "horse",
+   "long",
+   "mane",
+   "tail"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a wide bottom and thin neck",
+  "con": [
+   "pear",
+   "wide",
+   "thin",
+   "neck"
+  ],
+  "sin": [
+   "pear",
+   "wide",
+   "thin",
+   "neck"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a plump ripe tomato",
+  "con": [
+   "plump",
+   "ripe",
+   "tomato"
+  ],
+  "sin": [
+   "plump",
+   "ripe",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a crisp apple snack",
+  "con": [
+   "crisp",
+   "apple",
+   "snack"
+  ],
+  "sin": [
+   "crisp",
+   "apple",
+   "snack"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car parked in a garage",
+  "con": [
+   "car",
+   "garage"
+  ],
+  "sin": [
+   "car",
+   "garage"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a farmer milking a cow",
+  "con": [
+   "farmer",
+   "milking",
+   "cow"
+  ],
+  "sin": [
+   "farmer",
+   "cow"
+  ],
+  "verdad": "cow",
+  "rescatados": [
+   "milking"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a glass cup for a beverage",
+  "con": [
+   "glass",
+   "cup",
+   "beverage"
+  ],
+  "sin": [
+   "glass",
+   "cup",
+   "beverage"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a loyal pet dog beside its owner",
+  "con": [
+   "loyal",
+   "pet",
+   "dog",
+   "owner"
+  ],
+  "sin": [
+   "loyal",
+   "pet",
+   "dog",
+   "owner"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a mare and foal in a pasture",
+  "con": [
+   "mare",
+   "foal",
+   "pasture"
+  ],
+  "sin": [
+   "mare",
+   "foal",
+   "pasture"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear sliced in half",
+  "con": [
+   "pear",
+   "half"
+  ],
+  "sin": [
+   "pear",
+   "half"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato sliced for a salad",
+  "con": [
+   "tomato",
+   "salad"
+  ],
+  "sin": [
+   "tomato",
+   "salad"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple for a pie",
+  "con": [
+   "apple",
+   "pie"
+  ],
+  "sin": [
+   "apple",
+   "pie"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with tinted windows",
+  "con": [
+   "car",
+   "tinted",
+   "window"
+  ],
+  "sin": [
+   "car",
+   "tinted",
+   "window"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow standing in a muddy pasture",
+  "con": [
+   "cow",
+   "muddy",
+   "pasture"
+  ],
+  "sin": [
+   "cow",
+   "muddy",
+   "pasture"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug used to hold water",
+  "con": [
+   "mug",
+   "water"
+  ],
+  "sin": [
+   "mug",
+   "water"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog panting after a walk",
+  "con": [
+   "dog",
+   "walk"
+  ],
+  "sin": [
+   "dog",
+   "walk"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse trained for a race",
+  "con": [
+   "horse",
+   "race"
+  ],
+  "sin": [
+   "horse",
+   "race"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a bosc pear with brown skin",
+  "con": [
+   "bosc",
+   "pear",
+   "brown",
+   "skin"
+  ],
+  "sin": [
+   "bosc",
+   "pear",
+   "brown",
+   "skin"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato picked from the garden",
+  "con": [
+   "tomato",
+   "garden"
+  ],
+  "sin": [
+   "tomato",
+   "garden"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple with thin skin",
+  "con": [
+   "apple",
+   "thin",
+   "skin"
+  ],
+  "sin": [
+   "apple",
+   "thin",
+   "skin"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car driving through traffic",
+  "con": [
+   "car",
+   "drive",
+   "traffic"
+  ],
+  "sin": [
+   "car",
+   "traffic"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "drive"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a bull with horns in a field",
+  "con": [
+   "bull",
+   "horn",
+   "field"
+  ],
+  "sin": [
+   "bull",
+   "horn",
+   "field"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup and saucer on a table",
+  "con": [
+   "cup",
+   "saucer",
+   "table"
+  ],
+  "sin": [
+   "cup",
+   "saucer",
+   "table"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy with soft fur and paws",
+  "con": [
+   "puppy",
+   "soft",
+   "fur",
+   "paw"
+  ],
+  "sin": [
+   "puppy",
+   "soft",
+   "fur",
+   "paw"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse pulling a cart",
+  "con": [
+   "horse",
+   "cart"
+  ],
+  "sin": [
+   "horse",
+   "cart"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with grainy flesh",
+  "con": [
+   "pear",
+   "grainy",
+   "flesh"
+  ],
+  "sin": [
+   "pear",
+   "grainy",
+   "flesh"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a vine ripened tomato",
+  "con": [
+   "vine",
+   "tomato"
+  ],
+  "sin": [
+   "vine",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a fresh orchard apple",
+  "con": [
+   "fresh",
+   "orchard",
+   "apple"
+  ],
+  "sin": [
+   "fresh",
+   "orchard",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with a full tank of fuel",
+  "con": [
+   "car",
+   "tank",
+   "fuel"
+  ],
+  "sin": [
+   "car",
+   "tank",
+   "fuel"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow grazing near a barn",
+  "con": [
+   "cow",
+   "barn"
+  ],
+  "sin": [
+   "cow",
+   "barn"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup with a handle and a rim",
+  "con": [
+   "cup",
+   "handle",
+   "rim"
+  ],
+  "sin": [
+   "cup",
+   "handle",
+   "rim"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog guarding the front door",
+  "con": [
+   "dog",
+   "door"
+  ],
+  "sin": [
+   "dog",
+   "door"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a saddled horse ready to ride",
+  "con": [
+   "saddle",
+   "horse",
+   "ready",
+   "ride"
+  ],
+  "sin": [
+   "horse",
+   "ready"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "saddle",
+   "ride"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear picked from an orchard tree",
+  "con": [
+   "pear",
+   "orchard",
+   "tree"
+  ],
+  "sin": [
+   "pear",
+   "orchard",
+   "tree"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a tomato used in a salad",
+  "con": [
+   "tomato",
+   "salad"
+  ],
+  "sin": [
+   "tomato",
+   "salad"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple cut in half showing seeds",
+  "con": [
+   "apple",
+   "cut",
+   "half",
+   "seed"
+  ],
+  "sin": [
+   "apple",
+   "cut",
+   "half",
+   "seed"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "an automobile with a trunk",
+  "con": [
+   "automobile",
+   "trunk"
+  ],
+  "sin": [
+   "automobile",
+   "trunk"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a herd of cows on a dairy farm",
+  "con": [
+   "herd",
+   "cow",
+   "dairy",
+   "farm"
+  ],
+  "sin": [
+   "herd",
+   "cow",
+   "dairy",
+   "farm"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a stack of mugs on a counter",
+  "con": [
+   "stack",
+   "mug",
+   "counter"
+  ],
+  "sin": [
+   "stack",
+   "mug",
+   "counter"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog jumping to catch a frisbee",
+  "con": [
+   "dog",
+   "frisbee"
+  ],
+  "sin": [
+   "dog",
+   "frisbee"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse with strong hooves",
+  "con": [
+   "horse",
+   "strong",
+   "hoof"
+  ],
+  "sin": [
+   "horse",
+   "strong",
+   "hoof"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a long tapered stem",
+  "con": [
+   "pear",
+   "stem"
+  ],
+  "sin": [
+   "pear",
+   "stem"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a bunch of tomatoes on the vine",
+  "con": [
+   "bunch",
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "bunch",
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a bruised red apple",
+  "con": [
+   "red",
+   "apple"
+  ],
+  "sin": [
+   "red",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car braking at a red light",
+  "con": [
+   "car",
+   "brake",
+   "red",
+   "light"
+  ],
+  "sin": [
+   "car",
+   "red",
+   "light"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "brake"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a cow swishing its tail at flies",
+  "con": [
+   "cow",
+   "tail",
+   "fly"
+  ],
+  "sin": [
+   "cow",
+   "tail",
+   "fly"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup being filled with liquid",
+  "con": [
+   "cup",
+   "liquid"
+  ],
+  "sin": [
+   "cup",
+   "liquid"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog resting its paws on the floor",
+  "con": [
+   "dog",
+   "paw",
+   "floor"
+  ],
+  "sin": [
+   "dog",
+   "paw",
+   "floor"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse grazing in a paddock",
+  "con": [
+   "horse",
+   "paddock"
+  ],
+  "sin": [
+   "horse",
+   "paddock"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear ripening on the tree",
+  "con": [
+   "pear",
+   "tree"
+  ],
+  "sin": [
+   "pear",
+   "tree"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato plant with green leaves",
+  "con": [
+   "tomato",
+   "plant",
+   "green",
+   "leaf"
+  ],
+  "sin": [
+   "tomato",
+   "plant",
+   "green",
+   "leaf"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a basket of orchard apples",
+  "con": [
+   "basket",
+   "orchard",
+   "apple"
+  ],
+  "sin": [
+   "basket",
+   "orchard",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with alloy wheels",
+  "con": [
+   "car",
+   "alloy",
+   "wheel"
+  ],
+  "sin": [
+   "car",
+   "alloy",
+   "wheel"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow with a calf in a pasture",
+  "con": [
+   "cow",
+   "calf",
+   "pasture"
+  ],
+  "sin": [
+   "cow",
+   "calf",
+   "pasture"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug of cold water",
+  "con": [
+   "mug",
+   "cold",
+   "water"
+  ],
+  "sin": [
+   "mug",
+   "cold",
+   "water"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a small dog barking at strangers",
+  "con": [
+   "small",
+   "dog",
+   "bark",
+   "stranger"
+  ],
+  "sin": [
+   "small",
+   "dog",
+   "stranger"
+  ],
+  "verdad": "dog",
+  "rescatados": [
+   "bark"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a jockey riding a horse",
+  "con": [
+   "jockey",
+   "riding",
+   "horse"
+  ],
+  "sin": [
+   "jockey",
+   "horse"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "riding"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a bell shaped body",
+  "con": [
+   "pear",
+   "bell",
+   "body"
+  ],
+  "sin": [
+   "pear",
+   "bell",
+   "body"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato harvested from the garden",
+  "con": [
+   "tomato",
+   "garden"
+  ],
+  "sin": [
+   "tomato",
+   "garden"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple tree in the orchard",
+  "con": [
+   "apple",
+   "tree",
+   "orchard"
+  ],
+  "sin": [
+   "apple",
+   "tree",
+   "orchard"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a sedan car on the street",
+  "con": [
+   "sedan",
+   "car",
+   "street"
+  ],
+  "sin": [
+   "sedan",
+   "car",
+   "street"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a spotted cow in a green field",
+  "con": [
+   "cow",
+   "green",
+   "field"
+  ],
+  "sin": [
+   "cow",
+   "green",
+   "field"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup used as a vessel for drink",
+  "con": [
+   "cup",
+   "vessel",
+   "drink"
+  ],
+  "sin": [
+   "cup",
+   "vessel",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog wagging its tail at the door",
+  "con": [
+   "dog",
+   "tail",
+   "door"
+  ],
+  "sin": [
+   "dog",
+   "tail",
+   "door"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse in a stable eating hay",
+  "con": [
+   "horse",
+   "stable",
+   "eating",
+   "hay"
+  ],
+  "sin": [
+   "horse",
+   "stable",
+   "hay"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "eating"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear fruit basket",
+  "con": [
+   "pear",
+   "fruit",
+   "basket"
+  ],
+  "sin": [
+   "pear",
+   "fruit",
+   "basket"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a plump red tomato on the vine",
+  "con": [
+   "plump",
+   "red",
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "plump",
+   "red",
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a crunchy green apple",
+  "con": [
+   "crunchy",
+   "green",
+   "apple"
+  ],
+  "sin": [
+   "crunchy",
+   "green",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car engine roaring to life",
+  "con": [
+   "car",
+   "engine",
+   "life"
+  ],
+  "sin": [
+   "car",
+   "engine",
+   "life"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow being led to the barn",
+  "con": [
+   "cow",
+   "barn"
+  ],
+  "sin": [
+   "cow",
+   "barn"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a coffee cup with steam rising",
+  "con": [
+   "coffee",
+   "cup",
+   "steam"
+  ],
+  "sin": [
+   "coffee",
+   "cup",
+   "steam"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a puppy learning to sit and stay",
+  "con": [
+   "puppy",
+   "learning"
+  ],
+  "sin": [
+   "puppy",
+   "learning"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a wild horse galloping free",
+  "con": [
+   "wild",
+   "horse",
+   "free"
+  ],
+  "sin": [
+   "wild",
+   "horse",
+   "free"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a smooth curved neck",
+  "con": [
+   "pear",
+   "smooth",
+   "curved",
+   "neck"
+  ],
+  "sin": [
+   "pear",
+   "smooth",
+   "curved",
+   "neck"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato vegetable in a bowl",
+  "con": [
+   "tomato",
+   "vegetable",
+   "bowl"
+  ],
+  "sin": [
+   "tomato",
+   "vegetable",
+   "bowl"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple with a woody stem",
+  "con": [
+   "apple",
+   "woody",
+   "stem"
+  ],
+  "sin": [
+   "apple",
+   "woody",
+   "stem"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with headlights on",
+  "con": [
+   "car",
+   "headlight"
+  ],
+  "sin": [
+   "car",
+   "headlight"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow chewing grass in a meadow",
+  "con": [
+   "cow",
+   "grass",
+   "meadow"
+  ],
+  "sin": [
+   "cow",
+   "grass",
+   "meadow"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup with a wide handle",
+  "con": [
+   "cup",
+   "wide",
+   "handle"
+  ],
+  "sin": [
+   "cup",
+   "wide",
+   "handle"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog with a collar and tag",
+  "con": [
+   "dog",
+   "collar",
+   "tag"
+  ],
+  "sin": [
+   "dog",
+   "collar",
+   "tag"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse with a bridle and reins",
+  "con": [
+   "horse",
+   "bridle",
+   "rein"
+  ],
+  "sin": [
+   "horse",
+   "bridle",
+   "rein"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a juicy pear with a narrow top and round base",
+  "con": [
+   "juicy",
+   "pear",
+   "narrow",
+   "round",
+   "base"
+  ],
+  "sin": [
+   "juicy",
+   "pear",
+   "narrow",
+   "round",
+   "base"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato grown in a greenhouse",
+  "con": [
+   "tomato",
+   "greenhouse"
+  ],
+  "sin": [
+   "tomato",
+   "greenhouse"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a whole apple fruit",
+  "con": [
+   "apple",
+   "fruit"
+  ],
+  "sin": [
+   "apple",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "driving a car down a highway",
+  "con": [
+   "drive",
+   "car",
+   "highway"
+  ],
+  "sin": [
+   "car",
+   "highway"
+  ],
+  "verdad": "car",
+  "rescatados": [
+   "drive"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cattle herd moving across a field",
+  "con": [
+   "cattle",
+   "herd",
+   "field"
+  ],
+  "sin": [
+   "cattle",
+   "herd",
+   "field"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a small cup for espresso",
+  "con": [
+   "small",
+   "cup",
+   "espresso"
+  ],
+  "sin": [
+   "small",
+   "cup",
+   "espresso"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog digging in the garden",
+  "con": [
+   "dog",
+   "garden"
+  ],
+  "sin": [
+   "dog",
+   "garden"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a pony giving children a ride",
+  "con": [
+   "pony",
+   "child",
+   "ride"
+  ],
+  "sin": [
+   "pony",
+   "child",
+   "ride"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear fruit ready to eat",
+  "con": [
+   "pear",
+   "fruit",
+   "ready"
+  ],
+  "sin": [
+   "pear",
+   "fruit",
+   "ready"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato with smooth red skin",
+  "con": [
+   "tomato",
+   "smooth",
+   "red",
+   "skin"
+  ],
+  "sin": [
+   "tomato",
+   "smooth",
+   "red",
+   "skin"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a shiny green apple",
+  "con": [
+   "shiny",
+   "green",
+   "apple"
+  ],
+  "sin": [
+   "shiny",
+   "green",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car parked at the curb",
+  "con": [
+   "car",
+   "curb"
+  ],
+  "sin": [
+   "car",
+   "curb"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a dairy cow producing fresh milk",
+  "con": [
+   "dairy",
+   "cow",
+   "fresh",
+   "milk"
+  ],
+  "sin": [
+   "dairy",
+   "cow",
+   "fresh",
+   "milk"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug hanging on a hook",
+  "con": [
+   "mug",
+   "hook"
+  ],
+  "sin": [
+   "mug",
+   "hook"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a canine companion on a walk",
+  "con": [
+   "canine",
+   "companion",
+   "walk"
+  ],
+  "sin": [
+   "canine",
+   "companion",
+   "walk"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse trotting down a trail",
+  "con": [
+   "horse",
+   "trail"
+  ],
+  "sin": [
+   "horse",
+   "trail"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a slender neck and round base",
+  "con": [
+   "pear",
+   "slender",
+   "neck",
+   "round",
+   "base"
+  ],
+  "sin": [
+   "pear",
+   "slender",
+   "neck",
+   "round",
+   "base"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a cherry tomato on the vine",
+  "con": [
+   "cherry",
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "cherry",
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a sweet crunchy fruit",
+  "con": [
+   "sweet",
+   "crunchy",
+   "fruit"
+  ],
+  "sin": [
+   "sweet",
+   "crunchy",
+   "fruit"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an automobile with four doors",
+  "con": [
+   "automobile",
+   "door"
+  ],
+  "sin": [
+   "automobile",
+   "door"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow with a large belly grazing",
+  "con": [
+   "cow",
+   "large",
+   "belly",
+   "grazing"
+  ],
+  "sin": [
+   "cow",
+   "large",
+   "belly",
+   "grazing"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup holding a hot drink",
+  "con": [
+   "cup",
+   "hot",
+   "drink"
+  ],
+  "sin": [
+   "cup",
+   "hot",
+   "drink"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog licking its paws",
+  "con": [
+   "dog",
+   "paw"
+  ],
+  "sin": [
+   "dog",
+   "paw"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "a horse with shiny hooves",
+  "con": [
+   "horse",
+   "shiny",
+   "hoof"
+  ],
+  "sin": [
+   "horse",
+   "shiny",
+   "hoof"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear tree in an orchard",
+  "con": [
+   "pear",
+   "tree",
+   "orchard"
+  ],
+  "sin": [
+   "pear",
+   "tree",
+   "orchard"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a tomato salad with fresh vegetables",
+  "con": [
+   "tomato",
+   "salad",
+   "fresh",
+   "vegetable"
+  ],
+  "sin": [
+   "tomato",
+   "salad",
+   "fresh",
+   "vegetable"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple sliced for a pie",
+  "con": [
+   "apple",
+   "pie"
+  ],
+  "sin": [
+   "apple",
+   "pie"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car with a dashboard and steering wheel",
+  "con": [
+   "car",
+   "dashboard",
+   "steering",
+   "wheel"
+  ],
+  "sin": [
+   "car",
+   "dashboard",
+   "steering",
+   "wheel"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow standing beside a fence",
+  "con": [
+   "cow",
+   "fence"
+  ],
+  "sin": [
+   "cow",
+   "fence"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a cup used at breakfast",
+  "con": [
+   "cup",
+   "breakfast"
+  ],
+  "sin": [
+   "cup",
+   "breakfast"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a dog howling at the moon",
+  "con": [
+   "dog",
+   "moon"
+  ],
+  "sin": [
+   "dog",
+   "moon"
+  ],
+  "verdad": "dog",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "dog",
+  "ganador_sin": "dog"
+ },
+ {
+  "consulta": "an equine bred for racing",
+  "con": [
+   "equine",
+   "racing"
+  ],
+  "sin": [
+   "equine"
+  ],
+  "verdad": "horse",
+  "rescatados": [
+   "racing"
+  ],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with soft grainy texture",
+  "con": [
+   "pear",
+   "soft",
+   "grainy",
+   "texture"
+  ],
+  "sin": [
+   "pear",
+   "soft",
+   "grainy",
+   "texture"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato vine heavy with fruit",
+  "con": [
+   "tomato",
+   "vine",
+   "heavy",
+   "fruit"
+  ],
+  "sin": [
+   "tomato",
+   "vine",
+   "heavy",
+   "fruit"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a firm crunchy apple",
+  "con": [
+   "firm",
+   "crunchy",
+   "apple"
+  ],
+  "sin": [
+   "firm",
+   "crunchy",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car refueling at a station",
+  "con": [
+   "car",
+   "refueling",
+   "station"
+  ],
+  "sin": [
+   "car",
+   "refueling",
+   "station"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a beef cow raised on a ranch",
+  "con": [
+   "beef",
+   "cow",
+   "ranch"
+  ],
+  "sin": [
+   "beef",
+   "cow",
+   "ranch"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a vessel with a handle for tea",
+  "con": [
+   "vessel",
+   "handle",
+   "tea"
+  ],
+  "sin": [
+   "vessel",
+   "handle",
+   "tea"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a horse cantering across a field",
+  "con": [
+   "horse",
+   "field"
+  ],
+  "sin": [
+   "horse",
+   "field"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear shaped like a bell",
+  "con": [
+   "pear",
+   "bell"
+  ],
+  "sin": [
+   "pear",
+   "bell"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato cut into slices",
+  "con": [
+   "tomato",
+   "cut",
+   "slice"
+  ],
+  "sin": [
+   "tomato",
+   "cut",
+   "slice"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "an apple orchard harvest",
+  "con": [
+   "apple",
+   "orchard",
+   "harvest"
+  ],
+  "sin": [
+   "apple",
+   "orchard",
+   "harvest"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a car cruising down the road",
+  "con": [
+   "car",
+   "road"
+  ],
+  "sin": [
+   "car",
+   "road"
+  ],
+  "verdad": "car",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "car",
+  "ganador_sin": "car"
+ },
+ {
+  "consulta": "a cow mooing at the farm gate",
+  "con": [
+   "cow",
+   "mooing",
+   "farm",
+   "gate"
+  ],
+  "sin": [
+   "cow",
+   "mooing",
+   "farm",
+   "gate"
+  ],
+  "verdad": "cow",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cow",
+  "ganador_sin": "cow"
+ },
+ {
+  "consulta": "a mug filled to the brim",
+  "con": [
+   "mug",
+   "brim"
+  ],
+  "sin": [
+   "mug",
+   "brim"
+  ],
+  "verdad": "cup",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "cup",
+  "ganador_sin": "cup"
+ },
+ {
+  "consulta": "a stallion with a thick mane",
+  "con": [
+   "stallion",
+   "thick",
+   "mane"
+  ],
+  "sin": [
+   "stallion",
+   "thick",
+   "mane"
+  ],
+  "verdad": "horse",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "horse",
+  "ganador_sin": "horse"
+ },
+ {
+  "consulta": "a pear with a distinct narrow neck",
+  "con": [
+   "pear",
+   "distinct",
+   "narrow",
+   "neck"
+  ],
+  "sin": [
+   "pear",
+   "distinct",
+   "narrow",
+   "neck"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a garden fresh tomato",
+  "con": [
+   "garden",
+   "fresh",
+   "tomato"
+  ],
+  "sin": [
+   "garden",
+   "fresh",
+   "tomato"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a polished apple",
+  "con": [
+   "polished",
+   "apple"
+  ],
+  "sin": [
+   "polished",
+   "apple"
+  ],
+  "verdad": "apple",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "apple",
+  "ganador_sin": "apple"
+ },
+ {
+  "consulta": "a pear cut open showing seeds",
+  "con": [
+   "pear",
+   "open",
+   "showing",
+   "seed"
+  ],
+  "sin": [
+   "pear",
+   "open",
+   "showing",
+   "seed"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a tomato staked in the garden",
+  "con": [
+   "tomato",
+   "garden"
+  ],
+  "sin": [
+   "tomato",
+   "garden"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ },
+ {
+  "consulta": "a pear fruit on a kitchen counter",
+  "con": [
+   "pear",
+   "fruit",
+   "kitchen",
+   "counter"
+  ],
+  "sin": [
+   "pear",
+   "fruit",
+   "kitchen",
+   "counter"
+  ],
+  "verdad": "pear",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "pear",
+  "ganador_sin": "pear"
+ },
+ {
+  "consulta": "a bright red tomato on the vine",
+  "con": [
+   "bright",
+   "red",
+   "tomato",
+   "vine"
+  ],
+  "sin": [
+   "bright",
+   "red",
+   "tomato",
+   "vine"
+  ],
+  "verdad": "tomato",
+  "rescatados": [],
+  "solo_agrega": true,
+  "ganador_con": "tomato",
+  "ganador_sin": "tomato"
+ }
+]
