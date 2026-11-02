@@ -1,0 +1,57 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793066550.025366   27888 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793066551.171126   27888 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Etapa 7 — hemisferio visual
+Cargando TME + agentes (etapa 6)...
+Umbral de energía del latente: 16.61
+
+--- Fase A: interacciones visuales (train[200:]) ---
+  interaccion 32/128  (acc visual 100.0%)
+  interaccion 64/128  (acc visual 100.0%)
+  interaccion 96/128  (acc visual 100.0%)
+  interaccion 128/128  (acc visual 99.9%)
+  Fase A: 1024 imagenes · routing visual 99.9% · rechazo 0.8% · sin energía (antes de la memoria) 1
+  TME mem_dir_R (registro completo): counts=[2048, 2016, 2016, 2016, 2016, 2032, 2048, 2048]  entropia 3.000 bits
+[Dir apple visual] counts=[2048, 224, 336, 288, 256, 304, 256, 240] entropy=2.345 bits
+[Dir car visual] counts=[208, 2016, 320, 256, 224, 208, 240, 224] entropy=2.263 bits
+[Dir cow visual] counts=[208, 224, 2016, 304, 208, 320, 208, 176] entropy=2.241 bits
+[Dir cup visual] counts=[272, 304, 288, 2016, 224, 272, 368, 336] entropy=2.412 bits
+[Dir dog visual] counts=[336, 304, 144, 192, 2016, 288, 288, 288] entropy=2.316 bits
+[Dir horse visual] counts=[192, 336, 240, 224, 288, 2032, 192, 208] entropy=2.251 bits
+[Dir pear visual] counts=[288, 160, 240, 192, 352, 208, 2048, 208] entropy=2.223 bits
+[Dir tomato visual] counts=[272, 272, 272, 256, 224, 272, 224, 2048] entropy=2.305 bits
+
+--- Fase B: routing transactivo por mem_dir_R per-agente sobre test ---
+  Routing test: 631/656 = 96.2%  (rechazo 3.5%, de las cuales 4 sin energía antes de la memoria)  directorios consultados 7.95  saltos 0.23
+  Evocacion top-3 domain-hit: 113/116 = 97.4%
+
+  Muestras (clase real -> ruteado · labels evocados):
+    OK  apple -> apple  · ['green', 'red', 'fruit']
+    OK  apple -> apple  · ['core', 'green', 'fruit']
+    OK  apple -> apple  · ['fruit', 'tree', 'vegetable']
+    OK    car -> car    · ['motor', 'vehicle', 'car']
+    OK    car -> car    · ['car', 'road', 'engine']
+    OK    car -> car    · ['car', 'vehicle', 'brake']
+    OK    cow -> cow    · ['cow', 'bull', 'heifer']
+    OK    cow -> cow    · ['cow', 'cattle', 'milk']
+    OK    cow -> cow    · ['cow', 'cattle', 'beef']
+    OK    cup -> cup    · ['drink', 'mug', 'drinking']
+    OK    cup -> cup    · ['glass', 'cups', 'cupful']
+    OK    cup -> cup    · ['mug', 'glass', 'drink']
+    X     dog -> dog    · []
+    OK    dog -> dog    · ['dog', 'canine', 'puppy']
+    OK    dog -> dog    · ['dog', 'animal', 'pet']
+    OK  horse -> horse  · ['horse', 'pony', 'foal']
+    OK  horse -> horse  · ['horse', 'donkey', 'animal']
+    OK  horse -> horse  · ['horse', 'equine', 'racing']
+    OK   pear -> pear   · ['forelle', 'barbat', 'seckel']
+    OK   pear -> pear   · ['pear', 'pearwood', 'fruit']
+    OK   pear -> pear   · ['bosc', 'pear', 'forelle']
+    OK tomato -> tomato · ['green', 'red', 'tomatoey']
+    OK tomato -> tomato · ['fruit', 'tomatoey', 'vegetable']
+    OK tomato -> tomato · ['tomato', 'fruit', 'tomatoes']
+
+  TME + agentes actualizados (mem_dir_R perspectival por agente) -> *.pkl
+
+Etapa 7 COMPLETADA.
