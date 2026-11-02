@@ -129,6 +129,98 @@ La hetero reserva un valor indefinido por dominio, con su borde fijado en 1 («f
 - **El borde es una homo latente dentro de la hetero.** Sumado a la marginal de lo emparejado, reproduce exacta la homo oficial, y reconocer con esa tabla da las mismas decisiones que la homo oficial.
 - Predicción: se cumple en los tres puntos.
 
+### E. ¿Qué hace una homo que la hetero con borde no? (`run_homo_lesion.py`, `lesion.json`)
+
+**Pregunta** (1 nov). Si las homo hacen algo que una sola hetero con borde no puede reproducir, se quedan. Si no, se reemplazan por lecturas de la hetero.
+
+**Montaje.** Los 8 agentes. De las 200 imágenes de llenado, las primeras 100 (con sus 16 variantes) se emparejan como en el llenado oficial y las otras 100 llegan sin palabra.
+- **B:** la hetero recibe las emparejadas; la homo latente, todas (es la oficial).
+- **A:** una sola hetero; las sin pareja van a su borde. La homo latente se lee de ella (borde + marginal).
+
+Solo se mide el lado de la imagen. Cada imagen va al agente de su clase: no interviene el ruteo.
+
+**Consultas por agente:** la variante original de las 100 emparejadas y de las 100 sin pareja, y las imágenes de test de su clase con energía. Las de test de otras clases sirven solo para contar falsas alarmas.
+
+**Lecturas:**
+- **familiar:** la homo (o la lectura) contiene la imagen, con contención estricta como en el ruteo visual;
+- **nombra:** el recuerdo imagen → texto de la hetero se reconoce, con los pesos de la homo (o de la lectura);
+- **nombra bien:** además, alguna de las 3 palabras evocadas es del vocabulario de su clase.
+
+**Parte 1, sin lesión.**
+- Respuesta a cada imagen en A y en B: nombra, reconoce sin nombrar o rechaza.
+- Completar: a cada imagen sin pareja se le deja indefinida la mitad de las coordenadas, se recupera desde la homo (o la lectura) y se mide el error en las coordenadas ocultas, contra la imagen original y contra otra imagen sin pareja del mismo agente.
+
+**Parte 2, lesión.** Se destruye una fracción f ∈ {0.25, 0.5, 0.75, 1} de las celdas de la hetero, con la misma máscara en todas las condiciones:
+- **B focal:** la hetero pierde las celdas y la homo queda intacta;
+- **A al azar:** la única hetero pierde las celdas, del interior y del borde (el borde vuelve a su 1 fijo);
+- **A desasociar:** el conteo de cada celda del interior elegida pasa a los dos bordes (imagen sin palabra y palabra sin imagen), y la celda queda en cero;
+- **B global:** como B focal, y la homo pierde además la misma fracción de sus celdas.
+
+**Predicciones** (escritas antes de correr):
+1. **Sin lesión, A = B** en familiaridad, decisión por decisión, y en nombrar: el interior es el mismo y el borde no entra a la proyección. Las imágenes sin pareja quedan en «reconoce sin nombrar», por construcción.
+2. **Completar no recupera esa imagen, ni en A ni en B.** El error contra la original es igual al error contra otra imagen del mismo agente. Una homo cuenta cada coordenada por separado y, al completar, sortea cada coordenada oculta de su columna: no tiene con qué distinguir esa imagen de otra.
+3. **Lesión.** Nombrar cae con f en las cuatro condiciones.
+   - B focal: la familiaridad no cambia con f (por construcción) y crece «reconoce sin nombrar».
+   - A desasociar: igual, por construcción.
+   - A al azar: la familiaridad cae con f. No sé cuánto: una celda de la lectura suma hasta 17 celdas de la hetero, así que puede caer más despacio que nombrar.
+   - B global: la familiaridad cae más rápido que en A al azar, porque cada celda de la homo es una sola celda.
+
+**Regla de decisión** (escrita antes de correr):
+- Si en alguna lectura B logra algo que A no reproduce con ninguna de sus dos operaciones, se quedan las homo.
+- Si A lo reproduce todo, se reemplazan. Que B focal conserve la familiaridad sin una operación específica se reporta como una elección de modelado, no como una razón de los datos.
+
+**Cambios después de la prueba con un agente** (apple, 10 consultas por conjunto, f = 0.5), antes de la corrida completa:
+- **Nombrar se lee de la proyección.** El recuerdo oficial con muestreo tarda ~22 s por imagen; la corrida completa habría tomado ~20 h por agente. El recuerdo oficial se reconoce si y solo si ninguna columna de la proyección queda vacía (el muestreo no rechaza después), así que «nombra» es el mismo criterio. Las palabras de «nombra bien» se evocan del prototipo de la proyección (el valor más probable por coordenada), no del muestreo.
+- **Se agregan f = 0.01, 0.05 y 0.1.** Con f = 0.5, nombrar ya era 0 en las cuatro condiciones; las fracciones declaradas se mantienen.
+- La prueba ya contradice la predicción 1 en un punto: 9 de 10 imágenes sin pareja se nombran. No es por construcción: la hetero las nombra igual que a las de test, porque se parecen a las emparejadas.
+
+**Resultados** (8 agentes, ~7 min cada uno). En los 8, el interior de A es igual al de B y la lectura de A es la homo oficial celda por celda.
+
+*Parte 1, sin lesión* (A y B dan lo mismo):
+
+| Consultas | Familiar | Nombra | Reconoce sin nombrar | Rechaza |
+|---|---|---|---|---|
+| Emparejadas (800) | 800 | 800 | 0 | 0 |
+| Sin pareja (800) | 800 | 722 | 78 | 0 |
+| Test de su clase (652) | 643 | 590 | 53 | 9 |
+| Test de otra clase (4 564) | 3 aceptadas | — | — | — |
+
+- **A contra B, consulta por consulta:** 0 diferencias en familiaridad, en nombrar y en el prototipo, en las 2 252 consultas.
+- **Sin pareja:** 78 de 800 quedan en «reconoce sin nombrar», de 3 (horse) a 23 (car) por agente. El resto lo nombra la hetero por parecido, igual que a las de test.
+- «Nombra bien» coincide con «nombra» en todas las condiciones: cuando la proyección se reconoce, alguna de las 3 palabras del prototipo es de su clase. No agrega información y no va en las tablas.
+- **Completar** (mitad oculta, las 800 sin pareja): error medio de 2.228 niveles contra la original y de 2.240 contra otra imagen del mismo agente. Más cerca de la original en 383, de la otra en 406. Igual en A y en B.
+- Predicción 1: se cumple A = B. No se cumple que lo sin pareja quede sin nombre: 90 % se nombra.
+- Predicción 2: se cumple. Ni la homo ni la lectura recuperan esa imagen; recuperan el promedio del agente.
+
+*Parte 2, lesión.* Nombrar es igual en las cuatro condiciones, consulta por consulta.
+
+| f | Nombra (emparejadas) | Familiar, emparejadas: B focal · A desasociar · A al azar · B global | Familiar, test: B focal · A desasociar · A al azar · B global |
+|---|---|---|---|
+| 0 | 800 | 800 · 800 · 800 · 800 | 643 · 643 · 643 · 643 |
+| 0.01 | 64 | 800 · 800 · 800 · 416 | 643 · 643 · 642 · 341 |
+| 0.05 | 0 | 800 · 800 · 800 · 32 | 643 · 643 · 643 · 29 |
+| 0.1 | 0 | 800 · 800 · 799 · 0 | 643 · 643 · 640 · 1 |
+| 0.25 | 0 | 800 · 800 · 795 · 0 | 643 · 643 · 638 · 0 |
+| 0.5 | 0 | 800 · 800 · 675 · 0 | 643 · 643 · 533 · 0 |
+| 0.75 | 0 | 800 · 800 · 15 · 0 | 643 · 643 · 12 · 0 |
+| 1 | 0 | 800 · 800 · 0 · 0 | 643 · 643 · 0 · 0 |
+
+- Con f = 0.01 también se nombran 61 de 800 sin pareja y 44 de 652 de test; con 0.05, ninguna.
+- Aceptaciones de otra clase: 3 en B focal y A desasociar en todo f; en A al azar bajan a 2 con f = 0.25 y a 0 desde 0.5; en B global, 1 con f = 0.01 y 0 después.
+- **Nombrar es lo más frágil:** con 1 % de las celdas destruidas se pierde el 92 %, y con 5 %, todo. La proyección es un AND: cada una de las 64 coordenadas de la imagen tiene que dejar apoyo en cada una de las 300 de la palabra.
+- **La familiaridad leída de la hetero aguanta mucho más.** Con daño al azar en la única memoria (A al azar), entre f = 0.05 y 0.25 no se nombra nada y se reconocen 795 a 800 de 800 emparejadas. La disociación «pierdo la asociación, conservo la familiaridad» le sale sola a A, sin una operación específica. La familiaridad de A empieza a caer recién con f = 0.5.
+- **La homo es la más frágil ante el mismo daño** (B global): 416 de 800 con f = 0.01, 0 con 0.1. Una celda de la homo es un punto único. Una celda de la lectura suma las de los 17 valores de palabra en esa coordenada.
+- Predicción 3: se cumple en las cuatro condiciones. La distancia entre nombrar y la familiaridad de A es mucho mayor de lo que esperaba.
+
+**Decisión según la regla.** A reproduce todo lo que hace B:
+- sin lesión, consulta por consulta;
+- con lesión focal, «desasociar» lo reproduce exacto en todo f;
+- y el daño al azar lo reproduce sin operación específica hasta f = 0.25, cuando nombrar ya es 0 desde f = 0.05.
+
+B focal solo se separa de A al azar desde f = 0.5, donde ya no queda nada que nombrar. **Las homo se reemplazan por lecturas de la hetero.** Con el mismo daño en todas las memorias, las homo son además lo primero que se pierde.
+
+**No se midió:** el lado de las palabras; el recuerdo con muestreo (se usó el prototipo); lesiones que restan conteos en lugar de destruir celdas; una lectura que promedie las 300 coordenadas de palabra en vez de leer solo la primera.
+
 ## Lectura
 
 Con el llenado oficial, las dos homo de cada agente se pueden calcular de su hetero sin cambiar ninguna decisión del sistema. Solo cambian los recuerdos muestreados, por la escala de los pesos. Los pesos tampoco mejoran el recuerdo: con pesos uniformes queda un poco más cerca del llenado (A).

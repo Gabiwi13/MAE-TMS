@@ -1,0 +1,1187 @@
+{
+  "chequeos": {
+    "apple": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 400.8
+    },
+    "car": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 400.9
+    },
+    "cow": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 400.8
+    },
+    "cup": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 400.8
+    },
+    "dog": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 405.0
+    },
+    "horse": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 404.9
+    },
+    "pear": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 405.1
+    },
+    "tomato": {
+      "interior_A_igual_a_B": true,
+      "lectura_A_igual_a_homo_oficial": true,
+      "segundos_llenado": 404.9
+    }
+  },
+  "sin_lesion": {
+    "B": {
+      "pareadas": {
+        "n": 800,
+        "familiar": 800,
+        "nombra": 800,
+        "nombra_bien": 800,
+        "nombra_y_familiar": 800,
+        "reconoce_sin_nombrar": 0,
+        "nombra_sin_familiar": 0,
+        "rechaza": 0
+      },
+      "sin_pareja": {
+        "n": 800,
+        "familiar": 800,
+        "nombra": 722,
+        "nombra_bien": 722,
+        "nombra_y_familiar": 722,
+        "reconoce_sin_nombrar": 78,
+        "nombra_sin_familiar": 0,
+        "rechaza": 0
+      },
+      "test": {
+        "n": 652,
+        "familiar": 643,
+        "nombra": 590,
+        "nombra_bien": 590,
+        "nombra_y_familiar": 590,
+        "reconoce_sin_nombrar": 53,
+        "nombra_sin_familiar": 0,
+        "rechaza": 9
+      },
+      "ajenas": {
+        "n": 4564,
+        "aceptadas": 3
+      }
+    },
+    "A": {
+      "pareadas": {
+        "n": 800,
+        "familiar": 800,
+        "nombra": 800,
+        "nombra_bien": 800,
+        "nombra_y_familiar": 800,
+        "reconoce_sin_nombrar": 0,
+        "nombra_sin_familiar": 0,
+        "rechaza": 0
+      },
+      "sin_pareja": {
+        "n": 800,
+        "familiar": 800,
+        "nombra": 722,
+        "nombra_bien": 722,
+        "nombra_y_familiar": 722,
+        "reconoce_sin_nombrar": 78,
+        "nombra_sin_familiar": 0,
+        "rechaza": 0
+      },
+      "test": {
+        "n": 652,
+        "familiar": 643,
+        "nombra": 590,
+        "nombra_bien": 590,
+        "nombra_y_familiar": 590,
+        "reconoce_sin_nombrar": 53,
+        "nombra_sin_familiar": 0,
+        "rechaza": 9
+      },
+      "ajenas": {
+        "n": 4564,
+        "aceptadas": 3
+      }
+    }
+  },
+  "A_contra_B_sin_lesion": {
+    "pareadas": {
+      "familiar_distinto": 0,
+      "nombra_distinto": 0,
+      "recuerdo_distinto": 0,
+      "n": 800
+    },
+    "sin_pareja": {
+      "familiar_distinto": 0,
+      "nombra_distinto": 0,
+      "recuerdo_distinto": 0,
+      "n": 800
+    },
+    "test": {
+      "familiar_distinto": 0,
+      "nombra_distinto": 0,
+      "recuerdo_distinto": 0,
+      "n": 652
+    }
+  },
+  "completar": {
+    "B": {
+      "n": 800,
+      "reconocidas": 800,
+      "error_medio_contra_la_original": 2.2279296875,
+      "error_medio_contra_otra": 2.24015625,
+      "mas_cerca_de_la_original": 383,
+      "mas_cerca_de_otra": 406
+    },
+    "A": {
+      "n": 800,
+      "reconocidas": 800,
+      "error_medio_contra_la_original": 2.2279296875,
+      "error_medio_contra_otra": 2.24015625,
+      "mas_cerca_de_la_original": 383,
+      "mas_cerca_de_otra": 406
+    }
+  },
+  "lesion": {
+    "0.01": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 64,
+          "nombra_bien": 64,
+          "nombra_y_familiar": 64,
+          "reconoce_sin_nombrar": 736,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 61,
+          "nombra_bien": 61,
+          "nombra_y_familiar": 61,
+          "reconoce_sin_nombrar": 739,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 44,
+          "nombra_bien": 44,
+          "nombra_y_familiar": 44,
+          "reconoce_sin_nombrar": 599,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 416,
+          "nombra": 64,
+          "nombra_bien": 64,
+          "nombra_y_familiar": 23,
+          "reconoce_sin_nombrar": 393,
+          "nombra_sin_familiar": 41,
+          "rechaza": 343
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 453,
+          "nombra": 61,
+          "nombra_bien": 61,
+          "nombra_y_familiar": 31,
+          "reconoce_sin_nombrar": 422,
+          "nombra_sin_familiar": 30,
+          "rechaza": 317
+        },
+        "test": {
+          "n": 652,
+          "familiar": 341,
+          "nombra": 44,
+          "nombra_bien": 44,
+          "nombra_y_familiar": 23,
+          "reconoce_sin_nombrar": 318,
+          "nombra_sin_familiar": 21,
+          "rechaza": 290
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 1
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 64,
+          "nombra_bien": 64,
+          "nombra_y_familiar": 64,
+          "reconoce_sin_nombrar": 736,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 799,
+          "nombra": 61,
+          "nombra_bien": 61,
+          "nombra_y_familiar": 61,
+          "reconoce_sin_nombrar": 738,
+          "nombra_sin_familiar": 0,
+          "rechaza": 1
+        },
+        "test": {
+          "n": 652,
+          "familiar": 642,
+          "nombra": 44,
+          "nombra_bien": 44,
+          "nombra_y_familiar": 44,
+          "reconoce_sin_nombrar": 598,
+          "nombra_sin_familiar": 0,
+          "rechaza": 10
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 64,
+          "nombra_bien": 64,
+          "nombra_y_familiar": 64,
+          "reconoce_sin_nombrar": 736,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 61,
+          "nombra_bien": 61,
+          "nombra_y_familiar": 61,
+          "reconoce_sin_nombrar": 739,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 44,
+          "nombra_bien": 44,
+          "nombra_y_familiar": 44,
+          "reconoce_sin_nombrar": 599,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "0.05": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 32,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 32,
+          "nombra_sin_familiar": 0,
+          "rechaza": 768
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 42,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 42,
+          "nombra_sin_familiar": 0,
+          "rechaza": 758
+        },
+        "test": {
+          "n": 652,
+          "familiar": 29,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 29,
+          "nombra_sin_familiar": 0,
+          "rechaza": 623
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "0.1": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 1,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 1,
+          "nombra_sin_familiar": 0,
+          "rechaza": 651
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 799,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 799,
+          "nombra_sin_familiar": 0,
+          "rechaza": 1
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 795,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 795,
+          "nombra_sin_familiar": 0,
+          "rechaza": 5
+        },
+        "test": {
+          "n": 652,
+          "familiar": 640,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 640,
+          "nombra_sin_familiar": 0,
+          "rechaza": 12
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "0.25": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 652
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 795,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 795,
+          "nombra_sin_familiar": 0,
+          "rechaza": 5
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 789,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 789,
+          "nombra_sin_familiar": 0,
+          "rechaza": 11
+        },
+        "test": {
+          "n": 652,
+          "familiar": 638,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 638,
+          "nombra_sin_familiar": 0,
+          "rechaza": 14
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 2
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "0.5": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 652
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 675,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 675,
+          "nombra_sin_familiar": 0,
+          "rechaza": 125
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 665,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 665,
+          "nombra_sin_familiar": 0,
+          "rechaza": 135
+        },
+        "test": {
+          "n": 652,
+          "familiar": 533,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 533,
+          "nombra_sin_familiar": 0,
+          "rechaza": 119
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "0.75": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 652
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 15,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 15,
+          "nombra_sin_familiar": 0,
+          "rechaza": 785
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 21,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 21,
+          "nombra_sin_familiar": 0,
+          "rechaza": 779
+        },
+        "test": {
+          "n": 652,
+          "familiar": 12,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 12,
+          "nombra_sin_familiar": 0,
+          "rechaza": 640
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    },
+    "1.0": {
+      "B focal": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "B global": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 652
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A al azar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 800
+        },
+        "test": {
+          "n": 652,
+          "familiar": 0,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 0,
+          "nombra_sin_familiar": 0,
+          "rechaza": 652
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 0
+        }
+      },
+      "A desasociar": {
+        "pareadas": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "sin_pareja": {
+          "n": 800,
+          "familiar": 800,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 800,
+          "nombra_sin_familiar": 0,
+          "rechaza": 0
+        },
+        "test": {
+          "n": 652,
+          "familiar": 643,
+          "nombra": 0,
+          "nombra_bien": 0,
+          "nombra_y_familiar": 0,
+          "reconoce_sin_nombrar": 643,
+          "nombra_sin_familiar": 0,
+          "rechaza": 9
+        },
+        "ajenas": {
+          "n": 4564,
+          "aceptadas": 3
+        }
+      },
+      "desasociar_lectura_intacta": 8
+    }
+  }
+}
