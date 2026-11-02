@@ -1,6 +1,6 @@
 # Copia con una sola hetero por agente
 
-Rama `una-hetero`, cortada de `2614dcb`. Cada agente guarda su contenido en una sola memoria, la hetero label ↔ latente. Las dos homo dejan de existir como memorias: sus pesos se leen de la hetero con `DomainView` (`src/associative_memory.py`), que cuenta cuántas veces se registró cada valor en cada coordenada, con pareja (interior) o sin ella (borde de valor indefinido).
+Rama `una-hetero`, cortada de `b0542ab`. Cada agente guarda su contenido en una sola memoria, la hetero label ↔ latente. Las dos homo dejan de existir como memorias: sus pesos se leen de la hetero con `DomainView` (`src/associative_memory.py`), que cuenta cuántas veces se registró cada valor en cada coordenada, con pareja (interior) o sin ella (borde de valor indefinido).
 
 La base para comparar es `MAE-TMS-base-homo`: el mismo commit, sin cambios.
 
@@ -52,7 +52,7 @@ Donde la homo vieja no era la marginal de la hetero, el experimento mide otra co
 
 ## Grupo 1 (30 oct, 2 h)
 
-Corrido en esta copia y comparado contra los resultados con homo de `results/` (git diff contra `2614dcb`). Logs y tiempos en `logs_comparacion/grupo1/`.
+Corrido en esta copia y comparado contra los resultados con homo de `results/` (git diff contra `b0542ab`). Logs y tiempos en `logs_comparacion/grupo1/`.
 
 | Script | Contra la base con homo |
 |---|---|
@@ -126,7 +126,7 @@ Logs y tiempos en `logs_comparacion/grupo3/`. Tiempos: exp21 78 min, exp17 114 (
 
 La evocación de etiquetas es una muestra de la hetero sin semilla fija. En la propia base, dos semillas con la misma memoria de contenido difieren en 32 de 656 etiquetas (Vc4) y 39 (Vc16); base contra copia, en 32 y 38. Es el mismo ruido.
 
-Los raw de exp21 en git son del 26 oct (25f84b7), anteriores a los cambios de pesos homo y del directorio (763c902, 3fd2c76, aa283f6, f4ef4c3, bae22c2), y ya no corresponden al código de `2614dcb`. Los README de `experimento21` y `medico*` siguen citando us_mama 88.5 para T-protocolo; con el código actual sale 86.5.
+Los raw de exp21 en git son del 26 oct (25f84b7), anteriores a los cambios de pesos homo y del directorio (763c902, 3fd2c76, aa283f6, f4ef4c3, bae22c2), y ya no corresponden al código de `b0542ab`. Los README de `experimento21` y `medico*` siguen citando us_mama 88.5 para T-protocolo; con el código actual sale 86.5.
 
 Dos problemas de exp13 que vienen de antes de esta copia:
 
