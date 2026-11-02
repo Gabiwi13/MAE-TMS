@@ -15,7 +15,9 @@ Uso:  python run_experiment11_monolithic.py [--quick] [--cuts 25,50,100,200]
           [--seeds 42-51] [--reps 3] [--chunks 6] [--workers 6] [--report-only]
       --image-only [--img-per-class 10]      solo imagen -> texto
       --ood-only --ood-file consultas.txt    solo fuera de dominio, banco nuevo
+      --arms T-protocolo                     solo esos brazos (por defecto los tres)
       EXP11_OUT=<carpeta>                    salida alternativa (pruebas)
+      EXP11_RAW=<carpeta>                    raw en otra carpeta (por defecto EXP11_OUT/raw)
 """
 import argparse
 import contextlib
@@ -43,6 +45,7 @@ from stage7_bidirectional import (
     load_global_stats, recognize_gated_right, evoke_labels, XI_VISUAL,
 )
 from hetero_memory import HeteroAssociativeMemory
+from associative_memory import DirectoryMemory
 from quantizer import quantize_binary
 from run_experiment9_member_loss import (
     Judge, load_classifier, load_bank, load_test_latents, recall_lived,
@@ -51,7 +54,7 @@ from run_experiment9_member_loss import (
 from run_rejection_probe import PROBE_QUERIES
 
 OUT_DIR = Path(os.environ.get("EXP11_OUT", ROOT / "results" / "experimento11"))
-RAW_DIR = OUT_DIR / "raw"
+RAW_DIR = Path(os.environ.get("EXP11_RAW", OUT_DIR / "raw"))
 LATENT_CACHE = ROOT / "results" / "experimento7" / "latents_cache.json"
 DATA_DIR = ROOT / "data" / "eth80"
 
@@ -262,6 +265,15 @@ def attach_cut(skeleton, blocks):
 
 # ---------- protocolo ----------
 
+def reset_directories(agents):
+    """Directorios vacíos al empezar cada trabajo: los especialistas se cargan
+    una vez por proceso y, sin esto, cada trabajo heredaba lo registrado por
+    los anteriores del mismo proceso."""
+    for ag in agents.values():
+        ag.mem_dir = DirectoryMemory(N, M_LABEL, K)
+        ag.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, K)
+
+
 def gate_accepts(agent_list, cues):
     """Rechazo del protocolo: ningún agente da soporte a ninguna pista."""
     best = 0.0
@@ -348,11 +360,11 @@ def dependence(groups, reps):
 CTX = {}
 
 
-def init_worker(cut, shm, bank, train_idx, ood, img_pools, reps, shared, do_image):
+def init_worker(cut, shm, bank, train_idx, ood, img_pools, reps, shared, do_image, arms=ARMS):
     """Cada proceso recibe los datos y reconecta las memorias una sola vez; las
     tareas quedan reducidas a (semilla, corte, trozo)."""
     CTX.update(cut=cut, bank=bank, train_idx=train_idx, ood=ood, img_pools=img_pools,
-               reps=reps, shared=shared, do_image=do_image,
+               reps=reps, shared=shared, do_image=do_image, arms=arms,
                cached=attach_cut(*shm) if shm is not None else load_cache(cut))
 
 
@@ -374,6 +386,8 @@ def run_job(args):
 
     cached = CTX["cached"]
     specialists, mono = cached["specialists"], cached["mono"]
+    reset_directories(specialists)
+    arms = CTX["arms"]
     g_min, g_max = load_global_stats()
     judge = Judge(load_classifier(), g_min, g_max)
     centroids = np.stack([judge.instances[c].mean(axis=0) for c in CLASSES])
@@ -387,6 +401,7 @@ def run_job(args):
     train_set = set(train_idx)
     train = [bank[i] for i in train_idx]
     meta["formacion_texto"] = form_text_directories(specialists, tme, train, rng)
+    meta["segundos_formacion"] = round(time.time() - t0, 1)
 
     held_idx = [i for i, it in enumerate(bank) if it["cues"] and i not in train_set]
     mine = held_idx[chunk::n_chunks]
@@ -395,7 +410,7 @@ def run_job(args):
         it = bank[idx]
         banco = "reservado"
         entry_rng = np.random.RandomState(seed * 1000 + idx)
-        for arm in ARMS:
+        for arm in arms:
             base = {"semilla": seed, "corte": cut, "brazo": arm, "banco": banco,
                     "query": it["query"], "truth": it["truth"]}
             if arm == "M":
@@ -439,13 +454,13 @@ def run_job(args):
                             row["niveles_vivos"] = live_levels_lived(responder, it["cues"])
                 rows.append(row)
 
-    ood_rows = ood_rows_for(seed, cut, specialists, mono, ood) if chunk == 0 else []
+    ood_rows = ood_rows_for(seed, cut, specialists, mono, ood, arms) if chunk == 0 else []
 
     img_rows = []
     if do_image and chunk == 0:
         img_train, img_test = img_pools
         meta["formacion_imagen"] = form_image_directories(specialists, tme, img_train, rng)
-        img_rows = image_rows(seed, cut, specialists, mono, img_test)
+        img_rows = image_rows(seed, cut, specialists, mono, img_test, arms)
 
     meta["segundos"] = round(time.time() - t0, 1)
     meta["trozo"] = chunk
@@ -457,14 +472,14 @@ def run_job(args):
     return str(out)
 
 
-def ood_rows_for(seed, cut, specialists, mono, ood):
+def ood_rows_for(seed, cut, specialists, mono, ood, arms=ARMS):
     """Fuera de dominio: solo la puerta de aceptación de cada brazo, sin recall."""
     rows = []
     for k, it in enumerate(ood):
         if not it["cues"]:
             continue
         entry_rng = np.random.RandomState(seed * 1000 + 900 + k)
-        for arm in ARMS:
+        for arm in arms:
             if arm == "M":
                 acepta = gate_accepts([mono], it["cues"])
                 dest = "monolitica" if acepta else None
@@ -498,10 +513,11 @@ def run_ood_job(args):
     t0 = time.time()
     cached = CTX["cached"]
     specialists, mono = cached["specialists"], cached["mono"]
+    reset_directories(specialists)
     bank, train_idx, ood = CTX["bank"], CTX["train_idx"], CTX["ood"]
     tme = TME()
     form_text_directories(specialists, tme, [bank[i] for i in train_idx], rng)
-    rows = ood_rows_for(seed, cut, specialists, mono, ood)
+    rows = ood_rows_for(seed, cut, specialists, mono, ood, CTX["arms"])
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"meta": {"semilla": seed, "corte": cut, "ood_n": len(ood),
                                         "segundos": round(time.time() - t0, 1)},
@@ -510,7 +526,7 @@ def run_ood_job(args):
     return str(out)
 
 
-def image_rows(seed, cut, specialists, mono, img_test):
+def image_rows(seed, cut, specialists, mono, img_test, arms=ARMS):
     """Imagen -> etiquetas: cada brazo evoca top-3 y acierta si alguna
     pertenece al vocabulario de la clase verdadera (como la etapa 7)."""
     vectors = load_all_vectors()
@@ -520,7 +536,7 @@ def image_rows(seed, cut, specialists, mono, img_test):
         all_vecs.update(vectors[c])
     rows = []
     for path, z_q, ci in img_test:
-        for arm in ARMS:
+        for arm in arms:
             row = {"semilla": seed, "corte": cut, "brazo": arm,
                    "imagen": path, "truth": CLASSES[ci]}
             if arm == "M":
@@ -559,11 +575,13 @@ def run_image_job(args):
     t0 = time.time()
     cached = CTX["cached"]
     specialists, mono = cached["specialists"], cached["mono"]
+    reset_directories(specialists)
     img_train, img_test = CTX["img_pools"]
     tme = TME()
     meta = {"semilla": seed, "corte": cut, "trozo_imagen": chunk,
-            "formacion_imagen": form_image_directories(specialists, tme, img_train, rng)}
-    rows = image_rows(seed, cut, specialists, mono, img_test[chunk::n_chunks])
+            "formacion_imagen": form_image_directories(specialists, tme, img_train, rng),
+            "segundos_formacion": round(time.time() - t0, 1)}
+    rows = image_rows(seed, cut, specialists, mono, img_test[chunk::n_chunks], CTX["arms"])
     meta["segundos"] = round(time.time() - t0, 1)
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"meta": meta, "texto": [], "ood": [], "imagen": rows},
@@ -895,7 +913,12 @@ def main():
     ap.add_argument("--ood-file", default=None,
                     help="consultas fuera de dominio, una por línea (por defecto run_rejection_probe)")
     ap.add_argument("--report-only", action="store_true")
+    ap.add_argument("--arms", default=",".join(ARMS),
+                    help="brazos a correr, separados por coma (por defecto los tres)")
     args = ap.parse_args()
+    arms = tuple(a.strip() for a in args.arms.split(","))
+    if any(a not in ARMS for a in arms):
+        ap.error(f"--arms: brazos válidos {ARMS}")
 
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -964,7 +987,7 @@ def main():
                 print(f"Corte N={c}: {len(jobs)} trabajos en {n_proc} procesos", flush=True)
                 with Pool(processes=n_proc, initializer=init_worker,
                           initargs=(c, (skeleton, blocks), bank, train_idx, ood, img_pools,
-                                    reps, shared, args.image)) as pool:
+                                    reps, shared, args.image, arms)) as pool:
                     for _ in pool.imap_unordered(job_fn, jobs, chunksize=1):
                         pass
                 for h in handles:
@@ -974,7 +997,7 @@ def main():
                       run_ood_job if args.ood_only else run_job)
             n_chunks = 1 if args.ood_only else args.chunks
             for c in cuts:
-                init_worker(c, None, bank, train_idx, ood, img_pools, reps, shared, args.image)
+                init_worker(c, None, bank, train_idx, ood, img_pools, reps, shared, args.image, arms)
                 for s in seeds:
                     for k in range(n_chunks):
                         job_fn((s, c, k, n_chunks))

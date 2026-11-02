@@ -1,0 +1,24 @@
+stage5_fill inicio 2026-11-02 07:34:15
+stage5_fill rc=0 55 min (fin 08:29:53)
+tau inicio 2026-11-02 08:29:53
+tau rc=0 0 min (fin 08:30:01)
+stage6_interaction inicio 2026-11-02 08:30:02
+exp16_latentes inicio 2026-11-02 08:30:02
+exp16_latentes rc=0 0 min (fin 08:30:48)
+exp16_a inicio 2026-11-02 08:30:48
+stage6_interaction rc=0 1 min (fin 08:31:47)
+stage7_bidirectional inicio 2026-11-02 08:31:47
+stage7_bidirectional rc=0 34 min (fin 09:06:22)
+stage8_mature inicio 2026-11-02 09:06:22
+stage8_mature rc=0 1 min (fin 09:07:58)
+fase_b inicio 2026-11-02 09:07:58
+fase_b rc=127 28 min (fin 09:36:18)
+exp16_b inicio 2026-11-02 09:36:26 (a mano: la cadena se cortó al detener fase_b)
+exp16_a rc=0 225 min (fin 12:15:48)
+evocacion_sinclase inicio 2026-11-02 12:15:48
+evocacion_sinclase rc=0 31 min (fin 12:47:42)
+evocacion_oficial inicio 2026-11-02 12:47:42
+exp16_b rc=0 225 min (fin 13:22:16)
+exp16_reporte inicio 2026-11-02 13:22:42
+exp16_reporte rc=0 0 min (fin 13:22:50)
+evocacion_oficial rc=0 38 min (fin 13:26:19)

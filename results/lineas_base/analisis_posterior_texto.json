@@ -1,0 +1,310 @@
+{
+ "compuerta_vs_vocabulario": {
+  "vocab_y_acepta": 101,
+  "vocab_y_rechaza": 0,
+  "fuera_y_acepta": 0,
+  "fuera_y_rechaza": 2963,
+  "discrepancias": []
+ },
+ "mcnemar_cotas": {
+  "cal400": {
+   "voto|-|- (inf) vs eam_temprana": [
+    0,
+    34,
+    1.1641532182693481e-10
+   ],
+   "voto|-|- (sup) vs eam_temprana": [
+    15,
+    0,
+    6.103515625e-05
+   ],
+   "5nn|media|cuant (inf) vs eam_temprana": [
+    8,
+    42,
+    1.163555804595262e-06
+   ],
+   "5nn|media|cuant (sup) vs eam_temprana": [
+    27,
+    8,
+    0.001878225477412343
+   ],
+   "tabla_conteos (inf) vs eam_temprana": [
+    18,
+    9,
+    0.12207812070846558
+   ],
+   "tabla_conteos (sup) vs eam_temprana": [
+    18,
+    9,
+    0.12207812070846558
+   ]
+  },
+  "proto80": {
+   "voto|-|- (inf) vs eam_temprana": [
+    0,
+    6,
+    0.03125
+   ],
+   "voto|-|- (sup) vs eam_temprana": [
+    4,
+    0,
+    0.125
+   ],
+   "5nn|media|crudo (inf) vs eam_temprana": [
+    5,
+    11,
+    0.210113525390625
+   ],
+   "5nn|media|crudo (sup) vs eam_temprana": [
+    9,
+    2,
+    0.0654296875
+   ],
+   "tabla_conteos (inf) vs eam_temprana": [
+    3,
+    5,
+    0.7265625
+   ],
+   "tabla_conteos (sup) vs eam_temprana": [
+    3,
+    5,
+    0.7265625
+   ]
+  },
+  "res171": {
+   "voto|-|- (inf) vs eam_temprana": [
+    0,
+    10,
+    0.001953125
+   ],
+   "voto|-|- (inf) vs T-protocolo, rango de p en 10 semillas": [
+    0.021270751953125,
+    0.143463134765625
+   ],
+   "voto|-|- (sup) vs eam_temprana": [
+    2,
+    0,
+    0.5
+   ],
+   "voto|-|- (sup) vs T-protocolo, rango de p en 10 semillas": [
+    0.1796875,
+    0.6875
+   ],
+   "tabla_conteos (inf) vs eam_temprana": [
+    3,
+    8,
+    0.2265625
+   ],
+   "tabla_conteos (inf) vs T-protocolo, rango de p en 10 semillas": [
+    0.0625,
+    0.7744140625
+   ],
+   "tabla_conteos (sup) vs eam_temprana": [
+    3,
+    8,
+    0.2265625
+   ],
+   "tabla_conteos (sup) vs T-protocolo, rango de p en 10 semillas": [
+    0.0625,
+    0.7744140625
+   ]
+  }
+ },
+ "ood_aceptadas": {
+  "voto|-|-": [
+   {
+    "query": "a kitchen appliance that heats food",
+    "pred": [
+     "apple"
+    ]
+   },
+   {
+    "query": "a wooden table and chairs",
+    "pred": [
+     "cup",
+     "dog"
+    ]
+   }
+  ],
+  "eam_temprana": [
+   {
+    "query": "a kitchen appliance that heats food",
+    "pred": [
+     "apple"
+    ]
+   },
+   {
+    "query": "a wooden table and chairs",
+    "pred": [
+     "cup"
+    ]
+   }
+  ],
+  "tabla_conteos[cal400]": [
+   {
+    "query": "a kitchen appliance that heats food",
+    "pred": [
+     "apple"
+    ]
+   },
+   {
+    "query": "a tall building with many floors",
+    "pred": [
+     "dog"
+    ]
+   },
+   {
+    "query": "a cold mountain covered in snow",
+    "pred": [
+     "cup"
+    ]
+   },
+   {
+    "query": "a wooden table and chairs",
+    "pred": [
+     "cup"
+    ]
+   },
+   {
+    "query": "a piano with black and white keys",
+    "pred": [
+     "cow"
+    ]
+   },
+   {
+    "query": "a bridge across a wide river",
+    "pred": [
+     "pear"
+    ]
+   },
+   {
+    "query": "a thunderstorm with heavy rain",
+    "pred": [
+     "car"
+    ]
+   },
+   {
+    "query": "a pillow and a blanket on a bed",
+    "pred": [
+     "dog"
+    ]
+   }
+  ],
+  "tabla_conteos[res171]": [
+   {
+    "query": "a kitchen appliance that heats food",
+    "pred": [
+     "apple"
+    ]
+   },
+   {
+    "query": "a wooden table and chairs",
+    "pred": [
+     "cup"
+    ]
+   },
+   {
+    "query": "a piano with black and white keys",
+    "pred": [
+     "dog"
+    ]
+   },
+   {
+    "query": "a thunderstorm with heavy rain",
+    "pred": [
+     "car"
+    ]
+   }
+  ]
+ },
+ "aceptacion_eam_vs_voto": {
+  "cal400": {
+   "eam_acepta": 393,
+   "voto_acepta": 393,
+   "difieren": []
+  },
+  "proto80": {
+   "eam_acepta": 76,
+   "voto_acepta": 76,
+   "difieren": []
+  },
+  "res171": {
+   "eam_acepta": 171,
+   "voto_acepta": 171,
+   "difieren": []
+  },
+  "ood40": {
+   "eam_acepta": 2,
+   "voto_acepta": 2,
+   "difieren": []
+  }
+ },
+ "voto_ponderado_por_frecuencia": {
+  "cal400|abs": {
+   "acierto_pct": 81.04,
+   "empates": 14,
+   "misma_decision_que_eam": 334,
+   "n": 400,
+   "mcnemar_inf_vs_eam": [
+    9,
+    51,
+    3.085035609438902e-08
+   ]
+  },
+  "cal400|rel": {
+   "acierto_pct": 88.0,
+   "empates": 0,
+   "misma_decision_que_eam": 380,
+   "n": 400,
+   "mcnemar_inf_vs_eam": [
+    5,
+    13,
+    0.09625244140625
+   ]
+  },
+  "proto80|abs": {
+   "acierto_pct": 69.79,
+   "empates": 4,
+   "misma_decision_que_eam": 64,
+   "n": 80,
+   "mcnemar_inf_vs_eam": [
+    1,
+    12,
+    0.00341796875
+   ]
+  },
+  "proto80|rel": {
+   "acierto_pct": 80.0,
+   "empates": 0,
+   "misma_decision_que_eam": 76,
+   "n": 80,
+   "mcnemar_inf_vs_eam": [
+    1,
+    2,
+    1.0
+   ]
+  },
+  "res171|abs": {
+   "acierto_pct": 90.94,
+   "empates": 3,
+   "misma_decision_que_eam": 154,
+   "n": 171,
+   "mcnemar_inf_vs_eam": [
+    2,
+    15,
+    0.002349853515625
+   ]
+  },
+  "res171|rel": {
+   "acierto_pct": 96.49,
+   "empates": 0,
+   "misma_decision_que_eam": 167,
+   "n": 171,
+   "mcnemar_inf_vs_eam": [
+    1,
+    3,
+    0.625
+   ]
+  }
+ }
+}

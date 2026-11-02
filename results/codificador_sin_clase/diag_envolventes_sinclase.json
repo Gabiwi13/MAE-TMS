@@ -1,0 +1,73 @@
+{
+ "raiz": "C:\\Users\\aq99l\\Projects\\MAE-TMS-sinclase",
+ "n_test_con_energia": 656,
+ "propia_acepta": 0.9832317073170732,
+ "ajenas_que_aceptan_media": 2.2713414634146343,
+ "alguna_ajena_acepta": 0.8292682926829268,
+ "por_clase": {
+  "apple": {
+   "n": 82,
+   "propia_acepta": 0.975609756097561,
+   "ajenas_que_aceptan_media": 1.5975609756097562,
+   "alguna_ajena_acepta": 0.8536585365853658
+  },
+  "car": {
+   "n": 82,
+   "propia_acepta": 1.0,
+   "ajenas_que_aceptan_media": 2.1463414634146343,
+   "alguna_ajena_acepta": 0.7560975609756098
+  },
+  "cow": {
+   "n": 82,
+   "propia_acepta": 0.9634146341463414,
+   "ajenas_que_aceptan_media": 3.548780487804878,
+   "alguna_ajena_acepta": 0.9878048780487805
+  },
+  "cup": {
+   "n": 82,
+   "propia_acepta": 0.9878048780487805,
+   "ajenas_que_aceptan_media": 1.4268292682926829,
+   "alguna_ajena_acepta": 0.6219512195121951
+  },
+  "dog": {
+   "n": 82,
+   "propia_acepta": 0.9634146341463414,
+   "ajenas_que_aceptan_media": 3.158536585365854,
+   "alguna_ajena_acepta": 0.975609756097561
+  },
+  "horse": {
+   "n": 82,
+   "propia_acepta": 0.9878048780487805,
+   "ajenas_que_aceptan_media": 3.073170731707317,
+   "alguna_ajena_acepta": 0.975609756097561
+  },
+  "pear": {
+   "n": 82,
+   "propia_acepta": 0.9878048780487805,
+   "ajenas_que_aceptan_media": 2.1707317073170733,
+   "alguna_ajena_acepta": 0.8292682926829268
+  },
+  "tomato": {
+   "n": 82,
+   "propia_acepta": 1.0,
+   "ajenas_que_aceptan_media": 1.048780487804878,
+   "alguna_ajena_acepta": 0.6341463414634146
+  }
+ },
+ "fisher_por_coordenada": {
+  "mediana": 0.23684819042682648,
+  "media": 0.4375699460506439,
+  "max": 3.200923204421997,
+  "n_mayor_que_1": 5
+ },
+ "niveles_ocupados_por_coordenada": {
+  "apple": 17.03125,
+  "car": 20.15625,
+  "cow": 17.796875,
+  "cup": 19.4375,
+  "dog": 17.765625,
+  "horse": 18.1875,
+  "pear": 15.53125,
+  "tomato": 16.6875
+ }
+}

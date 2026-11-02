@@ -1,0 +1,5 @@
+Máquina: Windows 11, CPU de 20 hilos, GPU NVIDIA RTX PRO 1000 (solo para codificar las 656 imágenes de prueba).
+lineas_base_texto.py          47.7 s  (incluye cargar spaCy y las memorias, y los controles de madura B1 con N = 400 y N = 80)
+lineas_base_imagen.py         21.3 s  (656 latentes, réplica del ruteo de la etapa 7, 24 combinaciones de decisor)
+analisis_posterior_texto.py   39 s  (medido en la segunda corrida, con la calibración corriendo en paralelo)
+Copia de data/ y models/ al worktree: 6 s

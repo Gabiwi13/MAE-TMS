@@ -1,0 +1,796 @@
+% Generado por generar_capitulos.py a partir de ../.tex8
+\chapter{Desarrollo del Proyecto}
+
+\section{Producto propuesto}
+\label{sec:arquitectura}
+% <- 03, introducción y componentes
+Esta sección describe la arquitectura completa del sistema distribuido de memoria
+transactiva de ocho módulos.
+Se presentan primero los componentes (Sección~\ref{sec:componentes}), luego los tres
+diagramas de flujo que muestran el llenado de memorias, la fase temprana y la fase
+madura (Sección~\ref{sec:diagramas}), y finalmente la formalización de todas las
+operaciones del sistema (Sección~\ref{sec:operaciones}).
+
+\subsection{Componentes del sistema}
+\label{sec:componentes}
+
+Cada uno de los ocho módulos guarda su contenido en una sola memoria heteroasociativa
+$M^H_{\mathrm{dom}}$, que asocia etiquetas con latentes de imagen, y lleva dos directorios,
+uno para pistas de texto y otro para pistas de imagen; el TME lleva otros dos.
+En total son \textbf{26 memorias asociativas} (tres por módulo, más dos del TME); la
+Tabla~\ref{tab:memorias} resume sus dominios y dimensiones.
+Fuera del sistema de memorias, dos componentes de percepción actúan como interfaz con
+el mundo: un codificador ResNet18 \cite{he2016resnet} que proyecta imágenes de $128\times128$
+píxeles al espacio latente $\mathbf{z} \in \mathbb{R}^{64}$, y un decodificador convolucional
+transpuesto que invierte esa proyección; ambos se entrenan de antemano
+(Sección~\ref{sec:percepcion}) y sus pesos permanecen fijos durante la operación del
+sistema de memorias.
+Las representaciones semánticas se construyen con vectores fastText de 300 dimensiones
+\cite{bojanowski2017fasttext} procesados por spaCy \cite{honnibal2020spacy}, con
+vocabulario extraído de ConceptNet 5.7 \cite{speer2017conceptnet} y
+\emph{cuantización por magnitud} en 16 niveles (Sección~\ref{sec:pipeline-semantico}).
+
+\begin{table}[H]
+\centering
+\caption{Las 26 memorias asociativas del sistema EAM-TMS ($K=8$ módulos).
+Las lecturas de dominio $M^L$ y $M^R$ (ecuación~\eqref{eq:marginal}) no son memorias: se
+calculan de $M^H_{\mathrm{dom}}$.
+Para cada memoria se indica $(n, m \leftrightarrow p, q)$, como en la
+Sección~\ref{sec:hetero4d}, o $(n, m \to p, q)$ cuando la relación es unidireccional.
+El dominio \emph{etiqueta} corresponde a vectores fastText cuantizados por magnitud;
+el dominio \emph{latente} a códigos ResNet18 cuantizados.
+El dominio derecho de los directorios tiene una coordenada binaria por módulo
+($q{=}2$: ``conoce''\,/\,``no conoce'').}
+\label{tab:memorias}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Componente} & \textbf{Memoria} & \textbf{Tipo} & \textbf{Dimensiones} \\
+\midrule
+\multirow{3}{*}{Módulo $k$ ($\times 8$)} &
+  $M^H_{\mathrm{dom}}$ & Heteroasociativa & $(300, 16 \leftrightarrow 64, 32)$ \\
+& $M^L_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
+& $M^R_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
+\midrule
+\multirow{2}{*}{TME} &
+  $M^L_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
+& $M^R_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Todas las memorias de directorio son heteroasociativas, y su dominio derecho codifica
+la identidad $g$ del módulo ganador con un vector $\mathbf{g} \in \{0,1\}^{8}$: una
+coordenada binaria por módulo ($q{=}2$).
+El estado ``desconocido'' no tiene coordenada propia: es el rechazo, y ocurre cuando
+ningún módulo obtiene soporte en la lectura del directorio.
+
+Cada módulo mantiene \emph{dos} directorios, uno por modalidad de la pista: el de
+\textbf{texto} $M^L_{\mathrm{dir}}$ (pista de etiqueta $300\times16$) y el \textbf{visual}
+$M^R_{\mathrm{dir}}$ (pista de latente $64\times32$). Ambos apuntan al mismo destino (la
+identidad del módulo), pero las pistas viven en espacios distintos, por lo que requieren
+relaciones heteroasociativas separadas.
+El TME conserva además sus propios $M^L_{\mathrm{dir}}$ y $M^R_{\mathrm{dir}}$, con el
+registro completo del grupo; sirven de diagnóstico y ningún enrutamiento los consulta.
+
+Registrar una transacción es asociar la pista ($\mathbf{v}_q$ en $M^L_{\mathrm{dir}}$,
+$\mathbf{z}_q$ en $M^R_{\mathrm{dir}}$) con el identificador $g$ del módulo ganador.
+Registran solo quienes participaron: el módulo por el que entró la consulta y el
+ganador; el TME las registra todas (la \emph{actualización del directorio} de Wegner,
+por transacción).
+Los directorios son, por tanto, \emph{perspectivales}: cada módulo sabe de los demás lo
+que los vio ganar.
+En el directorio visual, cada percepción se registra con sus 16 variantes
+(Sección~\ref{sec:dataset}) y el mismo ganador.
+
+Esto permite la coordinación de la recuperación de Wegner también para imágenes: una
+imagen puede entrar por \emph{cualquier} módulo, que consulta su $M^R_{\mathrm{dir}}$ y
+los de los módulos que conoce y la reenvía al especialista, o la rechaza si nadie la
+contiene (Sección~\ref{sec:operaciones}).
+Un puente desde la memoria de contenido del módulo de entrada hacia su directorio de
+texto no serviría: cuando el módulo de entrada no es el especialista, su memoria de
+contenido no contiene el latente ajeno y el puente no redirige.
+
+\paragraph{Notación.}
+Una consulta de texto produce una pista por token, $\mathbf{v}_q \in
+\{0,\ldots,15\}^{300}$: el vector fastText del token, cuantizado por magnitud.
+Una imagen produce una pista, $\mathbf{z}_q \in \{0,\ldots,31\}^{64}$: su latente
+cuantizado.
+$g$ es el módulo ganador de una transacción; $s_k$, la puntuación que el módulo $k$ da
+a una pista con su memoria de contenido, y $\hat{s}_k$, la que un directorio da al
+módulo $k$ con la lectura B1 (Sección~\ref{sec:operaciones}).
+
+\section{Descripción de la metodología}
+\label{sec:metodologia}
+% <- 04, apertura
+Este capítulo describe el conjunto de datos y su partición, la representación de texto
+y de imagen, el banco de consultas, los parámetros de las memorias, la auditoría de
+fidelidad, las métricas y la organización de los experimentos.
+En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
+directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
+va de una imagen a los directorios visuales y a las memorias de contenido.
+
+% ---------------------------------------------------------------
+
+% <- 03, diagramas y operaciones
+\section{Diagramas de flujo}
+\label{sec:diagramas}
+
+Los tres diagramas siguientes muestran las tres etapas operativas del sistema: el
+llenado de la memoria de contenido (Figura~\ref{fig:arq-llenado}), la recuperación
+mediada por el TME en la fase temprana (Figura~\ref{fig:arq-temprana}) y la
+recuperación punto a punto en la fase madura (Figura~\ref{fig:arq-madura}).
+
+% ------------------------------------------------------------------
+% Diagrama 1: Llenado
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\resizebox{0.98\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance = 0.95cm and 2.4cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\scriptsize,
+        minimum height=0.9cm, minimum width=2.45cm,
+        inner sep=3pt
+    },
+    boxg/.style = {
+        rectangle, draw=gray, dashed, line width=0.4pt,
+        align=center, font=\scriptsize,
+        minimum height=0.9cm, minimum width=2.45cm,
+        inner sep=3pt, text=gray
+    },
+    arr/.style  = {-{Stealth[length=2mm]}, line width=0.4pt},
+    route/.style = {arr, rounded corners=5pt},
+    lbl/.style  = {font=\scriptsize, midway, above=2pt, align=center, fill=white, inner sep=1pt},
+    lblb/.style = {font=\scriptsize, midway, below=2pt, align=center, fill=white, inner sep=1pt},
+]
+
+% ---- Rama semántica (izquierda) ----
+\node[box] (conceptnet) {ConceptNet 5.7\\extracción bidireccional\\+ masa asociativa};
+\node[box, right=of conceptnet] (ft) {fastText\\subword 300D};
+\node[box, right=of ft] (sign) {$v/S$, escala\\global guardada};
+\node[box, right=of sign] (qL) {Cuantización\\por magnitud\\($m{=}16$)};
+
+% ---- Lectura de labels ----
+\node[box, dashed, right=2.4cm of qL] (ML) {$M^L$\\lectura de $M^H$};
+
+% ---- Etiqueta secuencia ----
+\node[box, below=1.8cm of qL] (seq) {Secuencia\\de etiquetas\\(expandida por\\frecuencia)};
+
+% ---- Rama visual (debajo de rama semántica) ----
+\node[box, below=4.4cm of conceptnet] (eth80) {ETH-80\\8 clases\\200 imágenes/clase\\(16 variantes)};
+\node[box, right=of eth80] (resnet) {Codificador\\ResNet18\\$128\!\times\!128$};
+\node[box, right=of resnet] (zR) {$\mathbf{z}\in\mathbb{R}^{64}$};
+\node[box, right=of zR] (qR) {Cuantización\\global\\min--max};
+
+% ---- Lectura latente y memoria de contenido ----
+\node[box, dashed, right=2.4cm of qR] (MR) {$M^R$\\lectura de $M^H$};
+\node[box, below=1.9cm of ML]  (MH) {$M^H_{\mathrm{dom}}$\\heteroasociativa\\$(300,16\!\leftrightarrow\!64,32)$};
+
+% ---- Flechas rama semántica ----
+\draw[arr] (conceptnet) -- node[lbl]{etiquetas,\\frec.} (ft);
+\draw[arr] (ft) -- node[lbl]{$\mathbf{v}\in\mathbb{R}^{300}$} (sign);
+\draw[arr] (sign) -- node[lbl]{$[-1,1]^{300}$} (qL);
+\draw[arr] (qL) -- (seq);
+
+% ---- Flechas rama visual ----
+\draw[arr] (eth80) -- (resnet);
+\draw[arr] (resnet) -- node[lbl]{$\mathbf{z}$} (zR);
+\draw[arr] (zR) -- (qR);
+
+% ---- Lecturas de M^H (por la derecha, para no pisar las rutas de registro) ----
+\draw[route, dashed] (MH.east) -- ++(0.45,0) |- (ML.east);
+\draw[route, dashed] (MH.east) -- ++(0.45,0) |- (MR.east);
+
+% ---- Registro emparejado imagen-etiqueta en M^H ----
+\coordinate (semroute) at ($(qL.south east)+(0.65,-0.65)$);
+\coordinate (visroute) at ($(qR.north east)+(0.70,0.80)$);
+\draw[route] (qL.south east) -- (semroute) -| (MH.north)
+    node[pos=0.78, above=2pt, font=\scriptsize, fill=white, inner sep=1pt]{$\lambda(\mathbf{v}_q, \mathbf{z}_q)$};
+\draw[arr] (seq.east) -- (MH.west);
+\draw[route] (qR.north east) -- (visroute) |- (MH.south);
+
+\end{tikzpicture}%
+}
+\caption{Llenado de la memoria de contenido.
+La rama semántica toma el vocabulario de cada clase de ConceptNet y cuantiza sus
+vectores fastText por magnitud sobre una escala global guardada $S$
+(Sección~\ref{sec:pipeline-semantico}).
+La rama visual cuantiza los códigos ResNet18 de las 200 imágenes de llenado por clase,
+cada una en sus 16 variantes (Sección~\ref{sec:dataset}): 3200 registros por clase.
+El registro en $M^H_{\mathrm{dom}}$ sigue el esquema \emph{imagen-etiqueta}:
+el latente $i$-ésimo (cada variante cuenta como uno) se registra emparejado con la etiqueta
+$\mathbf{v}_q^{(i \bmod L)}$ de la secuencia expandida por frecuencias
+(de longitud $L$), de modo que cada clase aporta el mismo número de registros.
+Las lecturas $M^L$ y $M^R$ (punteadas) se calculan de $M^H_{\mathrm{dom}}$ con la
+ecuación~\eqref{eq:marginal}; no se llenan.}
+\label{fig:arq-llenado}
+\end{figure}
+
+% ------------------------------------------------------------------
+% Diagrama 2: Fase temprana
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance = 0.55cm and 1.0cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\footnotesize,
+        minimum height=0.9cm, minimum width=2.5cm,
+        inner sep=3pt
+    },
+    mod/.style = {box, minimum height=1.2cm, minimum width=3.2cm},
+    arr/.style = {-{Stealth[length=2mm]}, line width=0.4pt},
+    lbl/.style = {font=\footnotesize, midway, above=1pt, fill=white, inner sep=1pt},
+]
+
+% ---- Columna izquierda: de la consulta a la pista ----
+\node[box] (query) {Consulta de texto\\(entra por un\\módulo al azar)};
+\node[box, below=of query] (spacy) {spaCy: lemas\\NOUN/ADJ/PROPN\\+ rescate léxico};
+\node[box, below=of spacy] (vq) {fastText, $v/S$,\\16 niveles: $\mathbf{v}_q$};
+
+% ---- TME ----
+\node[box, right=1.1cm of vq, minimum height=1.4cm] (tme) {TME\\(mediador)};
+
+% ---- Módulos ----
+\node[mod, right=1.5cm of tme] (A1) {Módulo $k$\\$w$ y $\Pi$ de $M^H$};
+\node[mod, above=0.9cm of A1] (A0) {Módulo 0 (\texttt{apple})\\$w$ y $\Pi$ de $M^H$};
+\node[mod, below=0.9cm of A1] (A7) {Módulo 7 (\texttt{tomato})\\$w$ y $\Pi$ de $M^H$};
+\node at ($(A0.south)!0.5!(A1.north)$) {$\vdots$};
+\node at ($(A1.south)!0.5!(A7.north)$) {$\vdots$};
+
+% ---- Ganador y salida ----
+\node[box, right=1.4cm of A1] (argmax) {ganador\\$g = \arg\max_k \sum s_k$};
+\node[box, right=1.0cm of argmax] (rec) {Recuperación $\beta$\\$\hat{\mathbf{z}}_q$};
+\node[box, below=of rec] (dec) {Decodificador};
+\node[box, below=of dec] (img) {Imagen\\recuperada};
+
+% ---- Actualización del directorio ----
+\node[box, below=1.0cm of tme, minimum width=3.2cm] (dirup)
+    {Actualización del\\directorio $(\mathbf{v}_q \to g)$};
+\node[font=\footnotesize\itshape, below=0.15cm of dirup, text width=4.8cm, align=center]
+    {Registran el módulo de entrada,\\el ganador y el TME\\(\textit{directory updating})};
+
+% ---- Flechas ----
+\draw[arr] (query) -- (spacy);
+\draw[arr] (spacy) -- (vq);
+\draw[arr] (vq) -- (tme);
+\draw[arr] (tme.east) -- (A0.west);
+\draw[arr] (tme.east) -- (A1.west);
+\draw[arr] (tme.east) -- (A7.west);
+\draw[arr] (A0.east) -| node[pos=0.25, above, font=\footnotesize]{$s_0$} (argmax.north);
+\draw[arr] (A1.east) -- node[lbl]{$s_k$} (argmax.west);
+\draw[arr] (A7.east) -| node[pos=0.25, below, font=\footnotesize]{$s_7$} (argmax.south);
+\draw[arr] (argmax) -- (rec);
+\draw[arr] (rec) -- (dec);
+\draw[arr] (dec) -- (img);
+\draw[arr] (tme) -- (dirup);
+
+\end{tikzpicture}%
+}
+\caption{Fase temprana: aprendizaje mediado por el TME.
+La consulta se codifica con fastText y cuantización por magnitud, el TME la difunde a
+los ocho módulos, cada módulo devuelve una puntuación $s_k$ con la proyección de su
+memoria heteroasociativa, ponderada por los pesos que lee de ella misma, y el ganador
+$g = \arg\max_k \sum s_k$ ejecuta la recuperación $\beta$ hacia el espacio latente.
+Registran el par $(\mathbf{v}_q, g)$ el módulo por el que entró la consulta (al azar),
+el ganador y el TME; los demás módulos no presenciaron la transacción.}
+\label{fig:arq-temprana}
+\end{figure}
+
+% ------------------------------------------------------------------
+% Diagrama 3: Fase madura
+% ------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance = 0.6cm and 0.8cm,
+    box/.style = {
+        rectangle, draw, line width=0.4pt,
+        align=center, font=\footnotesize,
+        minimum height=1.0cm, minimum width=2.2cm,
+        inner sep=3pt
+    },
+    boxg/.style = {box, draw=gray, dashed, text=gray},
+    arr/.style  = {-{Stealth[length=2mm]}, line width=0.4pt},
+    arrg/.style = {arr, draw=gray, dashed},
+    lbl/.style  = {font=\footnotesize, midway, above=1pt, fill=white, inner sep=1pt},
+]
+
+% ---- Fila principal ----
+\node[box] (query) {Consulta\\(texto o imagen)};
+\node[box, right=of query] (tau) {Solo imagen:\\$\|\mathbf{z}\| \geq \tau$};
+\node[box, right=of tau] (entrada) {Módulo de\\entrada};
+\node[box, right=1.4cm of entrada] (mdir)
+    {$M^L_{\mathrm{dir}}$ / $M^R_{\mathrm{dir}}$ propios\\y de los conocidos\\lectura B1, $\xi{=}0$};
+\node[box, right=1.4cm of mdir] (destino) {Módulo\\destino};
+
+% ---- Compuerta, salida y rechazo ----
+\node[box, below=1.2cm of destino] (gate) {Solo texto: ¿su\\contenido contiene\\la pista?};
+\node[box, below=1.0cm of gate] (salida)
+    {Texto: recuperación $\beta$\\y decodificador $\to$ imagen\\Imagen: evocación $\to$ etiquetas};
+\node[box] (rechazo) at (mdir |- gate) {RECHAZO\\(el grupo no inventa\\referentes)};
+
+% ---- TME fuera del circuito ----
+\node[boxg, above=1.0cm of entrada] (tme) {TME};
+\node[font=\footnotesize\itshape, text=gray, right=0.2cm of tme, align=left]
+    {fuera del circuito:\\el mediador ya no participa};
+
+% ---- Flechas ----
+\draw[arr] (query) -- (tau);
+\draw[arr] (tau) -- (entrada);
+\draw[arr] (entrada) -- node[lbl]{$\mathbf{v}_q$ / $\mathbf{z}_q$} (mdir);
+\draw[arr] (mdir) -- node[lbl]{soporte} (destino);
+\draw[arr] (destino) -- (gate);
+\draw[arr] (gate) -- node[right, font=\footnotesize]{sí} (salida);
+\draw[arr] (gate) -- node[above, font=\footnotesize]{no} (rechazo);
+\draw[arr] (mdir) -- node[right, font=\footnotesize]{sin soporte} (rechazo);
+\draw[arr] (tau.south) |- node[pos=0.25, left, font=\footnotesize]{$\|\mathbf{z}\| < \tau$} (rechazo.west);
+\draw[arrg] (entrada) -- (tme);
+
+\end{tikzpicture}%
+}
+\caption{Fase madura: recuperación punto a punto.
+La consulta entra por un módulo (al azar en texto; en la evaluación visual, uno que no
+es el especialista).
+Una imagen cuyo latente no alcanza la energía mínima $\tau$ se rechaza antes de
+cualquier memoria.
+El módulo de entrada suma la lectura B1 de su directorio de la modalidad de la pista
+($M^L_{\mathrm{dir}}$ o $M^R_{\mathrm{dir}}$, ambos con $\xi{=}0$) y la de los
+directorios de los módulos que conoce, y reenvía al de mayor puntuación sin pasar por
+el TME (en gris); si nadie en ese círculo tiene soporte, la consulta pasa a los
+conocidos.
+En texto, el destino responde solo si su memoria de contenido contiene la pista.
+Si ningún directorio alcanzable tiene soporte, o el destino no contiene la pista, el
+sistema rechaza: el grupo no inventa referentes.}
+\label{fig:arq-madura}
+\end{figure}
+
+\section{Operaciones del sistema}
+\label{sec:operaciones}
+
+\subsection*{Puntuación de enrutamiento con compuerta}
+
+Para un módulo $k$, dada una pista $\mathbf{v}_q$ (un token de la consulta, cuantizado),
+el proceso de enrutamiento es el siguiente.
+
+\begin{enumerate}
+    \item Se obtienen los pesos de reconocimiento de la pista en la lectura de etiquetas de la
+    memoria de contenido (ecuación~\eqref{eq:marginal}):
+    \begin{equation}
+        \mathbf{w} = \eta(\mathbf{v}_q,\; M^L)
+        \label{eq:pesos-routing}
+    \end{equation}
+    y se normalizan $w_i \leftarrow w_i / \max_j w_j$ (la proyección es invariante a esa
+    escala; ecuación~\eqref{eq:normalizacion-pesos}).
+
+    \item Se computa la proyección AND-ponderada sobre la memoria de contenido:
+    \begin{equation}
+        \Pi_k = \Pi(\mathbf{v}_q,\; \mathbf{w},\; M^H_{\mathrm{dom}})
+        \label{eq:proyeccion-routing}
+    \end{equation}
+    según la ecuación~\eqref{eq:proyeccion-AND}.
+
+    \item La puntuación del módulo $k$ incorpora una \textbf{compuerta de contención}:
+    \begin{equation}
+        s_k = \begin{cases}
+            0 & \text{si } \exists\, j : \sum_l \Pi_k[j, l] = 0 \\[4pt]
+            \dfrac{\displaystyle\sum_{j,l} \Pi_k[j, l]}%
+                  {|\{(j,l) : \Pi_k[j,l] \neq 0\}|} & \text{en otro caso}
+        \end{cases}
+        \label{eq:score-gated}
+    \end{equation}
+    La compuerta anula la puntuación si alguna fila del dominio derecho carece de
+    soporte: el módulo no opina sobre lo que no contiene.
+    En el caso contrario, $s_k$ es la \emph{activación media} de las celdas no nulas.
+\end{enumerate}
+
+El módulo ganador es $g = \arg\max_k \sum_{\text{tokens}} s_k$: la suma recorre las
+pistas de la consulta, una por token.
+En este sistema, esta suma hace el papel de la asignación de información de Wegner y
+vive fuera de las memorias por diseño.
+Si $s_k = 0$ para todos los módulos, el sistema emite un \textbf{rechazo}.
+
+\paragraph{Por qué la activación media es comparable.}
+Con el llenado \emph{imagen-etiqueta}, cada módulo acumula el mismo número de registros
+en $M^H_{\mathrm{dom}}$ (las mismas imágenes de llenado por clase, con las mismas
+variantes, emparejadas con la secuencia de etiquetas expandida por frecuencias).
+Las masas de registro quedan igualadas por construcción, de modo que la activación media
+$s_k$ es directamente comparable entre módulos sin ajustes adicionales.
+
+\subsection*{Lectura B1 del directorio}
+
+Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección de la pista $\mathbf{v}_q$
+en el directorio $M^L_{\mathrm{dir}}$ del módulo, restringida al bit $b=1$
+(``el módulo $k$ conoce'').
+La puntuación B1 se define como:
+\begin{equation}
+    \hat{s}_k = \frac{\Pi^{\mathrm{dir}}_k(\mathbf{v}_q,\; b{=}1)}{c_k + 1}
+    \label{eq:b1}
+\end{equation}
+donde $c_k$ es el número total de registros del módulo $k$ en el directorio.
+
+\paragraph{Por qué dividir entre el conteo.}
+La especialización real produce masas desiguales entre módulos: al final del protocolo
+completo (Sección~\ref{sec:proto-completo}) los conteos del directorio fueron
+$[46, 16, 40, 25, 30, 18, 21, 31]$.
+La puntuación cruda de una proyección heteroasociativa crece con la masa de registros,
+por lo que un módulo con más registros en el directorio obtendría ventaja sin mérito.
+La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
+registro}, haciendo que la puntuación refleje calidad de especialización y no cantidad.
+Esta es la \textbf{única normalización externa} del sistema de directorios.
+El conteo $c_k$ se guarda como un contador aparte, pero no agrega información: es el
+número de veces que se registró ``conoce'' para el módulo $k$, el mismo en todas las
+características de la relación.
+La Sección~\ref{sec:calibracion} mide su efecto.
+
+\subsection*{Coordinación transactiva de la recuperación}
+
+En la fase madura, el módulo de entrada suma la lectura B1 de su directorio y la de los
+directorios de los módulos que conoce (los que vio ganar alguna transacción) y reenvía
+al de mayor puntuación.
+Si nadie en ese círculo tiene soporte, la consulta pasa al conocido con más registros,
+que suma a su vez los directorios de sus propios conocidos aún no consultados.
+El paso se repite hasta encontrar soporte; si ningún módulo alcanzable lo tiene, el
+sistema rechaza.
+En texto, la puntuación de cada directorio es la suma de B1 sobre los tokens de la
+consulta, y el destino aplica una segunda compuerta: responde solo si su memoria de
+contenido contiene alguna de las pistas (ecuación~\eqref{eq:score-gated}); si no, la
+consulta se rechaza.
+En imagen, durante la formación del directorio visual (fase A,
+Sección~\ref{sec:dataset}) cada módulo vio ganar a los otros siete, de modo que el
+primer círculo ya reúne los ocho directorios visuales.
+
+\subsection*{Lectura estricta del directorio visual y umbral de energía}
+
+El directorio visual $M^R_{\mathrm{dir}}$ usa la misma lectura B1 que el de texto, con
+$\xi = 0$.
+No tolera huecos: en un directorio perspectival, una coordenada queda sin registro para
+todos los módulos según lo que el dueño del directorio presenció de los demás, así que
+una tolerancia $\xi > 0$ dependería de esa historia y no del módulo
+(Sección~\ref{sec:hemisferio-visual}).
+
+Antes de cualquier memoria visual, el latente continuo pasa un umbral de energía: si su
+norma es menor que $\tau = 16.61$, la imagen se rechaza.
+El valor de $\tau$ y por qué hace falta están en la Sección~\ref{sec:percepcion}.
+
+\subsection*{Entropía del directorio}
+
+Sea $c_k$ el número de registros del módulo $k$ en el directorio y
+$C = \sum_k c_k$ el total.
+La entropía del directorio resume el estado del grupo:
+\begin{equation}
+    H_{\mathrm{dir}} = -\sum_{k=0}^{K-1} p_k \log_2 p_k, \qquad p_k = \frac{c_k}{C}
+    \label{eq:entropia-dir}
+\end{equation}
+Con $K=8$ módulos, el máximo es $\log_2 8 = 3$ bits, alcanzado cuando los ocho conteos
+son iguales.
+Esa lectura vale para un registro completo del grupo (el del TME y el directorio
+compartido de los experimentos de texto, Sección~\ref{sec:organizacion}), donde una
+entropía menor indica colapso hacia un módulo o formación incompleta.
+No vale para el directorio de cada módulo, que registra todo lo que ganó y solo parte
+de lo ajeno (Sección~\ref{sec:tmt}).
+
+\subsection*{Recuperación de contenido (texto $\to$ imagen)}
+
+El módulo destino aplica la recuperación $\beta$ de su memoria de contenido desde la
+izquierda, con la primera pista de la consulta que esa memoria reconoce y con los pesos
+que lee de $M^L$; el resultado es un latente muestreado $\hat{\mathbf{z}}_q$ que el
+decodificador convierte en imagen.
+
+\subsection*{Evocación inversa (imagen $\to$ etiquetas)}
+
+Dado un código latente cuantizado $\mathbf{z}_q$ de una imagen, la recuperación
+de etiquetas procede como sigue.
+
+\begin{enumerate}
+    \item Se obtienen los pesos del dominio latente:
+    $\mathbf{w}_R = \eta(\mathbf{z}_q,\; M^R)$, sobre la lectura latente de
+    $M^H_{\mathrm{dom}}$.
+    El reconocimiento visual usa solo esa lectura, no la proyección hacia las etiquetas:
+    el lado de etiquetas, cuantizado por magnitud, es más disperso y rechazaría imágenes
+    que el lado latente sí contiene.
+
+    \item Se aplica la recuperación $\beta$ de la memoria heteroasociativa \emph{desde la
+    derecha}: la pista es $\mathbf{z}_q$ con pesos $\mathbf{w}_R$, y el resultado es un
+    patrón muestreado en el dominio semántico $\hat{\mathbf{v}}_q$.
+
+    \item Se buscan los 3 vecinos más cercanos de $\hat{\mathbf{v}}_q$, por similitud
+    coseno, entre las etiquetas de los ocho vocabularios de llenado (168 entradas, 159
+    palabras distintas), y se devuelven como etiquetas asociadas a la imagen.
+\end{enumerate}
+
+\paragraph{Justificación del diccionario.}
+La recuperación $\beta$ devuelve una \emph{muestra} de la distribución de etiquetas acumulada
+por el módulo, no una palabra exacta: el vector muestreado puede no coincidir con ningún
+vector almacenado.
+El diccionario actúa como un decodificador que interpreta esa muestra con el
+vocabulario conocido.
+
+\subsection*{Fidelidad de la fase madura}
+
+La \textbf{fidelidad} se define como la fracción de consultas en la fase madura en las
+que la coordinación de la recuperación, desde el módulo de entrada, llega al mismo
+módulo ganador que la fase temprana:
+\begin{equation}
+    F = \frac{|\{q : g^{\mathrm{maduro}}(q) = g^{\mathrm{temprano}}(q)\}|}{N_{\mathrm{consultas}}}
+    \label{eq:fidelidad}
+\end{equation}
+La fidelidad mide coincidencia con lo aprendido en la fase temprana, no acierto absoluto.
+
+% <- 04, secciones
+\section{Conjunto de datos}
+\label{sec:dataset}
+
+Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, con sus
+\textbf{ocho clases}: \texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup},
+\texttt{dog}, \texttt{horse}, \texttt{pear} y \texttt{tomato}.
+Cada clase tiene diez objetos físicos fotografiados desde 41 puntos de vista: 410
+imágenes de $128\times128$ píxeles.
+Las imágenes de cada clase se dividieron por archivo en 328 de entrenamiento y 82 de
+prueba: ninguna imagen está en los dos lados, pero los diez objetos de cada clase
+aportan vistas a ambos (solape de instancias del 100\%).
+Toda imagen de prueba es, por tanto, una vista nueva de un objeto cuyas demás vistas
+participaron del llenado o de la formación del directorio, y las cifras del hemisferio
+visual sobre esta partición miden generalización a \emph{vistas nuevas de objetos
+conocidos}.
+La generalización a objetos nuevos se midió aparte con una validación
+\textit{leave-one-object-out} de diez pliegues (Sección~\ref{sec:objetos-nuevos}): en
+cada pliegue se reserva un objeto por clase y el sistema se construye con los otros
+nueve.
+
+Las 410 imágenes de cada clase se reparten en tres conjuntos disjuntos:
+\begin{itemize}
+    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada
+    clase, con las que se llena la memoria de contenido del módulo especialista.
+    Cada imagen se registra en 16 variantes (3200 patrones por clase): la original y 15
+    transformaciones, que son el espejo; rotaciones de $\pm 12^{\circ}$ de la imagen y
+    de su espejo, y de $\pm 6^{\circ}$ de la imagen; escalas de 0.9 y 1.1; brillo de
+    0.85 y 1.15, y desplazamientos de 6 píxeles en las cuatro direcciones.
+    Las variantes densifican la distribución latente acumulada sin cambiar el mecanismo
+    de la memoria.
+    \item \textbf{Interacciones visuales} (\emph{fase A}): imágenes
+    \texttt{train[200:328]} de cada clase (1024 en total, 128 por clase), con las que se
+    forma el directorio visual.
+    El ganador de cada percepción lo decide la puntuación de las ocho memorias de
+    contenido sobre la imagen original, y sus 16 variantes se registran con ese ganador.
+    \item \textbf{Evaluación} (\emph{fase B}): las 82 imágenes de prueba (\texttt{test})
+    de cada clase (656 en total), nunca vistas durante el llenado ni la formación del
+    directorio.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\section{Representación de texto: vocabulario y consultas}
+\label{sec:pipeline-semantico}
+
+Las pistas de texto salen de dos caminos con la misma representación.
+El vocabulario que llena las memorias se extrae de ConceptNet, se vectoriza con
+fastText y se cuantiza por magnitud; una consulta en lenguaje natural se divide en
+tokens con spaCy, y cada token se vectoriza con el mismo fastText y se cuantiza con la
+misma escala.
+
+\paragraph{Extracción de conceptos con ConceptNet.}
+Se consultó ConceptNet~5.7 (la versión 5.5 se describe en \cite{speer2017conceptnet})
+con las relaciones \texttt{IsA},
+\texttt{HasProperty}, \texttt{RelatedTo}, \texttt{HasPart}, \texttt{HasA},
+\texttt{MadeOf}, \texttt{CapableOf}, \texttt{AtLocation}, \texttt{UsedFor},
+\texttt{PartOf}, \texttt{Synonym} y \texttt{SimilarTo}.
+La extracción es \emph{bidireccional}: el concepto de la clase puede
+aparecer en cualquiera de los dos extremos de la aserción, lo que multiplica los
+candidatos de las clases con vocabulario pobre (\texttt{pear} reúne 68 candidatos
+crudos y \texttt{tomato} 86).
+El peso de cada etiqueta es su \textbf{masa asociativa} (la suma de los pesos de todas sus
+aserciones, no el máximo), y los empates se ordenan por similitud coseno al centroide de
+las etiquetas fuertes de la clase.
+Los candidatos sin vector fastText real se excluyen \emph{antes} del corte, de modo que
+las ocho clases quedan con 21 etiquetas efectivas cada una y ninguna sintética.
+
+\paragraph{Vectorización con fastText y cuantización por magnitud.}
+Cada etiqueta del vocabulario se representó con su vector crudo de 300 dimensiones del
+modelo fastText preentrenado~\cite{bojanowski2017fasttext}.
+La cuantización es \emph{por magnitud} y no por signo: la binarización por signo
+colapsaría cada componente a 2 de los 16 niveles disponibles.
+Cada vector se escala como $v/S$ con una \textbf{escala global guardada}
+$S$ (el percentil 99 de las magnitudes de componente sobre el vocabulario completo,
+$S = 0.1881$), se recorta a $[-1, 1]$ y se mapea uniformemente a $m = 16$ niveles.
+La misma escala se aplica en el llenado y en la consulta.
+Con esto quedan poblados los 16 niveles (Figura~\ref{fig:espacio-semantico}).
+
+\paragraph{Procesamiento de consultas con spaCy.}
+Las consultas en lenguaje natural se procesan con spaCy~\cite{honnibal2020spacy}: se
+lematizan, se conservan los tokens de categoría gramatical \texttt{NOUN}, \texttt{ADJ}
+o \texttt{PROPN}, se eliminan las palabras vacías y cada token se conserva una sola vez,
+en su orden.
+Un \emph{rescate de atención léxica} recupera un token que el etiquetador gramatical
+descartó si, aislado, se etiqueta como \texttt{NOUN}, \texttt{ADJ} o \texttt{PROPN}, o
+si es una etiqueta registrada en las memorias; este segundo criterio solo \emph{admite}
+pistas, nunca descarta ninguna.
+El rescate corrige errores del etiquetador en frases nominales cortas (p.\ ej.\
+\texttt{pear} etiquetado como verbo en ``a bosc pear\ldots''), que de otro modo
+quitarían la pista más distintiva de la consulta.
+Sobre el banco completo la regla afecta a 46 consultas: con el rescate aciertan 43
+(93.5\%) y sin él 33 (71.7\%), diez aciertos más (21.7 puntos), y sin él cuatro se
+rechazan.
+Los diez cambios de ganador van todos hacia la clase correcta, y los tokens rescatados
+con más frecuencia son \texttt{bark}, \texttt{riding}, \texttt{drink}, \texttt{canine}
+y \texttt{drive}.
+La regla no decide el ganador, que sale de la proyección con compuerta de las memorias, pero
+sí decide qué tokens entran como pista, con un criterio tomado del vocabulario que llenó
+las memorias; por eso se reporta con su efecto medido (limitación (h),
+Sección~\ref{sec:limitaciones}).
+
+\paragraph{Representación de tokens, sin filtro de vocabulario.}
+El vocabulario de ConceptNet sirve para \emph{llenar} las memorias, no para decidir qué
+consultas son conocidas.
+Cada token de la consulta se convierte en una pista vectorial tomando su vector del
+modelo fastText completo, exista o no como etiqueta de ConceptNet.
+No se aplica ningún filtro de pertenencia léxica: una vez obtenida la pista, es la
+propia memoria la que, mediante el reconocimiento y la contención, decide si
+hay soporte o se rechaza (puntuación cero).
+Solo queda fuera lo que no es representable: un token sin vector fastText real no genera
+pista, lo cual es una frontera del codificador lingüístico y no un rechazo de la memoria.
+
+% ---------------------------------------------------------------
+\section{Percepción visual: codificador ResNet18}
+\label{sec:percepcion}
+
+Para obtener representaciones latentes de las imágenes se entrenó sobre las ocho clases
+un autocodificador convolucional con codificador basado en ResNet18~\cite{he2016resnet},
+inicializado con los pesos de ImageNet.
+El espacio latente tiene dimensión 64.
+La pérdida suma el error cuadrático medio de reconstrucción (MSE) y una entropía
+cruzada de clasificación (CE) con peso 0.1; la cabeza clasificadora solo guía el
+entrenamiento del codificador y \textbf{no participa} en el enrutamiento ni en la
+recuperación del sistema de memorias.
+El entrenamiento es \emph{determinista} (semilla 42 en \texttt{torch}, \texttt{numpy} y
+\texttt{random}, con cuDNN determinista), de modo que una réplica desde cero es
+reproducible; el codificador alcanza una raíz del error cuadrático medio (RMSE) de 0.110 y
+una precisión de la cabeza auxiliar del 99.7\%.
+No hay partición de validación separada: el punto de control se elige por RMSE mínimo
+sobre el propio conjunto de prueba (una evaluación cada 10 épocas: cinco candidatos),
+así que el espacio latente con el que se evalúa el hemisferio visual se eligió mirando
+ese conjunto (limitación (g), Sección~\ref{sec:limitaciones}).
+Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
+min-max con un margen del 10\%, calculada solo sobre el conjunto de llenado
+(\texttt{train[0:200]} por clase) con el original, el espejo y las rotaciones de
+$\pm 12^{\circ}$ de cada imagen (6400 latentes), y se guarda con el modelo; lo que cae
+fuera del rango se recorta al nivel extremo.
+Esta cuantización global evita que la escala relativa entre clases afecte la codificación.
+
+Antes de llegar a la memoria, toda percepción pasa un \textbf{umbral de energía}: si
+la norma de su latente continuo es menor que $\tau = 16.61$, se rechaza sin consultar
+la memoria.
+$\tau$ es el mínimo de esa norma sobre las 1600 imágenes originales del llenado
+(18.45) con un margen del 10\%. Hace falta porque el codificador lleva las entradas sin
+estructura (gris uniforme, desenfoque, contraste nulo) cerca del origen, donde la
+memoria les da soporte (experimento~14\footnote{Los
+experimentos se citan con el número de su carpeta en \texttt{results/}, donde están el
+protocolo y las tablas completas: 10 (tolerancia $\xi$ con directorios
+perspectivales), 11 (comparación con una sola EHAM), 13 (variantes por percepción), 14
+(umbral de energía), 15 (árbitro por contenido) y 16 (objetos nuevos).},
+Sección~\ref{sec:hemisferio-visual}).
+Es un criterio previo a la EAM y tiene costo: no rechaza ninguna imagen del llenado,
+pero sí 1 de las 1024 de la fase A y 4 de las 656 de prueba, cuatro vistas de vaca
+que el directorio enrutaba bien y que su especialista aceptaba.
+
+% ---------------------------------------------------------------
+\section{Banco de evaluación semántica}
+\label{sec:banco}
+
+Se construyó un banco de \textbf{411 consultas} en lenguaje natural con su clase
+correcta conocida, aproximadamente 50 por dominio,
+presentadas de forma intercalada.
+Las consultas varían en longitud y vocabulario (p.\ ej.\ ``a crunchy red apple'',
+``a barking domestic pet'', ``a mug for liquid'') y cubren tanto descripciones
+directas como perifrásticas; las clases con léxico compartido (\texttt{pear},
+\texttt{tomato}) incluyen consultas con contenido \emph{distintivo}
+(``a bosc pear with brown skin'', ``a tomato on the vine''), como en la comunicación
+de un grupo de Wegner: quien pregunta aporta las señas del dominio.
+Los experimentos de protocolo completo (Secciones~\ref{sec:proto-completo}
+a~\ref{sec:formacion}) usan las primeras 80 consultas (10 por clase), y el estudio de
+calibración (Sección~\ref{sec:calibracion}), hasta 400.
+Otros tres bancos se usan una sola vez: las 16 consultas de la reproducción por etapas
+(\texttt{TEST\_QUERIES}, 2 por dominio) y 12 consultas representables que describen
+objetos fuera de los ocho dominios, ambas en la Sección~\ref{sec:proto-completo}; y, en
+la comparación con una sola EHAM (Sección~\ref{sec:eham-unica}), una partición del
+banco (las primeras 30 consultas de cada clase forman los directorios y las 171
+restantes quedan reservadas para evaluar) más 40 consultas fuera de dominio: las 12
+anteriores y 28 de objetos y escenas de categorías ausentes de ETH-80, sin palabras
+del vocabulario de etiquetas.
+
+% ---------------------------------------------------------------
+\section{Parámetros de la EAM}
+\label{sec:parametros}
+
+Los parámetros de la EAM se fijaron en $\iota = 0$, $\kappa = 0$, $\sigma = 0.1$ y
+tolerancia de reconocimiento $\xi = 0$, iguales en las memorias de contenido y en los
+directorios de texto y visuales.
+Estos valores siguen el modelo W-EAM y su extensión heteroasociativa
+(Sección~\ref{sec:marco_teorico}).
+La propia línea W-EAM ha mostrado que estos hiperparámetros admiten optimización
+automática multiobjetivo \cite{lopez2025hyperopt}; aquí se fijan por barrido directo,
+cuya justificación experimental se presenta en la Sección~\ref{sec:param-iota-kappa}
+(barrido $\iota \times \kappa$) y en la Sección~\ref{sec:hemisferio-visual}
+($\xi$ visual).
+
+Todas las proyecciones usan los pesos por característica de la ecuación~\eqref{eq:pesos},
+calculados sobre la propia memoria: en la de contenido, sobre la lectura del dominio de
+la pista (ecuación~\eqref{eq:marginal}); en los directorios, sobre su relación (cuántas
+veces se registró cada valor en cada característica, lo mismo que daría una memoria
+homoasociativa llenada con las mismas pistas).
+Los pesos solo cambian magnitudes: la contención, y con ella la aceptación y el rechazo,
+no depende de ellos.
+
+% ---------------------------------------------------------------
+\section{Auditoría de fidelidad}
+\label{sec:auditoria}
+
+La auditoría de fidelidad comprueba que las decisiones del sistema salen de operaciones
+de las memorias y que ningún número se apoya en datos fabricados:
+\begin{itemize}
+    \item El vocabulario no contiene vectores sintéticos: una etiqueta sin vector fastText
+    real queda fuera del llenado, y la escala global $S = 0.1881$ se calcula solo sobre
+    vectores reales.
+    \item El código de las memorias de Pineda y Morales es idéntico byte a byte al
+    original, salvo una condición que evita cargar sus clasificadores y no toca ninguna
+    operación de memoria.
+    \item La clase correcta de cada consulta se usa solo para calcular métricas, nunca
+    dentro del circuito de decisión.
+\end{itemize}
+Todos los números reportados salen de corridas de este sistema.
+
+% ---------------------------------------------------------------
+\section{Métricas de evaluación}
+\label{sec:metricas}
+
+Se emplearon las siguientes métricas:
+
+\begin{itemize}
+    \item \textbf{Precisión temprana} (\textit{early accuracy}): fracción de consultas para las que el módulo ganador en la fase de activación temprana coincide con la clase real.
+    \item \textbf{Precisión madura} (\textit{mature accuracy}): ídem tras la fase de recuperación madura, con la lectura B1 o la cruda del directorio.
+    \item \textbf{Tasa de rechazo}: fracción de consultas que el sistema no asigna a
+    ningún módulo. Con $\kappa = 0$ no hay umbral sobre la puntuación: se rechaza lo que
+    no tiene soporte (en la fase temprana, $s_k = 0$ en los ocho módulos,
+    ecuación~\eqref{eq:score-gated}; en la fase madura, ningún directorio alcanzable lo
+    tiene o el destino no contiene la pista) y lo que no llega a ser pista (ningún token
+    con vector fastText, o una imagen cuyo latente no alcanza $\tau$).
+    \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
+    \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{conteos} de los módulos especialistas, con máximo $\log_2(8) = 3$ bits.
+    \item \textbf{Conteos por módulo}: número de registros acumulados en el directorio transactivo por cada módulo especialista.
+    \item \textbf{Participación del ganador} (\textit{winner share}): fracción de victorias maduras obtenidas por cada módulo; el ideal balanceado es $1/8 = 12.5\%$.
+    \item \textbf{Enrutamiento de prueba} (hemisferio visual): fracción de las imágenes de
+    prueba que el directorio visual asigna al módulo de su clase. Se acompaña de la
+    precisión sobre las imágenes aceptadas (sin contar los rechazos) y del número de
+    \emph{falsos enrutamientos}, imágenes asignadas a otra clase.
+    \item \textbf{Cobertura de punta a punta} (hemisferio visual): fracción de las
+    imágenes de prueba enrutadas a su clase cuyo módulo destino además responde: la
+    recuperación $\beta$ desde el latente lo reconoce.
+    \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): sobre las primeras 15 imágenes de prueba de cada clase que el enrutamiento acepta, fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recuperación inversa imagen $\to$ palabras). Una palabra compartida por dos vocabularios cuenta como acierto para las dos clases.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\section{Organización del experimento}
+\label{sec:organizacion}
+
+La Sección~\ref{sec:resultados} presenta los estudios en este orden.
+El estudio principal es la calibración del directorio (9 condiciones de lectura
+$\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$ 5 semillas).
+Le siguen cuatro estudios de caracterización (protocolo completo, parámetros nativos
+$\iota \times \kappa$, formación del directorio y capacidad de llenado,
+Secciones~\ref{sec:proto-completo} a~\ref{sec:capacidad}), el hemisferio visual
+(Sección~\ref{sec:hemisferio-visual}), la generalización a objetos nuevos
+(Sección~\ref{sec:objetos-nuevos}), la comparación con una sola EHAM
+(Sección~\ref{sec:eham-unica}), la verificación de una sola memoria de contenido por
+módulo (Sección~\ref{sec:una-memoria}) y el costo computacional de la reproducción
+completa (Sección~\ref{sec:costo}).
+En la calibración, el protocolo completo, el barrido $\iota \times \kappa$ y la
+formación del directorio, cada transacción de texto se registra en un solo
+\emph{directorio compartido}, igual al registro completo del TME.
+Los directorios perspectivales de la Sección~\ref{sec:componentes}, en los que solo
+registran el módulo de entrada y el ganador, se usan en el hemisferio visual y en la
+comparación con una sola EHAM.

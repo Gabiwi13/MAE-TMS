@@ -1,0 +1,14 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630016.340196    2984 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630017.604884    2984 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0261  RMSE=0.1367  acc=98.8%
+Epoch  20/50  loss=0.0216  RMSE=0.1247  acc=97.8%
+Epoch  30/50  loss=0.0210  RMSE=0.1184  acc=99.5%
+Epoch  40/50  loss=0.0200  RMSE=0.1296  acc=94.6%
+Epoch  50/50  loss=0.0127  RMSE=0.1054  acc=99.7%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1054  acc=99.7%
+  pliegue 1: codificador RMSE=0.1054 acc=99.7% (5.5 min)

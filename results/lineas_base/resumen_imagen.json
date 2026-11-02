@@ -1,0 +1,364 @@
+{
+ "tabla": [
+  {
+   "decisor": "sistema (route_transactive, etapa 7)",
+   "acierto": 631,
+   "pct": 96.19,
+   "falsos": 2,
+   "rechazos": 23,
+   "sin_energia": 4
+  },
+  {
+   "decisor": "clasificador del codificador (extra)",
+   "acierto": 654,
+   "pct": 99.7,
+   "falsos": 2,
+   "rechazos": 0,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    0,
+    2.384185791015625e-07
+   ]
+  },
+  {
+   "decisor": "centroide_euc|16var|crudo",
+   "acierto": 652.0,
+   "pct": 99.39,
+   "falsos": 4.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 4,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    2,
+    1.9431114196777344e-05
+   ]
+  },
+  {
+   "decisor": "1nn_euc|16var|crudo",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "5nn_euc|16var|crudo",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "centroide_cos|16var|crudo",
+   "acierto": 653.0,
+   "pct": 99.54,
+   "falsos": 3.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 3,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    1,
+    2.9802322387695312e-06
+   ]
+  },
+  {
+   "decisor": "1nn_cos|16var|crudo",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "5nn_cos|16var|crudo",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "centroide_euc|var0|crudo",
+   "acierto": 652.0,
+   "pct": 99.39,
+   "falsos": 4.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 4,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    2,
+    1.9431114196777344e-05
+   ]
+  },
+  {
+   "decisor": "1nn_euc|var0|crudo",
+   "acierto": 652.0,
+   "pct": 99.39,
+   "falsos": 4.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 4,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    3,
+    4.9233436584472656e-05
+   ]
+  },
+  {
+   "decisor": "5nn_euc|var0|crudo",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "centroide_cos|var0|crudo",
+   "acierto": 653.0,
+   "pct": 99.54,
+   "falsos": 3.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 3,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    1,
+    2.9802322387695312e-06
+   ]
+  },
+  {
+   "decisor": "1nn_cos|var0|crudo",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "5nn_cos|var0|crudo",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "centroide_euc|16var|cuant",
+   "acierto": 652.0,
+   "pct": 99.39,
+   "falsos": 4.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 4,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    2,
+    1.9431114196777344e-05
+   ]
+  },
+  {
+   "decisor": "1nn_euc|16var|cuant",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "5nn_euc|16var|cuant",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "centroide_cos|16var|cuant",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "1nn_cos|16var|cuant",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "5nn_cos|16var|cuant",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  },
+  {
+   "decisor": "centroide_euc|var0|cuant",
+   "acierto": 652.0,
+   "pct": 99.39,
+   "falsos": 4.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 4,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    23,
+    2,
+    1.9431114196777344e-05
+   ]
+  },
+  {
+   "decisor": "1nn_euc|var0|cuant",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "5nn_euc|var0|cuant",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "centroide_cos|var0|cuant",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "1nn_cos|var0|cuant",
+   "acierto": 654.0,
+   "pct": 99.7,
+   "falsos": 2.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 2,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    1,
+    1.5497207641601562e-06
+   ]
+  },
+  {
+   "decisor": "5nn_cos|var0|cuant",
+   "acierto": 655.0,
+   "pct": 99.85,
+   "falsos": 1.0,
+   "rechazos": 0,
+   "empates": 0,
+   "falsos_sin_empate": 1,
+   "mcnemar_vs_sistema (solo_x, solo_sistema, p)": [
+    24,
+    0,
+    1.1920928955078125e-07
+   ]
+  }
+ ],
+ "n": 656,
+ "tau_energia": 16.607263565063477,
+ "dispositivo": "cuda",
+ "segundos": 21.3
+}

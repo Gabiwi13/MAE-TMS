@@ -1,0 +1,143 @@
+% Generado por generar_capitulos.py a partir de ../.tex8
+\chapter{Planteamiento del Problema}\label{cap:pp}
+\section{Antecedentes}
+% <- 01 sin la pregunta (los primeros párrafos se repiten en la Introducción)
+Cuando un grupo de personas trabaja de manera coordinada durante el tiempo suficiente,
+puede recordar más de lo que cualquiera de sus miembros recordaría por separado.
+Wegner \cite{wegner1987transactive} llamó a este fenómeno
+\textbf{memoria transactiva}: una forma de memoria compartida en la que cada individuo
+almacena no solo sus propios conocimientos, sino también un \emph{directorio} que indica quién es reconocido
+dentro del grupo como referente en cada dominio.
+Cuando un miembro necesita información que no conoce, consulta ese directorio,
+determina a quién preguntar y delega la recuperación.
+El grupo funciona gracias a esa especialización: el conocimiento no necesita repetirse
+en cada miembro, sino que se reparte entre ellos.
+
+El modelo de Wegner identifica tres procesos principales \cite{wegner1995computer}.
+Primero, la \emph{actualización del directorio}: tras cada interacción, los
+miembros que la presenciaron registran quién supo responder.
+Segundo, la \emph{asignación de información}: la información nueva se envía
+hacia el miembro reconocido como referencia en ese dominio.
+Tercero, la \emph{coordinación de recuperación}: las consultas futuras viajan directamente
+a ese referente sin pasar por un intermediario.
+En este trabajo, la transición de una \emph{fase temprana} mediada a una \emph{fase
+madura} punto a punto es la señal de que el sistema transactivo ya quedó formado.
+
+Las memorias asociativas entrópicas de Pineda y Morales (Sección~\ref{sec:eam}) guardan
+lo que registran como conteos de frecuencia: aceptan una entrada cuando sus rasgos
+tienen soporte en lo registrado, recuerdan muestreando esos conteos y rechazan lo que no
+contienen, sin ningún clasificador entrenado.
+
+El sistema construido, \textbf{EAM-TMS} (\textit{Entropic Associative Memory --
+Transactive Memory System}: sistema de memoria transactiva sobre memorias asociativas
+entrópicas), se compone de ocho módulos especialistas, uno por cada categoría del
+conjunto ETH-80 \cite{leibe2003eth80}: \texttt{apple}, \texttt{car}, \texttt{cow},
+\texttt{cup}, \texttt{dog}, \texttt{horse}, \texttt{pear} y \texttt{tomato}.
+Cada módulo guarda las palabras y las imágenes de su categoría en una sola memoria de
+contenido y lleva dos directorios, uno textual y uno visual, donde anota las
+transacciones en que participa.
+Un mediador central denominado TME (\textit{Transactive Memory Expert}) coordina la fase
+temprana y registra en sus propios directorios qué módulo responde a cada tipo de
+consulta.
+Conforme se llenan los directorios de los módulos, el TME deja de hacer falta: en la fase
+madura los módulos se reenvían entre sí las consultas, sean frases o imágenes, sin
+intervención del mediador.
+
+Ninguna decisión del sistema sale de un clasificador entrenado ni de una optimización
+numérica: registrar, reconocer, recuperar y enrutar son operaciones definidas
+formalmente sobre las Memorias Asociativas Entrópicas
+de Pineda y Morales en su variante ponderada (W-EAM)
+\cite{pineda2021entropic,pineda2022weighted} y su extensión heteroasociativa (EHAM)
+\cite{morales2025missing}.
+Las representaciones semánticas se obtienen con vectores de palabras fastText
+\cite{bojanowski2017fasttext}, cuantizados \emph{por magnitud} en 16 niveles.
+El vocabulario de llenado se extrae de ConceptNet 5.7 \cite{speer2017conceptnet}
+y el texto se procesa con spaCy \cite{honnibal2020spacy}.
+Las representaciones visuales las produce el codificador de un autocodificador ResNet18
+\cite{he2016resnet}, inicializado con los pesos de ImageNet y entrenado sobre ETH-80
+(Sección~\ref{sec:percepcion}); su salida se cuantiza y almacena.
+
+\subsection*{Contribuciones principales}
+
+Este trabajo aporta cinco contribuciones:
+
+\begin{enumerate}
+    \item \textbf{Un sistema transactivo de ocho especialistas.}
+    Se construye un sistema de ocho módulos, uno por cada clase de ETH-80, cada uno con
+    una sola memoria de contenido heteroasociativa y dos directorios, y se evalúa con un
+    banco de 411 consultas ($\approx$50 por dominio).
+    Los directorios, su lectura normalizada por número de registros (B1,
+    Sección~\ref{sec:operaciones}), el rechazo de lo que ninguna memoria contiene y la
+    coordinación punto a punto de la contribución~3 funcionan con los ocho dominios.
+
+    \item \textbf{Cuantización por magnitud de las pistas semánticas.}
+    Cada vector fastText se divide entre una escala global $S$, la misma en el llenado y
+    en las consultas, se recorta a $[-1, 1]$ y se reparte en los 16 niveles
+    (Sección~\ref{sec:pipeline-semantico}); una binarización por signo usaría solo 2.
+    Con esta representación, la precisión temprana sobre el banco de 411 consultas es del
+    90.0\% (Sección~\ref{sec:calibracion}).
+
+    \item \textbf{Directorios perspectivales por módulo.}
+    Cada módulo lleva dos directorios heteroasociativos, uno de texto y uno visual
+    (Sección~\ref{sec:componentes}), y en ambos registra solo las transacciones en que
+    participó, como módulo de entrada o como ganador: cada módulo sabe de los demás lo
+    que presenció, y por eso los directorios se llaman \emph{perspectivales}.
+    Una frase o una imagen puede entrar por \emph{cualquier} módulo, que suma su
+    directorio y los de los módulos que conoce y la redirige punto a punto al
+    especialista; es la coordinación de recuperación de Wegner, en las dos modalidades.
+
+    \item \textbf{Auditoría de fidelidad.}
+    Ninguna decisión proviene de mecanismos ajenos a las memorias: el vocabulario no
+    contiene vectores sintéticos (de relleno, para etiquetas sin vector fastText), el
+    código de Pineda y Morales permanece idéntico byte a byte (salvo una condición que
+    evita cargar sus clasificadores y no toca ninguna operación de memoria), y todos los
+    números reportados son trazables a corridas del sistema actual, sobre datos no
+    fabricados.
+
+    \item \textbf{Evaluación experimental.}
+    Se miden nueve condiciones de lectura del directorio (con cuatro cantidades de
+    consultas de formación y cinco semillas), el efecto de los parámetros nativos de la
+    memoria ($\iota$ y $\kappa$), cuántas interacciones hacen falta para formar el
+    directorio, cuánto contenido admite cada módulo, el comportamiento con imágenes, la
+    comparación con una sola memoria para las ocho clases y la verificación de una sola
+    memoria de contenido por módulo, junto con el costo computacional de reproducir
+    todos los resultados.
+\end{enumerate}
+
+\subsection*{Estructura del documento}
+
+La Sección~\ref{sec:marco_teorico} presenta los fundamentos: la memoria asociativa
+entrópica de Pineda y Morales y su variante ponderada, su extensión heteroasociativa
+(EHAM) y el modelo de memoria transactiva de Wegner.
+La Sección~\ref{sec:arquitectura} describe la arquitectura EAM-TMS de ocho módulos, con
+los diagramas de flujo del llenado, la fase temprana y la fase madura, y la
+formalización de las operaciones del sistema.
+La Sección~\ref{sec:metodologia} detalla la metodología experimental, la
+Sección~\ref{sec:resultados} reporta los resultados, la Sección~\ref{sec:discusion} los
+discute y señala las limitaciones, y la Sección~\ref{sec:conclusiones} concluye y señala
+trabajo futuro.
+
+\section{Definición del problema}
+% <- 01, pregunta de investigación
+Este trabajo pregunta si la organización que describe Wegner puede construirse solo con
+estas memorias:
+
+\begin{quote}
+¿Puede un sistema de memoria transactiva construido sobre memorias asociativas
+entrópicas repartir consultas de texto e imagen entre ocho especialistas, recordar el
+contenido asociado y rechazar lo que no conoce, sin clasificadores supervisados? Y donde
+aparezcan límites, ¿provienen del mecanismo asociativo o de las representaciones que lo
+alimentan?
+\end{quote}
+
+\section{Objetivo general}\label{secc:og}
+[PENDIENTE: redactar desde las contribuciones de 01]
+
+\subsection{Objetivos específicos}
+[PENDIENTE: redactar desde las contribuciones de 01]
+
+\section{Justificación}
+[PENDIENTE]
+
+\section{Alcances y limitaciones}
+[PENDIENTE: redactar alcances y limitaciones. Las limitaciones (a)--(j) están en la Sección~\ref{sec:limitaciones}.]

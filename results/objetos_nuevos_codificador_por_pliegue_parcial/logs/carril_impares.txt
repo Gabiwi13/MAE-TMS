@@ -1,0 +1,15 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630373.336599    4288 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630374.883181    4288 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+  apple: 410 imágenes × 16 (5s)
+  car: 410 imágenes × 16 (11s)
+  cow: 410 imágenes × 16 (16s)
+  cup: 410 imágenes × 16 (22s)
+  dog: 410 imágenes × 16 (27s)
+  horse: 410 imágenes × 16 (33s)
+  pear: 410 imágenes × 16 (39s)
+  tomato: 410 imágenes × 16 (46s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 1: 656 filas (llenado 52 min, total 60 min)
+Training on cuda (seed=42)

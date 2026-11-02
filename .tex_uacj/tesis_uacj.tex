@@ -1,0 +1,155 @@
+%%%%%%%%%%%%
+% Compilar con XeLaTex en Overleaf
+%
+%%%%%%%%%%%%%%%%
+
+\documentclass[final, fmstyle, lic]{ReporteTecnicoDeInvestigacion}
+
+% paquetes usados
+%\usepackage[chapter, spanish]{theorems}
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}{Lema}[chapter]
+\newtheorem{proposition}{Proposición}[chapter]
+\newtheorem{corollary}{Corolario}[chapter]
+\newtheorem{definition}{Definición}[chapter]
+\newtheorem{example}{Ejemplo}[chapter]
+\newtheorem{observation}{Observación}[chapter]
+
+\usepackage{symbols}
+\usepackage{graphicx} %usar imágenes externas
+\usepackage{url}
+\usepackage{blindtext}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{float}
+%\usepackage{pdfpages} % falta pdflscape en esta instalación de MiKTeX y la tesis no usa \includepdf
+\usepackage{listings}
+%\usepackage[utf8]{inputenc}  % descomentar para teclado en español de Unix, Mac y posiblemente Windows y si no se compila con XeLaTex
+\usepackage[spanish]{babel}
+\usepackage{iftex}
+% con XeLaTeX, T1 imprime «¿» como «£»; XeLaTeX ya separa bien las palabras acentuadas
+\ifxetex\else\usepackage[T1]{fontenc}\fi % this helps hyphenate Spanish vocabulary with acute accent
+\usepackage{dirtytalk}
+%\usepackage[latin1]{inputenc}  % descomentar para   teclado en espa√±ol de Unix y posiblemente tambi√©n de Windows
+%\usepackage[applemac]{inputenc}  % descomentar para teclado en espa√±ol de Mac
+\usepackage[spanish]{babel}
+\usepackage{subcaption}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\decimalpoint
+\renewcommand{\lstlistingname}{Listado}
+\setlength{\parskip}{2mm}	%Espaciado entre párrafos
+
+% paquetes de la tesis (.tex8/main.tex) que la plantilla no trae
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, decorations.pathreplacing}
+\graphicspath{{../.tex8/figuras/}}
+\setlength{\emergencystretch}{2em}
+% Con XeLaTeX, los operadores acentuados de babel-spanish (\bmod, \max) rompen la
+% compilación dentro de \caption; se vuelven robustos sin cambiar cómo se ven.
+\makeatletter
+\let\es@op@ac@TU@frag\es@op@ac@TU
+\DeclareRobustCommand{\es@op@ac@TU}[1]{\es@op@ac@TU@frag{#1}}
+\accentedoperators
+\makeatother
+
+\usepackage{hyperref}
+%\usepackage{urm}
+% datos de la tesis
+\newcommand{\subtitulo}{\\[0.3em]{\large Ocho módulos sobre ETH-80 completo}}
+\title{Sistema distribuido de memorias heteroasociativas entrópicas especializadas con una arquitectura de enrutamiento semántico y recuperación asociativa multimodal basada en la teoría de memoria transactiva\subtitulo}
+\author{[PENDIENTE: matrícula]}{Gabriel Gonzalez}
+\authorb{}{}
+\director{[PENDIENTE: grado]}{Karla Miroslava Olmos Sánchez}
+\directorb{}{}%Llenar este campo en caso de coasesor
+\directorbp{«Profesor-Investigador IIT»}  % Dejar en campo en blanco si no hay segundo asesor
+\sinodala{[PENDIENTE: grado]}{[PENDIENTE: sinodal A]}
+\sinodalb{[PENDIENTE: grado]}{[PENDIENTE: sinodal B]}
+\sinodalc{[PENDIENTE: grado]}{[PENDIENTE: sinodal C]}
+\titular{[PENDIENTE: grado]}{[PENDIENTE: titular del Seminario de Titulación II]} % Titular de Seminario de Titulación II
+
+% comenta para automático:
+\termyear{\today}
+%\usepackage{amsfonts}
+%\usepackage[bitstream-charter]{mathdesign}
+\usepackage{listings}
+\usepackage{xcolor}
+% minted quitado: exige -shell-escape y la tesis no lo usa
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+\pagenumbering{roman}
+\renewcommand{\lstlistlistingname}{Índice de códigos fuente}
+\maketitle     % esto hace las portadas
+\renewcommand{\subtitulo}{} % las cartas citan solo el título
+%\includepdf[scale=1.2,pages=-]{everardo.pdf}
+\approvalpage  % esto hace la pagina de aprobaci√õn
+\approvalprint  % esto hace la pagina de aprobaci√õn
+%\approvalprint % esto hace la pagina de aprobaci√õn de impresión. Comentar si sólo un alumno
+\originalpage
+
+\include{Agradecimientos}
+\setcounter{page}{6}
+\include{Dedicatoria}
+
+\include{Resumen}
+%\include{Abstract} [Opcional]
+
+% los siguientes comandos producen √åndices.
+% tablas y figuras en el documento de la tesis
+\tableofcontents
+\listoffigures
+\listoftables
+%\lstlistoflistings % la tesis no tiene listados de código
+
+
+\setcounter{page}{1}
+\include{Introduccion}
+\setcounter{page}{0}
+\pagenumbering{arabic}
+
+\include{Capitulo1}
+\include{Capitulo2}
+\include{Capitulo3}
+\include{Capitulo4}
+\include{Capitulo5}
+
+
+\bibliographystyle{ieeetr}
+\bibliography{../.tex8/referencias}
+%\nocite{*} %Si quieres que en la bibliografía se muestren referencias que no citas en el texto, entonces descomenta esta línea.
+
+\appendix   % inician los ap√àndices del Reporte Técnico de Investigación
+
+% los cap√åtulos que se incluyan a partir de aqu√å aparecen 
+% como ap√àndices
+\include{ApendiceA}
+%\include{ApendiceB}
+\end{document}

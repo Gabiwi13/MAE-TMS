@@ -1,0 +1,4526 @@
+{
+ "control_logica_original_N400_semilla0": {
+  "A": {
+   "temprana": 90.0,
+   "madura": 85.25
+  },
+  "B1": {
+   "temprana": 90.0,
+   "madura": 93.0
+  }
+ },
+ "por_semilla_E": {
+  "0": {
+   "n_E": 120,
+   "con_nombre_E": 60,
+   "n_R": 291,
+   "temprana_E": 92.5,
+   "condiciones": {
+    "A_N50": {
+     "madura_E": {
+      "media": 77.83,
+      "de": 2.98,
+      "min": 75.0,
+      "max": 81.67,
+      "ic95_t": [
+       74.13,
+       81.53
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -14.67,
+      "de": 2.98,
+      "min": -17.5,
+      "max": -10.83,
+      "ic95_t": [
+       -18.37,
+       -10.97
+      ]
+     },
+     "fidelidad_E": {
+      "media": 76.33,
+      "de": 5.82,
+      "min": 67.5,
+      "max": 82.5,
+      "ic95_t": [
+       69.11,
+       83.56
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.8,
+      "de": 5.59,
+      "min": 82.0,
+      "max": 94.0,
+      "ic95_t": [
+       81.87,
+       95.73
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.4,
+      "de": 4.98,
+      "min": 46.0,
+      "max": 58.0,
+      "ic95_t": [
+       44.22,
+       56.58
+      ]
+     },
+     "N_real": [
+      50
+     ],
+     "dif_bootstrap_E_ic95": [
+      -20.0,
+      -9.17
+     ]
+    },
+    "A_N100": {
+     "madura_E": {
+      "media": 85.0,
+      "de": 2.95,
+      "min": 81.67,
+      "max": 89.17,
+      "ic95_t": [
+       81.34,
+       88.66
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.5,
+      "de": 2.95,
+      "min": -10.83,
+      "max": -3.33,
+      "ic95_t": [
+       -11.16,
+       -3.84
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.5,
+      "de": 5.86,
+      "min": 75.83,
+      "max": 90.83,
+      "ic95_t": [
+       75.22,
+       89.78
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.8,
+      "de": 5.4,
+      "min": 82.0,
+      "max": 96.0,
+      "ic95_t": [
+       82.09,
+       95.51
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.8,
+      "de": 4.55,
+      "min": 45.0,
+      "max": 57.0,
+      "ic95_t": [
+       45.15,
+       56.45
+      ]
+     },
+     "N_real": [
+      100
+     ],
+     "dif_bootstrap_E_ic95": [
+      -12.67,
+      -2.0
+     ]
+    },
+    "A_N200": {
+     "madura_E": {
+      "media": 86.17,
+      "de": 2.09,
+      "min": 84.17,
+      "max": 89.17,
+      "ic95_t": [
+       83.57,
+       88.76
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -6.33,
+      "de": 2.09,
+      "min": -8.33,
+      "max": -3.33,
+      "ic95_t": [
+       -8.93,
+       -3.74
+      ]
+     },
+     "fidelidad_E": {
+      "media": 87.0,
+      "de": 1.83,
+      "min": 85.0,
+      "max": 90.0,
+      "ic95_t": [
+       84.73,
+       89.27
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.8,
+      "de": 1.04,
+      "min": 89.0,
+      "max": 91.5,
+      "ic95_t": [
+       88.51,
+       91.09
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.2,
+      "de": 1.04,
+      "min": 50.5,
+      "max": 53.0,
+      "ic95_t": [
+       50.91,
+       53.49
+      ]
+     },
+     "N_real": [
+      200
+     ],
+     "dif_bootstrap_E_ic95": [
+      -11.33,
+      -1.33
+     ]
+    },
+    "A_N291": {
+     "madura_E": {
+      "media": 84.17,
+      "de": 0.0,
+      "min": 84.17,
+      "max": 84.17,
+      "ic95_t": [
+       84.17,
+       84.17
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -8.33,
+      "de": 0.0,
+      "min": -8.33,
+      "max": -8.33,
+      "ic95_t": [
+       -8.33,
+       -8.33
+      ]
+     },
+     "fidelidad_E": {
+      "media": 85.0,
+      "de": 0.0,
+      "min": 85.0,
+      "max": 85.0,
+      "ic95_t": [
+       85.0,
+       85.0
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.35,
+      "de": 0.0,
+      "min": 89.35,
+      "max": 89.35,
+      "ic95_t": [
+       89.35,
+       89.35
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.86,
+      "de": 0.0,
+      "min": 50.86,
+      "max": 50.86,
+      "ic95_t": [
+       50.86,
+       50.86
+      ]
+     },
+     "N_real": [
+      291
+     ],
+     "dif_bootstrap_E_ic95": [
+      -15.0,
+      -1.67
+     ]
+    },
+    "B1_N50": {
+     "madura_E": {
+      "media": 81.5,
+      "de": 3.14,
+      "min": 76.67,
+      "max": 85.0,
+      "ic95_t": [
+       77.6,
+       85.4
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -11.0,
+      "de": 3.14,
+      "min": -15.83,
+      "max": -7.5,
+      "ic95_t": [
+       -14.9,
+       -7.1
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.33,
+      "de": 2.4,
+      "min": 78.33,
+      "max": 83.33,
+      "ic95_t": [
+       77.35,
+       83.31
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.8,
+      "de": 5.59,
+      "min": 82.0,
+      "max": 94.0,
+      "ic95_t": [
+       81.87,
+       95.73
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.4,
+      "de": 4.98,
+      "min": 46.0,
+      "max": 58.0,
+      "ic95_t": [
+       44.22,
+       56.58
+      ]
+     },
+     "N_real": [
+      50
+     ],
+     "dif_bootstrap_E_ic95": [
+      -16.0,
+      -5.67
+     ]
+    },
+    "B1_N100": {
+     "madura_E": {
+      "media": 89.83,
+      "de": 2.6,
+      "min": 86.67,
+      "max": 92.5,
+      "ic95_t": [
+       86.61,
+       93.06
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -2.67,
+      "de": 2.6,
+      "min": -5.83,
+      "max": 0.0,
+      "ic95_t": [
+       -5.89,
+       0.56
+      ]
+     },
+     "fidelidad_E": {
+      "media": 89.0,
+      "de": 4.14,
+      "min": 84.17,
+      "max": 93.33,
+      "ic95_t": [
+       83.86,
+       94.14
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.8,
+      "de": 5.4,
+      "min": 82.0,
+      "max": 96.0,
+      "ic95_t": [
+       82.09,
+       95.51
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.8,
+      "de": 4.55,
+      "min": 45.0,
+      "max": 57.0,
+      "ic95_t": [
+       45.15,
+       56.45
+      ]
+     },
+     "N_real": [
+      100
+     ],
+     "dif_bootstrap_E_ic95": [
+      -6.83,
+      1.67
+     ]
+    },
+    "B1_N200": {
+     "madura_E": {
+      "media": 91.67,
+      "de": 0.83,
+      "min": 90.83,
+      "max": 92.5,
+      "ic95_t": [
+       90.63,
+       92.7
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.83,
+      "de": 0.83,
+      "min": -1.67,
+      "max": 0.0,
+      "ic95_t": [
+       -1.87,
+       0.2
+      ]
+     },
+     "fidelidad_E": {
+      "media": 92.5,
+      "de": 1.02,
+      "min": 90.83,
+      "max": 93.33,
+      "ic95_t": [
+       91.23,
+       93.77
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.8,
+      "de": 1.04,
+      "min": 89.0,
+      "max": 91.5,
+      "ic95_t": [
+       88.51,
+       91.09
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.2,
+      "de": 1.04,
+      "min": 50.5,
+      "max": 53.0,
+      "ic95_t": [
+       50.91,
+       53.49
+      ]
+     },
+     "N_real": [
+      200
+     ],
+     "dif_bootstrap_E_ic95": [
+      -5.17,
+      3.33
+     ]
+    },
+    "B1_N291": {
+     "madura_E": {
+      "media": 91.67,
+      "de": 0.0,
+      "min": 91.67,
+      "max": 91.67,
+      "ic95_t": [
+       91.67,
+       91.67
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.83,
+      "de": 0.0,
+      "min": -0.83,
+      "max": -0.83,
+      "ic95_t": [
+       -0.83,
+       -0.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 92.5,
+      "de": 0.0,
+      "min": 92.5,
+      "max": 92.5,
+      "ic95_t": [
+       92.5,
+       92.5
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.35,
+      "de": 0.0,
+      "min": 89.35,
+      "max": 89.35,
+      "ic95_t": [
+       89.35,
+       89.35
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.86,
+      "de": 0.0,
+      "min": 50.86,
+      "max": 50.86,
+      "ic95_t": [
+       50.86,
+       50.86
+      ]
+     },
+     "N_real": [
+      291
+     ],
+     "dif_bootstrap_E_ic95": [
+      -5.83,
+      4.17
+     ]
+    },
+    "D_N50": {
+     "madura_E": {
+      "media": 77.83,
+      "de": 9.73,
+      "min": 60.83,
+      "max": 85.0,
+      "ic95_t": [
+       65.75,
+       89.91
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -14.67,
+      "de": 9.73,
+      "min": -31.67,
+      "max": -7.5,
+      "ic95_t": [
+       -26.75,
+       -2.59
+      ]
+     },
+     "fidelidad_E": {
+      "media": 78.5,
+      "de": 7.8,
+      "min": 66.67,
+      "max": 87.5,
+      "ic95_t": [
+       68.81,
+       88.19
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.5,
+      "de": 6.07,
+      "min": 77.08,
+      "max": 91.67,
+      "ic95_t": [
+       79.96,
+       95.04
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.0,
+      "de": 4.88,
+      "min": 45.83,
+      "max": 58.33,
+      "ic95_t": [
+       43.94,
+       56.06
+      ]
+     },
+     "N_real": [
+      48
+     ],
+     "dif_bootstrap_E_ic95": [
+      -19.84,
+      -9.33
+     ]
+    },
+    "D_N100": {
+     "madura_E": {
+      "media": 82.33,
+      "de": 4.84,
+      "min": 76.67,
+      "max": 89.17,
+      "ic95_t": [
+       76.33,
+       88.34
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.17,
+      "de": 4.84,
+      "min": -15.83,
+      "max": -3.33,
+      "ic95_t": [
+       -16.17,
+       -4.16
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.0,
+      "de": 2.47,
+      "min": 79.17,
+      "max": 85.0,
+      "ic95_t": [
+       78.93,
+       85.07
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.29,
+      "de": 1.86,
+      "min": 85.42,
+      "max": 89.58,
+      "ic95_t": [
+       84.98,
+       89.6
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.67,
+      "de": 1.58,
+      "min": 50.0,
+      "max": 54.17,
+      "ic95_t": [
+       49.7,
+       53.63
+      ]
+     },
+     "N_real": [
+      96
+     ],
+     "dif_bootstrap_E_ic95": [
+      -15.33,
+      -5.16
+     ]
+    },
+    "D_N200": {
+     "madura_E": {
+      "media": 82.83,
+      "de": 3.75,
+      "min": 78.33,
+      "max": 87.5,
+      "ic95_t": [
+       78.17,
+       87.49
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.67,
+      "de": 3.75,
+      "min": -14.17,
+      "max": -5.0,
+      "ic95_t": [
+       -14.33,
+       -5.01
+      ]
+     },
+     "fidelidad_E": {
+      "media": 85.0,
+      "de": 2.5,
+      "min": 82.5,
+      "max": 87.5,
+      "ic95_t": [
+       81.9,
+       88.1
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.0,
+      "de": 0.71,
+      "min": 88.0,
+      "max": 89.5,
+      "ic95_t": [
+       88.12,
+       89.88
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.4,
+      "de": 1.29,
+      "min": 49.0,
+      "max": 51.5,
+      "ic95_t": [
+       48.79,
+       52.01
+      ]
+     },
+     "N_real": [
+      200
+     ],
+     "dif_bootstrap_E_ic95": [
+      -14.67,
+      -4.5
+     ]
+    },
+    "D_N291": {
+     "madura_E": {
+      "media": 83.83,
+      "de": 0.46,
+      "min": 83.33,
+      "max": 84.17,
+      "ic95_t": [
+       83.27,
+       84.4
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -8.67,
+      "de": 0.46,
+      "min": -9.17,
+      "max": -8.33,
+      "ic95_t": [
+       -9.23,
+       -8.1
+      ]
+     },
+     "fidelidad_E": {
+      "media": 85.67,
+      "de": 0.7,
+      "min": 85.0,
+      "max": 86.67,
+      "ic95_t": [
+       84.8,
+       86.53
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.44,
+      "de": 0.29,
+      "min": 89.16,
+      "max": 89.86,
+      "ic95_t": [
+       89.08,
+       89.8
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.91,
+      "de": 0.19,
+      "min": 50.7,
+      "max": 51.05,
+      "ic95_t": [
+       50.67,
+       51.15
+      ]
+     },
+     "N_real": [
+      286
+     ],
+     "dif_bootstrap_E_ic95": [
+      -14.84,
+      -2.33
+     ]
+    },
+    "G_N50": {
+     "madura_E": {
+      "media": 81.83,
+      "de": 5.45,
+      "min": 72.5,
+      "max": 85.83,
+      "ic95_t": [
+       75.07,
+       88.59
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.67,
+      "de": 5.45,
+      "min": -20.0,
+      "max": -6.67,
+      "ic95_t": [
+       -17.43,
+       -3.91
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.5,
+      "de": 3.68,
+      "min": 78.33,
+      "max": 88.33,
+      "ic95_t": [
+       77.93,
+       87.07
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.5,
+      "de": 6.07,
+      "min": 77.08,
+      "max": 91.67,
+      "ic95_t": [
+       79.96,
+       95.04
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.0,
+      "de": 4.88,
+      "min": 45.83,
+      "max": 58.33,
+      "ic95_t": [
+       43.94,
+       56.06
+      ]
+     },
+     "N_real": [
+      48
+     ],
+     "dif_bootstrap_E_ic95": [
+      -15.5,
+      -5.67
+     ]
+    },
+    "G_N100": {
+     "madura_E": {
+      "media": 88.0,
+      "de": 4.11,
+      "min": 82.5,
+      "max": 92.5,
+      "ic95_t": [
+       82.9,
+       93.1
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -4.5,
+      "de": 4.11,
+      "min": -10.0,
+      "max": 0.0,
+      "ic95_t": [
+       -9.6,
+       0.6
+      ]
+     },
+     "fidelidad_E": {
+      "media": 87.17,
+      "de": 3.21,
+      "min": 82.5,
+      "max": 90.83,
+      "ic95_t": [
+       83.19,
+       91.15
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.29,
+      "de": 1.86,
+      "min": 85.42,
+      "max": 89.58,
+      "ic95_t": [
+       84.98,
+       89.6
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.67,
+      "de": 1.58,
+      "min": 50.0,
+      "max": 54.17,
+      "ic95_t": [
+       49.7,
+       53.63
+      ]
+     },
+     "N_real": [
+      96
+     ],
+     "dif_bootstrap_E_ic95": [
+      -9.17,
+      0.33
+     ]
+    },
+    "G_N200": {
+     "madura_E": {
+      "media": 91.0,
+      "de": 1.37,
+      "min": 90.0,
+      "max": 92.5,
+      "ic95_t": [
+       89.3,
+       92.7
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -1.5,
+      "de": 1.37,
+      "min": -2.5,
+      "max": 0.0,
+      "ic95_t": [
+       -3.2,
+       0.2
+      ]
+     },
+     "fidelidad_E": {
+      "media": 92.33,
+      "de": 1.81,
+      "min": 90.0,
+      "max": 94.17,
+      "ic95_t": [
+       90.09,
+       94.58
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.0,
+      "de": 0.71,
+      "min": 88.0,
+      "max": 89.5,
+      "ic95_t": [
+       88.12,
+       89.88
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.4,
+      "de": 1.29,
+      "min": 49.0,
+      "max": 51.5,
+      "ic95_t": [
+       48.79,
+       52.01
+      ]
+     },
+     "N_real": [
+      200
+     ],
+     "dif_bootstrap_E_ic95": [
+      -5.33,
+      2.5
+     ]
+    },
+    "G_N291": {
+     "madura_E": {
+      "media": 91.83,
+      "de": 0.91,
+      "min": 90.83,
+      "max": 92.5,
+      "ic95_t": [
+       90.7,
+       92.97
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.67,
+      "de": 0.91,
+      "min": -1.67,
+      "max": 0.0,
+      "ic95_t": [
+       -1.8,
+       0.47
+      ]
+     },
+     "fidelidad_E": {
+      "media": 93.0,
+      "de": 0.75,
+      "min": 91.67,
+      "max": 93.33,
+      "ic95_t": [
+       92.07,
+       93.92
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.44,
+      "de": 0.29,
+      "min": 89.16,
+      "max": 89.86,
+      "ic95_t": [
+       89.08,
+       89.8
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.91,
+      "de": 0.19,
+      "min": 50.7,
+      "max": 51.05,
+      "ic95_t": [
+       50.67,
+       51.15
+      ]
+     },
+     "N_real": [
+      286
+     ],
+     "dif_bootstrap_E_ic95": [
+      -5.17,
+      3.83
+     ]
+    }
+   }
+  },
+  "1": {
+   "n_E": 120,
+   "con_nombre_E": 70,
+   "n_R": 291,
+   "temprana_E": 92.5,
+   "condiciones": {
+    "A_N50": {
+     "madura_E": {
+      "media": 75.83,
+      "de": 5.27,
+      "min": 67.5,
+      "max": 81.67,
+      "ic95_t": [
+       69.29,
+       82.38
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -16.67,
+      "de": 5.27,
+      "min": -25.0,
+      "max": -10.83,
+      "ic95_t": [
+       -23.21,
+       -10.12
+      ]
+     },
+     "fidelidad_E": {
+      "media": 76.83,
+      "de": 4.14,
+      "min": 70.0,
+      "max": 80.83,
+      "ic95_t": [
+       71.69,
+       81.97
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 6.26,
+      "min": 82.0,
+      "max": 98.0,
+      "ic95_t": [
+       83.43,
+       98.97
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.4,
+      "de": 7.4,
+      "min": 40.0,
+      "max": 58.0,
+      "ic95_t": [
+       39.21,
+       57.59
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "A_N100": {
+     "madura_E": {
+      "media": 80.5,
+      "de": 6.08,
+      "min": 74.17,
+      "max": 89.17,
+      "ic95_t": [
+       72.95,
+       88.05
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -12.0,
+      "de": 6.08,
+      "min": -18.33,
+      "max": -3.33,
+      "ic95_t": [
+       -19.55,
+       -4.45
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.67,
+      "de": 5.5,
+      "min": 75.83,
+      "max": 88.33,
+      "ic95_t": [
+       74.84,
+       88.49
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.6,
+      "de": 3.58,
+      "min": 86.0,
+      "max": 95.0,
+      "ic95_t": [
+       85.16,
+       94.04
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.0,
+      "de": 2.74,
+      "min": 44.0,
+      "max": 51.0,
+      "ic95_t": [
+       44.6,
+       51.4
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "A_N200": {
+     "madura_E": {
+      "media": 85.17,
+      "de": 2.97,
+      "min": 80.83,
+      "max": 89.17,
+      "ic95_t": [
+       81.48,
+       88.85
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.33,
+      "de": 2.97,
+      "min": -11.67,
+      "max": -3.33,
+      "ic95_t": [
+       -11.02,
+       -3.65
+      ]
+     },
+     "fidelidad_E": {
+      "media": 84.0,
+      "de": 2.53,
+      "min": 80.83,
+      "max": 87.5,
+      "ic95_t": [
+       80.86,
+       87.14
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.4,
+      "de": 0.96,
+      "min": 88.0,
+      "max": 90.5,
+      "ic95_t": [
+       88.21,
+       90.59
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.9,
+      "de": 1.47,
+      "min": 45.5,
+      "max": 49.0,
+      "ic95_t": [
+       46.07,
+       49.73
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "A_N291": {
+     "madura_E": {
+      "media": 81.67,
+      "de": 0.0,
+      "min": 81.67,
+      "max": 81.67,
+      "ic95_t": [
+       81.67,
+       81.67
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.83,
+      "de": 0.0,
+      "min": -10.83,
+      "max": -10.83,
+      "ic95_t": [
+       -10.83,
+       -10.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.83,
+      "de": 0.0,
+      "min": 80.83,
+      "max": 80.83,
+      "ic95_t": [
+       80.83,
+       80.83
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.35,
+      "de": 0.0,
+      "min": 89.35,
+      "max": 89.35,
+      "ic95_t": [
+       89.35,
+       89.35
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.42,
+      "de": 0.0,
+      "min": 47.42,
+      "max": 47.42,
+      "ic95_t": [
+       47.42,
+       47.42
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "B1_N50": {
+     "madura_E": {
+      "media": 80.67,
+      "de": 2.85,
+      "min": 75.83,
+      "max": 83.33,
+      "ic95_t": [
+       77.13,
+       84.21
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -11.83,
+      "de": 2.85,
+      "min": -16.67,
+      "max": -9.17,
+      "ic95_t": [
+       -15.37,
+       -8.29
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.33,
+      "de": 3.03,
+      "min": 78.33,
+      "max": 86.67,
+      "ic95_t": [
+       78.57,
+       86.09
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 6.26,
+      "min": 82.0,
+      "max": 98.0,
+      "ic95_t": [
+       83.43,
+       98.97
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.4,
+      "de": 7.4,
+      "min": 40.0,
+      "max": 58.0,
+      "ic95_t": [
+       39.21,
+       57.59
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "B1_N100": {
+     "madura_E": {
+      "media": 86.17,
+      "de": 1.51,
+      "min": 84.17,
+      "max": 87.5,
+      "ic95_t": [
+       84.29,
+       88.05
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -6.33,
+      "de": 1.51,
+      "min": -8.33,
+      "max": -5.0,
+      "ic95_t": [
+       -8.21,
+       -4.45
+      ]
+     },
+     "fidelidad_E": {
+      "media": 86.17,
+      "de": 1.39,
+      "min": 84.17,
+      "max": 87.5,
+      "ic95_t": [
+       84.44,
+       87.9
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.6,
+      "de": 3.58,
+      "min": 86.0,
+      "max": 95.0,
+      "ic95_t": [
+       85.16,
+       94.04
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.0,
+      "de": 2.74,
+      "min": 44.0,
+      "max": 51.0,
+      "ic95_t": [
+       44.6,
+       51.4
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "B1_N200": {
+     "madura_E": {
+      "media": 92.17,
+      "de": 1.62,
+      "min": 90.0,
+      "max": 94.17,
+      "ic95_t": [
+       90.15,
+       94.18
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.33,
+      "de": 1.62,
+      "min": -2.5,
+      "max": 1.67,
+      "ic95_t": [
+       -2.35,
+       1.68
+      ]
+     },
+     "fidelidad_E": {
+      "media": 89.33,
+      "de": 1.49,
+      "min": 87.5,
+      "max": 91.67,
+      "ic95_t": [
+       87.48,
+       91.18
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.4,
+      "de": 0.96,
+      "min": 88.0,
+      "max": 90.5,
+      "ic95_t": [
+       88.21,
+       90.59
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.9,
+      "de": 1.47,
+      "min": 45.5,
+      "max": 49.0,
+      "ic95_t": [
+       46.07,
+       49.73
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "B1_N291": {
+     "madura_E": {
+      "media": 93.33,
+      "de": 0.0,
+      "min": 93.33,
+      "max": 93.33,
+      "ic95_t": [
+       93.33,
+       93.33
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 0.83,
+      "de": 0.0,
+      "min": 0.83,
+      "max": 0.83,
+      "ic95_t": [
+       0.83,
+       0.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 89.17,
+      "de": 0.0,
+      "min": 89.17,
+      "max": 89.17,
+      "ic95_t": [
+       89.17,
+       89.17
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.35,
+      "de": 0.0,
+      "min": 89.35,
+      "max": 89.35,
+      "ic95_t": [
+       89.35,
+       89.35
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.42,
+      "de": 0.0,
+      "min": 47.42,
+      "max": 47.42,
+      "ic95_t": [
+       47.42,
+       47.42
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "D_N50": {
+     "madura_E": {
+      "media": 78.83,
+      "de": 4.35,
+      "min": 73.33,
+      "max": 84.17,
+      "ic95_t": [
+       73.43,
+       84.24
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -13.67,
+      "de": 4.35,
+      "min": -19.17,
+      "max": -8.33,
+      "ic95_t": [
+       -19.07,
+       -8.26
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.0,
+      "de": 4.6,
+      "min": 75.0,
+      "max": 85.0,
+      "ic95_t": [
+       74.29,
+       85.71
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.75,
+      "de": 5.23,
+      "min": 81.25,
+      "max": 95.83,
+      "ic95_t": [
+       82.26,
+       95.24
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 46.25,
+      "de": 8.52,
+      "min": 33.33,
+      "max": 56.25,
+      "ic95_t": [
+       35.68,
+       56.82
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "D_N100": {
+     "madura_E": {
+      "media": 80.5,
+      "de": 2.8,
+      "min": 76.67,
+      "max": 84.17,
+      "ic95_t": [
+       77.02,
+       83.98
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -12.0,
+      "de": 2.8,
+      "min": -15.83,
+      "max": -8.33,
+      "ic95_t": [
+       -15.48,
+       -8.52
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.83,
+      "de": 2.85,
+      "min": 78.33,
+      "max": 84.17,
+      "ic95_t": [
+       78.29,
+       85.37
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.71,
+      "de": 1.14,
+      "min": 86.46,
+      "max": 89.58,
+      "ic95_t": [
+       86.29,
+       89.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.12,
+      "de": 4.32,
+      "min": 41.67,
+      "max": 52.08,
+      "ic95_t": [
+       42.76,
+       53.48
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "D_N200": {
+     "madura_E": {
+      "media": 82.5,
+      "de": 1.32,
+      "min": 80.83,
+      "max": 84.17,
+      "ic95_t": [
+       80.86,
+       84.14
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.0,
+      "de": 1.32,
+      "min": -11.67,
+      "max": -8.33,
+      "ic95_t": [
+       -11.64,
+       -8.36
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.67,
+      "de": 1.67,
+      "min": 80.0,
+      "max": 83.33,
+      "ic95_t": [
+       79.6,
+       83.74
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.1,
+      "de": 0.82,
+      "min": 88.5,
+      "max": 90.0,
+      "ic95_t": [
+       88.08,
+       90.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.3,
+      "de": 1.52,
+      "min": 45.5,
+      "max": 49.5,
+      "ic95_t": [
+       45.41,
+       49.19
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "D_N291": {
+     "madura_E": {
+      "media": 82.33,
+      "de": 0.37,
+      "min": 81.67,
+      "max": 82.5,
+      "ic95_t": [
+       81.87,
+       82.8
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.17,
+      "de": 0.37,
+      "min": -10.83,
+      "max": -10.0,
+      "ic95_t": [
+       -10.63,
+       -9.7
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.5,
+      "de": 0.37,
+      "min": 80.83,
+      "max": 81.67,
+      "ic95_t": [
+       81.04,
+       81.96
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.58,
+      "de": 0.16,
+      "min": 89.51,
+      "max": 89.86,
+      "ic95_t": [
+       89.39,
+       89.77
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.76,
+      "de": 0.31,
+      "min": 47.55,
+      "max": 48.25,
+      "ic95_t": [
+       47.37,
+       48.15
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    },
+    "G_N50": {
+     "madura_E": {
+      "media": 83.33,
+      "de": 2.36,
+      "min": 80.83,
+      "max": 85.83,
+      "ic95_t": [
+       80.41,
+       86.26
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.17,
+      "de": 2.36,
+      "min": -11.67,
+      "max": -6.67,
+      "ic95_t": [
+       -12.09,
+       -6.24
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.67,
+      "de": 2.39,
+      "min": 80.0,
+      "max": 85.83,
+      "ic95_t": [
+       79.7,
+       85.63
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.75,
+      "de": 5.23,
+      "min": 81.25,
+      "max": 95.83,
+      "ic95_t": [
+       82.26,
+       95.24
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 46.25,
+      "de": 8.52,
+      "min": 33.33,
+      "max": 56.25,
+      "ic95_t": [
+       35.68,
+       56.82
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "G_N100": {
+     "madura_E": {
+      "media": 89.0,
+      "de": 1.99,
+      "min": 86.67,
+      "max": 91.67,
+      "ic95_t": [
+       86.53,
+       91.47
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -3.5,
+      "de": 1.99,
+      "min": -5.83,
+      "max": -0.83,
+      "ic95_t": [
+       -5.97,
+       -1.03
+      ]
+     },
+     "fidelidad_E": {
+      "media": 87.67,
+      "de": 1.37,
+      "min": 85.83,
+      "max": 89.17,
+      "ic95_t": [
+       85.97,
+       89.37
+      ]
+     },
+     "temprana_formacion": {
+      "media": 87.71,
+      "de": 1.14,
+      "min": 86.46,
+      "max": 89.58,
+      "ic95_t": [
+       86.29,
+       89.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.12,
+      "de": 4.32,
+      "min": 41.67,
+      "max": 52.08,
+      "ic95_t": [
+       42.76,
+       53.48
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "G_N200": {
+     "madura_E": {
+      "media": 92.17,
+      "de": 1.26,
+      "min": 90.83,
+      "max": 93.33,
+      "ic95_t": [
+       90.6,
+       93.74
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.33,
+      "de": 1.26,
+      "min": -1.67,
+      "max": 0.83,
+      "ic95_t": [
+       -1.9,
+       1.24
+      ]
+     },
+     "fidelidad_E": {
+      "media": 88.83,
+      "de": 0.46,
+      "min": 88.33,
+      "max": 89.17,
+      "ic95_t": [
+       88.27,
+       89.4
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.1,
+      "de": 0.82,
+      "min": 88.5,
+      "max": 90.0,
+      "ic95_t": [
+       88.08,
+       90.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.3,
+      "de": 1.52,
+      "min": 45.5,
+      "max": 49.5,
+      "ic95_t": [
+       45.41,
+       49.19
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "G_N291": {
+     "madura_E": {
+      "media": 93.5,
+      "de": 0.37,
+      "min": 93.33,
+      "max": 94.17,
+      "ic95_t": [
+       93.04,
+       93.96
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 1.0,
+      "de": 0.37,
+      "min": 0.83,
+      "max": 1.67,
+      "ic95_t": [
+       0.54,
+       1.46
+      ]
+     },
+     "fidelidad_E": {
+      "media": 89.33,
+      "de": 0.37,
+      "min": 89.17,
+      "max": 90.0,
+      "ic95_t": [
+       88.87,
+       89.8
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.58,
+      "de": 0.16,
+      "min": 89.51,
+      "max": 89.86,
+      "ic95_t": [
+       89.39,
+       89.77
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 47.76,
+      "de": 0.31,
+      "min": 47.55,
+      "max": 48.25,
+      "ic95_t": [
+       47.37,
+       48.15
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    }
+   }
+  },
+  "2": {
+   "n_E": 120,
+   "con_nombre_E": 56,
+   "n_R": 291,
+   "temprana_E": 85.83,
+   "condiciones": {
+    "A_N50": {
+     "madura_E": {
+      "media": 74.0,
+      "de": 2.73,
+      "min": 70.83,
+      "max": 77.5,
+      "ic95_t": [
+       70.62,
+       77.38
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -11.83,
+      "de": 2.73,
+      "min": -15.0,
+      "max": -8.33,
+      "ic95_t": [
+       -15.22,
+       -8.45
+      ]
+     },
+     "fidelidad_E": {
+      "media": 71.83,
+      "de": 1.09,
+      "min": 70.83,
+      "max": 73.33,
+      "ic95_t": [
+       70.48,
+       73.18
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.4,
+      "de": 0.89,
+      "min": 90.0,
+      "max": 92.0,
+      "ic95_t": [
+       89.29,
+       91.51
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.8,
+      "de": 4.15,
+      "min": 50.0,
+      "max": 60.0,
+      "ic95_t": [
+       49.65,
+       59.95
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "A_N100": {
+     "madura_E": {
+      "media": 81.0,
+      "de": 7.3,
+      "min": 73.33,
+      "max": 89.17,
+      "ic95_t": [
+       71.94,
+       90.06
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -4.83,
+      "de": 7.3,
+      "min": -12.5,
+      "max": 3.33,
+      "ic95_t": [
+       -13.89,
+       4.23
+      ]
+     },
+     "fidelidad_E": {
+      "media": 79.17,
+      "de": 3.86,
+      "min": 75.0,
+      "max": 85.0,
+      "ic95_t": [
+       74.37,
+       83.96
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 2.77,
+      "min": 87.0,
+      "max": 94.0,
+      "ic95_t": [
+       87.76,
+       94.64
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.4,
+      "de": 3.78,
+      "min": 49.0,
+      "max": 59.0,
+      "ic95_t": [
+       48.71,
+       58.09
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "A_N200": {
+     "madura_E": {
+      "media": 83.33,
+      "de": 3.49,
+      "min": 80.0,
+      "max": 89.17,
+      "ic95_t": [
+       79.01,
+       87.66
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -2.5,
+      "de": 3.49,
+      "min": -5.83,
+      "max": 3.33,
+      "ic95_t": [
+       -6.83,
+       1.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.33,
+      "de": 2.53,
+      "min": 78.33,
+      "max": 85.0,
+      "ic95_t": [
+       79.2,
+       85.47
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.2,
+      "de": 0.97,
+      "min": 91.0,
+      "max": 93.5,
+      "ic95_t": [
+       90.99,
+       93.41
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.5,
+      "de": 2.0,
+      "min": 50.0,
+      "max": 55.0,
+      "ic95_t": [
+       50.02,
+       54.98
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "A_N291": {
+     "madura_E": {
+      "media": 84.17,
+      "de": 0.0,
+      "min": 84.17,
+      "max": 84.17,
+      "ic95_t": [
+       84.17,
+       84.17
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -1.67,
+      "de": 0.0,
+      "min": -1.67,
+      "max": -1.67,
+      "ic95_t": [
+       -1.67,
+       -1.67
+      ]
+     },
+     "fidelidad_E": {
+      "media": 83.33,
+      "de": 0.0,
+      "min": 83.33,
+      "max": 83.33,
+      "ic95_t": [
+       83.33,
+       83.33
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.1,
+      "de": 0.0,
+      "min": 92.1,
+      "max": 92.1,
+      "ic95_t": [
+       92.1,
+       92.1
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.23,
+      "de": 0.0,
+      "min": 52.23,
+      "max": 52.23,
+      "ic95_t": [
+       52.23,
+       52.23
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "B1_N50": {
+     "madura_E": {
+      "media": 78.33,
+      "de": 2.28,
+      "min": 75.0,
+      "max": 80.83,
+      "ic95_t": [
+       75.5,
+       81.17
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.5,
+      "de": 2.28,
+      "min": -10.83,
+      "max": -5.0,
+      "ic95_t": [
+       -10.33,
+       -4.67
+      ]
+     },
+     "fidelidad_E": {
+      "media": 76.67,
+      "de": 1.95,
+      "min": 75.0,
+      "max": 80.0,
+      "ic95_t": [
+       74.24,
+       79.09
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.4,
+      "de": 0.89,
+      "min": 90.0,
+      "max": 92.0,
+      "ic95_t": [
+       89.29,
+       91.51
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.8,
+      "de": 4.15,
+      "min": 50.0,
+      "max": 60.0,
+      "ic95_t": [
+       49.65,
+       59.95
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "B1_N100": {
+     "madura_E": {
+      "media": 86.83,
+      "de": 3.51,
+      "min": 83.33,
+      "max": 91.67,
+      "ic95_t": [
+       82.48,
+       91.19
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 1.0,
+      "de": 3.51,
+      "min": -2.5,
+      "max": 5.83,
+      "ic95_t": [
+       -3.35,
+       5.35
+      ]
+     },
+     "fidelidad_E": {
+      "media": 84.0,
+      "de": 2.97,
+      "min": 80.83,
+      "max": 88.33,
+      "ic95_t": [
+       80.31,
+       87.69
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 2.77,
+      "min": 87.0,
+      "max": 94.0,
+      "ic95_t": [
+       87.76,
+       94.64
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.4,
+      "de": 3.78,
+      "min": 49.0,
+      "max": 59.0,
+      "ic95_t": [
+       48.71,
+       58.09
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "B1_N200": {
+     "madura_E": {
+      "media": 91.33,
+      "de": 0.95,
+      "min": 90.0,
+      "max": 92.5,
+      "ic95_t": [
+       90.15,
+       92.51
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 5.5,
+      "de": 0.95,
+      "min": 4.17,
+      "max": 6.67,
+      "ic95_t": [
+       4.32,
+       6.68
+      ]
+     },
+     "fidelidad_E": {
+      "media": 84.5,
+      "de": 1.51,
+      "min": 82.5,
+      "max": 85.83,
+      "ic95_t": [
+       82.62,
+       86.38
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.2,
+      "de": 0.97,
+      "min": 91.0,
+      "max": 93.5,
+      "ic95_t": [
+       90.99,
+       93.41
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.5,
+      "de": 2.0,
+      "min": 50.0,
+      "max": 55.0,
+      "ic95_t": [
+       50.02,
+       54.98
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "B1_N291": {
+     "madura_E": {
+      "media": 92.5,
+      "de": 0.0,
+      "min": 92.5,
+      "max": 92.5,
+      "ic95_t": [
+       92.5,
+       92.5
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 6.67,
+      "de": 0.0,
+      "min": 6.67,
+      "max": 6.67,
+      "ic95_t": [
+       6.67,
+       6.67
+      ]
+     },
+     "fidelidad_E": {
+      "media": 84.17,
+      "de": 0.0,
+      "min": 84.17,
+      "max": 84.17,
+      "ic95_t": [
+       84.17,
+       84.17
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.1,
+      "de": 0.0,
+      "min": 92.1,
+      "max": 92.1,
+      "ic95_t": [
+       92.1,
+       92.1
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.23,
+      "de": 0.0,
+      "min": 52.23,
+      "max": 52.23,
+      "ic95_t": [
+       52.23,
+       52.23
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "D_N50": {
+     "madura_E": {
+      "media": 69.0,
+      "de": 9.74,
+      "min": 56.67,
+      "max": 80.83,
+      "ic95_t": [
+       56.9,
+       81.1
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -16.83,
+      "de": 9.74,
+      "min": -29.17,
+      "max": -5.0,
+      "ic95_t": [
+       -28.93,
+       -4.74
+      ]
+     },
+     "fidelidad_E": {
+      "media": 74.17,
+      "de": 8.01,
+      "min": 62.5,
+      "max": 82.5,
+      "ic95_t": [
+       64.22,
+       84.12
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.58,
+      "de": 6.07,
+      "min": 81.25,
+      "max": 97.92,
+      "ic95_t": [
+       82.04,
+       97.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.25,
+      "de": 9.84,
+      "min": 39.58,
+      "max": 62.5,
+      "ic95_t": [
+       39.03,
+       63.47
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "D_N100": {
+     "madura_E": {
+      "media": 76.5,
+      "de": 6.65,
+      "min": 69.17,
+      "max": 86.67,
+      "ic95_t": [
+       68.24,
+       84.76
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.33,
+      "de": 6.65,
+      "min": -16.67,
+      "max": 0.83,
+      "ic95_t": [
+       -17.59,
+       -1.08
+      ]
+     },
+     "fidelidad_E": {
+      "media": 78.83,
+      "de": 7.23,
+      "min": 68.33,
+      "max": 87.5,
+      "ic95_t": [
+       69.86,
+       87.81
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.83,
+      "de": 3.93,
+      "min": 86.46,
+      "max": 96.88,
+      "ic95_t": [
+       85.96,
+       95.71
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.5,
+      "de": 5.59,
+      "min": 45.83,
+      "max": 58.33,
+      "ic95_t": [
+       45.56,
+       59.44
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "D_N200": {
+     "madura_E": {
+      "media": 82.33,
+      "de": 2.6,
+      "min": 79.17,
+      "max": 85.0,
+      "ic95_t": [
+       79.11,
+       85.56
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -3.5,
+      "de": 2.6,
+      "min": -6.67,
+      "max": -0.83,
+      "ic95_t": [
+       -6.72,
+       -0.28
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.33,
+      "de": 0.95,
+      "min": 80.0,
+      "max": 82.5,
+      "ic95_t": [
+       80.15,
+       82.51
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.7,
+      "de": 1.68,
+      "min": 90.0,
+      "max": 94.5,
+      "ic95_t": [
+       89.61,
+       93.79
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.2,
+      "de": 2.77,
+      "min": 48.5,
+      "max": 55.5,
+      "ic95_t": [
+       48.76,
+       55.64
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "D_N291": {
+     "madura_E": {
+      "media": 85.0,
+      "de": 1.56,
+      "min": 83.33,
+      "max": 86.67,
+      "ic95_t": [
+       83.06,
+       86.94
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.83,
+      "de": 1.56,
+      "min": -2.5,
+      "max": 0.83,
+      "ic95_t": [
+       -2.77,
+       1.1
+      ]
+     },
+     "fidelidad_E": {
+      "media": 82.83,
+      "de": 0.46,
+      "min": 82.5,
+      "max": 83.33,
+      "ic95_t": [
+       82.27,
+       83.4
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.31,
+      "de": 0.25,
+      "min": 91.96,
+      "max": 92.66,
+      "ic95_t": [
+       92.0,
+       92.61
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.24,
+      "de": 0.19,
+      "min": 52.1,
+      "max": 52.45,
+      "ic95_t": [
+       52.0,
+       52.48
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    },
+    "G_N50": {
+     "madura_E": {
+      "media": 78.67,
+      "de": 4.51,
+      "min": 73.33,
+      "max": 82.5,
+      "ic95_t": [
+       73.07,
+       84.27
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.17,
+      "de": 4.51,
+      "min": -12.5,
+      "max": -3.33,
+      "ic95_t": [
+       -12.77,
+       -1.57
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.17,
+      "de": 5.05,
+      "min": 74.17,
+      "max": 85.0,
+      "ic95_t": [
+       73.9,
+       86.43
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.58,
+      "de": 6.07,
+      "min": 81.25,
+      "max": 97.92,
+      "ic95_t": [
+       82.04,
+       97.12
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.25,
+      "de": 9.84,
+      "min": 39.58,
+      "max": 62.5,
+      "ic95_t": [
+       39.03,
+       63.47
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "G_N100": {
+     "madura_E": {
+      "media": 86.33,
+      "de": 1.92,
+      "min": 83.33,
+      "max": 88.33,
+      "ic95_t": [
+       83.95,
+       88.72
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 0.5,
+      "de": 1.92,
+      "min": -2.5,
+      "max": 2.5,
+      "ic95_t": [
+       -1.88,
+       2.88
+      ]
+     },
+     "fidelidad_E": {
+      "media": 83.83,
+      "de": 4.66,
+      "min": 79.17,
+      "max": 90.0,
+      "ic95_t": [
+       78.05,
+       89.62
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.83,
+      "de": 3.93,
+      "min": 86.46,
+      "max": 96.88,
+      "ic95_t": [
+       85.96,
+       95.71
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.5,
+      "de": 5.59,
+      "min": 45.83,
+      "max": 58.33,
+      "ic95_t": [
+       45.56,
+       59.44
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "G_N200": {
+     "madura_E": {
+      "media": 90.0,
+      "de": 1.02,
+      "min": 88.33,
+      "max": 90.83,
+      "ic95_t": [
+       88.73,
+       91.27
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 4.17,
+      "de": 1.02,
+      "min": 2.5,
+      "max": 5.0,
+      "ic95_t": [
+       2.9,
+       5.43
+      ]
+     },
+     "fidelidad_E": {
+      "media": 83.5,
+      "de": 1.24,
+      "min": 81.67,
+      "max": 85.0,
+      "ic95_t": [
+       81.97,
+       85.03
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.7,
+      "de": 1.68,
+      "min": 90.0,
+      "max": 94.5,
+      "ic95_t": [
+       89.61,
+       93.79
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.2,
+      "de": 2.77,
+      "min": 48.5,
+      "max": 55.5,
+      "ic95_t": [
+       48.76,
+       55.64
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "G_N291": {
+     "madura_E": {
+      "media": 92.17,
+      "de": 0.46,
+      "min": 91.67,
+      "max": 92.5,
+      "ic95_t": [
+       91.6,
+       92.73
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 6.33,
+      "de": 0.46,
+      "min": 5.83,
+      "max": 6.67,
+      "ic95_t": [
+       5.77,
+       6.9
+      ]
+     },
+     "fidelidad_E": {
+      "media": 84.67,
+      "de": 0.75,
+      "min": 84.17,
+      "max": 85.83,
+      "ic95_t": [
+       83.74,
+       85.59
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.31,
+      "de": 0.25,
+      "min": 91.96,
+      "max": 92.66,
+      "ic95_t": [
+       92.0,
+       92.61
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.24,
+      "de": 0.19,
+      "min": 52.1,
+      "max": 52.45,
+      "ic95_t": [
+       52.0,
+       52.48
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    }
+   }
+  },
+  "3": {
+   "n_E": 120,
+   "con_nombre_E": 59,
+   "n_R": 291,
+   "temprana_E": 90.0,
+   "condiciones": {
+    "A_N50": {
+     "madura_E": {
+      "media": 70.17,
+      "de": 4.62,
+      "min": 65.0,
+      "max": 75.83,
+      "ic95_t": [
+       64.43,
+       75.9
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -19.83,
+      "de": 4.62,
+      "min": -25.0,
+      "max": -14.17,
+      "ic95_t": [
+       -25.57,
+       -14.1
+      ]
+     },
+     "fidelidad_E": {
+      "media": 68.5,
+      "de": 3.97,
+      "min": 63.33,
+      "max": 74.17,
+      "ic95_t": [
+       63.57,
+       73.43
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.8,
+      "de": 1.79,
+      "min": 90.0,
+      "max": 94.0,
+      "ic95_t": [
+       88.58,
+       93.02
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.4,
+      "de": 6.99,
+      "min": 44.0,
+      "max": 62.0,
+      "ic95_t": [
+       43.73,
+       61.07
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "A_N100": {
+     "madura_E": {
+      "media": 77.17,
+      "de": 3.85,
+      "min": 72.5,
+      "max": 81.67,
+      "ic95_t": [
+       72.39,
+       81.94
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -12.83,
+      "de": 3.85,
+      "min": -17.5,
+      "max": -8.33,
+      "ic95_t": [
+       -17.61,
+       -8.06
+      ]
+     },
+     "fidelidad_E": {
+      "media": 75.83,
+      "de": 5.03,
+      "min": 69.17,
+      "max": 81.67,
+      "ic95_t": [
+       69.58,
+       82.08
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.4,
+      "de": 1.82,
+      "min": 88.0,
+      "max": 92.0,
+      "ic95_t": [
+       88.14,
+       92.66
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.4,
+      "de": 2.88,
+      "min": 48.0,
+      "max": 56.0,
+      "ic95_t": [
+       48.82,
+       55.98
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "A_N200": {
+     "madura_E": {
+      "media": 80.17,
+      "de": 1.49,
+      "min": 78.33,
+      "max": 81.67,
+      "ic95_t": [
+       78.32,
+       82.02
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.83,
+      "de": 1.49,
+      "min": -11.67,
+      "max": -8.33,
+      "ic95_t": [
+       -11.68,
+       -7.98
+      ]
+     },
+     "fidelidad_E": {
+      "media": 78.5,
+      "de": 1.37,
+      "min": 77.5,
+      "max": 80.83,
+      "ic95_t": [
+       76.8,
+       80.2
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 0.57,
+      "min": 90.5,
+      "max": 92.0,
+      "ic95_t": [
+       90.49,
+       91.91
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.1,
+      "de": 0.89,
+      "min": 51.0,
+      "max": 53.0,
+      "ic95_t": [
+       50.99,
+       53.21
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "A_N291": {
+     "madura_E": {
+      "media": 82.5,
+      "de": 0.0,
+      "min": 82.5,
+      "max": 82.5,
+      "ic95_t": [
+       82.5,
+       82.5
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.5,
+      "de": 0.0,
+      "min": -7.5,
+      "max": -7.5,
+      "ic95_t": [
+       -7.5,
+       -7.5
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.0,
+      "de": 0.0,
+      "min": 80.0,
+      "max": 80.0,
+      "ic95_t": [
+       80.0,
+       80.0
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.38,
+      "de": 0.0,
+      "min": 90.38,
+      "max": 90.38,
+      "ic95_t": [
+       90.38,
+       90.38
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.2,
+      "de": 0.0,
+      "min": 51.2,
+      "max": 51.2,
+      "ic95_t": [
+       51.2,
+       51.2
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "B1_N50": {
+     "madura_E": {
+      "media": 77.17,
+      "de": 4.77,
+      "min": 73.33,
+      "max": 85.0,
+      "ic95_t": [
+       71.24,
+       83.09
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -12.83,
+      "de": 4.77,
+      "min": -16.67,
+      "max": -5.0,
+      "ic95_t": [
+       -18.76,
+       -6.91
+      ]
+     },
+     "fidelidad_E": {
+      "media": 75.0,
+      "de": 4.25,
+      "min": 71.67,
+      "max": 81.67,
+      "ic95_t": [
+       69.72,
+       80.28
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.8,
+      "de": 1.79,
+      "min": 90.0,
+      "max": 94.0,
+      "ic95_t": [
+       88.58,
+       93.02
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.4,
+      "de": 6.99,
+      "min": 44.0,
+      "max": 62.0,
+      "ic95_t": [
+       43.73,
+       61.07
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "B1_N100": {
+     "madura_E": {
+      "media": 82.5,
+      "de": 2.64,
+      "min": 79.17,
+      "max": 85.83,
+      "ic95_t": [
+       79.23,
+       85.77
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.5,
+      "de": 2.64,
+      "min": -10.83,
+      "max": -4.17,
+      "ic95_t": [
+       -10.77,
+       -4.23
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.67,
+      "de": 2.24,
+      "min": 77.5,
+      "max": 82.5,
+      "ic95_t": [
+       77.89,
+       83.44
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.4,
+      "de": 1.82,
+      "min": 88.0,
+      "max": 92.0,
+      "ic95_t": [
+       88.14,
+       92.66
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.4,
+      "de": 2.88,
+      "min": 48.0,
+      "max": 56.0,
+      "ic95_t": [
+       48.82,
+       55.98
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "B1_N200": {
+     "madura_E": {
+      "media": 88.83,
+      "de": 2.25,
+      "min": 86.67,
+      "max": 91.67,
+      "ic95_t": [
+       86.04,
+       91.63
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -1.17,
+      "de": 2.25,
+      "min": -3.33,
+      "max": 1.67,
+      "ic95_t": [
+       -3.96,
+       1.63
+      ]
+     },
+     "fidelidad_E": {
+      "media": 86.0,
+      "de": 1.6,
+      "min": 84.17,
+      "max": 88.33,
+      "ic95_t": [
+       84.01,
+       87.99
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.2,
+      "de": 0.57,
+      "min": 90.5,
+      "max": 92.0,
+      "ic95_t": [
+       90.49,
+       91.91
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 52.1,
+      "de": 0.89,
+      "min": 51.0,
+      "max": 53.0,
+      "ic95_t": [
+       50.99,
+       53.21
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "B1_N291": {
+     "madura_E": {
+      "media": 90.83,
+      "de": 0.0,
+      "min": 90.83,
+      "max": 90.83,
+      "ic95_t": [
+       90.83,
+       90.83
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 0.83,
+      "de": 0.0,
+      "min": 0.83,
+      "max": 0.83,
+      "ic95_t": [
+       0.83,
+       0.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 88.33,
+      "de": 0.0,
+      "min": 88.33,
+      "max": 88.33,
+      "ic95_t": [
+       88.33,
+       88.33
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.38,
+      "de": 0.0,
+      "min": 90.38,
+      "max": 90.38,
+      "ic95_t": [
+       90.38,
+       90.38
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.2,
+      "de": 0.0,
+      "min": 51.2,
+      "max": 51.2,
+      "ic95_t": [
+       51.2,
+       51.2
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "D_N50": {
+     "madura_E": {
+      "media": 69.67,
+      "de": 5.39,
+      "min": 62.5,
+      "max": 77.5,
+      "ic95_t": [
+       62.98,
+       76.36
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -20.33,
+      "de": 5.39,
+      "min": -27.5,
+      "max": -12.5,
+      "ic95_t": [
+       -27.02,
+       -13.64
+      ]
+     },
+     "fidelidad_E": {
+      "media": 71.0,
+      "de": 4.01,
+      "min": 66.67,
+      "max": 76.67,
+      "ic95_t": [
+       66.02,
+       75.98
+      ]
+     },
+     "temprana_formacion": {
+      "media": 86.67,
+      "de": 5.23,
+      "min": 79.17,
+      "max": 91.67,
+      "ic95_t": [
+       80.17,
+       93.16
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 45.83,
+      "de": 3.29,
+      "min": 41.67,
+      "max": 50.0,
+      "ic95_t": [
+       41.75,
+       49.92
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "D_N100": {
+     "madura_E": {
+      "media": 77.83,
+      "de": 6.08,
+      "min": 68.33,
+      "max": 83.33,
+      "ic95_t": [
+       70.28,
+       85.39
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -12.17,
+      "de": 6.08,
+      "min": -21.67,
+      "max": -6.67,
+      "ic95_t": [
+       -19.72,
+       -4.61
+      ]
+     },
+     "fidelidad_E": {
+      "media": 77.17,
+      "de": 5.29,
+      "min": 68.33,
+      "max": 81.67,
+      "ic95_t": [
+       70.6,
+       83.73
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.75,
+      "de": 3.16,
+      "min": 84.38,
+      "max": 91.67,
+      "ic95_t": [
+       84.83,
+       92.67
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.75,
+      "de": 3.07,
+      "min": 46.88,
+      "max": 54.17,
+      "ic95_t": [
+       44.94,
+       52.57
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "D_N200": {
+     "madura_E": {
+      "media": 82.83,
+      "de": 2.98,
+      "min": 78.33,
+      "max": 86.67,
+      "ic95_t": [
+       79.13,
+       86.53
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.17,
+      "de": 2.98,
+      "min": -11.67,
+      "max": -3.33,
+      "ic95_t": [
+       -10.87,
+       -3.47
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.33,
+      "de": 3.21,
+      "min": 76.67,
+      "max": 85.0,
+      "ic95_t": [
+       77.35,
+       85.31
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.5,
+      "de": 0.79,
+      "min": 89.5,
+      "max": 91.5,
+      "ic95_t": [
+       89.52,
+       91.48
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 49.5,
+      "de": 0.79,
+      "min": 48.5,
+      "max": 50.5,
+      "ic95_t": [
+       48.52,
+       50.48
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "D_N291": {
+     "madura_E": {
+      "media": 84.0,
+      "de": 1.37,
+      "min": 82.5,
+      "max": 85.83,
+      "ic95_t": [
+       82.3,
+       85.7
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -6.0,
+      "de": 1.37,
+      "min": -7.5,
+      "max": -4.17,
+      "ic95_t": [
+       -7.7,
+       -4.3
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.83,
+      "de": 1.18,
+      "min": 80.0,
+      "max": 82.5,
+      "ic95_t": [
+       79.37,
+       82.3
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.77,
+      "de": 0.4,
+      "min": 90.21,
+      "max": 91.26,
+      "ic95_t": [
+       90.27,
+       91.26
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.05,
+      "de": 0.25,
+      "min": 50.7,
+      "max": 51.4,
+      "ic95_t": [
+       50.74,
+       51.36
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    },
+    "G_N50": {
+     "madura_E": {
+      "media": 78.67,
+      "de": 2.33,
+      "min": 76.67,
+      "max": 82.5,
+      "ic95_t": [
+       75.78,
+       81.56
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -11.33,
+      "de": 2.33,
+      "min": -13.33,
+      "max": -7.5,
+      "ic95_t": [
+       -14.22,
+       -8.44
+      ]
+     },
+     "fidelidad_E": {
+      "media": 79.0,
+      "de": 2.91,
+      "min": 75.0,
+      "max": 82.5,
+      "ic95_t": [
+       75.39,
+       82.61
+      ]
+     },
+     "temprana_formacion": {
+      "media": 86.67,
+      "de": 5.23,
+      "min": 79.17,
+      "max": 91.67,
+      "ic95_t": [
+       80.17,
+       93.16
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 45.83,
+      "de": 3.29,
+      "min": 41.67,
+      "max": 50.0,
+      "ic95_t": [
+       41.75,
+       49.92
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "G_N100": {
+     "madura_E": {
+      "media": 84.33,
+      "de": 4.39,
+      "min": 78.33,
+      "max": 90.0,
+      "ic95_t": [
+       78.89,
+       89.78
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -5.67,
+      "de": 4.39,
+      "min": -11.67,
+      "max": 0.0,
+      "ic95_t": [
+       -11.11,
+       -0.22
+      ]
+     },
+     "fidelidad_E": {
+      "media": 83.5,
+      "de": 4.77,
+      "min": 77.5,
+      "max": 90.83,
+      "ic95_t": [
+       77.58,
+       89.42
+      ]
+     },
+     "temprana_formacion": {
+      "media": 88.75,
+      "de": 3.16,
+      "min": 84.38,
+      "max": 91.67,
+      "ic95_t": [
+       84.83,
+       92.67
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 48.75,
+      "de": 3.07,
+      "min": 46.88,
+      "max": 54.17,
+      "ic95_t": [
+       44.94,
+       52.57
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "G_N200": {
+     "madura_E": {
+      "media": 90.33,
+      "de": 2.25,
+      "min": 87.5,
+      "max": 93.33,
+      "ic95_t": [
+       87.54,
+       93.13
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 0.33,
+      "de": 2.25,
+      "min": -2.5,
+      "max": 3.33,
+      "ic95_t": [
+       -2.46,
+       3.13
+      ]
+     },
+     "fidelidad_E": {
+      "media": 88.17,
+      "de": 2.6,
+      "min": 84.17,
+      "max": 90.83,
+      "ic95_t": [
+       84.94,
+       91.39
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.5,
+      "de": 0.79,
+      "min": 89.5,
+      "max": 91.5,
+      "ic95_t": [
+       89.52,
+       91.48
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 49.5,
+      "de": 0.79,
+      "min": 48.5,
+      "max": 50.5,
+      "ic95_t": [
+       48.52,
+       50.48
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "G_N291": {
+     "madura_E": {
+      "media": 92.0,
+      "de": 1.83,
+      "min": 90.83,
+      "max": 95.0,
+      "ic95_t": [
+       89.73,
+       94.27
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": 2.0,
+      "de": 1.83,
+      "min": 0.83,
+      "max": 5.0,
+      "ic95_t": [
+       -0.27,
+       4.27
+      ]
+     },
+     "fidelidad_E": {
+      "media": 89.17,
+      "de": 1.18,
+      "min": 88.33,
+      "max": 90.83,
+      "ic95_t": [
+       87.7,
+       90.63
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.77,
+      "de": 0.4,
+      "min": 90.21,
+      "max": 91.26,
+      "ic95_t": [
+       90.27,
+       91.26
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 51.05,
+      "de": 0.25,
+      "min": 50.7,
+      "max": 51.4,
+      "ic95_t": [
+       50.74,
+       51.36
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    }
+   }
+  },
+  "4": {
+   "n_E": 120,
+   "con_nombre_E": 52,
+   "n_R": 291,
+   "temprana_E": 87.5,
+   "condiciones": {
+    "A_N50": {
+     "madura_E": {
+      "media": 74.17,
+      "de": 6.74,
+      "min": 67.5,
+      "max": 81.67,
+      "ic95_t": [
+       65.79,
+       82.54
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -13.33,
+      "de": 6.74,
+      "min": -20.0,
+      "max": -5.83,
+      "ic95_t": [
+       -21.71,
+       -4.96
+      ]
+     },
+     "fidelidad_E": {
+      "media": 76.83,
+      "de": 5.18,
+      "min": 70.0,
+      "max": 80.83,
+      "ic95_t": [
+       70.4,
+       83.27
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.0,
+      "de": 4.0,
+      "min": 88.0,
+      "max": 96.0,
+      "ic95_t": [
+       87.03,
+       96.97
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.8,
+      "de": 7.01,
+      "min": 44.0,
+      "max": 62.0,
+      "ic95_t": [
+       46.09,
+       63.51
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "A_N100": {
+     "madura_E": {
+      "media": 80.5,
+      "de": 6.52,
+      "min": 73.33,
+      "max": 88.33,
+      "ic95_t": [
+       72.4,
+       88.6
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -7.0,
+      "de": 6.52,
+      "min": -14.17,
+      "max": 0.83,
+      "ic95_t": [
+       -15.1,
+       1.1
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.83,
+      "de": 3.41,
+      "min": 77.5,
+      "max": 85.0,
+      "ic95_t": [
+       77.61,
+       86.06
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.0,
+      "de": 2.12,
+      "min": 90.0,
+      "max": 95.0,
+      "ic95_t": [
+       89.37,
+       94.63
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.6,
+      "de": 4.83,
+      "min": 48.0,
+      "max": 59.0,
+      "ic95_t": [
+       48.61,
+       60.59
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "A_N200": {
+     "madura_E": {
+      "media": 79.5,
+      "de": 3.47,
+      "min": 75.83,
+      "max": 85.0,
+      "ic95_t": [
+       75.2,
+       83.8
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -8.0,
+      "de": 3.47,
+      "min": -11.67,
+      "max": -2.5,
+      "ic95_t": [
+       -12.3,
+       -3.7
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.83,
+      "de": 3.97,
+      "min": 77.5,
+      "max": 88.33,
+      "ic95_t": [
+       76.9,
+       86.76
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.3,
+      "de": 0.76,
+      "min": 90.5,
+      "max": 92.5,
+      "ic95_t": [
+       90.36,
+       92.24
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.1,
+      "de": 2.53,
+      "min": 50.0,
+      "max": 56.5,
+      "ic95_t": [
+       50.95,
+       57.25
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "A_N291": {
+     "madura_E": {
+      "media": 78.33,
+      "de": 0.0,
+      "min": 78.33,
+      "max": 78.33,
+      "ic95_t": [
+       78.33,
+       78.33
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.17,
+      "de": 0.0,
+      "min": -9.17,
+      "max": -9.17,
+      "ic95_t": [
+       -9.17,
+       -9.17
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.0,
+      "de": 0.0,
+      "min": 80.0,
+      "max": 80.0,
+      "ic95_t": [
+       80.0,
+       80.0
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.41,
+      "de": 0.0,
+      "min": 91.41,
+      "max": 91.41,
+      "ic95_t": [
+       91.41,
+       91.41
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.61,
+      "de": 0.0,
+      "min": 53.61,
+      "max": 53.61,
+      "ic95_t": [
+       53.61,
+       53.61
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "B1_N50": {
+     "madura_E": {
+      "media": 77.0,
+      "de": 6.03,
+      "min": 70.83,
+      "max": 85.0,
+      "ic95_t": [
+       69.52,
+       84.48
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.5,
+      "de": 6.03,
+      "min": -16.67,
+      "max": -2.5,
+      "ic95_t": [
+       -17.98,
+       -3.02
+      ]
+     },
+     "fidelidad_E": {
+      "media": 78.17,
+      "de": 5.05,
+      "min": 72.5,
+      "max": 83.33,
+      "ic95_t": [
+       71.9,
+       84.43
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.0,
+      "de": 4.0,
+      "min": 88.0,
+      "max": 96.0,
+      "ic95_t": [
+       87.03,
+       96.97
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.8,
+      "de": 7.01,
+      "min": 44.0,
+      "max": 62.0,
+      "ic95_t": [
+       46.09,
+       63.51
+      ]
+     },
+     "N_real": [
+      50
+     ]
+    },
+    "B1_N100": {
+     "madura_E": {
+      "media": 84.67,
+      "de": 3.36,
+      "min": 80.0,
+      "max": 88.33,
+      "ic95_t": [
+       80.49,
+       88.84
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -2.83,
+      "de": 3.36,
+      "min": -7.5,
+      "max": 0.83,
+      "ic95_t": [
+       -7.01,
+       1.34
+      ]
+     },
+     "fidelidad_E": {
+      "media": 86.17,
+      "de": 1.51,
+      "min": 84.17,
+      "max": 88.33,
+      "ic95_t": [
+       84.29,
+       88.05
+      ]
+     },
+     "temprana_formacion": {
+      "media": 92.0,
+      "de": 2.12,
+      "min": 90.0,
+      "max": 95.0,
+      "ic95_t": [
+       89.37,
+       94.63
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.6,
+      "de": 4.83,
+      "min": 48.0,
+      "max": 59.0,
+      "ic95_t": [
+       48.61,
+       60.59
+      ]
+     },
+     "N_real": [
+      100
+     ]
+    },
+    "B1_N200": {
+     "madura_E": {
+      "media": 85.17,
+      "de": 2.39,
+      "min": 83.33,
+      "max": 89.17,
+      "ic95_t": [
+       82.2,
+       88.13
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -2.33,
+      "de": 2.39,
+      "min": -4.17,
+      "max": 1.67,
+      "ic95_t": [
+       -5.3,
+       0.63
+      ]
+     },
+     "fidelidad_E": {
+      "media": 88.17,
+      "de": 1.71,
+      "min": 86.67,
+      "max": 90.83,
+      "ic95_t": [
+       86.05,
+       90.29
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.3,
+      "de": 0.76,
+      "min": 90.5,
+      "max": 92.5,
+      "ic95_t": [
+       90.36,
+       92.24
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 54.1,
+      "de": 2.53,
+      "min": 50.0,
+      "max": 56.5,
+      "ic95_t": [
+       50.95,
+       57.25
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "B1_N291": {
+     "madura_E": {
+      "media": 86.67,
+      "de": 0.0,
+      "min": 86.67,
+      "max": 86.67,
+      "ic95_t": [
+       86.67,
+       86.67
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.83,
+      "de": 0.0,
+      "min": -0.83,
+      "max": -0.83,
+      "ic95_t": [
+       -0.83,
+       -0.83
+      ]
+     },
+     "fidelidad_E": {
+      "media": 90.0,
+      "de": 0.0,
+      "min": 90.0,
+      "max": 90.0,
+      "ic95_t": [
+       90.0,
+       90.0
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.41,
+      "de": 0.0,
+      "min": 91.41,
+      "max": 91.41,
+      "ic95_t": [
+       91.41,
+       91.41
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.61,
+      "de": 0.0,
+      "min": 53.61,
+      "max": 53.61,
+      "ic95_t": [
+       53.61,
+       53.61
+      ]
+     },
+     "N_real": [
+      291
+     ]
+    },
+    "D_N50": {
+     "madura_E": {
+      "media": 69.17,
+      "de": 2.76,
+      "min": 66.67,
+      "max": 73.33,
+      "ic95_t": [
+       65.74,
+       72.6
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -18.33,
+      "de": 2.76,
+      "min": -20.83,
+      "max": -14.17,
+      "ic95_t": [
+       -21.76,
+       -14.9
+      ]
+     },
+     "fidelidad_E": {
+      "media": 71.5,
+      "de": 2.73,
+      "min": 69.17,
+      "max": 75.83,
+      "ic95_t": [
+       68.12,
+       74.88
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.17,
+      "de": 3.42,
+      "min": 85.42,
+      "max": 93.75,
+      "ic95_t": [
+       84.92,
+       93.42
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.42,
+      "de": 7.57,
+      "min": 43.75,
+      "max": 60.42,
+      "ic95_t": [
+       41.02,
+       59.82
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "D_N100": {
+     "madura_E": {
+      "media": 76.83,
+      "de": 1.49,
+      "min": 75.0,
+      "max": 78.33,
+      "ic95_t": [
+       74.98,
+       78.68
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -10.67,
+      "de": 1.49,
+      "min": -12.5,
+      "max": -9.17,
+      "ic95_t": [
+       -12.52,
+       -8.82
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.5,
+      "de": 1.51,
+      "min": 78.33,
+      "max": 82.5,
+      "ic95_t": [
+       78.62,
+       82.38
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.0,
+      "de": 1.19,
+      "min": 88.54,
+      "max": 91.67,
+      "ic95_t": [
+       88.53,
+       91.47
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.96,
+      "de": 3.16,
+      "min": 51.04,
+      "max": 58.33,
+      "ic95_t": [
+       50.03,
+       57.88
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "D_N200": {
+     "madura_E": {
+      "media": 78.5,
+      "de": 1.6,
+      "min": 75.83,
+      "max": 80.0,
+      "ic95_t": [
+       76.51,
+       80.49
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.0,
+      "de": 1.6,
+      "min": -11.67,
+      "max": -7.5,
+      "ic95_t": [
+       -10.99,
+       -7.01
+      ]
+     },
+     "fidelidad_E": {
+      "media": 81.5,
+      "de": 1.9,
+      "min": 78.33,
+      "max": 83.33,
+      "ic95_t": [
+       79.14,
+       83.86
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.5,
+      "de": 0.61,
+      "min": 91.0,
+      "max": 92.5,
+      "ic95_t": [
+       90.74,
+       92.26
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.5,
+      "de": 2.42,
+      "min": 51.0,
+      "max": 57.0,
+      "ic95_t": [
+       50.49,
+       56.51
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "D_N291": {
+     "madura_E": {
+      "media": 78.33,
+      "de": 0.0,
+      "min": 78.33,
+      "max": 78.33,
+      "ic95_t": [
+       78.33,
+       78.33
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -9.17,
+      "de": 0.0,
+      "min": -9.17,
+      "max": -9.17,
+      "ic95_t": [
+       -9.17,
+       -9.17
+      ]
+     },
+     "fidelidad_E": {
+      "media": 80.0,
+      "de": 0.0,
+      "min": 80.0,
+      "max": 80.0,
+      "ic95_t": [
+       80.0,
+       80.0
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.47,
+      "de": 0.47,
+      "min": 91.26,
+      "max": 92.31,
+      "ic95_t": [
+       90.89,
+       92.05
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.85,
+      "de": 0.25,
+      "min": 53.5,
+      "max": 54.2,
+      "ic95_t": [
+       53.54,
+       54.16
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    },
+    "G_N50": {
+     "madura_E": {
+      "media": 76.17,
+      "de": 4.62,
+      "min": 71.67,
+      "max": 82.5,
+      "ic95_t": [
+       70.43,
+       81.91
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -11.33,
+      "de": 4.62,
+      "min": -15.83,
+      "max": -5.0,
+      "ic95_t": [
+       -17.07,
+       -5.59
+      ]
+     },
+     "fidelidad_E": {
+      "media": 77.83,
+      "de": 2.8,
+      "min": 74.17,
+      "max": 81.67,
+      "ic95_t": [
+       74.36,
+       81.31
+      ]
+     },
+     "temprana_formacion": {
+      "media": 89.17,
+      "de": 3.42,
+      "min": 85.42,
+      "max": 93.75,
+      "ic95_t": [
+       84.92,
+       93.42
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 50.42,
+      "de": 7.57,
+      "min": 43.75,
+      "max": 60.42,
+      "ic95_t": [
+       41.02,
+       59.82
+      ]
+     },
+     "N_real": [
+      48
+     ]
+    },
+    "G_N100": {
+     "madura_E": {
+      "media": 82.67,
+      "de": 4.18,
+      "min": 76.67,
+      "max": 86.67,
+      "ic95_t": [
+       77.47,
+       87.86
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -4.83,
+      "de": 4.18,
+      "min": -10.83,
+      "max": -0.83,
+      "ic95_t": [
+       -10.03,
+       0.36
+      ]
+     },
+     "fidelidad_E": {
+      "media": 85.33,
+      "de": 3.36,
+      "min": 80.0,
+      "max": 88.33,
+      "ic95_t": [
+       81.16,
+       89.51
+      ]
+     },
+     "temprana_formacion": {
+      "media": 90.0,
+      "de": 1.19,
+      "min": 88.54,
+      "max": 91.67,
+      "ic95_t": [
+       88.53,
+       91.47
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.96,
+      "de": 3.16,
+      "min": 51.04,
+      "max": 58.33,
+      "ic95_t": [
+       50.03,
+       57.88
+      ]
+     },
+     "N_real": [
+      96
+     ]
+    },
+    "G_N200": {
+     "madura_E": {
+      "media": 86.17,
+      "de": 2.4,
+      "min": 82.5,
+      "max": 89.17,
+      "ic95_t": [
+       83.19,
+       89.15
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -1.33,
+      "de": 2.4,
+      "min": -5.0,
+      "max": 1.67,
+      "ic95_t": [
+       -4.31,
+       1.65
+      ]
+     },
+     "fidelidad_E": {
+      "media": 90.17,
+      "de": 2.73,
+      "min": 85.83,
+      "max": 92.5,
+      "ic95_t": [
+       86.78,
+       93.55
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.5,
+      "de": 0.61,
+      "min": 91.0,
+      "max": 92.5,
+      "ic95_t": [
+       90.74,
+       92.26
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.5,
+      "de": 2.42,
+      "min": 51.0,
+      "max": 57.0,
+      "ic95_t": [
+       50.49,
+       56.51
+      ]
+     },
+     "N_real": [
+      200
+     ]
+    },
+    "G_N291": {
+     "madura_E": {
+      "media": 87.17,
+      "de": 0.46,
+      "min": 86.67,
+      "max": 87.5,
+      "ic95_t": [
+       86.6,
+       87.73
+      ]
+     },
+     "dif_madura_menos_temprana": {
+      "media": -0.33,
+      "de": 0.46,
+      "min": -0.83,
+      "max": 0.0,
+      "ic95_t": [
+       -0.9,
+       0.23
+      ]
+     },
+     "fidelidad_E": {
+      "media": 90.5,
+      "de": 0.46,
+      "min": 90.0,
+      "max": 90.83,
+      "ic95_t": [
+       89.93,
+       91.07
+      ]
+     },
+     "temprana_formacion": {
+      "media": 91.47,
+      "de": 0.47,
+      "min": 91.26,
+      "max": 92.31,
+      "ic95_t": [
+       90.89,
+       92.05
+      ]
+     },
+     "con_nombre_formacion_pct": {
+      "media": 53.85,
+      "de": 0.25,
+      "min": 53.5,
+      "max": 54.2,
+      "ic95_t": [
+       53.54,
+       54.16
+      ]
+     },
+     "N_real": [
+      286
+     ]
+    }
+   }
+  }
+ },
+ "segundos": 2462.7,
+ "tiempos": {
+  "semilla_E_0_s": 479.9,
+  "semilla_E_1_s": 491.7,
+  "semilla_E_2_s": 484.9,
+  "semilla_E_3_s": 479.6,
+  "semilla_E_4_s": 486.2
+ }
+}

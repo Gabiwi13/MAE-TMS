@@ -1,0 +1,371 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630229.691861   20956 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793630232.083667   20956 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Particiones: {'cal400': 400, 'proto80': 80, 'res171': 171, 'ood40': 40}
+  cal400: listo (9.8s)
+  proto80: listo (9.9s)
+  res171: listo (10.4s)
+  ood40: listo (13.5s)
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.569225507340212, stdev = 0.25616762495229256
+Iota relation updated, and 0 cells have been turned off
+  control cal400: temprana 90.00  madura B1 93.00
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+Entropy updated to mean = 3.406371737860668, stdev = 0.26975063731386456
+Iota relation updated, and 0 cells have been turned off
+  control proto80: temprana 81.25  madura B1 81.25
+{
+ "cal400": {
+  "con_nombre_de_clase": 199,
+  "con_token_del_vocabulario_propio": 393,
+  "con_token_exclusivo_de_su_clase": 359,
+  "n": 400
+ },
+ "proto80": {
+  "con_nombre_de_clase": 11,
+  "con_token_del_vocabulario_propio": 76,
+  "con_token_exclusivo_de_su_clase": 64,
+  "n": 80
+ },
+ "res171": {
+  "con_nombre_de_clase": 150,
+  "con_token_del_vocabulario_propio": 171,
+  "con_token_exclusivo_de_su_clase": 170,
+  "n": 171
+ },
+ "ood40": {
+  "con_algun_token_del_vocabulario": 2,
+  "sin_tokens_con_vector": 0,
+  "n": 40
+ }
+}
+{'particion': 'cal400', 'decisor': 'voto|-|-', 'n': 400, 'acepta': 393, 'acierto_esperado': 348.5, 'acierto_pct': 87.12, 'empates': 49, 'cota_inf_pct': 81.5, 'cota_sup_pct': 93.75}
+{'particion': 'cal400', 'decisor': 'centroide|token|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 331.0, 'acierto_pct': 82.75, 'empates': 0, 'cota_inf_pct': 82.75, 'cota_sup_pct': 82.75}
+{'particion': 'cal400', 'decisor': 'centroide|media|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 325.0, 'acierto_pct': 81.25, 'empates': 0, 'cota_inf_pct': 81.25, 'cota_sup_pct': 81.25}
+{'particion': 'cal400', 'decisor': 'centroide_frec|token|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 335.0, 'acierto_pct': 83.75, 'empates': 0, 'cota_inf_pct': 83.75, 'cota_sup_pct': 83.75}
+{'particion': 'cal400', 'decisor': 'centroide_frec|media|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 333.0, 'acierto_pct': 83.25, 'empates': 0, 'cota_inf_pct': 83.25, 'cota_sup_pct': 83.25}
+{'particion': 'cal400', 'decisor': '1nn|token|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 323.083, 'acierto_pct': 80.77, 'empates': 63, 'cota_inf_pct': 73.25, 'cota_sup_pct': 89.0}
+{'particion': 'cal400', 'decisor': '1nn|media|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 342.5, 'acierto_pct': 85.62, 'empates': 73, 'cota_inf_pct': 78.75, 'cota_sup_pct': 96.75}
+{'particion': 'cal400', 'decisor': '5nn|token|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 335.833, 'acierto_pct': 83.96, 'empates': 16, 'cota_inf_pct': 82.0, 'cota_sup_pct': 86.0}
+{'particion': 'cal400', 'decisor': '5nn|media|crudo', 'n': 400, 'acepta': 400, 'acierto_esperado': 350.167, 'acierto_pct': 87.54, 'empates': 52, 'cota_inf_pct': 81.25, 'cota_sup_pct': 94.0}
+{'particion': 'cal400', 'decisor': 'centroide|token|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 330.0, 'acierto_pct': 82.5, 'empates': 0, 'cota_inf_pct': 82.5, 'cota_sup_pct': 82.5}
+{'particion': 'cal400', 'decisor': 'centroide|media|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 326.0, 'acierto_pct': 81.5, 'empates': 0, 'cota_inf_pct': 81.5, 'cota_sup_pct': 81.5}
+{'particion': 'cal400', 'decisor': 'centroide_frec|token|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 331.0, 'acierto_pct': 82.75, 'empates': 0, 'cota_inf_pct': 82.75, 'cota_sup_pct': 82.75}
+{'particion': 'cal400', 'decisor': 'centroide_frec|media|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 331.0, 'acierto_pct': 82.75, 'empates': 0, 'cota_inf_pct': 82.75, 'cota_sup_pct': 82.75}
+{'particion': 'cal400', 'decisor': '1nn|token|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 323.25, 'acierto_pct': 80.81, 'empates': 66, 'cota_inf_pct': 73.0, 'cota_sup_pct': 89.5}
+{'particion': 'cal400', 'decisor': '1nn|media|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 340.833, 'acierto_pct': 85.21, 'empates': 74, 'cota_inf_pct': 78.25, 'cota_sup_pct': 96.5}
+{'particion': 'cal400', 'decisor': '5nn|token|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 334.5, 'acierto_pct': 83.62, 'empates': 17, 'cota_inf_pct': 81.5, 'cota_sup_pct': 85.75}
+{'particion': 'cal400', 'decisor': '5nn|media|cuant', 'n': 400, 'acepta': 400, 'acierto_esperado': 352.167, 'acierto_pct': 88.04, 'empates': 55, 'cota_inf_pct': 81.5, 'cota_sup_pct': 94.75}
+{'particion': 'cal400', 'decisor': 'eam_temprana', 'n': 400, 'acepta': 393, 'acierto_esperado': 360.0, 'acierto_pct': 90.0, 'empates': 0, 'cota_inf_pct': 90.0, 'cota_sup_pct': 90.0}
+{'particion': 'proto80', 'decisor': 'voto|-|-', 'n': 80, 'acepta': 76, 'acierto_esperado': 63.5, 'acierto_pct': 79.38, 'empates': 10, 'cota_inf_pct': 73.75, 'cota_sup_pct': 86.25}
+{'particion': 'proto80', 'decisor': 'centroide|token|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 62.0, 'acierto_pct': 77.5, 'empates': 0, 'cota_inf_pct': 77.5, 'cota_sup_pct': 77.5}
+{'particion': 'proto80', 'decisor': 'centroide|media|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 62.0, 'acierto_pct': 77.5, 'empates': 0, 'cota_inf_pct': 77.5, 'cota_sup_pct': 77.5}
+{'particion': 'proto80', 'decisor': 'centroide_frec|token|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 63.0, 'acierto_pct': 78.75, 'empates': 0, 'cota_inf_pct': 78.75, 'cota_sup_pct': 78.75}
+{'particion': 'proto80', 'decisor': 'centroide_frec|media|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 63.0, 'acierto_pct': 78.75, 'empates': 0, 'cota_inf_pct': 78.75, 'cota_sup_pct': 78.75}
+{'particion': 'proto80', 'decisor': '1nn|token|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 64.0, 'acierto_pct': 80.0, 'empates': 8, 'cota_inf_pct': 75.0, 'cota_sup_pct': 85.0}
+{'particion': 'proto80', 'decisor': '1nn|media|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 60.833, 'acierto_pct': 76.04, 'empates': 23, 'cota_inf_pct': 65.0, 'cota_sup_pct': 93.75}
+{'particion': 'proto80', 'decisor': '5nn|token|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 64.0, 'acierto_pct': 80.0, 'empates': 2, 'cota_inf_pct': 78.75, 'cota_sup_pct': 81.25}
+{'particion': 'proto80', 'decisor': '5nn|media|crudo', 'n': 80, 'acepta': 80, 'acierto_esperado': 65.167, 'acierto_pct': 81.46, 'empates': 13, 'cota_inf_pct': 73.75, 'cota_sup_pct': 90.0}
+{'particion': 'proto80', 'decisor': 'centroide|token|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 62.0, 'acierto_pct': 77.5, 'empates': 0, 'cota_inf_pct': 77.5, 'cota_sup_pct': 77.5}
+{'particion': 'proto80', 'decisor': 'centroide|media|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 62.0, 'acierto_pct': 77.5, 'empates': 0, 'cota_inf_pct': 77.5, 'cota_sup_pct': 77.5}
+{'particion': 'proto80', 'decisor': 'centroide_frec|token|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 62.0, 'acierto_pct': 77.5, 'empates': 0, 'cota_inf_pct': 77.5, 'cota_sup_pct': 77.5}
+{'particion': 'proto80', 'decisor': 'centroide_frec|media|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 63.0, 'acierto_pct': 78.75, 'empates': 0, 'cota_inf_pct': 78.75, 'cota_sup_pct': 78.75}
+{'particion': 'proto80', 'decisor': '1nn|token|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 63.5, 'acierto_pct': 79.38, 'empates': 9, 'cota_inf_pct': 73.75, 'cota_sup_pct': 85.0}
+{'particion': 'proto80', 'decisor': '1nn|media|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 60.833, 'acierto_pct': 76.04, 'empates': 23, 'cota_inf_pct': 65.0, 'cota_sup_pct': 93.75}
+{'particion': 'proto80', 'decisor': '5nn|token|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 63.0, 'acierto_pct': 78.75, 'empates': 4, 'cota_inf_pct': 76.25, 'cota_sup_pct': 81.25}
+{'particion': 'proto80', 'decisor': '5nn|media|cuant', 'n': 80, 'acepta': 80, 'acierto_esperado': 65.167, 'acierto_pct': 81.46, 'empates': 14, 'cota_inf_pct': 73.75, 'cota_sup_pct': 90.0}
+{'particion': 'proto80', 'decisor': 'eam_temprana', 'n': 80, 'acepta': 76, 'acierto_esperado': 65.0, 'acierto_pct': 81.25, 'empates': 0, 'cota_inf_pct': 81.25, 'cota_sup_pct': 81.25}
+{'particion': 'res171', 'decisor': 'voto|-|-', 'n': 171, 'acepta': 171, 'acierto_esperado': 162.667, 'acierto_pct': 95.13, 'empates': 12, 'cota_inf_pct': 91.81, 'cota_sup_pct': 98.83}
+{'particion': 'res171', 'decisor': 'centroide|token|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 148.0, 'acierto_pct': 86.55, 'empates': 0, 'cota_inf_pct': 86.55, 'cota_sup_pct': 86.55}
+{'particion': 'res171', 'decisor': 'centroide|media|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 145.0, 'acierto_pct': 84.8, 'empates': 0, 'cota_inf_pct': 84.8, 'cota_sup_pct': 84.8}
+{'particion': 'res171', 'decisor': 'centroide_frec|token|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 150.0, 'acierto_pct': 87.72, 'empates': 0, 'cota_inf_pct': 87.72, 'cota_sup_pct': 87.72}
+{'particion': 'res171', 'decisor': 'centroide_frec|media|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 149.0, 'acierto_pct': 87.13, 'empates': 0, 'cota_inf_pct': 87.13, 'cota_sup_pct': 87.13}
+{'particion': 'res171', 'decisor': '1nn|token|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 136.333, 'acierto_pct': 79.73, 'empates': 44, 'cota_inf_pct': 67.84, 'cota_sup_pct': 93.57}
+{'particion': 'res171', 'decisor': '1nn|media|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 162.667, 'acierto_pct': 95.13, 'empates': 11, 'cota_inf_pct': 92.4, 'cota_sup_pct': 98.83}
+{'particion': 'res171', 'decisor': '5nn|token|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 149.333, 'acierto_pct': 87.33, 'empates': 9, 'cota_inf_pct': 84.8, 'cota_sup_pct': 90.06}
+{'particion': 'res171', 'decisor': '5nn|media|crudo', 'n': 171, 'acepta': 171, 'acierto_esperado': 158.5, 'acierto_pct': 92.69, 'empates': 11, 'cota_inf_pct': 89.47, 'cota_sup_pct': 95.91}
+{'particion': 'res171', 'decisor': 'centroide|token|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 147.0, 'acierto_pct': 85.96, 'empates': 0, 'cota_inf_pct': 85.96, 'cota_sup_pct': 85.96}
+{'particion': 'res171', 'decisor': 'centroide|media|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 145.0, 'acierto_pct': 84.8, 'empates': 0, 'cota_inf_pct': 84.8, 'cota_sup_pct': 84.8}
+{'particion': 'res171', 'decisor': 'centroide_frec|token|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 149.0, 'acierto_pct': 87.13, 'empates': 0, 'cota_inf_pct': 87.13, 'cota_sup_pct': 87.13}
+{'particion': 'res171', 'decisor': 'centroide_frec|media|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 149.0, 'acierto_pct': 87.13, 'empates': 0, 'cota_inf_pct': 87.13, 'cota_sup_pct': 87.13}
+{'particion': 'res171', 'decisor': '1nn|token|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 137.0, 'acierto_pct': 80.12, 'empates': 46, 'cota_inf_pct': 67.84, 'cota_sup_pct': 94.74}
+{'particion': 'res171', 'decisor': '1nn|media|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 161.667, 'acierto_pct': 94.54, 'empates': 11, 'cota_inf_pct': 91.81, 'cota_sup_pct': 98.25}
+{'particion': 'res171', 'decisor': '5nn|token|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 150.0, 'acierto_pct': 87.72, 'empates': 6, 'cota_inf_pct': 85.96, 'cota_sup_pct': 89.47}
+{'particion': 'res171', 'decisor': '5nn|media|cuant', 'n': 171, 'acepta': 171, 'acierto_esperado': 160.0, 'acierto_pct': 93.57, 'empates': 12, 'cota_inf_pct': 90.06, 'cota_sup_pct': 97.08}
+{'particion': 'res171', 'decisor': 'eam_temprana', 'n': 171, 'acepta': 171, 'acierto_esperado': 167.0, 'acierto_pct': 97.66, 'empates': 0, 'cota_inf_pct': 97.66, 'cota_sup_pct': 97.66}
+{'particion': 'ood40', 'decisor': 'voto|-|-', 'n': 40, 'acepta': 2, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 1, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide|token|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide|media|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide_frec|token|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide_frec|media|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '1nn|token|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 21, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '1nn|media|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 6, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '5nn|token|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 6, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '5nn|media|crudo', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 16, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide|token|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide|media|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide_frec|token|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'centroide_frec|media|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '1nn|token|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 21, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '1nn|media|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 4, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '5nn|token|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 8, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': '5nn|media|cuant', 'n': 40, 'acepta': 40, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 17, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'eam_temprana', 'n': 40, 'acepta': 2, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'cal400', 'decisor': 'tabla_conteos', 'n': 400, 'acepta': 400, 'acierto_esperado': 369.0, 'acierto_pct': 92.25, 'empates': 0, 'cota_inf_pct': 92.25, 'cota_sup_pct': 92.25}
+{'particion': 'proto80', 'decisor': 'tabla_conteos', 'n': 80, 'acepta': 77, 'acierto_esperado': 63.0, 'acierto_pct': 78.75, 'empates': 0, 'cota_inf_pct': 78.75, 'cota_sup_pct': 78.75}
+{'particion': 'res171', 'decisor': 'tabla_conteos', 'n': 171, 'acepta': 171, 'acierto_esperado': 162.0, 'acierto_pct': 94.74, 'empates': 0, 'cota_inf_pct': 94.74, 'cota_sup_pct': 94.74}
+{'particion': 'ood40', 'decisor': 'tabla_conteos[cal400]', 'n': 40, 'acepta': 8, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'tabla_conteos[proto80]', 'n': 40, 'acepta': 3, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'ood40', 'decisor': 'tabla_conteos[res171]', 'n': 40, 'acepta': 4, 'acierto_esperado': 0.0, 'acierto_pct': None, 'empates': 0, 'cota_inf_pct': None, 'cota_sup_pct': None}
+{'particion': 'cal400', 'decisor': 'sistema_madura_B1', 'n': 400, 'acepta': 400, 'acierto_esperado': 372.0, 'acierto_pct': 93.0, 'empates': 0, 'cota_inf_pct': 93.0, 'cota_sup_pct': 93.0}
+{'particion': 'proto80', 'decisor': 'sistema_madura_B1', 'n': 80, 'acepta': 77, 'acierto_esperado': 65.0, 'acierto_pct': 81.25, 'empates': 0, 'cota_inf_pct': 81.25, 'cota_sup_pct': 81.25}
+{'particion': 'res171', 'decisor': 'sistema_T-protocolo_N200 (exp11, 10 semillas)', 'n': 171, 'acepta': 171, 'acierto_pct': 97.02, 'acierto_min_max': [np.float64(95.91), np.float64(97.66)]}
+{'decisor': 'centroide|media|crudo', 'auroc': 0.9871, 'ood_acepta_umbral_100': 23, 'ood_acepta_umbral_95': 3, 'conf_res171_min_mediana': [0.6038, 0.8094], 'conf_ood_max_mediana': [0.7392, 0.6118]}
+{'decisor': 'centroide_frec|media|crudo', 'auroc': 0.9915, 'ood_acepta_umbral_100': 20, 'ood_acepta_umbral_95': 2, 'conf_res171_min_mediana': [0.6071, 0.8245], 'conf_ood_max_mediana': [0.7408, 0.6076]}
+{'decisor': '1nn|media|crudo', 'auroc': 0.9734, 'ood_acepta_umbral_100': 9, 'ood_acepta_umbral_95': 2, 'conf_res171_min_mediana': [0.6268, 0.8391], 'conf_ood_max_mediana': [0.8657, 0.5679]}
+{'decisor': '5nn|media|crudo', 'auroc': 0.9709, 'ood_acepta_umbral_100': 18, 'ood_acepta_umbral_95': 4, 'conf_res171_min_mediana': [0.5313, 0.7064], 'conf_ood_max_mediana': [0.6833, 0.5258]}
+{'decisor': 'centroide|media|cuant', 'auroc': 0.9857, 'ood_acepta_umbral_100': 22, 'ood_acepta_umbral_95': 3, 'conf_res171_min_mediana': [0.5959, 0.8065], 'conf_ood_max_mediana': [0.7345, 0.5994]}
+{'decisor': 'centroide_frec|media|cuant', 'auroc': 0.9914, 'ood_acepta_umbral_100': 16, 'ood_acepta_umbral_95': 2, 'conf_res171_min_mediana': [0.6041, 0.8175], 'conf_ood_max_mediana': [0.7342, 0.5955]}
+{'decisor': '1nn|media|cuant', 'auroc': 0.9738, 'ood_acepta_umbral_100': 9, 'ood_acepta_umbral_95': 2, 'conf_res171_min_mediana': [0.6275, 0.8303], 'conf_ood_max_mediana': [0.8575, 0.5637]}
+{'decisor': '5nn|media|cuant', 'auroc': 0.9713, 'ood_acepta_umbral_100': 22, 'ood_acepta_umbral_95': 4, 'conf_res171_min_mediana': [0.5099, 0.6995], 'conf_ood_max_mediana': [0.6739, 0.5146]}
+{
+ "cal400": {
+  "mejor_linea_base": "5nn|media|cuant",
+  "vs_sistema_madura_B1": {
+   "solo_base": 4,
+   "solo_sistema": 50,
+   "p": 3.8029690507812575e-11
+  },
+  "tabla_vs_sistema": {
+   "solo_tabla": 5,
+   "solo_sistema": 8,
+   "p": 0.5810546875
+  },
+  "voto_vs_sistema": {
+   "solo_voto": 2,
+   "solo_sistema": 48,
+   "p": 2.2666313270747196e-12
+  }
+ },
+ "proto80": {
+  "mejor_linea_base": "5nn|media|crudo",
+  "vs_sistema_madura_B1": {
+   "solo_base": 6,
+   "solo_sistema": 12,
+   "p": 0.237884521484375
+  },
+  "tabla_vs_sistema": {
+   "solo_tabla": 2,
+   "solo_sistema": 4,
+   "p": 0.6875
+  },
+  "voto_vs_sistema": {
+   "solo_voto": 1,
+   "solo_sistema": 7,
+   "p": 0.0703125
+  }
+ },
+ "res171": {
+  "mejor_linea_base": "voto|-|-",
+  "por_semilla (solo_x, solo_sistema, p)": {
+   "42": {
+    "base_vs_sistema": [
+     4,
+     14,
+     0.0308837890625
+    ],
+    "tabla_vs_sistema": [
+     0,
+     5,
+     0.0625
+    ],
+    "voto_vs_sistema": [
+     4,
+     14,
+     0.0308837890625
+    ]
+   },
+   "43": {
+    "base_vs_sistema": [
+     4,
+     13,
+     0.049041748046875
+    ],
+    "tabla_vs_sistema": [
+     0,
+     4,
+     0.125
+    ],
+    "voto_vs_sistema": [
+     4,
+     13,
+     0.049041748046875
+    ]
+   },
+   "44": {
+    "base_vs_sistema": [
+     3,
+     13,
+     0.021270751953125
+    ],
+    "tabla_vs_sistema": [
+     0,
+     5,
+     0.0625
+    ],
+    "voto_vs_sistema": [
+     3,
+     13,
+     0.021270751953125
+    ]
+   },
+   "45": {
+    "base_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ],
+    "tabla_vs_sistema": [
+     1,
+     5,
+     0.21875
+    ],
+    "voto_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ]
+   },
+   "46": {
+    "base_vs_sistema": [
+     3,
+     13,
+     0.021270751953125
+    ],
+    "tabla_vs_sistema": [
+     1,
+     6,
+     0.125
+    ],
+    "voto_vs_sistema": [
+     3,
+     13,
+     0.021270751953125
+    ]
+   },
+   "47": {
+    "base_vs_sistema": [
+     5,
+     12,
+     0.143463134765625
+    ],
+    "tabla_vs_sistema": [
+     3,
+     5,
+     0.7265625
+    ],
+    "voto_vs_sistema": [
+     5,
+     12,
+     0.143463134765625
+    ]
+   },
+   "48": {
+    "base_vs_sistema": [
+     4,
+     13,
+     0.049041748046875
+    ],
+    "tabla_vs_sistema": [
+     2,
+     6,
+     0.2890625
+    ],
+    "voto_vs_sistema": [
+     4,
+     13,
+     0.049041748046875
+    ]
+   },
+   "49": {
+    "base_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ],
+    "tabla_vs_sistema": [
+     2,
+     6,
+     0.2890625
+    ],
+    "voto_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ]
+   },
+   "50": {
+    "base_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ],
+    "tabla_vs_sistema": [
+     3,
+     7,
+     0.34375
+    ],
+    "voto_vs_sistema": [
+     3,
+     12,
+     0.03515625
+    ]
+   },
+   "51": {
+    "base_vs_sistema": [
+     4,
+     11,
+     0.11846923828125
+    ],
+    "tabla_vs_sistema": [
+     5,
+     7,
+     0.7744140625
+    ],
+    "voto_vs_sistema": [
+     4,
+     11,
+     0.11846923828125
+    ]
+   }
+  }
+ }
+}
+Tiempo total 47.7s

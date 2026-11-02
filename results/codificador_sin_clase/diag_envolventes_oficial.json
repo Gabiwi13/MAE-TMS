@@ -1,0 +1,73 @@
+{
+ "raiz": "C:\\Users\\aq99l\\Projects\\MAE-TMS-una-hetero",
+ "n_test_con_energia": 652,
+ "propia_acepta": 0.9861963190184049,
+ "ajenas_que_aceptan_media": 0.004601226993865031,
+ "alguna_ajena_acepta": 0.004601226993865031,
+ "por_clase": {
+  "apple": {
+   "n": 82,
+   "propia_acepta": 1.0,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "car": {
+   "n": 82,
+   "propia_acepta": 0.975609756097561,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "cow": {
+   "n": 78,
+   "propia_acepta": 1.0,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "cup": {
+   "n": 82,
+   "propia_acepta": 1.0,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "dog": {
+   "n": 82,
+   "propia_acepta": 0.9878048780487805,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "horse": {
+   "n": 82,
+   "propia_acepta": 0.9634146341463414,
+   "ajenas_que_aceptan_media": 0.036585365853658534,
+   "alguna_ajena_acepta": 0.036585365853658534
+  },
+  "pear": {
+   "n": 82,
+   "propia_acepta": 0.9878048780487805,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  },
+  "tomato": {
+   "n": 82,
+   "propia_acepta": 0.975609756097561,
+   "ajenas_que_aceptan_media": 0.0,
+   "alguna_ajena_acepta": 0.0
+  }
+ },
+ "fisher_por_coordenada": {
+  "mediana": 5.337608337402344,
+  "media": 5.582374572753906,
+  "max": 11.140311241149902,
+  "n_mayor_que_1": 64
+ },
+ "niveles_ocupados_por_coordenada": {
+  "apple": 10.15625,
+  "car": 12.46875,
+  "cow": 9.34375,
+  "cup": 11.34375,
+  "dog": 10.921875,
+  "horse": 9.125,
+  "pear": 9.234375,
+  "tomato": 8.09375
+ }
+}

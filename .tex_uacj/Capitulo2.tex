@@ -1,0 +1,323 @@
+% Generado por generar_capitulos.py a partir de ../.tex8
+\chapter{Marco Teórico}
+\label{sec:marco_teorico}
+% <- 02
+\section{Memoria Asociativa Entrópica}
+\label{sec:eam}
+
+La Memoria Asociativa Entrópica (EAM) \cite{pineda2021entropic} es un modelo de memoria
+que opera sobre funciones discretas.
+Una \textbf{pista}, lo que se presenta a la memoria para registrarlo o para preguntar por
+él, es una función discreta $f : \{1, \ldots, n\} \to \{0, \ldots, m-1\}$,
+representada como un vector $\mathbf{a} \in \{0, \ldots, m-1\}^n$.
+La dimensión $n$ es el número de \emph{características} y $m$ es el número de valores posibles
+por característica (el alfabeto).
+
+En la formulación original de 2021 el registro es \emph{booleano}: la memoria almacena
+una función característica $R : A \times V \to \{0, 1\}$, sobre características ($A$) y
+valores ($V$), y el registro se realiza por disyunción lógica.
+La variante que este trabajo utiliza es la \textbf{EAM ponderada} (W-EAM), introducida
+en el aprendizaje fonético \cite{pineda2022weighted} y empleada desde entonces en la
+línea de trabajo del grupo, de la imaginería a las imágenes naturales de
+CIFAR-10 \cite{pineda2023imagery,hernandez2026cifar}: la memoria
+se representa como una relación ponderada $\mathbf{R} \in \mathbb{N}^{n \times m}$,
+donde $\mathbf{R}[i, j]$ cuenta cuántas veces la característica $i$ ha tomado el valor
+$j$ a lo largo de todos los registros.
+Las definiciones que siguen corresponden a la variante ponderada, no a la booleana de
+2021.
+
+\subsection*{Operación de registro ($\lambda$)}
+
+Dada una pista $\mathbf{a}$, se construye el patrón unitario:
+\begin{equation}
+    r(\mathbf{a})[i, j] = \begin{cases} 1 & \text{si } j = a_i \\ 0 & \text{en otro caso} \end{cases}
+    \label{eq:patron-unitario}
+\end{equation}
+y se acumula en la memoria:
+\begin{equation}
+    \mathbf{R} \leftarrow \mathbf{R} + r(\mathbf{a})
+    \label{eq:registro}
+\end{equation}
+La acumulación está acotada superiormente (pesos en $\{0,\ldots,w\}$), tal como define
+la fuente heteroasociativa \cite{morales2025missing}, cuyos autores describen esta
+operación como una forma de la regla de aprendizaje de Hebb; la W-EAM original fija
+los pesos en $\{0,\ldots,l\}$ \cite{pineda2022weighted}.
+
+La memoria no almacena patrones individuales: acumula una
+\textbf{distribución de experiencias}.
+Cada vector $\mathbf{R}[i, \cdot]$ (la \emph{columna} de la característica $i$, como la
+llaman las fuentes) se convierte progresivamente en una distribución de
+frecuencias sobre los valores posibles de la característica $i$.
+La memoria va formando abstracciones y prototipos a partir de esta superposición
+estadística; no se imponen desde el exterior ni se calculan de forma separada.
+
+\subsection*{Operación de reconocimiento ($\eta$)}
+
+Se dice que la pista $\mathbf{a}$ está \emph{contenida} en $\mathbf{R}$ si, para toda
+característica $i$, la celda correspondiente tiene masa positiva: $\mathbf{R}[i, a_i] > 0$.
+La versión con tolerancia $\xi$ admite a lo más $\xi$ fallas:
+\begin{equation}
+    \eta(\mathbf{a}, \mathbf{R}, \xi) = \mathbf{1}\!\left[\,\bigl|\{i : \mathbf{R}[i, a_i] = 0\}\bigr| \leq \xi\,\right]
+    \label{eq:reconocimiento}
+\end{equation}
+donde $\mathbf{1}[\cdot]$ vale 1 si la condición se cumple y 0 si no.
+Es una \emph{implicación material relajada}: la pista se acepta si cada una de sus
+celdas marcadas encuentra soporte en la memoria, tolerando hasta $\xi$ columnas sin él.
+
+Durante el reconocimiento se computan además los \textbf{pesos por dimensión}:
+\begin{equation}
+    w_i = \mathbf{R}[i,\, a_i]
+    \label{eq:pesos}
+\end{equation}
+Estos pesos reflejan cuán frecuentemente la característica $i$ ha tenido el valor $a_i$
+en los patrones registrados.
+En las definiciones formales de las fuentes, $\eta$ devuelve solo aceptar o rechazar, y
+los $w_i$ son cantidades intermedias de esa prueba; la implementación de referencia de
+Pineda y Morales los devuelve (\texttt{recog\_weights}), y este trabajo los usa para
+ponderar la proyección de la memoria heteroasociativa (Sección~\ref{sec:hetero4d}).
+
+El parámetro $\iota$ controla la poda.
+Para cada característica $i$ se toma el peso medio de sus celdas no nulas,
+$\bar{r}_i = \sum_j \mathbf{R}[i,j] \,/\, |\{j : \mathbf{R}[i,j] > 0\}|$, y toda celda
+con $\mathbf{R}[i,j] < \iota\,\bar{r}_i$ se apaga al reconocer y al recuperar.
+La relación acumulada $\mathbf{R}$ no cambia: la poda quita los valores poco frecuentes
+solo de la \emph{relación operativa} con la que la memoria responde.
+
+El parámetro $\kappa$ fija un umbral de reconocimiento relativo: la memoria
+homoasociativa acepta la pista solo si, además de contenerla, el peso medio
+$\bar{w} = \frac{1}{n}\sum_i w_i$ alcanza $\kappa \cdot \bar{\mu}$, donde $\bar{\mu}$ es
+la media global de la memoria.
+De las lecturas de dominio de la memoria de contenido (ecuación~\eqref{eq:marginal}),
+este sistema usa los pesos y no esa decisión; el $\kappa$ que barre la
+Sección~\ref{sec:param-iota-kappa} actúa sobre la proyección heteroasociativa
+(Sección~\ref{sec:hetero4d}).
+
+\subsection*{Operación de recuperación ($\beta$)}
+
+La recuperación de un patrón a partir de una pista $\mathbf{a}$ procede columna a columna.
+Para cada característica $i$, se construye una distribución de probabilidad sobre $\{0,\ldots,m-1\}$
+modulada por una gaussiana de desviación $\sigma \cdot m$ centrada en el valor $a_i$
+(cuando se dispone de la pista):
+\begin{equation}
+    p_i(j) \propto \mathbf{R}[i, j] \cdot \exp\!\left(-\frac{(j - a_i)^2}{2(\sigma m)^2}\right)
+    \label{eq:distribucion-recuperacion}
+\end{equation}
+El valor recuperado $\hat{a}_i$ se obtiene \textbf{muestreando} esta distribución:
+$\hat{a}_i \sim p_i(\cdot)$.
+Por eso dos ejecuciones de $\beta$ sobre la misma pista y la misma memoria pueden dar
+resultados distintos; esa variación es parte de cómo recuerda la memoria:
+\emph{recordar es muestrear}, no leer un valor fijo.
+El parámetro $\sigma$ controla la dispersión del muestreo: $\sigma = 0$ concentra la
+masa en la pista exacta, valores mayores permiten explorar vecindades del espacio de
+representación; valores altos favorecen recuperaciones imaginativas al costo de
+falsas recolecciones \cite{pineda2023imagery}.
+Esta modulación gaussiana es la recuperación de la W-EAM \cite{pineda2022weighted}
+(la EAM de 2021 usaba una distribución triangular \cite{pineda2021entropic}) y es la
+que implementa el código de referencia que este sistema utiliza.
+
+La \textbf{entropía} de la memoria se calcula como la media de las entropías de Shannon
+por columna:
+\begin{equation}
+    H(\mathbf{R}) = \frac{1}{n} \sum_{i=1}^{n} \left(-\sum_{j=0}^{m-1} \hat{p}_{ij} \log_2 \hat{p}_{ij}\right)
+    \label{eq:entropia}
+\end{equation}
+donde $\hat{p}_{ij} = \mathbf{R}[i,j] / \sum_l \mathbf{R}[i,l]$.
+La entropía resume el estado de la memoria: una memoria con entropía alta ha acumulado
+más variedad; una con entropía baja está concentrada en pocos valores.
+La entropía baja \emph{no} es un defecto por sí misma: en las
+fuentes, una función totalmente determinada tiene entropía cero y es una
+memoria bien formada, solo que rígida y reproductiva
+\cite{pineda2021entropic,morales2022manuscript}.
+Si la entropía baja es deseable o no depende de la tarea: un directorio que debe señalar
+sin ambigüedad a un especialista necesita entropía baja, y una memoria
+de contenido que debe generalizar, un rango medio.
+La evidencia empírica de las fuentes ubica el óptimo de reconocimiento y recuperación
+constructiva en un rango \emph{intermedio} de entropía: baja entropía da precisión alta
+con exhaustividad (\textit{recall}) baja, alta entropía lo contrario
+\cite{pineda2023imagery}.
+
+\section{Memoria Heteroasociativa Entrópica}
+\label{sec:hetero4d}
+
+La Memoria Heteroasociativa Entrópica (EHAM) de Morales y
+Pineda~\cite{morales2025missing}
+extiende la EAM al almacenamiento de pares de objetos posiblemente pertenecientes a dominios
+o modalidades distintas.
+En lugar de una relación bidimensional, la EHAM almacena las asociaciones en una relación
+ponderada de cuatro dimensiones, de modo que una pista en un dominio puede proyectar una
+relación en el dominio asociado.
+Formalmente, relaciona un dominio izquierdo con $n$ características y alfabeto de tamaño $m$,
+y un dominio derecho con $p$ características y alfabeto de tamaño $q$.
+En el artículo la relación es $h \subseteq A \times B \times V \times Z$ con pesos en
+$\{0,\ldots,w\}$; la implementación de referencia la almacena en un tensor
+$\mathbf{R} \in \mathbb{N}^{n \times p \times (m+1) \times (q+1)}$,
+donde los tamaños $(m+1)$ y $(q+1)$ reservan la última posición de cada alfabeto para
+un \emph{valor indefinido}, que representa características sin valor (funciones
+parciales); esas celdas forman el \emph{borde} del tensor.
+Las operaciones $\lambda$, $\eta$ y $H$ se generalizan de forma directa: el registro es
+la misma suma acotada sobre el tensor 4D, el reconocimiento es la misma implicación
+material relajada con umbrales $\iota$ y $\kappa$, y la entropía es el promedio, sobre
+los pares de características $(i, j)$, de la entropía de Shannon del plano
+$\mathbf{R}[i, j, \cdot, \cdot]$ \cite{morales2025missing}.
+
+La recuperación heteroasociativa introduce además el \textbf{problema de la pista faltante}
+(\emph{missing cue problem}), contribución central del artículo publicado
+\cite{morales2025missing}: cuando la pista fuente selecciona un plano de memoria en el
+dominio destino pero no existe información adicional de ese dominio, el plano queda
+en gran parte indeterminado y no hay con qué completar la recuperación.
+Los autores proponen los métodos \emph{random}, \emph{sample and test} y
+\emph{search and test} para ese caso.
+La proyección ponderada que se describe a continuación produce ese plano a partir de la
+pista fuente y sus pesos; para elegir un objeto del plano, este sistema usa el tercer
+método, que es la recuperación por defecto de la implementación de referencia
+(\texttt{recall\_with\_sampling\_n\_search}).
+El presente sistema usa la EHAM para la memoria de contenido de cada módulo, que asocia
+texto e imagen en los dos sentidos, y para sus directorios, que asocian una pista (una
+palabra o una imagen) con la identidad del módulo que ganó la consulta.
+
+\subsection*{Registro heteroasociativo}
+
+Dada una pista izquierda $\mathbf{a} \in \{0,\ldots,m-1\}^n$ y una pista derecha
+$\mathbf{b} \in \{0,\ldots,q-1\}^p$, el patrón unitario conjunto es:
+\begin{equation}
+    r(\mathbf{a}, \mathbf{b})[i, j, a_i, b_j] = 1
+    \label{eq:registro-hetero}
+\end{equation}
+y se acumula de forma idéntica a la ecuación~\eqref{eq:registro}.
+
+\subsection*{Las memorias de dominio como lecturas de la heteroasociativa}
+
+La memoria heteroasociativa modela la \emph{distribución conjunta} de dos dominios, y
+la de cada dominio se lee de ella.
+Cada registro de la ecuación~\eqref{eq:registro-hetero} suma una unidad en
+$(i, j, a_i, b_j)$ para \emph{todas} las coordenadas $j$ del otro dominio.
+Por eso, fijada cualquier $j$, sumar sobre los valores $l$ del otro dominio cuenta
+cuántas veces se registró cada valor $k$ en cada característica $i$, sea cual sea la $j$
+elegida:
+\begin{equation}
+    M^{L}[i, k] = \sum_{l=0}^{q} \mathbf{R}[i, j, k, l],
+    \qquad
+    M^{R}[j, l] = \sum_{k=0}^{m} \mathbf{R}[i, j, k, l].
+    \label{eq:marginal}
+\end{equation}
+El índice $l = q$ (o $k = m$) es el valor indefinido, el borde: lo que llega sin pareja
+(una imagen sin palabra, una palabra sin imagen) se registra ahí y entra en la suma.
+Las celdas del borde arrancan en 1, y la lectura descuenta ese 1.
+Estas lecturas, $M^{L}$ y $M^{R}$, son las relaciones de memorias homoasociativas
+llenadas con lo mismo que recibió cada lado; la prueba $\eta$, los pesos de la
+ecuación~\eqref{eq:pesos} y la recuperación dentro de un dominio se calculan sobre ellas.
+
+Por eso cada módulo de EAM-TMS tiene una sola memoria de contenido, la
+heteroasociativa, y dos directorios heteroasociativos (uno de texto y uno visual).
+Un módulo que manejara un solo dominio guardaría su contenido en una memoria
+homoasociativa.
+En la implementación de referencia de Pineda y
+Morales\footnote{\url{https://github.com/eam-experiments/hetero}, archivo \texttt{eam.py}.},
+las memorias homoasociativas se llenan aparte y solo entregan los pesos de la prueba de
+reconocimiento de pares; la recuperación usa pesos uniformes.
+La Sección~\ref{sec:una-memoria} muestra que leer esos pesos de la heteroasociativa deja
+las mismas decisiones.
+
+\subsection*{Proyección AND-ponderada}
+
+Sea $\mathbf{a}$ una pista izquierda con pesos por dimensión $\mathbf{w}$, calculados
+con la ecuación~\eqref{eq:pesos} sobre la lectura $M^{L}$ de la propia memoria
+(ecuación~\eqref{eq:marginal}).
+Se normalizan los pesos:
+\begin{equation}
+    w'_i = \frac{n \cdot w_i}{\displaystyle\sum_{k=1}^{n} w_k}
+    \label{eq:normalizacion-pesos}
+\end{equation}
+de modo que $\frac{1}{n}\sum_i w'_i = 1$ (media unitaria).
+La \textbf{proyección} $\Pi(\mathbf{a})$ sobre el dominio derecho se define por:
+\begin{equation}
+    \Pi[j, l] = \begin{cases}
+        0 & \text{si } \exists\, i : \mathbf{R}[i, j, a_i, l] = 0 \\[4pt]
+        \displaystyle\sum_{i=1}^{n} w'_i\, \mathbf{R}[i, j, a_i, l] & \text{en otro caso}
+    \end{cases}
+    \label{eq:proyeccion-AND}
+\end{equation}
+La condición de anulación es la \textbf{conjunción AND}: una celda del resultado se
+anula si \emph{cualquiera} de las $n$ evidencias aporta cero.
+Esto implementa una \emph{contención} estricta (\textit{containment}): la proyección
+solo produce masa donde todas las características de la pista tienen soporte simultáneo
+en la memoria.
+Los pesos $w'_i$ ponderan la suma por la frecuencia con que cada característica de la
+pista se ha registrado en la memoria: las características muy frecuentes pesan más.
+
+El nombre ``proyección AND-ponderada'' es de este trabajo; el mecanismo no.
+Es la operación \texttt{project()} de la implementación de referencia de Pineda y
+Morales, que este sistema incorpora sin modificaciones: la anulación conjuntiva y la suma
+ponderada por pesos normalizados son líneas de esa función, aplicadas sobre la relación
+ya podada por $\iota$.
+La definición escrita de la recuperación $\beta$ en \cite{morales2025missing} suma las
+rebanadas de todas las características sin anular celdas (una unión ponderada); la
+anulación conjuntiva es de la implementación, y es la que usan aquí tanto la
+recuperación como las lecturas de directorio.
+
+La recuperación heteroasociativa $\beta$ muestrea $\Pi$ columna a columna varias veces,
+conserva la muestra que, proyectada de regreso, más se parece a la pista, y la mejora
+con una búsqueda local en su vecindad (\emph{sample-and-search}, el tercer método de la
+pista faltante, que el resumen del artículo llama \emph{search and test}).
+
+La memoria heteroasociativa de referencia define el umbral $\kappa$ solo para un par de
+pistas.
+Con una sola pista, este trabajo lo aplica a la proyección: compara la activación media
+por celda de $\Pi$, por coordenada de la pista, con $\kappa \cdot \bar{\mu}$ de la
+memoria de contenido.
+
+\section{Memoria transactiva}
+\label{sec:tmt}
+
+El modelo de memoria transactiva de Wegner \cite{wegner1987transactive} describe cómo
+los grupos desarrollan sistemas de memoria distribuida que pueden ser más eficaces que
+la memoria de cualquiera de sus miembros.
+El mecanismo central es la separación entre \emph{contenido} y \emph{directorio}:
+mientras cada miembro almacena información especializada, todos los miembros mantienen
+un \emph{metadirectorio} de quién sabe qué.
+Este puente entre la teoría de Wegner y las memorias asociativas
+entrópicas es una contribución de este proyecto: los artículos de la línea EAM/EHAM no
+contienen nociones de directorio, de especialistas que cooperan ni de memoria transactiva.
+
+Los tres procesos fundamentales, en la formulación de Wegner como red de directorios
+compartidos \cite{wegner1995computer}, son:
+
+\begin{enumerate}
+    \item \textbf{Actualización del directorio} (\emph{directory updating}):
+    tras cada interacción de recuperación exitosa, los miembros actualizan su
+    directorio anotando quién fue el especialista.
+    En este sistema la actualización es perspectival: anotan la interacción quienes
+    participaron en ella, de modo que cada módulo sabe de los demás lo que presenció
+    (Sección~\ref{sec:componentes}).
+
+    \item \textbf{Asignación de información} (\emph{information allocation}):
+    la información nueva se encamina automáticamente hacia el miembro cuya especialidad
+    mejor corresponde.
+    En este sistema, en la fase temprana este enrutamiento lo hace un mediador (el TME);
+    en la fase madura basta el propio directorio del emisor.
+
+    \item \textbf{Coordinación de recuperación} (\emph{retrieval coordination}):
+    cuando un miembro recibe una consulta fuera de su dominio, consulta su directorio
+    y reenvía la consulta al especialista correspondiente sin intervención de ningún
+    coordinador central.
+    En este sistema, cuando ningún módulo reconoce el dominio de la consulta, el grupo
+    la rechaza en vez de inventar un especialista; el rechazo es una respuesta válida.
+\end{enumerate}
+
+En EAM-TMS, en la \textbf{fase temprana} el grupo depende de un mediador: los miembros
+no conocen aún las especialidades de los demás y las consultas deben ser difundidas a
+todos.
+La \textbf{fase madura} se alcanza cuando cada miembro ha acumulado suficiente evidencia
+en su directorio para enrutar directamente: el mediador sale del circuito y las
+interacciones se vuelven punto a punto.
+
+La \textbf{entropía del directorio} resume el estado del grupo.
+No es la entropía de una memoria (ecuación~\eqref{eq:entropia}): se calcula sobre la
+distribución de los registros entre módulos (ecuación~\eqref{eq:entropia-dir}).
+En el registro completo del grupo (el del mediador, o el directorio compartido de la
+calibración), el máximo $\log_2 K$ (con $K$ módulos; $\log_2 8 = 3$ bits) indica que la
+experticia está repartida de forma pareja, y una entropía baja indica colapso hacia un
+solo módulo o formación incompleta.
+En el directorio de cada módulo el máximo no es el estado deseable: como cada uno
+registra lo que presenció, su directorio se carga hacia sí mismo y queda por debajo del
+máximo aunque el grupo esté balanceado.

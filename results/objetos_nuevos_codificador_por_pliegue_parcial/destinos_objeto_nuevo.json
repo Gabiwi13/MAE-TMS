@@ -1,0 +1,222 @@
+{
+ "1|apple1": {
+  "cabeza_clasificadora": {
+   "apple": 41
+  },
+  "destino_ruteo": {
+   "apple": 40,
+   "rechazo": 1
+  }
+ },
+ "1|car1": {
+  "cabeza_clasificadora": {
+   "car": 41
+  },
+  "destino_ruteo": {
+   "car": 36,
+   "rechazo": 5
+  }
+ },
+ "1|cow1": {
+  "cabeza_clasificadora": {
+   "cow": 38,
+   "dog": 1,
+   "horse": 2
+  },
+  "destino_ruteo": {
+   "cow": 35,
+   "rechazo": 4,
+   "horse": 2
+  }
+ },
+ "1|cup1": {
+  "cabeza_clasificadora": {
+   "cup": 41
+  },
+  "destino_ruteo": {
+   "cup": 41
+  }
+ },
+ "1|dog1": {
+  "cabeza_clasificadora": {
+   "cow": 3,
+   "dog": 35,
+   "horse": 3
+  },
+  "destino_ruteo": {
+   "dog": 34,
+   "rechazo": 4,
+   "horse": 2,
+   "cow": 1
+  }
+ },
+ "1|horse1": {
+  "cabeza_clasificadora": {
+   "horse": 41
+  },
+  "destino_ruteo": {
+   "horse": 35,
+   "rechazo": 6
+  }
+ },
+ "1|pear1": {
+  "cabeza_clasificadora": {
+   "pear": 41
+  },
+  "destino_ruteo": {
+   "pear": 41
+  }
+ },
+ "1|tomato1": {
+  "cabeza_clasificadora": {
+   "tomato": 41
+  },
+  "destino_ruteo": {
+   "tomato": 40,
+   "rechazo": 1
+  }
+ },
+ "2|apple2": {
+  "cabeza_clasificadora": {
+   "apple": 41
+  },
+  "destino_ruteo": {
+   "apple": 41
+  }
+ },
+ "2|car2": {
+  "cabeza_clasificadora": {
+   "car": 41
+  },
+  "destino_ruteo": {
+   "rechazo": 4,
+   "car": 37
+  }
+ },
+ "2|cow2": {
+  "cabeza_clasificadora": {
+   "cow": 41
+  },
+  "destino_ruteo": {
+   "cow": 38,
+   "rechazo": 3
+  }
+ },
+ "2|cup2": {
+  "cabeza_clasificadora": {
+   "cup": 41
+  },
+  "destino_ruteo": {
+   "cup": 41
+  }
+ },
+ "2|dog2": {
+  "cabeza_clasificadora": {
+   "dog": 41
+  },
+  "destino_ruteo": {
+   "dog": 41
+  }
+ },
+ "2|horse2": {
+  "cabeza_clasificadora": {
+   "cow": 23,
+   "dog": 3,
+   "horse": 15
+  },
+  "destino_ruteo": {
+   "rechazo": 7,
+   "cow": 17,
+   "dog": 5,
+   "horse": 12
+  }
+ },
+ "2|pear2": {
+  "cabeza_clasificadora": {
+   "pear": 41
+  },
+  "destino_ruteo": {
+   "pear": 41
+  }
+ },
+ "2|tomato2": {
+  "cabeza_clasificadora": {
+   "tomato": 41
+  },
+  "destino_ruteo": {
+   "tomato": 41
+  }
+ },
+ "3|apple3": {
+  "cabeza_clasificadora": {
+   "apple": 41
+  },
+  "destino_ruteo": {
+   "apple": 41
+  }
+ },
+ "3|car3": {
+  "cabeza_clasificadora": {
+   "car": 41
+  },
+  "destino_ruteo": {
+   "car": 40,
+   "rechazo": 1
+  }
+ },
+ "3|cow3": {
+  "cabeza_clasificadora": {
+   "cow": 41
+  },
+  "destino_ruteo": {
+   "cow": 40,
+   "dog": 1
+  }
+ },
+ "3|cup3": {
+  "cabeza_clasificadora": {
+   "cup": 41
+  },
+  "destino_ruteo": {
+   "cup": 41
+  }
+ },
+ "3|dog3": {
+  "cabeza_clasificadora": {
+   "dog": 37,
+   "horse": 4
+  },
+  "destino_ruteo": {
+   "dog": 25,
+   "rechazo": 15,
+   "horse": 1
+  }
+ },
+ "3|horse3": {
+  "cabeza_clasificadora": {
+   "dog": 6,
+   "horse": 35
+  },
+  "destino_ruteo": {
+   "dog": 4,
+   "horse": 35,
+   "rechazo": 2
+  }
+ },
+ "3|pear3": {
+  "cabeza_clasificadora": {
+   "pear": 41
+  },
+  "destino_ruteo": {
+   "pear": 41
+  }
+ },
+ "3|tomato3": {
+  "cabeza_clasificadora": {
+   "tomato": 41
+  },
+  "destino_ruteo": {
+   "tomato": 41
+  }
+ }
+}

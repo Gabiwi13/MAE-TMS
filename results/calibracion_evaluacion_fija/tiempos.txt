@@ -1,0 +1,7 @@
+calibracion_fija.py  2462.7 s en total (CPU, un proceso; corrió en paralelo con las líneas base, que duraron menos de 2 min)
+  control con la lógica original (A y B1, N = 400)   ~40 s incluida la carga
+  sorteo de E 0   479.9 s (80 corridas: 4 condiciones x 4 N x 5 semillas)
+  sorteo de E 1   491.7 s
+  sorteo de E 2   484.9 s
+  sorteo de E 3   479.6 s
+  sorteo de E 4   486.2 s
