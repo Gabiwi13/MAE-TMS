@@ -1,0 +1,3 @@
+stage6_interaction rc=0 1 min
+stage7_bidirectional rc=0 43 min
+stage8_mature rc=0 3 min

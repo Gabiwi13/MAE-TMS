@@ -9,7 +9,7 @@ Coordenadas distintas entre palabras cuantizadas (de 300): black-white 169, gree
   prototipo_todos  top-1  66.9 %   balanceada  50.5 %
   base (el color más registrado del agente)  55.5 %
   por clase (soporte_propios top-1):  apple 31/41  car 13/39  cow 23/40  cup 41/41  dog 25/39  horse 26/40  pear 29/41  tomato 41/41
-  confusiones (soporte_propios): gray->brown 13, black->brown 13, green->red 10, yellow->green 9, white->brown 7, black->green 6
+  confusiones (soporte_propios): black->brown 13, gray->brown 13, green->red 10, yellow->green 9, white->brown 7, black->green 6
   por clase (soporte_norm top-1):  apple 38/41  car 15/39  cow 27/40  cup 41/41  dog 23/39  horse 30/40  pear 35/41  tomato 41/41
   confusiones (soporte_norm): brown->gray 10, brown->black 8, black->gray 5, brown->white 5, green->brown 5, gray->brown 4
 
@@ -22,7 +22,7 @@ Coordenadas distintas entre palabras cuantizadas (de 300): black-white 169, gree
   por clase (soporte_propios top-1):  apple 29/41  car 19/41  cow 32/41  cup 41/41  dog 22/41  horse 19/41  pear 24/41  tomato 41/41
   confusiones (soporte_propios): black->brown 20, green->red 12, brown->green 12, brown->white 10, white->brown 10, yellow->green 9
   por clase (soporte_norm top-1):  apple 39/41  car 31/41  cow 31/41  cup 41/41  dog 22/41  horse 32/41  pear 38/41  tomato 41/41
-  confusiones (soporte_norm): brown->gray 10, brown->black 6, brown->white 6, white->brown 6, black->gray 4, green->yellow 3
+  confusiones (soporte_norm): brown->gray 10, brown->white 6, white->brown 6, brown->black 6, black->gray 4, black->brown 3
 
 Leave-object-out, pliegues [1, 2, 3]; objetos reservados: apple2=red, car1=yellow, cow2=brown, cup1=white, dog2=white, horse1=brown, pear2=green, tomato1=red, apple3=green, car2=green, cow4=brown, cup2=white, dog3=white, horse4=brown, pear3=brown, tomato2=red, apple4=green, car3=orange, cow6=brown, cup3=white, dog4=black, horse5=black, pear5=yellow, tomato3=red
 

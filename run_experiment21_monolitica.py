@@ -52,7 +52,7 @@ def run_level(tag):
     import run_experiment20_size_principle as e20
     from stage7_bidirectional import recognize_gated_right
     from hetero_memory import HeteroAssociativeMemory, _norm_weights
-    from associative_memory import HomoAssociativeMemory
+    from associative_memory import DomainView
     from run_experiment17_specific_word import support_ranking
     t0 = time.time()
     names, fill, pa, test = e20.load_pool(CACHE, tag)
@@ -60,7 +60,7 @@ def run_level(tag):
     level = demo.Level(tag, names, None, fill, pa)            # T-especialistas y T-protocolo
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(300, 16, 64, 32)
-        mem_R = HomoAssociativeMemory(64, 32)
+        mem_R = DomainView(mem_H, 1)
     n_max = max(len(fill[n]) for n in names)
     for i in range(n_max):                                     # intercalado por dominio
         for n in names:
@@ -68,7 +68,6 @@ def run_level(tag):
                 for z in fill[n][i]:
                     zq = level.q(z)
                     mem_H.register(lv[n], zq)
-                    mem_R.register(zq)
     t_fill = time.time() - t0
     rows = []
     for k, n in enumerate(names):

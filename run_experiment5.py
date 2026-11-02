@@ -52,9 +52,8 @@ from PIL import Image
 
 from quantizer import quantize_binary
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
 from stage5_fill import (
-    load_agent_memories, load_encoder, compute_global_latent_stats,
+    load_encoder, compute_global_latent_stats,
     quantize_latent_global, IMG_TRANSFORM, DATA_DIR,
 )
 from stage6_interaction import (
@@ -88,13 +87,12 @@ def class_latents(encoder, cls, split, k):
     return zs
 
 
-def build_entropic_agent(cls, latents_q, mem_L_shared):
+def build_entropic_agent(cls, latents_q):
     """label×freq → latente real (round-robin). Misma masa que stage5."""
     labels = json.loads((ROOT / f"labels_{cls}.json").read_text())
     raw    = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
     idx = 0
     n_reg = 0
     for word, freq in labels.items():
@@ -107,24 +105,20 @@ def build_entropic_agent(cls, latents_q, mem_L_shared):
                 mem_H.register(v_q, z_q)
             idx += 1
             n_reg += 1
-    for z_q in latents_q:
-        mem_R.register(z_q)
     print(f"    {cls}: {n_reg} registros hetero (round-robin sobre "
           f"{len(latents_q)} latentes reales)")
-    return Agent(cls, mem_H, mem_dom_L=mem_L_shared, mem_dom_R=mem_R)
+    return Agent(cls, mem_H)
 
 
-def build_delta_agent(cls, z_mean_q, n_latents, mem_L_shared):
+def build_delta_agent(cls, z_mean_q):
     """Protocolo v1 reconstruido: label×freq → SIEMPRE el mismo latente
     promediado (la abstracción ocurre fuera de la memoria, que recibe una
     distribución degenerada — un delta). Misma masa de registros que el
-    brazo de instancias: mem_H registra label_seq completo y mem_R recibe
-    el delta n_latents veces."""
+    brazo de instancias."""
     labels = json.loads((ROOT / f"labels_{cls}.json").read_text())
     raw    = json.loads((ROOT / f"label_vectors_{cls}.json").read_text())
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
     n_reg = 0
     for word, freq in labels.items():
         if word not in raw:
@@ -134,11 +128,9 @@ def build_delta_agent(cls, z_mean_q, n_latents, mem_L_shared):
             with contextlib.redirect_stdout(io.StringIO()):
                 mem_H.register(v_q, z_mean_q)
             n_reg += 1
-    for _ in range(n_latents):
-        mem_R.register(z_mean_q)
     print(f"    {cls}: {n_reg} registros hetero (todos al mismo latente "
           f"promediado)")
-    return Agent(cls, mem_H, mem_dom_L=mem_L_shared, mem_dom_R=mem_R)
+    return Agent(cls, mem_H)
 
 
 # Métricas
@@ -226,13 +218,6 @@ def main():
     decoder.eval()
     g_min, g_max = compute_global_latent_stats(encoder)
 
-    print("Cargando M_dom_L compartido (stage5, solo lectura)...")
-    mem_Ls = {}
-    with contextlib.redirect_stdout(io.StringIO()):
-        for cls in CLASSES:
-            _, mem_L, _ = load_agent_memories(cls)
-            mem_Ls[cls] = mem_L
-
     print("Construyendo ambos brazos EN MEMORIA (mismas 50 imágenes/clase, "
           "misma masa)...")
     delta_agents, inst_agents = {}, {}
@@ -243,9 +228,8 @@ def main():
         train_latents_q[cls] = zq
         z_mean_q = quantize_latent_global(
             np.mean(np.stack(zs), axis=0), g_min, g_max, Q_LATENT)
-        delta_agents[cls] = build_delta_agent(
-            cls, z_mean_q, len(zq), mem_Ls[cls])
-        inst_agents[cls] = build_entropic_agent(cls, zq, mem_Ls[cls])
+        delta_agents[cls] = build_delta_agent(cls, z_mean_q)
+        inst_agents[cls] = build_entropic_agent(cls, zq)
 
     ARMS = [("delta", delta_agents), ("inst", inst_agents)]
     metrics = {"delta": {}, "inst": {}}

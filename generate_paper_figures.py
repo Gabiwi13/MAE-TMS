@@ -985,7 +985,7 @@ def fig_recall_grid():
 
     # Load M_dom (con sus homo, que dan los pesos del recall)
     from stage5_fill import load_agent_memories
-    mdoms = {cls: load_agent_memories(cls)[0] for cls in CLASSES}
+    mdoms = {cls: load_agent_memories(cls) for cls in CLASSES}
 
     # Load vectors cache
     vc = load_all_vectors()
@@ -1092,8 +1092,8 @@ def _load_visual_assets():
     g_min, g_max = load_global_stats()
     agents = {}
     for c in classes:
-        H, L, R = load_agent_memories(c)
-        agents[c] = Agent(c, H, mem_dom_L=L, mem_dom_R=R)
+        H = load_agent_memories(c)
+        agents[c] = Agent(c, H)
     vc = load_all_vectors()
     all_vecs = {}
     for c in classes:

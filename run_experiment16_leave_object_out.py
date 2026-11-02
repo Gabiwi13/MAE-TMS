@@ -32,7 +32,7 @@ from stage6_interaction import (Agent, AGENT_LIST, TME, register_transaction, ro
                                 load_all_vectors, N as N_LAB, M_LABEL, P_LATENT, Q_LATENT)
 from stage7_bidirectional import (recognize_gated_right, evoke_labels, XI_VISUAL, load_global_stats,  # noqa: E402
                                   load_encoder, latent_energy_threshold, latent_has_energy)
-from associative_memory import DirectoryMemory, HomoAssociativeMemory  # noqa: E402
+from associative_memory import DirectoryMemory  # noqa: E402
 from hetero_memory import HeteroAssociativeMemory  # noqa: E402
 from run_experiment11_monolithic import _fill, exclusive_vocab, image_strict, _ci, _rate, _fmt  # noqa: E402
 from run_experiment13_augmentation import hetero_recognizes  # noqa: E402
@@ -130,13 +130,9 @@ def run_fold(k):
         seq = build_label_sequence(cls)
         with contextlib.redirect_stdout(io.StringIO()):
             mem_H = HeteroAssociativeMemory(N_LAB, M_LABEL, P_LATENT, Q_LATENT)
-            mem_L = HomoAssociativeMemory(N_LAB, M_LABEL)
-            mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
-        for v_q in seq:
-            mem_L.register(v_q)
         pool = [q(arr[ci, i, v]) for i in split[cls]["llenado"] for v in range(FILL_VARIANTS)]
-        _fill(mem_H, mem_R, seq, pool)
-        agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+        _fill(mem_H, seq, pool)
+        agents[cls] = Agent(cls, mem_H)
     t_fill = time.time() - t0
 
     # fase A

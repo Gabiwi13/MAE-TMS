@@ -3,8 +3,8 @@ Etapa 7 — Hemisferio visual: el directorio de imagenes.
 
 Fase A (interacciones visuales): las imagenes de entrenamiento que no
 participaron del llenado (indices [N_FILL:]) entran al grupo por un agente
-de entrada, intercaladas por clase. Cada agente puntua la percepcion con su
-homo latente (M_dom_R) y la transaccion (latente -> ganador) la registran
+de entrada, intercaladas por clase. Cada agente puntua la percepcion con el
+dominio latente de su hetero (M_dom_R) y la transaccion (latente -> ganador) la registran
 el agente de entrada, el ganador y el TME (register_transaction): los
 directorios visuales son perspectivales. Solo percepciones reales entran.
 
@@ -107,8 +107,9 @@ def image_variants_to_latents(img_path: str, encoder) -> np.ndarray:
 
 
 def recognize_gated_right(agent, z_q: np.ndarray) -> float:
-    """Score visual PURO de un agente: reconocimiento homo del dominio latente
-    (mem_dom_R) — containment + activacion media de los pesos por caracteristica.
+    """Score visual PURO de un agente: reconocimiento del dominio latente leído
+    de su hetero (mem_dom_R) — containment + activacion media de los pesos por
+    caracteristica.
 
     Antes proyectaba por M_dom_H (hetero), lo que ACOPLABA el reconocimiento
     visual a la cuantizacion de las etiquetas: al pasar a magnitud, el lado
@@ -118,7 +119,7 @@ def recognize_gated_right(agent, z_q: np.ndarray) -> float:
     Sigue siendo una operacion de la MAE (recog_weights = R[i, z_q[i]] con gate
     por containment); no hay bypass.
     """
-    w = agent.mem_dom_R.recog_weights(z_q)     # w_i = R[i, z_q[i]] (homo latente)
+    w = agent.mem_dom_R.recog_weights(z_q)     # w_i = R[i, z_q[i]]
     if np.count_nonzero(w == 0) > 0:           # containment estricto (xi=0)
         return 0.0
     return float(np.mean(w))

@@ -201,8 +201,8 @@ def main():
     agents = {}
     with contextlib.redirect_stdout(io.StringIO()):
         for cls in CLASSES:
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
-            agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+            mem_H = load_agent_memories(cls)
+            agents[cls] = Agent(cls, mem_H)
     # mem.mean es constante (no registramos en M_dom) — cachear
     mem_means = {}
     with contextlib.redirect_stdout(io.StringIO()):

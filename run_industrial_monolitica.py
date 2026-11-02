@@ -30,7 +30,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import run_industrial_demo as ind  # noqa: E402
 import run_medico_demo as demo  # noqa: E402
-from associative_memory import HomoAssociativeMemory  # noqa: E402
+from associative_memory import DomainView, HomoAssociativeMemory  # noqa: E402
 import commons  # noqa: E402
 from associative import AssociativeMemory  # noqa: E402
 from hetero_memory import HeteroAssociativeMemory, _norm_weights  # noqa: E402
@@ -139,10 +139,7 @@ def run_global(lv):
     fill_q = {p: L1.q(fill1[p].reshape(-1, 64)) for p in PIECES}
     check = check_composition(lv, fill_q)
     mem_H = hetero_from(composed_relation(lv, {p: hist(fill_q[p]) for p in PIECES}))
-    mem_R = HomoAssociativeMemory(64, Q)
-    for p in PIECES:
-        for zq in fill_q[p]:
-            mem_R.register(zq)
+    mem_R = DomainView(mem_H, 1)
     print(f"  M lista ({time.time() - t0:.0f} s)", flush=True)
 
     def judge(z, k, p, test):

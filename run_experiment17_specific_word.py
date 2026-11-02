@@ -256,7 +256,7 @@ def split_b(index, cls):
 def fill_b(cls):
     import pickle
     from hetero_memory import HeteroAssociativeMemory
-    from associative_memory import HomoAssociativeMemory
+    from associative_memory import DomainView
     from stage5_fill import FILL_VARIANTS
     out = MODELS_B / f"{cls}.pkl"
     if out.exists():
@@ -270,13 +270,12 @@ def fill_b(cls):
     raw = load_all_vectors()[cls]
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N_LAB, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        mem_R = DomainView(mem_H, 1)
         for i in split_b(index, cls)["llenado"]:
             w_q = quantize_binary(np.asarray(raw[words[object_id(index[cls][i])]], dtype=float), M_LABEL)
             for v in range(FILL_VARIANTS):
                 z_q = quantize_latent_global(np.asarray(arr[ci, i, v]), g_min, g_max, Q_LATENT)
                 mem_H.register(w_q, z_q)
-                mem_R.register(z_q)
     MODELS_B.mkdir(parents=True, exist_ok=True)
     with open(out, "wb") as f:
         pickle.dump((mem_H, mem_R), f)
@@ -443,7 +442,7 @@ def color_vectors_q():
 def fill_c(job):
     import pickle
     from hetero_memory import HeteroAssociativeMemory
-    from associative_memory import HomoAssociativeMemory
+    from associative_memory import DomainView
     from stage5_fill import FILL_VARIANTS
     cls, fold = job
     out = models_c(fold) / f"{cls}.pkl"
@@ -457,13 +456,12 @@ def fill_c(job):
     cq = color_vectors_q()
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N_LAB, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        mem_R = DomainView(mem_H, 1)
         for i in split_c(index, cls, fold)["llenado"]:
             w_q = cq[color_of(cls, index[cls][i])]
             for v in range(FILL_VARIANTS):
                 z_q = quantize_latent_global(np.asarray(arr[ci, i, v]), g_min, g_max, Q_LATENT)
                 mem_H.register(w_q, z_q)
-                mem_R.register(z_q)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "wb") as f:
         pickle.dump((mem_H, mem_R), f)

@@ -61,6 +61,7 @@ import matplotlib.pyplot as plt
 from quantizer import quantize_binary
 from associative_memory import DirectoryMemory
 from stage5_fill import load_agent_memories
+from associative_memory import DomainView
 from stage6_interaction import (
     CLASSES, AGENT_LIST, M_LABEL, N,
     get_nlp, load_all_vectors, tokenize_query, prevectorize,
@@ -167,9 +168,7 @@ def bank_gate_ratios(agents_mem, queries, nlp, vectors, tok_cache):
 def set_params(agents_mem, iota, kappa):
     """Mutación en-memoria vía setters originales (sin tocar pickles)."""
     for cls in CLASSES:
-        mem_L, mem_H = agents_mem[cls]
-        mem_L._am.iota  = iota
-        mem_L._am.kappa = kappa
+        _, mem_H = agents_mem[cls]
         mem_H.iota  = iota
         mem_H.kappa = kappa
 
@@ -279,8 +278,8 @@ def main():
     print("\nCargando memorias de stage5 (solo lectura)...")
     agents_mem = {}
     for cls in CLASSES:
-        mem_H, mem_L, mem_R = load_agent_memories(cls)
-        agents_mem[cls] = (mem_L, mem_H)
+        mem_H = load_agent_memories(cls)
+        agents_mem[cls] = (DomainView(mem_H, 0), mem_H)
 
     nlp     = get_nlp()
     vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core

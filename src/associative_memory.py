@@ -1,10 +1,11 @@
 """
-Memorias asociativas del sistema: la homo-asociativa de Pineda & Morales
-y el directorio transactivo construido sobre la hetero-asociativa.
+Memorias asociativas del sistema: la homo-asociativa de Pineda & Morales,
+la lectura de un dominio desde la hetero y el directorio transactivo.
 
-HomoAssociativeMemory  modela la distribucion de UN dominio; es la unica
-                       capaz de producir pesos por feature (recog_weights),
-                       que las memorias hetero consumen pero no generan.
+HomoAssociativeMemory  modela la distribucion de UN dominio (la usan los
+                       directorios y los scripts que la llenan aparte).
+DomainView             la misma lectura (recog_weights) sacada de la hetero
+                       del agente: sustituye a sus dos memorias homo.
 DirectoryMemory        directorio de Wegner: registra que agente conoce
                        cada cue y responde "quien sabe esto". Internamente
                        es una HeteroAssociativeMemory4D cuyo dominio derecho
@@ -137,6 +138,68 @@ class HomoAssociativeMemory:
     def print_stats(self, name: str = "") -> None:
         print(f"[AM {name}] n={self._n} m={self._m} "
               f"entropy={self.entropy:.4f}  mean={self.mean:.4f}")
+
+
+class DomainView:
+    """Un dominio de la hetero leído como memoria homo: cuántas veces se
+    registró cada valor en cada coordenada, con pareja (interior) o sin ella
+    (borde de valor indefinido del otro dominio). No guarda nada propio."""
+
+    def __init__(self, ham, dim: int):
+        self._ham = ham
+        self._dim = dim
+
+    @property
+    def n(self) -> int:
+        return self._ham.n if self._dim == 0 else self._ham.p
+
+    @property
+    def m(self) -> int:
+        return self._ham.m if self._dim == 0 else self._ham.q
+
+    @property
+    def relation(self) -> np.ndarray:
+        """(n, m) de conteos. Basta una coordenada del otro dominio: cada
+        registro pasa una vez por cada una."""
+        ham = self._ham
+        if self._dim == 0:
+            t = ham._relation[:, 0, :ham.m, :].sum(axis=2)
+        else:
+            t = ham._relation[0, :, :, :ham.q].sum(axis=1)
+        return t.astype(np.int64) - 1    # el borde arranca en 1
+
+    @property
+    def _am(self):
+        es = commons.ExperimentSettings(iota=0.0, kappa=0.0, xi=0, sigma=0.1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            return AssociativeMemory.from_relation(self.relation, es)
+
+    @property
+    def entropy(self) -> float:
+        return float(self._am.entropy)
+
+    @property
+    def mean(self) -> float:
+        return float(self._am.mean)
+
+    def register(self, cue_q: np.ndarray) -> None:
+        raise TypeError("DomainView solo lee: se registra en la hetero.")
+
+    def recog_weights(self, cue_q: np.ndarray) -> np.ndarray:
+        """w_i = R[i, v_i], cero si v_i es indefinido (como la homo)."""
+        c = np.clip(np.asarray(cue_q, dtype=float), 0, self.m - 1)
+        v = np.nan_to_num(c, nan=self.m).astype(int)
+        defined = v < self.m
+        w = np.zeros(v.size, dtype=float)
+        w[defined] = self.relation[np.where(defined)[0], v[defined]]
+        return w
+
+    def recognize(self, cue_q: np.ndarray) -> float:
+        return float(np.mean(self.recog_weights(cue_q)))
+
+    def recall(self, cue_q: np.ndarray):
+        r_io, recognized, weight = self._am.recall(cue_q)
+        return r_io, bool(recognized), float(weight)
 
 
 class DirectoryMemory:

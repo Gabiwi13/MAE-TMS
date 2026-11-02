@@ -112,4 +112,4 @@ Composición de M = register oficial: True · etiquetas distintas 12/12 · térm
     pipe_fryum  acepta cal 100.0 · U   1.0 /   0.0 · graduada   1.0 /   0.0 (0.505) · knn  44.0 /   0.0 (0.993) · maha  42.0 /   0.0 (0.856)
     media       acepta cal  99.9 · U   2.1 /   0.4 · graduada   2.1 /   0.4 (0.508) · knn  34.3 /   0.6 (0.875) · maha  22.2 /   0.7 (0.756)
 
-Tiempo total: 5 min
+Tiempo total: 4 min

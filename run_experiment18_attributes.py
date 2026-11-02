@@ -106,7 +106,7 @@ def run_job(job):
     """Llena la memoria del pliegue y la evalúa en el mismo proceso."""
     import pickle
     from hetero_memory import HeteroAssociativeMemory
-    from associative_memory import HomoAssociativeMemory
+    from associative_memory import DomainView
     from stage5_fill import FILL_VARIANTS
     axis, cls, fold = job
     t0 = time.time()
@@ -119,13 +119,12 @@ def run_job(job):
     own = sorted({value_of(cls, axis, index[cls][i]) for i in sp["llenado"]})
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N_LAB, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
+        mem_R = DomainView(mem_H, 1)
         for i in sp["llenado"]:
             w_q = wq[value_of(cls, axis, index[cls][i])]
             for v in range(FILL_VARIANTS):
                 z_q = quantize_latent_global(np.asarray(arr[ci, i, v]), *g, Q_LATENT)
                 mem_H.register(w_q, z_q)
-                mem_R.register(z_q)
     if fold == 0 and not CASES:
         MODELS.mkdir(parents=True, exist_ok=True)
         with open(MODELS / f"{axis}_{cls}.pkl", "wb") as f:

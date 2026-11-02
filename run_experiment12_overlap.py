@@ -39,7 +39,6 @@ sys.path.insert(0, str(ROOT / "src"))
 from stage6_interaction import CLASSES, AGENT_LIST, N, M_LABEL, P_LATENT, Q_LATENT, Agent, get_nlp, load_all_vectors
 from stage7_bidirectional import load_global_stats
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
 from run_experiment9_member_loss import Judge, load_classifier, load_bank, recall_lived, live_levels_lived
 from run_experiment11_monolithic import (
     load_pool, split_bank, shared_labels, N_TEXT_TRAIN_PER_CLASS, VARIANTS, load_cache, parse_seeds,
@@ -57,8 +56,8 @@ PAIRS = list(itertools.combinations(CLASSES, 2))
 # ---------- solapamiento ----------
 
 def supports_from_cache():
-    """Soportes (valor registrado o no) por coordenada de las homo de cada
-    clase, desde el caché de N=200 de exp11."""
+    """Soportes (valor registrado o no) por coordenada de cada dominio de
+    cada clase, desde el caché de N=200 de exp11."""
     cached = load_cache(N_IMG)
     sup = {}
     for cls, ag in cached["specialists"].items():
@@ -89,17 +88,11 @@ def pair_overlaps(sup, shared):
 def build_pair(pool, seqs, pair):
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-        mem_L = HomoAssociativeMemory(N, M_LABEL)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
-    for cls in pair:
-        for v_q in seqs[cls]:
-            mem_L.register(v_q)
     with contextlib.redirect_stdout(io.StringIO()):
         for i in range(VARIANTS * N_IMG):
             for cls in pair:
                 mem_H.register(seqs[cls][i % len(seqs[cls])], pool[cls][i])
-                mem_R.register(pool[cls][i])
-    return Agent("-".join(pair), mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+    return Agent("-".join(pair), mem_H)
 
 
 CTX = {}

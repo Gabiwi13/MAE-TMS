@@ -43,7 +43,6 @@ from stage7_bidirectional import (
     load_global_stats, recognize_gated_right, evoke_labels, XI_VISUAL,
 )
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
 from quantizer import quantize_binary
 from run_experiment9_member_loss import (
     Judge, load_classifier, load_bank, load_test_latents, recall_lived,
@@ -141,12 +140,11 @@ def load_image_pools(g_min, g_max, n_train, n_test):
 
 # ---------- memorias ----------
 
-def _fill(mem_H, mem_R, seq, latents):
+def _fill(mem_H, seq, latents):
     L = len(seq)
     with contextlib.redirect_stdout(io.StringIO()):
         for i, z_q in enumerate(latents):
             mem_H.register(seq[i % L], z_q)
-            mem_R.register(z_q)
 
 
 def build_specialists(pool, seqs, n_img):
@@ -154,12 +152,8 @@ def build_specialists(pool, seqs, n_img):
     for cls in CLASSES:
         with contextlib.redirect_stdout(io.StringIO()):
             mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-            mem_L = HomoAssociativeMemory(N, M_LABEL)
-            mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
-        for v_q in seqs[cls]:
-            mem_L.register(v_q)
-        _fill(mem_H, mem_R, seqs[cls], pool[cls][:VARIANTS * n_img])
-        agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+        _fill(mem_H, seqs[cls], pool[cls][:VARIANTS * n_img])
+        agents[cls] = Agent(cls, mem_H)
     return agents
 
 
@@ -168,18 +162,12 @@ def build_monolithic(pool, seqs, n_img):
     relación es aditiva, así que el orden no cambia el resultado."""
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-        mem_L = HomoAssociativeMemory(N, M_LABEL)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
-    for cls in CLASSES:
-        for v_q in seqs[cls]:
-            mem_L.register(v_q)
     n = VARIANTS * n_img
     with contextlib.redirect_stdout(io.StringIO()):
         for i in range(n):
             for cls in CLASSES:
                 mem_H.register(seqs[cls][i % len(seqs[cls])], pool[cls][i])
-                mem_R.register(pool[cls][i])
-    return Agent("monolitica", mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+    return Agent("monolitica", mem_H)
 
 
 def same_as_official(agents):
@@ -817,7 +805,7 @@ def write_report(summary):
           "Ningún brazo tiene reglas propias: todos pasan por las mismas operaciones de la memoria.", "",
           "| paso | M | T-oráculo | T-protocolo | dónde |",
           "|---|---|---|---|---|",
-          "| llenado | `register` de una hetero y dos homo con las 8 clases | `register` por clase | igual que T-oráculo | `stage5_fill.fill_agent`, `run_experiment11_monolithic.build_*` |",
+          "| llenado | `register` de una hetero con las 8 clases | `register` por clase | igual que T-oráculo | `stage5_fill.fill_agent`, `run_experiment11_monolithic.build_*` |",
           "| aceptación | `Agent.recognize_gated` (containment de la homo + proyección de la hetero) | máximo de `recognize_gated` sobre los 8 | `route_transactive` sobre directorios | `stage6_interaction.py` |",
           "| quién responde | la única memoria | el especialista de la verdad de terreno | el destino del directorio (agregado + encadenado) | `stage6_interaction.route_transactive` |",
           "| respuesta | `mem_dom_H.recall_from_left` con la primera pista reconocida | igual | igual | `run_experiment9_member_loss.recall_lived` |",

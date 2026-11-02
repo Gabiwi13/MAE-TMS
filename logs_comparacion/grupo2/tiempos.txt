@@ -1,0 +1,6 @@
+exp11_texto rc=0 694 min
+exp11_imagen rc=0 494 min
+exp11_ood rc=0 7 min
+exp11_reporte rc=0 0 min
+exp11_sondas rc=0 0 min
+exp12 rc=0 337 min

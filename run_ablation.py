@@ -123,7 +123,6 @@ def load_base_mdoms() -> dict:
     for cls in CLASSES:
         with open(MODELS_DIR / f"mem_dom_{cls}.pkl", "rb") as f:
             mdoms[cls] = pickle.load(f)
-        mdoms[cls].attach_homo(*_load_LR(cls))
     return mdoms
 
 
@@ -166,7 +165,6 @@ def build_curated_apple_mdom() -> HeteroAssociativeMemory:
     for i, z in enumerate(latents):
         z_q = quantize_latent_global(np.array(z), g_min, g_max, Q_F)
         mem.register(label_seq[i % L], z_q)
-    mem.attach_homo(*_load_LR("apple"))  # L/R sin curar, como en make_agents
     return mem
 
 
@@ -204,26 +202,10 @@ def get_condition_config(condition: str):
 
 # Factory de agentes
 
-# Memoizaciones de rendimiento (resultados idénticos):
-#   _LR_CACHE     evita re-deserializar L/R (y la H de ~160MB que
-#                 load_agent_memories arrastra) en cada uno de los experimentos.
-#                 L/R solo se LEEN durante la ablación (los registros van al
-#                 mem_dir fresco de cada experimento), así que compartirlas es seguro.
-#   _SCORE_CACHE  recognize_gated(token) es determinista dado (M_dom_H, M_dom_L);
-#                 las mdoms se construyen UNA vez (base y curada) y se reusan, así
-#                 que (id(mem_dom_H), token) identifica el score entre experimentos.
-_LR_CACHE = {}
+# recognize_gated(token) es determinista dado M_dom_H; las mdoms se construyen
+# una vez (base y curada) y se reusan, así que (id(mem_dom_H), token)
+# identifica el score entre experimentos.
 _SCORE_CACHE = {}
-
-
-def _load_LR(cls: str):
-    if cls not in _LR_CACHE:
-        with open(MODELS_DIR / f"mem_dom_L_{cls}.pkl", "rb") as f:
-            mem_L = pickle.load(f)
-        with open(MODELS_DIR / f"mem_dom_R_{cls}.pkl", "rb") as f:
-            mem_R = pickle.load(f)
-        _LR_CACHE[cls] = (mem_L, mem_R)
-    return _LR_CACHE[cls]
 
 
 def _gated_score_cached(agent, tok: str, vq_mdom) -> float:
@@ -237,15 +219,13 @@ def make_agents(mdoms: dict, mdir_class, m_mdir: int = 16,
                 mdir_kwargs: dict = None):
     """Create fresh Agent+TME set for one ablation experiment.
 
-    mdoms[cls] is the H memory (may be curated for conditions F/G).
-    M_dom_L/R are loaded from disk (non-curated) for weighted recognition.
+    mdoms[cls] is the H memory (may be curated for conditions F/G); the
+    weights for recognition are read from it.
     """
     mdir_kwargs = mdir_kwargs or {}
     agents = {}
     for cls in CLASSES:
-        # L/R para el reconocimiento ponderado (H llega vía mdoms)
-        mem_L, mem_R = _load_LR(cls)
-        ag = Agent(cls, mdoms[cls], mem_dom_L=mem_L, mem_dom_R=mem_R)
+        ag = Agent(cls, mdoms[cls])
         # Override the default mem_dir with the ablation-specific class.
         # n_agents explícito: el default de DirectoryMemory es 3 y el sistema
         # ahora tiene len(CLASSES) agentes.

@@ -6,10 +6,9 @@ Morales, codigo original en hetero_lib/) con tres ajustes de uso:
   - constructor con la firma (n, m, p, q) del sistema y fold=None
     (los clasificadores MNIST del original no aplican a este dominio),
   - recall por defecto con sampling_n_search, igual que el original,
-  - recall_from_left/right aceptan pesos por feature, de modo que las
-    memorias homo de cada dominio puedan modular el reconocimiento
-    en ambas direcciones (el patron left_eam -> hetero_eam de Pineda
-    y su espejo derecho).
+  - recall_from_left/right aceptan pesos por feature; sin ellos los lee
+    de la propia hetero (DomainView), el patron left_eam -> hetero_eam de
+    Pineda y su espejo derecho sin memorias homo aparte.
 """
 
 import io
@@ -25,7 +24,7 @@ if str(_HETERO_DIR) not in sys.path:
 
 import commons
 from hetero_associative_4d import HeteroAssociativeMemory4D
-from associative_memory import fill_undefined, homo_weights_enabled
+from associative_memory import DomainView, fill_undefined, homo_weights_enabled
 
 # Métodos de recuperación del paper de la pista faltante (morales2025missing):
 #   "random"        Random Samples (RS): una muestra del plano proyectado,
@@ -55,31 +54,17 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
         with contextlib.redirect_stdout(io.StringIO()):
             return super().update()
 
-    def attach_homo(self, left=None, right=None) -> None:
-        """Memorias homo de cada dominio. Si un recall o una proyección no
-        recibe pesos, los toma de ellas, como pide la proyección
-        AND-ponderada."""
-        self._homo_left, self._homo_right = left, right
-
     def _default_weights(self, cue: np.ndarray, weights, dim: int):
         if weights is not None or not homo_weights_enabled():
             return weights
         return self.homo_weights(cue, dim)
 
     def homo_weights(self, cue: np.ndarray, dim: int) -> np.ndarray:
-        """Pesos de la memoria homo del dominio de la pista (unos si se
-        pidieron pesos uniformes)."""
+        """Pesos homo del dominio de la pista, leídos de esta misma memoria
+        (unos si se pidieron pesos uniformes)."""
         if not homo_weights_enabled():
             return np.ones(len(cue), dtype=float)
-        # Las memorias guardadas con pickle no traen el atributo. Se lanza en
-        # vez de caer a pesos uniformes, para que ninguna lectura sin homo
-        # pase por una con pesos.
-        homo = getattr(self, "_homo_left" if dim == 0 else "_homo_right", None)
-        if homo is None:
-            raise RuntimeError(
-                "Memoria hetero sin memoria homo del dominio "
-                f"{'izquierdo' if dim == 0 else 'derecho'}: pasa los pesos o "
-                "llama a attach_homo().")
+        homo = DomainView(self, dim)
         c = np.asarray(cue, dtype=float)
         defined = ~np.isnan(c) & (c != self.undefined(dim))
         if not defined.any():
@@ -92,7 +77,7 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
     def recognize_from_left(self, cue_a: np.ndarray,
                             left_weights: np.ndarray = None) -> float:
         """Activacion media de la proyeccion del cue izquierdo, modulada
-        por los pesos de la memoria homo de ese dominio. Score crudo:
+        por los pesos homo de ese dominio. Score crudo:
         no aplica gate de containment ni calibracion (eso es decision
         del protocolo que compara agentes)."""
         ca = self.validate(cue_a, 0)
@@ -215,10 +200,8 @@ class HeteroAssociativeMemory(HeteroAssociativeMemory4D):
 def _norm_weights(weights, n: int) -> np.ndarray:
     """project() es invariante a escala; esto solo evita NaN y desbordes.
     Los pesos todo-cero se conservan, para que la proyeccion quede vacia y
-    la consulta se rechace: ponerlos a uno haria opinar a una memoria cuya
-    homo no vio la pista. Ese caso no ocurre mientras el soporte de la homo
-    contenga al de la hetero, que es una propiedad del llenado y no algo
-    que se verifique aqui."""
+    la consulta se rechace: ponerlos a uno haria opinar a una memoria que
+    no vio la pista."""
     if weights is None:
         return np.ones(n, dtype=float)
     w = np.nan_to_num(np.asarray(weights, dtype=float),

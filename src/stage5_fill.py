@@ -1,10 +1,9 @@
 """
 Etapa 5 — Llenado de las memorias de dominio por agente.
 
-Cada agente recibe tres memorias:
+Cada agente recibe una memoria de contenido:
   mem_dom_{cls}.pkl    HeteroAssociativeMemory(300,16,64,32)  label <-> latente
-  mem_dom_L_{cls}.pkl  HomoAssociativeMemory(300,16)          dominio label
-  mem_dom_R_{cls}.pkl  HomoAssociativeMemory(64,32)           dominio latente
+Los pesos de cada dominio se leen de ella (DomainView); no hay memorias homo.
 
 El llenado es por instancias (image-major): cada una de las N_FILL imagenes
 reales —×FILL_VARIANTS variantes si FILL_AUGMENT (familia de exp13), el
@@ -32,7 +31,6 @@ ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
 from quantizer import quantize_binary
 
 CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
@@ -173,7 +171,7 @@ def build_label_sequence(cls: str) -> list:
 
 def fill_agent(cls: str, encoder, g_min: np.ndarray, g_max: np.ndarray,
                latents: list = None):
-    """Llena las tres memorias de un agente. Devuelve (mem_H, mem_L, mem_R)."""
+    """Llena la memoria de contenido de un agente y la devuelve."""
     if latents is None:
         print(f"  Codificando {N_FILL} latentes de {cls}...")
         latents = get_instance_latents(encoder, cls, N_FILL)
@@ -183,27 +181,18 @@ def fill_agent(cls: str, encoder, g_min: np.ndarray, g_max: np.ndarray,
         json.dumps([z.tolist() for z in latents]))
 
     mem_H = HeteroAssociativeMemory(N, M, P, Q)
-    mem_L = HomoAssociativeMemory(N, M)
-    mem_R = HomoAssociativeMemory(P, Q)
-
     label_seq = build_label_sequence(cls)
-    for v_q in label_seq:
-        mem_L.register(v_q)
-
     L = len(label_seq)
     for i, z_q in enumerate(latents_q):
         mem_H.register(label_seq[i % L], z_q)
-        mem_R.register(z_q)
 
     print(f"  {cls}: secuencia de {L} labels, "
           f"{len(latents_q)} instancias registradas")
     mem_H.print_stats(cls)
-    mem_L.print_stats(f"{cls}_L")
-    mem_R.print_stats(f"{cls}_R")
-    return mem_H, mem_L, mem_R
+    return mem_H
 
 
-def probe_recall(mem_H, mem_L, cls: str, encoder, n_probes: int = 5):
+def probe_recall(mem_H, cls: str, encoder, n_probes: int = 5):
     """Recall de prueba con los primeros labels de la clase."""
     from stage2_encoder import load_models
     _, decoder, _ = load_models()
@@ -223,9 +212,7 @@ def probe_recall(mem_H, mem_L, cls: str, encoder, n_probes: int = 5):
         if word not in raw_vecs:
             continue
         v_q = quantize_binary(np.array(raw_vecs[word], dtype=np.float32), M)
-        # Pesos de la homo de labels, como en el recall del agente.
-        recalled_q, recognized, weight, *_ = mem_H.recall_from_left(
-            v_q, weights=mem_L.recog_weights(v_q))
+        recalled_q, recognized, weight, *_ = mem_H.recall_from_left(v_q)
         if recognized:
             v_norm = recalled_q.astype(float) / (Q - 1)
             v_latent = (v_norm * (g_max - g_min) + g_min).astype(np.float32)
@@ -238,30 +225,21 @@ def probe_recall(mem_H, mem_L, cls: str, encoder, n_probes: int = 5):
     return results
 
 
-def save_agent_memories(mem_H, mem_L, mem_R, cls: str):
-    for suffix, mem in (("", mem_H), ("L_", mem_L), ("R_", mem_R)):
-        path = MODELS_DIR / f"mem_dom_{suffix}{cls}.pkl"
-        with open(path, "wb") as f:
-            pickle.dump(mem, f)
-        print(f"  Guardado -> {path.name}")
+def save_agent_memories(mem_H, cls: str):
+    path = MODELS_DIR / f"mem_dom_{cls}.pkl"
+    with open(path, "wb") as f:
+        pickle.dump(mem_H, f)
+    print(f"  Guardado -> {path.name}")
 
 
 def load_agent_memories(cls: str):
-    """Devuelve (mem_H, mem_L, mem_R); L y R pueden ser None si sus
-    archivos no existen."""
+    """Memoria de contenido del agente."""
     with open(MODELS_DIR / f"mem_dom_{cls}.pkl", "rb") as f:
         mem_H = pickle.load(f)
-    mem_L = mem_R = None
-    path_L = MODELS_DIR / f"mem_dom_L_{cls}.pkl"
-    if path_L.exists():
-        with open(path_L, "rb") as f:
-            mem_L = pickle.load(f)
-    path_R = MODELS_DIR / f"mem_dom_R_{cls}.pkl"
-    if path_R.exists():
-        with open(path_R, "rb") as f:
-            mem_R = pickle.load(f)
-    mem_H.attach_homo(mem_L, mem_R)
-    return mem_H, mem_L, mem_R
+    # Las guardadas cuando había homo traen la referencia a ellas.
+    for k in ("_homo_left", "_homo_right"):
+        mem_H.__dict__.pop(k, None)
+    return mem_H
 
 
 def visualize_probes(results: list, cls: str):
@@ -356,17 +334,17 @@ def run():
 
     for cls in CLASSES:
         print(f"\n--- Llenando M_dom del agente {cls} ---")
-        paths = [MODELS_DIR / f"mem_dom_{s}{cls}.pkl" for s in ("", "L_", "R_")]
-        if all(p.exists() for p in paths) and not any(_is_stale_cls(p, cls) for p in paths):
-            print("  Memorias existentes y vigentes, cargando.")
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
+        path = MODELS_DIR / f"mem_dom_{cls}.pkl"
+        if not _is_stale_cls(path, cls):
+            print("  Memoria existente y vigente, cargando.")
+            mem_H = load_agent_memories(cls)
         else:
-            mem_H, mem_L, mem_R = fill_agent(
-                cls, encoder, g_min, g_max, latents=latents_by_cls.get(cls))
-            save_agent_memories(mem_H, mem_L, mem_R, cls)
+            mem_H = fill_agent(cls, encoder, g_min, g_max,
+                               latents=latents_by_cls.get(cls))
+            save_agent_memories(mem_H, cls)
 
         agents_H[cls] = mem_H
-        results = probe_recall(mem_H, mem_L, cls, encoder)
+        results = probe_recall(mem_H, cls, encoder)
         for word, ok, wt, _ in results:
             print(f"    '{word}': recognized={ok}, weight={wt:.2f}")
         visualize_probes(results, cls)

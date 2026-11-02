@@ -21,14 +21,14 @@ M_dom_L compartido; solo cambia el lado derecho de M_dom_H y M_dom_R.
 
 | clase | cue | distintos delta | distintos inst | L1 delta | L1 inst |
 |---|---|---|---|---|---|
-| apple | fruit | 1/12 | 12/12 | 0.000 | 1.973 |
-| car | vehicle | 1/12 | 12/12 | 0.000 | 2.250 |
-| cow | milk | 1/12 | 12/12 | 0.000 | 1.148 |
-| cup | drink | 1/12 | 12/12 | 0.000 | 2.187 |
-| dog | pet | 1/12 | 12/12 | 0.000 | 1.860 |
-| horse | mane | 1/12 | 12/12 | 0.000 | 1.459 |
-| pear | pome | 1/12 | 12/12 | 0.000 | 1.136 |
-| tomato | vegetable | 1/12 | 12/12 | 0.000 | 1.798 |
+| apple | fruit | 1/12 | 12/12 | 0.000 | 2.002 |
+| car | vehicle | 1/12 | 12/12 | 0.000 | 2.114 |
+| cow | milk | 1/12 | 12/12 | 0.000 | 1.118 |
+| cup | drink | 1/12 | 12/12 | 0.000 | 2.194 |
+| dog | pet | 1/12 | 12/12 | 0.000 | 1.826 |
+| horse | mane | 1/12 | 12/12 | 0.000 | 1.510 |
+| pear | pome | 1/12 | 12/12 | 0.000 | 1.111 |
+| tomato | vegetable | 1/12 | 12/12 | 0.000 | 1.823 |
 
 ## Archivos
 - metrics.json · fig1_recall_variety_grid.png · fig2_reverse_acceptance.png

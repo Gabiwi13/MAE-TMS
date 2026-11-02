@@ -144,7 +144,7 @@
   "apple": {
    "directorio_inverso_nan": {
     "niveles_vivos": 13.4375,
-    "entropia_bits": 2.9849444523555855,
+    "entropia_bits": 2.9849175978763025,
     "registros": 2048
    },
    "mem_dom_H_condicionada_media": {
@@ -161,46 +161,46 @@
   "car": {
    "directorio_inverso_nan": {
     "niveles_vivos": 14.203125,
-    "entropia_bits": 3.1197283663915085,
+    "entropia_bits": 3.11970506347143,
     "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
     "niveles_vivos": 11.86328125,
-    "entropia_bits": 3.1034317386716763,
+    "entropia_bits": 3.1034333709122457,
     "pistas": 8
    },
    "mem_dom_H_condicionada_por_pista": {
     "vehicle": {
      "niveles_vivos": 12.234375,
-     "entropia_bits": 3.1336189555065075
+     "entropia_bits": 3.1336196061077697
     },
     "wheel": {
      "niveles_vivos": 11.015625,
-     "entropia_bits": 3.050338269273161
+     "entropia_bits": 3.0503433090497034
     },
     "motor": {
      "niveles_vivos": 11.625,
-     "entropia_bits": 3.087414847309151
+     "entropia_bits": 3.087412388248875
     },
     "drive": {
      "niveles_vivos": 11.890625,
-     "entropia_bits": 3.1110255330336045
+     "entropia_bits": 3.1110342351143765
     },
     "crash": {
      "niveles_vivos": 11.46875,
-     "entropia_bits": 3.08572870443077
+     "entropia_bits": 3.0857200135308522
     },
     "seat": {
      "niveles_vivos": 12.5625,
-     "entropia_bits": 3.1344308951430504
+     "entropia_bits": 3.13443030421635
     },
     "auto": {
      "niveles_vivos": 12.140625,
-     "entropia_bits": 3.107592884677011
+     "entropia_bits": 3.107597728206469
     },
     "car": {
      "niveles_vivos": 11.96875,
-     "entropia_bits": 3.1173038200001546
+     "entropia_bits": 3.11730938282357
     }
    },
    "mem_dom_R_dominio_800": {
@@ -210,8 +210,8 @@
   },
   "cow": {
    "directorio_inverso_nan": {
-    "niveles_vivos": 11.734375,
-    "entropia_bits": 2.694099187451771,
+    "niveles_vivos": 11.71875,
+    "entropia_bits": 2.6941400335150023,
     "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
@@ -228,7 +228,7 @@
   "cup": {
    "directorio_inverso_nan": {
     "niveles_vivos": 12.90625,
-    "entropia_bits": 3.0009527486786745,
+    "entropia_bits": 3.000947131625062,
     "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
@@ -245,7 +245,7 @@
   "dog": {
    "directorio_inverso_nan": {
     "niveles_vivos": 14.546875,
-    "entropia_bits": 3.0673492236014033,
+    "entropia_bits": 3.0673404534528723,
     "registros": 2016
    },
    "mem_dom_H_condicionada_media": {
@@ -262,7 +262,7 @@
   "horse": {
    "directorio_inverso_nan": {
     "niveles_vivos": 11.734375,
-    "entropia_bits": 2.798651341220806,
+    "entropia_bits": 2.7986588069533775,
     "registros": 2032
    },
    "mem_dom_H_condicionada_media": {
@@ -279,7 +279,7 @@
   "pear": {
    "directorio_inverso_nan": {
     "niveles_vivos": 11.6875,
-    "entropia_bits": 2.8482400154093983,
+    "entropia_bits": 2.84827479222917,
     "registros": 2048
    },
    "mem_dom_H_condicionada_media": {
@@ -296,7 +296,7 @@
   "tomato": {
    "directorio_inverso_nan": {
     "niveles_vivos": 9.625,
-    "entropia_bits": 2.6485211607436763,
+    "entropia_bits": 2.6485327605132127,
     "registros": 2048
    },
    "mem_dom_H_condicionada_media": {

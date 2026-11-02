@@ -9,12 +9,13 @@ Implementa los tres procesos de la memoria transactiva de Wegner:
   coordinacion de recuperacion el ganador evoca el contenido asociado
                               (recall hetero -> decoder -> imagen).
 
-Arquitectura por agente (5 memorias, K = len(CLASSES) agentes):
-  mem_dom_L  HomoAssociativeMemory(300,16)   dominio label, pesos por feature
-  mem_dom_R  HomoAssociativeMemory(64,32)    dominio latente, pesos por feature
+Arquitectura por agente (3 memorias, K = len(CLASSES) agentes):
   mem_dom_H  HeteroAssociativeMemory(300,16,64,32)  contenido label <-> latente
   mem_dir    DirectoryMemory(300,16 -> K,2)  quien sabe que (labels)
   mem_dir_R  DirectoryMemory(64,32 -> K,2)   quien sabe que (latentes visuales)
+mem_dom_L y mem_dom_R son lecturas de mem_dom_H por dominio (DomainView),
+no memorias aparte. Un agente sin hetero (módulos solo de imagen) guarda su
+contenido en una homo latente, que es entonces su única memoria de contenido.
 
 TME (2 memorias):
   mem_dir_L  DirectoryMemory(300,16 -> K,2)  directorio por labels
@@ -35,7 +36,7 @@ import torch
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from associative_memory import HomoAssociativeMemory, DirectoryMemory
+from associative_memory import DomainView, DirectoryMemory, HomoAssociativeMemory
 from quantizer import quantize_binary
 
 CLASSES = ["apple", "car", "cow", "cup", "dog", "horse", "pear", "tomato"]
@@ -120,21 +121,13 @@ def tokenize_query(query: str, nlp) -> list:
 
 
 class Agent:
-    """Especialista de dominio con sus cinco memorias asociativas."""
+    """Especialista de dominio con sus tres memorias asociativas."""
 
-    def __init__(self, name: str, mem_dom_H,
-                 mem_dom_L: HomoAssociativeMemory = None,
-                 mem_dom_R: HomoAssociativeMemory = None):
+    def __init__(self, name: str, mem_dom_H):
         self.name = name
         self.mem_dom_H = mem_dom_H
-        self.mem_dom_L = mem_dom_L if mem_dom_L is not None \
-            else HomoAssociativeMemory(N, M_LABEL)
-        self.mem_dom_R = mem_dom_R if mem_dom_R is not None \
-            else HomoAssociativeMemory(P_LATENT, Q_LATENT)
-        # Solo se asocian las homo que se recibieron: una vacía rechazaría
-        # todo recall en silencio.
-        self._homo_given = (mem_dom_L is not None, mem_dom_R is not None)
-        self._attach_homo()
+        # Sin hetero (módulos solo de imagen) el contenido es una homo latente.
+        self._mem_img = HomoAssociativeMemory(P_LATENT, Q_LATENT) if mem_dom_H is None else None
         # Un directorio por modalidad de pista:
         #   mem_dir   : pista de texto  (label 300x16) -> agente
         #   mem_dir_R : pista de imagen (latente 64x32) -> agente
@@ -143,16 +136,23 @@ class Agent:
         self.mem_dir = DirectoryMemory(N, M_LABEL, len(AGENT_LIST))
         self.mem_dir_R = DirectoryMemory(P_LATENT, Q_LATENT, len(AGENT_LIST))
 
-    def _attach_homo(self):
-        if hasattr(self.mem_dom_H, "attach_homo"):
-            given_L, given_R = getattr(self, "_homo_given", (True, True))
-            self.mem_dom_H.attach_homo(self.mem_dom_L if given_L else None,
-                                       self.mem_dom_R if given_R else None)
+    @property
+    def mem_dom_L(self) -> DomainView:
+        return DomainView(self.mem_dom_H, 0)
+
+    @property
+    def mem_dom_R(self):
+        if self.mem_dom_H is None:
+            return self._mem_img
+        return DomainView(self.mem_dom_H, 1)
 
     def __setstate__(self, state):
-        # Los agentes guardados con pickle no pasan por __init__.
+        # Agentes guardados cuando tenían homo propias.
+        img = state.pop("mem_dom_R", None)
+        for k in ("mem_dom_L", "_homo_given"):
+            state.pop(k, None)
+        state.setdefault("_mem_img", img if state.get("mem_dom_H") is None else None)
         self.__dict__.update(state)
-        self._attach_homo()
 
     def recognize(self, v_label_q: np.ndarray) -> float:
         """Score crudo: activacion media sin gate ni calibracion.
@@ -177,9 +177,9 @@ class Agent:
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
         if mx <= 0:
-            # La homo no vio ninguna coordenada de la pista, asi que se
-            # rechaza aqui: con pesos en uno la hetero opinaria sobre una
-            # pista que su arbitro de pertenencia no conoce.
+            # Ninguna coordenada de la pista se registró, asi que se rechaza
+            # aqui: con pesos en uno la hetero opinaria sobre una pista que
+            # no conoce.
             return 0.0
         weights = l_w / mx
         mem_H = self.mem_dom_H
@@ -204,8 +204,7 @@ class Agent:
         l_w = self.mem_dom_L.recog_weights(v_label_q)
         mx = l_w.max()
         if mx <= 0:
-            # Mismo rechazo directo que recognize_gated: pista totalmente
-            # desconocida para la homo izquierda.
+            # Mismo rechazo directo que recognize_gated.
             return l_w, 0.0, 0.0
         weights = l_w / mx
         mem_H = self.mem_dom_H
@@ -561,8 +560,7 @@ def load_agents() -> dict:
     from stage5_fill import load_agent_memories
     agents = {}
     for cls in CLASSES:
-        mem_H, mem_L, mem_R = load_agent_memories(cls)
-        agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+        agents[cls] = Agent(cls, load_agent_memories(cls))
     return agents
 
 

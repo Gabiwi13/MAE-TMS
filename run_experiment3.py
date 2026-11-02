@@ -161,8 +161,8 @@ def main():
     agents = {}
     with contextlib.redirect_stdout(io.StringIO()):
         for cls in CLASSES:
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
-            agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+            mem_H = load_agent_memories(cls)
+            agents[cls] = Agent(cls, mem_H)
         tme = TME()
 
     nlp = get_nlp()
@@ -264,8 +264,8 @@ def main():
     with contextlib.redirect_stdout(io.StringIO()):
         agents10 = {}
         for cls in CLASSES:
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
-            agents10[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+            mem_H = load_agent_memories(cls)
+            agents10[cls] = Agent(cls, mem_H)
         tme10 = TME()
     tq_winners = []
     for query in TEST_QUERIES:

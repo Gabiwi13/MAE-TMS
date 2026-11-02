@@ -51,9 +51,8 @@ from PIL import Image
 
 from quantizer import quantize_binary
 from hetero_memory import HeteroAssociativeMemory
-from associative_memory import HomoAssociativeMemory
 from stage5_fill import (
-    load_agent_memories, load_encoder, compute_global_latent_stats,
+    load_encoder, compute_global_latent_stats,
     quantize_latent_global, IMG_TRANSFORM, DATA_DIR,
 )
 from stage6_interaction import (
@@ -97,16 +96,14 @@ def label_sequence(cls, vectors_raw):
     return seq
 
 
-def build_agent_n(cls, n_imgs, train_q, label_seq, mem_L_shared):
+def build_agent_n(cls, n_imgs, train_q, label_seq):
     with contextlib.redirect_stdout(io.StringIO()):
         mem_H = HeteroAssociativeMemory(N, M_LABEL, P_LATENT, Q_LATENT)
-        mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
     L = len(label_seq)
     for i in range(n_imgs):
         with contextlib.redirect_stdout(io.StringIO()):
             mem_H.register(label_seq[i % L], train_q[i])
-        mem_R.register(train_q[i])
-    return Agent(cls, mem_H, mem_dom_L=mem_L_shared, mem_dom_R=mem_R)
+    return Agent(cls, mem_H)
 
 
 def reverse_accept(agent, z_q):
@@ -169,11 +166,7 @@ def main():
     decoder.eval()
     g_min, g_max = compute_global_latent_stats(encoder)
 
-    train_q, test_q, label_seqs, mem_Ls = {}, {}, {}, {}
-    with contextlib.redirect_stdout(io.StringIO()):
-        for cls in CLASSES:
-            _, mem_L, _ = load_agent_memories(cls)
-            mem_Ls[cls] = mem_L
+    train_q, test_q, label_seqs = {}, {}, {}
     nlp = get_nlp()
     vectors = load_all_vectors(nlp)   # alias por lema: spaCy es parte del core
     for cls in CLASSES:
@@ -211,7 +204,7 @@ def main():
         agents = {}
         for cls in CLASSES:
             agents[cls] = build_agent_n(cls, n_imgs, train_q[cls],
-                                        label_seqs[cls], mem_Ls[cls])
+                                        label_seqs[cls])
         mem_means = {}
         with contextlib.redirect_stdout(io.StringIO()):
             for cls in CLASSES:

@@ -43,9 +43,8 @@ class Router:
         log("[router] loading text agents…")
         self.agents = {}
         for cls in CLASSES:
-            mem_H, mem_L, mem_R = load_agent_memories(cls)
-            self.agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L,
-                                     mem_dom_R=mem_R)
+            mem_H = load_agent_memories(cls)
+            self.agents[cls] = Agent(cls, mem_H)
         log("[router] loading spaCy + fastText…")
         self.nlp = get_nlp()
         self.vectors = load_all_vectors(self.nlp)

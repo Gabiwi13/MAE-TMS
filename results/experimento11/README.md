@@ -2,23 +2,23 @@
 
 Semillas: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]. Cortes N (imágenes por clase, ×16 variantes): [25, 50, 100, 200]. Intervalos: bootstrap del 95% sobre las medias por semilla. Banco: las consultas reservadas (no usadas para formar directorios), para los tres brazos. Diseño y criterio de refutación en `propuesta_fase5_mae_monolitica.md`.
 
-Control del llenado en N=200: 4/8 clases idénticas a los `agent_*.pkl` oficiales; distintas: car, cow, dog, horse. Este script recalcula los latentes en GPU; una diferencia de redondeo puede mover una coordenada de un registro al nivel vecino.
+Control del llenado en N=200: 4/8 clases idénticas a los `agent_*.pkl` oficiales; distintas: car 600 celdas, cow 600 celdas, dog 1200 celdas, horse 600 celdas (de 9,830,400 celdas por clase). Este script recalcula los latentes en GPU; una diferencia de redondeo puede mover una coordenada de un registro al nivel vecino.
 
 ## N = 25 (400 registros por clase; monolítica 3200)
 
 | brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.7 [97.5, 97.8] | 97.4 [97.1, 97.6] | 97.7 [97.4, 97.9] | 22.82 [22.77, 22.88] | 0.98 [0.98, 0.98] | 97.9 [97.8, 98.0] | 7.03 [7.03, 7.03] | — | 1.82 [1.79, 1.84] |
-| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 18.18 [18.14, 18.22] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 6.76 [6.76, 6.76] | 100.0 [100.0, 100.0] | 1.21 [1.19, 1.23] |
-| T-protocolo | 100.0 [100.0, 100.0] | 98.0 [97.7, 98.2] | 95.6 [95.0, 96.1] | 95.6 [95.0, 96.1] | 95.6 [95.0, 96.1] | 19.29 [19.13, 19.47] | 1.00 [1.00, 1.00] | 95.6 [95.0, 96.1] | 6.73 [6.72, 6.73] | 93.6 [93.2, 94.1] | 2.38 [2.28, 2.49] |
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.6 [97.4, 97.8] | 97.4 [97.3, 97.6] | 97.7 [97.4, 97.9] | 22.86 [22.80, 22.92] | 0.98 [0.98, 0.98] | 97.7 [97.6, 97.9] | 7.03 [7.03, 7.03] | — | 1.81 [1.78, 1.85] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 18.22 [18.20, 18.24] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 6.76 [6.76, 6.76] | 100.0 [100.0, 100.0] | 1.22 [1.21, 1.23] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.4 [98.2, 98.7] | 96.9 [96.3, 97.6] | 96.9 [96.3, 97.6] | 96.9 [96.3, 97.6] | 18.97 [18.80, 19.13] | 1.00 [1.00, 1.00] | 96.9 [96.3, 97.6] | 6.73 [6.72, 6.73] | 95.3 [94.6, 96.1] | 2.02 [1.83, 2.19] |
 
 Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 
 | brazo | fracción de respuestas | clase 1-NN | compat máx |
 |---|---|---|---|
-| M | 3.5 [3.5, 3.5] | 50.0 [44.4, 55.0] | 0.76 [0.76, 0.77] |
+| M | 3.5 [3.5, 3.5] | 48.3 [42.8, 54.4] | 0.76 [0.75, 0.76] |
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
-| T-protocolo | 4.7 [4.2, 5.4] | 79.5 [70.1, 85.7] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.5 [4.2, 4.9] | 80.3 [72.5, 85.7] | 1.00 [1.00, 1.00] |
 
 Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
@@ -28,7 +28,7 @@ Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agen
 | T-oraculo | 5.0 [5.0, 5.0] | 5.0 [5.0, 5.0] |
 | T-protocolo | 10.0 [10.0, 10.0] | 5.0 [5.0, 5.0] |
 
-Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 83.3 [83.3, 83.3].
+Formación de directorios (T-protocolo): registradas 233.00 [233.00, 233.00], rechazadas 7.00 [7.00, 7.00], acierto temprano 84.1 [84.1, 84.1].
 
 Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabulario del dominio (etapa 7). Estricto: alguna es exclusiva de la clase. Dominio: mayoría de etiquetas exclusivas; 'otro dominio' cuenta las respuestas cuyo dominio es otra clase. Todo sobre el total de imágenes.
 
@@ -42,17 +42,17 @@ Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabular
 
 | brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.6 [97.3, 98.0] | 97.4 [97.1, 97.8] | 97.3 [97.0, 97.7] | 26.50 [26.45, 26.55] | 0.98 [0.98, 0.98] | 97.7 [97.5, 97.8] | 8.81 [8.81, 8.81] | — | 1.49 [1.47, 1.52] |
-| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 20.40 [20.35, 20.44] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 8.50 [8.50, 8.50] | 100.0 [100.0, 100.0] | 1.11 [1.10, 1.12] |
-| T-protocolo | 100.0 [100.0, 100.0] | 98.8 [98.6, 99.1] | 98.5 [98.2, 98.8] | 98.5 [98.2, 98.8] | 98.5 [98.2, 98.8] | 20.80 [20.69, 20.91] | 1.00 [1.00, 1.00] | 98.5 [98.2, 98.8] | 8.49 [8.48, 8.49] | 97.3 [97.0, 97.7] | 1.50 [1.43, 1.57] |
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.5 [97.3, 97.7] | 97.2 [96.9, 97.5] | 97.2 [96.9, 97.5] | 26.57 [26.52, 26.61] | 0.98 [0.98, 0.98] | 97.5 [97.3, 97.7] | 8.81 [8.81, 8.81] | — | 1.48 [1.46, 1.51] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 20.38 [20.31, 20.45] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 8.50 [8.50, 8.50] | 100.0 [100.0, 100.0] | 1.10 [1.08, 1.11] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.7 [98.4, 98.9] | 98.8 [98.6, 98.9] | 98.8 [98.6, 98.9] | 98.8 [98.6, 98.9] | 20.67 [20.59, 20.76] | 1.00 [1.00, 1.00] | 98.8 [98.6, 98.9] | 8.49 [8.48, 8.49] | 97.4 [97.1, 97.8] | 1.42 [1.36, 1.48] |
 
 Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 
 | brazo | fracción de respuestas | clase 1-NN | compat máx |
 |---|---|---|---|
-| M | 3.5 [3.5, 3.5] | 52.2 [45.6, 60.0] | 0.74 [0.73, 0.75] |
+| M | 3.5 [3.5, 3.5] | 47.8 [42.2, 53.3] | 0.74 [0.74, 0.75] |
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
-| T-protocolo | 4.1 [4.1, 4.2] | 85.7 [85.7, 85.7] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.1 [4.1, 4.2] | 82.9 [78.6, 85.7] | 1.00 [1.00, 1.00] |
 
 Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
@@ -76,17 +76,17 @@ Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabular
 
 | brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.3 [97.1, 97.5] | 97.1 [96.8, 97.4] | 97.2 [96.9, 97.6] | 29.49 [29.43, 29.55] | 0.98 [0.98, 0.98] | 97.3 [97.2, 97.5] | 10.01 [10.01, 10.01] | — | 1.32 [1.30, 1.34] |
-| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 23.44 [23.36, 23.52] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 9.63 [9.63, 9.63] | 100.0 [100.0, 100.0] | 1.05 [1.04, 1.07] |
-| T-protocolo | 100.0 [100.0, 100.0] | 98.7 [98.5, 98.9] | 98.5 [98.2, 98.8] | 98.5 [98.2, 98.8] | 98.5 [98.2, 98.8] | 23.76 [23.64, 23.87] | 1.00 [1.00, 1.00] | 98.5 [98.2, 98.8] | 9.63 [9.62, 9.63] | 97.2 [96.8, 97.7] | 1.31 [1.26, 1.36] |
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 97.6 [97.4, 97.8] | 97.1 [96.9, 97.2] | 97.2 [97.0, 97.4] | 29.40 [29.31, 29.50] | 0.98 [0.98, 0.98] | 97.5 [97.3, 97.7] | 10.01 [10.01, 10.01] | — | 1.32 [1.31, 1.34] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 23.35 [23.24, 23.46] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 9.63 [9.63, 9.63] | 100.0 [100.0, 100.0] | 1.06 [1.06, 1.07] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.7 [98.4, 98.9] | 98.8 [98.4, 99.1] | 98.8 [98.4, 99.1] | 98.8 [98.4, 99.1] | 23.78 [23.66, 23.88] | 1.00 [1.00, 1.00] | 98.8 [98.4, 99.1] | 9.63 [9.62, 9.63] | 97.4 [97.0, 97.8] | 1.28 [1.21, 1.34] |
 
 Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 
 | brazo | fracción de respuestas | clase 1-NN | compat máx |
 |---|---|---|---|
-| M | 3.5 [3.5, 3.5] | 44.4 [40.6, 50.0] | 0.76 [0.75, 0.77] |
+| M | 3.5 [3.5, 3.5] | 52.2 [47.8, 57.2] | 0.77 [0.76, 0.77] |
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
-| T-protocolo | 4.1 [4.1, 4.2] | 85.7 [85.7, 85.7] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.1 [4.1, 4.2] | 84.3 [81.4, 85.7] | 1.00 [1.00, 1.00] |
 
 Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
@@ -110,17 +110,17 @@ Imagen → texto. Laxo: alguna de las 3 etiquetas evocadas está en el vocabular
 
 | brazo | acepta | responde | clase 1-NN | centroide | clasificador | d_nn | compat máx | compat ok | niveles vivos | ruteo ok | F |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 96.8 [96.6, 97.0] | 96.6 [96.4, 96.8] | 96.6 [96.4, 96.8] | 32.43 [32.32, 32.53] | 0.98 [0.98, 0.98] | 96.7 [96.5, 96.9] | 10.94 [10.94, 10.94] | — | 1.29 [1.27, 1.31] |
-| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 26.75 [26.66, 26.87] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 10.55 [10.55, 10.55] | 100.0 [100.0, 100.0] | 1.03 [1.02, 1.05] |
-| T-protocolo | 100.0 [100.0, 100.0] | 98.5 [98.2, 98.8] | 98.5 [98.2, 98.9] | 98.5 [98.2, 98.9] | 98.5 [98.2, 98.9] | 27.08 [26.91, 27.28] | 1.00 [1.00, 1.00] | 98.5 [98.2, 98.9] | 10.54 [10.54, 10.55] | 97.0 [96.5, 97.5] | 1.24 [1.19, 1.28] |
+| M | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 96.9 [96.7, 97.1] | 96.9 [96.7, 97.1] | 96.9 [96.7, 97.2] | 32.53 [32.45, 32.60] | 0.98 [0.98, 0.98] | 96.9 [96.6, 97.1] | 10.94 [10.94, 10.94] | — | 1.28 [1.26, 1.29] |
+| T-oraculo | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 100.0 [100.0, 100.0] | 26.78 [26.66, 26.91] | 1.00 [1.00, 1.00] | 100.0 [100.0, 100.0] | 10.55 [10.55, 10.55] | 100.0 [100.0, 100.0] | 1.04 [1.03, 1.05] |
+| T-protocolo | 100.0 [100.0, 100.0] | 98.7 [98.5, 98.9] | 98.3 [97.9, 98.6] | 98.3 [97.9, 98.6] | 98.3 [97.9, 98.6] | 26.98 [26.86, 27.09] | 1.00 [1.00, 1.00] | 98.3 [97.9, 98.6] | 10.54 [10.53, 10.55] | 97.0 [96.6, 97.4] | 1.25 [1.21, 1.30] |
 
 Consultas cuya primera pista reconocida es una etiqueta compartida entre clases:
 
 | brazo | fracción de respuestas | clase 1-NN | compat máx |
 |---|---|---|---|
-| M | 3.5 [3.5, 3.5] | 48.9 [43.9, 55.0] | 0.76 [0.76, 0.76] |
+| M | 3.5 [3.5, 3.5] | 51.1 [45.0, 56.7] | 0.75 [0.75, 0.76] |
 | T-oraculo | 3.5 [3.5, 3.5] | 100.0 [100.0, 100.0] | 1.00 [1.00, 1.00] |
-| T-protocolo | 4.2 [4.1, 4.2] | 85.7 [85.7, 85.7] | 1.00 [1.00, 1.00] |
+| T-protocolo | 4.1 [4.1, 4.2] | 78.6 [68.6, 85.7] | 1.00 [1.00, 1.00] |
 
 Fuera de dominio (40 consultas): tasa de aceptación. «Con compuerta»: el agente destino además debe contener la pista (en M y oráculo coincide con la aceptación).
 
@@ -146,7 +146,7 @@ Ningún brazo tiene reglas propias: todos pasan por las mismas operaciones de la
 
 | paso | M | T-oráculo | T-protocolo | dónde |
 |---|---|---|---|---|
-| llenado | `register` de una hetero y dos homo con las 8 clases | `register` por clase | igual que T-oráculo | `stage5_fill.fill_agent`, `run_experiment11_monolithic.build_*` |
+| llenado | `register` de una hetero con las 8 clases | `register` por clase | igual que T-oráculo | `stage5_fill.fill_agent`, `run_experiment11_monolithic.build_*` |
 | aceptación | `Agent.recognize_gated` (containment de la homo + proyección de la hetero) | máximo de `recognize_gated` sobre los 8 | `route_transactive` sobre directorios | `stage6_interaction.py` |
 | quién responde | la única memoria | el especialista de la verdad de terreno | el destino del directorio (agregado + encadenado) | `stage6_interaction.route_transactive` |
 | respuesta | `mem_dom_H.recall_from_left` con la primera pista reconocida | igual | igual | `run_experiment9_member_loss.recall_lived` |

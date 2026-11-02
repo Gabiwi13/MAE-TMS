@@ -38,7 +38,7 @@ from stage6_interaction import (Agent, AGENT_LIST, TME, register_transaction,  #
                                 N as N_LAB, M_LABEL, P_LATENT, Q_LATENT)
 from stage7_bidirectional import (recognize_gated_right, evoke_labels, XI_VISUAL,  # noqa: E402
                                   load_global_stats, load_encoder)
-from associative_memory import DirectoryMemory, HomoAssociativeMemory  # noqa: E402
+from associative_memory import DirectoryMemory  # noqa: E402
 from hetero_memory import HeteroAssociativeMemory, _norm_weights  # noqa: E402
 from run_experiment11_monolithic import (_fill, exclusive_vocab, image_strict,  # noqa: E402
                                          _ci, _rate, _fmt, parse_seeds, same_as_official)
@@ -231,13 +231,9 @@ def build_content(args):
         seq = build_label_sequence(cls)
         with contextlib.redirect_stdout(io.StringIO()):
             mem_H = HeteroAssociativeMemory(N_LAB, M_LABEL, P_LATENT, Q_LATENT)
-            mem_L = HomoAssociativeMemory(N_LAB, M_LABEL)
-            mem_R = HomoAssociativeMemory(P_LATENT, Q_LATENT)
-        for v_q in seq:
-            mem_L.register(v_q)
         pool = [z for i in range(n) for z in train_q[cls][i][:vc]]
-        _fill(mem_H, mem_R, seq, pool)
-        agents[cls] = Agent(cls, mem_H, mem_dom_L=mem_L, mem_dom_R=mem_R)
+        _fill(mem_H, seq, pool)
+        agents[cls] = Agent(cls, mem_H)
     meta = {"Vc": vc, "N": n, "registros_por_clase": n * vc,
             "densidad_R": {c: density_R(agents[c].mem_dom_R) for c in CLASSES},
             "control_encoder": control_enc,
