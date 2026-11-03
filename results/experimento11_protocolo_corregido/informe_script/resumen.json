@@ -1,0 +1,1202 @@
+{
+  "cortes": [
+    25,
+    50,
+    100,
+    200
+  ],
+  "semillas": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "texto": {
+    "M|N=25": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-oraculo|N=25": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-protocolo|N=25": {
+      "acepta": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "responde": [
+        0.9836257309941521,
+        0.9771929824561404,
+        0.9894736842105262
+      ],
+      "nn_ok": [
+        0.9470994980227401,
+        0.9341299262685707,
+        0.9602277973161706
+      ],
+      "centroide_ok": [
+        0.9470994980227401,
+        0.9341299262685707,
+        0.9602277973161706
+      ],
+      "clf_ok": [
+        0.9470994980227401,
+        0.9341299262685707,
+        0.9602277973161706
+      ],
+      "d_nn_truth": [
+        19.542248528241934,
+        19.186453107842723,
+        19.895361512779818
+      ],
+      "compat_max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compat_ok": [
+        0.9470994980227401,
+        0.9341299262685707,
+        0.9602277973161706
+      ],
+      "niveles_vivos": [
+        6.71631945031519,
+        6.701875393564963,
+        6.729854003825221
+      ],
+      "ruteo_ok": [
+        0.9315789473684208,
+        0.9187134502923975,
+        0.9461988304093568
+      ],
+      "nn_ok_pista_compartida": [
+        0.5373015873015873,
+        0.4706836219336219,
+        0.6269119769119769
+      ],
+      "compat_max_pista_compartida": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fraccion_pista_compartida": [
+        0.05770179040521771,
+        0.051163534389659475,
+        0.06333541740049312
+      ]
+    },
+    "M|N=50": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-oraculo|N=50": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-protocolo|N=50": {
+      "acepta": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "responde": [
+        0.9871345029239766,
+        0.9812865497076023,
+        0.9918128654970759
+      ],
+      "nn_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "centroide_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "clf_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "d_nn_truth": [
+        20.80758611573361,
+        20.719685290519866,
+        20.91974123738797
+      ],
+      "compat_max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compat_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "niveles_vivos": [
+        8.491900002158946,
+        8.475976896130122,
+        8.508712540761579
+      ],
+      "ruteo_ok": [
+        0.968421052631579,
+        0.9625730994152045,
+        0.9736842105263157
+      ],
+      "nn_ok_pista_compartida": [
+        0.6999999999999998,
+        0.5857142857142856,
+        0.7999999999999999
+      ],
+      "compat_max_pista_compartida": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fraccion_pista_compartida": [
+        0.04147238131401027,
+        0.04127421974707042,
+        0.04172222573806284
+      ]
+    },
+    "M|N=100": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-oraculo|N=100": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-protocolo|N=100": {
+      "acepta": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "responde": [
+        0.9871345029239766,
+        0.9812865497076023,
+        0.9918128654970759
+      ],
+      "nn_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "centroide_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "clf_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "d_nn_truth": [
+        23.749443531030224,
+        23.587597617757215,
+        23.92623412014461
+      ],
+      "compat_max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compat_ok": [
+        0.9810531738246671,
+        0.9774955830368727,
+        0.9845825876612075
+      ],
+      "niveles_vivos": [
+        9.61654194586993,
+        9.599481401258055,
+        9.632939217989424
+      ],
+      "ruteo_ok": [
+        0.968421052631579,
+        0.9625730994152045,
+        0.9736842105263157
+      ],
+      "nn_ok_pista_compartida": [
+        0.6999999999999998,
+        0.5857142857142856,
+        0.7999999999999999
+      ],
+      "compat_max_pista_compartida": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fraccion_pista_compartida": [
+        0.04147238131401027,
+        0.04127421974707042,
+        0.04172222573806284
+      ]
+    },
+    "M|N=200": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-oraculo|N=200": {
+      "acepta": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "responde": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "centroide_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "clf_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "d_nn_truth": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "niveles_vivos": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "ruteo_ok": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "nn_ok_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "compat_max_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "fraccion_pista_compartida": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    "T-protocolo|N=200": {
+      "acepta": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "responde": [
+        0.9865497076023392,
+        0.9807017543859649,
+        0.9912280701754386
+      ],
+      "nn_ok": [
+        0.9816308013253714,
+        0.9786903828637425,
+        0.9846153058856678
+      ],
+      "centroide_ok": [
+        0.9816308013253714,
+        0.9786903828637425,
+        0.9846153058856678
+      ],
+      "clf_ok": [
+        0.9816308013253714,
+        0.9786903828637425,
+        0.9846153058856678
+      ],
+      "d_nn_truth": [
+        27.18302970574347,
+        27.06494339224355,
+        27.316195027416512
+      ],
+      "compat_max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compat_ok": [
+        0.9816308013253714,
+        0.9786903828637425,
+        0.9846153058856678
+      ],
+      "niveles_vivos": [
+        10.540399886866055,
+        10.524907858731048,
+        10.555124269656211
+      ],
+      "ruteo_ok": [
+        0.968421052631579,
+        0.9625730994152045,
+        0.9736842105263157
+      ],
+      "nn_ok_pista_compartida": [
+        0.7142857142857142,
+        0.6142857142857142,
+        0.8
+      ],
+      "compat_max_pista_compartida": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fraccion_pista_compartida": [
+        0.041497036146357406,
+        0.04129858452256642,
+        0.04174659051355884
+      ]
+    }
+  },
+  "ood": {
+    "M|N=25": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=25": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=25": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "M|N=50": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=50": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=50": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "M|N=100": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=100": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=100": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "M|N=200": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=200": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=200": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ]
+  },
+  "ood_compuerta": {
+    "T-protocolo|N=25": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "T-protocolo|N=50": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "T-protocolo|N=100": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ],
+    "T-protocolo|N=200": [
+      0.16666666666666669,
+      0.16666666666666669,
+      0.16666666666666669
+    ]
+  },
+  "imagen": {
+    "T-protocolo|N=25": {
+      "acepta": [
+        0.6375,
+        0.6375,
+        0.6375
+      ],
+      "responde": [
+        0.4125,
+        0.4125,
+        0.4125
+      ],
+      "hit": [
+        0.4125,
+        0.4125,
+        0.4125
+      ],
+      "hit_exclusivo": [
+        0.4125,
+        0.4125,
+        0.4125
+      ],
+      "dominio_ok": [
+        0.41125,
+        0.40874999999999995,
+        0.4125
+      ],
+      "otro_dominio": [
+        0.00125,
+        0.0,
+        0.0037500000000000007
+      ],
+      "ruteo_ok": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "T-protocolo|N=50": {
+      "acepta": [
+        0.7750000000000001,
+        0.7750000000000001,
+        0.7750000000000001
+      ],
+      "responde": [
+        0.675,
+        0.675,
+        0.675
+      ],
+      "hit": [
+        0.675,
+        0.675,
+        0.675
+      ],
+      "hit_exclusivo": [
+        0.66625,
+        0.6599999999999999,
+        0.6725
+      ],
+      "dominio_ok": [
+        0.6599999999999999,
+        0.65,
+        0.66875
+      ],
+      "otro_dominio": [
+        0.015000000000000003,
+        0.00625,
+        0.025
+      ],
+      "ruteo_ok": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "T-protocolo|N=100": {
+      "acepta": [
+        0.8,
+        0.8,
+        0.8
+      ],
+      "responde": [
+        0.7874999999999999,
+        0.7874999999999999,
+        0.7874999999999999
+      ],
+      "hit": [
+        0.7874999999999999,
+        0.7874999999999999,
+        0.7874999999999999
+      ],
+      "hit_exclusivo": [
+        0.77125,
+        0.765,
+        0.7775000000000001
+      ],
+      "dominio_ok": [
+        0.755,
+        0.74625,
+        0.7625000000000001
+      ],
+      "otro_dominio": [
+        0.03125,
+        0.02375,
+        0.04
+      ],
+      "ruteo_ok": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "T-protocolo|N=200": {
+      "acepta": [
+        0.8125,
+        0.8125,
+        0.8125
+      ],
+      "responde": [
+        0.8125,
+        0.8125,
+        0.8125
+      ],
+      "hit": [
+        0.8125,
+        0.8125,
+        0.8125
+      ],
+      "hit_exclusivo": [
+        0.7924999999999999,
+        0.78625,
+        0.79875
+      ],
+      "dominio_ok": [
+        0.7799999999999999,
+        0.7675,
+        0.79125
+      ],
+      "otro_dominio": [
+        0.03125,
+        0.021249999999999998,
+        0.04253124999999983
+      ],
+      "ruteo_ok": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "formacion": {
+    "T-protocolo|N=25": {
+      "registradas": [
+        233.0,
+        233.0,
+        233.0
+      ],
+      "rechazadas": [
+        7.0,
+        7.0,
+        7.0
+      ],
+      "acierto_temprano": [
+        0.8412017167381973,
+        0.8412017167381973,
+        0.8412017167381973
+      ]
+    },
+    "T-protocolo|N=50": {
+      "registradas": [
+        233.0,
+        233.0,
+        233.0
+      ],
+      "rechazadas": [
+        7.0,
+        7.0,
+        7.0
+      ],
+      "acierto_temprano": [
+        0.8841201716738197,
+        0.8841201716738197,
+        0.8841201716738197
+      ]
+    },
+    "T-protocolo|N=100": {
+      "registradas": [
+        233.0,
+        233.0,
+        233.0
+      ],
+      "rechazadas": [
+        7.0,
+        7.0,
+        7.0
+      ],
+      "acierto_temprano": [
+        0.8841201716738197,
+        0.8841201716738197,
+        0.8841201716738197
+      ]
+    },
+    "T-protocolo|N=200": {
+      "registradas": [
+        233.0,
+        233.0,
+        233.0
+      ],
+      "rechazadas": [
+        7.0,
+        7.0,
+        7.0
+      ],
+      "acierto_temprano": [
+        0.8755364806866954,
+        0.8755364806866954,
+        0.8755364806866954
+      ]
+    }
+  },
+  "dependencia": {
+    "M|N=25": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=25": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=25": [
+      2.3745649631800396,
+      2.1550059032716176,
+      2.5931593977563034
+    ],
+    "M|N=50": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=50": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=50": [
+      1.6443550576873924,
+      1.5415503294476718,
+      1.7455139064898864
+    ],
+    "M|N=100": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=100": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=100": [
+      1.4158548827391961,
+      1.3444856553077713,
+      1.4854967897068911
+    ],
+    "M|N=200": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-oraculo|N=200": [
+      NaN,
+      NaN,
+      NaN
+    ],
+    "T-protocolo|N=200": [
+      1.3030160894805978,
+      1.257165796394847,
+      1.348195869453097
+    ]
+  },
+  "control": {
+    "apple": 0,
+    "car": 600,
+    "cow": 600,
+    "cup": 0,
+    "dog": 1200,
+    "horse": 600,
+    "pear": 0,
+    "tomato": 0
+  }
+}

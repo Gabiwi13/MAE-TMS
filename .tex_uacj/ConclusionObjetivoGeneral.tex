@@ -1,0 +1,83 @@
+El objetivo general (Sección~\ref{secc:og}) se cumplió.
+El sistema se construyó y se midió contra decisores simples, contra una sola memoria con
+las ocho clases y contra un codificador sin la pérdida de clase.
+Lo que dejaron esas comparaciones se resume por objetivo específico.
+
+\paragraph{Arquitectura (objetivo~\ref{oe:arquitectura}).}
+El sistema tiene ocho módulos, cada uno con una memoria de contenido heteroasociativa
+y dos directorios, y un mediador que deja de intervenir en la fase madura.
+Registrar, reconocer, recuperar y enrutar son operaciones de las memorias
+(Sección~\ref{sec:operaciones}).
+Una sola memoria de contenido por módulo basta: los pesos de cada dominio se leen de la
+memoria heteroasociativa, y con ellos el sistema toma las mismas decisiones que con
+memorias homoasociativas separadas (Sección~\ref{sec:una-memoria}).
+
+\paragraph{Formación del directorio (objetivo~\ref{oe:formacion}).}
+Sobre conjuntos de 120 consultas que nunca forman el directorio, la fase madura con la
+lectura B1 sube del 78.9\,\% con 50 consultas de formación al 91.0\,\% con 291, y la
+temprana es del 89.7\,\% (promedio de cinco sorteos del conjunto de evaluación).
+Con unas 200 consultas, la fase madura alcanza a la temprana: la diferencia es de
+$+0.2$ puntos con 200 y de $+1.3$ con 291, y ninguna diferencia positiva se sostiene
+entre sorteos.
+El directorio reproduce, entonces, la decisión del mediador sin difundir la consulta a
+todos los módulos, con el mismo acierto.
+La lectura B1 supera a la cruda con todos los tamaños de formación y en todos los
+sorteos, por 4.5 a 8.8 puntos en promedio; sin ella, la fase madura nunca alcanza a la
+temprana.
+
+\paragraph{Frente a decisores simples y a una memoria única
+(objetivo~\ref{oe:lineas-base}).}
+En texto, el sistema acierta lo mismo que los decisores simples.
+Sobre las 80 consultas más difíciles del banco, en las que solo 11 traen el nombre de
+su clase, acierta el 81.25\,\%, y el voto por tokens del vocabulario, el centroide y los
+vecinos más cercanos dan entre 76.0 y 81.5\,\%.
+Sobre las 171 consultas reservadas, con 200 imágenes por clase, enruta bien el
+96.8\,\% y la memoria única clasifica bien el 96.9\,\% (diferencia de $-0.1$ puntos,
+$p = 0.86$).
+Lo que la memoria agrega sobre el voto en texto es el desempate entre las clases que
+contienen algún token de la consulta: 2.9 puntos sobre las 400 consultas de
+calibración (90.0 frente a 87.1\,\%).
+Una tabla de conteos de tokens formada con las mismas consultas no se distingue del
+directorio (92.3 frente a 93.0\,\%, $p = 0.58$).
+
+\paragraph{Rechazo (objetivo~\ref{oe:rechazo}).}
+De las 40 consultas fuera de dominio, el sistema acepta 2 con 25, 50, 100 y 200 imágenes
+por clase.
+La memoria única acepta 5.0, 5.0, 12.5 y 20.0\,\% con esos mismos tamaños, y los
+decisores de coseno aceptan las 40.
+La compuerta textual coincide con la pertenencia al vocabulario en los 3064 pares de
+token y clase examinados, de modo que un voto léxico rechaza las mismas consultas.
+Las dos que pasan son las únicas que comparten una palabra con el vocabulario de un
+módulo (limitación (a)).
+En imagen, el umbral de energía y la contención rechazan buena parte de las entradas sin
+estructura (limitación (c)).
+El rechazo de imágenes reales de otras categorías no se midió.
+
+\paragraph{Recuperación en ambas direcciones (objetivo~\ref{oe:recuperacion}).}
+De texto a imagen, el sistema responde con una imagen al 98.7\,\% de las 171 consultas
+reservadas, y la memoria única al 100\,\%.
+La distancia de la imagen recordada a la imagen real más cercana de su clase es de
+27.2 con 200 imágenes por clase, frente a 32.5 de la memoria única y 26.8 del oráculo.
+De imagen a texto, 113 de las 116 imágenes enrutadas entre las 15 primeras de cada clase
+evocan palabras de su dominio (97.4\,\%).
+
+\paragraph{Imágenes y codificador (objetivo~\ref{oe:vision}).}
+Los directorios visuales envían al especialista el 96.2\,\% de las 656 imágenes de
+prueba (631), rechazan 23 y se equivocan en dos.
+El centroide y los vecinos más cercanos sobre los mismos códigos aciertan de 652 a 655
+sin rechazar ninguna, y el vecino más cercano acierta las 23 que el sistema rechaza.
+Con un codificador entrenado sin la pérdida de clase, el enrutamiento cae al 70.4\,\%,
+los errores suben de 2 a 169 y la cobertura de punta a punta con objetos nuevos baja del
+89.2 al 59.3\,\%.
+La separación entre clases la hace el codificador supervisado, y la propiedad de
+fallar con un rechazo en lugar de un error depende de esa supervisión.
+Con objetos que ningún módulo vio, la cobertura es del 89.2\,\% frente al 95.5\,\% con
+vistas nuevas de objetos conocidos, pero el codificador sí había visto esos objetos;
+con un codificador reentrenado sin el objeto reservado, la cobertura es del 87.6\,\%
+[84.3, 91.0] y los falsos enrutamientos suben de 2 a 136 de 3280 (4.1\,\%).
+
+\paragraph{En suma.}
+El sistema enruta como un decisor simple y, además, rechaza lo que no contiene,
+recupera en ambas direcciones y guarda un registro de quién sabe qué.
+Su acierto lo ponen las representaciones: el vocabulario en texto y el codificador
+supervisado en imagen.

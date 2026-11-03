@@ -334,18 +334,19 @@
 
 \renewcommand\maketitle{
   \begingroup\doublespacing % always typeset title pages in doublespacing %
+  \setlength{\parskip}{0pt}% el \parskip del documento no cabe en la portada
   \begin{titlepage}%
   \begin{center}
     \vspace{\@line}{\Large{UNIVERSIDAD AUTÓNOMA DE CIUDAD JUÁREZ}}\par
     \vspace{\@line}{\large\@institution}\par
     \vspace{3\@line}\includegraphics [scale=0.6]{\@logosource}\par
-    \vspace{2\@line}{\Large \@title}\par
+    \vspace{2\@line}{\def\baselinestretch{1}\Large \@title\par}% título largo a espacio sencillo
     \ifdoctor
     \textsc{Tesis de Doctorado/a en Ciencias de la Ingenier{\'{i}}a}\par
     \else
     \vspace{3\@line}{Reporte Técnico de Investigación presentado por:}\par
     \fi
-        \vspace{1\@line}{\@author\  \@authorid\\\@authorb\ \@authorbid}\par
+        \vspace{1\@line}{\@author\  \@authorid\ifx\@authorb\@empty\else\\\@authorb\ \@authorbid\fi}\par
     \vspace{2\@line}{Requisito  para la obtención del título de:}\par
         \ifdoctor
         \textbf{Doctor/a en Ciencias de la Ingeniería}\par
@@ -353,8 +354,8 @@
         \vspace{1\@line}{INGENIERO EN SISTEMAS COMPUTACIONALES}\par
         \fi
     \vfill\textsc{Asesor:}\par
-        \vspace{3\@line}{\@directortitle\ \@director}\\
-        {\@directorbtitle\ \@directorb}\par
+        \vspace{3\@line}{\@directortitle\ \@director}%
+        \ifx\@directorb\@empty\else\\{\@directorbtitle\ \@directorb}\fi\par
   \end{center}
     \vspace{1\@line}\textrm{\@address}%\par
     \textrm{\hfill\@termyear}
@@ -467,8 +468,8 @@ Profesor Titular de Seminario de Titulación II \\
 Asunto: Liberación de Asesoría
 \end{flushright}
 {\bf
-Mtro. Ismael Canales Valdiviezo\\
-Jefe del Departamento de Ingeniería\\
+Dra. Nelly Gordillo Castillo\\
+Jefa del Departamento de Ingeniería\\
 El\'ectrica y Computación\\
 Presente.-}\par
 \vspace{2\@line}
@@ -481,13 +482,13 @@ Sin más por el momento, reciba un cordial saludo.
 Atentamente:
 \par\vspace{4\@line}
 \begin{tabular}{ccc}
-Dr. \@director	\\
+\@directortitle\ \@director	\\
 Profesor Investigador \\
 \end{tabular}
 \end{center}
   
   \begin{singlespace}
-	  {Ccp: Mtro. David Absalón Uruchurtu Moreno}\par
+	  {Ccp: Dr. Josué Domínguez Guerrero}\par
 	  Coordinador del Programa de Sistemas Computacionales\par
 	  {\@author}\par
 	  Archivo\vfill

@@ -1,0 +1,151 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793706381.570402   12712 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793706382.934560   12712 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+pliegue 4: tomado por el proceso 10628 (04:46:25)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0276  RMSE=0.1343  acc=99.7%
+Epoch  20/50  loss=0.0229  RMSE=0.1273  acc=99.3%
+Epoch  30/50  loss=0.0167  RMSE=0.1172  acc=99.3%
+Epoch  40/50  loss=0.0153  RMSE=0.1124  acc=98.7%
+Epoch  50/50  loss=0.0174  RMSE=0.1130  acc=96.3%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1124  acc=98.7%
+  pliegue 4: codificador RMSE=0.1124 acc=98.7% (4.5 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (6s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (16s)
+  horse: 410 imágenes × 16 (19s)
+  pear: 410 imágenes × 16 (23s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 4: 656 filas (llenado 33 min, total 39 min)
+pliegue 5: tomado por el proceso 10628 (05:30:01)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0229  RMSE=0.1334  acc=97.8%
+Epoch  20/50  loss=0.0206  RMSE=0.1222  acc=96.7%
+Epoch  30/50  loss=0.0177  RMSE=0.1205  acc=99.5%
+Epoch  40/50  loss=0.0171  RMSE=0.1114  acc=98.5%
+Epoch  50/50  loss=0.0139  RMSE=0.1082  acc=99.2%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1082  acc=99.2%
+  pliegue 5: codificador RMSE=0.1082 acc=99.2% (4.5 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (6s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (16s)
+  horse: 410 imágenes × 16 (19s)
+  pear: 410 imágenes × 16 (23s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 5: 656 filas (llenado 33 min, total 39 min)
+pliegue 6: tomado por el proceso 10628 (06:13:53)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0240  RMSE=0.1371  acc=98.8%
+Epoch  20/50  loss=0.0197  RMSE=0.1213  acc=98.8%
+Epoch  30/50  loss=0.0204  RMSE=0.1248  acc=97.4%
+Epoch  40/50  loss=0.0168  RMSE=0.1142  acc=97.1%
+Epoch  50/50  loss=0.0165  RMSE=0.1095  acc=99.1%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1095  acc=99.1%
+  pliegue 6: codificador RMSE=0.1095 acc=99.1% (4.5 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (6s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (16s)
+  horse: 410 imágenes × 16 (19s)
+  pear: 410 imágenes × 16 (22s)
+  tomato: 410 imágenes × 16 (25s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 6: 656 filas (llenado 33 min, total 39 min)
+pliegue 7: tomado por el proceso 10628 (06:57:55)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0320  RMSE=0.1374  acc=95.5%
+Epoch  20/50  loss=0.0212  RMSE=0.1253  acc=99.8%
+Epoch  30/50  loss=0.0204  RMSE=0.1217  acc=92.6%
+Epoch  40/50  loss=0.0201  RMSE=0.1181  acc=98.3%
+Epoch  50/50  loss=0.0238  RMSE=0.1248  acc=92.0%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1181  acc=98.3%
+  pliegue 7: codificador RMSE=0.1181 acc=98.3% (4.5 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (6s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (16s)
+  horse: 410 imágenes × 16 (19s)
+  pear: 410 imágenes × 16 (23s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 7: 656 filas (llenado 89 min, total 95 min)
+pliegue 8: tomado por el proceso 10628 (08:38:00)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0248  RMSE=0.1346  acc=99.3%
+Epoch  20/50  loss=0.0201  RMSE=0.1276  acc=98.6%
+Epoch  30/50  loss=0.0203  RMSE=0.1257  acc=98.5%
+Epoch  40/50  loss=0.0146  RMSE=0.1145  acc=98.5%
+Epoch  50/50  loss=0.0148  RMSE=0.1091  acc=99.7%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1091  acc=99.7%
+  pliegue 8: codificador RMSE=0.1091 acc=99.7% (4.7 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (7s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (17s)
+  horse: 410 imágenes × 16 (20s)
+  pear: 410 imágenes × 16 (23s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 8: 656 filas (llenado 32 min, total 36 min)
+pliegue 9: tomado por el proceso 10628 (09:18:48)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0314  RMSE=0.1419  acc=98.1%
+Epoch  20/50  loss=0.0239  RMSE=0.1383  acc=98.6%
+Epoch  30/50  loss=0.0200  RMSE=0.1275  acc=99.3%
+Epoch  40/50  loss=0.0193  RMSE=0.1243  acc=98.3%
+Epoch  50/50  loss=0.0162  RMSE=0.1175  acc=99.3%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1175  acc=99.3%
+  pliegue 9: codificador RMSE=0.1175 acc=99.3% (4.6 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (6s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (13s)
+  dog: 410 imágenes × 16 (16s)
+  horse: 410 imágenes × 16 (19s)
+  pear: 410 imágenes × 16 (22s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 9: 656 filas (llenado 31 min, total 36 min)
+pliegue 10: tomado por el proceso 10628 (10:00:19)
+Training on cuda (seed=42)
+Epoch  10/50  loss=0.0257  RMSE=0.1386  acc=98.5%
+Epoch  20/50  loss=0.0200  RMSE=0.1268  acc=98.6%
+Epoch  30/50  loss=0.0158  RMSE=0.1169  acc=99.7%
+Epoch  40/50  loss=0.0218  RMSE=0.1232  acc=98.6%
+Epoch  50/50  loss=0.0146  RMSE=0.1135  acc=99.3%
+  Models saved (atómico).
+
+Final (best) RMSE=0.1135  acc=99.3%
+  pliegue 10: codificador RMSE=0.1135 acc=99.3% (4.6 min)
+  apple: 410 imágenes × 16 (3s)
+  car: 410 imágenes × 16 (7s)
+  cow: 410 imágenes × 16 (10s)
+  cup: 410 imágenes × 16 (14s)
+  dog: 410 imágenes × 16 (17s)
+  horse: 410 imágenes × 16 (20s)
+  pear: 410 imágenes × 16 (23s)
+  tomato: 410 imágenes × 16 (26s)
+  Calculando stats globales sobre 200 imagenes/clase x 4 variantes...
+  pliegue 10: 656 filas (llenado 31 min, total 36 min)

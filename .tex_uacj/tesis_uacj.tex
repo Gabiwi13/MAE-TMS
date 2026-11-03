@@ -55,6 +55,9 @@
 \DeclareRobustCommand{\es@op@ac@TU}[1]{\es@op@ac@TU@frag{#1}}
 \accentedoperators
 \makeatother
+% La clase deja los flotantes a espacio sencillo, pero los [H] no pasan por su \@xfloat.
+\AddToHook{env/table/begin}{\def\baselinestretch{1}\normalsize}
+\AddToHook{env/figure/begin}{\def\baselinestretch{1}\normalsize}
 
 \usepackage{hyperref}
 %\usepackage{urm}
@@ -71,8 +74,8 @@
 \sinodalc{[PENDIENTE: grado]}{[PENDIENTE: sinodal C]}
 \titular{[PENDIENTE: grado]}{[PENDIENTE: titular del Seminario de Titulación II]} % Titular de Seminario de Titulación II
 
-% comenta para automático:
-\termyear{\today}
+\termyear{noviembre de 2026}
+\date{noviembre de 2026} % fecha de las cartas
 %\usepackage{amsfonts}
 %\usepackage[bitstream-charter]{mathdesign}
 \usepackage{listings}
@@ -120,7 +123,8 @@
 \include{Dedicatoria}
 
 \include{Resumen}
-%\include{Abstract} [Opcional]
+\include{Abstract}
+\IfFileExists{DeclaracionIAG.tex}{\include{DeclaracionIAG}}{}
 
 % los siguientes comandos producen √åndices.
 % tablas y figuras en el documento de la tesis
@@ -128,6 +132,7 @@
 \listoffigures
 \listoftables
 %\lstlistoflistings % la tesis no tiene listados de código
+\include{Siglas}
 
 
 \setcounter{page}{1}

@@ -14,6 +14,8 @@ operaciones del sistema (Sección~\ref{sec:operaciones}).
 Cada uno de los ocho módulos guarda su contenido en una sola memoria heteroasociativa
 $M^H_{\mathrm{dom}}$, que asocia etiquetas con latentes de imagen, y lleva dos directorios,
 uno para pistas de texto y otro para pistas de imagen; el TME lleva otros dos.
+Pese a su nombre (\textit{Transactive Memory Expert}), el TME no es un especialista de
+ningún dominio; es el mediador de la fase temprana y solo lleva directorios.
 En total son \textbf{26 memorias asociativas} (tres por módulo, más dos del TME); la
 Tabla~\ref{tab:memorias} resume sus dominios y dimensiones.
 Fuera del sistema de memorias, dos componentes de percepción actúan como interfaz con
@@ -37,7 +39,7 @@ Sección~\ref{sec:hetero4d}, o $(n, m \to p, q)$ cuando la relación es unidirec
 El dominio \emph{etiqueta} corresponde a vectores fastText cuantizados por magnitud;
 el dominio \emph{latente} a códigos ResNet18 cuantizados.
 El dominio derecho de los directorios tiene una coordenada binaria por módulo
-($q{=}2$: ``conoce''\,/\,``no conoce'').}
+($q{=}2$: «conoce»\,/\,«no conoce»).}
 \label{tab:memorias}
 \small
 \begin{tabular}{@{}llll@{}}
@@ -46,61 +48,72 @@ El dominio derecho de los directorios tiene una coordenada binaria por módulo
 \midrule
 \multirow{3}{*}{Módulo $k$ ($\times 8$)} &
   $M^H_{\mathrm{dom}}$ & Heteroasociativa & $(300, 16 \leftrightarrow 64, 32)$ \\
-& $M^L_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
-& $M^R_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
+& $M^{\mathrm{txt}}_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
+& $M^{\mathrm{vis}}_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
 \midrule
 \multirow{2}{*}{TME} &
-  $M^L_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
-& $M^R_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
+  $M^{\mathrm{txt}}_{\mathrm{dir}}$ & Heteroasociativa & $(300, 16 \to 8, 2)$ \\
+& $M^{\mathrm{vis}}_{\mathrm{dir}}$ & Heteroasociativa & $(64, 32 \to 8, 2)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Todas las memorias de directorio son heteroasociativas, y su dominio derecho codifica
-la identidad $g$ del módulo ganador con un vector $\mathbf{g} \in \{0,1\}^{8}$: una
-coordenada binaria por módulo ($q{=}2$).
-El estado ``desconocido'' no tiene coordenada propia: es el rechazo, y ocurre cuando
+la identidad $g$ del módulo ganador con un vector $\mathbf{g} \in \{0,1\}^{8}$, que tiene
+una coordenada binaria por módulo ($q{=}2$).
+El estado «desconocido» no tiene coordenada propia; corresponde al rechazo, que ocurre cuando
 ningún módulo obtiene soporte en la lectura del directorio.
 
 Cada módulo mantiene \emph{dos} directorios, uno por modalidad de la pista: el de
-\textbf{texto} $M^L_{\mathrm{dir}}$ (pista de etiqueta $300\times16$) y el \textbf{visual}
-$M^R_{\mathrm{dir}}$ (pista de latente $64\times32$). Ambos apuntan al mismo destino (la
+\textbf{texto} $M^{\mathrm{txt}}_{\mathrm{dir}}$ (pista de etiqueta $300\times16$) y el \textbf{visual}
+$M^{\mathrm{vis}}_{\mathrm{dir}}$ (pista de latente $64\times32$). Ambos apuntan al mismo destino (la
 identidad del módulo), pero las pistas viven en espacios distintos, por lo que requieren
 relaciones heteroasociativas separadas.
-El TME conserva además sus propios $M^L_{\mathrm{dir}}$ y $M^R_{\mathrm{dir}}$, con el
-registro completo del grupo; sirven de diagnóstico y ningún enrutamiento los consulta.
+El TME conserva además sus propios $M^{\mathrm{txt}}_{\mathrm{dir}}$ y
+$M^{\mathrm{vis}}_{\mathrm{dir}}$, con el registro completo del grupo; en el sistema con
+directorios perspectivales sirven de diagnóstico y ningún enrutamiento los consulta.
+En los experimentos de texto de calibración, protocolo completo, barrido
+$\iota \times \kappa$ y formación del directorio, en cambio, cada transacción se
+registra en un solo \emph{directorio compartido}, igual a ese registro completo, y con
+él enrutan todos los módulos en la fase madura (Sección~\ref{sec:organizacion}).
 
-Registrar una transacción es asociar la pista ($\mathbf{v}_q$ en $M^L_{\mathrm{dir}}$,
-$\mathbf{z}_q$ en $M^R_{\mathrm{dir}}$) con el identificador $g$ del módulo ganador.
+Registrar una transacción es asociar la pista ($\mathbf{v}_q$ en
+$M^{\mathrm{txt}}_{\mathrm{dir}}$, $\mathbf{z}_q$ en $M^{\mathrm{vis}}_{\mathrm{dir}}$)
+con el identificador $g$ del módulo ganador.
 Registran solo quienes participaron: el módulo por el que entró la consulta y el
-ganador; el TME las registra todas (la \emph{actualización del directorio} de Wegner,
-por transacción).
-Los directorios son, por tanto, \emph{perspectivales}: cada módulo sabe de los demás lo
+ganador; el TME las registra todas.
+En este sistema, esa es la \emph{actualización del directorio}, transacción por
+transacción.
+Los directorios son, por tanto, \emph{perspectivales}, porque cada módulo sabe de los demás lo
 que los vio ganar.
 En el directorio visual, cada percepción se registra con sus 16 variantes
 (Sección~\ref{sec:dataset}) y el mismo ganador.
 
-Esto permite la coordinación de la recuperación de Wegner también para imágenes: una
-imagen puede entrar por \emph{cualquier} módulo, que consulta su $M^R_{\mathrm{dir}}$ y
-los de los módulos que conoce y la reenvía al especialista, o la rechaza si nadie la
-contiene (Sección~\ref{sec:operaciones}).
-Un puente desde la memoria de contenido del módulo de entrada hacia su directorio de
-texto no serviría: cuando el módulo de entrada no es el especialista, su memoria de
-contenido no contiene el latente ajeno y el puente no redirige.
+En este sistema, la coordinación de la recuperación vale también para imágenes.
+Una imagen puede entrar por \emph{cualquier} módulo, que consulta su
+$M^{\mathrm{vis}}_{\mathrm{dir}}$ y los de los módulos que conoce (los que vio ganar
+alguna transacción) y la reenvía al especialista, o la rechaza si nadie la contiene
+(Sección~\ref{sec:operaciones}).
+Traducir la imagen a palabras con la memoria de contenido del módulo de entrada, para
+enrutarlas con su directorio de texto, no serviría, porque cuando el módulo de entrada
+no es el especialista, su memoria de contenido no contiene el latente ajeno y no produce
+palabras que enrutar.
 
 \paragraph{Notación.}
 Una consulta de texto produce una pista por token, $\mathbf{v}_q \in
-\{0,\ldots,15\}^{300}$: el vector fastText del token, cuantizado por magnitud.
-Una imagen produce una pista, $\mathbf{z}_q \in \{0,\ldots,31\}^{64}$: su latente
+\{0,\ldots,15\}^{300}$, que es el vector fastText del token cuantizado por magnitud.
+Una imagen produce una pista, $\mathbf{z}_q \in \{0,\ldots,31\}^{64}$, que es su latente
 cuantizado.
-$g$ es el módulo ganador de una transacción; $s_k$, la puntuación que el módulo $k$ da
+El subíndice $q$ indica que la pista está cuantizada, también en el llenado, y no es el
+tamaño de alfabeto $q$ de la Sección~\ref{sec:hetero4d}.
+El módulo ganador de una transacción es $g$; $s_k$, la puntuación que el módulo $k$ da
 a una pista con su memoria de contenido, y $\hat{s}_k$, la que un directorio da al
-módulo $k$ con la lectura B1 (Sección~\ref{sec:operaciones}).
+módulo $k$ con la lectura normalizada por conteo (Sección~\ref{sec:operaciones}).
 
 \subsection{Diagramas de flujo}
 \label{sec:diagramas}
 
-Los tres diagramas siguientes muestran las tres etapas operativas del sistema: el
+Los diagramas siguientes muestran las tres etapas operativas del sistema: el
 llenado de la memoria de contenido (Figura~\ref{fig:arq-llenado}), la recuperación
 mediada por el TME en la fase temprana (Figura~\ref{fig:arq-temprana}) y la
 recuperación punto a punto en la fase madura (Figura~\ref{fig:arq-madura}).
@@ -133,7 +146,7 @@ recuperación punto a punto en la fase madura (Figura~\ref{fig:arq-madura}).
 
 % ---- Rama semántica (izquierda) ----
 \node[box] (conceptnet) {ConceptNet 5.7\\extracción bidireccional\\+ masa asociativa};
-\node[box, right=of conceptnet] (ft) {fastText\\subword 300D};
+\node[box, right=of conceptnet] (ft) {fastText\\300 dimensiones};
 \node[box, right=of ft] (sign) {$v/S$, escala\\global guardada};
 \node[box, right=of sign] (qL) {Cuantización\\por magnitud\\($m{=}16$)};
 
@@ -183,13 +196,13 @@ La rama semántica toma el vocabulario de cada clase de ConceptNet y cuantiza su
 vectores fastText por magnitud sobre una escala global guardada $S$
 (Sección~\ref{sec:pipeline-semantico}).
 La rama visual cuantiza los códigos ResNet18 de las 200 imágenes de llenado por clase,
-cada una en sus 16 variantes (Sección~\ref{sec:dataset}): 3200 registros por clase.
+cada una en sus 16 variantes (Sección~\ref{sec:dataset}), en total 3200 registros por clase.
 El registro en $M^H_{\mathrm{dom}}$ sigue el esquema \emph{imagen-etiqueta}:
 el latente $i$-ésimo (cada variante cuenta como uno) se registra emparejado con la etiqueta
 $\mathbf{v}_q^{(i \bmod L)}$ de la secuencia expandida por frecuencias
 (de longitud $L$), de modo que cada clase aporta el mismo número de registros.
-Las lecturas $M^L$ y $M^R$ (punteadas) se calculan de $M^H_{\mathrm{dom}}$ con la
-ecuación~\eqref{eq:marginal}; no se llenan.}
+Las lecturas $M^L$ y $M^R$ (con trazo discontinuo) se calculan de $M^H_{\mathrm{dom}}$
+con la ecuación~\eqref{eq:marginal}.}
 \label{fig:arq-llenado}
 \end{figure}
 
@@ -237,7 +250,7 @@ ecuación~\eqref{eq:marginal}; no se llenan.}
 \node[box, below=1.0cm of tme, minimum width=3.2cm] (dirup)
     {Actualización del\\directorio $(\mathbf{v}_q \to g)$};
 \node[font=\footnotesize\itshape, below=0.15cm of dirup, text width=4.8cm, align=center]
-    {Registran el módulo de entrada,\\el ganador y el TME\\(\textit{directory updating})};
+    {Registran el módulo de entrada,\\el ganador y el TME};
 
 % ---- Flechas ----
 \draw[arr] (query) -- (spacy);
@@ -291,14 +304,14 @@ el ganador y el TME; los demás módulos no presenciaron la transacción.}
 \node[box, right=of query] (tau) {Solo imagen:\\$\|\mathbf{z}\| \geq \tau$};
 \node[box, right=of tau] (entrada) {Módulo de\\entrada};
 \node[box, right=1.4cm of entrada] (mdir)
-    {$M^L_{\mathrm{dir}}$ / $M^R_{\mathrm{dir}}$ propios\\y de los conocidos\\lectura B1, $\xi{=}0$};
+    {$M^{\mathrm{txt}}_{\mathrm{dir}}$ / $M^{\mathrm{vis}}_{\mathrm{dir}}$ propios\\y de los conocidos\\lectura normalizada, $\xi{=}0$};
 \node[box, right=1.4cm of mdir] (destino) {Módulo\\destino};
 
 % ---- Compuerta, salida y rechazo ----
 \node[box, below=1.2cm of destino] (gate) {Solo texto: ¿su\\contenido contiene\\la pista?};
 \node[box, below=1.0cm of gate] (salida)
     {Texto: recuperación $\beta$\\y decodificador $\to$ imagen\\Imagen: evocación $\to$ etiquetas};
-\node[box] (rechazo) at (mdir |- gate) {RECHAZO\\(el grupo no inventa\\referentes)};
+\node[box] (rechazo) at (mdir |- gate) {RECHAZO};
 
 % ---- TME fuera del circuito ----
 \node[boxg, above=1.0cm of entrada] (tme) {TME};
@@ -324,14 +337,14 @@ La consulta entra por un módulo (al azar en texto; en la evaluación visual, un
 es el especialista).
 Una imagen cuyo latente no alcanza la energía mínima $\tau$ se rechaza antes de
 cualquier memoria.
-El módulo de entrada suma la lectura B1 de su directorio de la modalidad de la pista
-($M^L_{\mathrm{dir}}$ o $M^R_{\mathrm{dir}}$, ambos con $\xi{=}0$) y la de los
-directorios de los módulos que conoce, y reenvía al de mayor puntuación sin pasar por
-el TME (en gris); si nadie en ese círculo tiene soporte, la consulta pasa a los
-conocidos.
+El módulo de entrada suma la lectura normalizada de su directorio de la modalidad de la
+pista ($M^{\mathrm{txt}}_{\mathrm{dir}}$ o $M^{\mathrm{vis}}_{\mathrm{dir}}$, ambos con
+$\xi{=}0$) y la de los directorios de los módulos que conoce, y reenvía al de mayor
+puntuación sin pasar por el TME (en gris); si nadie en ese círculo tiene soporte, la
+consulta pasa al conocido con más registros.
 En texto, el destino responde solo si su memoria de contenido contiene la pista.
 Si ningún directorio alcanzable tiene soporte, o el destino no contiene la pista, el
-sistema rechaza: el grupo no inventa referentes.}
+sistema rechaza la consulta.}
 \label{fig:arq-madura}
 \end{figure}
 
@@ -347,11 +360,12 @@ el proceso de enrutamiento es el siguiente.
     \item Se obtienen los pesos de reconocimiento de la pista en la lectura de etiquetas de la
     memoria de contenido (ecuación~\eqref{eq:marginal}):
     \begin{equation}
-        \mathbf{w} = \eta(\mathbf{v}_q,\; M^L)
+        \mathbf{w} = \omega(\mathbf{v}_q,\; M^L)
         \label{eq:pesos-routing}
     \end{equation}
-    y se normalizan $w_i \leftarrow w_i / \max_j w_j$ (la proyección es invariante a esa
-    escala; ecuación~\eqref{eq:normalizacion-pesos}).
+    y la proyección los normaliza a media unitaria (ecuación~\eqref{eq:normalizacion-pesos});
+    la división previa entre el máximo, que hace el código del sistema para evitar
+    desbordes, no cambia el resultado.
 
     \item Se computa la proyección AND-ponderada sobre la memoria de contenido:
     \begin{equation}
@@ -369,15 +383,14 @@ el proceso de enrutamiento es el siguiente.
         \end{cases}
         \label{eq:score-gated}
     \end{equation}
-    La compuerta anula la puntuación si alguna fila del dominio derecho carece de
-    soporte: el módulo no opina sobre lo que no contiene.
+    La compuerta anula la puntuación si alguna columna del dominio derecho (una
+    característica $j$) carece de soporte, de modo que el módulo no opina sobre lo que no
+    contiene.
     En el caso contrario, $s_k$ es la \emph{activación media} de las celdas no nulas.
 \end{enumerate}
 
-El módulo ganador es $g = \arg\max_k \sum_{\text{tokens}} s_k$: la suma recorre las
-pistas de la consulta, una por token.
-En este sistema, esta suma hace el papel de la asignación de información de Wegner y
-vive fuera de las memorias por diseño.
+El módulo ganador es $g = \arg\max_k \sum_{\text{tokens}} s_k$; la suma recorre las
+pistas de la consulta, una por token, y es una operación fuera de las memorias.
 Si $s_k = 0$ para todos los módulos, el sistema emite un \textbf{rechazo}.
 
 \paragraph{Por qué la activación media es comparable.}
@@ -387,12 +400,13 @@ variantes, emparejadas con la secuencia de etiquetas expandida por frecuencias).
 Las masas de registro quedan igualadas por construcción, de modo que la activación media
 $s_k$ es directamente comparable entre módulos sin ajustes adicionales.
 
-\subsubsection*{Lectura B1 del directorio}
+\subsubsection*{Lectura normalizada por conteo}
 
 Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección de la pista $\mathbf{v}_q$
-en el directorio $M^L_{\mathrm{dir}}$ del módulo, restringida al bit $b=1$
-(``el módulo $k$ conoce'').
-La puntuación B1 se define como:
+en el directorio $M^{\mathrm{txt}}_{\mathrm{dir}}$ del módulo, restringida al bit $b=1$
+(«el módulo $k$ conoce»).
+La \textbf{lectura normalizada por conteo} (B1, por su nombre en el estudio de
+calibración de la Sección~\ref{sec:calibracion}) da al módulo $k$ la puntuación:
 \begin{equation}
     \hat{s}_k = \frac{\Pi^{\mathrm{dir}}_k(\mathbf{v}_q,\; b{=}1)}{c_k + 1}
     \label{eq:b1}
@@ -400,54 +414,55 @@ La puntuación B1 se define como:
 donde $c_k$ es el número total de registros del módulo $k$ en el directorio.
 
 \paragraph{Por qué dividir entre el conteo.}
-La especialización real produce masas desiguales entre módulos: al final del protocolo
+La especialización real produce masas desiguales entre módulos. Al final del protocolo
 completo (Sección~\ref{sec:proto-completo}) los conteos del directorio fueron
 $[46, 16, 40, 25, 30, 18, 21, 31]$.
 La puntuación cruda de una proyección heteroasociativa crece con la masa de registros,
 por lo que un módulo con más registros en el directorio obtendría ventaja sin mérito.
 La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
-registro}, haciendo que la puntuación refleje calidad de especialización y no cantidad.
+registro}, de modo que la puntuación refleja la calidad de la especialización.
 Esta es la \textbf{única normalización externa} del sistema de directorios.
-El conteo $c_k$ se guarda como un contador aparte, pero no agrega información: es el
-número de veces que se registró ``conoce'' para el módulo $k$, el mismo en todas las
+El conteo $c_k$ se guarda como un contador aparte, pero no agrega información, porque es el
+número de veces que se registró «conoce» para el módulo $k$, el mismo en todas las
 características de la relación.
 La Sección~\ref{sec:calibracion} mide su efecto.
 
 \subsubsection*{Coordinación transactiva de la recuperación}
 
-En la fase madura, el módulo de entrada suma la lectura B1 de su directorio y la de los
+En la fase madura, el módulo de entrada suma la lectura normalizada de su directorio y la de los
 directorios de los módulos que conoce (los que vio ganar alguna transacción) y reenvía
 al de mayor puntuación.
 Si nadie en ese círculo tiene soporte, la consulta pasa al conocido con más registros,
 que suma a su vez los directorios de sus propios conocidos aún no consultados.
 El paso se repite hasta encontrar soporte; si ningún módulo alcanzable lo tiene, el
 sistema rechaza.
-En texto, la puntuación de cada directorio es la suma de B1 sobre los tokens de la
+En texto, la puntuación de cada directorio es la suma de la lectura normalizada sobre los tokens de la
 consulta, y el destino aplica una segunda compuerta: responde solo si su memoria de
 contenido contiene alguna de las pistas (ecuación~\eqref{eq:score-gated}); si no, la
 consulta se rechaza.
-En imagen, durante la formación del directorio visual (fase A,
-Sección~\ref{sec:dataset}) cada módulo vio ganar a los otros siete, de modo que el
+En imagen, durante la formación del directorio visual
+(Sección~\ref{sec:dataset}) cada módulo vio ganar a los otros siete, de modo que el
 primer círculo ya reúne los ocho directorios visuales.
 
 \subsubsection*{Lectura estricta del directorio visual y umbral de energía}
 
-El directorio visual $M^R_{\mathrm{dir}}$ usa la misma lectura B1 que el de texto, con
+El directorio visual $M^{\mathrm{vis}}_{\mathrm{dir}}$ usa la misma lectura normalizada que el de texto, con
 $\xi = 0$.
-No tolera huecos: en un directorio perspectival, una coordenada queda sin registro para
-todos los módulos según lo que el dueño del directorio presenció de los demás, así que
-una tolerancia $\xi > 0$ dependería de esa historia y no del módulo
+No tolera huecos.
+En un directorio perspectival, las coordenadas que quedan sin registro para cada módulo
+dependen de lo que el dueño del directorio presenció de ese módulo; una tolerancia
+$\xi > 0$ dependería entonces de esa historia y no del módulo consultado
 (Sección~\ref{sec:hemisferio-visual}).
 
 Antes de cualquier memoria visual, el latente continuo pasa un umbral de energía: si su
 norma es menor que $\tau = 16.61$, la imagen se rechaza.
 El valor de $\tau$ y por qué hace falta están en la Sección~\ref{sec:percepcion}.
 
-\subsubsection*{Entropía del directorio}
+\subsubsection*{Entropía del directorio e información mutua}
 
 Sea $c_k$ el número de registros del módulo $k$ en el directorio y
 $C = \sum_k c_k$ el total.
-La entropía del directorio resume el estado del grupo:
+La entropía del directorio resume cómo se reparten los registros entre módulos:
 \begin{equation}
     H_{\mathrm{dir}} = -\sum_{k=0}^{K-1} p_k \log_2 p_k, \qquad p_k = \frac{c_k}{C}
     \label{eq:entropia-dir}
@@ -455,10 +470,29 @@ La entropía del directorio resume el estado del grupo:
 Con $K=8$ módulos, el máximo es $\log_2 8 = 3$ bits, alcanzado cuando los ocho conteos
 son iguales.
 Esa lectura vale para un registro completo del grupo (el del TME y el directorio
-compartido de los experimentos de texto, Sección~\ref{sec:organizacion}), donde una
-entropía menor indica colapso hacia un módulo o formación incompleta.
+compartido de los estudios de texto que lo usan, Sección~\ref{sec:organizacion}), donde
+una entropía menor indica colapso hacia un módulo o formación incompleta.
 No vale para el directorio de cada módulo, que registra todo lo que ganó y solo parte
 de lo ajeno (Sección~\ref{sec:tmt}).
+$H_{\mathrm{dir}}$ mide balance y es poco sensible.
+Con un banco balanceado, un enrutamiento al azar también quedaría cerca de 3 bits, y
+conteos que van de 112 a 186 registros dan 2.974 bits (Sección~\ref{sec:calibracion}).
+La especialización la mide la información mutua entre el dominio $D$ de cada consulta
+(su clase real, que solo se usa para medir) y el módulo $G$ que la gana en la fase
+madura:
+\begin{equation}
+    I(D; G) = H(G) - H(G \mid D), \qquad
+    H(G \mid D) = -\sum_{d} p(d) \sum_{k} p(k \mid d) \log_2 p(k \mid d),
+    \label{eq:info-mutua-dir}
+\end{equation}
+donde las probabilidades son las frecuencias de la matriz de confusión de la fase
+madura, sin los rechazos.
+$H(G)$ es la entropía de los ganadores maduros y no coincide con $H_{\mathrm{dir}}$, que
+cuenta los registros de la formación.
+Dividida entre $H(D)$, vale 1 cuando cada módulo recibe un solo dominio y 0 cuando el
+ganador no depende del dominio.
+Con pocas consultas, este estimador sobrestima $I$ en unos $(K-1)^2/(2n\ln 2)$ bits, con
+$n$ el número de consultas no rechazadas.
 
 \subsubsection*{Recuperación de contenido (texto $\to$ imagen)}
 
@@ -474,35 +508,35 @@ de etiquetas procede como sigue.
 
 \begin{enumerate}
     \item Se obtienen los pesos del dominio latente:
-    $\mathbf{w}_R = \eta(\mathbf{z}_q,\; M^R)$, sobre la lectura latente de
+    $\mathbf{w}_R = \omega(\mathbf{z}_q,\; M^R)$, sobre la lectura latente de
     $M^H_{\mathrm{dom}}$.
-    El reconocimiento visual usa solo esa lectura, no la proyección hacia las etiquetas:
-    el lado de etiquetas, cuantizado por magnitud, es más disperso y rechazaría imágenes
-    que el lado latente sí contiene.
+    El reconocimiento visual usa solo esa lectura.
+    La proyección hacia las etiquetas rechazaría imágenes que el lado latente sí
+    contiene, porque el lado de etiquetas, cuantizado por magnitud, es más disperso.
 
     \item Se aplica la recuperación $\beta$ de la memoria heteroasociativa \emph{desde la
     derecha}: la pista es $\mathbf{z}_q$ con pesos $\mathbf{w}_R$, y el resultado es un
     patrón muestreado en el dominio semántico $\hat{\mathbf{v}}_q$.
 
-    \item Se buscan los 3 vecinos más cercanos de $\hat{\mathbf{v}}_q$, por similitud
+    \item Se buscan los tres vecinos más cercanos de $\hat{\mathbf{v}}_q$, por similitud
     coseno, entre las etiquetas de los ocho vocabularios de llenado (168 entradas, 159
     palabras distintas), y se devuelven como etiquetas asociadas a la imagen.
 \end{enumerate}
 
 \paragraph{Justificación del diccionario.}
 La recuperación $\beta$ devuelve una \emph{muestra} de la distribución de etiquetas acumulada
-por el módulo, no una palabra exacta: el vector muestreado puede no coincidir con ningún
-vector almacenado.
+por el módulo, y el vector muestreado puede no coincidir con ningún vector almacenado.
 El diccionario actúa como un decodificador que interpreta esa muestra con el
 vocabulario conocido.
 
-\subsubsection*{Fidelidad de la fase madura}
+\subsubsection*{Concordancia temprana-madura}
 
-La \textbf{fidelidad} se define como la fracción de consultas en la fase madura en las
-que la coordinación de la recuperación, desde el módulo de entrada, llega al mismo
-módulo ganador que la fase temprana:
+La \textbf{concordancia temprana-madura} es la fracción de consultas en las que la
+coordinación de la recuperación, desde el módulo de entrada, llega en la fase madura al
+mismo módulo ganador que en la fase temprana:
 \begin{equation}
-    F = \frac{|\{q : g^{\mathrm{maduro}}(q) = g^{\mathrm{temprano}}(q)\}|}{N_{\mathrm{consultas}}}
-    \label{eq:fidelidad}
+    \rho = \frac{|\{x : g^{\mathrm{maduro}}(x) = g^{\mathrm{temprano}}(x)\}|}{N}
+    \label{eq:concordancia}
 \end{equation}
-La fidelidad mide coincidencia con lo aprendido en la fase temprana, no acierto absoluto.
+donde $x$ recorre las $N$ consultas evaluadas.
+La concordancia mide coincidencia con lo aprendido en la fase temprana, no acierto.

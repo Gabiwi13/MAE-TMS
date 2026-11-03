@@ -1,0 +1,66 @@
+{
+ "e2e_nuevo": {
+  "pliegue": [
+   0.876219512195122,
+   0.8426829268292684,
+   0.9103658536585366
+  ],
+  "oficial": [
+   0.8917682926829269,
+   0.8512195121951219,
+   0.9317149390243904
+  ]
+ },
+ "e2e_conocido": {
+  "pliegue": [
+   0.9484756097560976,
+   0.9384146341463415,
+   0.9585365853658535
+  ],
+  "oficial": [
+   0.9548780487804878,
+   0.9509146341463415,
+   0.958841463414634
+  ]
+ },
+ "dif_nuevo_pliegue_menos_oficial": [
+  -0.015548780487804859,
+  -0.05701981707317074,
+  0.032019817073170705
+ ],
+ "dif_conocido_pliegue_menos_oficial": [
+  -0.006402439024390238,
+  -0.015548780487804847,
+  0.0033612804878048502
+ ],
+ "brecha_oficial": [
+  0.06310975609756095,
+  0.024992378048780454,
+  0.1039634146341463
+ ],
+ "brecha_pliegue": [
+  0.07225609756097556,
+  0.04146341463414629,
+  0.10427591463414626
+ ],
+ "falsos": {
+  "nuevo_pliegue": 136,
+  "nuevo_oficial": 2,
+  "conocido_pliegue": 5,
+  "conocido_oficial": 3
+ },
+ "n_imagenes_por_banco": 3280,
+ "falsos_pares": {
+  "nuevo: horse → cow": 35,
+  "nuevo: horse → dog": 33,
+  "nuevo: cow → dog": 23,
+  "nuevo: cow → car": 20,
+  "nuevo: dog → horse": 12,
+  "nuevo: cow → horse": 7,
+  "nuevo: dog → cow": 5,
+  "conocido: cow → horse": 3,
+  "nuevo: dog → car": 1,
+  "conocido: horse → cow": 1,
+  "conocido: cow → dog": 1
+ }
+}

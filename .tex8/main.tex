@@ -36,6 +36,8 @@
     citecolor=blue,
     urlcolor=blue
 }
+% las citas autor-año pueden partirse al final de una línea
+\makeatletter\let\@cite@ofmt\@firstofone\makeatother
 
 % -------------------------------------------------------
 % Portada
@@ -44,10 +46,10 @@
     \textbf{Sistema distribuido de memorias heteroasociativas entrópicas especializadas}\\
     \textbf{con una arquitectura de enrutamiento semántico y recuperación asociativa}\\
     \textbf{multimodal basada en la teoría de memoria transactiva}\\[0.3em]
-    \large Ocho módulos sobre ETH-80 completo\\[0.5em]
+    \large Ocho módulos sobre el conjunto ETH-80\\[0.5em]
 }
 \author{Gabriel Gonzalez\\[0.4em]\small Directora: Karla Miroslava Olmos Sánchez}
-\date{Julio 2026}
+\date{julio de 2026}
 
 % -------------------------------------------------------
 \begin{document}
@@ -55,15 +57,19 @@
 \maketitle
 
 \begin{abstract}
-Un grupo que trabaja junto puede recordar más que cada uno de sus miembros por separado: cada
-miembro sabe quién sabe qué y a quién preguntar.
+Un grupo que trabaja junto puede recordar más que cada uno de sus miembros por separado,
+porque cada miembro guarda parte de lo que el grupo sabe y sabe a quién preguntar por el
+resto.
 Wegner \cite{wegner1987transactive} llamó a esta organización \emph{memoria
 transactiva}.
-Este trabajo pregunta si puede construirse solo con memorias asociativas, sin
-clasificadores supervisados, y presenta EAM-TMS, un sistema distribuido de memoria
-transactiva construido con las Memorias Asociativas Entrópicas de Pineda y Morales en su
-variante ponderada (W-EAM) \cite{pineda2021entropic,pineda2022weighted} y su extensión
-heteroasociativa (EHAM) \cite{morales2025missing}.
+Este trabajo pregunta si puede construirse con memorias asociativas, sin clasificadores
+discriminativos en las decisiones de enrutamiento y rechazo, y qué agregan esas memorias
+a las decisiones del sistema.
+Presenta EAM-TMS (\textit{Entropic Associative Memory -- Transactive Memory System}), un
+sistema distribuido de memoria transactiva construido con las Memorias Asociativas
+Entrópicas de Pineda y Morales en su variante ponderada (W-EAM)
+\cite{pineda2021entropic,pineda2022weighted} y su extensión heteroasociativa (EHAM)
+\cite{morales2025missing}.
 El sistema tiene ocho módulos especialistas, uno por cada categoría del conjunto de datos
 ETH-80 \cite{leibe2003eth80}
 (\texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup}, \texttt{dog}, \texttt{horse},
@@ -71,36 +77,56 @@ ETH-80 \cite{leibe2003eth80}
 Cada módulo guarda su contenido en una sola memoria heteroasociativa entre palabras e
 imágenes y lleva dos directorios, uno textual y uno visual, con las transacciones en que
 participa.
-La arquitectura modela los tres mecanismos de Wegner \cite{wegner1995computer}: la
-actualización del directorio, la asignación de información y la coordinación de la
-recuperación.
+De los tres procesos que Wegner \cite{wegner1995computer} distingue, el sistema modela
+dos: la actualización del directorio y la coordinación de la recuperación.
+La asignación de información la hace la etiqueta de clase, que decide qué módulo guarda
+cada imagen y cada palabra, así que la especialización de los módulos es asignada y lo
+que se forma con el uso es el directorio.
 Un mediador central coordina la fase temprana y deja de ser necesario en la fase madura,
 cuando los directorios de los módulos bastan para enrutar.
-Las memorias operan en los dos sentidos, de palabras a imágenes y de imágenes a
-palabras.
 Las palabras entran como vectores fastText de 300 dimensiones
 \cite{bojanowski2017fasttext}, con vocabulario extraído de ConceptNet 5.7
 \cite{speer2017conceptnet} y \emph{cuantización por magnitud} en 16 niveles; las
-imágenes, como códigos de un ResNet18 \cite{he2016resnet}.
-En el estudio de calibración, con un directorio compartido y un banco de 411 consultas
-de texto ($N{=}400$ consultas de formación, 5 semillas), el 90.0\% de las consultas
-llega al módulo correcto en la fase temprana y el 93.0\% en la fase madura con la
-lectura del directorio normalizada por número de registros (B1); la cifra madura se
-mide sobre las mismas consultas que formaron el directorio.
-La lectura B1 reduce la participación del módulo \texttt{apple} del 20.5\% de la
-lectura cruda al 13.8\% (ideal 12.5\%).
-Con imágenes, los directorios visuales envían al especialista correcto el 96.2\% de las
-656 imágenes de prueba (631), rechazan el 3.5\% y se equivocan en dos.
-Con objetos que ningún módulo vio, el 89.2\% de las vistas llega al especialista y
-recibe respuesta, frente al 95.5\% con vistas nuevas de objetos conocidos, con dos
-enrutamientos falsos en 3280.
-Frente a una sola memoria con las ocho clases, la partición en especialistas recuerda con
-más fidelidad y, si además el módulo destino debe contener la consulta, acepta menos
-consultas fuera de dominio cuando el contenido crece (2 frente a 8 de 40 con 200
-imágenes por clase).
-Los límites observados provienen de las representaciones (el léxico compartido entre
-clases vecinas y la cobertura del espacio latente ante objetos nuevos), no del mecanismo
-asociativo.
+imágenes, como códigos de un ResNet18 \cite{he2016resnet} entrenado con una pérdida de
+clasificación auxiliar.
+En la calibración, con un directorio compartido y un conjunto de consultas de texto que
+nunca se registran en él, la fase madura alcanza a la temprana sin superarla de forma
+robusta ($+0.2$ y $+1.3$ puntos con 200 y 291 consultas de formación), así que el
+directorio reproduce la decisión de la fase temprana sin consultar a los ocho módulos.
+Con directorios perspectivales y 171 consultas reservadas, el 96.8\,\% llega al módulo
+correcto, sobre consultas que traen el nombre de su clase más a menudo que las de la
+calibración (87.7 frente a 49.8\,\%).
+Con imágenes, los directorios visuales envían al especialista correcto 631 de las 656
+imágenes de prueba (96.2\,\%), vistas nuevas de objetos conocidos; rechazan el 3.5\,\% y
+se equivocan en dos.
+Con objetos que ningún módulo vio y un codificador reentrenado sin ellos, el 87.6\,\% de
+las vistas llega al especialista y recibe respuesta, con 136 falsos enrutamientos en 3280.
+Lo que la memoria asociativa agrega no es acierto de clase.
+Sobre las mismas representaciones, decisores sin memoria aciertan lo mismo en texto.
+En las 80 consultas del protocolo completo, un voto por las palabras del vocabulario y los
+cinco vecinos más cercanos aciertan el 79.4 y el 81.5\,\%, frente al 81.2\,\% del
+sistema.
+En imagen, un centroide o un vecino más cercano aciertan de 652 a 655 de las 656, sin
+rechazar ninguna, y una sola memoria con las ocho clases acierta la clase en el
+96.9\,\% de las reservadas.
+Lo que agrega es rechazar sin un umbral ajustado y devolver el contenido asociado.
+Los decisores de coseno aceptan las 40 consultas fuera de dominio y el sistema 2.
+Frente a la memoria única, con 200 imágenes por clase, la partición en especialistas
+acepta menos consultas fuera de dominio (2 frente a 8 de 40, con una segunda compuerta
+que se agregó después de ver esas consultas); además, recuerda con más fidelidad
+(27.2 frente a 32.5 de distancia a la instancia real más cercana de su clase).
+Esos resultados dependen de dos condiciones que no salen del mecanismo asociativo: la
+lectura del directorio normalizada por conteo, sin la cual la fase madura queda 7.5
+puntos por debajo de la temprana, y un latente en que cada coordenada separe las clases,
+que da la pérdida de clase del codificador; sin ella, el enrutamiento visual baja al
+70.4\,\%, con 169 falsos enrutamientos.
+En cada módulo, la familiaridad y el nombre se leen de la misma memoria, y el daño al
+azar los separa.
+Con el 1\,\% de las celdas destruidas, el módulo deja de nombrar el 92\,\% de las
+imágenes y sigue reconociéndolas todas.
+La clase la deciden las representaciones; el mecanismo asociativo tiene además límites
+propios, como la normalización externa que necesita la lectura del directorio y la
+fragilidad del nombre ante el daño.
 \end{abstract}
 
 \tableofcontents

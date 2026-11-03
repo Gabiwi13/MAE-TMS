@@ -1,55 +1,42 @@
-% Generado por generar_capitulos.py a partir de ../.tex8
 \chapter*{Resumen}
 \markboth{chapter name}{Sinopsis}
 
-% <- resumen de main.tex
-Un grupo que trabaja junto puede recordar más que cada uno de sus miembros por separado: cada
-miembro sabe quién sabe qué y a quién preguntar.
-Wegner \cite{wegner1987transactive} llamó a esta organización \emph{memoria
-transactiva}.
-Este trabajo pregunta si puede construirse solo con memorias asociativas, sin
-clasificadores supervisados, y presenta EAM-TMS, un sistema distribuido de memoria
-transactiva construido con las Memorias Asociativas Entrópicas de Pineda y Morales en su
-variante ponderada (W-EAM) \cite{pineda2021entropic,pineda2022weighted} y su extensión
-heteroasociativa (EHAM) \cite{morales2025missing}.
-El sistema tiene ocho módulos especialistas, uno por cada categoría del conjunto de datos
-ETH-80 \cite{leibe2003eth80}
-(\texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup}, \texttt{dog}, \texttt{horse},
-\texttt{pear}, \texttt{tomato}).
-Cada módulo guarda su contenido en una sola memoria heteroasociativa entre palabras e
-imágenes y lleva dos directorios, uno textual y uno visual, con las transacciones en que
-participa.
-La arquitectura modela los tres mecanismos de Wegner \cite{wegner1995computer}: la
-actualización del directorio, la asignación de información y la coordinación de la
-recuperación.
-Un mediador central coordina la fase temprana y deja de ser necesario en la fase madura,
-cuando los directorios de los módulos bastan para enrutar.
-Las memorias operan en los dos sentidos, de palabras a imágenes y de imágenes a
-palabras.
-Las palabras entran como vectores fastText de 300 dimensiones
-\cite{bojanowski2017fasttext}, con vocabulario extraído de ConceptNet 5.7
-\cite{speer2017conceptnet} y \emph{cuantización por magnitud} en 16 niveles; las
-imágenes, como códigos de un ResNet18 \cite{he2016resnet}.
-En el estudio de calibración, con un directorio compartido y un banco de 411 consultas
-de texto ($N{=}400$ consultas de formación, 5 semillas), el 90.0\% de las consultas
-llega al módulo correcto en la fase temprana y el 93.0\% en la fase madura con la
-lectura del directorio normalizada por número de registros (B1); la cifra madura se
-mide sobre las mismas consultas que formaron el directorio.
-La lectura B1 reduce la participación del módulo \texttt{apple} del 20.5\% de la
-lectura cruda al 13.8\% (ideal 12.5\%).
-Con imágenes, los directorios visuales envían al especialista correcto el 96.2\% de las
-656 imágenes de prueba (631), rechazan el 3.5\% y se equivocan en dos.
-Con objetos que ningún módulo vio, el 89.2\% de las vistas llega al especialista y
-recibe respuesta, frente al 95.5\% con vistas nuevas de objetos conocidos, con dos
-enrutamientos falsos en 3280.
-Frente a una sola memoria con las ocho clases, la partición en especialistas recuerda con
-más fidelidad y, si además el módulo destino debe contener la consulta, acepta menos
-consultas fuera de dominio cuando el contenido crece (2 frente a 8 de 40 con 200
-imágenes por clase).
-Los límites observados provienen de las representaciones (el léxico compartido entre
-clases vecinas y la cobertura del espacio latente ante objetos nuevos), no del mecanismo
-asociativo.
+Un grupo que trabaja junto puede recordar más que cada uno de sus miembros porque cada
+miembro sabe quién sabe qué y a quién preguntar; Wegner~\cite{wegner1987transactive}
+llamó a esta organización \emph{memoria transactiva}.
+Este trabajo construye EAM-TMS, un sistema distribuido de memoria transactiva sobre las
+memorias asociativas entrópicas de Pineda y Morales, en su variante ponderada y su
+extensión heteroasociativa \cite{pineda2022weighted,morales2025missing}, y mide qué
+agrega la memoria frente a decisores simples que usan las mismas representaciones.
+El sistema tiene ocho módulos, uno por cada clase de ETH-80~\cite{leibe2003eth80}.
+Cada módulo guarda palabras e imágenes de su clase en una sola memoria heteroasociativa
+y lleva un directorio textual y uno visual, que se forman con el uso.
+La especialización es asignada por la etiqueta de clase, y ninguna decisión de
+enrutamiento o rechazo pasa por un clasificador discriminativo.
+Al enrutar texto, el sistema iguala a los decisores simples: sobre 80 consultas acierta
+el 81.25\,\%, contra 79.4\,\% del voto por tokens del vocabulario y 81.5\,\% de los
+cinco vecinos más cercanos, y sobre 171 consultas reservadas, el 96.8\,\%, contra 96.9\,\% de
+una sola memoria con las ocho clases.
+Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, contra las 40 que
+aceptan los decisores de coseno y 8 de la memoria única; su compuerta textual coincide
+con la pertenencia al vocabulario.
+Recupera en ambas direcciones: responde con una imagen al 98.7\,\% de las consultas
+reservadas, con una fidelidad de 27.2 (distancia a la instancia real más cercana de su
+clase; 32.5 en la memoria única), y 113 de 116 imágenes
+enrutadas evocan palabras de su dominio.
+Con imágenes, enruta al especialista el 96.2\,\% de 656 vistas nuevas, con dos errores,
+mientras que el centroide y los vecinos más cercanos sobre los mismos códigos aciertan
+del 99.4 al 99.8\,\% sin rechazar ninguna.
+Ese enrutamiento depende de la supervisión del codificador: sin la pérdida de clase, cae
+al 70.4\,\% con 169 errores.
+Con objetos que ningún módulo vio, la cobertura de punta a punta es del 89.2\,\%, con 2
+falsos enrutamientos de 3280 vistas; con un codificador reentrenado sin esos objetos, es
+del 87.6\,\%, con 136.
+La memoria asociativa no acierta más que un decisor simple; aporta el rechazo, la
+recuperación en ambas direcciones y un directorio que registra quién sabe qué.
 
 \hfill
 
-\textbf{Palabras clave}: [PENDIENTE]
+\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria
+heteroasociativa, sistemas distribuidos, enrutamiento de consultas, recuperación
+multimodal.

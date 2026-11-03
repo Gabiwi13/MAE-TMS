@@ -1,52 +1,53 @@
 \section{Metodología}
 \label{sec:metodologia}
 
-Este capítulo describe el conjunto de datos y su partición, la representación de texto
+Esta sección describe el conjunto de datos y su partición, la representación de texto
 y de imagen, el banco de consultas, los parámetros de las memorias, la auditoría de
-fidelidad, las métricas y la organización de los experimentos.
+trazabilidad, las métricas y la organización de los experimentos.
 En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
 directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
 va de una imagen a los directorios visuales y a las memorias de contenido.
+El término nombra un camino de procesamiento y no supone ninguna lateralización.
 
 % ---------------------------------------------------------------
 \subsection{Conjunto de datos}
 \label{sec:dataset}
 
-Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, con sus
+Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, en su versión
+\texttt{eth80-\allowbreak cropped-\allowbreak close128}, con sus
 \textbf{ocho clases}: \texttt{apple}, \texttt{car}, \texttt{cow}, \texttt{cup},
 \texttt{dog}, \texttt{horse}, \texttt{pear} y \texttt{tomato}.
-Cada clase tiene diez objetos físicos fotografiados desde 41 puntos de vista: 410
-imágenes de $128\times128$ píxeles.
+Cada clase tiene diez objetos físicos fotografiados desde 41 puntos de vista, en total
+410 imágenes de $128\times128$ píxeles.
 Las imágenes de cada clase se dividieron por archivo en 328 de entrenamiento y 82 de
-prueba: ninguna imagen está en los dos lados, pero los diez objetos de cada clase
-aportan vistas a ambos (solape de instancias del 100\%).
+prueba. Ninguna imagen está en los dos lados, pero los diez objetos de cada clase
+aportan vistas a ambos (solape de instancias del 100\,\%).
 Toda imagen de prueba es, por tanto, una vista nueva de un objeto cuyas demás vistas
 participaron del llenado o de la formación del directorio, y las cifras del hemisferio
 visual sobre esta partición miden generalización a \emph{vistas nuevas de objetos
 conocidos}.
 La generalización a objetos nuevos se midió aparte con una validación
-\textit{leave-one-object-out} de diez pliegues (Sección~\ref{sec:objetos-nuevos}): en
+\textit{leave-one-object-out} de diez pliegues (Sección~\ref{sec:objetos-nuevos}); en
 cada pliegue se reserva un objeto por clase y el sistema se construye con los otros
 nueve.
 
 Las 410 imágenes de cada clase se reparten en tres conjuntos disjuntos:
 \begin{itemize}
-    \item \textbf{Llenado} (\textit{filling}): imágenes \texttt{train[0:200]} de cada
-    clase, con las que se llena la memoria de contenido del módulo especialista.
-    Cada imagen se registra en 16 variantes (3200 patrones por clase): la original y 15
-    transformaciones, que son el espejo; rotaciones de $\pm 12^{\circ}$ de la imagen y
-    de su espejo, y de $\pm 6^{\circ}$ de la imagen; escalas de 0.9 y 1.1; brillo de
-    0.85 y 1.15, y desplazamientos de 6 píxeles en las cuatro direcciones.
+    \item \textbf{Llenado}: las 200 primeras imágenes de entrenamiento de cada clase, con
+    las que se llena la memoria de contenido del módulo especialista.
+    Cada imagen se registra en 16 variantes (3200 patrones por clase), la original y 15
+    transformaciones de ella: el espejo; las rotaciones de $\pm 12^{\circ}$ de la imagen y
+    de su espejo, y de $\pm 6^{\circ}$ de la imagen; las escalas de 0.9 y 1.1; los brillos
+    de 0.85 y 1.15, y los desplazamientos de 6 píxeles en las cuatro direcciones.
     Las variantes densifican la distribución latente acumulada sin cambiar el mecanismo
     de la memoria.
-    \item \textbf{Interacciones visuales} (\emph{fase A}): imágenes
-    \texttt{train[200:328]} de cada clase (1024 en total, 128 por clase), con las que se
-    forma el directorio visual.
+    \item \textbf{Formación del directorio visual} (en adelante, \emph{formación visual}):
+    las 128 imágenes de entrenamiento restantes de cada clase (1024 en total), con las que
+    se forma el directorio visual.
     El ganador de cada percepción lo decide la puntuación de las ocho memorias de
     contenido sobre la imagen original, y sus 16 variantes se registran con ese ganador.
-    \item \textbf{Evaluación} (\emph{fase B}): las 82 imágenes de prueba (\texttt{test})
-    de cada clase (656 en total), nunca vistas durante el llenado ni la formación del
-    directorio.
+    \item \textbf{Evaluación visual}: las 82 imágenes de prueba de cada clase (656 en
+    total), nunca vistas durante el llenado ni la formación del directorio.
 \end{itemize}
 
 % ---------------------------------------------------------------
@@ -70,14 +71,15 @@ aparecer en cualquiera de los dos extremos de la aserción, lo que multiplica lo
 candidatos de las clases con vocabulario pobre (\texttt{pear} reúne 68 candidatos
 crudos y \texttt{tomato} 86).
 El peso de cada etiqueta es su \textbf{masa asociativa} (la suma de los pesos de todas sus
-aserciones, no el máximo), y los empates se ordenan por similitud coseno al centroide de
-las etiquetas fuertes de la clase.
+aserciones), y los empates se ordenan por similitud coseno al centroide de las etiquetas
+de la clase con masa asociativa de al menos 2.
 Los candidatos sin vector fastText real se excluyen \emph{antes} del corte, de modo que
-las ocho clases quedan con 21 etiquetas efectivas cada una y ninguna sintética.
+las ocho clases quedan con 21 etiquetas cada una, todas con vector real.
 
 \paragraph{Vectorización con fastText y cuantización por magnitud.}
 Cada etiqueta del vocabulario se representó con su vector crudo de 300 dimensiones del
-modelo fastText preentrenado~\cite{bojanowski2017fasttext}.
+modelo fastText preentrenado en inglés con subpalabras
+(\texttt{fasttext-wiki-news-subwords-300})~\cite{bojanowski2017fasttext}.
 La cuantización es \emph{por magnitud} y no por signo: la binarización por signo
 colapsaría cada componente a 2 de los 16 niveles disponibles.
 Cada vector se escala como $v/S$ con una \textbf{escala global guardada}
@@ -87,20 +89,22 @@ La misma escala se aplica en el llenado y en la consulta.
 Con esto quedan poblados los 16 niveles (Figura~\ref{fig:espacio-semantico}).
 
 \paragraph{Procesamiento de consultas con spaCy.}
-Las consultas en lenguaje natural se procesan con spaCy~\cite{honnibal2020spacy}: se
+Las consultas en lenguaje natural se procesan con spaCy~3.8.14 y su modelo
+\texttt{en\_core\_web\_sm}~3.8.0~\cite{honnibal2020spacy}: se
 lematizan, se conservan los tokens de categoría gramatical \texttt{NOUN}, \texttt{ADJ}
 o \texttt{PROPN}, se eliminan las palabras vacías y cada token se conserva una sola vez,
 en su orden.
-Un \emph{rescate de atención léxica} recupera un token que el etiquetador gramatical
+Un \emph{rescate léxico} recupera un token que el etiquetador gramatical
 descartó si, aislado, se etiqueta como \texttt{NOUN}, \texttt{ADJ} o \texttt{PROPN}, o
 si es una etiqueta registrada en las memorias; este segundo criterio solo \emph{admite}
 pistas, nunca descarta ninguna.
 El rescate corrige errores del etiquetador en frases nominales cortas (p.\ ej.\
-\texttt{pear} etiquetado como verbo en ``a bosc pear\ldots''), que de otro modo
+\texttt{pear} etiquetado como verbo en «a bosc pear\ldots»), que de otro modo
 quitarían la pista más distintiva de la consulta.
-Sobre el banco completo la regla afecta a 46 consultas: con el rescate aciertan 43
-(93.5\%) y sin él 33 (71.7\%), diez aciertos más (21.7 puntos), y sin él cuatro se
+Sobre el banco completo, la regla cambia el resultado de 46 consultas.
+Con el rescate aciertan 43 (93.5\,\%); sin él aciertan 33 (71.7\,\%) y cuatro se
 rechazan.
+La diferencia es de diez aciertos (21.7 puntos).
 Los diez cambios de ganador van todos hacia la clase correcta, y los tokens rescatados
 con más frecuencia son \texttt{bark}, \texttt{riding}, \texttt{drink}, \texttt{canine}
 y \texttt{drive}.
@@ -114,11 +118,11 @@ El vocabulario de ConceptNet sirve para \emph{llenar} las memorias, no para deci
 consultas son conocidas.
 Cada token de la consulta se convierte en una pista vectorial tomando su vector del
 modelo fastText completo, exista o no como etiqueta de ConceptNet.
-No se aplica ningún filtro de pertenencia léxica: una vez obtenida la pista, es la
+No se aplica ningún filtro de pertenencia léxica. Una vez obtenida la pista, es la
 propia memoria la que, mediante el reconocimiento y la contención, decide si
 hay soporte o se rechaza (puntuación cero).
-Solo queda fuera lo que no es representable: un token sin vector fastText real no genera
-pista, lo cual es una frontera del codificador lingüístico y no un rechazo de la memoria.
+Solo queda fuera lo que no es representable. Un token sin vector fastText real no genera
+pista y, por tanto, no llega a la memoria.
 
 % ---------------------------------------------------------------
 \subsection{Percepción visual: codificador ResNet18}
@@ -135,32 +139,34 @@ recuperación del sistema de memorias.
 El entrenamiento es \emph{determinista} (semilla 42 en \texttt{torch}, \texttt{numpy} y
 \texttt{random}, con cuDNN determinista), de modo que una réplica desde cero es
 reproducible; el codificador alcanza una raíz del error cuadrático medio (RMSE) de 0.110 y
-una precisión de la cabeza auxiliar del 99.7\%.
-No hay partición de validación separada: el punto de control se elige por RMSE mínimo
-sobre el propio conjunto de prueba (una evaluación cada 10 épocas: cinco candidatos),
-así que el espacio latente con el que se evalúa el hemisferio visual se eligió mirando
-ese conjunto (limitación (g), Sección~\ref{sec:limitaciones}).
-Los vectores latentes se cuantizaron a $m = 32$ niveles mediante normalización global
-min-max con un margen del 10\%, calculada solo sobre el conjunto de llenado
-(\texttt{train[0:200]} por clase) con el original, el espejo y las rotaciones de
-$\pm 12^{\circ}$ de cada imagen (6400 latentes), y se guarda con el modelo; lo que cae
-fuera del rango se recorta al nivel extremo.
+una precisión de la cabeza auxiliar del 99.7\,\%.
+No hay partición de validación separada, y el punto de control se elige por RMSE mínimo
+sobre el propio conjunto de prueba (una evaluación cada 10 épocas, es decir, cinco
+candidatos), así que el espacio latente con el que se evalúa el hemisferio visual se
+eligió con información de ese conjunto (limitación (g), Sección~\ref{sec:limitaciones}).
+Los vectores latentes se cuantizaron a $m = 32$ niveles con una normalización global
+min-max con un margen del 10\,\%.
+El rango se calculó solo sobre las 200 imágenes de llenado de cada clase, con la
+original, el espejo y las rotaciones de $\pm 12^{\circ}$ de cada una (6400 latentes), y
+se guardó con el modelo.
+Lo que cae fuera del rango se recorta al nivel extremo.
 Esta cuantización global evita que la escala relativa entre clases afecte la codificación.
 
 Antes de llegar a la memoria, toda percepción pasa un \textbf{umbral de energía}: si
 la norma de su latente continuo es menor que $\tau = 16.61$, se rechaza sin consultar
 la memoria.
-$\tau$ es el mínimo de esa norma sobre las 1600 imágenes originales del llenado
-(18.45) con un margen del 10\%. Hace falta porque el codificador lleva las entradas sin
+El umbral $\tau$ es el mínimo de esa norma sobre las 1600 imágenes originales del llenado
+(18.45) con un margen del 10\,\%. Hace falta porque el codificador lleva las entradas sin
 estructura (gris uniforme, desenfoque, contraste nulo) cerca del origen, donde la
 memoria les da soporte (experimento~14\footnote{Los
 experimentos se citan con el número de su carpeta en \texttt{results/}, donde están el
 protocolo y las tablas completas: 10 (tolerancia $\xi$ con directorios
 perspectivales), 11 (comparación con una sola EHAM), 13 (variantes por percepción), 14
-(umbral de energía), 15 (árbitro por contenido) y 16 (objetos nuevos).},
+(umbral de energía), 15 (árbitro por contenido), 16 (objetos nuevos) y 19 (codificador
+de ImageNet sin reentrenar).},
 Sección~\ref{sec:hemisferio-visual}).
 Es un criterio previo a la EAM y tiene costo: no rechaza ninguna imagen del llenado,
-pero sí 1 de las 1024 de la fase A y 4 de las 656 de prueba, cuatro vistas de vaca
+pero sí 1 de las 1024 de la formación visual y 4 de las 656 de prueba, cuatro vistas de vaca
 que el directorio enrutaba bien y que su especialista aceptaba.
 
 % ---------------------------------------------------------------
@@ -170,23 +176,35 @@ que el directorio enrutaba bien y que su especialista aceptaba.
 Se construyó un banco de \textbf{411 consultas} en lenguaje natural con su clase
 correcta conocida, aproximadamente 50 por dominio,
 presentadas de forma intercalada.
-Las consultas varían en longitud y vocabulario (p.\ ej.\ ``a crunchy red apple'',
-``a barking domestic pet'', ``a mug for liquid'') y cubren tanto descripciones
+El banco está alineado con el vocabulario de llenado.
+De las 411 consultas, 402 contienen una palabra del vocabulario de su clase, 367 una
+palabra que solo está en ese vocabulario y 208 el nombre de la clase.\footnote{Reanálisis
+del banco, \texttt{results/reanalisis\_jurado/salida.md}, tabla M3.1. Una palabra cuenta
+si aparece como palabra de la consulta, también en plural; el sistema tokeniza con
+spaCy, así que la cuenta es una aproximación.}
+Las consultas varían en longitud y vocabulario (p.\ ej.\ «a crunchy red apple»,
+«a barking domestic pet», «a mug for liquid») y cubren tanto descripciones
 directas como perifrásticas; las clases con léxico compartido (\texttt{pear},
 \texttt{tomato}) incluyen consultas con contenido \emph{distintivo}
-(``a bosc pear with brown skin'', ``a tomato on the vine''), como en la comunicación
-de un grupo de Wegner: quien pregunta aporta las señas del dominio.
+(«a bosc pear with brown skin», «a tomato on the vine»), en las que quien pregunta
+aporta las señas del dominio.
 Los experimentos de protocolo completo (Secciones~\ref{sec:proto-completo}
 a~\ref{sec:formacion}) usan las primeras 80 consultas (10 por clase), y el estudio de
 calibración (Sección~\ref{sec:calibracion}), hasta 400.
-Otros tres bancos se usan una sola vez: las 16 consultas de la reproducción por etapas
-(\texttt{TEST\_QUERIES}, 2 por dominio) y 12 consultas representables que describen
-objetos fuera de los ocho dominios, ambas en la Sección~\ref{sec:proto-completo}; y, en
-la comparación con una sola EHAM (Sección~\ref{sec:eham-unica}), una partición del
-banco (las primeras 30 consultas de cada clase forman los directorios y las 171
-restantes quedan reservadas para evaluar) más 40 consultas fuera de dominio: las 12
-anteriores y 28 de objetos y escenas de categorías ausentes de ETH-80, sin palabras
-del vocabulario de etiquetas.
+Otros tres bancos se usan una sola vez.
+La Sección~\ref{sec:proto-completo} usa las 16 consultas de referencia del sistema (dos
+por dominio) y 12 consultas representables que describen objetos fuera de los ocho
+dominios.
+La comparación con una sola EHAM (Sección~\ref{sec:eham-unica}) usa una partición del
+banco, en la que las primeras 30 consultas de cada clase forman los directorios y las 171
+restantes quedan reservadas para evaluar, más 40 consultas fuera de dominio: las 12
+anteriores y 28 de objetos y escenas de categorías ausentes de ETH-80, sin palabras del
+vocabulario de etiquetas.
+Las reservadas son la cola de la lista de cada clase, no una muestra al azar, y no
+representan al banco.
+El 87.7\,\% de ellas trae el nombre de su clase, frente al 24.2\,\% de las 240 de
+formación, el 13.8\,\% de las 80 primeras y el 49.8\,\% de las 400 de la
+calibración.\footnote{Reanálisis del banco, tabla M3.1.}
 
 % ---------------------------------------------------------------
 \subsection{Parámetros de la EAM}
@@ -208,15 +226,16 @@ calculados sobre la propia memoria: en la de contenido, sobre la lectura del dom
 la pista (ecuación~\eqref{eq:marginal}); en los directorios, sobre su relación (cuántas
 veces se registró cada valor en cada característica, lo mismo que daría una memoria
 homoasociativa llenada con las mismas pistas).
-Los pesos solo cambian magnitudes: la contención, y con ella la aceptación y el rechazo,
+Los pesos solo cambian magnitudes; la contención, y con ella la aceptación y el rechazo,
 no depende de ellos.
 
 % ---------------------------------------------------------------
-\subsection{Auditoría de fidelidad}
+\subsection{Auditoría de trazabilidad}
 \label{sec:auditoria}
 
-La auditoría de fidelidad comprueba que las decisiones del sistema salen de operaciones
-de las memorias y que ningún número se apoya en datos fabricados:
+La auditoría de trazabilidad comprueba que las operaciones de memoria son las de la
+implementación de referencia, que el vocabulario no contiene vectores sintéticos y que
+la clase correcta no entra al circuito de decisión:
 \begin{itemize}
     \item El vocabulario no contiene vectores sintéticos: una etiqueta sin vector fastText
     real queda fuera del llenado, y la escala global $S = 0.1881$ se calcula solo sobre
@@ -227,34 +246,41 @@ de las memorias y que ningún número se apoya en datos fabricados:
     \item La clase correcta de cada consulta se usa solo para calcular métricas, nunca
     dentro del circuito de decisión.
 \end{itemize}
-Todos los números reportados salen de corridas de este sistema.
+Fuera de las memorias quedan cuatro operaciones, declaradas en la arquitectura: la suma
+de las puntuaciones sobre los tokens, la lectura normalizada, el umbral de energía $\tau$
+y el rescate léxico.
+Todos los números reportados salen de corridas de este sistema, con sus tablas en
+\texttt{results/}.
 
 % ---------------------------------------------------------------
 \subsection{Métricas de evaluación}
 \label{sec:metricas}
 
-Se emplearon las siguientes métricas:
+Se emplearon las siguientes métricas. En este trabajo, \emph{precisión} es siempre la
+fracción de aciertos sobre las consultas o imágenes evaluadas o, cuando se indica, sobre
+las aceptadas.
 
 \begin{itemize}
-    \item \textbf{Precisión temprana} (\textit{early accuracy}): fracción de consultas para las que el módulo ganador en la fase de activación temprana coincide con la clase real.
-    \item \textbf{Precisión madura} (\textit{mature accuracy}): ídem tras la fase de recuperación madura, con la lectura B1 o la cruda del directorio.
+    \item \textbf{Precisión temprana}: fracción de consultas en las que el módulo ganador de la fase temprana coincide con la clase real.
+    \item \textbf{Precisión madura}: la misma fracción en la fase madura, con la lectura normalizada o con la cruda del directorio.
     \item \textbf{Tasa de rechazo}: fracción de consultas que el sistema no asigna a
-    ningún módulo. Con $\kappa = 0$ no hay umbral sobre la puntuación: se rechaza lo que
+    ningún módulo. Con $\kappa = 0$ no hay umbral sobre la puntuación; se rechaza lo que
     no tiene soporte (en la fase temprana, $s_k = 0$ en los ocho módulos,
     ecuación~\eqref{eq:score-gated}; en la fase madura, ningún directorio alcanzable lo
     tiene o el destino no contiene la pista) y lo que no llega a ser pista (ningún token
     con vector fastText, o una imagen cuyo latente no alcanza $\tau$).
-    \item \textbf{Fidelidad temprana-madura}: concordancia entre la clase ganadora en fase temprana y la clase ganadora en fase madura.
+    \item \textbf{Concordancia temprana-madura} (ecuación~\eqref{eq:concordancia}): fracción de consultas cuyo ganador en la fase madura es el mismo que en la fase temprana.
     \item \textbf{Entropía del directorio}: entropía de Shannon de la distribución de \textit{conteos} de los módulos especialistas, con máximo $\log_2(8) = 3$ bits.
     \item \textbf{Conteos por módulo}: número de registros acumulados en el directorio transactivo por cada módulo especialista.
-    \item \textbf{Participación del ganador} (\textit{winner share}): fracción de victorias maduras obtenidas por cada módulo; el ideal balanceado es $1/8 = 12.5\%$.
-    \item \textbf{Enrutamiento de prueba} (hemisferio visual): fracción de las imágenes de
+    \item \textbf{Participación del ganador}: fracción de victorias maduras obtenidas por cada módulo; el ideal balanceado es $1/8 = 12.5$\,\%.
+    \item \textbf{Enrutamiento visual} (hemisferio visual): fracción de las imágenes de
     prueba que el directorio visual asigna al módulo de su clase. Se acompaña de la
     precisión sobre las imágenes aceptadas (sin contar los rechazos) y del número de
     \emph{falsos enrutamientos}, imágenes asignadas a otra clase.
     \item \textbf{Cobertura de punta a punta} (hemisferio visual): fracción de las
-    imágenes de prueba enrutadas a su clase cuyo módulo destino además responde: la
-    recuperación $\beta$ desde el latente lo reconoce.
+    imágenes de prueba que se enrutan a su clase y a las que, además, responde el módulo
+    destino. El módulo responde cuando su recuperación $\beta$ desde el latente no deja
+    columnas vacías en la proyección.
     \item \textbf{Evocación de dominio} (\textit{top-3 coseno}): sobre las primeras 15 imágenes de prueba de cada clase que el enrutamiento acepta, fracción de imágenes para las que al menos una de las tres etiquetas más cercanas en el espacio fastText pertenece al vocabulario de la clase real (recuperación inversa imagen $\to$ palabras). Una palabra compartida por dos vocabularios cuenta como acierto para las dos clases.
 \end{itemize}
 
@@ -263,17 +289,22 @@ Se emplearon las siguientes métricas:
 \label{sec:organizacion}
 
 La Sección~\ref{sec:resultados} presenta los estudios en este orden.
-El estudio principal es la calibración del directorio (9 condiciones de lectura
-$\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$ 5 semillas).
-Le siguen cuatro estudios de caracterización (protocolo completo, parámetros nativos
-$\iota \times \kappa$, formación del directorio y capacidad de llenado,
-Secciones~\ref{sec:proto-completo} a~\ref{sec:capacidad}), el hemisferio visual
-(Sección~\ref{sec:hemisferio-visual}), la generalización a objetos nuevos
-(Sección~\ref{sec:objetos-nuevos}), la comparación con una sola EHAM
-(Sección~\ref{sec:eham-unica}), la verificación de una sola memoria de contenido por
-módulo (Sección~\ref{sec:una-memoria}) y el costo computacional de la reproducción
-completa (Sección~\ref{sec:costo}).
-En la calibración, el protocolo completo, el barrido $\iota \times \kappa$ y la
+El estudio principal es la calibración del directorio (9 condiciones de calibración
+$\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$ 5 semillas, que solo cambian
+el resultado en D y G).
+Le siguen la misma calibración con un conjunto de evaluación fijo, que no forma el
+directorio (Sección~\ref{sec:calibracion-fija}), y cuatro estudios de caracterización
+(protocolo completo, parámetros propios $\iota \times \kappa$, formación del directorio y
+capacidad de llenado, Secciones~\ref{sec:proto-completo} a~\ref{sec:capacidad}).
+Después vienen el hemisferio visual (Sección~\ref{sec:hemisferio-visual}), la
+generalización a objetos nuevos (Sección~\ref{sec:objetos-nuevos}), el hemisferio visual
+con un codificador entrenado sin la pérdida de clase
+(Sección~\ref{sec:codificador-sin-clase}), la comparación con una sola EHAM
+(Sección~\ref{sec:eham-unica}), la comparación con decisores sin memoria asociativa sobre
+los mismos vectores (Sección~\ref{sec:lineas-base}), la verificación de una sola memoria
+de contenido por módulo (Sección~\ref{sec:una-memoria}) y el costo computacional de la
+reproducción completa (Sección~\ref{sec:costo}).
+En las dos calibraciones, el protocolo completo, el barrido $\iota \times \kappa$ y la
 formación del directorio, cada transacción de texto se registra en un solo
 \emph{directorio compartido}, igual al registro completo del TME.
 Los directorios perspectivales de la Sección~\ref{sec:componentes}, en los que solo

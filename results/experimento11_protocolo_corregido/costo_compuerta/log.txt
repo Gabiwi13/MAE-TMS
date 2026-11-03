@@ -1,0 +1,9 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793719287.030818    5272 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793719288.937726    5272 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+N=25: {'consultas': 1710, 'directorio_acepta': 1710, 'compuerta_acepta': 1682, 'compuerta_rechaza': 28, 'sin_respuesta_de_todos_modos': 28}
+N=50: {'consultas': 1710, 'directorio_acepta': 1710, 'compuerta_acepta': 1688, 'compuerta_rechaza': 22, 'sin_respuesta_de_todos_modos': 22}
+N=100: {'consultas': 1710, 'directorio_acepta': 1710, 'compuerta_acepta': 1688, 'compuerta_rechaza': 22, 'sin_respuesta_de_todos_modos': 22}
+N=200: {'consultas': 1710, 'directorio_acepta': 1710, 'compuerta_acepta': 1687, 'compuerta_rechaza': 23, 'sin_respuesta_de_todos_modos': 23}
+-> C:\Users\aq99l\Projects\MAE-TMS-exp11fix\results\experimento11_protocolo_corregido\costo_compuerta\compuerta_reservadas.md

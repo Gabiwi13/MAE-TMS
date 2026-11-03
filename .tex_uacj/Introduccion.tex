@@ -1,31 +1,43 @@
-% Generado por generar_capitulos.py a partir de ../.tex8
 \chapter*{Introducción}\label{introduccion}\label{sec:introduccion}
 \thispagestyle{empty}
-[PENDIENTE: recortar a una cuartilla]
+\markboth{Introducción}{Introducción}
 
-% <- 01, párrafos antes de la pregunta de investigación
-Cuando un grupo de personas trabaja de manera coordinada durante el tiempo suficiente,
-puede recordar más de lo que cualquiera de sus miembros recordaría por separado.
-Wegner \cite{wegner1987transactive} llamó a este fenómeno
-\textbf{memoria transactiva}: una forma de memoria compartida en la que cada individuo
-almacena no solo sus propios conocimientos, sino también un \emph{directorio} que indica quién es reconocido
-dentro del grupo como referente en cada dominio.
-Cuando un miembro necesita información que no conoce, consulta ese directorio,
-determina a quién preguntar y delega la recuperación.
-El grupo funciona gracias a esa especialización: el conocimiento no necesita repetirse
-en cada miembro, sino que se reparte entre ellos.
+Un grupo que trabaja junto el tiempo suficiente recuerda más que cualquiera de sus
+miembros por separado, porque cada uno sabe quién sabe qué y a quién preguntar.
+Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta
+organización, y más tarde la describió como un modelo de red de
+computadoras~\cite{wegner1995computer}.
+Desde los sistemas computacionales, la idea es la de una red de nodos especializados
+que aprenden, con el uso, a enviarse las consultas sin un coordinador central.
 
-El modelo de Wegner identifica tres procesos principales \cite{wegner1995computer}.
-Primero, la \emph{actualización del directorio}: tras cada interacción, los
-miembros que la presenciaron registran quién supo responder.
-Segundo, la \emph{asignación de información}: la información nueva se envía
-hacia el miembro reconocido como referencia en ese dominio.
-Tercero, la \emph{coordinación de recuperación}: las consultas futuras viajan directamente
-a ese referente sin pasar por un intermediario.
-En este trabajo, la transición de una \emph{fase temprana} mediada a una \emph{fase
-madura} punto a punto es la señal de que el sistema transactivo ya quedó formado.
+Las memorias asociativas entrópicas de Pineda y Morales
+\cite{pineda2021entropic,pineda2022weighted,morales2025missing} guardan lo que registran
+como conteos de frecuencia, reconocen una entrada cuando sus rasgos tienen soporte en
+esos conteos, recuperan muestreándolos y rechazan lo que no contienen.
+Este trabajo pregunta si con ellas se puede construir un sistema de memoria
+transactiva, y qué agrega la memoria cuando se la compara con decisores simples que usan
+las mismas representaciones.
 
-Las memorias asociativas entrópicas de Pineda y Morales (Sección~\ref{sec:eam}) guardan
-lo que registran como conteos de frecuencia: aceptan una entrada cuando sus rasgos
-tienen soporte en lo registrado, recuerdan muestreando esos conteos y rechazan lo que no
-contienen, sin ningún clasificador entrenado.
+El objetivo es construir un sistema de ocho módulos especialistas que enrute consultas
+de texto e imagen, recupere el contenido asociado en ambas direcciones y rechace lo que
+no conoce, sin clasificadores discriminativos en esas decisiones, y medir su desempeño.
+
+El sistema, EAM-TMS, tiene un módulo por cada clase del conjunto ETH-80
+\cite{leibe2003eth80}.
+Cada módulo guarda palabras e imágenes de su clase en una sola memoria
+heteroasociativa y lleva dos directorios, uno textual y uno visual.
+Las palabras entran como vectores fastText~\cite{bojanowski2017fasttext} y las imágenes
+como códigos de un autocodificador ResNet18~\cite{he2016resnet}.
+Un mediador reparte las consultas mientras los directorios se forman; después, los
+módulos se las envían entre sí.
+El sistema se evalúa con un banco de 411 consultas de texto, 40 consultas fuera de
+dominio, 656 imágenes de prueba y objetos que ningún módulo vio.
+Se compara con decisores simples sobre los mismos vectores, con una sola memoria para
+las ocho clases y con un codificador entrenado sin la pérdida de clase.
+
+El Capítulo~\ref{cap:pp} plantea el problema, los objetivos y los alcances.
+El Capítulo~\ref{sec:marco_teorico} presenta las memorias asociativas entrópicas, su
+extensión heteroasociativa y el modelo de Wegner.
+El Capítulo~\ref{cap:desarrollo} describe la arquitectura y la metodología experimental, el Capítulo~\ref{cap:resultados}
+reporta y discute los resultados, y el Capítulo~\ref{conclusiones} responde a la
+pregunta de investigación y al objetivo general, y propone el trabajo futuro.

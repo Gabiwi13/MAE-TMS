@@ -1,143 +1,223 @@
-% Generado por generar_capitulos.py a partir de ../.tex8
 \chapter{Planteamiento del Problema}\label{cap:pp}
+
 \section{Antecedentes}
-% <- 01 sin la pregunta (los primeros párrafos se repiten en la Introducción)
-Cuando un grupo de personas trabaja de manera coordinada durante el tiempo suficiente,
-puede recordar más de lo que cualquiera de sus miembros recordaría por separado.
-Wegner \cite{wegner1987transactive} llamó a este fenómeno
-\textbf{memoria transactiva}: una forma de memoria compartida en la que cada individuo
-almacena no solo sus propios conocimientos, sino también un \emph{directorio} que indica quién es reconocido
-dentro del grupo como referente en cada dominio.
-Cuando un miembro necesita información que no conoce, consulta ese directorio,
-determina a quién preguntar y delega la recuperación.
-El grupo funciona gracias a esa especialización: el conocimiento no necesita repetirse
-en cada miembro, sino que se reparte entre ellos.
 
-El modelo de Wegner identifica tres procesos principales \cite{wegner1995computer}.
-Primero, la \emph{actualización del directorio}: tras cada interacción, los
-miembros que la presenciaron registran quién supo responder.
-Segundo, la \emph{asignación de información}: la información nueva se envía
-hacia el miembro reconocido como referencia en ese dominio.
-Tercero, la \emph{coordinación de recuperación}: las consultas futuras viajan directamente
-a ese referente sin pasar por un intermediario.
-En este trabajo, la transición de una \emph{fase temprana} mediada a una \emph{fase
-madura} punto a punto es la señal de que el sistema transactivo ya quedó formado.
+\paragraph{Memoria transactiva.}
+Wegner~\cite{wegner1987transactive} describió la memoria transactiva como la memoria de
+un grupo: cada miembro guarda lo que sabe y, además, un directorio de lo que saben los
+demás.
+El directorio no repite el contenido.
+Solo indica a quién preguntar.
+En un trabajo posterior, Wegner formuló el mismo fenómeno como un modelo de red de
+computadoras~\cite{wegner1995computer} y nombró tres procesos: la actualización del
+directorio, en la que los miembros anotan quién resolvió cada interacción; la asignación
+de información, que lleva lo nuevo al miembro que corresponde; y la coordinación de la
+recuperación, que envía cada consulta directamente al especialista.
+La analogía entre un grupo de personas y una red de nodos especializados es, por lo
+tanto, del propio Wegner.
+Lo que su modelo deja abierto es con qué memoria se construye cada nodo y cómo se
+forma su directorio.
 
-Las memorias asociativas entrópicas de Pineda y Morales (Sección~\ref{sec:eam}) guardan
-lo que registran como conteos de frecuencia: aceptan una entrada cuando sus rasgos
-tienen soporte en lo registrado, recuerdan muestreando esos conteos y rechazan lo que no
-contienen, sin ningún clasificador entrenado.
+\paragraph{Memorias asociativas entrópicas.}
+Pineda, Fuentes y Morales propusieron una memoria asociativa que guarda lo registrado
+como una tabla de frecuencias entre rasgos y valores~\cite{pineda2021entropic}.
+Con esa tabla, la memoria hace tres operaciones: registrar una entrada, reconocerla
+cuando cada uno de sus rasgos tiene soporte en lo registrado, y recuperar un patrón
+muestreando los conteos.
+Lo que no tiene soporte se rechaza, y la entropía de la tabla mide qué tan determinada
+está la memoria.
+La variante ponderada (W-EAM) apareció en el aprendizaje fonético~\cite{pineda2022weighted}
+y se ha usado con símbolos manuscritos~\cite{morales2022manuscript}, en la imaginería
+\cite{pineda2023imagery} y con las imágenes naturales de CIFAR-10~\cite{hernandez2026cifar};
+la optimización multiobjetivo de sus hiperparámetros se estudió
+en~\cite{lopez2025hyperopt}.
+La extensión heteroasociativa (EHAM) guarda pares de objetos de dominios distintos en
+una sola memoria, de modo que una pista en un dominio recupera el objeto asociado en el
+otro, y propone cómo completar esa recuperación cuando solo se tiene la pista de uno de
+los dos dominios~\cite{morales2025missing}.
+Ninguno de estos trabajos usa directorios ni especialistas que cooperen
+(Sección~\ref{sec:tmt}).
 
-El sistema construido, \textbf{EAM-TMS} (\textit{Entropic Associative Memory --
-Transactive Memory System}: sistema de memoria transactiva sobre memorias asociativas
-entrópicas), se compone de ocho módulos especialistas, uno por cada categoría del
-conjunto ETH-80 \cite{leibe2003eth80}: \texttt{apple}, \texttt{car}, \texttt{cow},
-\texttt{cup}, \texttt{dog}, \texttt{horse}, \texttt{pear} y \texttt{tomato}.
-Cada módulo guarda las palabras y las imágenes de su categoría en una sola memoria de
-contenido y lleva dos directorios, uno textual y uno visual, donde anota las
-transacciones en que participa.
-Un mediador central denominado TME (\textit{Transactive Memory Expert}) coordina la fase
-temprana y registra en sus propios directorios qué módulo responde a cada tipo de
-consulta.
-Conforme se llenan los directorios de los módulos, el TME deja de hacer falta: en la fase
-madura los módulos se reenvían entre sí las consultas, sean frases o imágenes, sin
-intervención del mediador.
+\paragraph{Representaciones.}
+Una memoria entrópica opera sobre vectores cuantizados, así que necesita que alguien
+le entregue las palabras y las imágenes como vectores.
+En este trabajo, las palabras son vectores fastText~\cite{bojanowski2017fasttext}, el
+vocabulario de cada dominio sale de ConceptNet~5.7~\cite{speer2017conceptnet} y las
+consultas se dividen en tokens con spaCy~\cite{honnibal2020spacy}.
+Las imágenes son códigos de un autocodificador con la arquitectura ResNet18
+\cite{he2016resnet}, que parte de los pesos de ImageNet y se entrena sobre
+ETH-80~\cite{leibe2003eth80}.
+ETH-80 tiene ocho categorías con diez objetos cada una, fotografiados desde 41 puntos
+de vista, y varias de sus clases se parecen entre sí: \texttt{apple}, \texttt{pear} y
+\texttt{tomato} son frutas redondas, y \texttt{cow}, \texttt{horse} y \texttt{dog} son
+cuadrúpedos.
+El codificador se entrena con dos pérdidas: la reconstrucción y una entropía cruzada de
+clase de peso 0.1 (Sección~\ref{sec:percepcion}).
+La cabeza de clasificación no interviene en ninguna decisión del sistema, pero la
+pérdida de clase da forma al espacio latente que las memorias guardan.
 
-Ninguna decisión del sistema sale de un clasificador entrenado ni de una optimización
-numérica: registrar, reconocer, recuperar y enrutar son operaciones definidas
-formalmente sobre las Memorias Asociativas Entrópicas
-de Pineda y Morales en su variante ponderada (W-EAM)
-\cite{pineda2021entropic,pineda2022weighted} y su extensión heteroasociativa (EHAM)
-\cite{morales2025missing}.
-Las representaciones semánticas se obtienen con vectores de palabras fastText
-\cite{bojanowski2017fasttext}, cuantizados \emph{por magnitud} en 16 niveles.
-El vocabulario de llenado se extrae de ConceptNet 5.7 \cite{speer2017conceptnet}
-y el texto se procesa con spaCy \cite{honnibal2020spacy}.
-Las representaciones visuales las produce el codificador de un autocodificador ResNet18
-\cite{he2016resnet}, inicializado con los pesos de ImageNet y entrenado sobre ETH-80
-(Sección~\ref{sec:percepcion}); su salida se cuantiza y almacena.
-
-\subsection*{Contribuciones principales}
-
-Este trabajo aporta cinco contribuciones:
-
-\begin{enumerate}
-    \item \textbf{Un sistema transactivo de ocho especialistas.}
-    Se construye un sistema de ocho módulos, uno por cada clase de ETH-80, cada uno con
-    una sola memoria de contenido heteroasociativa y dos directorios, y se evalúa con un
-    banco de 411 consultas ($\approx$50 por dominio).
-    Los directorios, su lectura normalizada por número de registros (B1,
-    Sección~\ref{sec:operaciones}), el rechazo de lo que ninguna memoria contiene y la
-    coordinación punto a punto de la contribución~3 funcionan con los ocho dominios.
-
-    \item \textbf{Cuantización por magnitud de las pistas semánticas.}
-    Cada vector fastText se divide entre una escala global $S$, la misma en el llenado y
-    en las consultas, se recorta a $[-1, 1]$ y se reparte en los 16 niveles
-    (Sección~\ref{sec:pipeline-semantico}); una binarización por signo usaría solo 2.
-    Con esta representación, la precisión temprana sobre el banco de 411 consultas es del
-    90.0\% (Sección~\ref{sec:calibracion}).
-
-    \item \textbf{Directorios perspectivales por módulo.}
-    Cada módulo lleva dos directorios heteroasociativos, uno de texto y uno visual
-    (Sección~\ref{sec:componentes}), y en ambos registra solo las transacciones en que
-    participó, como módulo de entrada o como ganador: cada módulo sabe de los demás lo
-    que presenció, y por eso los directorios se llaman \emph{perspectivales}.
-    Una frase o una imagen puede entrar por \emph{cualquier} módulo, que suma su
-    directorio y los de los módulos que conoce y la redirige punto a punto al
-    especialista; es la coordinación de recuperación de Wegner, en las dos modalidades.
-
-    \item \textbf{Auditoría de fidelidad.}
-    Ninguna decisión proviene de mecanismos ajenos a las memorias: el vocabulario no
-    contiene vectores sintéticos (de relleno, para etiquetas sin vector fastText), el
-    código de Pineda y Morales permanece idéntico byte a byte (salvo una condición que
-    evita cargar sus clasificadores y no toca ninguna operación de memoria), y todos los
-    números reportados son trazables a corridas del sistema actual, sobre datos no
-    fabricados.
-
-    \item \textbf{Evaluación experimental.}
-    Se miden nueve condiciones de lectura del directorio (con cuatro cantidades de
-    consultas de formación y cinco semillas), el efecto de los parámetros nativos de la
-    memoria ($\iota$ y $\kappa$), cuántas interacciones hacen falta para formar el
-    directorio, cuánto contenido admite cada módulo, el comportamiento con imágenes, la
-    comparación con una sola memoria para las ocho clases y la verificación de una sola
-    memoria de contenido por módulo, junto con el costo computacional de reproducir
-    todos los resultados.
-\end{enumerate}
-
-\subsection*{Estructura del documento}
-
-La Sección~\ref{sec:marco_teorico} presenta los fundamentos: la memoria asociativa
-entrópica de Pineda y Morales y su variante ponderada, su extensión heteroasociativa
-(EHAM) y el modelo de memoria transactiva de Wegner.
-La Sección~\ref{sec:arquitectura} describe la arquitectura EAM-TMS de ocho módulos, con
-los diagramas de flujo del llenado, la fase temprana y la fase madura, y la
-formalización de las operaciones del sistema.
-La Sección~\ref{sec:metodologia} detalla la metodología experimental, la
-Sección~\ref{sec:resultados} reporta los resultados, la Sección~\ref{sec:discusion} los
-discute y señala las limitaciones, y la Sección~\ref{sec:conclusiones} concluye y señala
-trabajo futuro.
+\paragraph{Qué falta.}
+Hay, entonces, una teoría de la memoria de grupo que ya se pensó como red, y una familia
+de memorias que reconocen, recuperan y rechazan con operaciones explícitas sobre
+conteos.
+No hay un sistema que las junte.
+Tampoco hay una medida de lo que la memoria asociativa agrega cuando se la compara con
+decisores simples que usan los mismos vectores, como un voto por palabras del
+vocabulario o el vecino más cercano.
+Sin esa comparación no se puede saber si un resultado se debe a la memoria o a la
+representación que la alimenta.
 
 \section{Definición del problema}
-% <- 01, pregunta de investigación
-Este trabajo pregunta si la organización que describe Wegner puede construirse solo con
-estas memorias:
+\label{sec:definicion-problema}
+
+Para construir un sistema de memoria transactiva con memorias asociativas entrópicas
+hay que resolver cuatro cosas.
+La primera es cómo se reparte el contenido entre los especialistas y cómo se forma, con
+el uso, el directorio que dice a quién preguntar.
+La segunda es cómo pasa una consulta de texto o de imagen al especialista correcto,
+primero con un mediador y después punto a punto.
+La tercera es cómo se rechaza una consulta que ningún especialista contiene.
+La cuarta es cómo se recupera, en ambos sentidos, lo que se asoció: la imagen a partir
+de las palabras y las palabras a partir de la imagen.
+Todo esto debe hacerse sin clasificadores discriminativos en las decisiones de
+enrutamiento y rechazo.
+
+Resolverlo no basta para saber qué aporta la memoria.
+El problema incluye medir cuánto de cada resultado se debe al mecanismo asociativo y
+cuánto a las representaciones: los vectores de palabras y su vocabulario, por un lado,
+y el codificador visual y su supervisión de clase, por el otro.
+La pregunta de investigación queda así:
 
 \begin{quote}
-¿Puede un sistema de memoria transactiva construido sobre memorias asociativas
-entrópicas repartir consultas de texto e imagen entre ocho especialistas, recordar el
-contenido asociado y rechazar lo que no conoce, sin clasificadores supervisados? Y donde
-aparezcan límites, ¿provienen del mecanismo asociativo o de las representaciones que lo
-alimentan?
+¿Puede un sistema de memoria transactiva construido sobre memorias heteroasociativas
+entrópicas enrutar consultas de texto e imagen entre ocho especialistas, recuperar el
+contenido asociado en ambas direcciones y rechazar lo que no conoce, sin clasificadores
+discriminativos en esas decisiones? ¿Qué agrega la memoria frente a decisores simples
+sobre las mismas representaciones, y cuánto dependen sus resultados de esas
+representaciones?
 \end{quote}
 
 \section{Objetivo general}\label{secc:og}
-[PENDIENTE: redactar desde las contribuciones de 01]
+
+Construir un sistema distribuido de memoria transactiva de ocho módulos sobre memorias
+heteroasociativas entrópicas, que enrute consultas de texto e imagen al módulo
+especialista, recupere el contenido asociado en ambas direcciones y rechace lo que
+ninguna memoria contiene, y medir su desempeño frente a decisores simples sobre las
+mismas representaciones y frente a una sola memoria con las ocho clases.
 
 \subsection{Objetivos específicos}
-[PENDIENTE: redactar desde las contribuciones de 01]
+
+\begin{enumerate}
+    \item \label{oe:arquitectura}
+    Implementar la arquitectura: ocho módulos, uno por cada clase de ETH-80, cada uno con
+    una memoria de contenido heteroasociativa entre palabras e imágenes y dos
+    directorios, uno textual y uno visual; un mediador para la fase temprana y la
+    coordinación punto a punto en la fase madura.
+    Verificar que todas las decisiones salen de operaciones de las memorias y que una
+    sola memoria de contenido por módulo basta para tomarlas.
+
+    \item \label{oe:formacion}
+    Medir el enrutamiento de texto en las fases temprana y madura sobre un conjunto de
+    evaluación que no forma el directorio, en función del número de consultas de
+    formación y de la lectura del directorio (cruda o normalizada por número de
+    registros, B1).
+
+    \item \label{oe:lineas-base}
+    Comparar el enrutamiento de texto con decisores simples sobre los mismos vectores
+    (voto por tokens del vocabulario, centroide, $k$ vecinos más cercanos y tabla de
+    conteos) y con una sola memoria heteroasociativa para las ocho clases.
+
+    \item \label{oe:rechazo}
+    Medir el rechazo: cuántas de 40 consultas fuera de dominio acepta el sistema,
+    frente a los decisores simples y a la memoria única, y qué pasa con entradas
+    visuales sin estructura.
+
+    \item \label{oe:recuperacion}
+    Medir la recuperación en ambas direcciones: cuántas consultas de texto reciben una
+    imagen y qué tan cerca queda de una imagen real de su clase, y cuántas imágenes
+    evocan palabras de su dominio.
+
+    \item \label{oe:vision}
+    Medir el enrutamiento visual sobre las 656 imágenes de prueba y sobre objetos que
+    ningún módulo vio, y cuantificar cuánto depende de la supervisión de clase del
+    codificador.
+\end{enumerate}
 
 \section{Justificación}
-[PENDIENTE]
+
+Repartir consultas entre nodos especializados, sin que un coordinador central decida
+cada una, es un problema de los sistemas distribuidos.
+El modelo de Wegner propone una solución que viene de los grupos humanos: cada nodo
+guarda lo suyo y aprende, con el uso, a quién mandar lo que no sabe.
+Este trabajo construye esa solución con memorias cuyas operaciones están definidas
+formalmente, y por eso cada decisión del sistema se puede rastrear hasta los conteos
+que la produjeron.
+Esa trazabilidad sirve para auditar el sistema y para explicar cada respuesta.
+
+El rechazo importa por la misma razón.
+Un sistema que responde a todo con alguna clase obliga a quien lo usa a adivinar cuándo
+se equivocó.
+Las memorias entrópicas contestan «no lo tengo» cuando una entrada no tiene soporte en
+lo registrado, y este trabajo mide cuándo esa respuesta funciona y cuándo no.
+
+La comparación con decisores simples tiene un valor práctico para la ingeniería.
+Si un voto por palabras del vocabulario o un vecino más cercano aciertan lo mismo que la
+memoria, la razón para usarla no es el acierto, sino lo que el voto o el vecino no
+hacen: rechazar, recuperar el contenido asociado y dejar un registro de quién sabe qué.
+Medirlo con los mismos vectores separa lo que aporta el mecanismo de lo que aporta la
+representación, y orienta dónde conviene invertir: en la memoria o en el codificador.
+
+Para la línea de trabajo de las memorias asociativas entrópicas, el sistema es una
+aplicación nueva, con varios módulos que cooperan y una memoria heteroasociativa que
+opera en ambas direcciones entre texto e imagen.
 
 \section{Alcances y limitaciones}
-[PENDIENTE: redactar alcances y limitaciones. Las limitaciones (a)--(j) están en la Sección~\ref{sec:limitaciones}.]
+
+\paragraph{Alcances.}
+\begin{itemize}
+    \item \textbf{Datos.} Las ocho clases de ETH-80, con 410 imágenes de $128\times128$
+    píxeles por clase, divididas por archivo en 328 de entrenamiento y 82 de prueba
+    (Sección~\ref{sec:dataset}).
+    La generalización a objetos nuevos se mide aparte, reservando un objeto por clase
+    (Sección~\ref{sec:objetos-nuevos}).
+    \item \textbf{Texto.} Consultas en inglés: un banco de 411 consultas, unas 50 por
+    clase, y 40 consultas fuera de dominio.
+    El vocabulario de cada módulo sale de ConceptNet~5.7 y las palabras se representan
+    con fastText.
+    \item \textbf{Sistema.} Ocho módulos con una memoria de contenido heteroasociativa y
+    dos directorios cada uno, un mediador en la fase temprana y coordinación punto a
+    punto en la fase madura.
+    La especialización es asignada: la etiqueta de clase decide qué módulo guarda cada
+    imagen y cada palabra.
+    Lo que se forma con el uso es el directorio.
+    \item \textbf{Comparaciones.} Decisores simples sobre los mismos vectores, una sola
+    memoria heteroasociativa con las ocho clases y un codificador entrenado sin la
+    pérdida de clase.
+    \item \textbf{Procesos de Wegner.} El sistema modela la actualización del directorio
+    y la coordinación de la recuperación.
+    La asignación de información la hace la etiqueta de clase.
+\end{itemize}
+
+\paragraph{Fuera del alcance.}
+\begin{itemize}
+    \item El aprendizaje después de formar el directorio y la reorganización del grupo
+    cuando un módulo sale o entra.
+    \item Imágenes de categorías ajenas a ETH-80.
+    Sin ellas, el rechazo visual solo se mide con entradas sin estructura, como lienzos
+    uniformes, ruido o desenfoques.
+    \item Fotografías de otro origen, otros conjuntos de datos y consultas en otros
+    idiomas.
+    \item La varianza entre entrenamientos del codificador: cada condición usa un solo
+    codificador.
+\end{itemize}
+
+\paragraph{Limitaciones.}
+Las limitaciones medidas están en la Sección~\ref{sec:limitaciones}.
+Las que más pesan en la lectura de los resultados son cuatro:
+el codificador visual se entrenó con supervisión de clase (limitación (k));
+la partición por imagen deja vistas de los mismos objetos en el llenado y en la prueba
+(limitación (f));
+el punto de control del codificador y el número de variantes se eligieron mirando el
+conjunto de prueba (limitación (g));
+y las consultas fuera de dominio que comparten palabras con el vocabulario de un
+módulo pasan la compuerta textual (limitación (a)).

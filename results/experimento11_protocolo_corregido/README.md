@@ -47,7 +47,7 @@ En `run_experiment11_monolithic.py`, cada proceso del Pool carga los especialist
 
 ## Resultados
 
-**La corrida completa no se lanzó.** La proyección de la prueba corta da unas 12.5 h con 2 procesos, por encima del límite de 8 h del encargo, así que el trabajo se detuvo después de la prueba. Lo que sigue es la prueba, la proyección y el reanálisis de los raw oficiales. Después, a pedido del coordinador, se corrió el **solo ruteo** completo: 10 semillas, 4 cortes, texto, imagen y fuera de dominio, en 19 min (sección «Solo ruteo», al final).
+La proyección de la prueba corta dio unas 12.5 h con 2 procesos, por encima del límite de 8 h del primer encargo, así que el trabajo se detuvo después de la prueba. Lo que sigue es la prueba, la proyección y el reanálisis de los raw oficiales. Después, a pedido del coordinador, se corrió el **solo ruteo** completo: 10 semillas, 4 cortes, texto, imagen y fuera de dominio, en 19 min (sección «Solo ruteo»). Por último se lanzó la **corrida completa** con recuerdo y jueces, del 2 nov 14:15 al 3 nov 04:46 (sección «Corrida completa», al final).
 
 ### Control del caché
 
@@ -204,11 +204,11 @@ La EHAM única acepta 5.0, 5.0, 12.5 y 20.0 %. Con la compuerta, P − M = −15
 - Con N = 200 se sostiene el empate de M1: −0.1 puntos, p = 0.86.
 - «Clasifica algo mejor» no tiene apoyo en ningún corte.
 - Imagen y fuera de dominio no cambian. Las ventajas defendibles del protocolo siguen siendo las de rechazo fuera de dominio con N ≥ 100.
-- La fidelidad (d_nn) y F no se recalcularon: dependen del recuerdo muestreado. Para el protocolo, quedan las del corrido oficial.
+- La fidelidad (d_nn) y F dependen del recuerdo muestreado y no salen del solo ruteo; están en la sección «Corrida completa».
 
 ### Desvíos del diseño
 
-- No se corrió nada de la corrida completa (texto, imagen ni fuera de dominio): la proyección pasa de 8 h.
+- La corrida completa no se lanzó con el primer encargo (la proyección pasaba de 8 h); se lanzó después, sin el fuera de dominio (ver «Corrida completa»).
 - La prueba con N = 25 usó 1 proceso, no 2, y esperó a 3.6 GiB libres en vez de 5. Tras casi 2 h de espera, la memoria libre no llegaba a 5 GiB. El umbral de 5 GB era para la corrida completa.
 - Se agregó una sonda de tiempo con N = 200 y 2 procesos, que no estaba en el encargo. Se detuvo tras 2 de 6 trabajos, cuando la memoria libre bajó a 0.86 GB.
 - Al script se le agregaron dos cosas que no tocan la lógica: `segundos_formacion` en el meta, para separar la formación del resto en la proyección, y la variable de entorno `EXP11_RAW`.
@@ -224,5 +224,51 @@ La EHAM única acepta 5.0, 5.0, 12.5 y 20.0 %. Con la compuerta, P − M = −15
 - `prueba/raw/`: raw de la prueba (`s43_N25_c0–5`, `s43_N25_i0–5`, `s43_N200_c0–1`).
 - `prueba/agregado/`: `comparacion.md` y `comparacion.json`, más `tablas_viejas/` (todo lo oficial), `tablas_viejas_mismos_pares/` y `tablas_nuevas/` (s43 con N = 25).
 - `prueba/informe_script/`: informe automático del script (solo protocolo; las columnas M y oráculo salen vacías).
+- `comparacion.md` y `comparacion.json`: corrida completa, viejo contra corregido por corte, clase sobre el total, McNemar, d_nn pareado contra M, diagnóstico del arreglo y tiempo por trabajo.
+- `tablas_nuevas/`, `tablas_viejas/` y `tablas_viejas_mismos_pares/`: las tablas del README de exp11 con el protocolo corregido, con todo lo oficial y con lo oficial sobre los mismos pares.
+- `informe_script/`: informe automático del script de la corrida completa (solo protocolo).
+- `raw/` no se copió a este repositorio (23 MB, 480 archivos): está en el worktree `MAE-TMS-exp11fix`, en esta misma ruta.
 - `logs/`: salidas de cada fase, `tiempos.log`, `memoria.log` y `muestras_memoria.log` (memoria libre y de los procesos cada 30 s).
 - Cambio al script: `git diff run_experiment11_monolithic.py` en el worktree (reinicio de directorios, `--arms`, `EXP11_RAW` y `segundos_formacion` en el meta).
+
+## Corrida completa (con recuerdo y jueces)
+
+Solo `T-protocolo`, con el diseño de la sección «Diseño»: semillas 42–51, cortes 25, 50, 100 y 200, texto con 6 trozos y 3 sorteos, imagen con 10 imágenes por clase y 6 trozos. Lanzador `correr_protocolo.sh` con 2 procesos y espera de memoria antes de cada corte. El fuera de dominio no se volvió a correr: el solo ruteo ya lo reproduce en 1600 de 1600 filas, y su fila sale «—» en `tablas_nuevas/`. Los 6 trabajos de texto y los 6 de imagen de s43 con N = 25, y los trozos 0 y 1 de s43 con N = 200, son los de la prueba (archivos idénticos byte a byte en `raw/` y `prueba/raw/`); por eso el log dice 54 y 58 trabajos en esos cortes.
+
+### Tiempos (`logs/tiempos.log`)
+
+| fase | inicio | fin | min |
+|---|---|---|---|
+| texto N = 25 | 2 nov 14:15 | 2 nov 16:35 | 140 |
+| texto N = 50 | 2 nov 16:35 | 2 nov 17:53 | 77 |
+| texto N = 100 | 2 nov 17:53 | 2 nov 19:45 | 111 |
+| texto N = 200 | 2 nov 21:27 | 2 nov 23:57 | 150 |
+| imagen N = 25 | 3 nov 00:00 | 3 nov 00:22 | 22 |
+| imagen N = 50 | 3 nov 00:22 | 3 nov 01:20 | 58 |
+| imagen N = 100 | 3 nov 01:20 | 3 nov 02:53 | 92 |
+| imagen N = 200 | 3 nov 02:53 | 3 nov 04:45 | 112 |
+
+Texto 478 min (8.0 h) e imagen 284 min (4.7 h): 12.7 h de cómputo con 2 procesos, contra 12.5 h proyectadas. De reloj fueron 14.5 h, con 1 h 42 min de espera de memoria entre texto N = 100 y N = 200. En horas-proceso (suma por trabajo, `comparacion.md`): texto 16.2 y imagen 9.5, contra 16.7 y 7.7 proyectadas.
+
+### Resultados
+
+`T-protocolo`, media de las diez semillas; «viejo» es la corrida oficial. Intervalos en `comparacion.md`.
+
+| medida | N = 25 | N = 50 | N = 100 | N = 200 |
+|---|---|---|---|---|
+| clase 1-NN sobre el total, viejo → corregido | 95.3 → 93.2 | 97.4 → 96.8 | 97.4 → 96.8 | 97.0 → 96.8 |
+| clase 1-NN sobre respondidas | 96.9 → 94.7 | 98.8 → 98.1 | 98.8 → 98.1 | 98.3 → 98.2 |
+| d_nn | 18.97 → 19.54 | 20.67 → 20.81 | 23.78 → 23.75 | 26.98 → 27.18 |
+| d_nn, protocolo corregido − M, pareado por consulta | −3.37 [−4.33, −2.43] | −5.79 [−6.59, −5.01] | −5.68 [−6.47, −4.92] | −5.39 [−6.30, −4.49] |
+| F (M: 1.81, 1.48, 1.32, 1.28) | 2.02 → 2.37 | 1.42 → 1.64 | 1.28 → 1.42 | 1.25 → 1.30 |
+| fracción con pista compartida | 4.5 → 5.8 | 4.1 → 4.1 | 4.1 → 4.1 | 4.1 → 4.1 |
+| clase 1-NN con pista compartida (M: 48.3, 47.8, 52.2, 51.1) | 80.3 → 53.7 | 82.9 → 70.0 | 84.3 → 70.0 | 78.6 → 71.4 |
+| imagen: hit estricto | 41.1 → 41.2 | 67.4 → 66.6 | 77.5 → 77.1 | 79.8 → 79.2 |
+| imagen: otro dominio (M: 5.5, 7.5, 10.5, 10.9) | 0.2 → 0.1 | 1.8 → 1.5 | 2.2 → 3.1 | 3.0 → 3.1 |
+
+- **Coincide con el solo ruteo.** La clase sobre el total (93.2, 96.8, 96.8 y 96.8), la cobertura y el McNemar contra M salen iguales a los del solo ruteo; en imagen, acepta, responde y hit laxo no cambian.
+- **Clase sobre respondidas:** baja 2.1 puntos con N = 25 y 0.6, 0.6 y 0.1 en los otros cortes. Queda por encima de M desde N = 50 y por debajo con N = 25.
+- **Fidelidad:** d_nn sube 0.57 con N = 25 y 0.21 con N = 200, fuera de los intervalos viejos; con 50 y 100 cambia menos de 0.15. El protocolo sigue recordando más cerca que M en los cuatro cortes, con intervalos que excluyen el cero.
+- **F** sube en los cuatro cortes y ahora queda por encima de M en todos; antes quedaba por debajo con N = 100 y 200.
+- **Pista compartida:** es la medida que más cambia. La clase cae 27 puntos con N = 25 y de 7 a 14 en los otros cortes; con 25, 50 y 100 la media nueva queda fuera del intervalo viejo, con 200 dentro. Sigue por encima de M en los cuatro cortes, pero con N = 25 los intervalos se solapan ([47.1, 62.7] contra [42.8, 54.4]).
+- **Imagen:** dominio ajeno de 0.1 a 3.1 %, siempre por debajo de M (5.5 a 10.9 %). Los cambios vienen del muestreo de la evocación: los 3200 destinos son los mismos.
