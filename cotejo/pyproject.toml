@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cotejo"
+version = "0.1.0"
+description = "Cotejo local de similitud, alertas de integridad y detectores abiertos para reportes en LaTeX"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pypdf==6.21.4",
+    "pdfminer.six==20260107",
+]
+
+[project.optional-dependencies]
+# torch se instala aparte con el índice de PyTorch que corresponda a su CUDA (ver README).
+detectores = ["transformers==5.22.1"]
+parafrasis = ["sentence-transformers==6.2.0"]
+prueba = ["pytest==9.2.0"]
+
+[project.scripts]
+cotejo = "cotejo.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

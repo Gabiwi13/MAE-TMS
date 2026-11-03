@@ -1,0 +1,16 @@
+\documentclass{report}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{pdfauthor={Autor de Prueba}, pdftitle={Proyecto sintético}}
+\title{Proyecto sintético}
+\author{Autor de Prueba}
+\definecolor{fantasma}{rgb}{1,1,1}
+\begin{document}
+\maketitle
+\include{cap1}
+\input{cap2}
+\IfFileExists{noexiste.tex}{\include{noexiste}}{}
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}

@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\begin{document}
+Texto normal visible en la página.
+
+\textcolor{white}{Texto blanco sobre página blanca.}
+
+\colorbox{black}{\textcolor{white}{Blanco sobre caja negra.}}
+
+{\fontsize{0.5}{0.6}\selectfont Letra diminuta escondida.}
+
+\special{pdf:literal 3 Tr}Texto con modo de render invisible.\special{pdf:literal 0 Tr}
+
+Una mеmoria con homoglifo.
+\end{document}
