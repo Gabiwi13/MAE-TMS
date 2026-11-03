@@ -62,8 +62,7 @@ funcionan sin clasificadores discriminativos en las decisiones de enrutamiento y
 rechazo.
 No todo sale de las memorias.
 La especialización la asigna la etiqueta de clase, el codificador visual se entrenó con
-una pérdida de clasificación auxiliar, y la suma por tokens, la normalización del
-directorio, el umbral $\tau$ y el rescate léxico operan fuera de ellas (limitación (k)).
+una pérdida de clasificación auxiliar (limitación (k)), y la suma por tokens, la normalización del directorio, el umbral $\tau$ y el rescate léxico operan fuera de ellas (Sección~\ref{sec:auditoria}).
 El rechazo tiene dos fugas medidas, consultas que comparten tokens con un dominio y
 entradas visuales sin estructura, que el umbral de energía cierra en su mayor parte
 (limitaciones (a) y (c)).
@@ -98,7 +97,7 @@ más cercanos entre el 62 y el 71\,\%, frente al 70.0\,\% de la fase temprana y 
 En imagen, sin la pérdida de clase del codificador, el enrutamiento baja al 70.4\,\%.
 El mecanismo tiene también límites propios: necesita la normalización externa del
 directorio, su contención estricta por coordenada cuesta cobertura (rechaza 23 imágenes
-que un vecino más cercano clasifica bien), el nombre se pierde con un daño del 1\,\% y
+que un vecino más cercano clasifica bien), destruir al azar el 1\,\% de las celdas deja sin nombre al 92\,\% de las imágenes, y
 el contenido visual da soporte a entradas sin estructura.
 El directorio funciona como un índice que localiza al especialista, y formarlo cuesta
 interacción.
@@ -117,7 +116,7 @@ Con 200, sobre el total de las 171 consultas reservadas, aciertan el 96.8 y el
 porque el directorio todavía enruta peor.
 El sistema transactivo recuerda con más fidelidad, mezcla menos los dominios cuando la
 pista es compartida (desde 50 imágenes por clase acierta la clase en el 70--71\,\% de
-esas consultas, frente al 48--52\,\% de la EHAM única, sobre el 4\,\% de las consultas;
+esas consultas, frente al 48--52\,\% de la EHAM única, sobre el 4.1\,\% de sus respuestas;
 con 25 los intervalos se solapan) y en imagen responde con un dominio ajeno menos veces
 (3.1\,\% de las imágenes, frente a 10.9\,\% con 200 por clase).
 Con 200 imágenes por clase acepta menos consultas fuera de dominio (2 frente a 8 de 40,

@@ -663,3 +663,10 @@ Se anotan para que el autor decida. No se corrigieron porque tocan cifras, refer
 8. **Pasaje repetido entre capítulos.** La frase sobre la especialización asignada «como en la condición de estructura asignada de Wegner, Erber y Raymond» y «la asignación de información no se modela; la hace la etiqueta» está en `Capitulo1.tex:191-199`, `02_marco_teorico.tex:332-335`, `06_discusion.tex:425-426` y en la limitación (e), `06_discusion.tex:526-531`. Las cuatro dicen lo mismo, sin agregar nada.
 9. **La salvedad «estructurales, no causales» aparece tres veces.** Está en `06_discusion.tex:95`, `:205` y `:434-435`. Es una salvedad deliberada y no se tocó. Bastaría con una sola declaración, al principio de la Sección de lectura desde Wegner, que cubra las tres secciones.
 10. **Transición débil en la Justificación.** `Capitulo1.tex:158`: «El rechazo importa por la misma razón». La razón anterior es la trazabilidad, que sirve para auditar y explicar. Lo que sigue habla de no obligar al usuario a adivinar cuándo se equivocó el sistema. La relación existe, pero no es la misma razón.
+
+## Problemas de contenido 1 a 4: corrección aprobada y aplicada
+
+1. **Pistas compartidas.** Las dos cifras son fracción de respuestas, pero de brazos distintos: EHAM única y oráculo 3.5\,%, protocolo 4.1\,% desde 50 (`results/experimento11_protocolo_corregido/tablas_nuevas/README.md`). En Resultados se nombran las dos; en Conclusiones, «sobre el 4.1\,\% de sus respuestas».
+2. **Limitación (k).** Ahora solo cubre el codificador; la suma por tokens, la normalización, $\tau$ y el rescate léxico remiten a la Sección de auditoría.
+3. **Daño del 1\,%.** En la Discusión y en las Conclusiones: «destruir al azar el 1\,\% de las celdas deja sin nombre al 92\,\% de las imágenes», como la limitación (j) y la Tabla de lesión.
+4. **Abstract.** Se quitó «that seldom name their class», para que diga lo mismo que el Resumen.
