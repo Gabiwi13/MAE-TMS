@@ -68,7 +68,7 @@ en consultas que no vio, pero solo hasta alcanzar a la temprana
 
 \begin{table}[H]
     \centering
-    \caption{Precisión bajo las condiciones de calibración
+    \caption[Precisión bajo las condiciones de calibración]{Precisión bajo las condiciones de calibración
     ($N = 400$, media de cinco semillas, 400 consultas del banco de 411).
     La precisión temprana no depende de la lectura del directorio, por lo que solo
     varía en las condiciones que alteran las consultas (D, G).
@@ -111,7 +111,7 @@ consultas y depurar el vocabulario aportan poco.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{fig02_mature_accuracy_vs_N.png}
-    \caption{Precisión madura en función de $N$ para las condiciones de la
+    \caption[Precisión madura en función de $N$ por condición de calibración]{Precisión madura en función de $N$ para las condiciones de la
     Tabla~\ref{tab:calibracion} ($N$ consultas del banco de 411, media de cinco semillas;
     la banda es $\pm 1$ desviación estándar de G).
     Entre las condiciones que no alteran las consultas, B1 es la mejor en todo el rango y
@@ -127,7 +127,7 @@ consultas y depurar el vocabulario aportan poco.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{fig03_heatmap_condition_N.png}
-    \caption{Precisión madura (\%) por condición de la Tabla~\ref{tab:calibracion} y
+    \caption[Precisión madura por condición y número de consultas de formación]{Precisión madura (\%) por condición de la Tabla~\ref{tab:calibracion} y
     número de consultas de formación $N$ (mismos datos que la
     Figura~\ref{fig:mature-vs-n}).
     Hasta $N = 200$, A, C, E32, E64 y F quedan entre 66 y 77\,\%, y B1 sube de 78 a
@@ -151,7 +151,7 @@ El otro foco es \texttt{horse} hacia \texttt{cow} (6).
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig04_domain_accuracy_N400.png}
-    \caption{Precisión madura por dominio y condición de la
+    \caption[Precisión madura por dominio y condición de calibración]{Precisión madura por dominio y condición de la
     Tabla~\ref{tab:calibracion} ($N = 400$, media de cinco semillas).
     \texttt{pear} es el dominio más bajo en todas las condiciones; la lectura B1 lo lleva
     de 40 a 76\,\% respecto de la cruda (A), y a \texttt{horse} de 68 a 88\,\%.}
@@ -170,7 +170,7 @@ La Sección~\ref{sec:disc-dominancia} analiza el origen del sesgo.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig09_winner_distribution_N400.png}
-    \caption{Distribución de módulos ganadores en fase madura por condición de la
+    \caption[Módulos ganadores en fase madura por condición de calibración]{Distribución de módulos ganadores en fase madura por condición de la
     Tabla~\ref{tab:calibracion} ($N = 400$, media de cinco semillas; cifras en \%, sin cifra
     en los segmentos menores del 6\,\%).
     La línea discontinua marca el ideal balanceado de $1/8 = 12.5$\,\%, con el que se
@@ -221,7 +221,7 @@ La Tabla~\ref{tab:calibracion-fija} da los resultados.
 
 \begin{table}[H]
     \centering
-    \caption{Calibración con un conjunto de evaluación fijo de 120 consultas que no
+    \caption[Calibración con un conjunto de evaluación fijo]{Calibración con un conjunto de evaluación fijo de 120 consultas que no
     forman el directorio. $N$: consultas de formación. Sorteo principal: media de cinco
     semillas, con el intervalo t de Student del 95\,\% entre semillas para la madura y el
     intervalo del 95\,\% por remuestreo de las 120 consultas para la diferencia con la
@@ -357,7 +357,7 @@ La Tabla~\ref{tab:grid-iota-kappa} muestra la precisión temprana y el rechazo.
 
 \begin{table}[H]
     \centering
-    \caption{Precisión temprana y, entre paréntesis, tasa de rechazo (\%) en función de
+    \caption[Precisión temprana y tasa de rechazo en función de $\iota$ y $\kappa$]{Precisión temprana y, entre paréntesis, tasa de rechazo (\%) en función de
     $\iota$ y $\kappa$ (80 consultas). Con $\iota \geq 0.25$ el valor no cambia con
     $\kappa$, porque la poda sube la razón que $\kappa$ compara por encima del mayor
     $\kappa$ del barrido.}
@@ -458,7 +458,7 @@ La Tabla~\ref{tab:capacidad} resume las métricas.
 
 \begin{table}[H]
     \centering
-    \caption{Métricas de capacidad en función del número de imágenes registradas $I$
+    \caption[Métricas de capacidad en función de las imágenes registradas por clase]{Métricas de capacidad en función del número de imágenes registradas $I$
     por clase.
     «Llenado propio» y «Prueba propia»: fracción de imágenes de la propia clase, de
     llenado y de prueba, que el módulo acepta; «Falsos»: fracción de imágenes de otras
@@ -601,7 +601,7 @@ distribución acumulada en la memoria.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{fig15_image_rejection.png}
-    \caption{Rechazo de imágenes en el hemisferio visual, con el umbral
+    \caption[Rechazo de imágenes en el hemisferio visual]{Rechazo de imágenes en el hemisferio visual, con el umbral
     de energía $\tau$ y la contención en el mismo orden que el sistema. Arriba: imágenes de
     prueba aceptadas por el contenido, con el módulo de mayor soporte y su puntuación de
     contención. En medio: imágenes de prueba rechazadas, dos porque ningún módulo las
@@ -615,7 +615,7 @@ distribución acumulada en la memoria.
 \begin{figure}[p]
     \centering
     \includegraphics[width=0.85\textwidth]{fig16_image_to_labels.png}
-    \caption{Salida semántica imagen $\to$ etiquetas: las dos primeras imágenes de prueba
+    \caption[Salida semántica imagen $\to$ etiquetas]{Salida semántica imagen $\to$ etiquetas: las dos primeras imágenes de prueba
     de cada clase que pasan el umbral de energía y que algún módulo contiene (el de mayor
     soporte, sin pasar por el directorio).
     Por imagen: la entrada, la reconstrucción que evoca la memoria (no la entrada) y las
@@ -699,7 +699,7 @@ por sí solo.
 
 \begin{table}[H]
     \centering
-    \caption{Experimento~16 en los diez pliegues, con el codificador del sistema y
+    \caption[Objetos nuevos por pliegue, con el codificador del sistema y uno reentrenado]{Experimento~16 en los diez pliegues, con el codificador del sistema y
     con uno reentrenado sin los objetos reservados de cada pliegue.
     Cobertura de punta a punta (\%) sobre las 328 vistas de
     cada banco, y falsos enrutamientos con objetos nuevos, de 328 por pliegue. $\tau$:
@@ -760,7 +760,7 @@ con las imágenes de entrenamiento.
 
 \begin{table}[H]
     \centering
-    \caption{Hemisferio visual con el codificador del sistema (reconstrucción y entropía
+    \caption[Hemisferio visual con tres codificadores]{Hemisferio visual con el codificador del sistema (reconstrucción y entropía
     cruzada de peso 0.1), con uno entrenado sin la pérdida de clase y con la ResNet18 de
     ImageNet sin reentrenar (experimento~19). Formación visual: 1024 imágenes; prueba: 656.
     Evocación: top-3 sobre las primeras 15 imágenes de prueba de cada clase que el
@@ -872,7 +872,7 @@ intervalos, están en \texttt{results/experimento11/} y, para el protocolo, en
 
 \begin{table}[H]
     \centering
-    \caption{Una sola EHAM contra los especialistas, por número de imágenes de llenado
+    \caption[Una sola EHAM contra los especialistas, por imágenes de llenado]{Una sola EHAM contra los especialistas, por número de imágenes de llenado
     por clase (media de diez semillas). Texto: 171 consultas reservadas; clase correcta
     según el juez 1-NN, sobre las consultas respondidas y sobre el total (la falta de
     respuesta cuenta como fallo); distancia euclidiana, en el espacio latente continuo,
@@ -1008,7 +1008,7 @@ La Tabla~\ref{tab:lineas-base-texto} da los resultados.
 
 \begin{table}[H]
     \centering
-    \caption{Decisores sin memoria asociativa sobre los mismos vectores de los tokens, en
+    \caption[Decisores sin memoria asociativa sobre los vectores de los tokens]{Decisores sin memoria asociativa sobre los mismos vectores de los tokens, en
     las 400 consultas de la calibración, las 80 del protocolo completo y las 171
     reservadas de la comparación con una sola EHAM. Acierto sobre el total (\%), con la
     falta de respuesta como fallo; los empates en el máximo se resuelven por sorteo
@@ -1111,7 +1111,7 @@ La Tabla~\ref{tab:lineas-base-imagen} da los resultados.
 
 \begin{table}[H]
     \centering
-    \caption{Decisores sin memoria asociativa sobre los latentes de las 656 imágenes de
+    \caption[Decisores sin memoria asociativa sobre los latentes de las imágenes]{Decisores sin memoria asociativa sobre los latentes de las 656 imágenes de
     prueba, con los puntos de cada clase tomados de los 3200 latentes del llenado (16
     variantes) o de los 200 de las imágenes originales (variante 0). Ninguno tiene umbral,
     así que no rechazan y todos sus errores son falsos. Discordantes: imágenes que solo
@@ -1223,7 +1223,7 @@ de una sola memoria por módulo.
 
 \begin{table}[H]
 \centering
-\caption{Lesión de la memoria de contenido sobre las 800 imágenes emparejadas
+\caption[Lesión de la memoria de contenido]{Lesión de la memoria de contenido sobre las 800 imágenes emparejadas
 (100 por módulo). La fracción de celdas de la memoria heteroasociativa destruidas al
 azar es $f$.
 \emph{Nombra}: la proyección imagen$\to$texto no deja columnas vacías; es igual en las
@@ -1260,7 +1260,7 @@ La Tabla~\ref{tab:costo} resume los tiempos.
 
 \begin{table}[H]
     \centering
-    \caption{Costo computacional de reproducir el sistema desde cero (solo CPU).
+    \caption[Costo computacional de reproducir el sistema desde cero]{Costo computacional de reproducir el sistema desde cero (solo CPU).
     Fuente: \texttt{results/computational\_cost/nov2026\_cpu/}.}
     \label{tab:costo}
     \small

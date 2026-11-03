@@ -3,7 +3,7 @@
 
 \section{Producto propuesto}
 \label{sec:arquitectura}
-% <- 03, introducción y componentes
+% <- 03
 Esta sección describe la arquitectura completa del sistema distribuido de memoria
 transactiva de ocho módulos.
 Se presentan primero los componentes (Sección~\ref{sec:componentes}), luego los tres
@@ -34,7 +34,7 @@ vocabulario extraído de ConceptNet 5.7 \cite{speer2017conceptnet} y
 
 \begin{table}[H]
 \centering
-\caption{Las 26 memorias asociativas del sistema EAM-TMS ($K=8$ módulos).
+\caption[Las 26 memorias asociativas del sistema EAM-TMS]{Las 26 memorias asociativas del sistema EAM-TMS ($K=8$ módulos).
 Las lecturas de dominio $M^L$ y $M^R$ (ecuación~\eqref{eq:marginal}) no son memorias: se
 calculan de $M^H_{\mathrm{dom}}$.
 Para cada memoria se indica $(n, m \leftrightarrow p, q)$, como en la
@@ -113,21 +113,7 @@ El módulo ganador de una transacción es $g$; $s_k$, la puntuación que el mód
 a una pista con su memoria de contenido, y $\hat{s}_k$, la que un directorio da al
 módulo $k$ con la lectura normalizada por conteo (Sección~\ref{sec:operaciones}).
 
-\section{Descripción de la metodología}
-\label{sec:metodologia}
-% <- 04, apertura
-Esta sección describe el conjunto de datos y su partición, la representación de texto
-y de imagen, el banco de consultas, los parámetros de las memorias, la auditoría de
-trazabilidad, las métricas y la organización de los experimentos.
-En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
-directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
-va de una imagen a los directorios visuales y a las memorias de contenido.
-El término nombra un camino de procesamiento y no supone ninguna lateralización.
-
-% ---------------------------------------------------------------
-
-% <- 03, diagramas y operaciones
-\section{Diagramas de flujo}
+\subsection{Diagramas de flujo}
 \label{sec:diagramas}
 
 Los diagramas siguientes muestran las tres etapas operativas del sistema: el
@@ -208,7 +194,7 @@ recuperación punto a punto en la fase madura (Figura~\ref{fig:arq-madura}).
 
 \end{tikzpicture}%
 }
-\caption{Llenado de la memoria de contenido.
+\caption[Llenado de la memoria de contenido]{Llenado de la memoria de contenido.
 La rama semántica toma el vocabulario de cada clase de ConceptNet y cuantiza sus
 vectores fastText por magnitud sobre una escala global guardada $S$
 (Sección~\ref{sec:pipeline-semantico}).
@@ -286,7 +272,7 @@ con la ecuación~\eqref{eq:marginal}.}
 
 \end{tikzpicture}%
 }
-\caption{Fase temprana: aprendizaje mediado por el TME.
+\caption[Fase temprana: aprendizaje mediado por el TME]{Fase temprana: aprendizaje mediado por el TME.
 La consulta se codifica con fastText y cuantización por magnitud, el TME la difunde a
 los ocho módulos, cada módulo devuelve una puntuación $s_k$ con la proyección de su
 memoria heteroasociativa, ponderada por los pesos que lee de ella misma, y el ganador
@@ -349,7 +335,7 @@ el ganador y el TME; los demás módulos no presenciaron la transacción.}
 
 \end{tikzpicture}%
 }
-\caption{Fase madura: recuperación punto a punto.
+\caption[Fase madura: recuperación punto a punto]{Fase madura: recuperación punto a punto.
 La consulta entra por un módulo (al azar en texto; en la evaluación visual, uno que no
 es el especialista).
 Una imagen cuyo latente no alcanza la energía mínima $\tau$ se rechaza antes de
@@ -365,10 +351,10 @@ sistema rechaza la consulta.}
 \label{fig:arq-madura}
 \end{figure}
 
-\section{Operaciones del sistema}
+\subsection{Operaciones del sistema}
 \label{sec:operaciones}
 
-\subsection*{Puntuación de enrutamiento con compuerta}
+\subsubsection*{Puntuación de enrutamiento con compuerta}
 
 Para un módulo $k$, dada una pista $\mathbf{v}_q$ (un token de la consulta, cuantizado),
 el proceso de enrutamiento es el siguiente.
@@ -417,7 +403,7 @@ variantes, emparejadas con la secuencia de etiquetas expandida por frecuencias).
 Las masas de registro quedan igualadas por construcción, de modo que la activación media
 $s_k$ es directamente comparable entre módulos sin ajustes adicionales.
 
-\subsection*{Lectura normalizada por conteo}
+\subsubsection*{Lectura normalizada por conteo}
 
 Sea $\Pi^{\mathrm{dir}}_k(\mathbf{v}_q)$ la proyección de la pista $\mathbf{v}_q$
 en el directorio $M^{\mathrm{txt}}_{\mathrm{dir}}$ del módulo, restringida al bit $b=1$
@@ -444,7 +430,7 @@ número de veces que se registró «conoce» para el módulo $k$, el mismo en to
 características de la relación.
 La Sección~\ref{sec:calibracion} mide su efecto.
 
-\subsection*{Coordinación transactiva de la recuperación}
+\subsubsection*{Coordinación transactiva de la recuperación}
 
 En la fase madura, el módulo de entrada suma la lectura normalizada de su directorio y la de los
 directorios de los módulos que conoce (los que vio ganar alguna transacción) y reenvía
@@ -461,7 +447,7 @@ En imagen, durante la formación del directorio visual
 (Sección~\ref{sec:dataset}) cada módulo vio ganar a los otros siete, de modo que el
 primer círculo ya reúne los ocho directorios visuales.
 
-\subsection*{Lectura estricta del directorio visual y umbral de energía}
+\subsubsection*{Lectura estricta del directorio visual y umbral de energía}
 
 El directorio visual $M^{\mathrm{vis}}_{\mathrm{dir}}$ usa la misma lectura normalizada que el de texto, con
 $\xi = 0$.
@@ -475,7 +461,7 @@ Antes de cualquier memoria visual, el latente continuo pasa un umbral de energí
 norma es menor que $\tau = 16.61$, la imagen se rechaza.
 El valor de $\tau$ y por qué hace falta están en la Sección~\ref{sec:percepcion}.
 
-\subsection*{Entropía del directorio e información mutua}
+\subsubsection*{Entropía del directorio e información mutua}
 
 Sea $c_k$ el número de registros del módulo $k$ en el directorio y
 $C = \sum_k c_k$ el total.
@@ -511,14 +497,14 @@ ganador no depende del dominio.
 Con pocas consultas, este estimador sobrestima $I$ en unos $(K-1)^2/(2n\ln 2)$ bits, con
 $n$ el número de consultas no rechazadas.
 
-\subsection*{Recuperación de contenido (texto $\to$ imagen)}
+\subsubsection*{Recuperación de contenido (texto $\to$ imagen)}
 
 El módulo destino aplica la recuperación $\beta$ de su memoria de contenido desde la
 izquierda, con la primera pista de la consulta que esa memoria reconoce y con los pesos
 que lee de $M^L$; el resultado es un latente muestreado $\hat{\mathbf{z}}_q$ que el
 decodificador convierte en imagen.
 
-\subsection*{Evocación inversa (imagen $\to$ etiquetas)}
+\subsubsection*{Evocación inversa (imagen $\to$ etiquetas)}
 
 Dado un código latente cuantizado $\mathbf{z}_q$ de una imagen, la recuperación
 de etiquetas procede como sigue.
@@ -546,7 +532,7 @@ por el módulo, y el vector muestreado puede no coincidir con ningún vector alm
 El diccionario actúa como un decodificador que interpreta esa muestra con el
 vocabulario conocido.
 
-\subsection*{Concordancia temprana-madura}
+\subsubsection*{Concordancia temprana-madura}
 
 La \textbf{concordancia temprana-madura} es la fracción de consultas en las que la
 coordinación de la recuperación, desde el módulo de entrada, llega en la fase madura al
@@ -558,8 +544,19 @@ mismo módulo ganador que en la fase temprana:
 donde $x$ recorre las $N$ consultas evaluadas.
 La concordancia mide coincidencia con lo aprendido en la fase temprana, no acierto.
 
-% <- 04, secciones
-\section{Conjunto de datos}
+\section{Descripción de la metodología}
+\label{sec:metodologia}
+% <- 04
+Esta sección describe el conjunto de datos y su partición, la representación de texto
+y de imagen, el banco de consultas, los parámetros de las memorias, la auditoría de
+trazabilidad, las métricas y la organización de los experimentos.
+En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
+directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
+va de una imagen a los directorios visuales y a las memorias de contenido.
+El término nombra un camino de procesamiento y no supone ninguna lateralización.
+
+% ---------------------------------------------------------------
+\subsection{Conjunto de datos}
 \label{sec:dataset}
 
 Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, en su versión
@@ -600,7 +597,7 @@ Las 410 imágenes de cada clase se reparten en tres conjuntos disjuntos:
 \end{itemize}
 
 % ---------------------------------------------------------------
-\section{Representación de texto: vocabulario y consultas}
+\subsection{Representación de texto: vocabulario y consultas}
 \label{sec:pipeline-semantico}
 
 Las pistas de texto salen de dos caminos con la misma representación.
@@ -674,7 +671,7 @@ Solo queda fuera lo que no es representable. Un token sin vector fastText real n
 pista y, por tanto, no llega a la memoria.
 
 % ---------------------------------------------------------------
-\section{Percepción visual: codificador ResNet18}
+\subsection{Percepción visual: codificador ResNet18}
 \label{sec:percepcion}
 
 Para obtener representaciones latentes de las imágenes se entrenó sobre las ocho clases
@@ -719,7 +716,7 @@ pero sí 1 de las 1024 de la formación visual y 4 de las 656 de prueba, cuatro 
 que el directorio enrutaba bien y que su especialista aceptaba.
 
 % ---------------------------------------------------------------
-\section{Banco de evaluación semántica}
+\subsection{Banco de evaluación semántica}
 \label{sec:banco}
 
 Se construyó un banco de \textbf{411 consultas} en lenguaje natural con su clase
@@ -756,7 +753,7 @@ formación, el 13.8\,\% de las 80 primeras y el 49.8\,\% de las 400 de la
 calibración.\footnote{Reanálisis del banco, tabla M3.1.}
 
 % ---------------------------------------------------------------
-\section{Parámetros de la EAM}
+\subsection{Parámetros de la EAM}
 \label{sec:parametros}
 
 Los parámetros de la EAM se fijaron en $\iota = 0$, $\kappa = 0$, $\sigma = 0.1$ y
@@ -779,7 +776,7 @@ Los pesos solo cambian magnitudes; la contención, y con ella la aceptación y e
 no depende de ellos.
 
 % ---------------------------------------------------------------
-\section{Auditoría de trazabilidad}
+\subsection{Auditoría de trazabilidad}
 \label{sec:auditoria}
 
 La auditoría de trazabilidad comprueba que las operaciones de memoria son las de la
@@ -802,7 +799,7 @@ Todos los números reportados salen de corridas de este sistema, con sus tablas 
 \texttt{results/}.
 
 % ---------------------------------------------------------------
-\section{Métricas de evaluación}
+\subsection{Métricas de evaluación}
 \label{sec:metricas}
 
 Se emplearon las siguientes métricas. En este trabajo, \emph{precisión} es siempre la
@@ -834,12 +831,12 @@ las aceptadas.
 \end{itemize}
 
 % ---------------------------------------------------------------
-\section{Organización del experimento}
+\subsection{Organización del experimento}
 \label{sec:organizacion}
 
 La Sección~\ref{sec:resultados} presenta los estudios en este orden.
 El estudio principal es la calibración del directorio (9 condiciones de calibración
-$\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$ 5 semillas, que solo cambian
+$\times$ $N \in \{50, 100, 200, 400\}$ consultas $\times$ cinco semillas, que solo cambian
 el resultado en D y G).
 Le siguen la misma calibración con un conjunto de evaluación fijo, que no forma el
 directorio (Sección~\ref{sec:calibracion-fija}), y cuatro estudios de caracterización

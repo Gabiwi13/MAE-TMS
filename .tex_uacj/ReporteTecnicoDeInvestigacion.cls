@@ -351,7 +351,7 @@
         \ifdoctor
         \textbf{Doctor/a en Ciencias de la Ingeniería}\par
         \else
-        \vspace{1\@line}{INGENIERO EN SISTEMAS COMPUTACIONALES}\par
+        \vspace{1\@line}{LICENCIADO EN INGENIERÍA EN SISTEMAS COMPUTACIONALES}\par
         \fi
     \vfill\textsc{Asesora:}\par
         \vspace{3\@line}{\@directortitle\ \@director}%

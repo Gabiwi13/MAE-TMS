@@ -29,7 +29,7 @@ temprana.
 (objetivo~\ref{oe:lineas-base}).}
 En texto, el sistema acierta lo mismo que los decisores simples.
 Sobre las 80 consultas más difíciles del banco, en las que solo 11 traen el nombre de
-su clase, acierta el 81.25\,\%, y el voto por tokens del vocabulario, el centroide y los
+su clase, acierta el 81.2\,\%, y el voto por tokens del vocabulario, el centroide y los
 vecinos más cercanos dan entre 76.0 y 81.5\,\%.
 Sobre las 171 consultas reservadas, con 200 imágenes por clase, enruta bien el
 96.8\,\% y la memoria única clasifica bien el 96.9\,\% (diferencia de $-0.1$ puntos,
@@ -38,12 +38,12 @@ Lo que la memoria agrega sobre el voto en texto es el desempate entre las clases
 contienen algún token de la consulta: 2.9 puntos sobre las 400 consultas de
 calibración (90.0 frente a 87.1\,\%).
 Una tabla de conteos de tokens formada con las mismas consultas no se distingue del
-directorio (92.3 frente a 93.0\,\%, $p = 0.58$).
+directorio (92.2 frente a 93.0\,\%, $p = 0.58$).
 
 \paragraph{Rechazo (objetivo~\ref{oe:rechazo}).}
 De las 40 consultas fuera de dominio, el sistema acepta 2 con 25, 50, 100 y 200 imágenes
 por clase.
-La memoria única acepta 5.0, 5.0, 12.5 y 20.0\,\% con esos mismos tamaños, y los
+La memoria única acepta 2, 2, 5 y 8 de 40 con esos mismos tamaños, y los
 decisores de coseno aceptan las 40.
 La compuerta textual coincide con la pertenencia al vocabulario en los 3064 pares de
 token y clase examinados, de modo que un voto léxico rechaza las mismas consultas.

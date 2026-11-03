@@ -90,17 +90,15 @@ apertura04, resto04 = partir(cuerpo04, r"\subsection{Conjunto de datos}")
 escribir("Capitulo3.tex", remisiones(
          "\\chapter{Desarrollo del Proyecto}\\label{cap:desarrollo}\n\n"
          f"\\section{{Producto propuesto}}\n\\label{{{etq03}}}\n"
-         "% <- 03, introducción y componentes\n" + producto +
+         "% <- 03\n" + producto + resto03 +
          f"\n\\section{{Descripción de la metodología}}\n\\label{{{etq04}}}\n"
-         "% <- 04, apertura\n" + apertura04 + "\n\n"
-         "% <- 03, diagramas y operaciones\n" + mover_niveles(resto03, -1) +
-         "\n% <- 04, secciones\n" + mover_niveles(resto04, -1)))
+         "% <- 04\n" + apertura04 + resto04))
 
 # ---------------------------------------------------------------- 05 y 06
 etq05, cuerpo05 = quitar_encabezado(leer(SECCIONES / "05_resultados.tex"))
 etq06, cuerpo06 = quitar_encabezado(leer(SECCIONES / "06_discusion.tex"))
 escribir("Capitulo4.tex", remisiones(
-         "\\chapter{Resultados y discusiones}\\label{cap:resultados}\n\n"
+         "\\chapter{Resultados y Discusiones}\\label{cap:resultados}\n\n"
          f"\\section{{Resultados}}\n\\label{{{etq05}}}\n% <- 05\n" + cuerpo05 +
          f"\n\\section{{Discusiones}}\n\\label{{{etq06}}}\n% <- 06\n" + cuerpo06))
 

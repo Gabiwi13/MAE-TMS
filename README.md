@@ -84,21 +84,27 @@ TME (early phase only)
   `recall_from_left`, `recall_from_right`). Three arms: M (single memory),
   T-oracle (specialists, ground-truth routing) and T-protocol (official v5).
   Cuts N ∈ {25, 50, 100, 200}, 10 seeds, 3 draws, 171 held-out queries.
-- **Class accuracy ties**: M 97.4% vs T-protocol 97.5% (1-NN judge) at N=200;
-  T-protocol wins only at N=25 (98.5 vs 95.9).
+- **Class accuracy ties from N=50**: correct class over all 171 held-out queries
+  (no answer counts as a miss), T-protocol 93.2 / 96.8 / 96.8 / 96.8% vs M
+  97.6 / 97.5 / 97.6 / 96.9% at N = 25 / 50 / 100 / 200; at N=200 the difference
+  is −0.1 points [−2.9, +2.9], p = 0.86. M wins at N=25 (−4.4 [−8.1, −0.9])
+  (`results/experimento11_protocolo_corregido/ruteo/ruteo.md`).
 - **Fidelity does not**: distance of the recalled latent to the nearest real
-  instance is 26.7 for M vs 22.8 (protocol) / 22.2 (oracle), and the gap grows
-  with N (2.0 → 4.5). Mixing happens per coordinate, not per word.
-- **Chimeras where predicted**: with a shared first cue (`fruit`, `animal`,
-  `mammal`, `red`, `pome`, `table`) M gets the class right 44% of the time
-  with 73% of the coordinates from one class; specialists 100% / 100%.
-- **Image → text**: M covers more (93% strict hit vs 78.5% oracle) because the
-  union support contains 96% of test latents where a specialist contains 79%,
-  but answers with another class's domain 8× more often (8.0% vs 1.0%).
-- **Price of the directory**: 2.5 points below the oracle at every N.
+  instance at N=200 is 32.5 for M vs 27.2 (protocol) / 26.8 (oracle); the
+  paired protocol − M difference is −3.4 to −5.8 across the four cuts.
+- **Shared first cue** (`fruit`, `animal`, `mammal`, `red`, `pome`, `table`):
+  the protocol gets the class right 70–71% of the time from N=50, M 48–52%
+  (`results/experimento11_protocolo_corregido/tablas_nuevas/`).
+- **Image → text**: M answers 100% of the test images at N=200 vs 81.2% for the
+  protocol, but answers with another class's domain more often (10.9% vs 3.1%).
+- **Out of domain** (40 queries): with the double gate the protocol accepts 2 at
+  every N; M accepts 2, 2, 5 and 8.
+- **Price of the directory**: 3.2 points of class over all queries below the
+  oracle from N=50 (6.8 at N=25).
 - Verdict against the pre-registered criterion (`propuesta_fase5_mae_monolitica.md` §8):
   not refuted. Partitioning buys fidelity, coherence and precision; it costs
-  coverage, an index and 8× the cells. Full tables: `results/experimento11/`.
+  coverage, an index and 8× the cells. Full tables: `results/experimento11/` and,
+  for the protocol, `results/experimento11_protocolo_corregido/`.
 - **Experiment 12** (`run_experiment12_overlap.py`): the same single-memory
   fidelity gap measured for every pair of classes (28 pairs, 5 seeds). It grows
   with the overlap of the two classes' label supports (Spearman ρ 0.45,
@@ -117,11 +123,11 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Metric | Value | Note |
 |--------|-------|------|
 | Early-phase accuracy (ablation) | **90.0%** | gated scoring, honest rejection (88.0% with the 4-variant fill) |
-| Mature accuracy, B1 read | **93.5%** | directory ÷count normalization |
-| Mature accuracy, raw read (A) | 87.0% | density bias of raw directory score (80.0% with the 4-variant fill) |
-| Mature accuracy, best combo (G) | 94.0% | D + B1 + F |
-| Directory winner share, apple | **13.2%** | ideal 12.5% — bias essentially resolved |
-| Per-domain mature (B1) | cow/cup/tomato 100, car 98, dog 96, apple 88, horse 88, pear 78 | |
+| Mature accuracy, B1 read | **93.0%** | directory ÷count normalization; in-sample (on a fixed evaluation set it reaches the early phase, 91.0 vs 89.7%, `results/calibracion_evaluacion_fija/`) |
+| Mature accuracy, raw read (A) | 85.2% | density bias of raw directory score (80.0% with the 4-variant fill) |
+| Mature accuracy, best combo (G) | 93.5% | D + B1 + F, evaluated on a balanced draw of the bank |
+| Directory winner share, apple | **13.8%** | 20.5% with the raw read; apple has 51 of the 400 queries (12.75%) |
+| Per-domain mature (B1) | cow/cup/tomato 100, car 98, dog 94, apple 88, horse 88, pear 76 | `results/ablation_mdir_bias/ablation_metrics.csv` |
 | Visual routing (test, mem_dir_R) | 75.0% (v4) · **73.6% (v5, perspectival directories, xi=0)** | 25% / 26.4% rejection, **0 false routes** in both |
 | Visual routing, official fill since 23 Sep (16 variants + energy threshold) | **96.2%** routing · 3.5% rejection | 2 false routes of 656 (0.3%), both views of `horse7` → `dog`; exp13 measured 97.1 / 1 with GPU-encoded variants (`results/experimento13/`) |
 | Early↔mature fidelity, 16 test queries (v5) | **100%** | transactive routing over perspectival directories |
@@ -129,15 +135,12 @@ memories over the 8 ETH-80 classes. Ablation is 9 conditions × N ∈ {50,100,20
 | Image→labels evocation (top-3 hit) | **97.4%** (85.3% with the 4-variant fill) | |
 | Leave-one-object-out (exp16, 10 folds) | **89.2%** end-to-end on unseen objects (95.5% on unseen views of known objects, same models) | 2 false routes of 3280; gap 6.3 pts lives in 6 of 80 objects (`results/experimento16/`) |
 | Capacity: cross-domain false accept | **0.0%** at every N | specificity is exact |
-| Single-EHAM baseline (exp11, N=200) | class 97.4 / d_nn 26.7 | vs T-protocol 97.5 / 22.8 (`results/experimento11/`) |
+| Single-EHAM baseline (exp11, N=200) | class 96.9 / d_nn 32.5 | vs T-protocol 96.8 / 27.2 (`results/experimento11_protocolo_corregido/`) |
 
-**Finding on apple dominance (v4):** earlier 8-class runs showed apple capturing
-~20% of mature wins (vs ideal 12.5%) and pear collapsing to ~52%. A fresh
-deterministic encoder retrain revealed that a large part of this was the *latent
-space*, not only ConceptNet's lexical asymmetry: with better visual separation of
-pear/tomato from apple, apple's share drops to 13.2% and pear recovers to 86% with the 4-variant fill (78% with 16 variants) —
-**without changing the vocabulary**. So the dominance is a joint effect of encoder
-separability *and* the knowledge source, not ConceptNet alone.
+**Finding on apple dominance (v4):** with the raw directory read, apple captures
+20.5% of mature wins and pear is routed correctly 40% of the time; the B1 read
+brings apple to 13.8% and pear to 76% without changing what the directory
+registered (`results/ablation_mdir_bias/`).
 
 ## Key Results — Experimento 1 (v3, 3-class system, historical baseline)
 

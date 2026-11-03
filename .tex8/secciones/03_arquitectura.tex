@@ -31,7 +31,7 @@ vocabulario extraído de ConceptNet 5.7 \cite{speer2017conceptnet} y
 
 \begin{table}[H]
 \centering
-\caption{Las 26 memorias asociativas del sistema EAM-TMS ($K=8$ módulos).
+\caption[Las 26 memorias asociativas del sistema EAM-TMS]{Las 26 memorias asociativas del sistema EAM-TMS ($K=8$ módulos).
 Las lecturas de dominio $M^L$ y $M^R$ (ecuación~\eqref{eq:marginal}) no son memorias: se
 calculan de $M^H_{\mathrm{dom}}$.
 Para cada memoria se indica $(n, m \leftrightarrow p, q)$, como en la
@@ -191,7 +191,7 @@ recuperación punto a punto en la fase madura (Figura~\ref{fig:arq-madura}).
 
 \end{tikzpicture}%
 }
-\caption{Llenado de la memoria de contenido.
+\caption[Llenado de la memoria de contenido]{Llenado de la memoria de contenido.
 La rama semántica toma el vocabulario de cada clase de ConceptNet y cuantiza sus
 vectores fastText por magnitud sobre una escala global guardada $S$
 (Sección~\ref{sec:pipeline-semantico}).
@@ -269,7 +269,7 @@ con la ecuación~\eqref{eq:marginal}.}
 
 \end{tikzpicture}%
 }
-\caption{Fase temprana: aprendizaje mediado por el TME.
+\caption[Fase temprana: aprendizaje mediado por el TME]{Fase temprana: aprendizaje mediado por el TME.
 La consulta se codifica con fastText y cuantización por magnitud, el TME la difunde a
 los ocho módulos, cada módulo devuelve una puntuación $s_k$ con la proyección de su
 memoria heteroasociativa, ponderada por los pesos que lee de ella misma, y el ganador
@@ -332,7 +332,7 @@ el ganador y el TME; los demás módulos no presenciaron la transacción.}
 
 \end{tikzpicture}%
 }
-\caption{Fase madura: recuperación punto a punto.
+\caption[Fase madura: recuperación punto a punto]{Fase madura: recuperación punto a punto.
 La consulta entra por un módulo (al azar en texto; en la evaluación visual, uno que no
 es el especialista).
 Una imagen cuyo latente no alcanza la energía mínima $\tau$ se rechaza antes de
