@@ -5,10 +5,9 @@
 \subsection{El mecanismo transactivo funciona con ocho dominios; la clase la decide la representación}
 \label{sec:disc-escala}
 
-El mecanismo transactivo funciona con ocho dominios: los directorios
-heteroasociativos, la lectura normalizada, el rechazo por contención, la actualización
-perspectival del directorio ---en imagen--- y la coordinación punto a punto operan sin
-ajustes por dominio.
+Los directorios heteroasociativos, la lectura normalizada, el rechazo por contención,
+la actualización perspectival del directorio ---en imagen--- y la coordinación punto a
+punto operan con los ocho dominios sin ajustes por dominio.
 En imagen, el registro completo de percepciones de la formación visual queda balanceado
 (3.000 bits, el máximo con ocho módulos), y los directorios visuales de los módulos
 enrutan las imágenes de prueba con dos falsos enrutamientos en 656
@@ -128,7 +127,7 @@ procesos que nombra Wegner~\cite{wegner1995computer}:
     consultas de formación, así que la formación mejora la decisión en consultas que no
     vio.
     Con ese crecimiento la madura alcanza a la fase temprana, que sobre esas consultas
-    acierta el 89.7\,\%, sin superarla de forma robusta; la diferencia pasa de $-10.7$
+    acierta el 89.7\,\%, sin una ventaja que se sostenga entre sorteos; la diferencia pasa de $-10.7$
     puntos con 50 consultas a $+0.2$ con 200 y $+1.3$ con 291, y con 291 va de $-0.8$ a
     $+6.7$ según qué consultas se evalúen (Sección~\ref{sec:calibracion-fija}).
     En equipos de trabajo, el sistema transactivo se desarrolla a lo largo del proyecto,
@@ -260,14 +259,14 @@ a \textit{baker}~\cite{mcweeny1987putting}.
 En este sistema el nombre es también la lectura que más exige, porque es una conjunción
 sobre todas las coordenadas.
 
-El estado intermedio, reconocer sin poder nombrar, también tiene análogos.
+El estado intermedio, reconocer sin poder nombrar, también se observa en las personas.
 En la afasia óptica, el paciente identifica un objeto por la vista pero no puede
 nombrarlo desde ella~\cite{beauvois1982optic}.
 En la experiencia de la punta de la lengua, la persona sabe que conoce la palabra y
 recupera partes de ella, como la primera letra o el número de sílabas, sin
 alcanzarla~\cite{brown1966tip}; y la sensación de saber anticipa con bastante acierto qué
 se reconocerá aunque no se haya podido recordar~\cite{hart1965memory}.
-En este sistema el estado aparece en cuanto hay datos sin pareja.
+Aquí el estado aparece en cuanto hay datos sin pareja.
 De 800 imágenes registradas sin palabra, 78 quedan reconocidas sin nombre
 (Sección~\ref{sec:una-memoria}).
 La lectura de familiaridad las distingue de un rechazo; el protocolo de respuesta
@@ -275,7 +274,7 @@ todavía no las usa.
 El equivalente de la punta de la lengua sería un acceso parcial, una fracción de
 columnas con soporte, y esa fracción no se midió; tampoco si la familiaridad predice un
 enrutamiento correcto, como la sensación de saber predice el reconocimiento.
-En este sistema, sería el momento de consultar el directorio, porque el módulo sabe que
+Ese estado intermedio sería el momento de consultar el directorio, porque el módulo sabe que
 conoce el objeto y necesita a quien sepa el nombre.
 En los pacientes la asociación existía y se dañó; en el sistema, con datos sin pareja,
 nunca se registró.
@@ -295,9 +294,9 @@ equivoca de módulo, la mezcla reaparece como error de dominio.
 Con una etiqueta compartida como primera pista, el protocolo acierta la clase entre el
 70 y el 71\,\% desde 50 imágenes por clase (54\,\% con 25), y la EHAM única entre el
 48 y el 52\,\% (Sección~\ref{sec:eham-unica}).
-Es un reencuentro de un principio conocido en las memorias asociativas
+Es un principio conocido en las memorias asociativas
 (Sección~\ref{sec:trabajo-relacionado}).
-Se ve en la fidelidad.
+La menor mezcla se ve también en la fidelidad.
 La respuesta de la EHAM única queda más lejos de la instancia real más cercana de la
 clase de la consulta en todos los cortes (de 4.6 a 6.2 más que el oráculo), sin
 tendencia con el contenido.
@@ -363,7 +362,7 @@ deja pasar de 9 a 23 de las 40.
 En texto, este rechazo vale lo que una búsqueda léxica, porque la compuerta es la
 pertenencia al vocabulario y las consultas fuera de dominio se escribieron sin palabras
 de él; las dos que el sistema acepta son las únicas que tienen una.
-Su ventaja aparece frente a un almacén único.
+La ventaja de este rechazo aparece frente a un almacén único.
 La EHAM única acepta 2, 2, 5 y 8 de las 40 con 25, 50, 100 y 200 imágenes por clase, y
 el protocolo con doble compuerta 2 en todos los cortes (Sección~\ref{sec:eham-unica});
 la diferencia es significativa con 200 imágenes por clase ($p = 0.031$) y no con 100
@@ -422,9 +421,9 @@ encontraron en las personas, que recuerdan mejor dónde está una información q
 información misma~\cite{sparrow2011google}.
 En simulaciones de grupos, saber quién sabe qué conviene más en grupos grandes y en
 entornos de tarea o de conocimiento cambiantes~\cite{ren2006contingent}.
-Aquí son ocho módulos con contenido fijo y especialización asignada, como en la
-condición de estructura asignada de Wegner, Erber y Raymond~\cite{wegner1991transactive},
-así que no hay mucho que ganar en acierto.
+Con ocho módulos de contenido fijo y especialización asignada, como en la condición de
+estructura asignada de Wegner, Erber y Raymond~\cite{wegner1991transactive}, no hay
+mucho que ganar en acierto.
 
 En suma, la clase la deciden las representaciones: el vocabulario en texto y el
 codificador entrenado con la clase en imagen.
@@ -596,7 +595,7 @@ etiqueta, y no tolera ninguna columna vacía.
 Destruir al azar el 1\,\% de las celdas de la memoria de contenido deja sin nombre al
 92\,\% de las imágenes emparejadas, y el 5\,\% a todas
 (Tabla~\ref{tab:lesion}); el reconocimiento, en cambio, sobrevive.
-La diferencia de redundancia entre las dos lecturas viene de la construcción, así que la
+Como la diferencia de redundancia entre las dos lecturas viene de la construcción, la
 disociación no prueba dos procesos (Sección~\ref{sec:disc-una-memoria}); un nombrar
 graduado, que tolere una fracción de columnas vacías, y un daño difuso en lugar de al
 azar quedan por medir.

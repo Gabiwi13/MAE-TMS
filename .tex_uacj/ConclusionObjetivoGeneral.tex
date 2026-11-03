@@ -4,8 +4,8 @@ las ocho clases y contra un codificador sin la pérdida de clase.
 Lo que dejaron esas comparaciones se resume por objetivo específico.
 
 \paragraph{Arquitectura (objetivo~\ref{oe:arquitectura}).}
-El sistema tiene ocho módulos, cada uno con una memoria de contenido heteroasociativa
-y dos directorios, y un mediador que deja de intervenir en la fase madura.
+Son ocho módulos, cada uno con una memoria de contenido heteroasociativa y dos
+directorios, y un mediador que deja de intervenir en la fase madura.
 Registrar, reconocer, recuperar y enrutar son operaciones de las memorias
 (Sección~\ref{sec:operaciones}); la suma por tokens, la lectura B1, el umbral $\tau$ y el
 rescate léxico operan fuera de ellas (Sección~\ref{sec:auditoria}).
@@ -71,7 +71,7 @@ prueba (631), rechazan 23 y se equivocan en dos.
 El centroide y los vecinos más cercanos sobre los mismos códigos aciertan de 652 a 655
 sin rechazar ninguna, y el vecino más cercano acierta las 23 que el sistema rechaza.
 Con un codificador entrenado sin la pérdida de clase, el enrutamiento cae al 70.4\,\%,
-los errores suben de 2 a 169 y la cobertura de punta a punta con objetos nuevos baja del
+los falsos enrutamientos suben de 2 a 169 y la cobertura de punta a punta con objetos nuevos baja del
 89.2 al 59.3\,\%.
 La separación entre clases la hace el codificador supervisado, y la propiedad de
 fallar con un rechazo en lugar de un error depende de esa supervisión.

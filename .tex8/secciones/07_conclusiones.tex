@@ -18,7 +18,7 @@ coordinación de la recuperación; la asignación de información la hace la eti
 Con conjuntos evaluados fijos de 120 consultas que nunca se registran en el directorio,
 la fase madura con la lectura normalizada alcanza el \textbf{91.0\,\%} con 291 consultas
 de formación, frente al \textbf{89.7\,\%} de la temprana (promedio de cinco sorteos), sin
-superarla de forma robusta ($+0.2$ puntos con 200 consultas de formación y $+1.3$ con
+superarla de forma sostenida ($+0.2$ puntos con 200 consultas de formación y $+1.3$ con
 291); con la lectura cruda queda 7.5 puntos por debajo
 (Sección~\ref{sec:calibracion-fija}).
 Dentro de muestra, sobre 400 consultas del banco de 411 que también forman el
@@ -87,7 +87,8 @@ que se leen en los registros de sus memorias.
 Los límites vienen de las dos partes.
 La clase la decide sobre todo la representación.
 En texto, el léxico que comparten clases vecinas concentra los errores que quedan
-(\texttt{pear} $\to$ \texttt{apple} 9 y \texttt{horse} $\to$ \texttt{cow} 6 de 28), y
+(\texttt{pear} $\to$ \texttt{apple} 9 y \texttt{horse} $\to$ \texttt{cow} 6 de 28),
+como en la sobrecarga de pistas de la memoria humana~\cite{watkins1975buildup}, y
 \texttt{pear} es difícil para todos los decisores.
 Con los mismos vectores, un centroide la acierta el 8.0\,\% de las veces y los vecinos
 más cercanos entre el 62 y el 71\,\%, frente al 70.0\,\% de la fase temprana y al
@@ -97,17 +98,15 @@ El mecanismo tiene también límites propios: necesita la normalización externa
 directorio, su contención estricta por coordenada cuesta cobertura (rechaza 23 imágenes
 que un vecino más cercano clasifica bien), el nombre se pierde con un daño del 1\,\% y
 el contenido visual da soporte a entradas sin estructura.
-El directorio funciona como un índice que localiza al especialista.
-Formarlo cuesta interacción.
+El directorio funciona como un índice que localiza al especialista, y formarlo cuesta
+interacción.
 Con un conjunto evaluado fijo, la fase madura sube del 78.9 al 91.0\,\% entre 50 y 291
 consultas de formación, hasta alcanzar a la temprana (89.7\,\%), sin una ventaja que se
 sostenga entre sorteos ($+1.3$ puntos con 291; de $-0.8$ a $+6.7$ según el sorteo).
-Y las consultas de las clases con léxico compartido se van hacia la clase vecina, como
-en la sobrecarga de pistas de la memoria humana~\cite{watkins1975buildup}.
 
 \paragraph{Frente a una EHAM única.}
-Con el mismo contenido, en el acierto de clase del sistema transactivo y de una sola
-memoria con las ocho clases, la diferencia por consulta no excluye el cero desde 50
+Con el mismo contenido, la diferencia por consulta en el acierto de clase entre el
+sistema transactivo y una sola memoria con las ocho clases no excluye el cero desde 50
 imágenes por clase ($-0.7$, $-0.7$ y $-0.1$ puntos con 50, 100 y 200), aunque McNemar
 por pares, que trata como independientes las repeticiones de cada consulta, favorece a
 la EHAM única con 50 y 100.

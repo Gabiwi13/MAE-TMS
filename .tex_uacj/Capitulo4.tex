@@ -433,31 +433,31 @@ consultas, más fáciles, en las que la fase temprana ya acierta el 90.0\,\%
 Con un conjunto evaluado fijo, formar el directorio con más interacciones sube la
 precisión madura del 78.9 al 91.0\,\% entre unas 6 y 36 consultas de formación por
 clase (50 y 291 en total), hasta el nivel de la fase temprana sobre esas consultas
-(89.7\,\%), sin superarlo de forma robusta (Sección~\ref{sec:calibracion-fija}).
+(89.7\,\%), sin una ventaja que se sostenga entre sorteos
+(Sección~\ref{sec:calibracion-fija}).
 
 \paragraph{El orden afecta la velocidad, no el destino.}
 Las cuatro condiciones terminan en el mismo estado, con los conteos y la entropía de la
 Sección~\ref{sec:proto-completo} (2.914 bits).
-El orden sí cambia la velocidad.
-La precisión madura llega al 70\,\% tras 13 interacciones en orden intercalado, tras 28 a
-42 en orden barajado (según la semilla) y tras 59 en orden bloqueado; al 75\,\%, tras 18,
-40 a 51 y 71.
 La invariancia del destino ocurre por construcción, porque el ganador de cada
 interacción lo deciden las memorias de contenido, que no cambian durante la formación, y
 el registro es una suma (ecuación~\eqref{eq:registro}), que no depende del orden de los
 sumandos.
 El orden solo determina cuándo el directorio parcial se vuelve utilizable.
+La precisión madura llega al 70\,\% tras 13 interacciones en orden intercalado, tras 28 a
+42 en orden barajado (según la semilla) y tras 59 en orden bloqueado; al 75\,\%, tras 18,
+40 a 51 y 71.
 
 % ---------------------------------------------------------------
 \subsection{Capacidad de llenado}
 \label{sec:capacidad}
 
 Se varió el número de imágenes registradas por clase,
-$I \in \{25, 50, 100, 200, 328\}$, con el llenado imagen-etiqueta.
+$I \in \{25, 50, 100, 200, 328\}$, con el llenado imagen-etiqueta
+(Tabla~\ref{tab:capacidad}).
 Una imagen se acepta si la memoria del módulo la contiene desde el lado de la imagen
 (con $\xi = 0$); los \textit{falsos} se miden con imágenes de otras
 clases presentadas al módulo.
-La Tabla~\ref{tab:capacidad} resume las métricas.
 
 \begin{table}[H]
     \centering
@@ -941,9 +941,8 @@ McNemar exacto sobre los pares de semilla, consulta y sorteo da $p = 0.86$ con 2
 imágenes por clase y $p < 0.05$ con 25, 50 y 100, pero trata como independientes las
 treinta repeticiones de cada consulta y es optimista.
 Sobre las respondidas, el acierto del protocolo es del 94.7, 98.1, 98.1 y 98.2\,\%.
-Lo que cuesta elegir el módulo con el directorio en lugar de con la clase real, la
-distancia del protocolo al oráculo sobre el total, es de 6.8 puntos con 25 imágenes por
-clase y de 3.2 desde 50.
+Elegir el módulo con el directorio en lugar de con la clase real cuesta, sobre el
+total, 6.8 puntos frente al oráculo con 25 imágenes por clase y 3.2 desde 50.
 
 \paragraph{Fidelidad del recuerdo.}
 La respuesta de la EHAM única queda más lejos de la instancia real más cercana de la
@@ -988,7 +987,7 @@ es menor que un umbral $\delta$ quita más de un acierto por cada error evitado
 \subsection{Líneas base sin memoria asociativa}
 \label{sec:lineas-base}
 
-Esta sección mide qué agrega la memoria asociativa frente a decisores simples que usan
+La pregunta es qué agrega la memoria asociativa frente a decisores simples que usan
 exactamente los mismos vectores que el sistema.
 Los decisores, las particiones y los criterios de lectura se fijaron antes de correr.
 
@@ -1119,7 +1118,6 @@ Son el centroide de la clase, el vecino más cercano y los cinco más cercanos, 
 distancia euclidiana y coseno, y no tienen umbral.
 El sistema enruta con los directorios visuales, con la misma regla de entrada y el mismo
 umbral de energía de la Sección~\ref{sec:hemisferio-visual}.
-La Tabla~\ref{tab:lineas-base-imagen} da los resultados.
 
 \begin{table}[H]
     \centering
@@ -1155,7 +1153,8 @@ La Tabla~\ref{tab:lineas-base-imagen} da los resultados.
 
 \paragraph{En imagen, los decisores sin memoria superan al enrutamiento.}
 Con las 16 variantes, los decisores aciertan de 652 a 655 de las 656 imágenes de prueba,
-con 1 a 4 falsos, frente a 631 del sistema, con 2 falsos y 23 rechazos.
+con 1 a 4 falsos, frente a 631 del sistema, con 2 falsos y 23 rechazos
+(Tabla~\ref{tab:lineas-base-imagen}).
 La línea base acierta sola 23 o 24 imágenes y el sistema de 0 a 3, con 16 variantes o
 solo con la original, y McNemar exacto da $p < 10^{-4}$ en todos los casos.
 El 1-NN euclidiano clasifica bien las 23 imágenes que el sistema rechaza, incluidas las
@@ -1268,7 +1267,6 @@ Se midió el tiempo real transcurrido de reproducir el sistema completo desde ce
 partición del conjunto de datos a la fase madura, en una computadora portátil con un
 Intel Core Ultra 7 265HX (20 hilos lógicos) y 16.6~GB de RAM, con la GPU deshabilitada,
 de modo que todo corre en CPU.
-La Tabla~\ref{tab:costo} resume los tiempos.
 
 \begin{table}[H]
     \centering
@@ -1291,7 +1289,7 @@ La Tabla~\ref{tab:costo} resume los tiempos.
     \end{tabular}
 \end{table}
 
-El sistema completo se reproduce en 102.9 minutos.
+El sistema completo se reproduce en 102.9 minutos (Tabla~\ref{tab:costo}).
 La parte más cara son las memorias.
 El llenado de las ocho memorias de contenido y el hemisferio visual suman 77.4 minutos,
 tres cuartas partes del total, frente a los 21.5 minutos del entrenamiento del
@@ -1307,10 +1305,9 @@ Las fases de texto, con el banco de 411 consultas, tardan menos de cuatro minuto
 \subsection{El mecanismo transactivo funciona con ocho dominios; la clase la decide la representación}
 \label{sec:disc-escala}
 
-El mecanismo transactivo funciona con ocho dominios: los directorios
-heteroasociativos, la lectura normalizada, el rechazo por contención, la actualización
-perspectival del directorio ---en imagen--- y la coordinación punto a punto operan sin
-ajustes por dominio.
+Los directorios heteroasociativos, la lectura normalizada, el rechazo por contención,
+la actualización perspectival del directorio ---en imagen--- y la coordinación punto a
+punto operan con los ocho dominios sin ajustes por dominio.
 En imagen, el registro completo de percepciones de la formación visual queda balanceado
 (3.000 bits, el máximo con ocho módulos), y los directorios visuales de los módulos
 enrutan las imágenes de prueba con dos falsos enrutamientos en 656
@@ -1430,7 +1427,7 @@ procesos que nombra Wegner~\cite{wegner1995computer}:
     consultas de formación, así que la formación mejora la decisión en consultas que no
     vio.
     Con ese crecimiento la madura alcanza a la fase temprana, que sobre esas consultas
-    acierta el 89.7\,\%, sin superarla de forma robusta; la diferencia pasa de $-10.7$
+    acierta el 89.7\,\%, sin una ventaja que se sostenga entre sorteos; la diferencia pasa de $-10.7$
     puntos con 50 consultas a $+0.2$ con 200 y $+1.3$ con 291, y con 291 va de $-0.8$ a
     $+6.7$ según qué consultas se evalúen (Sección~\ref{sec:calibracion-fija}).
     En equipos de trabajo, el sistema transactivo se desarrolla a lo largo del proyecto,
@@ -1562,14 +1559,14 @@ a \textit{baker}~\cite{mcweeny1987putting}.
 En este sistema el nombre es también la lectura que más exige, porque es una conjunción
 sobre todas las coordenadas.
 
-El estado intermedio, reconocer sin poder nombrar, también tiene análogos.
+El estado intermedio, reconocer sin poder nombrar, también se observa en las personas.
 En la afasia óptica, el paciente identifica un objeto por la vista pero no puede
 nombrarlo desde ella~\cite{beauvois1982optic}.
 En la experiencia de la punta de la lengua, la persona sabe que conoce la palabra y
 recupera partes de ella, como la primera letra o el número de sílabas, sin
 alcanzarla~\cite{brown1966tip}; y la sensación de saber anticipa con bastante acierto qué
 se reconocerá aunque no se haya podido recordar~\cite{hart1965memory}.
-En este sistema el estado aparece en cuanto hay datos sin pareja.
+Aquí el estado aparece en cuanto hay datos sin pareja.
 De 800 imágenes registradas sin palabra, 78 quedan reconocidas sin nombre
 (Sección~\ref{sec:una-memoria}).
 La lectura de familiaridad las distingue de un rechazo; el protocolo de respuesta
@@ -1577,7 +1574,7 @@ todavía no las usa.
 El equivalente de la punta de la lengua sería un acceso parcial, una fracción de
 columnas con soporte, y esa fracción no se midió; tampoco si la familiaridad predice un
 enrutamiento correcto, como la sensación de saber predice el reconocimiento.
-En este sistema, sería el momento de consultar el directorio, porque el módulo sabe que
+Ese estado intermedio sería el momento de consultar el directorio, porque el módulo sabe que
 conoce el objeto y necesita a quien sepa el nombre.
 En los pacientes la asociación existía y se dañó; en el sistema, con datos sin pareja,
 nunca se registró.
@@ -1597,9 +1594,9 @@ equivoca de módulo, la mezcla reaparece como error de dominio.
 Con una etiqueta compartida como primera pista, el protocolo acierta la clase entre el
 70 y el 71\,\% desde 50 imágenes por clase (54\,\% con 25), y la EHAM única entre el
 48 y el 52\,\% (Sección~\ref{sec:eham-unica}).
-Es un reencuentro de un principio conocido en las memorias asociativas
+Es un principio conocido en las memorias asociativas
 (Sección~\ref{sec:trabajo-relacionado}).
-Se ve en la fidelidad.
+La menor mezcla se ve también en la fidelidad.
 La respuesta de la EHAM única queda más lejos de la instancia real más cercana de la
 clase de la consulta en todos los cortes (de 4.6 a 6.2 más que el oráculo), sin
 tendencia con el contenido.
@@ -1665,7 +1662,7 @@ deja pasar de 9 a 23 de las 40.
 En texto, este rechazo vale lo que una búsqueda léxica, porque la compuerta es la
 pertenencia al vocabulario y las consultas fuera de dominio se escribieron sin palabras
 de él; las dos que el sistema acepta son las únicas que tienen una.
-Su ventaja aparece frente a un almacén único.
+La ventaja de este rechazo aparece frente a un almacén único.
 La EHAM única acepta 2, 2, 5 y 8 de las 40 con 25, 50, 100 y 200 imágenes por clase, y
 el protocolo con doble compuerta 2 en todos los cortes (Sección~\ref{sec:eham-unica});
 la diferencia es significativa con 200 imágenes por clase ($p = 0.031$) y no con 100
@@ -1724,9 +1721,9 @@ encontraron en las personas, que recuerdan mejor dónde está una información q
 información misma~\cite{sparrow2011google}.
 En simulaciones de grupos, saber quién sabe qué conviene más en grupos grandes y en
 entornos de tarea o de conocimiento cambiantes~\cite{ren2006contingent}.
-Aquí son ocho módulos con contenido fijo y especialización asignada, como en la
-condición de estructura asignada de Wegner, Erber y Raymond~\cite{wegner1991transactive},
-así que no hay mucho que ganar en acierto.
+Con ocho módulos de contenido fijo y especialización asignada, como en la condición de
+estructura asignada de Wegner, Erber y Raymond~\cite{wegner1991transactive}, no hay
+mucho que ganar en acierto.
 
 En suma, la clase la deciden las representaciones: el vocabulario en texto y el
 codificador entrenado con la clase en imagen.
@@ -1898,7 +1895,7 @@ etiqueta, y no tolera ninguna columna vacía.
 Destruir al azar el 1\,\% de las celdas de la memoria de contenido deja sin nombre al
 92\,\% de las imágenes emparejadas, y el 5\,\% a todas
 (Tabla~\ref{tab:lesion}); el reconocimiento, en cambio, sobrevive.
-La diferencia de redundancia entre las dos lecturas viene de la construcción, así que la
+Como la diferencia de redundancia entre las dos lecturas viene de la construcción, la
 disociación no prueba dos procesos (Sección~\ref{sec:disc-una-memoria}); un nombrar
 graduado, que tolere una fracción de columnas vacías, y un daño difuso en lugar de al
 azar quedan por medir.

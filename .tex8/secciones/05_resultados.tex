@@ -430,31 +430,31 @@ consultas, más fáciles, en las que la fase temprana ya acierta el 90.0\,\%
 Con un conjunto evaluado fijo, formar el directorio con más interacciones sube la
 precisión madura del 78.9 al 91.0\,\% entre unas 6 y 36 consultas de formación por
 clase (50 y 291 en total), hasta el nivel de la fase temprana sobre esas consultas
-(89.7\,\%), sin superarlo de forma robusta (Sección~\ref{sec:calibracion-fija}).
+(89.7\,\%), sin una ventaja que se sostenga entre sorteos
+(Sección~\ref{sec:calibracion-fija}).
 
 \paragraph{El orden afecta la velocidad, no el destino.}
 Las cuatro condiciones terminan en el mismo estado, con los conteos y la entropía de la
 Sección~\ref{sec:proto-completo} (2.914 bits).
-El orden sí cambia la velocidad.
-La precisión madura llega al 70\,\% tras 13 interacciones en orden intercalado, tras 28 a
-42 en orden barajado (según la semilla) y tras 59 en orden bloqueado; al 75\,\%, tras 18,
-40 a 51 y 71.
 La invariancia del destino ocurre por construcción, porque el ganador de cada
 interacción lo deciden las memorias de contenido, que no cambian durante la formación, y
 el registro es una suma (ecuación~\eqref{eq:registro}), que no depende del orden de los
 sumandos.
 El orden solo determina cuándo el directorio parcial se vuelve utilizable.
+La precisión madura llega al 70\,\% tras 13 interacciones en orden intercalado, tras 28 a
+42 en orden barajado (según la semilla) y tras 59 en orden bloqueado; al 75\,\%, tras 18,
+40 a 51 y 71.
 
 % ---------------------------------------------------------------
 \subsection{Capacidad de llenado}
 \label{sec:capacidad}
 
 Se varió el número de imágenes registradas por clase,
-$I \in \{25, 50, 100, 200, 328\}$, con el llenado imagen-etiqueta.
+$I \in \{25, 50, 100, 200, 328\}$, con el llenado imagen-etiqueta
+(Tabla~\ref{tab:capacidad}).
 Una imagen se acepta si la memoria del módulo la contiene desde el lado de la imagen
 (con $\xi = 0$); los \textit{falsos} se miden con imágenes de otras
 clases presentadas al módulo.
-La Tabla~\ref{tab:capacidad} resume las métricas.
 
 \begin{table}[H]
     \centering
@@ -938,9 +938,8 @@ McNemar exacto sobre los pares de semilla, consulta y sorteo da $p = 0.86$ con 2
 imágenes por clase y $p < 0.05$ con 25, 50 y 100, pero trata como independientes las
 treinta repeticiones de cada consulta y es optimista.
 Sobre las respondidas, el acierto del protocolo es del 94.7, 98.1, 98.1 y 98.2\,\%.
-Lo que cuesta elegir el módulo con el directorio en lugar de con la clase real, la
-distancia del protocolo al oráculo sobre el total, es de 6.8 puntos con 25 imágenes por
-clase y de 3.2 desde 50.
+Elegir el módulo con el directorio en lugar de con la clase real cuesta, sobre el
+total, 6.8 puntos frente al oráculo con 25 imágenes por clase y 3.2 desde 50.
 
 \paragraph{Fidelidad del recuerdo.}
 La respuesta de la EHAM única queda más lejos de la instancia real más cercana de la
@@ -985,7 +984,7 @@ es menor que un umbral $\delta$ quita más de un acierto por cada error evitado
 \subsection{Líneas base sin memoria asociativa}
 \label{sec:lineas-base}
 
-Esta sección mide qué agrega la memoria asociativa frente a decisores simples que usan
+La pregunta es qué agrega la memoria asociativa frente a decisores simples que usan
 exactamente los mismos vectores que el sistema.
 Los decisores, las particiones y los criterios de lectura se fijaron antes de correr.
 
@@ -1116,7 +1115,6 @@ Son el centroide de la clase, el vecino más cercano y los cinco más cercanos, 
 distancia euclidiana y coseno, y no tienen umbral.
 El sistema enruta con los directorios visuales, con la misma regla de entrada y el mismo
 umbral de energía de la Sección~\ref{sec:hemisferio-visual}.
-La Tabla~\ref{tab:lineas-base-imagen} da los resultados.
 
 \begin{table}[H]
     \centering
@@ -1152,7 +1150,8 @@ La Tabla~\ref{tab:lineas-base-imagen} da los resultados.
 
 \paragraph{En imagen, los decisores sin memoria superan al enrutamiento.}
 Con las 16 variantes, los decisores aciertan de 652 a 655 de las 656 imágenes de prueba,
-con 1 a 4 falsos, frente a 631 del sistema, con 2 falsos y 23 rechazos.
+con 1 a 4 falsos, frente a 631 del sistema, con 2 falsos y 23 rechazos
+(Tabla~\ref{tab:lineas-base-imagen}).
 La línea base acierta sola 23 o 24 imágenes y el sistema de 0 a 3, con 16 variantes o
 solo con la original, y McNemar exacto da $p < 10^{-4}$ en todos los casos.
 El 1-NN euclidiano clasifica bien las 23 imágenes que el sistema rechaza, incluidas las
@@ -1265,7 +1264,6 @@ Se midió el tiempo real transcurrido de reproducir el sistema completo desde ce
 partición del conjunto de datos a la fase madura, en una computadora portátil con un
 Intel Core Ultra 7 265HX (20 hilos lógicos) y 16.6~GB de RAM, con la GPU deshabilitada,
 de modo que todo corre en CPU.
-La Tabla~\ref{tab:costo} resume los tiempos.
 
 \begin{table}[H]
     \centering
@@ -1288,7 +1286,7 @@ La Tabla~\ref{tab:costo} resume los tiempos.
     \end{tabular}
 \end{table}
 
-El sistema completo se reproduce en 102.9 minutos.
+El sistema completo se reproduce en 102.9 minutos (Tabla~\ref{tab:costo}).
 La parte más cara son las memorias.
 El llenado de las ocho memorias de contenido y el hemisferio visual suman 77.4 minutos,
 tres cuartas partes del total, frente a los 21.5 minutos del entrenamiento del
