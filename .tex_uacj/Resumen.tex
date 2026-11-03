@@ -1,42 +1,35 @@
 \chapter*{Resumen}
 \markboth{chapter name}{Sinopsis}
+\enlargethispage{3\baselineskip}
 
-Un grupo que trabaja junto puede recordar más que cada uno de sus miembros porque cada
-miembro sabe quién sabe qué y a quién preguntar; Wegner~\cite{wegner1987transactive}
-llamó a esta organización \emph{memoria transactiva}.
+Un grupo que trabaja junto puede recordar más que cada uno de sus miembros, porque cada
+miembro sabe quién sabe qué; Wegner~\cite{wegner1987transactive} llamó a esta
+organización \emph{memoria transactiva}.
 Este trabajo construye EAM-TMS, un sistema distribuido de memoria transactiva sobre las
-memorias asociativas entrópicas de Pineda y Morales, en su variante ponderada y su
-extensión heteroasociativa \cite{pineda2022weighted,morales2025missing}, y mide qué
-agrega la memoria frente a decisores simples que usan las mismas representaciones.
-El sistema tiene ocho módulos, uno por cada clase de ETH-80~\cite{leibe2003eth80}.
+memorias asociativas entrópicas de Pineda y Morales
+\cite{pineda2022weighted,morales2025missing}, con ocho módulos, uno por clase de
+ETH-80~\cite{leibe2003eth80}.
 Cada módulo guarda palabras e imágenes de su clase en una sola memoria heteroasociativa
-y lleva un directorio textual y uno visual, que se forman con el uso.
-La especialización es asignada por la etiqueta de clase, y ninguna decisión de
-enrutamiento o rechazo pasa por un clasificador discriminativo.
-Al enrutar texto, el sistema iguala a los decisores simples: sobre 80 consultas acierta
-el 81.25\,\%, contra 79.4\,\% del voto por tokens del vocabulario y 81.5\,\% de los
-cinco vecinos más cercanos, y sobre 171 consultas reservadas, el 96.8\,\%, contra 96.9\,\% de
-una sola memoria con las ocho clases.
-Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, contra las 40 que
-aceptan los decisores de coseno y 8 de la memoria única; su compuerta textual coincide
-con la pertenencia al vocabulario.
-Recupera en ambas direcciones: responde con una imagen al 98.7\,\% de las consultas
-reservadas, con una fidelidad de 27.2 (distancia a la instancia real más cercana de su
-clase; 32.5 en la memoria única), y 113 de 116 imágenes
-enrutadas evocan palabras de su dominio.
-Con imágenes, enruta al especialista el 96.2\,\% de 656 vistas nuevas, con dos errores,
-mientras que el centroide y los vecinos más cercanos sobre los mismos códigos aciertan
-del 99.4 al 99.8\,\% sin rechazar ninguna.
-Ese enrutamiento depende de la supervisión del codificador: sin la pérdida de clase, cae
-al 70.4\,\% con 169 errores.
-Con objetos que ningún módulo vio, la cobertura de punta a punta es del 89.2\,\%, con 2
-falsos enrutamientos de 3280 vistas; con un codificador reentrenado sin esos objetos, es
-del 87.6\,\%, con 136.
-La memoria asociativa no acierta más que un decisor simple; aporta el rechazo, la
+y lleva directorios que se forman con el uso; ninguna decisión de enrutamiento o rechazo
+pasa por un clasificador discriminativo.
+Al enrutar texto, el sistema iguala a decisores simples que usan las mismas
+representaciones (96.8\,\% sobre 171 consultas reservadas, contra 96.9\,\% de una sola
+memoria con las ocho clases).
+Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, contra las 40 de los
+decisores de coseno.
+Recupera en ambas direcciones: responde con una imagen al 98.7\,\% de las consultas, más
+cerca de una instancia real de su clase que la memoria única (27.2 contra 32.5), y 113
+de 116 imágenes evocan palabras de su dominio.
+Con imágenes enruta bien el 96.2\,\% de 656 vistas nuevas, mientras que un centroide sobre
+los mismos códigos acierta más, sin rechazar ninguna; ese enrutamiento depende de que el
+codificador se entrenó con la clase, y sin ella cae al 70.4\,\%.
+Con objetos que ningún módulo vio, la cobertura es del 89.2\,\%, y del 87.6\,\% si el
+codificador tampoco los vio.
+La memoria asociativa no acierta más que un decisor simple: aporta el rechazo, la
 recuperación en ambas direcciones y un directorio que registra quién sabe qué.
 
-\hfill
 
-\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria
+\smallskip
+\noindent\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria
 heteroasociativa, sistemas distribuidos, enrutamiento de consultas, recuperación
 multimodal.

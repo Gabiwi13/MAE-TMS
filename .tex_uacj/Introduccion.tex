@@ -1,43 +1,34 @@
 \chapter*{Introducción}\label{introduccion}\label{sec:introduccion}
 \thispagestyle{empty}
 \markboth{Introducción}{Introducción}
+\enlargethispage{5\baselineskip}
 
-Un grupo que trabaja junto el tiempo suficiente recuerda más que cualquiera de sus
-miembros por separado, porque cada uno sabe quién sabe qué y a quién preguntar.
-Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta
-organización, y más tarde la describió como un modelo de red de
-computadoras~\cite{wegner1995computer}.
-Desde los sistemas computacionales, la idea es la de una red de nodos especializados
-que aprenden, con el uso, a enviarse las consultas sin un coordinador central.
+Un grupo que trabaja junto puede recordar más que cualquiera de sus miembros por
+separado, porque cada uno sabe quién sabe qué y a quién preguntar.
+Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta organización
+y después la describió como una red de computadoras~\cite{wegner1995computer}: nodos
+especializados que aprenden, con el uso, a enviarse las consultas.
 
 Las memorias asociativas entrópicas de Pineda y Morales
 \cite{pineda2021entropic,pineda2022weighted,morales2025missing} guardan lo que registran
-como conteos de frecuencia, reconocen una entrada cuando sus rasgos tienen soporte en
-esos conteos, recuperan muestreándolos y rechazan lo que no contienen.
-Este trabajo pregunta si con ellas se puede construir un sistema de memoria
-transactiva, y qué agrega la memoria cuando se la compara con decisores simples que usan
-las mismas representaciones.
+como conteos, reconocen una entrada cuando sus rasgos tienen soporte, recuperan
+muestreando y rechazan lo que no contienen.
+Hasta donde sabemos, en su línea de trabajo no se han usado para repartir el
+conocimiento entre varios especialistas.
+Este trabajo pregunta si con ellas se puede construir un sistema de memoria transactiva,
+y qué agrega la memoria frente a decisores simples que usan las mismas representaciones.
 
-El objetivo es construir un sistema de ocho módulos especialistas que enrute consultas
-de texto e imagen, recupere el contenido asociado en ambas direcciones y rechace lo que
-no conoce, sin clasificadores discriminativos en esas decisiones, y medir su desempeño.
+El producto es EAM-TMS: ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, que
+guardan palabras e imágenes en una sola memoria heteroasociativa, se envían consultas de
+texto e imagen mediante directorios formados con el uso, recuperan en ambas direcciones y
+rechazan lo que no conocen, sin clasificadores discriminativos en esas decisiones.
+Se evalúa con 411 consultas de texto, 40 fuera de dominio, 656 imágenes de prueba y
+objetos que ningún módulo vio, y se compara con decisores simples, con una sola memoria
+para las ocho clases y con un codificador entrenado sin la pérdida de clase.
 
-El sistema, EAM-TMS, tiene un módulo por cada clase del conjunto ETH-80
-\cite{leibe2003eth80}.
-Cada módulo guarda palabras e imágenes de su clase en una sola memoria
-heteroasociativa y lleva dos directorios, uno textual y uno visual.
-Las palabras entran como vectores fastText~\cite{bojanowski2017fasttext} y las imágenes
-como códigos de un autocodificador ResNet18~\cite{he2016resnet}.
-Un mediador reparte las consultas mientras los directorios se forman; después, los
-módulos se las envían entre sí.
-El sistema se evalúa con un banco de 411 consultas de texto, 40 consultas fuera de
-dominio, 656 imágenes de prueba y objetos que ningún módulo vio.
-Se compara con decisores simples sobre los mismos vectores, con una sola memoria para
-las ocho clases y con un codificador entrenado sin la pérdida de clase.
-
-El Capítulo~\ref{cap:pp} plantea el problema, los objetivos y los alcances.
-El Capítulo~\ref{sec:marco_teorico} presenta las memorias asociativas entrópicas, su
-extensión heteroasociativa y el modelo de Wegner.
-El Capítulo~\ref{cap:desarrollo} describe la arquitectura y la metodología experimental, el Capítulo~\ref{cap:resultados}
-reporta y discute los resultados, y el Capítulo~\ref{conclusiones} responde a la
-pregunta de investigación y al objetivo general, y propone el trabajo futuro.
+El valor del trabajo está en mostrar qué aporta una memoria asociativa a un sistema
+distribuido (rechazo, recuperación en ambas direcciones y decisiones trazables a sus
+registros) y qué no aporta (más acierto que un decisor simple).
+El Capítulo~\ref{cap:pp} plantea el problema y los objetivos; los
+Capítulos~\ref{sec:marco_teorico} a~\ref{conclusiones} presentan el marco teórico, el
+desarrollo, los resultados y las conclusiones.
