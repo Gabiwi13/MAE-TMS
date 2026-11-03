@@ -367,9 +367,9 @@ Repartir el conocimiento entre especialistas y elegir cuál responde tiene varia
 tradiciones.
 
 \paragraph{Mezcla de expertos.}
-Una mezcla de expertos (\textit{mixture of experts}) reparte los casos entre varias
-redes, cada una de las cuales aprende a manejar un subconjunto de
-ellos~\cite{jacobs1991adaptive}, con variantes en árbol entrenadas con el algoritmo
+En una mezcla de expertos (\textit{mixture of experts}), una red de compuerta decide qué red
+especialista atiende cada caso, y cada especialista termina por cubrir una región
+distinta de los datos~\cite{jacobs1991adaptive}, con variantes en árbol entrenadas con el algoritmo
 EM~\cite{jordan1994hierarchical} y, a gran escala, compuertas que eligen para cada
 ejemplo pocos expertos~\cite{shazeer2017outrageously} o uno solo~\cite{fedus2022switch}.
 EAM-TMS comparte la estructura pero no el aprendizaje.
@@ -392,9 +392,8 @@ continuos~\cite{ramsauer2021hopfield}.
 Se distingue por guardar distribuciones de frecuencia por característica, reconocer
 por contención y recordar muestreando (Sección~\ref{sec:eam}).
 Cuando una sola memoria guarda muchos patrones aparecen estados metaestables que los
-mezclan~\cite{amit1985spin,ramsauer2021hopfield}, y en las redes conexionistas lo
-aprendido después puede interferir de forma catastrófica con lo anterior al entrenar en
-secuencia~\cite{mccloskey1989catastrophic}.
+mezclan~\cite{amit1985spin,ramsauer2021hopfield}, y una red conexionista que aprende tareas una tras otra puede perder lo que ya sabía
+(interferencia catastrófica)~\cite{mccloskey1989catastrophic}.
 La ventaja de partir el contenido entre especialistas (Sección~\ref{sec:eham-unica})
 responde al mismo principio.
 Con un dominio por memoria, al recordar se mezclan menos
@@ -402,9 +401,10 @@ patrones de otros dominios.
 
 \paragraph{Memoria transactiva computacional.}
 La memoria transactiva ya se ha simulado.
-Un modelo computacional muestra que saber qué
-saben los demás conviene más a los grupos grandes y en entornos de tarea o de
-conocimiento cambiantes~\cite{ren2006contingent}, y otros modelan la coevolución de las
+En un modelo computacional, saber qué saben los demás acelera más el trabajo de los
+grupos grandes y de los que enfrentan tareas o conocimiento cambiantes, mientras que en la
+calidad de las decisiones ganan más los grupos pequeños~\cite{ren2006contingent}.
+Otros modelan la coevolución de las
 redes de comunicación y de conocimiento de un grupo~\cite{palazzolo2006coevolution}.
 EAM-TMS no simula un grupo para estudiar su desempeño; lo construye con memorias
 asociativas que resuelven consultas de texto e imagen.
@@ -425,9 +425,10 @@ sabe, y el registro se llena observando quién resolvió cada consulta.
 \paragraph{Enrutamiento distribuido y búsqueda federada.}
 En las redes entre pares, los índices de enrutamiento evitan tanto un índice central
 como inundar la red.
-Cada nodo guarda un índice, proporcional al número de vecinos y no
-al de documentos, para decidir a quién reenviar la consulta~\cite{crespo2002routing},
-como hace en la fase madura cada módulo con su directorio y los de sus conocidos.
+Cada nodo resume, por vecino, cuántos documentos de cada tema se alcanzan a través de él,
+y con ese resumen decide a quién reenviar la consulta~\cite{crespo2002routing}; el índice
+crece con los vecinos, no con los documentos.
+Lo mismo hace en la fase madura cada módulo con su directorio y los de sus conocidos.
 En la recuperación de información distribuida hay que elegir, entre muchas bases de
 texto, en cuáles buscar~\cite{callan2000distributed}; el directorio de EAM-TMS hace esa
 elección con una memoria asociativa.

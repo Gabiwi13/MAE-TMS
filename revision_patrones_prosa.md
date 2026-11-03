@@ -670,3 +670,12 @@ Se anotan para que el autor decida. No se corrigieron porque tocan cifras, refer
 2. **Limitación (k).** Ahora solo cubre el codificador; la suma por tokens, la normalización, $\tau$ y el rescate léxico remiten a la Sección de auditoría.
 3. **Daño del 1\,%.** En la Discusión y en las Conclusiones: «destruir al azar el 1\,\% de las celdas deja sin nombre al 92\,\% de las imágenes», como la limitación (j) y la Tabla de lesión.
 4. **Abstract.** Se quitó «that seldom name their class», para que diga lo mismo que el Resumen.
+
+## Traducciones casi literales del Marco Teórico: corrección aprobada y aplicada
+
+La búsqueda web del cotejo (60 oraciones en español sin coincidencia; 10 traducidas al inglés) mostró tres oraciones casi literales de los resúmenes de sus fuentes, todas citadas, y una paráfrasis que omitía una condición. Se reformularon en `02_marco_teorico.tex` con las mismas citas:
+
+1. Mezcla de expertos (`jacobs1991adaptive`): la red de compuerta decide qué especialista atiende cada caso.
+2. Interferencia catastrófica (`mccloskey1989catastrophic`): la red que aprende tareas una tras otra puede perder lo que ya sabía.
+3. Índices de enrutamiento (`crespo2002routing`): resumen por vecino de los documentos por tema; el índice crece con los vecinos, no con los documentos.
+4. Ren et al. (`ren2006contingent`): el beneficio en grupos grandes y entornos cambiantes es en rapidez; en calidad ganan más los grupos pequeños. Tomado del resumen del artículo; conviene confirmarlo en el texto completo.
