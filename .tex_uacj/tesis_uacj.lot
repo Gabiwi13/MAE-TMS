@@ -18,3 +18,6 @@
 \contentsline {table}{\numberline {4.11}{\ignorespaces Costo computacional de reproducir el sistema desde cero (solo CPU). Fuente: \texttt {results/computational\_cost/nov2026\_cpu/}.}}{75}{table.caption.105}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{\ignorespaces Experimentos del hemisferio textual y del directorio.}}{111}{table.caption.135}%
+\contentsline {table}{\numberline {A.2}{\ignorespaces Experimentos del hemisferio visual.}}{112}{table.caption.136}%
+\contentsline {table}{\numberline {A.3}{\ignorespaces Comparaciones con otras arquitecturas y decisores, y costo.}}{113}{table.caption.137}%

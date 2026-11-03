@@ -1,3 +1,161 @@
-\chapter{Tabla de experimentos}\label{apendiceA}
+\chapter{Experimentos y su ubicación}\label{apendiceA}
 
-[PENDIENTE: tabla de experimentos, sección y qué mide]
+Las Tablas~\ref{tab:exp-texto} a~\ref{tab:exp-comparaciones} ubican cada experimento citado en
+el texto: la sección donde se reporta, lo que mide y su carpeta dentro de
+\texttt{results/}.
+Todas las cifras del reporte salen de esas carpetas del repositorio del proyecto, salvo
+la comparación con la batería completa, marcada «sin carpeta», cuyos registros están en
+\texttt{logs\_comparacion/}.
+
+% filas terminadas en \tabularnewline porque \raggedright redefine \\
+\begin{table}[H]
+\centering
+\caption{Experimentos del hemisferio textual y del directorio.}
+\label{tab:exp-texto}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\toprule
+Experimento & Sección & Qué mide & Carpeta \tabularnewline
+\midrule
+\raggedright Rescate léxico & \raggedright \ref{sec:pipeline-semantico} &
+\raggedright Cuánto aporta a la fase temprana la regla que rescata tokens mal etiquetados
+por spaCy, con y sin ella, sobre las 411 consultas del banco. &
+\raggedright \texttt{rescate\_\allowbreak lexico} \tabularnewline\addlinespace[6pt]
+\raggedright Reanálisis del banco & \raggedright \ref{sec:banco}, \ref{sec:calibracion} &
+\raggedright Relecturas del banco y de corridas ya versionadas pedidas por la lectura de
+jurado, como cuántas consultas traen el nombre de su clase. &
+\raggedright \texttt{reanalisis\_\allowbreak jurado} \tabularnewline\addlinespace[6pt]
+\raggedright Calibración del directorio & \raggedright \ref{sec:calibracion} &
+\raggedright Sesgo del directorio hacia un módulo bajo nueve condiciones de lectura y
+registro (A a G), con 50 a 400 consultas y cinco semillas, evaluadas sobre las consultas
+que forman el directorio. &
+\raggedright \texttt{ablation\_\allowbreak mdir\_\allowbreak bias} \tabularnewline\addlinespace[6pt]
+\raggedright Calibración fija & \raggedright \ref{sec:calibracion-fija} &
+\raggedright La misma calibración evaluada en 120 consultas fijas que nunca registran en
+el directorio. &
+\raggedright \texttt{calibracion\_\allowbreak evaluacion\_\allowbreak fija} \tabularnewline\addlinespace[6pt]
+\raggedright Protocolo completo & \raggedright \ref{sec:proto-completo} &
+\raggedright Fase temprana, formación del directorio y fase madura con lectura B1 sobre
+80 consultas, y réplica con las 16 consultas de referencia. &
+\raggedright \texttt{exp3\_\allowbreak corrected\_\allowbreak routing} \tabularnewline\addlinespace[6pt]
+\raggedright Sonda de rechazo fuera de dominio & \raggedright \ref{sec:proto-completo} &
+\raggedright Si la memoria rechaza por contención 12 consultas representables que
+describen objetos fuera de los ocho dominios. &
+\raggedright \texttt{rejection\_\allowbreak probe} \tabularnewline\addlinespace[6pt]
+\raggedright Barrido $\iota \times \kappa$ & \raggedright \ref{sec:param-iota-kappa} &
+\raggedright Si la poda $\iota$ y el umbral relativo $\kappa$ eliminan el sesgo de masa
+que obliga a la lectura B1 (cuadrícula de $4 \times 7$ sobre 80 consultas). &
+\raggedright \texttt{exp2\_\allowbreak iota\_\allowbreak kappa} \tabularnewline\addlinespace[6pt]
+\raggedright Formación del directorio & \raggedright \ref{sec:formacion} &
+\raggedright Cuántas interacciones necesita el directorio para que el enrutamiento maduro
+sea confiable, y si importa su orden. &
+\raggedright \texttt{exp4\_\allowbreak directory\_\allowbreak formation} \tabularnewline\addlinespace[6pt]
+\raggedright Capacidad de llenado & \raggedright \ref{sec:capacidad} &
+\raggedright Aceptación propia y ajena, variedad del recuerdo, enrutamiento y entropía con
+25 a 328 imágenes por clase. &
+\raggedright \texttt{exp6\_\allowbreak capacity} \tabularnewline\addlinespace[6pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Experimentos del hemisferio visual.}
+\label{tab:exp-visual}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\toprule
+Experimento & Sección & Qué mide & Carpeta \tabularnewline
+\midrule
+\raggedright Hemisferio visual & \raggedright \ref{sec:hemisferio-visual} &
+\raggedright Registro de la etapa visual en la corrida oficial: formación del directorio
+visual, enrutamiento de las 656 imágenes de prueba y evocación. &
+\raggedright \texttt{hemisferio\_\allowbreak visual} \tabularnewline\addlinespace[6pt]
+\raggedright Directorios perspectivales (exp.~10) & \raggedright
+\ref{sec:hemisferio-visual}, \ref{sec:disc-wegner} &
+\raggedright Si el grupo recupera el enrutamiento del directorio compartido encadenando lo
+que cada módulo sabe de los demás cuando solo presencia parte de lo ajeno. &
+\raggedright \texttt{experimento10} \tabularnewline\addlinespace[6pt]
+\raggedright Variantes por percepción (exp.~13) & \raggedright
+\ref{sec:hemisferio-visual}, \ref{sec:limitaciones} &
+\raggedright Efecto de registrar más variantes por imagen en el contenido y en el
+directorio sobre aceptación, cobertura de punta a punta y falsos enrutamientos. &
+\raggedright \texttt{experimento13} \tabularnewline\addlinespace[6pt]
+\raggedright Umbral de energía (exp.~14) & \raggedright \ref{sec:percepcion},
+\ref{sec:hemisferio-visual}, \ref{sec:limitaciones} &
+\raggedright Criterio de energía mínima del latente: su costo en imágenes reales y cuánto
+cierra la fuga de entradas degeneradas. &
+\raggedright \texttt{experimento14} \tabularnewline\addlinespace[6pt]
+\raggedright Objetos nuevos (exp.~16) & \raggedright \ref{sec:objetos-nuevos} &
+\raggedright Generalización a objetos que las memorias no vieron, con diez pliegues
+\textit{leave-one-object-out}. &
+\raggedright \texttt{experimento16} \tabularnewline\addlinespace[6pt]
+\raggedright Codificador por pliegue & \raggedright \ref{sec:objetos-nuevos} &
+\raggedright El experimento 16 con un codificador reentrenado sin el objeto reservado de
+cada pliegue. &
+\raggedright \texttt{objetos\_\allowbreak nuevos\_\allowbreak codificador\_\allowbreak
+por\_\allowbreak pliegue} \tabularnewline\addlinespace[6pt]
+\raggedright Codificador sin pérdida de clase & \raggedright
+\ref{sec:codificador-sin-clase} &
+\raggedright Cuánto depende el sistema visual de la pérdida de clase del codificador, de
+punta a punta, con el diagnóstico de separación por coordenada. &
+\raggedright \texttt{codificador\_\allowbreak sin\_\allowbreak clase} \tabularnewline\addlinespace[6pt]
+\raggedright Codificador de ImageNet (exp.~19) & \raggedright
+\ref{sec:codificador-sin-clase} &
+\raggedright El sistema completo con la ResNet18 de ImageNet congelada y PCA a 64, una
+percepción que conserva el detalle dentro de la clase. &
+\raggedright \texttt{experimento19} \tabularnewline\addlinespace[6pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Comparaciones con otras arquitecturas y decisores, y costo.}
+\label{tab:exp-comparaciones}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\toprule
+Experimento & Sección & Qué mide & Carpeta \tabularnewline
+\midrule
+\raggedright EHAM única (exp.~11) & \raggedright \ref{sec:eham-unica} &
+\raggedright Una sola memoria con las ocho clases contra los especialistas con oráculo y
+el protocolo transactivo, con diez semillas y de 25 a 200 imágenes por clase. &
+\raggedright \texttt{experimento11} \tabularnewline\addlinespace[6pt]
+\raggedright Protocolo corregido (exp.~11) & \raggedright \ref{sec:eham-unica},
+\ref{sec:lineas-base} &
+\raggedright El experimento 11 con los directorios perspectivales reiniciados en cada
+trabajo. &
+\raggedright \texttt{experimento11\_\allowbreak protocolo\_\allowbreak corregido}
+\tabularnewline\addlinespace[6pt]
+\raggedright Líneas base sin memoria & \raggedright \ref{sec:lineas-base} &
+\raggedright Qué agrega la memoria asociativa sobre decisores simples que usan los mismos
+vectores, en texto y en imagen. &
+\raggedright \texttt{lineas\_\allowbreak base} \tabularnewline\addlinespace[6pt]
+\raggedright Árbitro por contenido (exp.~15) & \raggedright \ref{sec:limitaciones} &
+\raggedright Árbitro por contenido entre los tres mejores del directorio y abstención por
+margen, sobre la misma salida del enrutamiento. &
+\raggedright \texttt{experimento15} \tabularnewline\addlinespace[6pt]
+\raggedright Una memoria por módulo & \raggedright \ref{sec:una-memoria} &
+\raggedright Si las memorias homoasociativas guardan algo que la heteroasociativa no
+tenga: marginales, datos sin pareja y completado. &
+\raggedright \texttt{homo\_\allowbreak marginal} \tabularnewline\addlinespace[6pt]
+\raggedright Lesión & \raggedright \ref{sec:una-memoria} &
+\raggedright Familiaridad y nombre al destruir al azar una fracción de las celdas de la
+memoria de contenido. &
+\raggedright \texttt{homo\_\allowbreak marginal} \tabularnewline\addlinespace[6pt]
+\raggedright Comparación con la batería completa & \raggedright \ref{sec:una-memoria} &
+\raggedright Las dos arquitecturas, con memorias homoasociativas y con una sola memoria
+por módulo, sobre la batería de experimentos salvo el 10, el 14 y el 15. &
+\raggedright sin carpeta \tabularnewline
+\midrule
+\raggedright Costo computacional & \raggedright \ref{sec:costo} &
+\raggedright Tiempo real de reproducir el sistema completo desde cero, solo en CPU. &
+\raggedright \texttt{computational\_\allowbreak cost/\allowbreak nov2026\_\allowbreak cpu}
+\tabularnewline\addlinespace[6pt]
+\bottomrule
+\end{tabular}
+\end{table}
