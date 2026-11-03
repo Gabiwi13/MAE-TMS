@@ -6,6 +6,10 @@ el texto: la sección donde se reporta, lo que mide y su carpeta dentro de
 Todas las cifras del reporte salen de esas carpetas del repositorio del proyecto, salvo
 la comparación con la batería completa, marcada «sin carpeta», cuyos registros están en
 \texttt{logs\_comparacion/}.
+Quedan fuera del repositorio los modelos entrenados (\texttt{models/*.pt} y
+\texttt{models/*.pkl}), los registros por consulta (\texttt{raw/}) del protocolo
+transactivo del experimento 11 (23\,MB) y los codificadores reentrenados por pliegue,
+como declaran el \texttt{.gitignore} y los README de esas carpetas.
 
 % filas terminadas en \tabularnewline porque \raggedright redefine \\
 \begin{table}[H]
@@ -23,12 +27,12 @@ Experimento & Sección & Qué mide & Carpeta \tabularnewline
 por spaCy, con y sin ella, sobre las 411 consultas del banco. &
 \raggedright \texttt{rescate\_\allowbreak lexico} \tabularnewline\addlinespace[6pt]
 \raggedright Reanálisis del banco & \raggedright \ref{sec:banco}, \ref{sec:calibracion} &
-\raggedright Relecturas del banco y de corridas ya versionadas pedidas por la lectura de
-jurado, como cuántas consultas traen el nombre de su clase. &
+\raggedright Relecturas del banco y de corridas ya versionadas, como cuántas consultas traen
+el nombre de su clase. &
 \raggedright \texttt{reanalisis\_\allowbreak jurado} \tabularnewline\addlinespace[6pt]
 \raggedright Calibración del directorio & \raggedright \ref{sec:calibracion} &
-\raggedright Sesgo del directorio hacia un módulo bajo nueve condiciones de lectura y
-registro (A a G), con 50 a 400 consultas y cinco semillas, evaluadas sobre las consultas
+\raggedright Sesgo del directorio hacia un módulo bajo nueve condiciones de calibración
+(A a G), con 50 a 400 consultas y cinco semillas, evaluadas sobre las consultas
 que forman el directorio. &
 \raggedright \texttt{ablation\_\allowbreak mdir\_\allowbreak bias} \tabularnewline\addlinespace[6pt]
 \raggedright Calibración fija & \raggedright \ref{sec:calibracion-fija} &
@@ -125,10 +129,10 @@ Experimento & Sección & Qué mide & Carpeta \tabularnewline
 \raggedright Una sola memoria con las ocho clases contra los especialistas con oráculo y
 el protocolo transactivo, con diez semillas y de 25 a 200 imágenes por clase. &
 \raggedright \texttt{experimento11} \tabularnewline\addlinespace[6pt]
-\raggedright Protocolo corregido (exp.~11) & \raggedright \ref{sec:eham-unica},
+\raggedright Protocolo transactivo (exp.~11) & \raggedright \ref{sec:eham-unica},
 \ref{sec:lineas-base} &
-\raggedright El experimento 11 con los directorios perspectivales reiniciados en cada
-trabajo. &
+\raggedright El protocolo transactivo del experimento 11, con directorios perspectivales
+formados desde cero en cada semilla y corte. &
 \raggedright \texttt{experimento11\_\allowbreak protocolo\_\allowbreak corregido}
 \tabularnewline\addlinespace[6pt]
 \raggedright Líneas base sin memoria & \raggedright \ref{sec:lineas-base} &

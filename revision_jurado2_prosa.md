@@ -1,6 +1,6 @@
 # Propuesta viejo/nuevo: segunda lectura del jurado (prosa)
 
-**Estado:** pendiente de aprobación del autor. Es el parche B; este archivo llega con el parche A, que sí se aplica directo.
+**Estado:** aprobada y aplicada. Para que el Resumen cupiera en una página, el autor aprobó dos recortes sobre B1: «Un grupo recuerda más que cada uno de sus miembros cuando cada uno sabe quién sabe qué» y «(81.2 frente a 76.0--81.5\,\% en 80 consultas)». El Resumen y el Abstract van sin número de página, como la Introducción, porque las palabras clave chocaban con él.
 
 **Base:** `6b127f6` más el parche A. Las líneas son las del árbol con A aplicado. `07:17` es `.tex8/secciones/07_conclusiones.tex`, línea 17; al lado va la línea del `.tex_uacj/CapituloN.tex` que genera `generar_capitulos.py`. Los cambios a los capítulos 2 a 5 se hacen en `.tex8/secciones/` y se regeneran.
 

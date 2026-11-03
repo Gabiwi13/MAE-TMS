@@ -539,14 +539,17 @@ Sección~\ref{sec:operaciones}).
 Con $\xi = 2$, el enrutamiento del dominio propio baja a medida que el módulo presencia
 más dominios ajenos (experimento 10).
 Para ganar cobertura, el sistema densifica el llenado en lugar de tolerar huecos.
-El experimento 13 lo mide sobre las 656 imágenes de prueba.
+Un barrido del número de variantes lo mide sobre las 656 imágenes de prueba.
 Registrar en el directorio 16 variantes por percepción, en lugar de una, lleva su
-aceptación del 73.6 al 96.2\,\% (con 4 variantes, 87.7\,\%); con 16 variantes también en
-el contenido, la \emph{cobertura de punta a punta} (imágenes enrutadas a su clase cuyo
-destino además responde) pasa de 66.5 a 94.5\,\%, y el rechazo en la formación visual
-baja del 4.2 al 0.8\,\%.
-En ese experimento, con 1 o 4 variantes en el directorio no hay falsos enrutamientos, y
-con 16 hay uno; el sistema, con sus 16 variantes, enruta mal dos de las 656 imágenes
+aceptación del 73.6 al 96.2\,\% (con 4 variantes, 87.7\,\%), y llenar el contenido con 16
+variantes por imagen, en lugar de 4, lleva la respuesta de la memoria heteroasociativa
+del 76.2 al 96.2\,\%; con las dos, la \emph{cobertura de punta a punta} (imágenes
+enrutadas a su clase cuyo destino además responde) pasa de 66.5 a 94.5\,\%, y el rechazo
+en la formación visual baja del 4.2 al 0.8\,\%.
+En ese barrido, con 1 o 4 variantes en el directorio no hay falsos enrutamientos, y con
+16 hay uno; con 16 variantes en el contenido, un especialista ajeno acepta 5 de las 656
+imágenes (0.8\,\%), todas entre animales.
+El sistema, con sus 16 variantes, enruta mal dos de las 656 imágenes
 (Sección~\ref{sec:limitaciones}).
 
 \paragraph{Evocación de dominio: imagen $\to$ palabras.}
@@ -578,7 +581,7 @@ latente (10.7) queda por debajo del umbral de energía $\tau = 16.61$
 panel.
 
 Sin ese umbral, el contenido sí le daría soporte al lienzo gris.
-El experimento 14 localizó la causa.
+Un banco de 231 entradas degeneradas localizó la causa.
 El codificador lleva las entradas sin estructura (gris uniforme, un objeto desenfocado o
 sin contraste) a latentes de norma baja que caen dentro de la envolvente por coordenada
 de los animales, es decir, que en cada coordenada toman un valor que esas memorias ya
@@ -588,8 +591,8 @@ Los grises de nivel 120 a 160 (el del panel, 127, cae en ese tramo) los aceptan 
 una distancia de entre 2.4 y 2.9 veces la mediana de la distancia intraclase.
 De 12 colores lisos se aceptan solo 2.
 Esos grises tienen norma de 10.7 a 13.0, y el umbral los rechaza.
-Las entradas degeneradas que sí pasan el umbral se discuten en la
-Sección~\ref{sec:limitaciones}.
+En todo el banco, de las 152 entradas que acepta una clase ajena, 137 caen bajo $\tau$.
+Las que sí pasan el umbral se discuten en la Sección~\ref{sec:limitaciones}.
 
 \paragraph{Salida semántica.}
 La Figura~\ref{fig:imagen-etiquetas} muestra, para cada imagen aceptada, la
@@ -648,11 +651,11 @@ enrutamientos en 3280 vistas, frente a 2 del codificador común en los mismos pl
 La cobertura de punta a punta es del 89.2\,\% [85.1, 93.2] con objetos nuevos y del
 95.5\,\% [95.1, 95.9] con objetos conocidos; la brecha es de 6.3 puntos [2.5, 10.4]
 (intervalos de 95\,\% por remuestreo de los pliegues).
-La cifra con objetos conocidos no coincide con el 94.5\,\% del experimento 13 porque se
-mide sobre otro banco y con otros modelos.
+La cifra con objetos conocidos no coincide con el 94.5\,\% de la
+Sección~\ref{sec:hemisferio-visual} porque se mide sobre otro banco y con otros modelos.
 Aquí es la media de diez pliegues, cada uno con modelos construidos con nueve objetos
-por clase y evaluado sobre 41 vistas no usadas de cada clase; el experimento 13 mide
-sobre las 656 imágenes de prueba, con sus propios modelos.
+por clase y evaluado sobre 41 vistas no usadas de cada clase; aquel barrido mide sobre
+las 656 imágenes de prueba, con sus propios modelos.
 El enrutamiento correcto sobre las imágenes aceptadas es del 99.9\,\% en los dos bancos,
 y los falsos enrutamientos con objetos nuevos son 2 de 3280 (un \texttt{cow} y un
 \texttt{horse}, enviados a \texttt{dog}).
@@ -971,6 +974,12 @@ solo es significativa con 200 imágenes por clase ($p = 0.031$, con seis consult
 acepta solo la EHAM única y ninguna que acepte solo el protocolo); con 100, $p = 0.25$,
 y con 25 y 50, $p = 1$.
 Sin la segunda compuerta, con 200 imágenes por clase, $p = 0.22$.
+Dos alternativas a la segunda compuerta, aplicadas a la misma salida del enrutamiento
+con 200 imágenes por clase, cuestan acierto en las 171 reservadas: que el contenido
+decida entre los tres mejores candidatos del directorio baja el acierto del 96.8 al
+93.6\,\%, y abstenerse cuando la diferencia relativa entre las dos mejores puntuaciones
+es menor que un umbral $\delta$ quita más de un acierto por cada error evitado
+(\texttt{results/experimento15/}).
 
 % ---------------------------------------------------------------
 \subsection{Líneas base sin memoria asociativa}

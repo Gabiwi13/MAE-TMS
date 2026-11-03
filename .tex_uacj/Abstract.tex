@@ -1,5 +1,6 @@
 \chapter*{Abstract}
 \markboth{Abstract}{Abstract}
+\thispagestyle{empty}
 \enlargethispage{3\baselineskip}
 
 A group that works together can remember more than any of its members, because each
@@ -11,11 +12,13 @@ with eight modules, one per ETH-80 class~\cite{leibe2003eth80}.
 Each module stores the words and images of its class in a single heteroassociative
 memory and keeps directories formed through use; no routing or rejection decision goes
 through a discriminative classifier.
-When routing text, the system matches simple decision rules that use the same
-representations (96.8\,\% on 171 held-out queries, against 96.9\,\% for a single memory
-holding the eight classes).
-It rejects what it does not know: it accepts 2 of 40 out-of-domain queries, against all
-40 for the cosine rules.
+When routing text, the system matches simple decision rules on the same
+representations (81.2 against 76.0--81.5\,\% on 80 queries that seldom name their class)
+and a single memory holding the eight classes (96.8 against 96.9\,\% on 171 held-out
+queries).
+It rejects what it does not know: it accepts 2 of 40 out-of-domain queries, like a
+vocabulary vote, against all 40 for the cosine rules; rejection of real images from
+other categories was not measured.
 It retrieves in both directions: it answers 98.7\,\% of the queries with an image, closer
 to a real instance of its class than the single memory (27.2 against 32.5), and 113 of
 116 images evoke words from their domain.
@@ -23,7 +26,7 @@ With images it routes 96.2\,\% of 656 new views correctly, while a centroid on t
 codes is more accurate and rejects none; that routing depends on the encoder having been
 trained with the class, and without it drops to 70.4\,\%.
 On objects no module has seen, coverage is 89.2\,\%, and 87.6\,\% when the encoder has not
-seen them either.
+seen them either, but with 136 false routings of 3280 instead of 2.
 The associative memory is not more accurate than a simple rule: what it adds is
 rejection, retrieval in both directions and a directory that records who knows what.
 

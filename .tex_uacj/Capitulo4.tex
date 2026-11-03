@@ -542,14 +542,17 @@ Sección~\ref{sec:operaciones}).
 Con $\xi = 2$, el enrutamiento del dominio propio baja a medida que el módulo presencia
 más dominios ajenos (experimento 10).
 Para ganar cobertura, el sistema densifica el llenado en lugar de tolerar huecos.
-El experimento 13 lo mide sobre las 656 imágenes de prueba.
+Un barrido del número de variantes lo mide sobre las 656 imágenes de prueba.
 Registrar en el directorio 16 variantes por percepción, en lugar de una, lleva su
-aceptación del 73.6 al 96.2\,\% (con 4 variantes, 87.7\,\%); con 16 variantes también en
-el contenido, la \emph{cobertura de punta a punta} (imágenes enrutadas a su clase cuyo
-destino además responde) pasa de 66.5 a 94.5\,\%, y el rechazo en la formación visual
-baja del 4.2 al 0.8\,\%.
-En ese experimento, con 1 o 4 variantes en el directorio no hay falsos enrutamientos, y
-con 16 hay uno; el sistema, con sus 16 variantes, enruta mal dos de las 656 imágenes
+aceptación del 73.6 al 96.2\,\% (con 4 variantes, 87.7\,\%), y llenar el contenido con 16
+variantes por imagen, en lugar de 4, lleva la respuesta de la memoria heteroasociativa
+del 76.2 al 96.2\,\%; con las dos, la \emph{cobertura de punta a punta} (imágenes
+enrutadas a su clase cuyo destino además responde) pasa de 66.5 a 94.5\,\%, y el rechazo
+en la formación visual baja del 4.2 al 0.8\,\%.
+En ese barrido, con 1 o 4 variantes en el directorio no hay falsos enrutamientos, y con
+16 hay uno; con 16 variantes en el contenido, un especialista ajeno acepta 5 de las 656
+imágenes (0.8\,\%), todas entre animales.
+El sistema, con sus 16 variantes, enruta mal dos de las 656 imágenes
 (Sección~\ref{sec:limitaciones}).
 
 \paragraph{Evocación de dominio: imagen $\to$ palabras.}
@@ -581,7 +584,7 @@ latente (10.7) queda por debajo del umbral de energía $\tau = 16.61$
 panel.
 
 Sin ese umbral, el contenido sí le daría soporte al lienzo gris.
-El experimento 14 localizó la causa.
+Un banco de 231 entradas degeneradas localizó la causa.
 El codificador lleva las entradas sin estructura (gris uniforme, un objeto desenfocado o
 sin contraste) a latentes de norma baja que caen dentro de la envolvente por coordenada
 de los animales, es decir, que en cada coordenada toman un valor que esas memorias ya
@@ -591,8 +594,8 @@ Los grises de nivel 120 a 160 (el del panel, 127, cae en ese tramo) los aceptan 
 una distancia de entre 2.4 y 2.9 veces la mediana de la distancia intraclase.
 De 12 colores lisos se aceptan solo 2.
 Esos grises tienen norma de 10.7 a 13.0, y el umbral los rechaza.
-Las entradas degeneradas que sí pasan el umbral se discuten en la
-Sección~\ref{sec:limitaciones}.
+En todo el banco, de las 152 entradas que acepta una clase ajena, 137 caen bajo $\tau$.
+Las que sí pasan el umbral se discuten en la Sección~\ref{sec:limitaciones}.
 
 \paragraph{Salida semántica.}
 La Figura~\ref{fig:imagen-etiquetas} muestra, para cada imagen aceptada, la
@@ -651,11 +654,11 @@ enrutamientos en 3280 vistas, frente a 2 del codificador común en los mismos pl
 La cobertura de punta a punta es del 89.2\,\% [85.1, 93.2] con objetos nuevos y del
 95.5\,\% [95.1, 95.9] con objetos conocidos; la brecha es de 6.3 puntos [2.5, 10.4]
 (intervalos de 95\,\% por remuestreo de los pliegues).
-La cifra con objetos conocidos no coincide con el 94.5\,\% del experimento 13 porque se
-mide sobre otro banco y con otros modelos.
+La cifra con objetos conocidos no coincide con el 94.5\,\% de la
+Sección~\ref{sec:hemisferio-visual} porque se mide sobre otro banco y con otros modelos.
 Aquí es la media de diez pliegues, cada uno con modelos construidos con nueve objetos
-por clase y evaluado sobre 41 vistas no usadas de cada clase; el experimento 13 mide
-sobre las 656 imágenes de prueba, con sus propios modelos.
+por clase y evaluado sobre 41 vistas no usadas de cada clase; aquel barrido mide sobre
+las 656 imágenes de prueba, con sus propios modelos.
 El enrutamiento correcto sobre las imágenes aceptadas es del 99.9\,\% en los dos bancos,
 y los falsos enrutamientos con objetos nuevos son 2 de 3280 (un \texttt{cow} y un
 \texttt{horse}, enviados a \texttt{dog}).
@@ -974,6 +977,12 @@ solo es significativa con 200 imágenes por clase ($p = 0.031$, con seis consult
 acepta solo la EHAM única y ninguna que acepte solo el protocolo); con 100, $p = 0.25$,
 y con 25 y 50, $p = 1$.
 Sin la segunda compuerta, con 200 imágenes por clase, $p = 0.22$.
+Dos alternativas a la segunda compuerta, aplicadas a la misma salida del enrutamiento
+con 200 imágenes por clase, cuestan acierto en las 171 reservadas: que el contenido
+decida entre los tres mejores candidatos del directorio baja el acierto del 96.8 al
+93.6\,\%, y abstenerse cuando la diferencia relativa entre las dos mejores puntuaciones
+es menor que un umbral $\delta$ quita más de un acierto por cada error evitado
+(\texttt{results/experimento15/}).
 
 % ---------------------------------------------------------------
 \subsection{Líneas base sin memoria asociativa}
@@ -1335,19 +1344,6 @@ de prueba que un vecino más cercano sobre los mismos latentes clasifica bien
 (limitación (j)), y el contenido visual da soporte a entradas sin estructura
 (limitación (c)).
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{fig11_semantic_space.png}
-    \caption[Espacio semántico de las etiquetas de llenado]{Espacio semántico de las etiquetas de llenado de las ocho clases (vectores
-    fastText del vocabulario de la Sección~\ref{sec:pipeline-semantico}).
-    Izquierda: proyección en las dos primeras componentes principales (PCA, por sus
-    siglas en inglés), con la envolvente y el centroide (estrella) de cada clase; se rotulan solo las etiquetas que comparten dos o tres clases (\textit{fruit},
-    \textit{pome}, \textit{red}, \textit{animal}, \textit{mammal} y \textit{table}).
-    Derecha: proporción de las 300 componentes que cae en cada uno de los 16 niveles de
-    la cuantización por magnitud, para la etiqueta con el nombre de cada clase.}
-    \label{fig:espacio-semantico}
-\end{figure}
-
 % ---------------------------------------------------------------
 \subsection{La normalización necesaria es B1}
 \label{sec:disc-b1}
@@ -1492,10 +1488,10 @@ procesos que nombra Wegner~\cite{wegner1995computer}:
 
     \item \textbf{El rechazo se sostiene con ocho dominios, en lo medido.}
     Con siete clases contrarias por módulo, el contenido no acepta ningún falso con un
-    latente por imagen, en ninguno de los tamaños de llenado probados, y con las 16
-    variantes del experimento 13 acepta 5 de 656 imágenes de prueba, todas entre
-    animales (vacas y caballos aceptados por \texttt{dog}, un caballo por
-    \texttt{cow}).
+    latente por imagen, en ninguno de los tamaños de llenado probados, y con 16
+    variantes acepta 5 de 656 imágenes de prueba, todas entre animales (vacas y caballos
+    aceptados por \texttt{dog}, un caballo por \texttt{cow};
+    Sección~\ref{sec:hemisferio-visual}).
     El directorio visual comete dos falsos enrutamientos de 656.
     En este sistema, lo que ningún módulo reconoce no se responde
     (Sección~\ref{sec:tmt}).
@@ -1660,7 +1656,7 @@ En imagen, un centroide o un vecino más cercano sobre los mismos latentes acier
 652 a 655 de las 656 imágenes de prueba, frente a 631 del sistema, y el vecino más
 cercano clasifica bien las 23 que el sistema rechaza.
 
-\paragraph{Agrega rechazo sin un umbral ajustado.}
+\paragraph{Agrega rechazo sin umbral en texto.}
 Los decisores de similitud no tienen umbral y aceptan las 40 consultas fuera de dominio;
 el sistema acepta 2.
 Un umbral de coseno fijado con los datos de evaluación separa bien las reservadas de las
@@ -1734,8 +1730,9 @@ así que no hay mucho que ganar en acierto.
 
 En suma, la clase la deciden las representaciones: el vocabulario en texto y el
 codificador entrenado con la clase en imagen.
-Lo que la memoria asociativa agrega es el rechazo sin umbral ajustado, el recuerdo del
-contenido asociado y decisiones que se leen en sus registros.
+Lo que la memoria asociativa agrega es el recuerdo del contenido asociado, decisiones que
+se leen en sus registros y un rechazo que en texto no usa umbral, aunque equivale a la
+pertenencia al vocabulario, y en imagen depende del umbral de energía $\tau$.
 Como en las Secciones~\ref{sec:disc-wegner} y~\ref{sec:disc-una-memoria}, las analogías
 de esta sección son estructurales, no causales.
 
@@ -1745,6 +1742,12 @@ de esta sección son estructurales, no causales.
 \paragraph{(a) Fuga de consultas fuera de dominio en el hemisferio textual.}
 Una consulta fuera de dominio que comparte tokens con etiquetas legítimas pasa la
 contención textual y llega a algún módulo.
+Las 40 consultas fuera de dominio casi no los tienen: las 28 que se agregaron a las 12
+de la sonda se escribieron sin ninguna palabra del vocabulario de etiquetas, y solo 2 de
+las 40 contienen una.
+El rechazo textual es así, en parte, consecuencia de cómo se construyó el banco
+(limitación (l)), porque la compuerta coincide con la pertenencia al vocabulario
+(Sección~\ref{sec:lineas-base}).
 La sonda de rechazo deja pasar 2 de 12 (Sección~\ref{sec:proto-completo}), y en el
 banco de 40 de la comparación con la EHAM única el directorio acepta 4, dos de ellas
 (\emph{piano}, \emph{thunderstorm}) hacia un módulo que no las contiene.
@@ -1756,8 +1759,9 @@ consultas reservadas no quita ninguna respuesta, porque las que rechaza (1.3\,\%
 tampoco respondía.
 Las dos que quedan las contiene el destino, y ninguna compuerta de contención las
 separa de una consulta legítima.
-Las alternativas medidas rinden menos (experimento 15, sobre las 171 reservadas): que el
-contenido decida entre los tres mejores candidatos del directorio baja el acierto de
+Las alternativas medidas rinden menos (Sección~\ref{sec:eham-unica}, sobre las 171
+reservadas): que el contenido decida entre los tres mejores candidatos del directorio
+baja el acierto de
 96.8 a 93.6\,\%, porque el directorio, con su lectura normalizada, compara mejor que la
 activación del contenido, y abstenerse cuando la diferencia relativa entre las dos
 mejores puntuaciones es menor que un umbral $\delta$ quita más de un acierto por cada error
@@ -1768,9 +1772,10 @@ La lectura del directorio visual es estricta ($\xi = 0$), porque con directorios
 perspectivales los huecos tolerados dependerían de lo que presenció cada módulo.
 Para cubrir más, el sistema densifica.
 El directorio visual y la recuperación de la heteroasociativa son dos compuertas, y
-cada una cede solo con sus propias variantes (experimento 13, sobre las 656 imágenes de
-prueba): registrar en el directorio 16 variantes por percepción, en lugar de una, lleva
-su aceptación de 73.6 a 96.2\,\%; llenar el contenido con 16 variantes por imagen, en
+cada una cede solo con sus propias variantes (Sección~\ref{sec:hemisferio-visual},
+sobre las 656 imágenes de prueba): registrar en el directorio 16 variantes por
+percepción, en lugar de una, lleva su aceptación de 73.6 a 96.2\,\%; llenar el
+contenido con 16 variantes por imagen, en
 lugar de 4, lleva la respuesta de la heteroasociativa de 76 a 96\,\%; con las dos, la
 cobertura de punta a punta (enrutamiento correcto y respuesta) pasa de 66.5 a
 94.5\,\%, con rendimiento decreciente por escalón de variantes.
@@ -1791,8 +1796,9 @@ Densificar agranda esa fuga.
 En el experimento 13, con 16 variantes, a la sonda de color liso la aceptan tres
 especialistas en vez de uno y el directorio la enruta.
 El umbral de energía (Sección~\ref{sec:percepcion}) cierra el 90\,\% de la fuga entre
-clases (experimento 14), porque 137 de las 152 entradas degeneradas aceptadas por una
-clase ajena caen bajo $\tau$ (grises de 104 a 168, contrastes $\leq 0.2$ y desenfoques
+clases (Sección~\ref{sec:hemisferio-visual}), porque 137 de las 152 entradas
+degeneradas aceptadas por una clase ajena caen bajo $\tau$ (grises de 104 a 168,
+contrastes $\leq 0.2$ y desenfoques
 fuertes: todos los de radio $\geq 12$ y buena parte de los menores).
 Del banco de 231 entradas degeneradas, la memoria acepta 180, y tras $\tau$ siguen
 aceptadas 33: las 15 que acepta una clase ajena y 18 que solo acepta su propia clase.
@@ -1853,8 +1859,8 @@ tomaron con información de los mismos datos con que se reportan los resultados:
     \item el punto de control del codificador, por RMSE mínimo sobre el conjunto de
     prueba entre cinco candidatos (Sección~\ref{sec:percepcion});
     \item las 16 variantes del llenado, adoptadas después de ver el barrido de variantes
-    del experimento 13, que mide sobre las 656 imágenes de prueba (16 es el mayor valor
-    probado, no un óptimo ajustado);
+    de la Sección~\ref{sec:hemisferio-visual}, que mide sobre las 656 imágenes de
+    prueba (16 es el mayor valor probado, no un óptimo ajustado);
     \item la lectura B1 y la regla de rescate léxico, elegidas sobre el mismo banco de
     consultas con que se evalúan (Secciones~\ref{sec:calibracion}
     y~\ref{sec:pipeline-semantico});
@@ -1865,8 +1871,8 @@ tomaron con información de los mismos datos con que se reportan los resultados:
 \end{itemize}
 La lectura del directorio visual no tiene tolerancia que ajustar ($\xi = 0$,
 limitación (b)).
-Ninguna de estas decisiones introduce un mecanismo ajeno a las memorias, pero pueden
-inflar las cifras reportadas.
+Dos de ellas, la lectura B1 y el rescate léxico, operan fuera de las memorias
+(Sección~\ref{sec:auditoria}), y todas pueden inflar las cifras reportadas.
 La corrección es separar una partición de validación y confirmar las cifras finales con
 bancos nuevos que no se hayan usado para decidir nada; queda pendiente.
 
@@ -1910,3 +1916,15 @@ El fallo deja además de ser rechazo, porque los falsos enrutamientos de prueba 
 2 a 169 de 656 y el rechazo queda casi igual (3.8 frente a 3.5\,\%;
 Sección~\ref{sec:codificador-sin-clase}).
 Por qué ocurre se discute en la Sección~\ref{sec:disc-lineas-base}.
+
+\paragraph{(l) Autoría de los bancos de consultas.}
+Las 411 consultas del banco y las 40 fuera de dominio se generaron con un modelo de
+lenguaje, y el autor las revisó.
+De las 28 fuera de dominio que se agregaron a las 12 de la sonda de rechazo consta la
+regla con que se escribieron: objetos y escenas de categorías ausentes de ETH-80, sin
+ninguna palabra del vocabulario de etiquetas y sin animales ni plantas.
+Del banco de 411 no consta con qué acceso al vocabulario se generó; está alineado con
+él, porque 402 de las 411 consultas contienen una palabra del vocabulario de su clase
+(Sección~\ref{sec:banco}).
+Las cifras de texto miden el sistema sobre consultas cercanas a su vocabulario; con un
+banco escrito por terceros sin acceso a él no se midió.

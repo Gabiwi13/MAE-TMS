@@ -634,6 +634,19 @@ $S = 0.1881$), se recorta a $[-1, 1]$ y se mapea uniformemente a $m = 16$ nivele
 La misma escala se aplica en el llenado y en la consulta.
 Con esto quedan poblados los 16 niveles (Figura~\ref{fig:espacio-semantico}).
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig11_semantic_space.png}
+    \caption[Espacio semántico de las etiquetas de llenado]{Espacio semántico de las etiquetas de llenado de las ocho clases (vectores
+    fastText del vocabulario de la Sección~\ref{sec:pipeline-semantico}).
+    Izquierda: proyección en las dos primeras componentes principales (PCA, por sus
+    siglas en inglés), con la envolvente y el centroide (estrella) de cada clase; se rotulan solo las etiquetas que comparten dos o tres clases (\textit{fruit},
+    \textit{pome}, \textit{red}, \textit{animal}, \textit{mammal} y \textit{table}).
+    Derecha: proporción de las 300 componentes que cae en cada uno de los 16 niveles de
+    la cuantización por magnitud, para la etiqueta con el nombre de cada clase.}
+    \label{fig:espacio-semantico}
+\end{figure}
+
 \paragraph{Procesamiento de consultas con spaCy.}
 Las consultas en lenguaje natural se procesan con spaCy~3.8.14 y su modelo
 \texttt{en\_core\_web\_sm}~3.8.0~\cite{honnibal2020spacy}: se

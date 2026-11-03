@@ -7,10 +7,13 @@ Lo que dejaron esas comparaciones se resume por objetivo específico.
 El sistema tiene ocho módulos, cada uno con una memoria de contenido heteroasociativa
 y dos directorios, y un mediador que deja de intervenir en la fase madura.
 Registrar, reconocer, recuperar y enrutar son operaciones de las memorias
-(Sección~\ref{sec:operaciones}).
+(Sección~\ref{sec:operaciones}); la suma por tokens, la lectura B1, el umbral $\tau$ y el
+rescate léxico operan fuera de ellas (Sección~\ref{sec:auditoria}).
 Una sola memoria de contenido por módulo basta: los pesos de cada dominio se leen de la
 memoria heteroasociativa, y con ellos el sistema toma las mismas decisiones que con
-memorias homoasociativas separadas (Sección~\ref{sec:una-memoria}).
+memorias homoasociativas separadas en imagen y casi todas en texto (cambian algunos
+destinos del protocolo y una consulta de 80 en la curva de capacidad;
+Sección~\ref{sec:una-memoria}).
 
 \paragraph{Formación del directorio (objetivo~\ref{oe:formacion}).}
 Sobre conjuntos de 120 consultas que nunca forman el directorio, la fase madura con la
@@ -19,8 +22,9 @@ temprana es del 89.7\,\% (promedio de cinco sorteos del conjunto de evaluación)
 Con unas 200 consultas, la fase madura alcanza a la temprana: la diferencia es de
 $+0.2$ puntos con 200 y de $+1.3$ con 291, y ninguna diferencia positiva se sostiene
 entre sorteos.
-El directorio reproduce, entonces, la decisión del mediador sin difundir la consulta a
-todos los módulos, con el mismo acierto.
+El directorio coincide, entonces, con la decisión del mediador en el 92.5\,\% de las
+consultas evaluadas (sorteo principal), con un acierto equivalente y sin difundir la
+consulta a todos los módulos.
 La lectura B1 supera a la cruda con todos los tamaños de formación y en todos los
 sorteos, por 4.5 a 8.8 puntos en promedio; sin ella, la fase madura nunca alcanza a la
 temprana.
@@ -28,7 +32,7 @@ temprana.
 \paragraph{Frente a decisores simples y a una memoria única
 (objetivo~\ref{oe:lineas-base}).}
 En texto, el sistema acierta lo mismo que los decisores simples.
-Sobre las 80 consultas más difíciles del banco, en las que solo 11 traen el nombre de
+Sobre las 80 consultas del protocolo completo, en las que solo 11 traen el nombre de
 su clase, acierta el 81.2\,\%, y el voto por tokens del vocabulario, el centroide y los
 vecinos más cercanos dan entre 76.0 y 81.5\,\%.
 Sobre las 171 consultas reservadas, con 200 imágenes por clase, enruta bien el
@@ -41,10 +45,10 @@ Una tabla de conteos de tokens formada con las mismas consultas no se distingue 
 directorio (92.2 frente a 93.0\,\%, $p = 0.58$).
 
 \paragraph{Rechazo (objetivo~\ref{oe:rechazo}).}
-De las 40 consultas fuera de dominio, el sistema acepta 2 con 25, 50, 100 y 200 imágenes
-por clase.
-La memoria única acepta 2, 2, 5 y 8 de 40 con esos mismos tamaños, y los
-decisores de coseno aceptan las 40.
+De las 40 consultas fuera de dominio, el sistema, con la doble compuerta, acepta 2 con
+25, 50, 100 y 200 imágenes por clase, y la memoria única 2, 2, 5 y 8; la segunda
+compuerta se decidió después de ver estas consultas (limitación (g)).
+Los decisores de coseno aceptan las 40.
 La compuerta textual coincide con la pertenencia al vocabulario en los 3064 pares de
 token y clase examinados, de modo que un voto léxico rechaza las mismas consultas.
 Las dos que pasan son las únicas que comparten una palabra con el vocabulario de un
