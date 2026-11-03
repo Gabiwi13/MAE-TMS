@@ -353,7 +353,7 @@
         \else
         \vspace{1\@line}{INGENIERO EN SISTEMAS COMPUTACIONALES}\par
         \fi
-    \vfill\textsc{Asesor:}\par
+    \vfill\textsc{Asesora:}\par
         \vspace{3\@line}{\@directortitle\ \@director}%
         \ifx\@directorb\@empty\else\\{\@directorbtitle\ \@directorb}\fi\par
   \end{center}
@@ -412,7 +412,7 @@ Sin otro particular, reciba un cordial saludo.\par
 %Atentamente
 \par\vspace{4\@line}
 \@titulartitle\ \@titular \\
-Profesor Titular de Seminario de Titulación II \\
+Profesora Titular de Seminario de Titulación II \\
 \end{center}
 \pagebreak
 %  \begin{singlespace}
@@ -447,7 +447,7 @@ Sin otro particular, reciba un cordial saludo.\par
 %Atentamente
 \par\vspace{4\@line}
 \@titulartitle\ \@titular \\
-Profesor Titular de Seminario de Titulación II \\
+Profesora Titular de Seminario de Titulación II \\
 \end{center}
 %  \begin{singlespace}
 %  \@date\vfill
@@ -483,7 +483,7 @@ Atentamente:
 \par\vspace{4\@line}
 \begin{tabular}{ccc}
 \@directortitle\ \@director	\\
-Profesor Investigador \\
+Profesora Investigadora \\
 \end{tabular}
 \end{center}
   
