@@ -117,7 +117,9 @@ escribir("Capitulo5.tex", remisiones(
          "\n\\section{Con respecto al objetivo general}\n"
          "\\input{ConclusionObjetivoGeneral}\n\n"
          "\\section{Recomendaciones para trabajo a futuro}\n"
-         "% <- 07, «Trabajo futuro» y párrafo final\n" + futuro07.lstrip()))
+         "% <- 07, «Trabajo futuro» y párrafo final\n" + futuro07.lstrip() +
+         "\n\\section{Difusión y productos derivados}\n"
+         "\\input{Difusion}\n"))
 
 # Una remisión a capítulo con otra palabra delante (p. ej. «Secciones») se revisa a mano.
 for nombre in GENERADOS:
