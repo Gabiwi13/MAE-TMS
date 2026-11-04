@@ -1,23 +1,34 @@
 \babel@toc {spanish}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Lo que EAM-TMS toma de Wegner y lo que decide el sistema}}{16}{table.caption.23}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Lo que EAM-TMS toma de Wegner y lo que decide el sistema}}{19}{table.caption.24}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Las 26 memorias asociativas del sistema EAM-TMS}}{21}{table.caption.29}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Las 26 memorias asociativas del sistema EAM-TMS}}{24}{table.caption.30}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Arquitectura de cada fase de la investigación}}{35}{table.caption.45}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Precisión bajo las condiciones de calibración}}{43}{table.caption.51}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Calibración con un conjunto de evaluación fijo}}{49}{table.caption.60}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Precisión temprana y tasa de rechazo en función de $\iota $ y $\kappa $}}{52}{table.caption.68}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Métricas de capacidad en función de las imágenes registradas por clase}}{55}{table.caption.74}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Objetos nuevos por pliegue, con el codificador del sistema y uno reentrenado}}{63}{table.caption.87}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces Hemisferio visual con tres codificadores}}{64}{table.caption.88}%
-\contentsline {table}{\numberline {4.7}{\ignorespaces Una sola EHAM contra los especialistas, por imágenes de llenado}}{67}{table.caption.92}%
-\contentsline {table}{\numberline {4.8}{\ignorespaces Decisores sin memoria asociativa sobre los vectores de los tokens}}{71}{table.caption.98}%
-\contentsline {table}{\numberline {4.9}{\ignorespaces Decisores sin memoria asociativa sobre los latentes de las imágenes}}{74}{table.caption.103}%
-\contentsline {table}{\numberline {4.10}{\ignorespaces Lesión de la memoria de contenido}}{77}{table.caption.105}%
-\contentsline {table}{\numberline {4.11}{\ignorespaces Costo computacional de reproducir el sistema desde cero}}{77}{table.caption.106}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Formación del directorio con tres módulos}}{58}{table.caption.64}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Precisión bajo las condiciones de calibración}}{62}{table.caption.70}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Calibración con un conjunto de evaluación fijo}}{68}{table.caption.80}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Precisión temprana y tasa de rechazo en función de $\iota $ y $\kappa $}}{72}{table.caption.91}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Métricas de capacidad en función de las imágenes registradas por clase}}{75}{table.caption.99}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Objetos nuevos por pliegue, con el codificador del sistema y uno reentrenado}}{83}{table.caption.114}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Hemisferio visual con tres codificadores}}{84}{table.caption.116}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Una sola EHAM contra los especialistas, por imágenes de llenado}}{87}{table.caption.121}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces Decisores sin memoria asociativa sobre los vectores de los tokens}}{92}{table.caption.129}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces Decisores sin memoria asociativa sobre los latentes de las imágenes}}{95}{table.caption.134}%
+\contentsline {table}{\numberline {4.11}{\ignorespaces Lesión de la memoria de contenido}}{98}{table.caption.137}%
+\contentsline {table}{\numberline {4.12}{\ignorespaces Costo computacional de reproducir el sistema desde cero}}{98}{table.caption.139}%
+\contentsline {table}{\numberline {4.13}{\ignorespaces Directorios perspectivales y protocolos de enrutamiento}}{102}{table.caption.145}%
+\contentsline {table}{\numberline {4.14}{\ignorespaces Creencias iniciales: formación y lectura del directorio}}{108}{table.caption.153}%
+\contentsline {table}{\numberline {4.15}{\ignorespaces Creencias iniciales: imagen, rechazo y alcance del mecanismo}}{109}{table.caption.154}%
+\contentsline {table}{\numberline {4.16}{\ignorespaces Creencias iniciales: el directorio, el contenido y la partición}}{110}{table.caption.155}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {A.1}{\ignorespaces Experimentos del hemisferio textual y del directorio}}{114}{table.caption.136}%
-\contentsline {table}{\numberline {A.2}{\ignorespaces Experimentos del hemisferio visual}}{115}{table.caption.137}%
-\contentsline {table}{\numberline {A.3}{\ignorespaces Comparaciones con otras arquitecturas y decisores, y costo}}{116}{table.caption.138}%
+\contentsline {table}{\numberline {A.1}{\ignorespaces Fase 1, prototipo de tres módulos}}{157}{table.caption.197}%
+\contentsline {table}{\numberline {A.2}{\ignorespaces Fase 2, lectura del directorio}}{158}{table.caption.198}%
+\contentsline {table}{\numberline {A.3}{\ignorespaces Fase 3, escalado a ocho módulos: protocolo, formación y capacidad}}{159}{table.caption.199}%
+\contentsline {table}{\numberline {A.4}{\ignorespaces Fase 3, escalado a ocho módulos: tamaño y comparaciones}}{160}{table.caption.200}%
+\contentsline {table}{\numberline {A.5}{\ignorespaces Fase 3, escalado a ocho módulos: imagen y codificador}}{161}{table.caption.201}%
+\contentsline {table}{\numberline {A.6}{\ignorespaces Fase 4, hallazgos con el sistema escalado}}{162}{table.caption.202}%
+\contentsline {table}{\numberline {A.7}{\ignorespaces Fase 5, laboratorio en tiempo real}}{163}{table.caption.203}%
+\contentsline {table}{\numberline {A.8}{\ignorespaces Carpetas auxiliares}}{163}{table.caption.204}%

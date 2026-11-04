@@ -1,88 +1,53 @@
 El objetivo general (Sección~\ref{secc:og}) se cumplió.
-El sistema se construyó y se midió contra una sola memoria con las ocho clases, para ver
-si el reparto evita el techo entrópico, contra decisores simples y contra un codificador
-sin la pérdida de clase.
-Lo que dejaron esas comparaciones se resume por objetivo específico.
+El sistema se construyó y se estudió en las cinco fases previstas; tres objetivos
+específicos se cumplieron con cifras sobre conjuntos que no forman el directorio o con la
+arquitectura final, el de emergencia con una evaluación dentro de muestra y el de mundo
+real como demostración sin cifras de acierto.
 
-\paragraph{Arquitectura (objetivo~\ref{oe:arquitectura}).}
-Son ocho módulos, cada uno con una memoria de contenido heteroasociativa y dos
-directorios, y un mediador que deja de intervenir en la fase madura.
-Registrar, reconocer, recuperar y enrutar son operaciones de las memorias
-(Sección~\ref{sec:operaciones}); la suma por tokens, la lectura B1, el umbral $\tau$ y el
-rescate léxico operan fuera de ellas (Sección~\ref{sec:auditoria}).
-Una sola memoria de contenido por módulo basta: los pesos de cada dominio se leen de la
-memoria heteroasociativa, y con ellos el sistema toma las mismas decisiones que con
-memorias homoasociativas separadas en imagen y casi todas en texto (cambian algunos
-destinos del protocolo y una consulta de 80 en la curva de capacidad;
-Sección~\ref{sec:una-memoria}).
+\paragraph{Emergencia (objetivo~\ref{oe:emergencia}).}
+El prototipo de tres módulos lo cumplió.
+Su directorio se formó desde cero con las interacciones de la fase temprana y llegó al
+98.75\,\% de enrutamiento maduro con las 80 consultas del banco, que son las mismas que
+lo formaron.
+Falta mostrar la emergencia con un conjunto que no forme el directorio y con la
+arquitectura final, en la que la curva de formación termina en el 81.2\,\% sin cruzar el
+90\,\%.
 
-\paragraph{Formación del directorio (objetivo~\ref{oe:formacion}).}
-Sobre conjuntos de 120 consultas que nunca forman el directorio, la fase madura con la
-lectura B1 sube del 78.9\,\% con 50 consultas de formación al 91.0\,\% con 291, y la
-temprana es del 89.7\,\% (promedio de cinco sorteos del conjunto de evaluación).
-Con unas 200 consultas, la fase madura alcanza a la temprana: la diferencia es de
-$+0.2$ puntos con 200 y de $+1.3$ con 291, y ninguna diferencia positiva se sostiene
-entre sorteos.
-El directorio coincide, entonces, con la decisión del mediador en el 92.5\,\% de las
-consultas evaluadas (sorteo principal), con un acierto equivalente y sin difundir la
-consulta a todos los módulos.
-La lectura B1 supera a la cruda con todos los tamaños de formación y en todos los
-sorteos, por 4.5 a 8.8 puntos en promedio; sin ella, la fase madura nunca alcanza a la
-temprana.
+\paragraph{Lectura del directorio (objetivo~\ref{oe:lectura}).}
+Se cumplió.
+Entre las condiciones de lectura probadas con tres módulos se eligió B1, y con ocho se
+confirmó sobre conjuntos fijos que nunca forman el directorio, donde la fase madura
+alcanza a la temprana (91.0 frente a 89.7\,\% con 291 consultas de formación) y coincide
+con su decisión en el 92.5\,\% de las consultas, sin difundir cada consulta a todos los
+módulos.
+El principio de tamaño da las mismas decisiones en ETH-80.
+La normalización es un componente externo a las memorias, y queda declarada como tal
+(Sección~\ref{sec:auditoria}).
 
-\paragraph{Frente a decisores simples y a una memoria única
-(objetivo~\ref{oe:lineas-base}).}
-En texto, el sistema acierta lo mismo que los decisores simples.
-Sobre las 80 consultas del protocolo completo, en las que solo 11 traen el nombre de
-su clase, acierta el 81.2\,\%, y el voto por tokens del vocabulario, el centroide y los
-vecinos más cercanos dan entre 76.0 y 81.5\,\%.
-Sobre las 171 consultas reservadas, con 200 imágenes por clase, enruta bien el
-96.8\,\% y la memoria única clasifica bien el 96.9\,\% (diferencia de $-0.1$ puntos,
-$p = 0.86$).
-Lo que la memoria agrega sobre el voto en texto es el desempate entre las clases que
-contienen algún token de la consulta: 2.9 puntos sobre las 400 consultas de
-calibración (90.0 frente a 87.1\,\%).
-Una tabla de conteos de tokens formada con las mismas consultas no se distingue del
-directorio (92.2 frente a 93.0\,\%, $p = 0.58$).
+\paragraph{Escalado (objetivo~\ref{oe:escalado}).}
+Quedó cumplido en la construcción y en las dos comparaciones pedidas.
+El sistema de ocho módulos funciona con una memoria heteroasociativa por módulo, y se
+comparó con una sola memoria con las ocho clases y con decisores simples sobre los mismos
+vectores; ninguna de las dos comparaciones le da ventaja en acierto de clase, y la
+primera le da fidelidad, menos mezcla y rechazo.
+No se midió el efecto del número de módulos con todo lo demás fijo.
+La evidencia controlada del tamaño es la de cuántas clases guarda una memoria: la EHAM
+única contra la partición y la EHAM de dos clases contra la de ocho.
 
-\paragraph{Rechazo (objetivo~\ref{oe:rechazo}).}
-De las 40 consultas fuera de dominio, el sistema, con la doble compuerta, acepta 2 con
-25, 50, 100 y 200 imágenes por clase, y la memoria única 2, 2, 5 y 8; la segunda
-compuerta se decidió después de ver estas consultas (limitación (g)).
-Los decisores de coseno aceptan las 40.
-La compuerta textual coincide con la pertenencia al vocabulario en los 3064 pares de
-token y clase examinados, de modo que un voto léxico rechaza las mismas consultas.
-Las dos que pasan son las únicas que comparten una palabra con el vocabulario de un
-módulo (limitación (a)).
-En imagen, el umbral de energía y la contención rechazan buena parte de las entradas sin
-estructura (limitación (c)).
-El rechazo de imágenes reales de otras categorías no se midió.
+\paragraph{Hallazgos (objetivo~\ref{oe:hallazgos}).}
+Seis propiedades del sistema escalado quedaron caracterizadas: el directorio como índice y
+metamemoria, la perspectiva y la pérdida de un miembro, la separación entre reconocer y
+recordar, el tamaño y la partición, la relación entre imagen y palabra, y los límites del
+rechazo.
+Cada una se leyó desde el modelo de Wegner y desde la psicología y la neurociencia de la
+memoria (Sección~\ref{sec:discusion}).
+Los experimentos de lectura inversa, perspectiva y pérdida de un miembro usan protocolos
+anteriores al sistema final, y la pérdida de un miembro está por repetirse con el
+protocolo corregido.
 
-\paragraph{Recuperación en ambas direcciones (objetivo~\ref{oe:recuperacion}).}
-De texto a imagen, el sistema responde con una imagen al 98.7\,\% de las 171 consultas
-reservadas, y la memoria única al 100\,\%.
-La distancia de la imagen recordada a la imagen real más cercana de su clase es de
-27.2 con 200 imágenes por clase, frente a 32.5 de la memoria única y 26.8 del oráculo.
-De imagen a texto, 113 de las 116 imágenes enrutadas entre las 15 primeras de cada clase
-evocan palabras de su dominio (97.4\,\%).
-
-\paragraph{Imágenes y codificador (objetivo~\ref{oe:vision}).}
-Los directorios visuales envían al especialista el 96.2\,\% de las 656 imágenes de
-prueba (631), rechazan 23 y se equivocan en dos.
-El centroide y los vecinos más cercanos sobre los mismos códigos aciertan de 652 a 655
-sin rechazar ninguna, y el vecino más cercano acierta las 23 que el sistema rechaza.
-Con un codificador entrenado sin la pérdida de clase, el enrutamiento cae al 70.4\,\%,
-los falsos enrutamientos suben de 2 a 169 y la cobertura de punta a punta con objetos nuevos baja del
-89.2 al 59.3\,\%.
-La separación entre clases la hace el codificador supervisado, y la propiedad de
-fallar con un rechazo en lugar de un error depende de esa supervisión.
-Con objetos que ningún módulo vio, la cobertura es del 89.2\,\% frente al 95.5\,\% con
-vistas nuevas de objetos conocidos, pero el codificador sí había visto esos objetos;
-con un codificador reentrenado sin el objeto reservado, la cobertura es del 87.6\,\%
-[84.3, 91.0] y los falsos enrutamientos suben de 2 a 136 de 3280 (4.1\,\%).
-
-\paragraph{En suma.}
-El sistema enruta como un decisor simple y, además, rechaza lo que no contiene,
-recupera en ambas direcciones y guarda un registro de quién sabe qué.
-Su acierto lo ponen las representaciones: el vocabulario en texto y el codificador
-supervisado en imagen.
+\paragraph{Mundo real (objetivo~\ref{oe:mundo-real}).}
+Se cumplió como demostración de integración.
+La voz, con Whisper, y la cámara funcionan en tiempo real con la versión v5 del sistema,
+con unos 0.6\,s del final de la frase a la decisión y 54\,ms por cuadro.
+No se evaluó con cifras de acierto ni se corrió con la arquitectura final de una memoria
+heteroasociativa por módulo.

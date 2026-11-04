@@ -2,168 +2,213 @@
 \chapter{Conclusiones}\label{conclusiones}
 \label{sec:conclusiones}
 % <- 07
-Este trabajo presentó EAM-TMS, un sistema distribuido de memoria transactiva de ocho
-módulos construido sobre la Memoria Asociativa Entrópica ponderada
-(W-EAM) y su extensión heteroasociativa
-(EHAM)~\cite{pineda2021entropic,pineda2022weighted,morales2025missing}.
-El sistema cubre las ocho categorías de ETH-80 y opera en los dos sentidos,
-texto $\leftrightarrow$ imagen, con rechazo explícito en ambos, y no responde cuando
-nadie tiene soporte para la consulta.
+Este trabajo construyó EAM-TMS, un sistema distribuido de memoria transactiva hecho de
+Memorias Asociativas Entrópicas ponderadas (W-EAM) y de su extensión heteroasociativa
+(EHAM)~\cite{pineda2021entropic,pineda2022weighted,morales2025missing}, y lo estudió en
+cinco fases.
+Un prototipo de tres módulos sirvió para comprobar que el directorio emerge del uso y
+para elegir cómo leerlo.
+Después el sistema creció a los ocho módulos de ETH-80, con una memoria heteroasociativa
+por módulo, y sobre esa versión se midieron sus propiedades y se integraron la voz y la
+cámara.
 Las decisiones de enrutamiento y de rechazo no usan clasificadores discriminativos; la
 partición del contenido usa las etiquetas de clase, y el codificador visual se entrenó
 con una pérdida de clasificación auxiliar, de la que depende el enrutamiento visual.
 Del modelo de Wegner, el sistema implementa la actualización del directorio y la
 coordinación de la recuperación; la asignación de información la hace la etiqueta.
 
-\paragraph{Resultados principales.}
-Con conjuntos evaluados fijos de 120 consultas que nunca se registran en el directorio,
-la fase madura con la lectura normalizada alcanza el \textbf{91.0\,\%} con 291 consultas
-de formación, frente al \textbf{89.7\,\%} de la temprana (promedio de cinco sorteos), sin
-superarla de forma sostenida ($+0.2$ puntos con 200 consultas de formación y $+1.3$ con
-291); con la lectura cruda queda 7.5 puntos por debajo
-(Sección~\ref{sec:calibracion-fija}).
-Dentro de muestra, sobre 400 consultas del banco de 411 que también forman el
-directorio, la precisión temprana es del 90.0\,\% y la madura del 93.0\,\%, con una
-concordancia temprana-madura del 95.8\,\%.
-Sobre 171 consultas reservadas, con directorios perspectivales, el protocolo enruta
-correctamente el 96.8\,\% con 200 imágenes por clase (Sección~\ref{sec:eham-unica});
-que supere a la cifra dentro de muestra depende de la composición de las reservadas,
-que traen el nombre de su clase en el 87.7\,\% de los casos, frente al 49.8\,\% de las
-consultas de la calibración.
-La lectura normalizada deja la participación de \texttt{apple}, el módulo que la lectura
-cruda favorece (20.5\,\%), en \textbf{13.8\,\%} (proporción real 12.75\,\%, 51 de 400).
-En la dirección inversa, el hemisferio visual enruta el \textbf{96.2\,\%} de las 656
-imágenes de prueba, vistas nuevas de objetos conocidos, con \textbf{dos falsos
-enrutamientos} (99.7\,\% de precisión sobre las aceptadas), y el registro completo de
-sus percepciones queda balanceado, con \textbf{3.000 bits} de entropía, el máximo con
-ocho módulos.
-Sobre las primeras 15 imágenes de prueba de cada clase (116 aceptadas), la evocación de
-dominio es del \textbf{97.4\,\%}, frente a un azar del 34.8\,\%.
-Sobre objetos físicos nunca vistos (\textit{leave-one-object-out}, diez pliegues), la
-cobertura de punta a punta es del \textbf{89.2\,\%}, seis puntos por debajo de la de
-vistas nuevas de objetos conocidos, con dos falsos enrutamientos de 3280.
-Ese codificador había visto vistas de todos los objetos; con uno reentrenado sin el
-objeto reservado, la cobertura con objetos nuevos es del 87.6\,\% y los falsos
-enrutamientos suben a 136 de 3280.
-Con siete clases contrarias por módulo, el contenido no acepta ningún falso al llenar
-con un latente por imagen (curva de capacidad) y acepta 5 de 656 imágenes de prueba
-(0.8\,\%), todas entre animales, con el llenado de 16 variantes
-(Sección~\ref{sec:hemisferio-visual}).
-Sobre los mismos vectores, decisores sin memoria aciertan la clase tanto como el sistema
-en texto, y más en imagen, sin rechazar nada (Sección~\ref{sec:lineas-base}).
+Cada cifra de este capítulo va con la arquitectura de su fase.
+Entre el prototipo y el sistema final cambiaron a la vez el codificador, la cuantización
+de las pistas, las memorias por módulo, el banco de consultas y el mediador, de modo que
+las cifras de tres módulos no se comparan con las de ocho como un experimento controlado.
 
 \section{Con respecto a las preguntas de investigación}
 % <- 07, «Respuesta a la pregunta de investigación» hasta antes de «Trabajo futuro»
-El reparto evita el techo de una sola memoria en lo que ese techo afecta, y no en el
-acierto de clase.
-Con el mismo contenido, la EHAM única acepta más consultas fuera de dominio cuanto más
-contiene, responde con un dominio ajeno más veces y recuerda más lejos de una instancia
-real de la clase, mientras que el acierto de clase es el mismo desde 50 imágenes por
-clase (Sección~\ref{sec:eham-unica}); la ventaja del sistema en ese rechazo depende de
-una compuerta decidida después de ver esas consultas (limitación (g)).
-Hasta 200 imágenes por clase y con ocho clases, la memoria única no llega a un techo en el
-acierto; dónde lo alcanza queda por medir.
-El reparto, además, se puede hacer sin clasificadores.
-Un sistema de memoria transactiva hecho de memorias asociativas entrópicas reparte,
-recuerda y rechaza en ocho dominios: los directorios, la lectura normalizada, el
-rechazo por contención, la actualización del directorio y la coordinación punto a punto
-funcionan sin clasificadores discriminativos en las decisiones de enrutamiento y
-rechazo.
-No todo sale de las memorias.
-La especialización la asigna la etiqueta de clase, el codificador visual se entrenó con
-una pérdida de clasificación auxiliar (limitación (k)), y la suma por tokens, la normalización del directorio, el umbral $\tau$ y el rescate léxico operan fuera de ellas (Sección~\ref{sec:auditoria}).
-El rechazo tiene dos fugas medidas, consultas que comparten tokens con un dominio y
-entradas visuales sin estructura, que el umbral de energía cierra en su mayor parte
-(limitaciones (a) y (c)).
-Se midió con las 40 consultas fuera de dominio, entre ellas las 12 de la sonda de
-rechazo, y con sondas visuales sintéticas, no con fotografías reales de otras
-categorías.
+\paragraph{Emergencia del directorio (fase 1).}
+El directorio emerge de la experiencia con la arquitectura de la fase 1: tres módulos,
+cuatro memorias por módulo, cuantización por signo, TME mediador y banco de 80 consultas.
+Empieza vacío, y tras una sola interacción la fase madura acierta el 26.25\,\% de las
+consultas y rechaza el 72.5\,\%.
+A las 13 interacciones acierta el 91.25\,\%, y con las 80 del banco, el 98.75\,\%, con
+un rechazo del 1.25\,\%.
+La prueba más directa es el orden bloqueado por dominio.
+Mientras solo se presentaron consultas de \texttt{apple}, el directorio solo enrutó a
+\texttt{apple} y se quedó en el 33.75\,\%, la parte de esa clase en el banco; cruzó el
+90\,\% hasta la interacción 67, ya dentro del bloque de \texttt{car}.
+El orden intercalado, el barajado y el bloqueado terminan en las mismas cuentas,
+[78, 65, 53].
+En él queda a quién vio ganar cada pista, y lo que no presenció no lo enruta.
+Esta respuesta tiene tres límites.
+La curva se midió sobre las mismas 80 consultas que forman el directorio, así que mide
+cuánto del banco cubren los tokens ya registrados; el techo lo pone la fase temprana
+(98.73\,\% acumulado frente al 98.75\,\% de la madura), y sin la lectura B1 la fase
+madura no lo alcanza.
+La formación con ocho módulos no repite el umbral: ninguna condición pasa del 90\,\% y
+todas terminan en el 81.2\,\% (Sección~\ref{sec:formacion}).
 
-Frente a decisores simples sobre las mismas representaciones, la memoria asociativa no
-agrega acierto de clase.
-En las 80 consultas del protocolo completo, un voto por las palabras del vocabulario y
-los cinco vecinos más cercanos aciertan el 79.4 y el 81.5\,\%, frente al 81.2\,\% del
-sistema, y en imagen un centroide o un vecino más cercano aciertan de 652 a 655 de las
-656 imágenes de prueba, frente a 631 (Sección~\ref{sec:disc-lineas-base}).
-Lo que agrega es un rechazo que en texto no usa umbral, aunque equivale a la pertenencia
-al vocabulario, y que en imagen depende del umbral de energía $\tau$.
-Los decisores de coseno aceptan las 40 consultas fuera de dominio y el sistema 2, como un
-voto por vocabulario; frente a la EHAM única, la ventaja depende de una segunda
+\paragraph{Lectura del directorio (fase 2).}
+La lectura elegida en la fase 2 es B1, que divide la evidencia de cada módulo entre su
+número de registros más uno.
+En el prototipo, sobre las 80 consultas, la lectura cruda deja la fase madura en el
+53.75\,\%, porque \texttt{apple}, el módulo con más registros, gana el 78.75\,\% de las
+consultas.
+B1 la sube al 98.75\,\%, y dividir entre la raíz del número de registros (B2) se queda en
+el 75.0\,\%.
+La elección se sostuvo con ocho módulos.
+Sobre conjuntos fijos de 120 consultas que nunca forman el directorio, B1 supera a la
+lectura cruda con todos los tamaños de formación y en todos los sorteos, por 4.5 a 8.8
+puntos en promedio, y con ella la fase madura sube del 78.9\,\% con 50 consultas de
+formación al 91.0\,\% con 291, frente al 89.7\,\% de la temprana
+(Sección~\ref{sec:calibracion-fija}).
+Leer el directorio con el principio de tamaño da en ETH-80, donde el registro está
+balanceado, las mismas decisiones que B1 salvo una de 656 imágenes y 8 de 411 consultas.
+B1 opera fuera de las memorias y corrige un sesgo de la lectura sin tocar lo registrado.
+En el sistema de ocho módulos, la lectura cruda le da a \texttt{apple} el 20.5\,\% de las
+consultas aunque las cuentas del directorio están casi parejas (2.974 de 3.000 bits), y B1 lo deja
+en el 13.8\,\% (Sección~\ref{sec:calibracion}).
+
+\paragraph{Escalado a ocho módulos (fase 3).}
+El escalado a los ocho módulos de ETH-80 funciona con una memoria heteroasociativa y dos
+directorios por módulo.
+La caída del protocolo completo, del 98.75\,\% de la fase madura con tres módulos al
+81.2\,\% con ocho, no se puede atribuir al número de módulos, porque en el paso cambiaron
+también el codificador, la cuantización, las memorias, el banco y el mediador.
+En la arquitectura final, el hemisferio visual enruta el 96.2\,\% de las 656 imágenes de
+prueba con dos falsos enrutamientos, y 113 de las 116 imágenes enrutadas entre las 15
+primeras de cada clase evocan palabras de su dominio
+(Sección~\ref{sec:hemisferio-visual}).
+Ante objetos que ningún módulo vio, la cobertura de punta a punta es del 89.2\,\%; con un
+codificador reentrenado sin el objeto reservado es del 87.6\,\%, y los falsos
+enrutamientos suben de 2 a 136 de 3280 (Sección~\ref{sec:objetos-nuevos}).
+Las memorias homoasociativas que antes se llenaban aparte equivalen a lecturas de la
+heteroasociativa: con una sola memoria de contenido por módulo, el sistema toma las
+mismas decisiones en imagen y casi todas en texto (Sección~\ref{sec:una-memoria}).
+
+Sobre el tamaño hay dos mediciones controladas, las dos con la arquitectura final.
+Frente a una sola EHAM con las ocho clases y el mismo contenido, el sistema acierta la
+clase igual desde 50 imágenes por clase; con 200, sobre las 171 consultas reservadas,
+aciertan el 96.8 y el 96.9\,\% ($p = 0.86$).
+La partición compra fidelidad del recuerdo (lo recordado queda 5.4 unidades más cerca de
+una instancia real), menos mezcla cuando la pista es compartida (71.4 frente a 51.1\,\% de
+clase correcta) y un rechazo que no empeora con el contenido (acepta 2 de 40 consultas
+fuera de dominio, y la EHAM única, 8); esa ventaja en el rechazo depende de una segunda
 compuerta decidida después de ver esas consultas (limitación (g)).
-Agrega también el recuerdo del contenido asociado, un rechazo que no empeora cuando
-crece el contenido, a diferencia de una sola memoria con las ocho clases, y decisiones
-que se leen en los registros de sus memorias.
+A cambio, en imagen responde al 81.2\,\% de las imágenes, y la EHAM única al 100\,\%
+(Sección~\ref{sec:eham-unica}).
+En los 28 pares de clases de ETH-80, una EHAM de dos clases recuerda a 2.54 unidades de
+distancia más que el especialista, en promedio, y la de ocho a 5.66, peor en 26 de los 28
+pares.
+Esa brecha no sigue al solapamiento entre los dos dominios ($\rho = 0.01$), y el error de
+clase sí ($\rho = 0.49$, $p = 0.008$).
+Mezclar más dominios en una memoria degrada el recuerdo antes que el acierto de clase;
+hasta 200 imágenes por clase, la memoria única no llega a un techo en el acierto, y dónde
+lo alcanza queda por medir.
 
-Los límites vienen de las dos partes.
-La clase la decide sobre todo la representación.
-En texto, el léxico que comparten clases vecinas concentra los errores que quedan
-(\texttt{pear} $\to$ \texttt{apple} 9 y \texttt{horse} $\to$ \texttt{cow} 6 de 28),
-como en la sobrecarga de pistas de la memoria humana~\cite{watkins1975buildup}, y
-\texttt{pear} es difícil para todos los decisores.
-Con los mismos vectores, un centroide la acierta el 8.0\,\% de las veces y los vecinos
-más cercanos entre el 62 y el 71\,\%, frente al 70.0\,\% de la fase temprana y al
-76\,\% de la lectura normalizada.
-En imagen, sin la pérdida de clase del codificador, el enrutamiento baja al 70.4\,\%.
-El mecanismo tiene también límites propios: necesita la normalización externa del
-directorio, su contención estricta por coordenada cuesta cobertura (rechaza 23 imágenes
-que un vecino más cercano clasifica bien), destruir al azar el 1\,\% de las celdas deja sin nombre al 92\,\% de las imágenes, y
-el contenido visual da soporte a entradas sin estructura.
-El directorio funciona como un índice que localiza al especialista, y formarlo cuesta
-interacción.
-Con un conjunto evaluado fijo, la fase madura sube del 78.9 al 91.0\,\% entre 50 y 291
-consultas de formación, hasta alcanzar a la temprana (89.7\,\%), sin una ventaja que se
-sostenga entre sorteos ($+1.3$ puntos con 291; de $-0.8$ a $+6.7$ según el sorteo).
+Frente a decisores simples sobre los mismos vectores, la memoria no agrega acierto de
+clase.
+En las 80 consultas del protocolo completo, el voto por tokens del vocabulario, el
+centroide y los vecinos más cercanos aciertan entre el 76.0 y el 81.5\,\%, frente al
+81.2\,\% del sistema, y en imagen un centroide o un vecino más cercano aciertan de 652 a
+655 de las 656 imágenes, frente a 631 (Sección~\ref{sec:lineas-base}).
+Agrega un rechazo que en texto no usa umbral, aunque equivale a la pertenencia
+al vocabulario, el recuerdo del contenido asociado y decisiones que se leen en los
+registros de sus memorias.
+Las representaciones deciden la clase: en texto, el léxico que comparten clases vecinas
+concentra los errores (\texttt{pear} $\to$ \texttt{apple} 9 y \texttt{horse} $\to$
+\texttt{cow} 6 de 28), como en la sobrecarga de pistas de la memoria
+humana~\cite{watkins1975buildup}, y en imagen, sin la pérdida de clase del codificador, el
+enrutamiento baja al 70.4\,\% (Sección~\ref{sec:codificador-sin-clase}).
 
-\paragraph{Frente a una EHAM única.}
-Con el mismo contenido, la diferencia por consulta en el acierto de clase entre el
-sistema transactivo y una sola memoria con las ocho clases no excluye el cero desde 50
-imágenes por clase ($-0.7$, $-0.7$ y $-0.1$ puntos con 50, 100 y 200), aunque McNemar
-por pares, que trata como independientes las repeticiones de cada consulta, favorece a
-la EHAM única con 50 y 100.
-Con 200, sobre el total de las 171 consultas reservadas, aciertan el 96.8 y el
-96.9\,\% ($[-2.9, +2.9]$); con 25, la EHAM única acierta más (97.6 frente a 93.2\,\%),
-porque el directorio todavía enruta peor.
-El sistema transactivo recuerda con más fidelidad, mezcla menos los dominios cuando la
-pista es compartida (desde 50 imágenes por clase acierta la clase en el 70--71\,\% de
-esas consultas, frente al 48--52\,\% de la EHAM única, sobre el 4.1\,\% de sus respuestas;
-con 25 los intervalos se solapan) y en imagen responde con un dominio ajeno menos veces
-(3.1\,\% de las imágenes, frente a 10.9\,\% con 200 por clase).
-Con 200 imágenes por clase acepta menos consultas fuera de dominio (2 frente a 8 de 40,
-$p = 0.031$), mientras que la EHAM única acepta más cuanto más contiene (2, 2, 5 y 8);
-la segunda compuerta que da esa ventaja se decidió después de ver esas consultas
-(limitación (g)).
-A cambio cubre menos, porque en imagen responde al 81.2\,\% de las imágenes, frente al
-100\,\% de la EHAM única, y elegir el módulo con el directorio le cuesta 3.2 puntos de
-clase sobre el total respecto del oráculo desde 50 imágenes por clase (6.8 con 25).
+\paragraph{Propiedades del sistema escalado (fase 4).}
+En el sistema escalado, el directorio funciona como un índice y, leído al revés, como un
+registro de lo que sabe cada miembro.
+Para enrutar solo cuenta quién ganó cada pista.
+Un directorio único para texto e imagen enruta el texto igual que uno separado (96.2\,\%
+en los dos), y las dos modalidades no se transfieren nada.
+Leído de módulo a pista, el directorio reconstruye el dominio propio y el de los módulos
+ajenos que presenció (80 de 80 y 112 de 112), y lo que devuelve es una envolvente del
+dominio, de 2.9 a 5.5 veces más lejos de cualquier instancia real que las instancias
+entre sí.
 
-\paragraph{Una memoria de contenido por módulo.}
-Las memorias homoasociativas que la implementación de referencia llena aparte equivalen
-a lecturas de la heteroasociativa.
-Con los pesos leídos de la memoria heteroasociativa, el sistema toma las mismas
-decisiones en imagen y casi todas en texto (cambian algunos destinos del protocolo y una
-consulta de 80 en la curva de capacidad).
-Ante la misma fracción de celdas destruidas en todas las memorias, la familiaridad
-leída de ella resiste más que la de una memoria homoasociativa aparte (con el 1\,\% de
-las celdas destruidas, 800 frente a 416 de 800 imágenes), por construcción: cada celda
-de la lectura suma las de los 17 valores de etiqueta, y una celda de la memoria
-homoasociativa es un punto único.
-Cada módulo necesita una memoria de contenido y dos directorios.
-Reconocer sin poder nombrar, que en las personas tiene análogos como la afasia óptica,
-la experiencia de la punta de la lengua o la dificultad para recordar nombres propios
-(Sección~\ref{sec:disc-una-memoria}), surge en él de una sola memoria con dos lecturas.
-Con daño al azar, el módulo deja de nombrar mucho antes de dejar de reconocer, porque
-nombrar es una conjunción sobre todas las coordenadas y reconocer, una suma.
+Registrar solo lo que cada módulo presencia no le cuesta acierto al grupo.
+En imagen, encadenar los directorios parciales iguala al registro compartido (81.9\,\%
+con una de cada 64 transmisiones ajenas presenciadas); en texto lo iguala sumar los
+puntajes de los módulos conocidos (91.0 frente a 93.6\,\% con una de cada 32).
+Cuando falta un especialista, el directorio sigue apuntando a él, de modo que el grupo
+pierde la respuesta y conserva la ubicación, como en la pérdida de un miembro que
+describe Wegner~\cite{wegner1987transactive}.
+Sustituirlo por el segundo mejor responde el 24.5\,\% de las veces y nunca con la clase
+correcta, mientras que describirlo con la lectura inversa del directorio responde siempre
+y con la clase correcta.
+El reconocimiento queda en el especialista, que acepta el 98.3\,\% de las
+consultas de su dominio, y un módulo ajeno, el 16.1\,\%.
+Estos experimentos de lectura inversa, perspectiva y pérdida de un miembro usan
+protocolos anteriores al sistema final, con directorios compartidos o con un directorio
+visual formado sin variantes.
 
-\paragraph{Lecciones.}
-Un sesgo de lectura no es un sesgo de lo registrado.
-Con la lectura cruda, \texttt{apple} gana el 20.5\,\% de las victorias aunque los
-conteos del directorio están casi parejos (2.974 de 3.000 bits), y la normalización por
-conteo lo deja en 13.8\,\% sin tocar lo registrado.
-Y la entropía de los conteos mide balance, no especialización; la especialización del
-directorio la mide la información mutua entre el dominio de la consulta y el módulo
-ganador, que con $N = 400$, sobre las consultas que formaron el directorio, llega al
-88.3\,\% de su máximo con la lectura normalizada y al 81.3\,\% con la cruda; el estimador
-la sobrestima en unos 0.09 bits.
+Reconocer y recordar se separan dentro de una misma memoria.
+La memoria acepta lo que su envolvente cubre, aunque no se parezca a nada visto; el
+codificador lleva las entradas sin estructura cerca del origen, ese punto cae en el
+soporte de \texttt{horse}, y el umbral de energía $\tau$ cierra 137 de 152 de esas
+entradas.
+Ante un daño al azar, el módulo deja de nombrar mucho antes de dejar de reconocer: destruir
+el 1\,\% de las celdas deja sin nombre al 92\,\% de las imágenes, porque nombrar es una
+conjunción sobre todas las coordenadas y reconocer, una suma.
+Ese patrón tiene análogos en las personas, como la afasia óptica o la experiencia de la
+punta de la lengua (Sección~\ref{sec:disc-una-memoria}).
+
+De una imagen el sistema recupera el dominio con más seguridad que la palabra.
+El primer término evocado pertenece al vocabulario de la clase en el 96.0\,\% de las
+imágenes, y es el nombre de la clase en el 48.0\,\%.
+En objetos nuevos, el color se acierta en el 57.8\,\% frente a una base del 49.5\,\%, y
+un atributo visible, como el patrón o el pelo, sale con el valor mayoritario del módulo
+en el 98 al 99\,\% de las vistas, de modo que el valor minoritario se acierta del 1 al
+6\,\%.
+La pertenencia a la clase generaliza; el atributo lo decide la densidad de lo
+registrado.
+
+Los límites del rechazo también se midieron.
+De 12 consultas fuera de los ocho dominios, la memoria rechaza 10 por contención, y la
+contención estricta por coordenada rechaza 23 imágenes que un vecino más cercano
+clasifica bien.
+El rechazo se probó con consultas de texto y con sondas visuales sintéticas; con
+fotografías reales de otras categorías no se midió.
+
+\paragraph{Voz y cámara (fase 5).}
+La fase 5 es una demostración de integración, hecha con la versión v5 del sistema: ocho
+módulos con tres memorias de contenido por módulo.
+Una frase grabada, «Farm animal that gives milk», pasó por el detector de voz, Whisper y
+el enrutamiento y llegó a \texttt{cow} en unos 0.6\,s, de los que 336\,ms fueron de
+transcripción y 302\,ms de enrutamiento.
+La visión analiza un cuadro en 54\,ms con la interfaz a 26 cuadros por segundo, y un
+cuadro de la cámara sin ningún objeto de las ocho clases se rechaza.
+En simulación, la corrección de color recupera 22, 18 y 15 de 24 imágenes de prueba sin
+degradar, con degradación media y con degradación fuerte.
+Son mediciones únicas de julio de 2026, sin salida cruda guardada; la frase entró desde
+un archivo de audio y no se habló en vivo, y con la cámara física y hojas impresas solo
+\texttt{cow} se reconoció de forma fiable.
+No hay tasa de error de transcripción ni aciertos de enrutamiento con voz.
+Esta fase muestra que la cadena funciona de punta a punta; cuánto acierta está por
+medir.
+
+\paragraph{Lo que se sostuvo y lo que cambió.}
+La Sección~\ref{sec:creencias} contrasta cada creencia inicial con lo que se encontró.
+Se sostuvieron tres decisiones: la lectura normalizada por conteo, elegida con tres
+módulos y vigente con ocho; el directorio como índice para enrutar, que el directorio
+unificado de texto e imagen confirmó; y la idea de que el acierto lo ponen sobre todo las
+representaciones, con el matiz de que el mecanismo tiene límites propios.
+La ventaja de la fase madura sobre la temprana cambió, porque venía de evaluar sobre las
+consultas que formaron el directorio, y con un conjunto fijo la madura solo alcanza a la
+temprana.
+También cambió la fidelidad de 10 de 10 del primer prototipo, que contaba dos rechazos
+como coincidencias.
+Al pasar a ocho módulos, la cuantización por signo de las pistas se reemplazó por una por
+magnitud.
+Partir el contenido entre especialistas dio fidelidad, menos mezcla y rechazo, con el
+mismo acierto de clase que una sola memoria.
+Tampoco se sostuvo que todas las decisiones fueran operaciones de memoria, porque la suma
+por tokens, B1, el umbral $\tau$ y el rescate léxico operan fuera de ellas
+(Sección~\ref{sec:auditoria}).
 
 \section{Con respecto al objetivo general}
 \input{ConclusionObjetivoGeneral}
@@ -178,6 +223,22 @@ Los siguientes pasos salen de las limitaciones de la Sección~\ref{sec:limitacio
     imagen y fuera de dominio con bancos nuevos, escritos por terceros sin acceso al
     vocabulario, y con una partición reservada sorteada en lugar de la cola de la lista
     de cada clase.
+    \item \textbf{Barrido del número de módulos con la arquitectura final}: tomar
+    subconjuntos de 2 a 8 módulos de los modelos actuales, sin reentrenar ni volver a
+    llenar, porque las memorias de contenido son independientes por módulo, y formar de
+    nuevo los directorios.
+    Separaría el efecto del número de módulos de los demás cambios del escalado; el
+    codificador seguiría siendo el de ocho clases, y habría que declararlo.
+    Con los tiempos de las etapas 6 a 8 medidos en septiembre en la segunda laptop, cada
+    número de módulos y semilla costaría unos 17 minutos.
+    \item \textbf{Pérdida de un miembro con el protocolo final}: repetir el experimento 9
+    con directorios perspectivales, una memoria heteroasociativa por módulo y el
+    directorio visual de 16 variantes, y fijar con esa corrida cuántas consultas llegan al
+    módulo perdido según el número de interacciones.
+    \item \textbf{Voz y cámara con cifras}: un banco de frases habladas en vivo, con su
+    tasa de error de transcripción y su acierto de enrutamiento; latencias repetidas, con
+    su distribución, y un conteo de aciertos con la cámara física y objetos impresos.
+    Todo con la arquitectura final y guardando la salida cruda en \texttt{results/}.
     \item \textbf{Asignación de información y aprendizaje en fase madura} (limitación
     (e)): que una imagen o una palabra nueva entre por cualquier módulo y el grupo la
     registre en el especialista que indique su directorio, sin la etiqueta de clase (la
@@ -215,19 +276,14 @@ Los siguientes pasos salen de las limitaciones de la Sección~\ref{sec:limitacio
 
 \bigskip
 
-En resumen, las Memorias Asociativas Entrópicas de Pineda y Morales bastan para
-construir un sistema distribuido de memoria transactiva de ocho especialistas,
-bidireccional y con rechazo explícito, sin clasificadores discriminativos en las
-decisiones de enrutamiento y rechazo.
-El sistema modela la actualización del directorio y la coordinación de la
-recuperación; la especialización la asigna la etiqueta de clase.
-Frente a decisores simples sobre las mismas representaciones, esas memorias no
-clasifican mejor; lo que aportan es el recuerdo del contenido asociado, decisiones que
-se leen en sus registros y un rechazo que en texto no usa umbral, aunque equivale a la
-pertenencia al vocabulario, y en imagen depende del umbral de energía $\tau$.
-La clase la deciden las representaciones, y el mecanismo necesita dos cosas que no
-salen de él: la normalización por conteo del directorio y un código en que cada
-coordenada separe las clases.
+Las Memorias Asociativas Entrópicas de Pineda y Morales bastan para construir un sistema
+distribuido de memoria transactiva de ocho especialistas, bidireccional y con rechazo
+explícito, sin clasificadores discriminativos en las decisiones de enrutamiento y
+rechazo.
+Desde el prototipo de tres módulos el directorio emerge del uso, y la lectura elegida ahí
+es la que usa el sistema de ocho.
+El mecanismo necesita dos cosas que no salen de él, la normalización por conteo del
+directorio y un código en que cada coordenada separe las clases.
 
 \section{Difusión y productos derivados}
 \input{Difusion}

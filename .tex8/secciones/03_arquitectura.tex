@@ -1,12 +1,10 @@
 \section{Arquitectura EAM-TMS}
 \label{sec:arquitectura}
 
-Esta sección describe la arquitectura completa del sistema distribuido de memoria
-transactiva de ocho módulos.
-Se presentan primero los componentes (Sección~\ref{sec:componentes}), luego los tres
-diagramas de flujo que muestran el llenado de memorias, la fase temprana y la fase
-madura (Sección~\ref{sec:diagramas}), y finalmente la formalización de todas las
-operaciones del sistema (Sección~\ref{sec:operaciones}).
+El producto propuesto es el sistema de ocho módulos con el que cerró la fase 3, más los
+cambios que dejaron los experimentos de la fase 4 (Sección~\ref{sec:metodologia}).
+Con él se obtuvieron las cifras de ocho módulos del reporte, salvo donde se indica otra
+versión.
 
 \subsection{Componentes del sistema}
 \label{sec:componentes}
@@ -412,20 +410,12 @@ calibración de la Sección~\ref{sec:calibracion}) da al módulo $k$ la puntuaci
     \label{eq:b1}
 \end{equation}
 donde $c_k$ es el número total de registros del módulo $k$ en el directorio.
-
-\paragraph{Por qué dividir entre el conteo.}
-La especialización real produce masas desiguales entre módulos. Al final del protocolo
-completo (Sección~\ref{sec:proto-completo}) los conteos del directorio fueron
-$[46, 16, 40, 25, 30, 18, 21, 31]$.
-La puntuación cruda de una proyección heteroasociativa crece con la masa de registros,
-por lo que un módulo con más registros en el directorio obtendría ventaja sin mérito.
-La división por $c_k + 1$ convierte \emph{evidencia total} en \emph{evidencia por
-registro}, de modo que la puntuación refleja la calidad de la especialización.
 Esta es la \textbf{única normalización externa} del sistema de directorios.
 El conteo $c_k$ se guarda como un contador aparte, pero no agrega información, porque es el
 número de veces que se registró «conoce» para el módulo $k$, el mismo en todas las
 características de la relación.
-La Sección~\ref{sec:calibracion} mide su efecto.
+La razón para dividir entre el conteo y la comparación con las demás lecturas que se
+probaron forman la fase 2 (Sección~\ref{fase2:lectura}).
 
 \subsubsection*{Coordinación transactiva de la recuperación}
 

@@ -1,165 +1,383 @@
 \chapter{Experimentos y su ubicación}\label{apendiceA}
 
-Las Tablas~\ref{tab:exp-texto} a~\ref{tab:exp-comparaciones} ubican cada experimento citado en
-el texto: la sección donde se reporta, lo que mide y su carpeta dentro de
-\texttt{results/}.
-Todas las cifras del reporte salen de esas carpetas del repositorio del proyecto, salvo
-la comparación con la batería completa, marcada «sin carpeta», cuyos registros están en
-\texttt{logs\_comparacion/}.
+Las Tablas~\ref{tab:fase1-experimentos} a~\ref{tab:fase-auxiliares} listan las carpetas
+de \texttt{results/} de este reporte, ordenadas por fase, con lo que mide cada una, la
+arquitectura con que se corrió, su estado y la sección donde se reporta.
+«Vigente» quiere decir que sus cifras se pueden citar; «corregido», que una parte se
+rehízo y vale la versión que se indica; «reemplazado», que otra carpeta tiene las cifras
+que valen.
+La columna de arquitectura usa estas abreviaturas:
+\begin{itemize}
+    \item \textbf{F1}: tres módulos (\texttt{apple}, \texttt{horse} y \texttt{car}), cuatro
+    memorias por módulo, cuantización por signo, TME mediador, directorio compartido y
+    banco de 80 consultas;
+    \item \textbf{final}: ocho módulos de ETH-80, cada uno con una memoria
+    heteroasociativa y dos directorios, 16 variantes de llenado, umbral de energía y
+    directorios perspectivales; \textbf{final (lectura)} solo lee los modelos o
+    directorios oficiales de esa versión;
+    \item \textbf{8 anterior}: ocho módulos con un protocolo previo al final, y la columna
+    dice qué cambia;
+    \item \textbf{v5}: ocho módulos con tres memorias de contenido por módulo, la versión
+    de julio y agosto de 2026.
+\end{itemize}
+
+Las carpetas de la fase 1 están dentro de \texttt{results/fase1\_tres\_modulos/}, copia
+de la rama del prototipo sin recalcular nada, y las de la fase 5, en
+\texttt{results/mundo\_real/}.
 Quedan fuera del repositorio los modelos entrenados (\texttt{models/*.pt} y
 \texttt{models/*.pkl}), los registros por consulta (\texttt{raw/}) del protocolo
 transactivo del experimento 11 (23\,MB) y los codificadores reentrenados por pliegue,
 como declaran el \texttt{.gitignore} y los README de esas carpetas.
+Las carpetas de las aplicaciones médica (MedMNIST+) e industrial (VisA), incluida la flota
+de detectores, son casos aplicados en curso y no se listan.
 
 % filas terminadas en \tabularnewline porque \raggedright redefine \\
 \begin{table}[H]
 \centering
-\caption[Experimentos del hemisferio textual y del directorio]{Experimentos del hemisferio textual y del directorio.}
+\caption[Fase 1, prototipo de tres módulos]{Fase 1, prototipo de tres módulos. Las carpetas están en \texttt{results/fase1\_\allowbreak tres\_\allowbreak modulos/}.}
+\label{tab:fase1-experimentos}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
+\toprule
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
+\midrule
+\raggedright \texttt{exp4\_\allowbreak directory\_\allowbreak formation} &
+\raggedright Formación del directorio tras cada interacción, con orden intercalado, barajado (cinco semillas) y bloqueado, y un control con puntuación cruda. &
+\raggedright F1 &
+\raggedright Vigente; dentro de muestra y con la lectura B1. &
+\raggedright \ref{sec:resultados}, fase~1 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp3\_\allowbreak corrected\_\allowbreak routing} &
+\raggedright Protocolo completo: fase temprana, formación del directorio y fase madura con lectura cruda y B1. &
+\raggedright F1 &
+\raggedright Vigente; dentro de muestra. &
+\raggedright \ref{sec:resultados}, fases~1 y~2 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp6\_\allowbreak capacity} &
+\raggedright Capacidad del llenado por instancias con 25 a 328 imágenes por clase. &
+\raggedright F1 &
+\raggedright Vigente para su fase. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp5\_\allowbreak entropic\_\allowbreak prototype} &
+\raggedright Llenado con un latente promediado contra llenado por instancias. &
+\raggedright F1, con 50 instancias por clase &
+\raggedright Vigente como evidencia cualitativa; corrida anterior al protocolo de 200 imágenes por clase. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{rejection\_\allowbreak probe} &
+\raggedright Rechazo de 12 consultas que describen objetos fuera de apple, horse y car. &
+\raggedright F1 &
+\raggedright Reemplazado por \texttt{rejection\_\allowbreak probe} de ocho módulos. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{label\_\allowbreak recall} &
+\raggedright Recuerdo de etiquetas en el dominio propio, en uno ajeno y con varias palabras (solo figuras). &
+\raggedright F1 &
+\raggedright Vigente para su fase. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{computational\_\allowbreak cost} &
+\raggedright Tiempo de reproducir el prototipo completo. &
+\raggedright F1 &
+\raggedright Vigente para su fase; no se compara con el costo de ocho módulos. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento1} &
+\raggedright Informe del primer prototipo, con sus cinco secciones de resultados. &
+\raggedright F1 &
+\raggedright Reemplazado por las carpetas de esta tabla, que tienen sus cifras. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{results/\allowbreak experimento1} &
+\raggedright Copia del mismo informe en la raíz de \texttt{results/}. &
+\raggedright F1 &
+\raggedright Reemplazado por \texttt{fase1\_\allowbreak tres\_\allowbreak modulos/}; su \texttt{summary.json} ya no tiene las cifras de tres módulos. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Fase 2, lectura del directorio]{Fase 2, lectura del directorio.}
+\label{tab:fase2-experimentos}
 \label{tab:exp-texto}
 \footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
 \toprule
-Experimento & Sección & Qué mide & Carpeta \tabularnewline
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
 \midrule
-\raggedright Rescate léxico & \raggedright \ref{sec:pipeline-semantico} &
-\raggedright Cuánto aporta a la fase temprana la regla que rescata tokens mal etiquetados
-por spaCy, con y sin ella, sobre las 411 consultas del banco. &
-\raggedright \texttt{rescate\_\allowbreak lexico} \tabularnewline\addlinespace[6pt]
-\raggedright Reanálisis del banco & \raggedright \ref{sec:banco}, \ref{sec:calibracion} &
-\raggedright Relecturas del banco y de corridas ya versionadas, como cuántas consultas traen
-el nombre de su clase. &
-\raggedright \texttt{reanalisis\_\allowbreak jurado} \tabularnewline\addlinespace[6pt]
-\raggedright Calibración del directorio & \raggedright \ref{sec:calibracion} &
-\raggedright Sesgo del directorio hacia un módulo bajo nueve condiciones de calibración
-(A a G), con 50 a 400 consultas y cinco semillas, evaluadas sobre las consultas
-que forman el directorio. &
-\raggedright \texttt{ablation\_\allowbreak mdir\_\allowbreak bias} \tabularnewline\addlinespace[6pt]
-\raggedright Calibración fija & \raggedright \ref{sec:calibracion-fija} &
-\raggedright La misma calibración evaluada en 120 consultas fijas que nunca registran en
-el directorio. &
-\raggedright \texttt{calibracion\_\allowbreak evaluacion\_\allowbreak fija} \tabularnewline\addlinespace[6pt]
-\raggedright Protocolo completo & \raggedright \ref{sec:proto-completo} &
-\raggedright Fase temprana, formación del directorio y fase madura con lectura B1 sobre
-80 consultas, y réplica con las 16 consultas de referencia. &
-\raggedright \texttt{exp3\_\allowbreak corrected\_\allowbreak routing} \tabularnewline\addlinespace[6pt]
-\raggedright Sonda de rechazo fuera de dominio & \raggedright \ref{sec:proto-completo} &
-\raggedright Si la memoria rechaza por contención 12 consultas representables que
-describen objetos fuera de los ocho dominios. &
-\raggedright \texttt{rejection\_\allowbreak probe} \tabularnewline\addlinespace[6pt]
-\raggedright Barrido $\iota \times \kappa$ & \raggedright \ref{sec:param-iota-kappa} &
-\raggedright Si la poda $\iota$ y el umbral relativo $\kappa$ eliminan el sesgo de masa
-que obliga a la lectura B1 (cuadrícula de $4 \times 7$ sobre 80 consultas). &
-\raggedright \texttt{exp2\_\allowbreak iota\_\allowbreak kappa} \tabularnewline\addlinespace[6pt]
-\raggedright Formación del directorio & \raggedright \ref{sec:formacion} &
-\raggedright Cuántas interacciones necesita el directorio para que el enrutamiento maduro
-sea confiable, y si importa su orden. &
-\raggedright \texttt{exp4\_\allowbreak directory\_\allowbreak formation} \tabularnewline\addlinespace[6pt]
-\raggedright Capacidad de llenado & \raggedright \ref{sec:capacidad} &
-\raggedright Aceptación propia y ajena, variedad del recuerdo, enrutamiento y entropía con
-25 a 328 imágenes por clase. &
-\raggedright \texttt{exp6\_\allowbreak capacity} \tabularnewline\addlinespace[6pt]
+\raggedright \texttt{fase1\_\allowbreak tres\_\allowbreak modulos/\allowbreak ablation\_\allowbreak mdir\_\allowbreak bias} &
+\raggedright Lectura cruda, B1, B2 y las calibraciones C, D, E32, E64, F y G, con 10 a 80 consultas y cinco semillas. &
+\raggedright F1 &
+\raggedright Vigente; dentro de muestra. &
+\raggedright \ref{sec:resultados}, fase~2 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{fase1\_\allowbreak tres\_\allowbreak modulos/\allowbreak exp2\_\allowbreak iota\_\allowbreak kappa} &
+\raggedright Si la poda $\iota$ y el umbral $\kappa$ sustituyen a la lectura B1. &
+\raggedright F1 &
+\raggedright Vale lo de $\iota$; la columna de $\kappa$ no responde por un error de la compuerta, corregido después con ocho módulos. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{ablation\_\allowbreak mdir\_\allowbreak bias} &
+\raggedright Las mismas condiciones con ocho módulos, de 50 a 400 consultas y cinco semillas. &
+\raggedright final &
+\raggedright Corregido en su evaluación, que usaba las consultas que forman el directorio; la sustituye \texttt{calibracion\_\allowbreak evaluacion\_\allowbreak fija}. &
+\raggedright \ref{sec:calibracion} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{calibracion\_\allowbreak evaluacion\_\allowbreak fija} &
+\raggedright La calibración evaluada en 120 consultas fijas que nunca se registran en el directorio. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:calibracion-fija} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento22} &
+\raggedright Principio de tamaño contra B1 sobre los directorios oficiales, en texto y en imagen. &
+\raggedright final (lectura) &
+\raggedright Vigente. &
+\raggedright \ref{sec:resultados}, fase~2 \tabularnewline\addlinespace[4pt]
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption[Experimentos del hemisferio visual]{Experimentos del hemisferio visual.}
-\label{tab:exp-visual}
+\caption[Fase 3, escalado a ocho módulos: protocolo, formación y capacidad]{Fase 3, escalado a ocho módulos: protocolo, formación y capacidad.}
+\label{tab:fase3-experimentos}
 \footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
 \toprule
-Experimento & Sección & Qué mide & Carpeta \tabularnewline
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
 \midrule
-\raggedright Hemisferio visual & \raggedright \ref{sec:hemisferio-visual} &
-\raggedright Registro de la etapa visual en la corrida oficial: formación del directorio
-visual, enrutamiento de las 656 imágenes de prueba y evocación. &
-\raggedright \texttt{hemisferio\_\allowbreak visual} \tabularnewline\addlinespace[6pt]
-\raggedright Directorios perspectivales (exp.~10) & \raggedright
-\ref{sec:hemisferio-visual}, \ref{sec:disc-wegner} &
-\raggedright Si el grupo recupera el enrutamiento del directorio compartido encadenando lo
-que cada módulo sabe de los demás cuando solo presencia parte de lo ajeno. &
-\raggedright \texttt{experimento10} \tabularnewline\addlinespace[6pt]
-\raggedright Variantes por percepción (exp.~13) & \raggedright
-\ref{sec:hemisferio-visual}, \ref{sec:limitaciones} &
-\raggedright Efecto de registrar más variantes por imagen en el contenido y en el
-directorio sobre aceptación, cobertura de punta a punta y falsos enrutamientos. &
-\raggedright \texttt{experimento13} \tabularnewline\addlinespace[6pt]
-\raggedright Umbral de energía (exp.~14) & \raggedright \ref{sec:percepcion},
-\ref{sec:hemisferio-visual}, \ref{sec:limitaciones} &
-\raggedright Criterio de energía mínima del latente: su costo en imágenes reales y cuánto
-cierra la fuga de entradas degeneradas. &
-\raggedright \texttt{experimento14} \tabularnewline\addlinespace[6pt]
-\raggedright Objetos nuevos (exp.~16) & \raggedright \ref{sec:objetos-nuevos} &
-\raggedright Generalización a objetos que las memorias no vieron, con diez pliegues
-\textit{leave-one-object-out}. &
-\raggedright \texttt{experimento16} \tabularnewline\addlinespace[6pt]
-\raggedright Codificador por pliegue & \raggedright \ref{sec:objetos-nuevos} &
-\raggedright El experimento 16 con un codificador reentrenado sin el objeto reservado de
-cada pliegue. &
-\raggedright \texttt{objetos\_\allowbreak nuevos\_\allowbreak codificador\_\allowbreak
-por\_\allowbreak pliegue} \tabularnewline\addlinespace[6pt]
-\raggedright Codificador sin pérdida de clase & \raggedright
-\ref{sec:codificador-sin-clase} &
-\raggedright Cuánto depende el sistema visual de la pérdida de clase del codificador, de
-punta a punta, con el diagnóstico de separación por coordenada. &
-\raggedright \texttt{codificador\_\allowbreak sin\_\allowbreak clase} \tabularnewline\addlinespace[6pt]
-\raggedright Codificador de ImageNet (exp.~19) & \raggedright
-\ref{sec:codificador-sin-clase} &
-\raggedright El sistema completo con la ResNet18 de ImageNet congelada y PCA a 64, una
-percepción que conserva el detalle dentro de la clase. &
-\raggedright \texttt{experimento19} \tabularnewline\addlinespace[6pt]
+\raggedright \texttt{exp3\_\allowbreak corrected\_\allowbreak routing} &
+\raggedright Protocolo completo sobre 80 consultas, y réplica con las 16 consultas de referencia. &
+\raggedright final &
+\raggedright Vigente; reemplaza las cifras de tres módulos de \texttt{experimento1}. &
+\raggedright \ref{sec:proto-completo} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{rejection\_\allowbreak probe} &
+\raggedright Rechazo por contención de 12 consultas representables fuera de los ocho dominios. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:proto-completo} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp2\_\allowbreak iota\_\allowbreak kappa} &
+\raggedright Rejilla $\iota \times \kappa$ ($4 \times 7$) sobre 80 consultas. &
+\raggedright final &
+\raggedright Vigente, con la compuerta de $\kappa$ corregida; dentro de muestra. &
+\raggedright \ref{sec:param-iota-kappa} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp4\_\allowbreak directory\_\allowbreak formation} &
+\raggedright Formación del directorio según el orden de las interacciones. &
+\raggedright final &
+\raggedright Vigente; ninguna condición cruza el 90\,\%. Dentro de muestra. &
+\raggedright \ref{sec:formacion} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp6\_\allowbreak capacity} &
+\raggedright Aceptación propia y ajena, variedad, enrutamiento y entropía con 25 a 328 imágenes por clase. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:capacidad} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{exp5\_\allowbreak entropic\_\allowbreak prototype} &
+\raggedright Llenado con un latente promediado contra llenado por instancias. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption[Comparaciones con otras arquitecturas y decisores, y costo]{Comparaciones con otras arquitecturas y decisores, y costo.}
+\caption[Fase 3, escalado a ocho módulos: tamaño y comparaciones]{Fase 3, escalado a ocho módulos: tamaño y comparaciones.}
+\label{tab:fase3-comparaciones}
 \label{tab:exp-comparaciones}
 \footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{p{2.9cm}p{1.3cm}p{6.6cm}p{3.9cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
 \toprule
-Experimento & Sección & Qué mide & Carpeta \tabularnewline
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
 \midrule
-\raggedright EHAM única (exp.~11) & \raggedright \ref{sec:eham-unica} &
-\raggedright Una sola memoria con las ocho clases contra los especialistas con oráculo y
-el protocolo transactivo, con diez semillas y de 25 a 200 imágenes por clase. &
-\raggedright \texttt{experimento11} \tabularnewline\addlinespace[6pt]
-\raggedright Protocolo transactivo (exp.~11) & \raggedright \ref{sec:eham-unica},
-\ref{sec:lineas-base} &
-\raggedright El protocolo transactivo del experimento 11, con directorios perspectivales
-formados desde cero en cada semilla y corte. &
-\raggedright \texttt{experimento11\_\allowbreak protocolo\_\allowbreak corregido}
-\tabularnewline\addlinespace[6pt]
-\raggedright Líneas base sin memoria & \raggedright \ref{sec:lineas-base} &
-\raggedright Qué agrega la memoria asociativa sobre decisores simples que usan los mismos
-vectores, en texto y en imagen. &
-\raggedright \texttt{lineas\_\allowbreak base} \tabularnewline\addlinespace[6pt]
-\raggedright Árbitro por contenido (exp.~15) & \raggedright \ref{sec:limitaciones} &
-\raggedright Árbitro por contenido entre los tres mejores del directorio y abstención por
-margen, sobre la misma salida del enrutamiento. &
-\raggedright \texttt{experimento15} \tabularnewline\addlinespace[6pt]
-\raggedright Una memoria por módulo & \raggedright \ref{sec:una-memoria} &
-\raggedright Si las memorias homoasociativas guardan algo que la heteroasociativa no
-tenga: marginales, datos sin pareja y completado. &
-\raggedright \texttt{homo\_\allowbreak marginal} \tabularnewline\addlinespace[6pt]
-\raggedright Lesión & \raggedright \ref{sec:una-memoria} &
-\raggedright Familiaridad y nombre al destruir al azar una fracción de las celdas de la
-memoria de contenido. &
-\raggedright \texttt{homo\_\allowbreak marginal} \tabularnewline\addlinespace[6pt]
-\raggedright Comparación con la batería completa & \raggedright \ref{sec:una-memoria} &
-\raggedright Las dos arquitecturas, con memorias homoasociativas y con una sola memoria
-por módulo, sobre la batería de experimentos salvo el 10, el 14 y el 15. &
-\raggedright sin carpeta \tabularnewline
+\raggedright \texttt{experimento11} &
+\raggedright EHAM única contra los especialistas con oráculo y el protocolo transactivo, con diez semillas y de 25 a 200 imágenes por clase. &
+\raggedright final &
+\raggedright Corregido: el brazo del protocolo acumulaba directorios entre trabajos; lo reemplaza la carpeta siguiente. &
+\raggedright \ref{sec:eham-unica} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento11\_\allowbreak protocolo\_\allowbreak corregido} &
+\raggedright El protocolo transactivo del experimento 11 con directorios formados desde cero en cada semilla y corte. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:eham-unica}, \ref{sec:lineas-base} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento12} &
+\raggedright EHAM de dos clases contra la de ocho en los 28 pares de clases, y la brecha de fidelidad contra el solapamiento. &
+\raggedright final &
+\raggedright Corregido: \texttt{veredicto.md} conserva una lectura vieja ($\rho = 0.45$); valen el README y el control con pesos uniformes. &
+\raggedright \ref{sec:resultados}, fase~3 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{controles\_\allowbreak uniformes} &
+\raggedright Control del experimento 12 con pesos uniformes y una copia distinta de \texttt{missing\_\allowbreak cue}. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright con el exp.~12 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{lineas\_\allowbreak base} &
+\raggedright Decisores sin memoria sobre los mismos vectores, en texto y en imagen. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:lineas-base} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{homo\_\allowbreak marginal} &
+\raggedright Si las memorias homoasociativas guardan algo que la heteroasociativa no tenga, y lesión al azar de la memoria de contenido. &
+\raggedright final &
+\raggedright Vigente; reemplaza las memorias homoasociativas del diseño anterior. &
+\raggedright \ref{sec:una-memoria} \tabularnewline\addlinespace[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Fase 3, escalado a ocho módulos: imagen y codificador]{Fase 3, escalado a ocho módulos: imagen y codificador.}
+\label{tab:fase3-visual}
+\label{tab:exp-visual}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
+\toprule
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
 \midrule
-\raggedright Costo computacional & \raggedright \ref{sec:costo} &
-\raggedright Tiempo real de reproducir el sistema completo desde cero, solo en CPU. &
-\raggedright \texttt{computational\_\allowbreak cost/\allowbreak nov2026\_\allowbreak cpu}
-\tabularnewline\addlinespace[6pt]
+\raggedright \texttt{hemisferio\_\allowbreak visual} &
+\raggedright Registro de la etapa visual: formación del directorio visual, enrutamiento de las 656 imágenes de prueba y evocación. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:hemisferio-visual} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento13} &
+\raggedright Variantes registradas por imagen en el contenido y en el directorio: aceptación, cobertura y falsos enrutamientos. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:hemisferio-visual} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento14} &
+\raggedright Umbral de energía mínima del latente: su costo en imágenes reales y la fuga de entradas sin estructura que cierra. &
+\raggedright 8 anterior, con 4 variantes &
+\raggedright Vigente; el umbral forma parte del sistema final. &
+\raggedright \ref{sec:percepcion}, \ref{sec:hemisferio-visual} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento16} &
+\raggedright Objetos que las memorias no vieron, con diez pliegues \textit{leave-one-object-out}. &
+\raggedright final &
+\raggedright Vigente; la carpeta siguiente corrige su lectura de que el fallo es siempre un rechazo. &
+\raggedright \ref{sec:objetos-nuevos} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{objetos\_\allowbreak nuevos\_\allowbreak codificador\_\allowbreak por\_\allowbreak pliegue} &
+\raggedright El experimento 16 con un codificador reentrenado sin el objeto reservado de cada pliegue. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:objetos-nuevos} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{codificador\_\allowbreak sin\_\allowbreak clase} &
+\raggedright El sistema de punta a punta con un codificador sin pérdida de clase, y la separación por coordenada. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:codificador-sin-clase} \tabularnewline\addlinespace[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Fase 4, hallazgos con el sistema escalado]{Fase 4, hallazgos con el sistema escalado.}
+\label{tab:fase4-experimentos}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
+\toprule
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
+\midrule
+\raggedright \texttt{experimento7} &
+\raggedright Un directorio único para texto e imagen contra dos separados. &
+\raggedright final (lectura); texto en 32 niveles &
+\raggedright Vigente; el texto se evalúa dentro de muestra. &
+\raggedright \ref{sec:resultados}, fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento8} &
+\raggedright Lectura inversa del directorio, de módulo a pista, y fracción presenciada que basta para responder. &
+\raggedright 8 anterior: todos registran todo &
+\raggedright Vigente como mecanismo. &
+\raggedright \ref{sec:resultados}, fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento9} &
+\raggedright Pérdida de un miembro: rechazo, sustitución y descripción, y dónde queda la familiaridad. &
+\raggedright 8 anterior: directorios compartidos y memorias homo &
+\raggedright Vigente con la salvedad del protocolo; la cifra de 98.5\,\% de una corrida sin semilla se corrigió en su README. &
+\raggedright \ref{sec:resultados}, fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento10} &
+\raggedright Directorios perspectivales: encadenado y agregado contra el registro compartido. &
+\raggedright 8 anterior: directorio visual sin variantes &
+\raggedright Vigente; \texttt{v1\_\allowbreak sin\_\allowbreak agregado} es la versión previa. &
+\raggedright \ref{sec:hemisferio-visual}, \ref{sec:disc-wegner}; fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento15} &
+\raggedright Árbitro por contenido entre los tres mejores del directorio y abstención por margen. &
+\raggedright 8 anterior: con memorias homo &
+\raggedright Vigente; \texttt{veredicto.md} conserva 90.6\,\% y el README da 93.6\,\%. &
+\raggedright \ref{sec:limitaciones} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento17} &
+\raggedright De la imagen a una palabra específica: dominio, nombre de la clase y color. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:resultados}, fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento18} &
+\raggedright Atributos visibles (patrón, pelo, techo) en objetos vistos y nuevos. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:resultados}, fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{experimento19} &
+\raggedright El sistema completo con la ResNet18 de ImageNet congelada y PCA a 64. &
+\raggedright 8 anterior: antes de una memoria por módulo &
+\raggedright Vigente; dos cifras de enrutamiento (80.5 y 79.6\,\%) por conciliar. &
+\raggedright \ref{sec:codificador-sin-clase}; fase~4 \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{missing\_\allowbreak cue} &
+\raggedright Recuerdo con una pista faltante por tres métodos de muestreo, con 30 corridas por método. &
+\raggedright v5 &
+\raggedright Vigente; hay una copia distinta en \texttt{controles\_\allowbreak uniformes}. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Fase 5, laboratorio en tiempo real]{Fase 5, laboratorio en tiempo real.}
+\label{tab:fase5-experimentos}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
+\toprule
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
+\midrule
+\raggedright \texttt{mundo\_\allowbreak real} &
+\raggedright Latencias de voz (Whisper) y de visión, rechazo de un cuadro de cámara y corrección de color en simulación. &
+\raggedright v5 &
+\raggedright Vigente como demostración, sin salida cruda; su 75.0\,\% de enrutamiento visual lo reemplaza \texttt{hemisferio\_\allowbreak visual}. &
+\raggedright \ref{sec:resultados}, fase~5 \tabularnewline\addlinespace[4pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Carpetas auxiliares]{Carpetas auxiliares: costo, auditorías y relecturas.}
+\label{tab:fase-auxiliares}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.1cm}p{4.7cm}p{2.0cm}p{3.1cm}p{1.6cm}}
+\toprule
+Carpeta & Qué mide & Arquitectura & Estado & Dónde \tabularnewline
+\midrule
+\raggedright \texttt{computational\_\allowbreak cost} &
+\raggedright Tiempo de reproducir el sistema completo desde cero en CPU, por etapa y por máquina. &
+\raggedright final (\texttt{nov2026\_\allowbreak cpu}) &
+\raggedright Vigente la subcarpeta \texttt{nov2026\_\allowbreak cpu}; \texttt{report.md} dice 984 imágenes en la corrida de ocho clases, que usa 2624. &
+\raggedright \ref{sec:costo} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{rescate\_\allowbreak lexico} &
+\raggedright Cuánto aporta a la fase temprana la regla que rescata tokens mal etiquetados por spaCy, sobre las 411 consultas. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:pipeline-semantico} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{reanalisis\_\allowbreak jurado} &
+\raggedright Relecturas del banco y de corridas ya versionadas, como cuántas consultas traen el nombre de su clase. &
+\raggedright final &
+\raggedright Vigente. &
+\raggedright \ref{sec:banco}, \ref{sec:calibracion} \tabularnewline\addlinespace[4pt]
+\raggedright \texttt{auditoria\_\allowbreak integral} &
+\raggedright Auditoría de sanidad y fidelidad del código y los documentos del 2 de agosto de 2026. &
+\raggedright v5 &
+\raggedright Vigente para su fecha; el código auditado es anterior al sistema final. &
+\raggedright no se reporta \tabularnewline\addlinespace[4pt]
+\raggedright sin carpeta (\texttt{logs\_\allowbreak comparacion/}) &
+\raggedright Las dos arquitecturas, con memorias homoasociativas y con una sola por módulo, sobre la batería salvo los experimentos 10, 14 y 15. &
+\raggedright final y 8 anterior &
+\raggedright Vigente. &
+\raggedright \ref{sec:una-memoria} \tabularnewline\addlinespace[4pt]
 \bottomrule
 \end{tabular}
 \end{table}

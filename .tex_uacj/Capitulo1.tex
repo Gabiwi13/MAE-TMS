@@ -51,8 +51,8 @@ ETH-80 tiene ocho categorías con diez objetos cada una, fotografiados desde 41 
 de vista, y varias de sus clases se parecen entre sí: \texttt{apple}, \texttt{pear} y
 \texttt{tomato} son frutas redondas, y \texttt{cow}, \texttt{horse} y \texttt{dog} son
 cuadrúpedos.
-El codificador se entrena con dos pérdidas: la reconstrucción y una entropía cruzada de
-clase de peso 0.1 (Sección~\ref{sec:percepcion}).
+En el sistema de ocho módulos, el codificador se entrena con dos pérdidas: la
+reconstrucción y una entropía cruzada de clase de peso 0.1 (Sección~\ref{sec:percepcion}).
 La cabeza de clasificación no interviene en ninguna decisión del sistema, pero la
 pérdida de clase da forma al espacio latente que las memorias guardan.
 
@@ -67,6 +67,26 @@ vocabulario o el vecino más cercano.
 Sin esa comparación no se puede saber si un resultado se debe a la memoria o a la
 representación que la alimenta.
 
+\paragraph{Arco de la investigación.}
+Este trabajo construyó ese sistema en cinco fases, y cada una partió de lo que dejó la
+anterior.
+La primera fue un prototipo de tres módulos (\texttt{apple}, \texttt{horse} y
+\texttt{car}), con cuatro memorias por módulo, pistas de texto cuantizadas por signo y un
+mediador, en el que se vio que el directorio se forma con la experiencia.
+En ese prototipo, la lectura cruda del directorio favorecía al módulo con más registros,
+y en la segunda fase se eligió leerlo dividiendo entre ellos (normalización B1).
+La tercera pasó a las ocho clases de ETH-80, y al hacerlo cambiaron a la vez el
+codificador, la cuantización, las memorias por módulo, el banco de consultas y el
+mediador.
+Por eso la comparación entre tres y ocho módulos no aísla el efecto de crecer, que se
+mide con dos experimentos propios: una sola memoria contra la partición y una memoria de
+dos clases contra una de ocho.
+Con el sistema de ocho módulos, la cuarta fase estudió sus propiedades, entre ellas la
+lectura inversa del directorio, la pérdida de un miembro y la evocación de palabras
+desde imágenes.
+La quinta conectó el sistema a la voz y a la cámara en tiempo real, como demostración
+de integración.
+
 \section{Definición del problema}
 \label{sec:definicion-problema}
 
@@ -80,80 +100,79 @@ rechaza peor y recuerda con menos fidelidad.
 La solución que se propone es la de la memoria transactiva: repartir el contenido entre
 especialistas, cada uno con menos variedad que guardar, y aprender con el uso a quién
 preguntar.
-Para que ese reparto funcione hay que resolver cuatro cosas.
-La primera es cómo se reparte el contenido entre los especialistas y cómo se forma, con
-el uso, el directorio que dice a quién preguntar.
-La segunda es cómo pasa una consulta de texto o de imagen al especialista correcto,
-primero con un mediador y después punto a punto.
-La tercera es cómo se rechaza una consulta que ningún especialista contiene.
-La cuarta es cómo se recupera, en ambos sentidos, lo que se asoció: la imagen a partir
-de las palabras y las palabras a partir de la imagen.
-Todo esto debe hacerse sin clasificadores discriminativos en las decisiones de
-enrutamiento y rechazo.
+El problema tiene cinco partes, en el orden en que se estudiaron.
+\begin{enumerate}
+    \item \textbf{Emergencia.} Que el directorio emerja del uso: sin saber de antemano
+    quién sabe qué, los módulos tienen que aprender a quién preguntar registrando quién
+    resolvió cada consulta, primero con un mediador y después punto a punto.
+    \item \textbf{Lectura.} Cómo leer el directorio, porque un módulo con más registros
+    acumula más soporte y una lectura cruda lo favorece aunque no sea el especialista.
+    \item \textbf{Escalado.} Que el mecanismo funcione con ocho módulos: enrutar consultas
+    de texto e imagen, rechazar lo que ningún módulo contiene y recuperar en ambos
+    sentidos lo asociado (la imagen a partir de las palabras y las palabras a partir de la
+    imagen), sin clasificadores discriminativos en las decisiones de enrutamiento y
+    rechazo.
+    \item \textbf{Propiedades.} Qué hace el sistema escalado más allá de enrutar, y cómo
+    se lee eso desde el modelo de Wegner y desde lo que se sabe de la memoria humana.
+    \item \textbf{Mundo real.} Si el sistema puede recibir entradas que no vienen del
+    conjunto de datos, como la voz y las imágenes de una cámara.
+\end{enumerate}
 
-Resolverlo no basta.
+Resolver estas partes no basta.
 Hay que medir, frente a una sola memoria con el mismo contenido, si el reparto evita el
 techo, y cuánto de cada resultado se debe al mecanismo asociativo y cuánto a las
 representaciones: los vectores de palabras y su vocabulario, por un lado,
 y el codificador visual y su supervisión de clase, por el otro.
-La pregunta de investigación queda así:
-
-\begin{quote}
-¿Evita un sistema de memoria transactiva, que reparte el contenido entre ocho memorias
-heteroasociativas entrópicas especializadas y aprende con el uso a quién preguntar, el
-techo entrópico de una sola memoria con todo el contenido? ¿Puede hacerlo enrutando
-consultas de texto e imagen, recuperando el contenido asociado en ambas direcciones y
-rechazando lo que no conoce, sin clasificadores discriminativos en esas decisiones? ¿Qué
-agrega la memoria frente a decisores simples sobre las mismas representaciones, y cuánto
-dependen sus resultados de esas representaciones?
-\end{quote}
+Las preguntas de investigación (Sección~\ref{fase:preguntas}) siguen las cinco partes.
 
 \section{Objetivo general}\label{secc:og}
 
-Construir un sistema distribuido de memoria transactiva de ocho módulos sobre memorias
-heteroasociativas entrópicas, que enrute consultas de texto e imagen al módulo
-especialista, recupere el contenido asociado en ambas direcciones y rechace lo que
-ninguna memoria contiene, y medir, frente a una sola memoria con las ocho clases, si el
-reparto evita el techo entrópico y, frente a decisores simples sobre las mismas
-representaciones, qué agrega la memoria.
+Construir un sistema distribuido de memoria transactiva sobre memorias asociativas
+entrópicas y estudiarlo por fases, desde un prototipo de tres módulos hasta ocho módulos
+sobre ETH-80 con una memoria heteroasociativa cada uno, y medir, frente a una sola
+memoria con las ocho clases, si el reparto evita el techo entrópico y, frente a decisores
+simples sobre las mismas representaciones, qué agrega la memoria.
 
 \subsection{Objetivos específicos}
 
 \begin{enumerate}
-    \item \label{oe:arquitectura}
-    Implementar la arquitectura: ocho módulos, uno por cada clase de ETH-80, cada uno con
-    una memoria de contenido heteroasociativa entre palabras e imágenes y dos
-    directorios, uno textual y uno visual; un mediador para la fase temprana y la
-    coordinación punto a punto en la fase madura.
-    Identificar qué decisiones salen de operaciones de las memorias y cuáles de
-    componentes externos, y verificar que una sola memoria de contenido por módulo basta
-    para tomarlas.
+    \item \label{oe:emergencia}
+    \textbf{Emergencia (fase 1).}
+    Comprobar que el directorio emerge de la experiencia, con un prototipo de tres módulos
+    (\texttt{apple}, \texttt{horse} y \texttt{car}; cuatro memorias por módulo, pistas
+    cuantizadas por signo, TME mediador y un banco de 80 consultas): medir el enrutamiento
+    de la fase madura en función del número de interacciones y del orden en que llegan.
 
-    \item \label{oe:formacion}
-    Medir el enrutamiento de texto en las fases temprana y madura sobre un conjunto de
-    evaluación que no forma el directorio, en función del número de consultas de
-    formación y de la lectura del directorio (cruda o normalizada por número de
-    registros, B1).
+    \item \label{oe:lectura}
+    \textbf{Lectura del directorio (fase 2).}
+    Determinar cómo leer el directorio comparando, en el prototipo de tres módulos, la
+    lectura cruda con lecturas normalizadas por el número de registros, elegir una (B1) y
+    comprobar con ocho módulos, sobre un conjunto de evaluación que no forma el
+    directorio, si la elección se sostiene.
 
-    \item \label{oe:lineas-base}
-    Comparar el enrutamiento de texto con decisores simples sobre los mismos vectores
-    (voto por tokens del vocabulario, centroide, $k$ vecinos más cercanos y tabla de
-    conteos) y con una sola memoria heteroasociativa para las ocho clases.
+    \item \label{oe:escalado}
+    \textbf{Escalado (fase 3).}
+    Comprobar que el sistema funciona con ocho módulos, uno por clase de ETH-80, cada uno
+    con una memoria de contenido heteroasociativa entre palabras e imágenes y dos
+    directorios, uno textual y uno visual: medir la formación del directorio, el
+    enrutamiento de texto e imagen, el rechazo, la recuperación en ambas direcciones y el
+    enrutamiento de objetos que ningún módulo vio; compararlo con una sola memoria con las
+    ocho clases y con decisores simples sobre los mismos vectores; y cuantificar cuánto
+    depende el enrutamiento visual de la supervisión de clase del codificador.
 
-    \item \label{oe:rechazo}
-    Medir el rechazo: cuántas de 40 consultas fuera de dominio acepta el sistema,
-    frente a los decisores simples y a la memoria única, y qué pasa con entradas
-    visuales sin estructura.
+    \item \label{oe:hallazgos}
+    \textbf{Hallazgos (fase 4).}
+    Caracterizar las propiedades del sistema de ocho módulos (el directorio como
+    metamemoria, la perspectiva de cada módulo y la pérdida de un miembro, la envolvente
+    con que reconoce y recuerda, el tamaño y la partición, la relación entre imagen y
+    palabra, y sus límites) y leerlas desde el modelo de Wegner, la psicología y la
+    neurociencia de la memoria.
 
-    \item \label{oe:recuperacion}
-    Medir la recuperación en ambas direcciones: cuántas consultas de texto reciben una
-    imagen y qué tan cerca queda de una imagen real de su clase, y cuántas imágenes
-    evocan palabras de su dominio.
-
-    \item \label{oe:vision}
-    Medir el enrutamiento visual sobre las 656 imágenes de prueba y sobre objetos que
-    ningún módulo vio, y cuantificar cuánto depende de la supervisión de clase del
-    codificador.
+    \item \label{oe:mundo-real}
+    \textbf{Mundo real (fase 5).}
+    Integrar al sistema la voz, transcrita con Whisper, y la cámara en tiempo real, como
+    demostración de integración: registrar las latencias de la cadena y qué pasa con
+    entradas ajenas a ETH-80, sin evaluar el acierto.
 \end{enumerate}
 
 \section{Justificación}
@@ -175,10 +194,17 @@ lo registrado, y este trabajo mide cuándo esa respuesta funciona y cuándo no.
 
 La comparación con decisores simples tiene un valor práctico para la ingeniería.
 Si un voto por palabras del vocabulario o un vecino más cercano aciertan lo mismo que la
-memoria, la razón para usarla no es el acierto, sino lo que el voto o el vecino no
-hacen: rechazar, recuperar el contenido asociado y dejar un registro de quién sabe qué.
+memoria, la razón para usarla está en lo que el voto o el vecino no hacen: rechazar,
+recuperar el contenido asociado y dejar un registro de quién sabe qué.
 Medirlo con los mismos vectores separa lo que aporta el mecanismo de lo que aporta la
 representación, y orienta dónde conviene invertir: en la memoria o en el codificador.
+
+Contar la investigación por fases deja ver de dónde salió cada decisión del sistema
+final.
+La lectura B1, por ejemplo, se eligió con tres módulos y se volvió a medir con ocho.
+La demostración con voz y cámara muestra qué piezas hay que agregar para que las
+consultas lleguen de un micrófono o de una cámara, y dónde falla el sistema cuando la
+imagen no viene de ETH-80.
 
 Para la línea de trabajo de las memorias asociativas entrópicas, el sistema es una
 aplicación nueva, con varios módulos que cooperan y una memoria heteroasociativa que
@@ -193,40 +219,59 @@ opera en ambas direcciones entre texto e imagen.
     (Sección~\ref{sec:dataset}).
     La generalización a objetos nuevos se mide aparte, reservando un objeto por clase
     (Sección~\ref{sec:objetos-nuevos}).
+    El prototipo de la fase 1 usa tres de esas clases.
     \item \textbf{Texto.} Consultas en inglés: un banco de 411 consultas, unas 50 por
     clase, y 40 consultas fuera de dominio.
+    El prototipo de tres módulos usa un banco propio de 80 consultas.
     El vocabulario de cada módulo sale de ConceptNet~5.7 y las palabras se representan
     con fastText.
-    \item \textbf{Sistema.} Ocho módulos con una memoria de contenido heteroasociativa y
-    dos directorios cada uno, un mediador en la fase temprana y coordinación punto a
-    punto en la fase madura.
+    \item \textbf{Sistema.} En las fases 3 y 4, ocho módulos con una memoria de contenido
+    heteroasociativa y dos directorios cada uno, un mediador en la fase temprana y
+    coordinación punto a punto en la fase madura.
+    En las fases 1 y 2, el prototipo de tres módulos descrito en el objetivo
+    específico~\ref{oe:emergencia}.
     La especialización es asignada: la etiqueta de clase decide qué módulo guarda cada
     imagen y cada palabra.
     Lo que se forma con el uso es el directorio.
     \item \textbf{Comparaciones.} Decisores simples sobre los mismos vectores, una sola
-    memoria heteroasociativa con las ocho clases y un codificador entrenado sin la
-    pérdida de clase.
+    memoria heteroasociativa con las ocho clases, una memoria de dos clases contra una de
+    ocho y un codificador entrenado sin la pérdida de clase.
     \item \textbf{Procesos de Wegner.} El sistema modela la actualización del directorio
     y la coordinación de la recuperación.
     La asignación de información la hace la etiqueta de clase.
+    \item \textbf{Demostración en tiempo real.} La fase 5 usa la versión del sistema de
+    julio de 2026, con tres memorias de contenido por módulo.
+    Toca como demostración lo que la evaluación excluye: Whisper traduce al inglés frases
+    dichas en español o en inglés, y la cámara entrega cuadros reales, entre ellos uno
+    ajeno a ETH-80.
+    Sus latencias son mediciones únicas, sin salida cruda guardada.
 \end{itemize}
 
 \paragraph{Fuera del alcance.}
 \begin{itemize}
     \item El aprendizaje después de formar el directorio y la reorganización del grupo
     cuando un módulo sale o entra.
-    \item Imágenes de categorías ajenas a ETH-80.
+    La pérdida de un módulo se estudia como lesión, sin que el grupo vuelva a formar su
+    directorio.
+    \item Una comparación que cambie solo el número de módulos.
+    Entre el prototipo de tres módulos y el sistema de ocho cambiaron varias cosas a la
+    vez, el prototipo no se puede volver a correr con el código del sistema final y los
+    pesos de su codificador no se guardaron.
+    \item En la evaluación, las imágenes de categorías ajenas a ETH-80, las fotografías de
+    otro origen y las consultas en otros idiomas.
     Sin ellas, el rechazo visual solo se mide con entradas sin estructura, como lienzos
-    uniformes, ruido o desenfoques.
-    \item Fotografías de otro origen, otros conjuntos de datos y consultas en otros
-    idiomas.
+    uniformes, ruido o desenfoques; la fase 5 las toca solo como demostración, sin conteo
+    de aciertos.
+    \item Otros conjuntos de datos.
+    Las aplicaciones médica e industrial siguen en curso y solo se mencionan entre la
+    difusión y los productos derivados, al final del Capítulo~\ref{conclusiones}.
     \item La varianza entre entrenamientos del codificador: cada condición usa un solo
     codificador.
 \end{itemize}
 
 \paragraph{Limitaciones.}
 Las limitaciones medidas están en la Sección~\ref{sec:limitaciones}.
-Las que más pesan en la lectura de los resultados son cuatro:
+Las que más pesan en la lectura de los resultados del sistema de ocho módulos son cuatro:
 el codificador visual se entrenó con supervisión de clase (limitación (k));
 la partición por imagen deja vistas de los mismos objetos en el llenado y en la prueba
 (limitación (f));
@@ -234,3 +279,43 @@ el punto de control del codificador y el número de variantes se eligieron con e
 conjunto de prueba (limitación (g));
 y las consultas fuera de dominio que comparten palabras con el vocabulario de un
 módulo pasan la compuerta textual (limitación (a)).
+A estas se suman las que vienen de comparar fases.
+La formación del directorio con tres módulos se midió dentro de muestra, sobre las mismas
+80 consultas que lo forman, y sus cifras no se comparan como experimento controlado con
+las del sistema de ocho módulos.
+La fase 5 no tiene tasa de error de transcripción ni aciertos con voz o con cámara.
+
+\section{Preguntas de investigación}\label{fase:preguntas}
+
+La pregunta general es si un sistema de memoria transactiva, que reparte el contenido
+entre memorias heteroasociativas entrópicas especializadas y aprende con el uso a quién
+preguntar, evita el techo entrópico de una sola memoria con todo el contenido, y qué
+agrega esa memoria frente a decisores simples sobre las mismas representaciones.
+Cada objetivo específico tiene su pregunta.
+
+\begin{enumerate}
+    \item \label{fase:pi-emergencia}
+    ¿Emerge el directorio de la experiencia en un prototipo de tres módulos, y cuántas
+    interacciones y qué orden de llegada necesita la fase madura para enrutar las
+    consultas sin el mediador? (Objetivo~\ref{oe:emergencia}.)
+    \item \label{fase:pi-lectura}
+    ¿Qué lectura del directorio corrige la ventaja del módulo con más registros, y se
+    sostiene esa lectura al pasar de tres a ocho módulos?
+    (Objetivo~\ref{oe:lectura}.)
+    \item \label{fase:pi-escalado}
+    Con ocho módulos, ¿enruta el sistema consultas de texto e imagen, rechaza lo que no
+    conoce y recupera en ambas direcciones sin clasificadores discriminativos en esas
+    decisiones? ¿En qué evita el reparto el techo de una sola memoria con las ocho clases,
+    qué agrega la memoria frente a decisores simples y cuánto dependen sus resultados de
+    las representaciones? (Objetivo~\ref{oe:escalado}.)
+    \item \label{fase:pi-hallazgos}
+    ¿Qué propiedades muestra el sistema de ocho módulos en el directorio, en la
+    perspectiva de cada módulo, en la relación entre reconocer y recordar, en el efecto
+    del tamaño, en la relación entre imagen y palabra y en sus límites, y qué
+    correspondencia tienen con la memoria transactiva y con la memoria humana?
+    (Objetivo~\ref{oe:hallazgos}.)
+    \item \label{fase:pi-mundo-real}
+    ¿Puede el sistema recibir consultas por voz e imágenes de una cámara en tiempo real,
+    con qué latencias, y qué hace con entradas que no vienen de ETH-80?
+    (Objetivo~\ref{oe:mundo-real}.)
+\end{enumerate}

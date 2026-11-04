@@ -4,27 +4,26 @@
 Un grupo puede recordar más que cualquiera de sus miembros porque cada uno sabe quién
 sabe qué.
 Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta organización
-y después la describió como una red de computadoras~\cite{wegner1995computer}: nodos
-especializados que aprenden, con el uso, a enviarse las consultas.
+y después la describió como una red de computadoras~\cite{wegner1995computer}.
 Las memorias asociativas entrópicas de Pineda y Morales
 \cite{pineda2021entropic,pineda2022weighted,morales2025missing} guardan lo que registran
-como conteos, reconocen una entrada cuando sus rasgos tienen soporte, recuperan
-muestreando y rechazan lo que no contienen.
-Hasta donde sabemos, no se han usado para repartir el conocimiento entre especialistas.
-Una sola de ellas tiene un techo: su entropía crece con lo que
-guarda, y con ella las aceptaciones falsas.
-Este trabajo pregunta si repartir el contenido entre especialistas que saben quién sabe
-qué evita ese techo, y qué agrega la memoria frente a decisores simples.
-
-El producto es EAM-TMS: ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, cada
-uno con una memoria heteroasociativa de palabras e imágenes y directorios formados con el
-uso, que enrutan consultas de texto e imagen, recuperan en ambas direcciones y rechazan
-lo que no conocen sin clasificadores discriminativos.
-Se evalúa con 411 consultas de texto, 40 fuera de dominio, 656 imágenes de prueba y
-objetos nuevos, frente a una sola memoria con las ocho clases, decisores
-simples y un codificador sin la pérdida de clase.
-El valor del trabajo está en mostrar dónde evita el reparto el techo (fidelidad del
-recuerdo y mezcla de dominios) y dónde no (acierto de clase).
+como conteos, reconocen, recuperan muestreando y rechazan lo que no contienen.
+Una sola tiene un techo: su entropía crece con lo que guarda, y con ella las aceptaciones
+falsas.
+Este trabajo reparte el contenido entre módulos especialistas que aprenden con el uso a
+quién preguntar, y lo estudia en cinco fases.
+Un prototipo de tres módulos mostró que el directorio emerge de la experiencia, y con él
+se eligió leerlo dividiendo entre los registros de cada módulo (B1).
+Después se pasó a ocho módulos sobre ETH-80~\cite{leibe2003eth80}, cada uno con una
+memoria heteroasociativa de palabras e imágenes.
+En ese paso cambiaron varias cosas a la vez, y el efecto del tamaño se midió aparte, con
+una sola memoria contra la partición y con memorias de dos y de ocho clases.
+Con los ocho módulos se hicieron las comparaciones con decisores simples y con un
+codificador sin la pérdida de clase, y se estudiaron propiedades como la lectura inversa
+del directorio y la pérdida de un módulo.
+La última fase es una demostración con voz y cámara en tiempo real, sin cifras de acierto.
+El reparto evita el techo en la fidelidad del recuerdo y en la mezcla de dominios; en el
+acierto de clase empata con la memoria única.
 Los Capítulos~\ref{cap:pp} a~\ref{conclusiones} presentan el problema, el marco teórico,
-el desarrollo, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA} ubica los
-experimentos.
+el desarrollo por fases, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA}
+ubica los experimentos.

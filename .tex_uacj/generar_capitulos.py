@@ -85,7 +85,9 @@ escribir("Capitulo2.tex",
 etq03, cuerpo03 = quitar_encabezado(leer(SECCIONES / "03_arquitectura.tex"))
 producto, resto03 = partir(cuerpo03, r"\subsection{Diagramas de flujo}")
 etq04, cuerpo04 = quitar_encabezado(leer(SECCIONES / "04_metodologia.tex"))
-apertura04, resto04 = partir(cuerpo04, r"\subsection{Conjunto de datos}")
+# La apertura (las cinco fases y las métricas) queda dentro de «Descripción de la
+# metodología»; cada fase sube a \section y sus métodos a \subsection.
+apertura04, resto04 = partir(cuerpo04, r"\subsection{Fase 1: prototipo de tres módulos}")
 
 escribir("Capitulo3.tex", remisiones(
          "\\chapter{Desarrollo del Proyecto}\\label{cap:desarrollo}\n\n"

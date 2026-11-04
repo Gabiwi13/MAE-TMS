@@ -3,28 +3,27 @@
 \thispagestyle{empty}
 Una memoria asociativa entrópica tiene un techo: conforme se llena, su entropía crece,
 acepta de más y recuerda peor.
-Este trabajo reparte el contenido entre especialistas que saben quién sabe qué, como en
-la \emph{memoria transactiva} de Wegner~\cite{wegner1987transactive}, y construye EAM-TMS
-sobre las memorias de Pineda y Morales \cite{pineda2022weighted,morales2025missing}:
-ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, cada uno con una memoria
-heteroasociativa de palabras e imágenes y directorios formados con el uso, sin
-clasificadores discriminativos.
-Frente a una sola memoria con las ocho clases acierta lo mismo (96.8 frente a
-96.9\,\% en 171 consultas), pero responde menos veces con un dominio ajeno
-(3.1 frente a 10.9\,\% de las imágenes).
-En texto iguala a decisores simples sobre las mismas representaciones (81.2 frente a
-76.0--81.5\,\%).
-Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, como un voto por
-vocabulario, contra 40 de los decisores de coseno; con imágenes de otras categorías no
-se midió.
-Recupera en ambas direcciones: responde con una imagen al 98.7\,\% de las consultas, más
-cerca de una instancia real que la memoria única (27.2 contra 32.5), y 113
-de 116 imágenes evocan su dominio.
-Con imágenes enruta bien el 96.2\,\% de 656 vistas nuevas (un centroide acierta más), y
-solo porque el codificador se entrenó con la clase: sin ella, 70.4\,\%.
-Con objetos que ningún módulo vio cubre el 89.2\,\%, y el 87.6\,\% si el codificador
-tampoco los vio, con 136 falsos enrutamientos de 3280, no 2.
-Repartir evita el techo en fidelidad y mezcla de dominios, no en acierto.
+Este trabajo reparte el contenido entre módulos que aprenden con el uso quién sabe qué,
+como en la \emph{memoria transactiva} de Wegner~\cite{wegner1987transactive}, sobre las
+memorias de Pineda y Morales \cite{pineda2022weighted,morales2025missing}, y lo estudia en cinco fases.
+En un prototipo de tres módulos, con cuatro memorias cada uno, pistas cuantizadas por
+signo y un mediador, el directorio emerge del uso: la fase madura acierta el 26.25\,\% de 80
+consultas tras una interacción y el 98.75\,\% tras 80, dentro de muestra, y con el orden
+bloqueado por clase, 33.75\,\%.
+Leerlo pide dividir entre los registros de cada módulo (B1); sin dividir, 53.75\,\%.
+Con ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80} y con una memoria
+heteroasociativa de palabras e imágenes, el sistema acierta lo mismo que una sola memoria (96.8 frente
+a 96.9\,\%), pero responde menos con un dominio ajeno (3.1 frente a 10.9\,\% de las
+imágenes).
+En texto iguala a decisores simples sobre los mismos vectores (81.2 frente a
+76.0--81.5\,\%) y acepta 2 de 40 consultas fuera de dominio, como un voto por vocabulario,
+contra 40 de los decisores de coseno.
+Leído al revés, el directorio devuelve la envolvente de cada dominio presenciado y no un
+ejemplar.
+Una imagen evoca una palabra de su clase el 96.0\,\% de las veces, y su nombre el
+48.0\,\%.
+Una demostración conecta voz y cámara en tiempo real, sin cifras de acierto.
+Repartir evita el techo en fidelidad y mezcla de dominios; en acierto de clase empata.
 
 
 \noindent\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria
