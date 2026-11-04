@@ -10,7 +10,7 @@
 \contentsline {table}{\numberline {4.2}{\ignorespaces Precisión bajo las condiciones de calibración}}{62}{table.caption.70}%
 \contentsline {table}{\numberline {4.3}{\ignorespaces Calibración con un conjunto de evaluación fijo}}{68}{table.caption.80}%
 \contentsline {table}{\numberline {4.4}{\ignorespaces Precisión temprana y tasa de rechazo en función de $\iota $ y $\kappa $}}{72}{table.caption.91}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Métricas de capacidad en función de las imágenes registradas por clase}}{75}{table.caption.99}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Métricas de capacidad en función de las imágenes registradas por clase}}{74}{table.caption.99}%
 \contentsline {table}{\numberline {4.6}{\ignorespaces Objetos nuevos por pliegue, con el codificador del sistema y uno reentrenado}}{83}{table.caption.114}%
 \contentsline {table}{\numberline {4.7}{\ignorespaces Hemisferio visual con tres codificadores}}{84}{table.caption.116}%
 \contentsline {table}{\numberline {4.8}{\ignorespaces Una sola EHAM contra los especialistas, por imágenes de llenado}}{87}{table.caption.121}%
@@ -24,11 +24,11 @@
 \contentsline {table}{\numberline {4.16}{\ignorespaces Creencias iniciales: el directorio, el contenido y la partición}}{110}{table.caption.155}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {A.1}{\ignorespaces Fase 1, prototipo de tres módulos}}{157}{table.caption.197}%
-\contentsline {table}{\numberline {A.2}{\ignorespaces Fase 2, lectura del directorio}}{158}{table.caption.198}%
-\contentsline {table}{\numberline {A.3}{\ignorespaces Fase 3, escalado a ocho módulos: protocolo, formación y capacidad}}{159}{table.caption.199}%
-\contentsline {table}{\numberline {A.4}{\ignorespaces Fase 3, escalado a ocho módulos: tamaño y comparaciones}}{160}{table.caption.200}%
-\contentsline {table}{\numberline {A.5}{\ignorespaces Fase 3, escalado a ocho módulos: imagen y codificador}}{161}{table.caption.201}%
-\contentsline {table}{\numberline {A.6}{\ignorespaces Fase 4, hallazgos con el sistema escalado}}{162}{table.caption.202}%
-\contentsline {table}{\numberline {A.7}{\ignorespaces Fase 5, laboratorio en tiempo real}}{163}{table.caption.203}%
-\contentsline {table}{\numberline {A.8}{\ignorespaces Carpetas auxiliares}}{163}{table.caption.204}%
+\contentsline {table}{\numberline {A.1}{\ignorespaces Fase 1, prototipo de tres módulos}}{155}{table.caption.197}%
+\contentsline {table}{\numberline {A.2}{\ignorespaces Fase 2, lectura del directorio}}{156}{table.caption.198}%
+\contentsline {table}{\numberline {A.3}{\ignorespaces Fase 3, escalado a ocho módulos: protocolo, formación y capacidad}}{157}{table.caption.199}%
+\contentsline {table}{\numberline {A.4}{\ignorespaces Fase 3, escalado a ocho módulos: tamaño y comparaciones}}{158}{table.caption.200}%
+\contentsline {table}{\numberline {A.5}{\ignorespaces Fase 3, escalado a ocho módulos: imagen y codificador}}{159}{table.caption.201}%
+\contentsline {table}{\numberline {A.6}{\ignorespaces Fase 4, hallazgos con el sistema escalado}}{160}{table.caption.202}%
+\contentsline {table}{\numberline {A.7}{\ignorespaces Fase 5, laboratorio en tiempo real}}{161}{table.caption.203}%
+\contentsline {table}{\numberline {A.8}{\ignorespaces Carpetas auxiliares}}{161}{table.caption.204}%

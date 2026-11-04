@@ -1,7 +1,6 @@
 \section{Metodología}
 \label{sec:metodologia}
 
-La investigación avanzó en cinco fases, y cada una partió de lo que dejó la anterior.
 En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
 directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
 va de una imagen a los directorios visuales y a las memorias de contenido.
@@ -211,17 +210,11 @@ Con la cuantización por signo, E32 y E64 solo cambian el índice de los dos niv
 se usan, así que su patrón de bits es el de A.
 
 \paragraph{Por qué B1.}
-Con tres módulos y $N = 80$, la lectura cruda dejó a \texttt{apple} el 78.75\,\% de las
-decisiones maduras y una precisión madura del 53.75\,\%.
-B1 la llevó al 98.75\,\%, por encima del 97.5\,\% de la fase temprana.
-De las otras condiciones solas, F llegó al 80.0\,\% y B2 al 75.0\,\%, mientras que C,
-D, E32 y E64 se quedaron entre el 52.8 y el 53.75\,\%.
-G, que contiene a B1, dio el 98.72\,\%.
-B1 se adoptó por ser la única corrección individual que alcanzaba el techo de la fase
-temprana, y es una sola operación sobre un conteo que el directorio ya guarda.
-Como el directorio se evaluó sobre las consultas que lo formaron, estas cifras también
-son dentro de muestra
-(\texttt{results/fase1\_tres\_modulos/ablation\_mdir\_bias/ablation\_report.md}).
+B1 se adoptó por ser la única corrección individual que, con $N = 80$, alcanzaba el
+techo de la fase temprana, y porque es una sola operación sobre un conteo que el
+directorio ya guarda.
+Como el directorio se evaluó sobre las consultas que lo formaron, la comparación es
+dentro de muestra; sus cifras están en la Sección~\ref{sec:fase2-resultados}.
 
 \paragraph{Verificación con ocho módulos.}
 Con el sistema de ocho módulos, la elección se revisó de tres formas.
@@ -729,7 +722,7 @@ entradas continuas.
 Usa la versión v5 del sistema, de julio de 2026, con ocho módulos que llevan tres
 memorias de contenido cada uno (la heteroasociativa y dos homoasociativas), un
 directorio de texto y un directorio visual, más el TME.
-No es la arquitectura final, y no hay ninguna corrida con ella.
+No es la arquitectura final, y el laboratorio no se volvió a correr con esta.
 El laboratorio carga los modelos en modo de solo lectura y corre en una ventana de
 Python con tres hilos, uno para el audio, uno para la visión y uno para la interfaz.
 

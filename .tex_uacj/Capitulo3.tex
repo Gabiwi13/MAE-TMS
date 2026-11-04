@@ -537,7 +537,6 @@ La concordancia mide coincidencia con lo aprendido en la fase temprana, no acier
 \section{Descripción de la metodología}
 \label{sec:metodologia}
 % <- 04
-La investigación avanzó en cinco fases, y cada una partió de lo que dejó la anterior.
 En adelante, \emph{hemisferio textual} es el camino que va de una frase a los
 directorios de texto y a las memorias de contenido, y \emph{hemisferio visual}, el que
 va de una imagen a los directorios visuales y a las memorias de contenido.
@@ -579,8 +578,9 @@ la investigación.
 Las memorias por módulo cuentan las de contenido y los directorios.
 En la fase 3, la primera cifra es la del sistema de julio y la segunda, la del sistema
 final.
-En la fase 4, tres experimentos (8, 9 y 10) usan el protocolo anterior, con cinco
-memorias por módulo y directorios iguales en todos los módulos.
+En la fase 4, los experimentos 7 a 10 usan un protocolo anterior al final, con el
+registro dictado por la clase verdadera o por todos los módulos y el directorio visual
+sin variantes; el 8 y el 9 llevan cinco memorias por módulo.
 La fase 2 adoptó B1 con tres módulos; su verificación con ocho usa la arquitectura de
 la fase 3.}
 \label{fase:tab-arco}
@@ -746,17 +746,11 @@ Con la cuantización por signo, E32 y E64 solo cambian el índice de los dos niv
 se usan, así que su patrón de bits es el de A.
 
 \paragraph{Por qué B1.}
-Con tres módulos y $N = 80$, la lectura cruda dejó a \texttt{apple} el 78.75\,\% de las
-decisiones maduras y una precisión madura del 53.75\,\%.
-B1 la llevó al 98.75\,\%, por encima del 97.5\,\% de la fase temprana.
-De las otras condiciones solas, F llegó al 80.0\,\% y B2 al 75.0\,\%, mientras que C,
-D, E32 y E64 se quedaron entre el 52.8 y el 53.75\,\%.
-G, que contiene a B1, dio el 98.72\,\%.
-B1 se adoptó por ser la única corrección individual que alcanzaba el techo de la fase
-temprana, y es una sola operación sobre un conteo que el directorio ya guarda.
-Como el directorio se evaluó sobre las consultas que lo formaron, estas cifras también
-son dentro de muestra
-(\texttt{results/fase1\_tres\_modulos/ablation\_mdir\_bias/ablation\_report.md}).
+B1 se adoptó por ser la única corrección individual que, con $N = 80$, alcanzaba el
+techo de la fase temprana, y porque es una sola operación sobre un conteo que el
+directorio ya guarda.
+Como el directorio se evaluó sobre las consultas que lo formaron, la comparación es
+dentro de muestra; sus cifras están en la Sección~\ref{sec:fase2-resultados}.
 
 \paragraph{Verificación con ocho módulos.}
 Con el sistema de ocho módulos, la elección se revisó de tres formas.
@@ -1125,14 +1119,16 @@ resultados están en la Sección~\ref{sec:resultados}.
 Varios de estos experimentos estudian el directorio y no la elección del ganador.
 En ellos el directorio se forma con la clase real como ganador de cada transacción, para
 separar lo que el directorio guarda del acierto de la fase temprana.
-Los experimentos 8, 9 y 10 se corrieron antes de que el sistema adoptara los directorios
-perspectivales y una sola memoria de contenido.
-Usan el protocolo anterior, en el que todos los módulos registran todas las
-transacciones y sus directorios son idénticos, con el directorio visual llenado sin
-variantes y con las memorias homoasociativas al lado de la heteroasociativa.
-Los mecanismos que miden no dependen de las memorias homoasociativas, pero sus cifras
-no son las del sistema final.
-El experimento~9 se reporta con esa salvedad.
+Los experimentos 7 a 10 se corrieron antes de que el sistema adoptara los directorios
+perspectivales y una sola memoria de contenido, con el directorio visual llenado sin
+variantes.
+En el 8 y el 9 todos los módulos registran todas las transacciones, sus directorios son
+idénticos y las memorias homoasociativas están al lado de la heteroasociativa; el 10
+parte de ese registro para medir directorios que divergen.
+Los experimentos 7, 8 y 10 miden sobre todo directorios.
+En el 9 el sustituto reconoce y evoca con sus memorias homoasociativas, que el sistema
+final ya no tiene, y por eso se reporta con esa salvedad.
+Ninguno da cifras del sistema final.
 
 \paragraph{El directorio como índice.}
 En el experimento~7, un solo directorio recibe pistas de texto y de imagen, para ver si
@@ -1262,7 +1258,7 @@ entradas continuas.
 Usa la versión v5 del sistema, de julio de 2026, con ocho módulos que llevan tres
 memorias de contenido cada uno (la heteroasociativa y dos homoasociativas), un
 directorio de texto y un directorio visual, más el TME.
-No es la arquitectura final, y no hay ninguna corrida con ella.
+No es la arquitectura final, y el laboratorio no se volvió a correr con esta.
 El laboratorio carga los modelos en modo de solo lectura y corre en una ventana de
 Python con tres hilos, uno para el audio, uno para la visión y uno para la interfaz.
 
@@ -1305,8 +1301,8 @@ análisis de un cuadro y la tasa de cuadros de la interfaz.
 La política de color se probó en simulación, sobre 24 imágenes de prueba de ETH-80 en
 tres condiciones: limpias, con un tono grisáceo medio y con uno fuerte.
 Con la cámara física se mostraron imágenes de ETH-80 en la pantalla de un teléfono y en
-una hoja impresa con 16 imágenes, y un cuadro real ajeno a ETH-80 se pasó por el
-directorio visual.
+una hoja impresa con 16 imágenes, y se pasó por el directorio visual un cuadro gris sin
+objeto, ajeno a ETH-80 (\texttt{selftest\_frame.png}).
 Las mediciones son del 16 al 18 de julio de 2026 y no quedó registro crudo de ellas;
 lo que se conserva está en \texttt{results/mundo\_real/}.
 No se midieron la tasa de error de la transcripción, el acierto del enrutamiento con voz

@@ -108,8 +108,8 @@ Los experimentos 7 a 10 se corrieron con un protocolo anterior al final (limitac
         (Sección~\ref{sec:hemisferio-visual}). \tabularnewline\addlinespace[4pt]
         \raggedright 8. Las cifras de enrutamiento visual de ocho clases del laboratorio
         eran citables. &
-        \raggedright Una de ellas era anterior a la revisión de las cifras y no tenía
-        fuente, y se retiró. La vigente, con 16 variantes y el umbral de energía, es
+        \raggedright Una de ellas no tenía fuente en \texttt{results/} y no se cita.
+        La vigente, con 16 variantes y el umbral de energía, es
         631 de 656 (96.2\,\%). &
         \raggedright Error de medición. &
         \raggedright Revisión de las cifras; experimentos 13 y 14.
@@ -259,37 +259,24 @@ Las analogías de esta sección y de las siguientes son estructurales, no causal
 Los módulos no son personas, y lo que se compara es la forma de una regularidad, no el
 mecanismo que la produce.
 Para enrutar, el directorio se comporta como un índice que no mezcla lo que registra.
-Un solo directorio con las pistas de texto y las de imagen en coordenadas disjuntas
-enruta el texto igual que el directorio de texto solo (96.2\,\% en los dos), y sus
-puntuaciones de texto son idénticas con o sin registros de imagen (experimento~7).
-La relación acumula por par de rasgo y módulo, sin ningún término entre rasgos, y por
-eso las dos mitades no forman una representación compartida.
-Lo único que las acopla es el denominador de B1 cuando cuenta registros de cualquier
-modalidad: con él, sumar imágenes baja el texto del 96.2 al 91.2\,\%, y al 88.8\,\% si
-las imágenes son desiguales entre módulos; leído de la relación, el conteo de texto
-deja el 96.2\,\%.
-Con una consulta que trae texto e imagen, la mitad sin soporte veta a la otra, y el
-directorio unificado acierta el 23.8\,\%, frente al 100.0\,\% de dos directorios
-separados.
-El texto de este experimento usa 32 niveles y se evalúa sobre las consultas que
-formaron el directorio.
+Un solo directorio con pistas de texto y de imagen en coordenadas disjuntas enruta cada
+modalidad igual que dos directorios separados, porque la relación acumula por par de
+rasgo y módulo, sin ningún término entre rasgos (experimento~7,
+Sección~\ref{sec:fase4-indice}).
+Las dos mitades solo se tocan en el denominador de B1, cuando cuenta registros de las
+dos, y en el veto conjuntivo, por el que la mitad sin soporte de una consulta emparejada
+tumba a la otra; ninguno de los dos acoples es una representación compartida.
 
-Leído al revés, del módulo a la pista, el directorio devuelve el dominio del módulo
-(experimento~8).
-La lectura acierta la clase con el dominio propio (80 de 80) y con uno ajeno que el
-módulo presenció (112 de 112).
+Leído al revés, del módulo a la pista, el directorio devuelve el dominio del módulo,
+tanto el propio como uno ajeno que el módulo solo presenció (experimento~8).
 En el directorio, el especialista no tiene ningún privilegio.
-Lo que devuelve es una envolvente y no un ejemplar: queda de 2.9 a 5.5 veces más lejos
-de cualquier instancia real que las instancias entre sí.
-Ante identidades que no pudieron ocurrir, como dos módulos ganando la misma pista, no
-responde en ninguna de las 10 lecturas de cada una, y la falla es siempre callar.
-Basta haber presenciado un registro ajeno para que reconstruya ese dominio el 59\,\% de
-las veces, y con ocho, el 100\,\%, con la clase correcta desde el primero.
-Más registros la ensanchan: la distancia a la instancia real más cercana va de 3.3 con
-un registro por módulo a 20.5 con 800.
-En ese experimento todos los módulos registran todas las transacciones y el directorio
-visual tiene 981 registros sin variantes; el mecanismo no depende de eso, pero las
-cifras no son del sistema final.
+Lo que devuelve es una envolvente y no un ejemplar, más lejos de cualquier instancia
+real que las instancias entre sí, y ante identidades que no pudieron ocurrir la falla es
+siempre callar.
+Un solo registro ajeno presenciado basta para empezar a reconstruir un dominio, y más
+registros ensanchan la envolvente.
+El experimento usa un protocolo anterior al final; el mecanismo no depende de eso, pero
+las cifras no son del sistema final (limitación (o)).
 
 Saber qué sabe otro es conocimiento sobre una memoria, y en este sistema vive en un
 almacén distinto del que guarda el contenido.
@@ -339,18 +326,13 @@ procesos que nombra Wegner~\cite{wegner1995computer}:
 \begin{itemize}
     \item \textbf{Conocerse cuesta interacción.}
     Con 10 consultas por dominio, la precisión madura queda en 81.2\,\%, y con unas 50
-    llega al 93.0\,\%, las dos sobre las consultas que formaron el directorio.
-    Sobre las mismas consultas, la diferencia entre la lectura normalizada y la fase
-    temprana, que no usa el directorio, es de 0, +4.0, +5.5 y +3.0 puntos con 50, 100,
-    200 y 400 consultas de formación (Sección~\ref{sec:calibracion}).
+    llega al 93.0\,\%, las dos sobre las consultas que formaron el directorio; la mayor
+    parte de ese ascenso es el de la fase temprana, que no usa el directorio
+    (Sección~\ref{sec:calibracion}).
     Sobre un conjunto fijo de 120 consultas que nunca registran en el directorio, la
-    precisión madura con la lectura normalizada sube del 78.9 al 91.0\,\% entre 50 y 291
-    consultas de formación, así que la formación mejora la decisión en consultas que no
-    vio.
-    Con ese crecimiento la madura alcanza a la fase temprana, que sobre esas consultas
-    acierta el 89.7\,\%, sin una ventaja que se sostenga entre sorteos; la diferencia pasa de $-10.7$
-    puntos con 50 consultas a $+0.2$ con 200 y $+1.3$ con 291, y con 291 va de $-0.8$ a
-    $+6.7$ según qué consultas se evalúen (Sección~\ref{sec:calibracion-fija}).
+    formación mejora la decisión en consultas que no vio, pero solo hasta alcanzar a la
+    fase temprana, sin una ventaja que se sostenga entre sorteos
+    (Sección~\ref{sec:calibracion-fija}).
     En equipos de trabajo, el sistema transactivo se desarrolla a lo largo del proyecto,
     y es más probable que surja cuando la experticia está repartida desde el inicio y
     los miembros se conocen~\cite{lewis2004knowledge}.
@@ -377,26 +359,20 @@ procesos que nombra Wegner~\cite{wegner1995computer}:
 
 \paragraph{Directorios perspectivales.}
 Cuando cada módulo registra solo una parte de lo ajeno, el grupo recupera el
-enrutamiento del registro completo (experimento~10).
-En imagen, un módulo sin soporte pasa la consulta a los módulos que conoce, en orden de
-cuántos registros les vio ganar.
-Así el grupo acierta el 81.9\,\% de las imágenes de prueba sin ningún error, lo mismo
-que el registro completo, aunque cada módulo presencie al azar uno de cada 64 registros
-ajenos y los directorios difieran en el 83\,\% de sus celdas.
-El costo son 3.56 consultas adicionales en promedio.
+enrutamiento del registro completo (experimento~10,
+Tabla~\ref{tab:fase4-perspectiva}).
+En imagen basta con que un módulo sin soporte pase la consulta a los módulos que
+conoce, en orden de cuántos registros les vio ganar: el grupo iguala al registro
+completo aunque cada módulo presencie al azar uno de cada 64 registros ajenos, y lo
+paga con consultas adicionales.
 En texto, pasar la consulta no basta, porque decide el primero con soporte y la decisión
-de texto es comparativa.
-Con uno de cada 64 registros, el encadenado se equivoca en el 20.7\,\% de las consultas
-reservadas.
-Sumar las puntuaciones normalizadas de todos los conocidos recupera la comparación:
-91.0\,\% con uno de cada 32 registros, frente al 93.6\,\% del registro completo, y
-94.3\,\% con uno de cada cuatro, cuatro consultas de diferencia en una de tres semillas.
+de texto es comparativa; sumar las puntuaciones normalizadas de todos los conocidos
+recupera la comparación.
+En un anillo en que cada módulo conoce solo a sus dos vecinos ocurre lo contrario, porque
+la suma no sale de la vecindad y el encadenado llega a todo el grupo por transitividad.
 Encadenar da alcance y sumar da comparación.
-En un anillo en que cada módulo conoce solo a sus dos vecinos, la suma, que no sale de
-la vecindad, acierta el 56.4\,\% de las reservadas, y el encadenado, que llega a todo el
-grupo por transitividad, el 73.9\,\%.
-Esta corrida usa el directorio visual sin variantes, por eso el registro completo
-acierta el 81.9\,\% y no el 96.2\,\%, y el registro lo dicta la clase verdadera.
+La corrida usa el directorio visual sin variantes y un registro dictado por la clase
+verdadera (limitación (o)).
 
 En este sistema, el TME es un registro compartido que los módulos consultan, y en un
 grupo de personas haría el papel de un artefacto común.
@@ -416,9 +392,8 @@ En la teoría de Wegner, cada miembro guarda, además de lo suyo, qué sabe cada
 otro~\cite{wegner1987transactive}.
 Cuando un módulo falta, los directorios de los demás no lo saben.
 Al quitar un módulo, el directorio le sigue enviando las consultas de su dominio
-(experimento~9): en texto, 229 de las 411 consultas del banco (55.7\,\%), con un
-directorio formado con las 16 consultas de la fase temprana, y en imagen, 65 de 80.
-El grupo pierde la respuesta y conserva la ubicación.
+(experimento~9, Sección~\ref{sec:fase4-perspectiva}), y el grupo pierde la respuesta y
+conserva la ubicación.
 Darle la consulta al segundo mejor del directorio es la peor política.
 De texto a imagen responde el 24.5\,\% de las veces, siempre con la clase del sustituto
 (\texttt{tomato} por \texttt{apple}, \texttt{cow} por \texttt{horse}), y de imagen a
@@ -450,9 +425,8 @@ Reconocer, en este sistema, es caer dentro de una envolvente por coordenada, y t
 experimentos lo muestran desde entradas distintas.
 Con objetos que nunca contribuyeron a la envolvente, la cobertura de punta a punta baja
 del 95.5 al 89.2\,\%, y lo que no cabe se rechaza (Sección~\ref{sec:objetos-nuevos}).
-Si el codificador tampoco vio el objeto, la cobertura queda en 87.6\,\% y el fallo deja
-de ser solo rechazo: hay 136 falsos enrutamientos en 3280 vistas, frente a 2 con el
-codificador común (limitación (f)).
+Si el codificador tampoco vio el objeto, el fallo deja de ser solo rechazo
+(limitación (f)).
 Con entradas sin estructura, el codificador las lleva cerca del origen, y ese punto
 cae dentro del soporte de \texttt{horse} a una distancia de 15 a 19 de su instancia más
 cercana, tres veces la mediana entre vecinos de la clase (5.8; experimento~14, con 4
@@ -558,31 +532,22 @@ B1 quita el peso de cuántas veces registró cada módulo.
 En este banco, con unas 50 consultas por dominio, ese peso no informa sobre la consulta;
 con dominios de tamaños muy desiguales sí informaría, y B1 lo descartaría.
 
-La brecha cruda-B1 es de 7.8 puntos con ocho módulos (85.2\,\% frente a 93.0\,\%), y la
-entropía del directorio es alta incluso con la lectura cruda (2.974 de 3.000 bits).
-Los conteos del directorio están casi balanceados, y el sesgo está en la
-\emph{lectura}, donde B1 actúa.
+Con ocho módulos, la entropía del directorio es casi máxima incluso con la lectura
+cruda, y los conteos están casi balanceados; el sesgo está en la \emph{lectura}, donde
+B1 actúa.
 La entropía no dice si el directorio está especializado; eso lo dice la información
-mutua entre dominio y ganador, que con el mismo directorio pasa de 2.438 bits con la
-lectura cruda a 2.649 con B1 (Sección~\ref{sec:calibracion}).
-Con $N = 400$, las demás condiciones (B2, C, D, E32, E64) quedan por debajo de B1, y la
-combinación G, que suma correcciones a B1, gana medio punto sobre otras consultas, más
-fáciles; sobre las suyas, suma a la fase temprana lo mismo que B1, unos 3 puntos
-(Sección~\ref{sec:calibracion}).
+mutua entre dominio y ganador, que con el mismo directorio sube con B1.
+Las correcciones que se suman a B1 no agregan nada que se sostenga: G gana medio punto
+sobre otras consultas, más fáciles, y sobre las suyas suma a la fase temprana lo mismo
+que B1 (Sección~\ref{sec:calibracion}).
 
 B1 es la normalización elegida entre las calibradas, pero no la única que funciona con
 este registro.
 Una lectura que, entre los módulos que contienen la pista, elige al de envolvente más
-estrecha (la menor suma, sobre las coordenadas, del logaritmo del número de niveles con
-soporte), a la que el experimento~22 llama principio de tamaño, decide igual que B1
-sobre los mismos directorios.
-En imagen acierta el 96.3\,\% de las 656 imágenes de prueba, frente al 96.2\,\% de B1,
-con una sola decisión distinta, y en texto el 28.5\,\%, frente al 28.7\,\%, con 8 de 411
-decisiones distintas.
-Los directorios de texto de esa comparación se formaron solo con las 16 consultas de la
-fase temprana, y por eso rechazan el 59.4\,\%; la comparación entre lecturas usa los
-mismos directorios y vale igual, pero con directorios de texto bien formados no se
-corrió.
+estrecha, a la que el experimento~22 llama principio de tamaño, decide igual que B1
+sobre los mismos directorios, salvo en una de 656 imágenes y en 8 de 411 consultas
+(Sección~\ref{sec:fase2-tamano}); con directorios de texto formados con más consultas
+no se probó.
 Con un registro casi balanceado, B1 y el principio de tamaño no se distinguen.
 Dónde se separarían, con dominios de tamaños muy desiguales, no se midió con ETH-80.
 
@@ -602,10 +567,8 @@ Si el espacio latente del codificador contribuye también al sesgo no se midió 
 trabajo.
 
 Las pistas compartidas degradan el enrutamiento.
-Con la lectura normalizada, \texttt{car}, \texttt{cow}, \texttt{cup} y
-\texttt{tomato} quedan entre 98.0 y 100.0\,\% y \texttt{dog} en 93.9\,\%;
-\texttt{pear} (76.0\,\%), \texttt{horse} (88.0\,\%) y \texttt{apple} (88.2\,\%)
-pierden hacia la vecina con la que comparten etiquetas.
+Con la lectura normalizada, las tres clases que quedan bajo el 90\,\% pierden hacia la
+vecina con la que comparten etiquetas (Figura~\ref{fig:dominio}).
 En la memoria humana, la probabilidad de recordar un ítem baja con el número de
 ítems que comparten su pista de recuperación~\cite{watkins1975buildup}, y el tiempo
 para verificar un hecho crece con el número de hechos aprendidos sobre la misma
@@ -639,29 +602,19 @@ la vez (limitación (m)).
 \label{fase:disc-imagen-palabra}
 
 De la imagen a la palabra, el sistema devuelve el dominio con fiabilidad y una palabra
-concreta solo a medias (experimento~17).
-La primera palabra evocada está en el vocabulario de la clase en el 96.0\,\% de las
-lecturas, pero es el nombre de la clase en el 48.0\,\%, y sale la misma en tres
-recuerdos solo en el 38.9\,\% de las imágenes.
+concreta solo a medias (experimento~17, Sección~\ref{sec:fase4-imagen-palabra}).
 El resultado sigue al llenado, que empareja cada imagen con la siguiente palabra del
 vocabulario de su clase.
-Cuando a cada objeto se le asigna una palabra propia y todas sus vistas se registran con
-ella, la memoria acierta esa palabra en el 40.8\,\% de las vistas nuevas (azar del
-10\,\%) y en el 51.2\,\% de las vistas que registró: distingue objetos dentro de la
-clase, pero los objetos de una clase se pisan en la envolvente.
+Cuando a cada objeto se le asigna una palabra propia, la memoria la acierta por encima
+del azar y lejos de siempre: distingue objetos dentro de la clase, pero los objetos de
+una clase se pisan en la envolvente.
 
 Con el color, la memoria responde lo común.
-En vistas nuevas de objetos conocidos, la lectura normalizada acierta el 74.4\,\%, frente
-al 55.5\,\% de responder siempre el color más registrado del módulo.
-En objetos nuevos, la lectura por soporte acierta el 57.8\,\%, frente al 49.5\,\% de
-esa base, y los objetos de
-color minoritario fallan: una manzana verde se responde como roja.
+Supera a responder siempre el color más registrado del módulo, pero en objetos nuevos
+los de color minoritario fallan: una manzana verde se responde como roja.
 Con un atributo visible, como el patrón, el pelo o el techo (experimento~18), pasa lo
-mismo.
-En vistas nuevas de objetos conocidos, la lectura normalizada separa algo (de 62.7 a
-72.3\,\% balanceado), y en objetos nuevos la memoria responde el valor mayoritario en el
-98 al 99\,\% de las vistas y acierta el minoritario en el 1 al 6\,\%.
-En las vacas, con cuatro objetos manchados y cuatro lisos, acierta el 8\,\%.
+mismo, y en objetos nuevos la memoria responde casi siempre el valor mayoritario del
+módulo.
 La pertenencia generaliza porque la envolvente cubre al objeto nuevo; el valor del
 atributo lo decide la masa de lo registrado, y el fallo es una confusión sin rechazo.
 
@@ -675,11 +628,9 @@ La lectura tolerante, que acepta niveles vecinos, baja el rechazo y casi no tran
 el atributo.
 
 Con una percepción que conserva el detalle (ResNet18 de ImageNet con PCA a 64, sin
-ajuste), el índice pierde mucho y el especialista gana poco (experimento~19).
-El enrutamiento de las 656 imágenes de prueba baja del 96.2 al 80.5\,\%, los falsos
-enrutamientos suben de 2 a 83 y, con objetos nuevos, la cobertura de punta a punta
-baja del 89.2 al 60.8\,\%; el atributo de objetos nuevos queda unos 5 puntos sobre el
-azar.
+ajuste), el índice pierde mucho y el especialista gana poco (experimento~19): el
+enrutamiento de prueba baja del 96.2 al 80.5\,\%, y el atributo de objetos nuevos queda
+unos 5 puntos sobre el azar.
 Los rasgos que conservan color, textura y pelo son los que comparten especies
 distintas, y con ellos las envolventes de los animales se tocan.
 El índice necesita invariancia dentro de la clase y el especialista, sensibilidad, y
@@ -721,12 +672,10 @@ en las 400 consultas de la calibración.
 Un centroide la acierta el 8.0\,\% de las veces, los cinco vecinos más cercanos entre
 el 62 y el 63\,\% y el vecino más cercano entre el 67 y el 71\,\%, frente al 70.0\,\% de
 la fase temprana y al 76\,\% de la lectura normalizada (Sección~\ref{sec:lineas-base}).
-En imagen, un centroide o un vecino más cercano sobre los mismos latentes aciertan de
-652 a 655 de las 656 imágenes de prueba, sin rechazar ninguna, frente a 631 del sistema
-(Sección~\ref{sec:lineas-base}); la separación entre clases la hace el codificador.
-Con un codificador entrenado sin la pérdida de clase y el mismo mecanismo, el
-enrutamiento visual baja del 96.2 al 70.4\,\% y los falsos enrutamientos suben de 2 a
-169 de 656 (Sección~\ref{sec:codificador-sin-clase}).
+En imagen, la separación entre clases la hace el codificador: decisores simples sobre
+los mismos latentes aciertan más imágenes que el sistema
+(Sección~\ref{sec:disc-lineas-base}), y sin la pérdida de clase el mismo mecanismo
+enruta mucho peor (limitación (k)).
 
 El mecanismo tiene también límites propios.
 La lectura del directorio necesita una normalización externa
@@ -758,8 +707,8 @@ Con la versión v5 del sistema, una pantalla de teléfono frente a la cámara ha
 el enrutamiento por el brillo, el moiré y el encuadre, y una hoja impresa en papel mate
 funciona si llena el recuadro de análisis.
 El corrimiento de color de la impresora y la cámara llevó a una corrección que solo
-actúa tras un rechazo, y en simulación enruta bien 22, 18 y 15 de 24 imágenes con
-degradación nula, media y fuerte.
+actúa tras un rechazo y que, en simulación, recupera buena parte de las imágenes
+degradadas (Sección~\ref{sec:fase5-resultados}).
 Son resultados de una sola sesión, sin aciertos con voz ni conteos con la cámara física
 (limitación (n)), y no dicen nada del mecanismo que no digan los experimentos con
 ETH-80.
@@ -794,12 +743,9 @@ compuerta se decidió después de ver estas consultas (limitación (g)).
 
 \paragraph{En acierto de clase, los dos empatan desde 50 imágenes por clase.}
 Sobre el total de las 171 consultas reservadas, contando la falta de respuesta como
-fallo, la diferencia entre el protocolo y la EHAM única es de $-0.7$ puntos con 50 y con
-100 imágenes por clase y de $-0.1$ con 200, con intervalos de 95\,\% por remuestreo de
-consultas que incluyen el cero.
-Con 25, la EHAM única acierta 4.4 puntos más ($[-8.1, -0.9]$), porque el directorio
-todavía enruta peor (93.2\,\% de enrutamiento correcto;
-Sección~\ref{sec:eham-unica}).
+fallo, la diferencia entre el protocolo y la EHAM única tiene intervalos que incluyen el
+cero desde 50 imágenes por clase; con 25 gana la EHAM única, porque el directorio
+todavía enruta peor (Sección~\ref{sec:eham-unica}).
 
 \paragraph{La partición cuesta cobertura y requiere un directorio.}
 El especialista deja sin respuesta al 2.5\,\% de las imágenes de prueba con 200 por
@@ -846,12 +792,8 @@ deja pasar de 9 a 23 de las 40.
 En texto, este rechazo vale lo que una búsqueda léxica, porque la compuerta es la
 pertenencia al vocabulario y las consultas fuera de dominio se escribieron sin palabras
 de él; las dos que el sistema acepta son las únicas que tienen una.
-La ventaja de este rechazo aparece frente a un almacén único.
-La EHAM única acepta 2, 2, 5 y 8 de las 40 con 25, 50, 100 y 200 imágenes por clase, y
-el protocolo con doble compuerta 2 en todos los cortes (Sección~\ref{sec:eham-unica});
-la diferencia es significativa con 200 imágenes por clase ($p = 0.031$) y no con 100
-($p = 0.25$), y la segunda compuerta se decidió después de ver esas consultas
-(limitación (g)).
+La ventaja de este rechazo aparece frente a un almacén único, que acepta más consultas
+ajenas cuanto más contiene (Sección~\ref{sec:eham-unica}).
 En los modelos de emparejamiento global, la familiaridad es una suma sobre todas las
 huellas guardadas~\cite{clark1996global}.
 La EHAM única hace esa suma sobre las ocho clases, y cuanto más contiene, más consultas
@@ -893,10 +835,8 @@ codificador entrenado con la clase, antes de que la memoria registre nada.
 \paragraph{El directorio localiza; no decide mejor.}
 Con un conjunto evaluado fijo, el directorio formado con unas 200 consultas toma la
 misma decisión que la fase temprana en el 92.5\,\% de las consultas que no vio (sorteo
-principal), con un acierto equivalente.
-La diferencia con la temprana es de $+0.2$ puntos con 200 consultas de formación y de
-$+1.3$ con 291, y ninguna diferencia positiva se sostiene entre sorteos
-(Sección~\ref{sec:calibracion-fija}).
+principal), con un acierto equivalente y sin una diferencia positiva que se sostenga
+entre sorteos (Sección~\ref{sec:calibracion-fija}).
 Lo que el directorio aporta es encontrar al especialista sin difundir la consulta a los
 ocho módulos.
 Es la coordinación de la recuperación tal como la define Wegner, planear cómo encontrar
@@ -914,8 +854,6 @@ codificador entrenado con la clase en imagen.
 Lo que la memoria asociativa agrega es el recuerdo del contenido asociado, decisiones que
 se leen en sus registros y un rechazo que en texto no usa umbral, aunque equivale a la
 pertenencia al vocabulario, y en imagen depende del umbral de energía $\tau$.
-Como en las Secciones~\ref{sec:disc-wegner} y~\ref{sec:disc-una-memoria}, las analogías
-de esta sección son estructurales, no causales.
 
 \subsection{Limitaciones}
 \label{sec:limitaciones}
@@ -953,13 +891,8 @@ La lectura del directorio visual es estricta ($\xi = 0$), porque con directorios
 perspectivales los huecos tolerados dependerían de lo que presenció cada módulo.
 Para cubrir más, el sistema densifica.
 El directorio visual y la recuperación de la heteroasociativa son dos compuertas, y
-cada una cede solo con sus propias variantes (Sección~\ref{sec:hemisferio-visual},
-sobre las 656 imágenes de prueba): registrar en el directorio 16 variantes por
-percepción, en lugar de una, lleva su aceptación de 73.6 a 96.2\,\%; llenar el
-contenido con 16 variantes por imagen, en
-lugar de 4, lleva la respuesta de la heteroasociativa de 76 a 96\,\%; con las dos, la
-cobertura de punta a punta (enrutamiento correcto y respuesta) pasa de 66.5 a
-94.5\,\%, con rendimiento decreciente por escalón de variantes.
+cada una cede solo con sus propias variantes, con rendimiento decreciente por escalón
+de variantes (Sección~\ref{sec:hemisferio-visual}).
 El sistema usa 16 variantes en las dos y aun así rechaza el 3.5\,\% de las imágenes de
 prueba (Sección~\ref{sec:hemisferio-visual}).
 Densificar tiene un costo: dos falsos enrutamientos de 656 y, en el experimento,
@@ -1023,12 +956,10 @@ físicos: los diez objetos de cada clase aportan vistas a ambos lados
 (Sección~\ref{sec:dataset}).
 Las cifras visuales principales (96.2\,\% de enrutamiento, evocación de dominio) miden
 por tanto generalización a \emph{vistas nuevas de objetos conocidos}.
-Con objetos nuevos, la cobertura de punta a punta baja del 95.5 al 89.2\,\%
-(Sección~\ref{sec:objetos-nuevos}), pero en esa medición el codificador había visto
-vistas de todos los objetos.
-Con un codificador reentrenado sin el objeto reservado, la cobertura con objetos nuevos
-es del 87.6\,\%, y el fallo ya no es solo rechazo: hay 136 falsos enrutamientos en 3280
-vistas, frente a 2 con el codificador común en los mismos pliegues.
+Con objetos nuevos, la cobertura de punta a punta baja del 95.5 al 89.2\,\%, pero en
+esa medición el codificador había visto vistas de todos los objetos; reentrenado sin el
+objeto reservado, el fallo ya no es solo rechazo, y los falsos enrutamientos pasan de 2
+a 136 en 3280 vistas (Sección~\ref{sec:objetos-nuevos}).
 Con diez objetos por clase, «objeto nuevo» sigue siendo un objeto de la misma
 colección fotografiado en las mismas condiciones; la generalización a fotos de otro
 origen no se midió.
@@ -1091,11 +1022,8 @@ La cabeza clasificadora no participa en ninguna decisión, pero la pérdida mold
 espacio latente sobre el que operan los directorios visuales y las memorias de
 contenido; desde ese espacio, la cabeza auxiliar alcanza una precisión del 99.7\,\%.
 Con un codificador entrenado sin esa pérdida, el enrutamiento de las 656 imágenes de
-prueba es del 70.4\,\% (frente al 96.2\,\%), y la cobertura de punta a punta con
-objetos nuevos, del 59.3\,\% (frente al 89.2\,\%).
-El fallo deja además de ser rechazo, porque los falsos enrutamientos de prueba pasan de
-2 a 169 de 656 y el rechazo queda casi igual (3.8 frente a 3.5\,\%;
-Sección~\ref{sec:codificador-sin-clase}).
+prueba baja del 96.2 al 70.4\,\%, y el fallo deja de ser rechazo, porque los falsos
+enrutamientos pasan de 2 a 169 de 656 (Sección~\ref{sec:codificador-sin-clase}).
 Por qué ocurre se discute en la Sección~\ref{sec:disc-lineas-base}.
 
 \paragraph{(l) Autoría de los bancos de consultas.}
@@ -1117,10 +1045,8 @@ madura se evaluó sobre las mismas consultas que formaron el directorio.
 Al pasar a ocho módulos cambiaron a la vez el codificador, la cuantización, el número de
 memorias por módulo, el banco y el mediador, y el escalado no se hizo como experimento
 controlado.
-Con tres módulos, la precisión madura cruza el 90\,\% tras 13 interacciones en orden
-intercalado y termina en 98.75\,\%; con ocho y 10 consultas por clase, ninguna condición
-llega al 90\,\% y todas terminan en 81.2\,\% (Sección~\ref{sec:formacion}).
-Esa diferencia no se puede atribuir al número de módulos.
+De ahí que la diferencia entre las curvas de formación con tres y con ocho módulos
+(Sección~\ref{sec:formacion}) no se pueda atribuir al número de módulos.
 La evidencia controlada del efecto de crecer es la comparación con la EHAM única
 (Sección~\ref{sec:eham-unica}) y la de memorias de dos clases contra la de ocho
 (experimento~12, Sección~\ref{fase:disc-tamano}).

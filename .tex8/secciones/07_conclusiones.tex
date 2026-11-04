@@ -69,8 +69,8 @@ en el 13.8\,\% (Sección~\ref{sec:calibracion}).
 El escalado a los ocho módulos de ETH-80 funciona con una memoria heteroasociativa y dos
 directorios por módulo.
 La caída del protocolo completo, del 98.75\,\% de la fase madura con tres módulos al
-81.2\,\% con ocho, no se puede atribuir al número de módulos, porque en el paso cambiaron
-también el codificador, la cuantización, las memorias, el banco y el mediador.
+81.2\,\% con ocho, no se puede atribuir al número de módulos, por los cambios simultáneos
+del escalado.
 En la arquitectura final, el hemisferio visual enruta el 96.2\,\% de las 656 imágenes de
 prueba con dos falsos enrutamientos, y 113 de las 116 imágenes enrutadas entre las 15
 primeras de cada clase evocan palabras de su dominio
@@ -130,7 +130,7 @@ entre sí.
 
 Registrar solo lo que cada módulo presencia no le cuesta acierto al grupo.
 En imagen, encadenar los directorios parciales iguala al registro compartido (81.9\,\%
-con una de cada 64 transmisiones ajenas presenciadas); en texto lo iguala sumar los
+con una de cada 64 transacciones ajenas presenciadas); en texto lo iguala sumar los
 puntajes de los módulos conocidos (91.0 frente a 93.6\,\% con una de cada 32).
 Cuando falta un especialista, el directorio sigue apuntando a él, de modo que el grupo
 pierde la respuesta y conserva la ubicación, como en la pérdida de un miembro que
@@ -223,8 +223,9 @@ Los siguientes pasos salen de las limitaciones de la Sección~\ref{sec:limitacio
     nuevo los directorios.
     Separaría el efecto del número de módulos de los demás cambios del escalado; el
     codificador seguiría siendo el de ocho clases, y habría que declararlo.
-    Con los tiempos de las etapas 6 a 8 medidos en septiembre en la segunda laptop, cada
-    número de módulos y semilla costaría unos 17 minutos.
+    Con los tiempos de la fase temprana, el hemisferio visual y la fase madura, medidos en
+    septiembre en otra computadora portátil, cada número de módulos y semilla costaría
+    unos 17 minutos.
     \item \textbf{Pérdida de un miembro con el protocolo final}: repetir el experimento 9
     con directorios perspectivales, una memoria heteroasociativa por módulo y el
     directorio visual de 16 variantes, y fijar con esa corrida cuántas consultas llegan al
