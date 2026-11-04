@@ -4,8 +4,8 @@
 \section{Resultados}
 \label{sec:resultados}
 % <- 05
-Los resultados siguen las cinco fases de la Sección~\ref{fase:arco}.
-Las cifras de la fase 1 son de su propia arquitectura, con tres módulos, y se rotulan así.
+Los resultados siguen las cinco fases de la Sección~\ref{fase:arco}, y cada fase abre
+con la arquitectura de la que salen sus cifras.
 Con ocho módulos, en las fases 2 a 4, los experimentos usan los parámetros de la
 Sección~\ref{sec:parametros} salvo indicación en contrario.
 Todos los números son trazables a archivos de \texttt{results/}
@@ -23,9 +23,9 @@ El TME y los tres módulos reciben los mismos registros, de modo que el director
 compartido, y el banco tiene 80 consultas (27, 27 y 26 por clase).
 El azar es de 1/3 y la entropía máxima de las cuentas del directorio, de
 $\log_2 3 = 1.585$ bits.
-Los modelos de esa fase no se guardaron y el código actual fija ocho clases, así que
-estas cifras no se volvieron a medir ni se comparan como experimento controlado con las
-del sistema final.
+Los modelos de esa fase no se guardaron y el código actual fija ocho clases, de modo que
+estas cifras no se volvieron a medir.
+Tampoco se comparan como experimento controlado con las del sistema final.
 Fuente: \texttt{results/fase1\_tres\_modulos/}.
 
 \paragraph{Protocolo completo.}
@@ -110,7 +110,7 @@ Hay un solo banco, un codificador y cinco barajados, sin intervalos.
 \label{sec:fase2-resultados}
 
 La lectura B1 se eligió con tres módulos.
-En la ablación de la fase 1, con la arquitectura de la sección anterior, cinco semillas
+En la ablación sobre el prototipo de la fase 1, con la arquitectura de la sección anterior, cinco semillas
 y $N = 80$ consultas, también evaluada dentro de muestra, la lectura cruda daba el
 53.75\,\% en la fase madura.
 Con ella \texttt{apple} se llevaba el 78.75\,\% de las victorias maduras, frente al
@@ -130,10 +130,8 @@ fijo, y se comparó B1 con una lectura por el principio de tamaño.
 
 La calibración mide cómo debe leerse el directorio para que el enrutamiento maduro sea
 confiable.
-Se compararon nueve condiciones: la lectura cruda (A), dos normalizaciones por el conteo
-de registros de cada módulo (B1, B2) y seis que actúan sobre otra cosa: un tope de
-registros por módulo (C), consultas balanceadas (D), la cuantización (E32, E64), el
-vocabulario (F) y la combinación de D, B1 y F (G).
+Se compararon las nueve condiciones de la ablación con tres módulos, de A a G
+(Sección~\ref{fase2:lectura}).
 Cada una se evaluó con $N \in \{50, 100, 200, 400\}$ consultas del banco de 411, que
 forman el directorio.
 En siete condiciones son las primeras $N$ consultas del banco; D y G sortean en cambio
@@ -2011,8 +2009,7 @@ el índice con su lectura normalizada.
 La 5 cayó con un cambio de representación y la 15 con la lectura inversa del
 directorio.
 
-Las seis matizadas (4, 6, 9, 14, 16 y 18) conservan la idea con un alcance menor, casi
-siempre «en lo medido».
+Las seis matizadas (4, 6, 9, 14, 16 y 18) conservan la idea con un alcance menor.
 La 9 y la 16 pasan de un cero o una ventaja general a una cifra con su costo, y la 18
 queda en «suficiente, no superior».
 Las tres confirmadas (11, 12 y 13) también llevan un límite: el mecanismo tiene fallas

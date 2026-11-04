@@ -16,7 +16,6 @@ con una pérdida de clasificación auxiliar, de la que depende el enrutamiento v
 Del modelo de Wegner, el sistema implementa la actualización del directorio y la
 coordinación de la recuperación; la asignación de información la hace la etiqueta.
 
-Cada cifra de este capítulo va con la arquitectura de su fase.
 Entre el prototipo y el sistema final cambiaron a la vez el codificador, la cuantización
 de las pistas, las memorias por módulo, el banco de consultas y el mediador, de modo que
 las cifras de tres módulos no se comparan con las de ocho como un experimento controlado.
@@ -35,13 +34,14 @@ Mientras solo se presentaron consultas de \texttt{apple}, el directorio solo enr
 90\,\% hasta la interacción 67, ya dentro del bloque de \texttt{car}.
 El orden intercalado, el barajado y el bloqueado terminan en las mismas cuentas,
 [78, 65, 53].
-En él queda a quién vio ganar cada pista, y lo que no presenció no lo enruta.
+En el directorio queda a quién vio ganar cada pista, y lo que no presenció no lo enruta.
 Esta respuesta tiene cuatro límites.
-La curva se midió sobre las mismas 80 consultas que forman el directorio, así que mide
-cuánto del banco cubren los tokens ya registrados; el techo lo pone la fase temprana
-(98.73\,\% acumulado frente al 98.75\,\% de la madura), y sin la lectura B1 la fase
-madura no lo alcanza.
-La formación con ocho módulos no repite el umbral: ninguna condición pasa del 90\,\% y
+La curva se midió sobre las mismas 80 consultas que forman el directorio y mide cuánto
+del banco cubren los tokens ya registrados.
+El techo lo pone la fase temprana (98.73\,\% acumulado frente al 98.75\,\% de la
+madura).
+Sin la lectura B1, la fase madura no lo alcanza.
+Por último, la formación con ocho módulos no repite el umbral: ninguna condición pasa del 90\,\% y
 todas terminan en el 81.2\,\% (Sección~\ref{sec:formacion}).
 
 \paragraph{Lectura del directorio (fase 2).}
@@ -58,12 +58,12 @@ lectura cruda con todos los tamaños de formación y en todos los sorteos, por 4
 puntos en promedio, y con ella la fase madura sube del 78.9\,\% con 50 consultas de
 formación al 91.0\,\% con 291, frente al 89.7\,\% de la temprana
 (Sección~\ref{sec:calibracion-fija}).
-Leer el directorio con el principio de tamaño da en ETH-80, donde el registro está
-balanceado, las mismas decisiones que B1 salvo una de 656 imágenes y 8 de 411 consultas.
-B1 opera fuera de las memorias y corrige un sesgo de la lectura sin tocar lo registrado.
 En el sistema de ocho módulos, la lectura cruda le da a \texttt{apple} el 20.5\,\% de las
 consultas aunque las cuentas del directorio están casi parejas (2.974 de 3.000 bits), y B1 lo deja
 en el 13.8\,\% (Sección~\ref{sec:calibracion}).
+Leer el directorio con el principio de tamaño da en ETH-80, donde el registro está
+balanceado, las mismas decisiones que B1 salvo una de 656 imágenes y 8 de 411 consultas.
+B1 opera fuera de las memorias y corrige un sesgo de la lectura sin tocar lo registrado.
 
 \paragraph{Escalado a ocho módulos (fase 3).}
 El escalado a los ocho módulos de ETH-80 funciona con una memoria heteroasociativa y dos
@@ -128,7 +128,7 @@ ajenos que presenció (80 de 80 y 112 de 112), y lo que devuelve es una envolven
 dominio, de 2.9 a 5.5 veces más lejos de cualquier instancia real que las instancias
 entre sí.
 
-Registrar solo lo que cada módulo presencia no le cuesta acierto al grupo.
+Registrar solo lo que cada módulo presencia le cuesta poco acierto al grupo.
 En imagen, encadenar los directorios parciales iguala al registro compartido (81.9\,\%
 con una de cada 64 transacciones ajenas presenciadas); en texto lo iguala sumar los
 puntajes de los módulos conocidos (91.0 frente a 93.6\,\% con una de cada 32).
@@ -165,7 +165,7 @@ en el 98 al 99\,\% de las vistas, de modo que el valor minoritario se acierta de
 La pertenencia a la clase generaliza; el atributo lo decide la densidad de lo
 registrado.
 
-Los límites del rechazo también se midieron.
+El rechazo por contención falla en los dos sentidos.
 De 12 consultas fuera de los ocho dominios, la memoria rechaza 10 por contención, y la
 contención estricta por coordenada rechaza 23 imágenes que un vecino más cercano
 clasifica bien.
@@ -202,8 +202,8 @@ También cambió la coincidencia completa entre fases del primer prototipo, que 
 dos rechazos como coincidencias.
 Al pasar a ocho módulos, la cuantización por signo de las pistas se reemplazó por una por
 magnitud.
-Partir el contenido entre especialistas dio fidelidad, menos mezcla y rechazo, con el
-mismo acierto de clase que una sola memoria.
+De partir el contenido entre especialistas se esperaba más acierto de clase que con una
+sola memoria; dio el mismo, junto con fidelidad, menos mezcla y rechazo.
 Tampoco se sostuvo que todas las decisiones fueran operaciones de memoria, porque la suma
 por tokens, B1, el umbral $\tau$ y el rescate léxico operan fuera de ellas
 (Sección~\ref{sec:auditoria}).

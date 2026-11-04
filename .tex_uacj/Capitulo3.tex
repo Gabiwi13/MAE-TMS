@@ -681,8 +681,7 @@ En la fase madura, con el TME apagado, la consulta entraba por un módulo al aza
 El banco tenía 80 consultas en lenguaje natural con su clase conocida (27 de
 \texttt{apple}, 27 de \texttt{horse} y 26 de \texttt{car}).
 El protocolo completo pasaba las 80 por la fase temprana para formar el directorio y
-después evaluaba la fase madura sobre las mismas 80, así que la evaluación es dentro de
-muestra.
+después evaluaba la fase madura sobre esas mismas 80, dentro de muestra.
 
 \paragraph{Formación del directorio.}
 El estudio central de la fase sigue al directorio desde que está vacío.
@@ -773,7 +772,7 @@ lecturas toman las mismas decisiones.
 \section{Fase 3: escalado a ocho módulos}
 \label{fase3:escalado}
 
-El paso de tres a ocho módulos ocupa 22 commits, de \texttt{b281f9c} (1 de julio de
+El paso de tres a ocho módulos ocupa 22 revisiones del repositorio (\textit{commits}), de \texttt{b281f9c} (1 de julio de
 2026) a \texttt{d5b93fa} (14 de julio).
 Cambiaron a la vez:
 \begin{itemize}
@@ -792,8 +791,6 @@ Cambiaron a la vez:
     \item el banco, de 80 a 411 consultas, unas 50 por clase;
     \item las referencias de las métricas, con azar de 1/8 y entropía máxima de 3 bits.
 \end{itemize}
-Como todo cambió junto, la diferencia entre las cifras de tres y de ocho módulos no se
-puede atribuir al número de módulos.
 
 Después de julio el sistema siguió con ocho módulos y recibió cuatro cambios que salieron
 de la fase 4 (Sección~\ref{fase4:propiedades}):

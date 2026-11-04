@@ -97,9 +97,9 @@ acepta de más y la recuperación se vuelve menos precisa
 \cite{pineda2021entropic,morales2022manuscript}.
 Una sola memoria con todo el contenido tiene, entonces, un techo: conforme se llena,
 rechaza peor y recuerda con menos fidelidad.
-La solución que se propone es la de la memoria transactiva: repartir el contenido entre
-especialistas, cada uno con menos variedad que guardar, y aprender con el uso a quién
-preguntar.
+La solución que se propone es la de la memoria transactiva, que reparte el contenido
+entre especialistas, cada uno con menos variedad que guardar, y aprende con el uso a
+quién preguntar.
 El problema tiene cinco partes, en el orden en que se estudiaron.
 \begin{enumerate}
     \item \textbf{Emergencia.} Que el directorio emerja del uso: sin saber de antemano
@@ -190,7 +190,7 @@ reúnen.
 La primera es que el directorio se forma con el uso.
 Nadie entrena una compuerta ni escribe un catálogo: cada módulo cuenta qué pistas
 respondió cada especialista, y con tres módulos el directorio supera el 90\,\% de acierto
-tras 13 interacciones (Sección~\ref{sec:fase1-resultados}).
+tras 13 interacciones, medido sobre las mismas consultas que lo forman (Sección~\ref{sec:fase1-resultados}).
 Cuando llega contenido nuevo, las memorias suman conteos y no se reentrenan; un
 clasificador o una compuerta entrenada sí, con el riesgo de interferencia
 catastrófica~\cite{mccloskey1989catastrophic}.
@@ -206,21 +206,23 @@ el sistema pierde la respuesta pero conserva la ubicación de quien la tenía (l
 envolvente del dominio de cada módulo, una forma de saber qué sabe cada uno.
 
 La tercera es que cada especialista es una memoria
-declarativa~\cite{pineda2022weighted}: guarda y devuelve contenido, no solo una etiqueta.
+declarativa~\cite{pineda2022weighted}, que guarda y devuelve contenido donde un
+clasificador daría solo una etiqueta.
 El sistema responde con una imagen o con palabras, reconoce por contención y contesta
 «no lo tengo» cuando la entrada no tiene soporte.
+Como las operaciones de la memoria están definidas formalmente, cada una de esas
+decisiones se puede rastrear hasta los conteos que la produjeron.
 Un índice exacto solo encuentra lo que coincide con su clave y no sirve para imágenes;
 en texto, en cambio, el rechazo de la memoria equivale a la pertenencia al vocabulario, y
 ahí un diccionario rechazaría lo mismo.
 
-Como las operaciones de la memoria están definidas formalmente, cada decisión se puede
-rastrear hasta los conteos que la produjeron.
 Ninguna de estas propiedades promete más acierto: sobre los mismos vectores, decisores
 simples aciertan lo mismo en texto y más en imagen.
-Medirlo así separa lo que aporta el mecanismo de lo que aporta la representación.
+La comparación con esos decisores separa lo que aporta el mecanismo de lo que aporta la
+representación.
 
 Contar la investigación por fases deja ver de dónde salió cada decisión del sistema
-final.
+final y qué le falta para recibir entradas del mundo real.
 La lectura B1, por ejemplo, se eligió con tres módulos y se volvió a medir con ocho.
 La demostración con voz y cámara muestra qué piezas hay que agregar para que las
 consultas lleguen de un micrófono o de una cámara, y dónde falla el sistema cuando la
