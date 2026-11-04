@@ -16,7 +16,7 @@ Con el código actual de `una-hetero`, que fija ocho clases, no se reproduce, y 
 ## Estado de cada carpeta
 - `exp4_directory_formation`: formación del directorio. Vigente. Se evalúa dentro de muestra (las mismas 80 consultas que forman el directorio) y necesita la lectura B1.
 - `exp3_corrected_routing`: lectura B1 de la fase madura. Vigente.
-- `exp2_iota_kappa`: la conclusión «κ inerte» de una versión anterior era un error de programación, corregido en `29f401c`. La versión copiada aquí es la corregida.
+- `exp2_iota_kappa`: la copia es anterior a la corrección de la compuerta κ (`29f401c`, 26 oct 2026, hecha ya con ocho clases). Sus columnas de κ tienen el error de programación (son idénticas entre sí) y no se citan; solo vale lo de ι.
 - `rejection_probe`: sonda de rechazo de tres clases. Quedó obsoleta.
 - `experimento1`: informe del primer prototipo. Sus cifras de tres clases las reemplaza `exp3_corrected_routing`.
 - `exp5_entropic_prototype`: corrida del 12 jun con 50 instancias, no con 200.
