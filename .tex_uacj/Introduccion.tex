@@ -1,37 +1,30 @@
 \chapter*{Introducción}\label{introduccion}\label{sec:introduccion}
 \thispagestyle{empty}
 \markboth{Introducción}{Introducción}
-\enlargethispage{5\baselineskip}
-
-Un grupo que trabaja junto puede recordar más que cualquiera de sus miembros por
-separado, porque cada uno sabe quién sabe qué y a quién preguntar.
+Un grupo puede recordar más que cualquiera de sus miembros porque cada uno sabe quién
+sabe qué.
 Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta organización
 y después la describió como una red de computadoras~\cite{wegner1995computer}: nodos
 especializados que aprenden, con el uso, a enviarse las consultas.
-
 Las memorias asociativas entrópicas de Pineda y Morales
 \cite{pineda2021entropic,pineda2022weighted,morales2025missing} guardan lo que registran
 como conteos, reconocen una entrada cuando sus rasgos tienen soporte, recuperan
 muestreando y rechazan lo que no contienen.
-Hasta donde sabemos, en su línea de trabajo no se han usado para repartir el
-conocimiento entre varios especialistas.
-Una sola de ellas con todo el contenido tiene un techo: su entropía crece con lo que
+Hasta donde sabemos, no se han usado para repartir el conocimiento entre especialistas.
+Una sola de ellas tiene un techo: su entropía crece con lo que
 guarda, y con ella las aceptaciones falsas.
 Este trabajo pregunta si repartir el contenido entre especialistas que saben quién sabe
 qué evita ese techo, y qué agrega la memoria frente a decisores simples.
 
-El producto es EAM-TMS: ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, que
-guardan palabras e imágenes en una sola memoria heteroasociativa, se envían consultas de
-texto e imagen mediante directorios formados con el uso, recuperan en ambas direcciones y
-rechazan lo que no conocen, sin clasificadores discriminativos en esas decisiones.
+El producto es EAM-TMS: ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, cada
+uno con una memoria heteroasociativa de palabras e imágenes y directorios formados con el
+uso, que enrutan consultas de texto e imagen, recuperan en ambas direcciones y rechazan
+lo que no conocen sin clasificadores discriminativos.
 Se evalúa con 411 consultas de texto, 40 fuera de dominio, 656 imágenes de prueba y
-objetos que ningún módulo vio, y se compara con decisores simples, con una sola memoria
-para las ocho clases y con un codificador entrenado sin la pérdida de clase.
-
+objetos nuevos, frente a una sola memoria con las ocho clases, decisores
+simples y un codificador sin la pérdida de clase.
 El valor del trabajo está en mostrar dónde evita el reparto el techo (fidelidad del
-recuerdo y mezcla de dominios) y dónde no (acierto de clase), y qué aporta la memoria
-frente a un decisor simple.
-El Capítulo~\ref{cap:pp} plantea el problema y los objetivos; los
-Capítulos~\ref{sec:marco_teorico} a~\ref{conclusiones} presentan el marco teórico, el
-desarrollo, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA} ubica cada
-experimento citado.
+recuerdo y mezcla de dominios) y dónde no (acierto de clase).
+Los Capítulos~\ref{cap:pp} a~\ref{conclusiones} presentan el problema, el marco teórico,
+el desarrollo, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA} ubica los
+experimentos.

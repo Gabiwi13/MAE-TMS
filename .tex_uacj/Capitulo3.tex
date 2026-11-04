@@ -556,7 +556,7 @@ va de una imagen a los directorios visuales y a las memorias de contenido.
 El término nombra un camino de procesamiento y no supone ninguna lateralización.
 
 % ---------------------------------------------------------------
-\subsection{Conjunto de datos}
+\section{Conjunto de datos}
 \label{sec:dataset}
 
 Se utilizó el conjunto de datos ETH-80~\cite{leibe2003eth80} completo, en su versión
@@ -597,7 +597,7 @@ Las 410 imágenes de cada clase se reparten en tres conjuntos disjuntos:
 \end{itemize}
 
 % ---------------------------------------------------------------
-\subsection{Representación de texto: vocabulario y consultas}
+\section{Representación de texto: vocabulario y consultas}
 \label{sec:pipeline-semantico}
 
 Las pistas de texto salen de dos caminos con la misma representación.
@@ -684,7 +684,7 @@ Solo queda fuera lo que no es representable. Un token sin vector fastText real n
 pista y, por tanto, no llega a la memoria.
 
 % ---------------------------------------------------------------
-\subsection{Percepción visual: codificador ResNet18}
+\section{Percepción visual: codificador ResNet18}
 \label{sec:percepcion}
 
 Para obtener representaciones latentes de las imágenes se entrenó sobre las ocho clases
@@ -729,7 +729,7 @@ pero sí 1 de las 1024 de la formación visual y 4 de las 656 de prueba, cuatro 
 que el directorio enrutaba bien y que su especialista aceptaba.
 
 % ---------------------------------------------------------------
-\subsection{Banco de evaluación semántica}
+\section{Banco de evaluación semántica}
 \label{sec:banco}
 
 Se construyó un banco de \textbf{411 consultas} en lenguaje natural con su clase
@@ -766,7 +766,7 @@ formación, el 13.8\,\% de las 80 primeras y el 49.8\,\% de las 400 de la
 calibración.\footnote{Reanálisis del banco, tabla M3.1.}
 
 % ---------------------------------------------------------------
-\subsection{Parámetros de la EAM}
+\section{Parámetros de la EAM}
 \label{sec:parametros}
 
 Los parámetros de la EAM se fijaron en $\iota = 0$, $\kappa = 0$, $\sigma = 0.1$ y
@@ -789,7 +789,7 @@ Los pesos solo cambian magnitudes; la contención, y con ella la aceptación y e
 no depende de ellos.
 
 % ---------------------------------------------------------------
-\subsection{Auditoría de trazabilidad}
+\section{Auditoría de trazabilidad}
 \label{sec:auditoria}
 
 La auditoría de trazabilidad comprueba que las operaciones de memoria son las de la
@@ -812,7 +812,7 @@ Todos los números reportados salen de corridas de este sistema, con sus tablas 
 \texttt{results/}.
 
 % ---------------------------------------------------------------
-\subsection{Métricas de evaluación}
+\section{Métricas de evaluación}
 \label{sec:metricas}
 
 Se emplearon las siguientes métricas. En este trabajo, \emph{precisión} es siempre la
@@ -844,7 +844,7 @@ las aceptadas.
 \end{itemize}
 
 % ---------------------------------------------------------------
-\subsection{Organización del experimento}
+\section{Organización del experimento}
 \label{sec:organizacion}
 
 La Sección~\ref{sec:resultados} presenta los estudios en este orden.

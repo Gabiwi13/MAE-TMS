@@ -1,37 +1,32 @@
 \chapter*{Resumen}
 \markboth{Resumen}{Resumen}
 \thispagestyle{empty}
-\enlargethispage{5\baselineskip}
-
-Una memoria asociativa entrópica con todo el contenido tiene un techo: conforme se
-llena, su entropía crece, acepta de más y recuerda con menos fidelidad.
+Una memoria asociativa entrópica tiene un techo: conforme se llena, su entropía crece,
+acepta de más y recuerda peor.
 Este trabajo reparte el contenido entre especialistas que saben quién sabe qué, como en
 la \emph{memoria transactiva} de Wegner~\cite{wegner1987transactive}, y construye EAM-TMS
-sobre las memorias de Pineda y Morales \cite{pineda2022weighted,morales2025missing}, con
-ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}.
-Cada módulo guarda palabras e imágenes en una memoria heteroasociativa y directorios
-formados con el uso, sin clasificadores discriminativos en sus decisiones.
-Frente a una sola memoria con las ocho clases acierta la clase lo mismo (96.8 frente a
-96.9\,\% sobre 171 consultas reservadas), pero responde menos veces con un dominio ajeno
+sobre las memorias de Pineda y Morales \cite{pineda2022weighted,morales2025missing}:
+ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, cada uno con una memoria
+heteroasociativa de palabras e imágenes y directorios formados con el uso, sin
+clasificadores discriminativos.
+Frente a una sola memoria con las ocho clases acierta lo mismo (96.8 frente a
+96.9\,\% en 171 consultas), pero responde menos veces con un dominio ajeno
 (3.1 frente a 10.9\,\% de las imágenes).
-Al enrutar texto iguala a decisores simples sobre las mismas representaciones (81.2
-frente a 76.0--81.5\,\% en 80 consultas).
-Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, igual que un voto
-por vocabulario y frente a las 40 de los decisores de coseno; con imágenes reales de
-otras categorías no se midió.
+En texto iguala a decisores simples sobre las mismas representaciones (81.2 frente a
+76.0--81.5\,\%).
+Rechaza lo que no conoce: acepta 2 de 40 consultas fuera de dominio, como un voto por
+vocabulario, contra 40 de los decisores de coseno; con imágenes de otras categorías no
+se midió.
 Recupera en ambas direcciones: responde con una imagen al 98.7\,\% de las consultas, más
-cerca de una instancia real de su clase que la memoria única (27.2 contra 32.5), y 113
-de 116 imágenes evocan palabras de su dominio.
-Con imágenes enruta bien el 96.2\,\% de 656 vistas nuevas, mientras que un centroide sobre
-los mismos códigos acierta más, sin rechazar ninguna; ese enrutamiento depende de que el
-codificador se entrenó con la clase, y sin ella cae al 70.4\,\%.
-Con objetos que ningún módulo vio, la cobertura es del 89.2\,\%, y del 87.6\,\% si el
-codificador tampoco los vio, pero con 136 falsos enrutamientos de 3280 en lugar de 2.
-Repartir evita el techo en fidelidad y mezcla de dominios, no en acierto; la memoria
-aporta el rechazo, el recuerdo en ambas direcciones y un registro de quién sabe qué.
+cerca de una instancia real que la memoria única (27.2 contra 32.5), y 113
+de 116 imágenes evocan su dominio.
+Con imágenes enruta bien el 96.2\,\% de 656 vistas nuevas (un centroide acierta más), y
+solo porque el codificador se entrenó con la clase: sin ella, 70.4\,\%.
+Con objetos que ningún módulo vio cubre el 89.2\,\%, y el 87.6\,\% si el codificador
+tampoco los vio, con 136 falsos enrutamientos de 3280, no 2.
+Repartir evita el techo en fidelidad y mezcla de dominios, no en acierto.
 
 
-\smallskip
 \noindent\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria
 heteroasociativa, sistemas distribuidos, enrutamiento de consultas, recuperación
 multimodal.

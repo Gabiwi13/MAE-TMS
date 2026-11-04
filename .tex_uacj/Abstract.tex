@@ -1,36 +1,31 @@
 \chapter*{Abstract}
 \markboth{Abstract}{Abstract}
 \thispagestyle{empty}
-\enlargethispage{5\baselineskip}
-
-An entropic associative memory holding all the content has a ceiling: as it fills, its
-entropy grows, it accepts too much and it recalls less faithfully.
+An entropic associative memory has a ceiling: as it fills, its entropy grows, it accepts
+too much and recalls worse.
 This work splits the content among specialists that know who knows what, as in Wegner's
 \emph{transactive memory}~\cite{wegner1987transactive}, and builds EAM-TMS on the
-memories of Pineda and Morales \cite{pineda2022weighted,morales2025missing}, with eight
-modules, one per ETH-80 class~\cite{leibe2003eth80}.
-Each module keeps words and images in a heteroassociative memory and directories formed
-through use, with no discriminative classifier in its decisions.
+memories of Pineda and Morales \cite{pineda2022weighted,morales2025missing}: eight
+modules, one per ETH-80 class~\cite{leibe2003eth80}, each with a heteroassociative memory
+of words and images and directories formed through use, with no discriminative
+classifier.
 Against a single memory holding the eight classes it is as accurate (96.8 against
-96.9\,\% on 171 held-out queries), but answers with a foreign domain less often (3.1
+96.9\,\% on 171 queries), but answers with a foreign domain less often (3.1
 against 10.9\,\% of the images).
-When routing text it matches simple decision rules on the same representations (81.2
-against 76.0--81.5\,\% on 80 queries).
+On text it matches simple decision rules on the same representations (81.2 against
+76.0--81.5\,\%).
 It rejects what it does not know: it accepts 2 of 40 out-of-domain queries, like a
-vocabulary vote, against all 40 for the cosine rules; rejection of real images from
-other categories was not measured.
+vocabulary vote, against all 40 for the cosine rules; real images from other
+categories were not tested.
 It retrieves in both directions: it answers 98.7\,\% of the queries with an image, closer
 to a real instance of its class than the single memory (27.2 against 32.5), and 113 of
-116 images evoke words from their domain.
-With images it routes 96.2\,\% of 656 new views correctly, while a centroid on the same
-codes is more accurate and rejects none; that routing depends on the encoder having been
-trained with the class, and without it drops to 70.4\,\%.
+116 images evoke their domain.
+With images it routes 96.2\,\% of 656 new views correctly (a centroid is more accurate),
+only because the encoder was trained with the class: without it, 70.4\,\%.
 On objects no module has seen, coverage is 89.2\,\%, and 87.6\,\% when the encoder has not
-seen them either, but with 136 false routings of 3280 instead of 2.
-Splitting avoids the ceiling in recall fidelity and domain mixing, not in accuracy; the
-memory adds rejection, two-way recall and a record of who knows what.
+seen them either, with 136 false routings of 3280, not 2.
+Splitting avoids the ceiling in recall fidelity and domain mixing, not in accuracy.
 
 
-\smallskip
 \noindent\textbf{Keywords}: transactive memory, entropic associative memory, heteroassociative
 memory, distributed systems, query routing, multimodal retrieval.

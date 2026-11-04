@@ -92,7 +92,7 @@ escribir("Capitulo3.tex", remisiones(
          f"\\section{{Producto propuesto}}\n\\label{{{etq03}}}\n"
          "% <- 03\n" + producto + resto03 +
          f"\n\\section{{Descripción de la metodología}}\n\\label{{{etq04}}}\n"
-         "% <- 04\n" + apertura04 + resto04))
+         "% <- 04\n" + apertura04 + mover_niveles(resto04, -1)))
 
 # ---------------------------------------------------------------- 05 y 06
 etq05, cuerpo05 = quitar_encabezado(leer(SECCIONES / "05_resultados.tex"))
