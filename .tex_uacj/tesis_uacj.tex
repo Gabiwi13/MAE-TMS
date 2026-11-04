@@ -124,7 +124,6 @@
 
 \include{Resumen}
 \include{Abstract}
-\IfFileExists{DeclaracionIAG.tex}{\include{DeclaracionIAG}}{}
 
 % los siguientes comandos producen √åndices.
 % tablas y figuras en el documento de la tesis
@@ -156,5 +155,8 @@
 % los cap√åtulos que se incluyan a partir de aqu√å aparecen 
 % como ap√àndices
 \include{ApendiceA}
+\IfFileExists{DeclaracionIAG.tex}{\clearpage\phantomsection
+  \addcontentsline{toc}{chapter}{Declaración de uso de inteligencia artificial generativa}
+  \include{DeclaracionIAG}}{}
 %\include{ApendiceB}
 \end{document}
