@@ -43,8 +43,9 @@ la investigación.
 Las memorias por módulo cuentan las de contenido y los directorios.
 En la fase 3, la primera cifra es la del sistema de julio y la segunda, la del sistema
 final.
-En la fase 4, tres experimentos (8, 9 y 10) usan el protocolo anterior, con cinco
-memorias por módulo y directorios iguales en todos los módulos.
+En la fase 4, los experimentos 7 a 10 usan un protocolo anterior al final, con el
+registro dictado por la clase verdadera o por todos los módulos y el directorio visual
+sin variantes; el 8 y el 9 llevan cinco memorias por módulo.
 La fase 2 adoptó B1 con tres módulos; su verificación con ocho usa la arquitectura de
 la fase 3.}
 \label{fase:tab-arco}
@@ -589,14 +590,16 @@ resultados están en la Sección~\ref{sec:resultados}.
 Varios de estos experimentos estudian el directorio y no la elección del ganador.
 En ellos el directorio se forma con la clase real como ganador de cada transacción, para
 separar lo que el directorio guarda del acierto de la fase temprana.
-Los experimentos 8, 9 y 10 se corrieron antes de que el sistema adoptara los directorios
-perspectivales y una sola memoria de contenido.
-Usan el protocolo anterior, en el que todos los módulos registran todas las
-transacciones y sus directorios son idénticos, con el directorio visual llenado sin
-variantes y con las memorias homoasociativas al lado de la heteroasociativa.
-Los mecanismos que miden no dependen de las memorias homoasociativas, pero sus cifras
-no son las del sistema final.
-El experimento~9 se reporta con esa salvedad.
+Los experimentos 7 a 10 se corrieron antes de que el sistema adoptara los directorios
+perspectivales y una sola memoria de contenido, con el directorio visual llenado sin
+variantes.
+En el 8 y el 9 todos los módulos registran todas las transacciones, sus directorios son
+idénticos y las memorias homoasociativas están al lado de la heteroasociativa; el 10
+parte de ese registro para medir directorios que divergen.
+Los experimentos 7, 8 y 10 miden sobre todo directorios.
+En el 9 el sustituto reconoce y evoca con sus memorias homoasociativas, que el sistema
+final ya no tiene, y por eso se reporta con esa salvedad.
+Ninguno da cifras del sistema final.
 
 \paragraph{El directorio como índice.}
 En el experimento~7, un solo directorio recibe pistas de texto y de imagen, para ver si
@@ -769,8 +772,8 @@ análisis de un cuadro y la tasa de cuadros de la interfaz.
 La política de color se probó en simulación, sobre 24 imágenes de prueba de ETH-80 en
 tres condiciones: limpias, con un tono grisáceo medio y con uno fuerte.
 Con la cámara física se mostraron imágenes de ETH-80 en la pantalla de un teléfono y en
-una hoja impresa con 16 imágenes, y un cuadro real ajeno a ETH-80 se pasó por el
-directorio visual.
+una hoja impresa con 16 imágenes, y se pasó por el directorio visual un cuadro gris sin
+objeto, ajeno a ETH-80 (\texttt{selftest\_frame.png}).
 Las mediciones son del 16 al 18 de julio de 2026 y no quedó registro crudo de ellas;
 lo que se conserva está en \texttt{results/mundo\_real/}.
 No se midieron la tasa de error de la transcripción, el acierto del enrutamiento con voz

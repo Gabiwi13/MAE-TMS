@@ -1167,10 +1167,14 @@ Entre la brecha y el solapamiento del lado de las etiquetas, la correlación de 
 es de 0.01 ($p = 0.95$), y del lado latente, de 0.21 ($p = 0.29$).
 El error de clase sí crece con el solapamiento de las etiquetas ($\rho = 0.49$,
 $p = 0.008$).
-En todos los pares el solapamiento va de 0.57 a 0.65, así que en esta representación no
-hay pares disjuntos.
+En todos los pares el solapamiento de las etiquetas va de 0.57 a 0.65, y el latente, de
+0.35 a 0.50, así que en esta representación no hay pares disjuntos.
 Con la misma arquitectura y la misma medida, la fidelidad de una memoria baja con el
-número de clases que guarda (\texttt{results/experimento12/README.md}).
+número de clases que guarda.
+Como las dos llevan 200 imágenes por clase, M8 guarda también cuatro veces más registros
+que M2; en la EHAM única, con ocho clases, la brecha con el oráculo queda entre 4.6 y 6.2
+de 25 a 200 imágenes por clase (Sección~\ref{sec:eham-unica};
+\texttt{results/experimento12/README.md}).
 
 % ---------------------------------------------------------------
 \subsubsection{Líneas base sin memoria asociativa}
@@ -1617,8 +1621,8 @@ cero errores, en todas las condiciones con $f > 0$ o $r \geq 1$.
 Con $f = 1/64$ los directorios difieren en el 83\,\% de sus celdas.
 El costo son las consultas, 3.56 saltos en promedio con $f = 1/64$ y 1.89 con el
 anillo $r = 1$.
-El ruteo directo se queda en el 10.2\,\%, el dominio propio, mientras $f$ es menor que
-1/8.
+El ruteo directo se queda entre el 10.2 y el 10.4\,\%, el dominio propio, mientras $f$
+es menor que 1/8.
 En texto, el encadenado elimina el rechazo y deja errores, el 20.7\,\% de las
 reservadas con $f = 1/64$, porque decide con la primera perspectiva que tiene soporte.
 El agregado, que compara, llega al 91.0\,\% con $f = 1/32$, frente al 93.6\,\% del
