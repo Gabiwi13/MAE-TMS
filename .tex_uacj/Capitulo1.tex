@@ -177,27 +177,47 @@ simples sobre las mismas representaciones, qué agrega la memoria.
 
 \section{Justificación}
 
-Repartir consultas entre nodos especializados, sin que un coordinador central decida
-cada una, es un problema de los sistemas distribuidos.
-El modelo de Wegner propone una solución que viene de los grupos humanos: cada nodo
-guarda lo suyo y aprende, con el uso, a quién mandar lo que no sabe.
-Este trabajo construye esa solución con memorias cuyas operaciones están definidas
-formalmente, y por eso cada decisión del sistema se puede rastrear hasta los conteos
-que la produjeron.
-Esa trazabilidad sirve para auditar el sistema y para explicar cada respuesta.
+El techo entrópico admite varias soluciones.
+Se puede repartir el contenido y elegir el destino con una red de compuerta entrenada,
+como en la mezcla de expertos~\cite{jacobs1991adaptive,shazeer2017outrageously}; con un
+índice de enrutamiento o un catálogo de qué guarda cada
+nodo~\cite{crespo2002routing,callan2000distributed}; con un coordinador que anuncie cada
+consulta y la adjudique, como en la red de contratos~\cite{smith1980contract}; o con una
+memoria de mayor capacidad~\cite{krotov2016dense,ramsauer2021hopfield}.
+Este trabajo elige la memoria transactiva por tres propiedades que esas opciones no
+reúnen.
 
-El rechazo importa por la misma razón.
-Un sistema que responde a todo con alguna clase obliga a quien lo usa a adivinar cuándo
-se equivocó.
-Las memorias entrópicas contestan «no lo tengo» cuando una entrada no tiene soporte en
-lo registrado, y este trabajo mide cuándo esa respuesta funciona y cuándo no.
+La primera es que el directorio se forma con el uso.
+Nadie entrena una compuerta ni escribe un catálogo: cada módulo cuenta qué pistas
+respondió cada especialista, y con tres módulos el directorio supera el 90\,\% de acierto
+tras 13 interacciones (Sección~\ref{sec:fase1-resultados}).
+Cuando llega contenido nuevo, las memorias suman conteos y no se reentrenan; un
+clasificador o una compuerta entrenada sí, con el riesgo de interferencia
+catastrófica~\cite{mccloskey1989catastrophic}.
+Esto vale para las memorias y no para el codificador visual, que se entrenó con la clase
+(limitación (k)).
 
-La comparación con decisores simples tiene un valor práctico para la ingeniería.
-Si un voto por palabras del vocabulario o un vecino más cercano aciertan lo mismo que la
-memoria, la razón para usarla está en lo que el voto o el vecino no hacen: rechazar,
-recuperar el contenido asociado y dejar un registro de quién sabe qué.
-Medirlo con los mismos vectores separa lo que aporta el mecanismo de lo que aporta la
-representación, y orienta dónde conviene invertir: en la memoria o en el codificador.
+La segunda es que no hace falta un coordinador.
+En la fase madura cada módulo consulta su propio directorio y manda la pregunta a un
+solo destino, sin difundirla a los ocho.
+Esa organización muestra propiedades de la memoria de un grupo: si se pierde un módulo,
+el sistema pierde la respuesta pero conserva la ubicación de quien la tenía (limitación
+(o) para el protocolo de ese experimento), y el directorio leído al revés devuelve la
+envolvente del dominio de cada módulo, una forma de saber qué sabe cada uno.
+
+La tercera es que cada especialista es una memoria
+declarativa~\cite{pineda2022weighted}: guarda y devuelve contenido, no solo una etiqueta.
+El sistema responde con una imagen o con palabras, reconoce por contención y contesta
+«no lo tengo» cuando la entrada no tiene soporte.
+Un índice exacto solo encuentra lo que coincide con su clave y no sirve para imágenes;
+en texto, en cambio, el rechazo de la memoria equivale a la pertenencia al vocabulario, y
+ahí un diccionario rechazaría lo mismo.
+
+Como las operaciones de la memoria están definidas formalmente, cada decisión se puede
+rastrear hasta los conteos que la produjeron.
+Ninguna de estas propiedades promete más acierto: sobre los mismos vectores, decisores
+simples aciertan lo mismo en texto y más en imagen.
+Medirlo así separa lo que aporta el mecanismo de lo que aporta la representación.
 
 Contar la investigación por fases deja ver de dónde salió cada decisión del sistema
 final.
