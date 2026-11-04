@@ -1,0 +1,13 @@
+word_apple_noise,word_car,cosine
+computer,vehicle,0.253333
+computer,automobile,0.266667
+computer,machine,0.433333
+computer,crash,0.246667
+mac,vehicle,0.04
+mac,automobile,0.066667
+mac,machine,0.206667
+mac,crash,0.166667
+macintosh,vehicle,0.013333
+macintosh,automobile,0.066667
+macintosh,machine,0.26
+macintosh,crash,0.126667

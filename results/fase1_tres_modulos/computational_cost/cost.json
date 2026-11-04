@@ -1,0 +1,133 @@
+{
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "cpu_count_logical": 12,
+    "ram_total_gb": 16.9,
+    "python": "3.13.6",
+    "torch_version": "2.12.0+cpu",
+    "torch_cuda_available": false,
+    "torch_num_threads": 8,
+    "gpu_present_unused": "NVIDIA RTX 2050 4GB (torch es CPU-only, no se usa)"
+  },
+  "date": "2026-06-22T21:38:35",
+  "pipeline_seconds": 1596.5,
+  "pipeline_minutes": 26.61,
+  "total_seconds": 3841.0,
+  "total_minutes": 64.02,
+  "steps": [
+    {
+      "step": "stage1_dataset",
+      "seconds": 0.17,
+      "minutes": 0.003,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage2_train_encoder",
+      "seconds": 1459.49,
+      "minutes": 24.325,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage3_conceptnet",
+      "seconds": 0.0,
+      "minutes": 0.0,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage4_fasttext",
+      "seconds": 7.22,
+      "minutes": 0.12,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage5_fill",
+      "seconds": 30.17,
+      "minutes": 0.503,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage6_interaction",
+      "seconds": 29.47,
+      "minutes": 0.491,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage7_bidirectional",
+      "seconds": 13.31,
+      "minutes": 0.222,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "stage8_mature",
+      "seconds": 47.14,
+      "minutes": 0.786,
+      "ok": true,
+      "note": ""
+    },
+    {
+      "step": "exp2_iota_kappa",
+      "seconds": 174.75,
+      "minutes": 2.912,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "exp3_routing",
+      "seconds": 18.74,
+      "minutes": 0.312,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "exp4_formation",
+      "seconds": 337.58,
+      "minutes": 5.626,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "exp5_entropic",
+      "seconds": 165.78,
+      "minutes": 2.763,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "exp6_capacity",
+      "seconds": 516.22,
+      "minutes": 8.604,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "ablation",
+      "seconds": 464.01,
+      "minutes": 7.733,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "rejection_probe",
+      "seconds": 13.78,
+      "minutes": 0.23,
+      "ok": true,
+      "note": "rc=0"
+    },
+    {
+      "step": "paper_figures",
+      "seconds": 553.58,
+      "minutes": 9.226,
+      "ok": false,
+      "note": "rc=1"
+    }
+  ]
+}
