@@ -6,19 +6,19 @@ Cada entrada se cotejó el 20 de octubre de 2026 contra la fuente que se indica 
 
 ## A · Para el resumen (7)
 
-Bergman, L., N. Cohen y Y. Hoshen. "Deep nearest neighbor anomaly detection," arXiv:2002.10445, 2020. [arXiv]
+Bergman, L., N. Cohen y Y. Hoshen. "Deep nearest neighbor anomaly detection," *arXiv preprint*, arXiv:2002.10445, 2020. [arXiv]
 
-Defard, T., A. Setkov, A. Loesch y R. Audigier. "PaDiM: A patch distribution modeling framework for anomaly detection and localization," Pattern Recognition. ICPR International Workshops and Challenges, Lecture Notes in Computer Science, Vol. 12664, pp. 475-489, 2021. [Crossref 10.1007/978-3-030-68799-1_35; Springer]
+Defard, T., A. Setkov, A. Loesch y R. Audigier. "PaDiM: A patch distribution modeling framework for anomaly detection and localization," *Pattern Recognition. ICPR International Workshops and Challenges*, Lecture Notes in Computer Science, Vol. 12664, Springer, Cham, pp. 475-489, 2021. [Crossref 10.1007/978-3-030-68799-1_35; Springer, Part IV]
 
-Pineda, L. A., G. Fuentes y R. Morales. "An entropic associative memory," Scientific Reports, Vol. 11, No. 6948, 2021. [Crossref 10.1038/s41598-021-86270-7]
+Pineda, L. A., G. Fuentes y R. Morales. "An entropic associative memory," *Scientific Reports*, Vol. 11, No. 1, art. 6948, 2021. [Crossref 10.1038/s41598-021-86270-7]
 
-Rippel, O., P. Mertens y D. Merhof. "Modeling the distribution of normal data in pre-trained deep features for anomaly detection," 25th International Conference on Pattern Recognition (ICPR), pp. 6726-6733, 2021. [Crossref 10.1109/ICPR48806.2021.9412109]
+Rippel, O., P. Mertens y D. Merhof. "Modeling the distribution of normal data in pre-trained deep features for anomaly detection," *25th International Conference on Pattern Recognition (ICPR)*, Milán, Italia, pp. 6726-6733, 2021. [Crossref 10.1109/ICPR48806.2021.9412109]
 
-Roth, K., L. Pemula, J. Zepeda, B. Schölkopf, T. Brox y P. Gehler. "Towards total recall in industrial anomaly detection," IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 14298-14308, 2022. [Crossref 10.1109/CVPR52688.2022.01392]
+Roth, K., L. Pemula, J. Zepeda, B. Schölkopf, T. Brox y P. Gehler. "Towards total recall in industrial anomaly detection," *IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)*, Nueva Orleans, EUA, pp. 14298-14308, 2022. [Crossref 10.1109/CVPR52688.2022.01392]
 
-Wegner, D. M. "Transactive memory: A contemporary analysis of the group mind," en B. Mullen y G. R. Goethals (eds.), Theories of Group Behavior, Springer, pp. 185-208, 1987. [Crossref 10.1007/978-1-4612-4634-3_9]
+Wegner, D. M. "Transactive memory: A contemporary analysis of the group mind," en B. Mullen y G. R. Goethals (eds.), *Theories of Group Behavior*, Springer, Nueva York, pp. 185-208, 1987. [Crossref 10.1007/978-1-4612-4634-3_9; editores en Crossref del libro]
 
-Zou, Y., J. Jeong, L. Pemula, D. Zhang y O. Dabeer. "SPot-the-Difference self-supervised pre-training for anomaly detection and segmentation," Computer Vision - ECCV 2022, Lecture Notes in Computer Science, Vol. 13690, pp. 392-408, 2022. [Crossref 10.1007/978-3-031-20056-4_23; Springer]
+Zou, Y., J. Jeong, L. Pemula, D. Zhang y O. Dabeer. "SPot-the-Difference self-supervised pre-training for anomaly detection and segmentation," *Computer Vision – ECCV 2022*, Lecture Notes in Computer Science, Vol. 13690, Springer, Cham, pp. 392-408, 2022. [Crossref 10.1007/978-3-031-20056-4_23; Springer, Part XXX]
 
 ## B · Además, para el artículo del 30 de octubre
 
