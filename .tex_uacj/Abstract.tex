@@ -1,21 +1,21 @@
 \chapter*{Abstract}
 \markboth{Abstract}{Abstract}
 \thispagestyle{empty}
-\enlargethispage{3\baselineskip}
+\enlargethispage{5\baselineskip}
 
-A group that works together can remember more than any of its members, because each
-member knows who knows what; Wegner~\cite{wegner1987transactive} called this
-organization \emph{transactive memory}.
-This work builds EAM-TMS, a distributed transactive memory system on the entropic
-associative memories of Pineda and Morales \cite{pineda2022weighted,morales2025missing},
-with eight modules, one per ETH-80 class~\cite{leibe2003eth80}.
-Each module stores the words and images of its class in a single heteroassociative
-memory and keeps directories formed through use; no routing or rejection decision goes
-through a discriminative classifier.
-When routing text, the system matches simple decision rules on the same
-representations (81.2 against 76.0--81.5\,\% on 80 queries)
-and a single memory holding the eight classes (96.8 against 96.9\,\% on 171 held-out
-queries).
+An entropic associative memory holding all the content has a ceiling: as it fills, its
+entropy grows, it accepts too much and it recalls less faithfully.
+This work splits the content among specialists that know who knows what, as in Wegner's
+\emph{transactive memory}~\cite{wegner1987transactive}, and builds EAM-TMS on the
+memories of Pineda and Morales \cite{pineda2022weighted,morales2025missing}, with eight
+modules, one per ETH-80 class~\cite{leibe2003eth80}.
+Each module keeps words and images in a heteroassociative memory and directories formed
+through use, with no discriminative classifier in its decisions.
+Against a single memory holding the eight classes it is as accurate (96.8 against
+96.9\,\% on 171 held-out queries), but answers with a foreign domain less often (3.1
+against 10.9\,\% of the images).
+When routing text it matches simple decision rules on the same representations (81.2
+against 76.0--81.5\,\% on 80 queries).
 It rejects what it does not know: it accepts 2 of 40 out-of-domain queries, like a
 vocabulary vote, against all 40 for the cosine rules; rejection of real images from
 other categories was not measured.
@@ -27,8 +27,8 @@ codes is more accurate and rejects none; that routing depends on the encoder hav
 trained with the class, and without it drops to 70.4\,\%.
 On objects no module has seen, coverage is 89.2\,\%, and 87.6\,\% when the encoder has not
 seen them either, but with 136 false routings of 3280 instead of 2.
-The associative memory is not more accurate than a simple rule: what it adds is
-rejection, retrieval in both directions and a directory that records who knows what.
+Splitting avoids the ceiling in recall fidelity and domain mixing, not in accuracy; the
+memory adds rejection, two-way recall and a record of who knows what.
 
 
 \smallskip

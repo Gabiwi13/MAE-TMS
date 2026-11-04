@@ -52,7 +52,16 @@ Sobre los mismos vectores, decisores sin memoria aciertan la clase tanto como el
 en texto, y más en imagen, sin rechazar nada (Sección~\ref{sec:lineas-base}).
 
 \paragraph{Respuesta a la pregunta de investigación.}
-Sí, se puede.
+El reparto evita el techo de una sola memoria en lo que ese techo afecta, y no en el
+acierto de clase.
+Con el mismo contenido, la EHAM única acepta más consultas fuera de dominio cuanto más
+contiene, responde con un dominio ajeno más veces y recuerda más lejos de una instancia
+real de la clase, mientras que el acierto de clase es el mismo desde 50 imágenes por
+clase (Sección~\ref{sec:eham-unica}); la ventaja del sistema en ese rechazo depende de
+una compuerta decidida después de ver esas consultas (limitación (g)).
+Hasta 200 imágenes por clase y con ocho clases, la memoria única no llega a un techo en el
+acierto; dónde lo alcanza queda por medir.
+El reparto, además, se puede hacer sin clasificadores.
 Un sistema de memoria transactiva hecho de memorias asociativas entrópicas reparte,
 recuerda y rechaza en ocho dominios: los directorios, la lectura normalizada, el
 rechazo por contención, la actualización del directorio y la coordinación punto a punto
@@ -193,6 +202,9 @@ Los siguientes pasos salen de las limitaciones de la Sección~\ref{sec:limitacio
     un nombrar que tolere una fracción de columnas vacías y con un daño difuso, y medir
     si la disociación se mantiene, si aparece la inversa y si las etiquetas evocadas
     derivan hacia las compartidas entre clases.
+    \item \textbf{Curva del techo entrópico}: llenar la EHAM única con más clases y más
+    contenido que en este trabajo, hasta encontrar dónde cae el acierto de clase, y
+    comparar ahí con el reparto entre especialistas.
 \end{enumerate}
 
 \bigskip

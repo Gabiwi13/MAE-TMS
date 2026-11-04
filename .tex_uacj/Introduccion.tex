@@ -15,8 +15,10 @@ como conteos, reconocen una entrada cuando sus rasgos tienen soporte, recuperan
 muestreando y rechazan lo que no contienen.
 Hasta donde sabemos, en su línea de trabajo no se han usado para repartir el
 conocimiento entre varios especialistas.
-Este trabajo pregunta si con ellas se puede construir un sistema de memoria transactiva,
-y qué agrega la memoria frente a decisores simples que usan las mismas representaciones.
+Una sola de ellas con todo el contenido tiene un techo: su entropía crece con lo que
+guarda, y con ella las aceptaciones falsas.
+Este trabajo pregunta si repartir el contenido entre especialistas que saben quién sabe
+qué evita ese techo, y qué agrega la memoria frente a decisores simples.
 
 El producto es EAM-TMS: ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80}, que
 guardan palabras e imágenes en una sola memoria heteroasociativa, se envían consultas de
@@ -26,9 +28,9 @@ Se evalúa con 411 consultas de texto, 40 fuera de dominio, 656 imágenes de pru
 objetos que ningún módulo vio, y se compara con decisores simples, con una sola memoria
 para las ocho clases y con un codificador entrenado sin la pérdida de clase.
 
-El valor del trabajo está en mostrar qué aporta una memoria asociativa a un sistema
-distribuido (rechazo, recuperación en ambas direcciones y decisiones trazables a sus
-registros) y qué no aporta (más acierto que un decisor simple).
+El valor del trabajo está en mostrar dónde evita el reparto el techo (fidelidad del
+recuerdo y mezcla de dominios) y dónde no (acierto de clase), y qué aporta la memoria
+frente a un decisor simple.
 El Capítulo~\ref{cap:pp} plantea el problema y los objetivos; los
 Capítulos~\ref{sec:marco_teorico} a~\ref{conclusiones} presentan el marco teórico, el
 desarrollo, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA} ubica cada

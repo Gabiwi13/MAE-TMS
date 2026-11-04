@@ -70,8 +70,17 @@ representación que la alimenta.
 \section{Definición del problema}
 \label{sec:definicion-problema}
 
-Para construir un sistema de memoria transactiva con memorias asociativas entrópicas
-hay que resolver cuatro cosas.
+Una memoria asociativa entrópica guarda lo que registra como una tabla de frecuencias,
+y su entropía crece con lo que guarda.
+Con entropía baja, el reconocimiento comete pocas aceptaciones falsas; con entropía alta
+acepta de más y la recuperación se vuelve menos precisa
+\cite{pineda2021entropic,morales2022manuscript}.
+Una sola memoria con todo el contenido tiene, entonces, un techo: conforme se llena,
+rechaza peor y recuerda con menos fidelidad.
+La solución que se propone es la de la memoria transactiva: repartir el contenido entre
+especialistas, cada uno con menos variedad que guardar, y aprender con el uso a quién
+preguntar.
+Para que ese reparto funcione hay que resolver cuatro cosas.
 La primera es cómo se reparte el contenido entre los especialistas y cómo se forma, con
 el uso, el directorio que dice a quién preguntar.
 La segunda es cómo pasa una consulta de texto o de imagen al especialista correcto,
@@ -82,19 +91,21 @@ de las palabras y las palabras a partir de la imagen.
 Todo esto debe hacerse sin clasificadores discriminativos en las decisiones de
 enrutamiento y rechazo.
 
-Resolverlo no basta para saber qué aporta la memoria.
-El problema incluye medir cuánto de cada resultado se debe al mecanismo asociativo y
-cuánto a las representaciones: los vectores de palabras y su vocabulario, por un lado,
+Resolverlo no basta.
+Hay que medir, frente a una sola memoria con el mismo contenido, si el reparto evita el
+techo, y cuánto de cada resultado se debe al mecanismo asociativo y cuánto a las
+representaciones: los vectores de palabras y su vocabulario, por un lado,
 y el codificador visual y su supervisión de clase, por el otro.
 La pregunta de investigación queda así:
 
 \begin{quote}
-¿Puede un sistema de memoria transactiva construido sobre memorias heteroasociativas
-entrópicas enrutar consultas de texto e imagen entre ocho especialistas, recuperar el
-contenido asociado en ambas direcciones y rechazar lo que no conoce, sin clasificadores
-discriminativos en esas decisiones? ¿Qué agrega la memoria frente a decisores simples
-sobre las mismas representaciones, y cuánto dependen sus resultados de esas
-representaciones?
+¿Evita un sistema de memoria transactiva, que reparte el contenido entre ocho memorias
+heteroasociativas entrópicas especializadas y aprende con el uso a quién preguntar, el
+techo entrópico de una sola memoria con todo el contenido? ¿Puede hacerlo enrutando
+consultas de texto e imagen, recuperando el contenido asociado en ambas direcciones y
+rechazando lo que no conoce, sin clasificadores discriminativos en esas decisiones? ¿Qué
+agrega la memoria frente a decisores simples sobre las mismas representaciones, y cuánto
+dependen sus resultados de esas representaciones?
 \end{quote}
 
 \section{Objetivo general}\label{secc:og}
@@ -102,8 +113,9 @@ representaciones?
 Construir un sistema distribuido de memoria transactiva de ocho módulos sobre memorias
 heteroasociativas entrópicas, que enrute consultas de texto e imagen al módulo
 especialista, recupere el contenido asociado en ambas direcciones y rechace lo que
-ninguna memoria contiene, y medir su desempeño frente a decisores simples sobre las
-mismas representaciones y frente a una sola memoria con las ocho clases.
+ninguna memoria contiene, y medir, frente a una sola memoria con las ocho clases, si el
+reparto evita el techo entrópico y, frente a decisores simples sobre las mismas
+representaciones, qué agrega la memoria.
 
 \subsection{Objetivos específicos}
 
