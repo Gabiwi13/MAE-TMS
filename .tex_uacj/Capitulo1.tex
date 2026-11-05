@@ -2,107 +2,158 @@
 
 \section{Antecedentes}
 
-\paragraph{Memoria transactiva.}
-Wegner~\cite{wegner1987transactive} describió la memoria transactiva como la memoria de
-un grupo: cada miembro guarda lo que sabe y, además, un directorio de lo que saben los
-demás.
-El directorio no repite el contenido.
-Solo indica a quién preguntar.
-En un trabajo posterior, Wegner formuló el mismo fenómeno como un modelo de red de
-computadoras~\cite{wegner1995computer} y nombró tres procesos: la actualización del
-directorio, en la que los miembros anotan quién resolvió cada interacción; la asignación
-de información, que lleva lo nuevo al miembro que corresponde; y la coordinación de la
-recuperación, que envía cada consulta directamente al especialista.
-La analogía entre un grupo de personas y una red de nodos especializados es, por lo
-tanto, del propio Wegner.
-Lo que su modelo deja abierto es con qué memoria se construye cada nodo y cómo se
-forma su directorio.
+Los tres primeros trabajos son memorias asociativas de la tradición de las redes
+neuronales; los cuatro siguientes, la memoria asociativa entrópica y sus aplicaciones.
 
-\paragraph{Memorias asociativas entrópicas.}
-Pineda, Fuentes y Morales propusieron una memoria asociativa que guarda lo registrado
-como una tabla de frecuencias entre rasgos y valores~\cite{pineda2021entropic}.
-Con esa tabla, la memoria hace tres operaciones: registrar una entrada, reconocerla
-cuando cada uno de sus rasgos tiene soporte en lo registrado, y recuperar un patrón
-muestreando los conteos.
-Lo que no tiene soporte se rechaza, y la entropía de la tabla mide qué tan determinada
-está la memoria.
-La variante ponderada (W-EAM) apareció en el aprendizaje fonético~\cite{pineda2022weighted}
-y se ha usado con símbolos manuscritos~\cite{morales2022manuscript}, en la imaginería
-\cite{pineda2023imagery} y con las imágenes naturales de CIFAR-10~\cite{hernandez2026cifar};
-la optimización multiobjetivo de sus hiperparámetros se estudió
-en~\cite{lopez2025hyperopt}.
-La extensión heteroasociativa (EHAM) guarda pares de objetos de dominios distintos en
-una sola memoria, de modo que una pista en un dominio recupera el objeto asociado en el
-otro, y propone cómo completar esa recuperación cuando solo se tiene la pista de uno de
-los dos dominios~\cite{morales2025missing}.
-Ninguno de estos trabajos usa directorios ni especialistas que cooperen
-(Sección~\ref{sec:tmt}).
+\paragraph{Red de Hopfield.}
+Hopfield~\cite{hopfield1982neural} buscó propiedades de cómputo que surgieran de forma
+colectiva en un sistema con muchos componentes simples e iguales, las neuronas.
+Su modelo, basado en aspectos de la neurobiología y fácil de llevar a circuitos integrados,
+evoluciona por procesamiento paralelo asíncrono, y de esa evolución sale una memoria
+direccionable por contenido que devuelve un recuerdo completo a partir de cualquier parte
+suficientemente grande de él.
+La misma red generaliza, reconoce lo familiar, categoriza y corrige errores, y la falla
+de un componente le afecta poco.
+Su límite es la capacidad.
+Con patrones aleatorios guarda del orden de $0.14N$ recuerdos, con $N$ neuronas, y si se
+le dan más, recuerdos vecinos se funden en un estado que no corresponde a
+ninguno~\cite{krotov2016dense}.
+Además, según Pineda y colaboradores, las memorias de esta tradición no guardan una
+representación declarativa, no rechazan lo que no contienen y reproducen en lugar de
+construir~\cite{pineda2021entropic}.
+La memoria entrópica pertenece a esta familia, y la fusión de recuerdos en una red que
+guarda demasiado es un techo del mismo tipo que el que en este trabajo motiva repartir el
+contenido.
 
-\paragraph{Representaciones.}
-Una memoria entrópica opera sobre vectores cuantizados, así que las palabras y las
-imágenes tienen que llegarle como vectores.
-En este trabajo, las palabras son vectores fastText~\cite{bojanowski2017fasttext}, el
-vocabulario de cada dominio sale de ConceptNet~5.7~\cite{speer2017conceptnet} y las
-consultas se dividen en tokens con spaCy~\cite{honnibal2020spacy}.
-Las imágenes son códigos de un autocodificador con la arquitectura ResNet18
-\cite{he2016resnet}, que parte de los pesos de ImageNet y se entrena sobre
-ETH-80~\cite{leibe2003eth80}.
-ETH-80 tiene ocho categorías con diez objetos cada una, fotografiados desde 41 puntos
-de vista, y varias de sus clases se parecen entre sí: \texttt{apple}, \texttt{pear} y
-\texttt{tomato} son frutas redondas, y \texttt{cow}, \texttt{horse} y \texttt{dog} son
-cuadrúpedos.
-En el sistema de ocho módulos, el codificador se entrena con dos pérdidas: la
-reconstrucción y una entropía cruzada de clase de peso 0.1 (Sección~\ref{sec:percepcion}).
-La cabeza de clasificación no interviene en ninguna decisión del sistema, pero la
-pérdida de clase da forma al espacio latente que las memorias guardan.
+\paragraph{Memoria asociativa bidireccional.}
+La red de Hopfield asocia cada patrón consigo mismo.
+Kosko~\cite{kosko1988bidirectional} quiso asociar pares de patrones distintos y propuso
+una memoria de dos capas unidas por una sola matriz de conexiones, en la que un patrón en
+una capa evoca su par en la otra y la recuperación va y viene entre ambas hasta
+estabilizarse.
+Basta una pista de cualquiera de los dos lados para recuperar el otro.
+Comparte la limitación que Pineda y colaboradores señalan en las memorias conexionistas:
+no tiene una operación para rechazar lo que no guarda~\cite{pineda2021entropic}.
+Es el antecedente más directo de la memoria de contenido de cada módulo desde la fase 3,
+que recupera la imagen a partir de las palabras y las palabras a partir de la imagen.
+
+\paragraph{Memorias asociativas densas.}
+Para reconocer patrones con poco error, una red de Hopfield tendría que guardar muchos más
+recuerdos que neuronas, y la red estándar solo funciona bien en el caso contrario.
+Krotov y Hopfield~\cite{krotov2016dense} quitaron esa restricción agregando a la función
+de energía interacciones de orden mayor que el cuadrático, con lo que la capacidad crece
+de forma no lineal con el tamaño de la red.
+También mostraron que estas memorias equivalen a una red neuronal de una capa oculta, con
+funciones de activación como los polinomios rectificados.
+En los dígitos manuscritos de MNIST, con 2000 memorias, todas las redes de potencia 3
+quedaron por debajo del 1.6\,\% de error de prueba.
+En esa prueba las memorias se aprenden por retropropagación para reducir el error de
+clasificación, y lo que la red entrega es una etiqueta.
+Representan la opción de ganar capacidad dentro de una sola memoria.
+La de este trabajo es la contraria, repartir el contenido entre memorias que devuelven el
+contenido mismo.
+
+\paragraph{Memoria asociativa entrópica.}
+Pineda, Fuentes y Morales~\cite{pineda2021entropic} partieron de un contraste.
+Las memorias simbólicas de las computadoras son declarativas pero no asociativas, y las
+conexionistas son asociativas y distribuidas pero no declarativas, no rechazan y
+reproducen.
+Buscaron un modelo con las cinco propiedades que atribuyen a la memoria natural, que es
+asociativa, declarativa y distribuida, construye lo que recupera y rechaza directamente lo
+que no contiene.
+Lo construyeron con tablas de rasgos por valores, en las que reconocer es una prueba de
+contención, recuperar construye un objeto nuevo y la entropía mide la indeterminación de
+lo guardado.
+Para los dígitos de MNIST usaron una tabla por dígito, y una unidad central de control
+enviaba cada operación a las diez tablas y recogía su estado y su entropía.
+Al llenar las tablas, la precisión del reconocimiento siguió alta mientras la memoria
+aceptaba cada vez más de lo que sí contenía, y lo recuperado se parecía a la pista con
+entropía baja o moderada.
+El límite que reportan es un rango.
+Si la entropía sube demasiado, por ejemplo al agregar ruido, la información se confunde y
+la precisión cae.
+En este reporte, el techo entrópico es el extremo alto de ese rango, y la unidad central
+que consulta todas las tablas se cambia por módulos que aprenden a quién preguntar.
+
+\paragraph{Memoria entrópica ponderada.}
+En la formulación original cada celda de la tabla estaba encendida o apagada, y todo lo
+guardado pesaba lo mismo.
+Pineda y Morales~\cite{pineda2022weighted} agregaron un mecanismo de aprendizaje en el que
+cada registro refuerza las celdas que usa, de modo que la tabla cuenta (W-EAM).
+La aplicaron al aprendizaje fonético del español de México, con el corpus DIMEx100 y 22
+tablas, una por fonema.
+Para decidir qué tabla responde, el sistema pondera la fuerza de la pista con la entropía
+de cada tabla que la acepta.
+Con tablas de 16 filas, la decisión elegía entre 11 tablas que aceptaban la pista y
+acertaba cerca del 80\,\% de las veces; la precisión y la exhaustividad (\textit{recall}) del sistema
+pasaron de 0.8.
+Frente a la red neuronal sola, la memoria bajó el error fonético rechazando segmentos mal
+alineados.
+Los autores usaron los mismos parámetros en las 22 tablas y dejan abierto si convendría
+ajustarlos por fonema.
+La W-EAM es la memoria sobre la que se construyen los módulos de este trabajo, y elegir
+entre varias tablas que aceptan la misma pista es el problema que aquí resuelve el
+directorio con lo que registró en interacciones anteriores.
+
+\paragraph{Memoria heteroasociativa entrópica.}
+Morales y Pineda~\cite{morales2025missing} extendieron la memoria entrópica al caso
+heteroasociativo, con pares de objetos de dominios o modalidades distintos guardados en
+una relación de cuatro dimensiones.
+Al recuperar, la pista de un dominio selecciona en el otro un plano de memoria muy
+indeterminado, y no queda pista con qué sacar de él un objeto.
+Los autores llaman a esto el problema de la pista faltante y proponen tres métodos
+incrementales para resolverlo: el aleatorio, muestrear y probar, y buscar y probar.
+Lo evaluaron con dígitos manuscritos de MNIST asociados a letras de EMNIST, de modo que un
+dígito recupera su letra y una letra su dígito, y concluyen que el modelo promete guardar,
+reconocer y recuperar conjuntos muy grandes de objetos con pocos recursos de cómputo.
+En esa evaluación los dos dominios son imágenes de caracteres manuscritos.
+En este trabajo la EHAM es la memoria de contenido de cada módulo desde la fase 3, donde
+asocia palabras con imágenes en ambos sentidos, y también forma sus directorios; para
+elegir el objeto del plano se usa el tercer método.
+
+\paragraph{Imágenes naturales.}
+Los experimentos anteriores con la memoria entrópica usaban datos estructurados y
+homogéneos, como dígitos y letras manuscritos, ropa y fonemas.
+Hernández, Morales y Pineda~\cite{hernandez2026cifar} probaron la W-EAM con las imágenes
+de animales y vehículos de CIFAR-10, más complejas, guardadas todas en una sola tabla sin
+importar su clase.
+Un autocodificador produce los rasgos y, como la tabla no clasifica, un clasificador
+asigna la clase de cada objeto recuperado.
+La memoria guardó, reconoció y recuperó esas imágenes, y formó cadenas de asociación en
+las que cada recuerdo sirve de pista al siguiente, con objetos recordados, asociados a
+otra clase o imaginados.
+Su desempeño con estas imágenes quedó por debajo del clasificador, mientras que en los
+trabajos anteriores los dos eran parecidos.
+Corresponde al caso de una sola memoria con todas las clases, que aquí se compara con la
+partición en módulos, y en él la clase final la pone un clasificador; el sistema de este
+trabajo no usa clasificadores para enrutar ni para rechazar.
 
 \paragraph{Qué falta.}
-Hay, entonces, una teoría de la memoria de grupo que ya se pensó como red, y una familia
-de memorias que reconocen, recuperan y rechazan con operaciones explícitas sobre
-conteos.
-No hay un sistema que las junte.
-Tampoco hay una medida de lo que la memoria asociativa agrega cuando se la compara con
-decisores simples que usan los mismos vectores, como un voto por palabras del
-vocabulario o el vecino más cercano.
-Sin esa comparación no se puede saber si un resultado se debe a la memoria o a la
+Ninguno de estos trabajos reparte el contenido entre memorias que aprendan a quién
+preguntar.
+Las memorias conexionistas enfrentan el límite de capacidad con una red más grande o
+entrenada, y las entrópicas consultan todas sus tablas o guardan todo en una.
+La teoría de Wegner tiene la organización que falta, pero no dice con qué memoria se
+construye cada nodo ni cómo se forma su directorio.
+Tampoco hay una medida de lo que agrega la memoria asociativa frente a decisores simples
+que usan los mismos vectores, como un voto por palabras del vocabulario o el vecino más
+cercano, y sin ella no se puede saber si un resultado se debe a la memoria o a la
 representación que la alimenta.
-
-\paragraph{Arco de la investigación.}
-Este trabajo construyó ese sistema en cinco fases, y cada una partió de lo que dejó la
-anterior.
-La primera fue un prototipo de tres módulos (\texttt{apple}, \texttt{horse} y
-\texttt{car}), con cuatro memorias por módulo, pistas de texto cuantizadas por signo y un
-mediador, en el que se vio que el directorio se forma con la experiencia.
-En ese prototipo, la lectura cruda del directorio favorecía al módulo con más registros,
-y en la segunda fase se eligió leerlo dividiendo entre ellos (normalización B1).
-La tercera pasó a las ocho clases de ETH-80, y al hacerlo cambiaron a la vez el
-codificador, la cuantización, las memorias por módulo, el banco de consultas y el
-mediador.
-Por eso la comparación entre tres y ocho módulos no aísla el efecto de crecer, que se
-mide con dos experimentos propios: una sola memoria contra la partición y una memoria de
-dos clases contra una de ocho.
-Con el sistema de ocho módulos, la cuarta fase estudió sus propiedades, entre ellas la
-lectura inversa del directorio, la pérdida de un miembro y la evocación de palabras
-desde imágenes.
-La quinta conectó el sistema a la voz y a la cámara en tiempo real, como demostración
-de integración.
 
 \section{Definición del problema}
 \label{sec:definicion-problema}
 
-Una memoria asociativa entrópica guarda lo que registra como una tabla de frecuencias,
-y su entropía crece con lo que guarda.
-Con entropía baja, el reconocimiento comete pocas aceptaciones falsas; con entropía alta
-acepta de más y la recuperación se vuelve menos precisa
-\cite{pineda2021entropic,morales2022manuscript}.
-Una sola memoria con todo el contenido tiene, entonces, un techo: conforme se llena,
-rechaza peor y recuerda con menos fidelidad.
+Con entropía baja, el reconocimiento de una memoria asociativa entrópica comete pocas
+aceptaciones falsas; con entropía alta acepta de más y la recuperación se vuelve menos
+precisa \cite{pineda2021entropic,morales2022manuscript}.
+Como la entropía crece con lo que se guarda, una sola memoria con todo el contenido tiene
+un techo: conforme se llena, rechaza peor y recuerda con menos fidelidad.
 La solución que se propone es la de la memoria transactiva, que reparte el contenido
-entre especialistas, cada uno con menos variedad que guardar, y aprende con el uso a
-quién preguntar.
+entre especialistas, cada uno con menos variedad que guardar, y aprende de la experiencia
+a quién preguntar.
 El problema tiene cinco partes, en el orden en que se estudiaron.
 \begin{enumerate}
-    \item \textbf{Emergencia.} Que el directorio emerja del uso: sin saber de antemano
+    \item \textbf{Emergencia.} Que el directorio emerja de la experiencia: sin saber de antemano
     quién sabe qué, los módulos tienen que aprender a quién preguntar registrando quién
     resolvió cada consulta, primero con un mediador y después punto a punto.
     \item \textbf{Lectura.} Cómo leer el directorio, porque un módulo con más registros
@@ -126,6 +177,28 @@ y el codificador visual y su supervisión de clase, por el otro.
 Las preguntas de investigación (Sección~\ref{fase:preguntas}) siguen las cinco partes.
 
 \section{Objetivo general}\label{secc:og}
+
+La investigación siguió cinco fases, y cada una partió de lo que dejó la anterior.
+La primera fue un prototipo de tres módulos (\texttt{apple}, \texttt{horse} y
+\texttt{car}), con cuatro memorias por módulo, pistas de texto cuantizadas por signo y un
+mediador, en el que se vio que el directorio emerge de la experiencia.
+En ese prototipo, la lectura cruda del directorio favorecía al módulo con más registros,
+y en la segunda fase se eligió leerlo dividiendo entre ellos (normalización B1).
+La tercera pasó a las ocho clases de ETH-80, y al hacerlo cambiaron a la vez el
+codificador, la cuantización, las memorias por módulo, el banco de consultas y el
+mediador.
+Por eso la comparación entre tres y ocho módulos no aísla el efecto de crecer, que se
+mide con dos experimentos propios: una sola memoria contra la partición y una memoria de
+dos clases contra una de ocho.
+Con el sistema de ocho módulos, la cuarta fase estudió sus propiedades, entre ellas la
+lectura inversa del directorio, la pérdida de un miembro y la evocación de palabras
+desde imágenes.
+La quinta conectó el sistema a la voz y a la cámara en tiempo real, como demostración
+de integración.
+Cada fase respondió una pregunta que dependía de la anterior, porque no se puede leer un
+directorio que no se ha formado ni estudiar las propiedades de un sistema que todavía no
+escala.
+De ahí que haya un objetivo específico por fase, y que el objetivo general las reúna.
 
 Construir un sistema distribuido de memoria transactiva sobre memorias asociativas
 entrópicas y estudiarlo por fases, desde un prototipo de tres módulos hasta ocho módulos
@@ -187,7 +260,7 @@ memoria de mayor capacidad~\cite{krotov2016dense,ramsauer2021hopfield}.
 Este trabajo elige la memoria transactiva por tres propiedades que esas opciones no
 reúnen.
 
-La primera es que el directorio se forma con el uso.
+La primera es que el directorio emerge de la experiencia.
 Nadie entrena una compuerta ni escribe un catálogo: cada módulo cuenta qué pistas
 respondió cada especialista, y con tres módulos el directorio supera el 90\,\% de acierto
 tras 13 interacciones, medido sobre las mismas consultas que lo forman (Sección~\ref{sec:fase1-resultados}).
@@ -254,7 +327,7 @@ opera en ambas direcciones entre texto e imagen.
     específico~\ref{oe:emergencia}.
     La especialización es asignada: la etiqueta de clase decide qué módulo guarda cada
     imagen y cada palabra.
-    Lo que se forma con el uso es el directorio.
+    Lo que emerge de la experiencia es el directorio.
     \item \textbf{Comparaciones.} Decisores simples sobre los mismos vectores, una sola
     memoria heteroasociativa con las ocho clases, una memoria de dos clases contra una de
     ocho y un codificador entrenado sin la pérdida de clase.
@@ -311,7 +384,7 @@ La fase 5 no tiene tasa de error de transcripción ni aciertos con voz o con cá
 \section{Preguntas de investigación}\label{fase:preguntas}
 
 La pregunta general es si un sistema de memoria transactiva, que reparte el contenido
-entre memorias heteroasociativas entrópicas especializadas y aprende con el uso a quién
+entre memorias heteroasociativas entrópicas especializadas y aprende de la experiencia a quién
 preguntar, evita el techo entrópico de una sola memoria con todo el contenido, y qué
 agrega esa memoria frente a decisores simples sobre las mismas representaciones.
 Cada objetivo específico tiene su pregunta.

@@ -1,29 +1,29 @@
 \chapter*{Resumen}
 \markboth{Resumen}{Resumen}
 \thispagestyle{empty}
-Una memoria asociativa entrópica tiene un techo: conforme se llena, su entropía crece,
-acepta de más y recuerda peor.
-Este trabajo reparte el contenido entre módulos que aprenden con el uso quién sabe qué,
-como en la \emph{memoria transactiva} de Wegner~\cite{wegner1987transactive}, sobre las
-memorias de Pineda y Morales \cite{pineda2022weighted,morales2025missing}, y lo estudia en cinco fases.
-En un prototipo de tres módulos, con cuatro memorias cada uno, pistas cuantizadas por
-signo y un mediador, el directorio emerge del uso: la fase madura acierta el 26.25\,\% de 80
-consultas tras una interacción y el 98.75\,\% tras 80, dentro de muestra, y con el orden
-bloqueado, 33.75\,\% mientras solo ve una clase.
-Leerlo pide dividir entre los registros de cada módulo (B1); sin dividir, 53.75\,\%.
-Con ocho módulos, uno por clase de ETH-80~\cite{leibe2003eth80} y con una memoria
-heteroasociativa de palabras e imágenes, el sistema acierta lo mismo que una sola memoria (96.8 frente
-a 96.9\,\%), pero responde menos con un dominio ajeno (3.1 frente a 10.9\,\% de las
-imágenes).
-En texto iguala a decisores simples sobre los mismos vectores (81.2 frente a
-76.0--81.5\,\%) y acepta 2 de 40 consultas fuera de dominio, como un voto por vocabulario,
-contra 40 de los decisores de coseno.
-Leído al revés, el directorio devuelve la envolvente de cada dominio presenciado y no un
-ejemplar.
-Una imagen evoca una palabra de su clase el 96.0\,\% de las veces, y su nombre el
-48.0\,\%.
-Una demostración conecta voz y cámara en tiempo real, sin cifras de acierto.
-Repartir evita el techo en fidelidad y mezcla de dominios; en acierto de clase empata.
+Un grupo recuerda más que cada uno de sus miembros cuando cada uno sabe quién sabe qué;
+Wegner~\cite{wegner1987transactive} llamó a esta organización \emph{memoria transactiva}.
+Las memorias asociativas entrópicas de Pineda y Morales
+\cite{pineda2022weighted,morales2025missing} guardan lo que registran como una tabla de
+conteos, reconocen lo que tiene soporte, recuperan muestreando y rechazan lo que no
+contienen.
+Su límite es un techo: una sola memoria con todo el contenido, conforme se llena, acepta
+de más y recuerda peor.
+Aquí se reparte el contenido entre módulos especialistas que aprenden de su experiencia
+a quién preguntar, en un sistema distribuido de memoria transactiva sin clasificadores
+discriminativos.
+El sistema se desarrolló en cinco fases: de un prototipo de tres módulos a ocho módulos
+sobre ETH-80~\cite{leibe2003eth80}, cada uno con una memoria de palabras e imágenes, y a
+una demostración con voz y cámara.
+Con tres módulos, el directorio emerge de la experiencia: el acierto pasa del 26.25 al
+98.75\,\% en 80 consultas, medido sobre las que lo forman.
+Con ocho, el sistema acierta lo mismo que una sola memoria (96.8 frente a 96.9\,\%), pero
+la mezcla de dominios baja de 10.9 a 3.1\,\% de las imágenes y rechaza 38 de 40 consultas
+ajenas.
+Repartir evita el techo en el recuerdo y no en el acierto.
+Lo que aporta la memoria transactiva es un directorio que nadie programa, el rechazo y el
+recuerdo en ambas direcciones; su acierto depende de un codificador visual entrenado con
+la clase.
 
 
 \noindent\textbf{Palabras clave}: memoria transactiva, memoria asociativa entrópica, memoria

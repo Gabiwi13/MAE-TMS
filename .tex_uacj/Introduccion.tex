@@ -1,29 +1,33 @@
 \chapter*{Introducción}\label{introduccion}\label{sec:introduccion}
 \thispagestyle{empty}
 \markboth{Introducción}{Introducción}
-Un grupo puede recordar más que cualquiera de sus miembros porque cada uno sabe quién
-sabe qué.
-Wegner~\cite{wegner1987transactive} llamó \emph{memoria transactiva} a esta organización
-y después la describió como una red de computadoras~\cite{wegner1995computer}.
-Las memorias asociativas entrópicas de Pineda y Morales
-\cite{pineda2021entropic,pineda2022weighted,morales2025missing} guardan lo que registran
-como conteos, reconocen, recuperan muestreando y rechazan lo que no contienen.
-Una sola tiene un techo: su entropía crece con lo que guarda, y con ella las aceptaciones
-falsas.
-Este trabajo reparte el contenido entre módulos especialistas que aprenden con el uso a
-quién preguntar, y lo estudia en cinco fases.
-Un prototipo de tres módulos mostró que el directorio emerge de la experiencia, y con él
-se eligió leerlo dividiendo entre los registros de cada módulo (B1).
-Después se pasó a ocho módulos sobre ETH-80~\cite{leibe2003eth80}, cada uno con una
-memoria heteroasociativa de palabras e imágenes.
-En ese paso cambiaron varias cosas a la vez, y el efecto del tamaño se midió aparte, con
-una sola memoria contra la partición y con memorias de dos y de ocho clases.
-Con los ocho módulos se hicieron las comparaciones con decisores simples y con un
-codificador sin la pérdida de clase, y se estudiaron propiedades como la lectura inversa
-del directorio y la pérdida de un módulo.
-La última fase es una demostración con voz y cámara en tiempo real, sin cifras de acierto.
-El reparto evita el techo en la fidelidad del recuerdo y en la mezcla de dominios; en el
-acierto de clase empata con la memoria única.
+En un sistema distribuido con nodos especializados, cada consulta tiene que llegar al
+nodo que sabe responderla~\cite{crespo2002routing,callan2000distributed}.
+Los grupos de personas lo resuelven con una \emph{memoria
+transactiva}~\cite{wegner1987transactive}, en la que cada miembro guarda lo que sabe y un
+directorio de quién sabe qué, y Wegner la describió como una red de
+computadoras~\cite{wegner1995computer}.
+
+Entre las memorias asociativas, que devuelven un recuerdo completo a partir de una parte
+de él~\cite{hopfield1982neural}, la entrópica~\cite{pineda2021entropic,pineda2022weighted}
+guarda lo registrado como una tabla de conteos entre rasgos y valores.
+Reconoce una pista cuando cada rasgo tiene soporte, recupera muestreando y rechaza lo que
+no contiene, y su versión heteroasociativa (EHAM) recupera desde un dominio lo asociado en
+otro~\cite{morales2025missing}.
+Como la entropía crece con lo que la tabla guarda, una sola memoria con todo el contenido
+rechaza y recuerda peor conforme se llena, y ese es su \emph{techo entrópico}.
+
+Aquí, cada especialista es un \emph{módulo} con una memoria de contenido y un
+\emph{directorio} que registra quién resolvió cada consulta presenciada.
+Las consultas son palabras en inglés, representadas con
+fastText~\cite{bojanowski2017fasttext}, o imágenes de las ocho clases de
+ETH-80~\cite{leibe2003eth80}.
+
+Este trabajo construye con esos módulos un sistema de memoria transactiva, lo hace crecer
+por fases y lo compara con una sola memoria y con decisores simples.
+A los sistemas computacionales les ofrece enrutar sin compuerta entrenada ni catálogo
+escrito a mano, con un directorio que emerge de la experiencia y decisiones que se
+rastrean hasta sus conteos.
 Los Capítulos~\ref{cap:pp} a~\ref{conclusiones} presentan el problema, el marco teórico,
 el desarrollo por fases, los resultados y las conclusiones, y el Apéndice~\ref{apendiceA}
-ubica los experimentos.
+ubica cada experimento.

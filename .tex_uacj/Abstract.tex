@@ -1,29 +1,28 @@
 \chapter*{Abstract}
 \markboth{Abstract}{Abstract}
 \thispagestyle{empty}
-An entropic associative memory has a ceiling: as it fills, its entropy grows, it accepts
+A group remembers more than each of its members when each one knows who knows what;
+Wegner~\cite{wegner1987transactive} called this organization \emph{transactive memory}.
+The entropic associative memories of Pineda and Morales
+\cite{pineda2022weighted,morales2025missing} store what they register as a table of
+counts, recognize what has support, retrieve by sampling and reject what they do not
+contain.
+Their limit is a ceiling: a single memory holding all the content, as it fills, accepts
 too much and recalls worse.
-This work splits the content among modules that learn through use who knows what, as in
-Wegner's \emph{transactive memory}~\cite{wegner1987transactive}, on the memories of
-Pineda and Morales \cite{pineda2022weighted,morales2025missing}, and studies it in five
-phases.
-In a three-module prototype, with four memories each, sign-quantized cues and a mediator,
-the directory emerges from use: the mature phase routes correctly 26.25\,\% of 80 queries
-after one interaction and 98.75\,\% after 80, in-sample, and with blocked order,
-33.75\,\% while it sees one class.
-Reading it requires dividing by each module's records (B1); without dividing, 53.75\,\%.
-With eight modules, one per ETH-80 class~\cite{leibe2003eth80} and with a heteroassociative
-memory of words and images, the system is as accurate as a single memory (96.8 against
-96.9\,\%), but answers less often with a foreign domain (3.1 against 10.9\,\% of the
-images).
-On text it matches simple decision rules on the same vectors (81.2 against
-76.0--81.5\,\%) and accepts 2 of 40 out-of-domain queries, like a vocabulary vote,
-against 40 for the cosine rules.
-Read backwards, the directory returns the envelope of each witnessed domain, not an
-exemplar.
-An image evokes a word of its class 96.0\,\% of the time, and its name 48.0\,\%.
-A demonstration connects voice and camera in real time, with no accuracy figures.
-Splitting avoids the ceiling in fidelity and domain mixing; in class accuracy it ties.
+Here the content is split among specialist modules that learn from experience whom to
+ask, in a distributed transactive memory system without discriminative classifiers.
+The system was developed in five phases: from a three-module prototype to eight modules
+on ETH-80~\cite{leibe2003eth80}, each with a memory of words and images, and to a
+demonstration with voice and camera.
+With three modules, the directory emerges from experience: accuracy rises from 26.25 to
+98.75\,\% over 80 queries, measured on the queries that form it.
+With eight, the system is as accurate as a single memory (96.8 against 96.9\,\%), but
+domain mixing falls from 10.9 to 3.1\,\% of the images, and the system rejects 38 of 40
+out-of-domain queries.
+Splitting avoids the ceiling in recall and not in accuracy.
+What transactive memory contributes is a directory that nobody programs, rejection and
+recall in both directions; its accuracy depends on a visual encoder trained with the
+class.
 
 
 \noindent\textbf{Keywords}: transactive memory, entropic associative memory, heteroassociative
