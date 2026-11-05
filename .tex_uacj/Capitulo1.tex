@@ -18,7 +18,7 @@ Su límite es la capacidad.
 Con patrones aleatorios guarda del orden de $0.14N$ recuerdos, con $N$ neuronas, y si se
 le dan más, recuerdos vecinos se funden en un estado que no corresponde a
 ninguno~\cite{krotov2016dense}.
-Además, según Pineda y colaboradores, las memorias de esta tradición no guardan una
+Según Pineda y colaboradores, las memorias de esta tradición no guardan una
 representación declarativa, no rechazan lo que no contienen y reproducen en lugar de
 construir~\cite{pineda2021entropic}.
 La memoria entrópica pertenece a esta familia, y la fusión de recuerdos en una red que
@@ -43,7 +43,7 @@ recuerdos que neuronas, y la red estándar solo funciona bien en el caso contrar
 Krotov y Hopfield~\cite{krotov2016dense} quitaron esa restricción agregando a la función
 de energía interacciones de orden mayor que el cuadrático, con lo que la capacidad crece
 de forma no lineal con el tamaño de la red.
-También mostraron que estas memorias equivalen a una red neuronal de una capa oculta, con
+Mostraron que estas memorias equivalen a una red neuronal de una capa oculta, con
 funciones de activación como los polinomios rectificados.
 En los dígitos manuscritos de MNIST, con 2000 memorias, todas las redes de potencia 3
 quedaron por debajo del 1.6\,\% de error de prueba.
@@ -151,7 +151,7 @@ un techo: conforme se llena, rechaza peor y recuerda con menos fidelidad.
 La solución que se propone es la de la memoria transactiva, que reparte el contenido
 entre especialistas, cada uno con menos variedad que guardar, y aprende de la experiencia
 a quién preguntar.
-El problema tiene cinco partes, en el orden en que se estudiaron.
+El problema tiene cinco partes.
 \begin{enumerate}
     \item \textbf{Emergencia.} Que el directorio emerja de la experiencia: sin saber de antemano
     quién sabe qué, los módulos tienen que aprender a quién preguntar registrando quién
@@ -169,8 +169,7 @@ El problema tiene cinco partes, en el orden en que se estudiaron.
     conjunto de datos, como la voz y las imágenes de una cámara.
 \end{enumerate}
 
-Resolver estas partes no basta.
-Hay que medir, frente a una sola memoria con el mismo contenido, si el reparto evita el
+Hay que medir, además, frente a una sola memoria con el mismo contenido, si el reparto evita el
 techo, y cuánto de cada resultado se debe al mecanismo asociativo y cuánto a las
 representaciones: los vectores de palabras y su vocabulario, por un lado,
 y el codificador visual y su supervisión de clase, por el otro.
